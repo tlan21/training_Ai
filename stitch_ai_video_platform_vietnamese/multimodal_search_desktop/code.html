@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script>
+  if (!localStorage.getItem('currentUser')) {
+    window.location.href = '../login_desktop/code.html';
+  }
+  function logout() {
+    localStorage.removeItem('currentUser');
+    window.location.href = '../login_desktop/code.html';
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    const userJson = localStorage.getItem('currentUser');
+    if (userJson) {
+      const user = JSON.parse(userJson);
+      const avatars = document.querySelectorAll('.user-avatar');
+      avatars.forEach(avatarEl => {
+        if (user.avatar) {
+          avatarEl.src = user.avatar;
+        }
+      });
+    }
+  });
+</script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary": "#ffffff",
+                        "secondary-fixed-dim": "#ffb95f",
+                        "on-error": "#ffffff",
+                        "secondary-fixed": "#ffddb8",
+                        "on-error-container": "#93000a",
+                        "on-surface-variant": "#4a4455",
+                        "tertiary-fixed": "#ffdad7",
+                        "inverse-on-surface": "#f7efeb",
+                        "on-secondary-fixed-variant": "#653e00",
+                        "surface-dim": "#e0d8d5",
+                        "surface-container": "#f4ece8",
+                        "primary-fixed-dim": "#d2bbff",
+                        "error": "#ba1a1a",
+                        "outline-variant": "#ccc3d8",
+                        "surface-container-high": "#eee7e3",
+                        "tertiary": "#a20017",
+                        "secondary": "#855300",
+                        "on-surface": "#1e1b19",
+                        "background": "#fff8f5",
+                        "surface-container-low": "#faf2ee",
+                        "surface-tint": "#732ee4",
+                        "on-primary-fixed-variant": "#5a00c6",
+                        "on-tertiary-container": "#ffdfdc",
+                        "inverse-primary": "#d2bbff",
+                        "primary": "#630ed4",
+                        "inverse-surface": "#33302d",
+                        "surface-variant": "#e9e1dd",
+                        "on-tertiary-fixed": "#410004",
+                        "on-secondary-container": "#684000",
+                        "on-primary-fixed": "#25005a",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#930013",
+                        "surface-container-highest": "#e9e1dd",
+                        "tertiary-fixed-dim": "#ffb3ad",
+                        "on-primary-container": "#ede0ff",
+                        "surface": "#fff8f5",
+                        "error-container": "#ffdad6",
+                        "outline": "#7b7487",
+                        "surface-bright": "#fff8f5",
+                        "tertiary-container": "#c6252b",
+                        "primary-fixed": "#eaddff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed": "#2a1700",
+                        "on-background": "#1e1b19",
+                        "secondary-container": "#fea619",
+                        "primary-container": "#7c3aed"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "20px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "container-margin-desktop": "40px",
+                        "unit": "4px",
+                        "xl": "32px",
+                        "container-margin-mobile": "16px",
+                        "md": "16px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        body {
+            background-color: #fff8f5;
+            color: #1e1b19;
+            overflow-x: hidden;
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(231, 229, 228, 0.5);
+        }
+        .search-tab-active {
+            color: #630ed4;
+            border-bottom: 2px solid #630ed4;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #ccc3d8;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation Bar -->
+<nav class="hidden md:flex fixed top-0 w-full h-16 items-center justify-between px-container-margin-desktop z-50 bg-background border-b border-outline-variant">
+<div class="flex items-center gap-8">
+<a class="font-headline-lg text-headline-lg font-bold text-primary" href="../discovery_desktop/code.html">VidsAI</a>
+<div class="flex gap-6">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 font-label-md text-label-md" href="../short_video_feed_desktop/code.html">Trang chủ</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 font-label-md text-label-md" href="../discovery_desktop/code.html">Khám phá</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 font-label-md text-label-md" href="../personal_library_desktop/code.html">Thư viện</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-surface-container rounded-full transition-all duration-150 active:scale-95">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 hover:bg-surface-container rounded-full transition-all duration-150 active:scale-95">
+<span class="material-symbols-outlined">history</span>
+</button>
+<div class="relative">
+  <div onclick="toggleProfileMenu()" class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant cursor-pointer active:scale-95 duration-150">
+    <img class="w-full h-full object-cover user-avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEqYQ8NKIdjE-kPCbHpmjk-jollUulkQ493ARemitZYd46ur-liMJ-gjLpVQdh3jE488GoosDVZe9QNBT_-ZCnbN1l68R9eXXVe92SMZcQCYYKDsoRnydOzBWt3OKI9jyJ8jEOV_Gx2jH1AECc1oy5AO2WafDz8WeSox_8M0a-5COqFYKvtjXP02buA9IhioHEApCjFlYPm3Ur7rs8cz-TGDNmephdY5SYoEI0C0GqeiXGol7mrKzLkcqZdyusFCw3QRhEXBOU6Qw"/>
+  </div>
+  <!-- Dropdown Menu -->
+  <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white border border-outline-variant rounded-xl shadow-lg py-2 hidden z-[100]">
+    <div class="px-4 py-2 border-b border-outline-variant/50 flex flex-col items-start">
+      <p class="text-sm font-bold text-on-surface truncate">Digital Creator</p>
+      <p class="text-xs text-on-surface-variant truncate">user@vidsai.com</p>
+    </div>
+    <a href="../personal_library_desktop/code.html" class="block w-full text-left px-4 py-2 text-sm text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors">Thư viện của tôi</a>
+    <button onclick="logout()" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors flex items-center gap-2">
+      <span class="material-symbols-outlined text-[18px]">logout</span>
+      <span>Đăng xuất</span>
+    </button>
+  </div>
+</div>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="pt-24 pb-16 px-container-margin-desktop max-w-[1440px] mx-auto min-h-screen">
+<!-- Search Header Section -->
+<header class="mb-12">
+<h1 class="font-headline-lg text-headline-lg mb-8 text-center text-on-surface">Tìm kiếm đa phương thức</h1>
+<!-- Search Interface Bento -->
+<div class="grid grid-cols-12 gap-6 items-start">
+<!-- Search Modes Toggle & Inputs -->
+<div class="col-span-12 lg:col-span-8 bg-surface-container-lowest rounded-xl p-8 shadow-sm border border-outline-variant">
+<div class="flex gap-8 border-b border-outline-variant mb-6">
+<button class="search-tab-active pb-4 font-label-md text-label-md transition-all" id="text-search-btn" onclick="switchSearchMode('text')">Tìm bằng văn bản</button>
+<button class="text-on-surface-variant pb-4 font-label-md text-label-md transition-all hover:text-primary" id="image-search-btn" onclick="switchSearchMode('image')">Tìm bằng hình ảnh</button>
+</div>
+<!-- Text Search Panel -->
+<div class="space-y-6" id="text-search-panel">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors">search</span>
+<input class="w-full pl-12 pr-4 py-4 bg-surface-container-low border-transparent focus:border-primary focus:ring-0 rounded-xl transition-all font-body-lg text-body-lg" placeholder="Nhập từ khóa hoặc mô tả cảnh quay..." type="text"/>
+</div>
+<div class="flex flex-wrap gap-2">
+<span class="text-on-surface-variant font-label-sm mr-2 py-1">Tìm kiếm gần đây:</span>
+<button class="px-3 py-1 bg-surface-container text-on-surface-variant rounded-full font-label-sm hover:bg-primary-fixed transition-colors">Cảnh hoàng hôn trên biển</button>
+<button class="px-3 py-1 bg-surface-container text-on-surface-variant rounded-full font-label-sm hover:bg-primary-fixed transition-colors">Nấu ăn phong cách cinematic</button>
+<button class="px-3 py-1 bg-surface-container text-on-surface-variant rounded-full font-label-sm hover:bg-primary-fixed transition-colors">Drone bay qua thành phố</button>
+</div>
+</div>
+<!-- Image Search Panel (Hidden by default) -->
+<div class="hidden space-y-6" id="image-search-panel">
+<div class="grid grid-cols-2 gap-6">
+<div class="border-2 border-dashed border-outline-variant rounded-xl p-8 flex flex-col items-center justify-center bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="w-16 h-16 rounded-full bg-primary-fixed flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-3xl">add_photo_alternate</span>
+</div>
+<p class="text-on-surface font-label-md mb-2">Kéo và thả ảnh vào đây</p>
+<p class="text-on-surface-variant text-label-sm">Hoặc</p>
+<button class="mt-4 px-6 py-2 bg-primary text-on-primary rounded-full font-label-md hover:bg-opacity-90 transition-all">Chọn ảnh</button>
+</div>
+<div class="relative bg-surface-container-high rounded-xl overflow-hidden aspect-video flex items-center justify-center border border-outline-variant">
+<img class="w-full h-full object-cover opacity-60" data-alt="A cinematic, high-resolution visual reference image for search, featuring a lush mountain landscape at dawn with ethereal fog and golden hour lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUwvcgrLXANQ2WJQR9_jm0XqbRAa593Puj7bcX3ys1QtxKSbJtIAiiL4V1MUFE3kkxhfxt-6M9nWjzzqrhmEdkLG8AdvFITQSLBglpdDau8TFbXOUMcOMtfqRY0pNu5uOug7UANioYa9TsijLaBkkwvIH7wkTnAFku4ddhHVxD1du7d6DhhnO5DNRMjKV1IdwnzG7hTC355NNaWnSkelI07VEGEwzEcRisNCv2XVRErURYmB_ot6kykc_jJLXL2s7tsUSzLprYc-o"/>
+<div class="absolute inset-0 flex flex-col items-center justify-center bg-black/20 backdrop-blur-[2px]">
+<span class="material-symbols-outlined text-white text-4xl mb-2">visibility</span>
+<span class="text-white font-label-md">Xem trước ảnh</span>
+</div>
+</div>
+</div>
+<p class="text-label-sm text-on-surface-variant text-center">Hệ thống AI sẽ phân tích bố cục, màu sắc và đối tượng trong ảnh để tìm các video tương ứng.</p>
+</div>
+</div>
+<!-- Filters Column -->
+<div class="col-span-12 lg:col-span-4 space-y-6">
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-outline-variant">
+<h3 class="font-title-lg text-title-lg mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined">tune</span>
+                            Bộ lọc
+                        </h3>
+<div class="space-y-6">
+<div>
+<label class="block font-label-md text-on-surface mb-3">Mức độ tương đồng: <span class="text-primary" id="similarity-val">85%</span></label>
+<input class="w-full accent-primary" max="100" min="50" oninput="document.getElementById('similarity-val').innerText = this.value + '%'" type="range" value="85"/>
+<div class="flex justify-between text-label-sm text-on-surface-variant mt-1">
+<span>Rộng</span>
+<span>Chính xác</span>
+</div>
+</div>
+<div>
+<label class="block font-label-md text-on-surface mb-3">Thời lượng video</label>
+<div class="grid grid-cols-2 gap-2">
+<button class="px-4 py-2 border border-outline-variant rounded-lg font-label-sm hover:border-primary transition-colors text-left flex justify-between">
+                                        Ngắn <span>&lt; 1p</span>
+</button>
+<button class="px-4 py-2 bg-primary-fixed border border-primary rounded-lg font-label-sm text-on-primary-fixed-variant transition-colors text-left flex justify-between">
+                                        Vừa <span>1-5p</span>
+</button>
+<button class="px-4 py-2 border border-outline-variant rounded-lg font-label-sm hover:border-primary transition-colors text-left flex justify-between">
+                                        Dài <span>5-20p</span>
+</button>
+<button class="px-4 py-2 border border-outline-variant rounded-lg font-label-sm hover:border-primary transition-colors text-left flex justify-between">
+                                        Rất dài <span>&gt; 20p</span>
+</button>
+</div>
+</div>
+<div>
+<label class="block font-label-md text-on-surface mb-3">Sắp xếp theo</label>
+<select class="w-full bg-surface-container-low border-outline-variant rounded-lg p-2 font-body-md focus:ring-primary focus:border-primary">
+<option>Độ khớp cao nhất</option>
+<option>Mới nhất</option>
+<option>Phổ biến nhất</option>
+</select>
+</div>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Search Results Grid -->
+<section>
+<div class="flex justify-between items-end mb-6">
+<h2 class="font-headline-md text-headline-md text-on-surface">Kết quả tìm kiếm <span class="text-on-surface-variant font-body-md ml-2">(124 kết quả)</span></h2>
+<div class="flex gap-2">
+<button class="p-2 bg-surface-container text-primary rounded-lg"><span class="material-symbols-outlined">grid_view</span></button>
+<button class="p-2 hover:bg-surface-container text-on-surface-variant rounded-lg transition-colors"><span class="material-symbols-outlined">view_list</span></button>
+</div>
+</div>
+<!-- Bento Grid of Results -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Result Card 1 -->
+<div class="group bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm border border-outline-variant transition-all duration-300 hover:-translate-y-2 hover:shadow-lg cursor-pointer" onclick="window.location.href='../video_detail_ai_player_animated_desktop/code.html'">
+<div class="relative aspect-video overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="High-quality video frame of a cinematic sunset over a calm ocean, with deep oranges and purples, reflecting in the water ripples. Modern filmic aesthetic with slight grain." src="https://lh3.googleusercontent.com/aida-public/AB6AXuALJZdL2HCN5NC2LtverjlhkNc0RTPeaTDPGSWZHYwsPz4ud63SzpsMPjrnRxND0YxUz-hXLGdBqdVqsyunvYPQLnuckJFk_VOyHzKHOZVvOuLC9ALarBsJKBihEhXAeoueAY7qqiub3SeIDTTQTfAsrIpWRpdZkGA94hyGQESrhq1nbaVXE-LbcarcTY-nrX7-dDIWyelRmTYFpNKynsYenCMMZIKOlMkJ2YP-e4ECq6kvVOw3iLqxyS-NIkOJtHBXqAbaX4qHLWY"/>
+<div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<button class="bg-white/90 text-primary px-4 py-2 rounded-full font-label-md flex items-center gap-2 backdrop-blur hover:bg-white active:scale-95 transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                                Phát từ đoạn này
+                            </button>
+</div>
+<span class="absolute top-3 left-3 bg-primary-container text-on-primary-container px-3 py-1 rounded-full text-label-sm font-bold shadow-sm">Khớp: 98.2%</span>
+<span class="absolute bottom-3 right-3 bg-black/60 text-white px-2 py-1 rounded text-label-sm backdrop-blur">08:45</span>
+</div>
+<div class="p-5">
+<h3 class="font-title-lg text-title-lg text-on-surface mb-2 line-clamp-1">Kỳ quan thiên nhiên ven biển</h3>
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-secondary text-sm">schedule</span>
+<span class="text-label-sm text-secondary font-bold">Xuất hiện tại 02:15</span>
+</div>
+<p class="text-on-surface-variant text-label-md line-clamp-2 mb-4">Video chất lượng cao về những cảnh quay thiên nhiên hùng vĩ được quay bằng drone...</p>
+<div class="pt-4 border-t border-outline-variant flex justify-between items-center">
+<span class="text-label-sm text-on-surface-variant">Kênh: TravelVibe</span>
+<button class="text-primary hover:underline font-label-md">Chi tiết</button>
+</div>
+</div>
+</div>
+<!-- Result Card 2 -->
+<div class="group bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm border border-outline-variant transition-all duration-300 hover:-translate-y-2 hover:shadow-lg cursor-pointer" onclick="window.location.href='../video_detail_ai_player_animated_desktop/code.html'">
+<div class="relative aspect-video overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A professional chef in a bright, modern kitchen meticulously plating a gourmet dish. Shallow depth of field, focused on the textures of the food. Clean, light-filled aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdC078Va-wYf444Ly40wUB4g3qENonVKEpK3RQxmw0NRF-pKMTsERy_ir-OaYZKoxRHeYoVm-8RyvnDSZDXd7YoT7dhIB3UNe_FHCpDXw1EZSEO1O0QvX0Ggoaza3TnO26n4yJTyzfXHm8yjg8e2rl-7BozrjwxPUM6Rf1tCGBzi5Zl6zzbrfulsW6Jm5Oz3sFy4t0USBpBLovLbrd0PCWxDucwlua1y4pOhK172QQV2KURN30ms9P2YP5IsO5fJ06zDwohwpiqxI"/>
+<div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<button class="bg-white/90 text-primary px-4 py-2 rounded-full font-label-md flex items-center gap-2 backdrop-blur hover:bg-white active:scale-95 transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                                Phát từ đoạn này
+                            </button>
+</div>
+<span class="absolute top-3 left-3 bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-label-sm font-bold shadow-sm">Khớp: 94.5%</span>
+<span class="absolute bottom-3 right-3 bg-black/60 text-white px-2 py-1 rounded text-label-sm backdrop-blur">12:30</span>
+</div>
+<div class="p-5">
+<h3 class="font-title-lg text-title-lg text-on-surface mb-2 line-clamp-1">Kỹ thuật nấu ăn chuyên nghiệp</h3>
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-secondary text-sm">schedule</span>
+<span class="text-label-sm text-secondary font-bold">Xuất hiện tại 05:42</span>
+</div>
+<p class="text-on-surface-variant text-label-md line-clamp-2 mb-4">Hướng dẫn chi tiết cách trang trí món ăn cao cấp dành cho đầu bếp tại gia.</p>
+<div class="pt-4 border-t border-outline-variant flex justify-between items-center">
+<span class="text-label-sm text-on-surface-variant">Kênh: ChefSecrets</span>
+<button class="text-primary hover:underline font-label-md">Chi tiết</button>
+</div>
+</div>
+</div>
+<!-- Result Card 3 -->
+<div class="group bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm border border-outline-variant transition-all duration-300 hover:-translate-y-2 hover:shadow-lg cursor-pointer" onclick="window.location.href='../video_detail_ai_player_animated_desktop/code.html'">
+<div class="relative aspect-video overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A futuristic cityscape at night, vibrant neon lights in shades of blue and pink reflecting on wet streets. High-tech architecture and flying transport silhouettes." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDy-RwOGnVmKVDMFg09oeqmTyLhX1eDZl3wX1TRgGAZd62s08Y00KCvLcM6ZuCRglxd_Zi-noNmspxHjoqCtgdNequOuGtWCrXvK6Y7AOnJ7iLqlYZvm01yY_GivwKSOzawhRVmAcKSClH__bwif05j9PObBj_EuoF6obRqAB0TeslP1wjohiF8Z-E4o5kGxTq6nkQ6NyZvIT-RzlWoJ5DMcAdPQ_Ms2yCOv8jecGTq3YL8gaCaTQnk5mKuiTCiMmJ2D4shvivv-1I"/>
+<div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<button class="bg-white/90 text-primary px-4 py-2 rounded-full font-label-md flex items-center gap-2 backdrop-blur hover:bg-white active:scale-95 transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                                Phát từ đoạn này
+                            </button>
+</div>
+<span class="absolute top-3 left-3 bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-label-sm font-bold shadow-sm">Khớp: 91.0%</span>
+<span class="absolute bottom-3 right-3 bg-black/60 text-white px-2 py-1 rounded text-label-sm backdrop-blur">05:12</span>
+</div>
+<div class="p-5">
+<h3 class="font-title-lg text-title-lg text-on-surface mb-2 line-clamp-1">Thành phố tương lai Cyberpunk</h3>
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-secondary text-sm">schedule</span>
+<span class="text-label-sm text-secondary font-bold">Xuất hiện tại 00:30</span>
+</div>
+<p class="text-on-surface-variant text-label-md line-clamp-2 mb-4">Phim ngắn 3D giới thiệu concept nghệ thuật đô thị viễn tưởng.</p>
+<div class="pt-4 border-t border-outline-variant flex justify-between items-center">
+<span class="text-label-sm text-on-surface-variant">Kênh: TechArt Studio</span>
+<button class="text-primary hover:underline font-label-md">Chi tiết</button>
+</div>
+</div>
+</div>
+<!-- More cards would repeat here... -->
+</div>
+<!-- Pagination/Load more -->
+<div class="mt-12 flex justify-center">
+<button class="px-8 py-3 bg-surface-container-high text-on-surface font-label-md rounded-full hover:bg-primary-fixed hover:text-on-primary-fixed-variant transition-all flex items-center gap-2">
+<span class="material-symbols-outlined">refresh</span>
+                    Tải thêm kết quả
+                </button>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar (Mobile only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-safe h-[56px] bg-surface-container shadow-sm">
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Trang chủ</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-3 py-1">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">explore</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Khám phá</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1">
+<span class="material-symbols-outlined">video_library</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Thư viện</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Cá nhân</span>
+</div>
+</nav>
+<script>
+        function switchSearchMode(mode) {
+            const textBtn = document.getElementById('text-search-btn');
+            const imageBtn = document.getElementById('image-search-btn');
+            const textPanel = document.getElementById('text-search-panel');
+            const imagePanel = document.getElementById('image-search-panel');
+
+            if (mode === 'text') {
+                textBtn.classList.add('search-tab-active');
+                textBtn.classList.remove('text-on-surface-variant');
+                imageBtn.classList.remove('search-tab-active');
+                imageBtn.classList.add('text-on-surface-variant');
+                
+                textPanel.classList.remove('hidden');
+                imagePanel.classList.add('hidden');
+            } else {
+                imageBtn.classList.add('search-tab-active');
+                imageBtn.classList.remove('text-on-surface-variant');
+                textBtn.classList.remove('search-tab-active');
+                textBtn.classList.add('text-on-surface-variant');
+                
+                imagePanel.classList.remove('hidden');
+                textPanel.classList.add('hidden');
+            }
+        }
+
+        // Simple animation on scroll logic
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-10');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.group').forEach(el => {
+            el.classList.add('transition-all', 'duration-700', 'opacity-0', 'translate-y-10');
+            observer.observe(el);
+        });
+
+        function toggleProfileMenu() {
+            const dropdown = document.getElementById('profile-dropdown');
+            dropdown.classList.toggle('hidden');
+        }
+        document.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('profile-dropdown');
+            const avatar = document.querySelector('.user-avatar');
+            if (dropdown && !dropdown.contains(e.target) && e.target !== avatar && !avatar.contains(e.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+        document.addEventListener('DOMContentLoaded', () => {
+            const userJson = localStorage.getItem('currentUser');
+            if (!userJson) {
+                window.location.href = '../login_desktop/code.html';
+                return;
+            }
+            if (userJson) {
+                const user = JSON.parse(userJson);
+                const dropdownName = document.querySelector('#profile-dropdown p.font-bold');
+                const dropdownEmail = document.querySelector('#profile-dropdown p.text-xs');
+                if (dropdownName) dropdownName.textContent = user.name;
+                if (dropdownEmail) dropdownEmail.textContent = user.email;
+            }
+        });
+    </script>
+</body></html>

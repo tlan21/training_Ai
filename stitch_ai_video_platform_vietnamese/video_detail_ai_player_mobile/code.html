@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>VidsAI - Chi tiết Video</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary": "#ffffff",
+                    "secondary-fixed-dim": "#ffb95f",
+                    "on-error": "#ffffff",
+                    "secondary-fixed": "#ffddb8",
+                    "on-error-container": "#93000a",
+                    "on-surface-variant": "#4a4455",
+                    "tertiary-fixed": "#ffdad7",
+                    "inverse-on-surface": "#f7efeb",
+                    "on-secondary-fixed-variant": "#653e00",
+                    "surface-dim": "#e0d8d5",
+                    "surface-container": "#f4ece8",
+                    "primary-fixed-dim": "#d2bbff",
+                    "error": "#ba1a1a",
+                    "outline-variant": "#ccc3d8",
+                    "surface-container-high": "#eee7e3",
+                    "tertiary": "#a20017",
+                    "secondary": "#855300",
+                    "on-surface": "#1e1b19",
+                    "background": "#fff8f5",
+                    "surface-container-low": "#faf2ee",
+                    "surface-tint": "#732ee4",
+                    "on-primary-fixed-variant": "#5a00c6",
+                    "on-tertiary-container": "#ffdfdc",
+                    "inverse-primary": "#d2bbff",
+                    "primary": "#630ed4",
+                    "inverse-surface": "#33302d",
+                    "surface-variant": "#e9e1dd",
+                    "on-tertiary-fixed": "#410004",
+                    "on-secondary-container": "#684000",
+                    "on-primary-fixed": "#25005a",
+                    "on-tertiary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#930013",
+                    "surface-container-highest": "#e9e1dd",
+                    "tertiary-fixed-dim": "#ffb3ad",
+                    "on-primary-container": "#ede0ff",
+                    "surface": "#fff8f5",
+                    "error-container": "#ffdad6",
+                    "outline": "#7b7487",
+                    "surface-bright": "#fff8f5",
+                    "tertiary-container": "#c6252b",
+                    "primary-fixed": "#eaddff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-fixed": "#2a1700",
+                    "on-background": "#1e1b19",
+                    "secondary-container": "#fea619",
+                    "primary-container": "#7c3aed"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "20px",
+                    "lg": "24px",
+                    "sm": "8px",
+                    "xs": "4px",
+                    "container-margin-desktop": "40px",
+                    "unit": "4px",
+                    "xl": "32px",
+                    "container-margin-mobile": "16px",
+                    "md": "16px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "title-lg": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .heatmap-bar {
+            mask-image: linear-gradient(to right, black, black);
+            clip-path: url(#heatmap-mask);
+        }
+        .transcript-sheet {
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+        }
+        .transcript-sheet.open {
+            transform: translateY(0);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #E7E5E4;
+            border-radius: 10px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Header (Mobile Only, Hidden on details to focus content) -->
+<header class="flex md:hidden sticky top-0 bg-background/80 backdrop-blur-md z-40 items-center justify-between px-4 h-14">
+<button class="p-2" onclick="window.history.back()">
+<span class="material-symbols-outlined text-on-surface">arrow_back_ios</span>
+</button>
+<span class="font-headline-md-mobile text-primary font-bold">VidsAI</span>
+<button class="p-2">
+<span class="material-symbols-outlined text-on-surface">share</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="pb-24">
+<!-- Intelligent Video Player Area -->
+<section class="relative bg-black w-full aspect-video flex items-center justify-center overflow-hidden">
+<!-- Video Thumbnail / Player -->
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-80" data-alt="A high-quality cinematic 16:9 widescreen video frame showing a breathtaking sunset over a futuristic digital landscape. The lighting is warm and golden, reflecting off sleek purple and violet crystalline structures. The camera angle is a wide-angle drone shot, capturing depth and immense detail. The visual style is refined minimalism with professional color grading and a serene atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZOet-SFV77A-MMUAU7tIM6Zk_M57l9Uw14eR4MnSxC7LtnVRtIqfNEnvkIBxIU_KkauM1mSIdvaxq9UH4bnNx3yQI2VU7YvKkCSSbpIM8pN0oPl_9F0NDTUGjD2Atnz5mw82NglKp2pcVrDF5jO-9YN3yACRqsmIDGUy2KimKo2APdxOhgAzoBjjrBYFYG8OQu9epjQNLriWTbAyZ-slPbwWD8aUqh3UPBWK_TyD7O5GAHzj9YvU5D6OBA-UKUD1Og52HkCpbptk"/>
+</div>
+<!-- AI Player Overlay Controls (Simplified for Mobile) -->
+<div class="absolute inset-0 z-10 bg-gradient-to-t from-black/60 via-transparent to-black/30 flex flex-col justify-between p-4">
+<div class="flex justify-end">
+<span class="bg-black/40 text-white text-[10px] px-2 py-1 rounded-full backdrop-blur-sm border border-white/10">AI Augmented</span>
+</div>
+<div class="flex flex-col gap-2">
+<!-- Playback Controls -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-6">
+<span class="material-symbols-outlined text-white text-3xl">replay_10</span>
+<span class="material-symbols-outlined text-white text-5xl" style="font-variation-settings: 'FILL' 1;">play_circle</span>
+<span class="material-symbols-outlined text-white text-3xl">forward_10</span>
+</div>
+<span class="material-symbols-outlined text-white text-2xl">fullscreen</span>
+</div>
+<!-- AI Heatmap Seek Bar -->
+<div class="relative w-full h-12 flex flex-col justify-end gap-1">
+<!-- Heatmap Visualization -->
+<div class="w-full h-6 flex items-end gap-[1px]">
+<!-- Generated heatmap bars -->
+<div class="flex-1 bg-primary/40 rounded-t-[1px]" style="height: 20%"></div>
+<div class="flex-1 bg-primary/40 rounded-t-[1px]" style="height: 30%"></div>
+<div class="flex-1 bg-secondary-container/60 rounded-t-[1px]" style="height: 60%"></div>
+<div class="flex-1 bg-secondary-container/60 rounded-t-[1px]" style="height: 80%"></div>
+<div class="flex-1 bg-tertiary-container/80 rounded-t-[1px]" style="height: 100%"></div>
+<div class="flex-1 bg-tertiary-container/80 rounded-t-[1px]" style="height: 90%"></div>
+<div class="flex-1 bg-secondary-container/60 rounded-t-[1px]" style="height: 70%"></div>
+<div class="flex-1 bg-primary/40 rounded-t-[1px]" style="height: 40%"></div>
+<div class="flex-1 bg-primary/40 rounded-t-[1px]" style="height: 20%"></div>
+<div class="flex-1 bg-primary/40 rounded-t-[1px]" style="height: 35%"></div>
+<div class="flex-1 bg-secondary-container/60 rounded-t-[1px]" style="height: 55%"></div>
+<div class="flex-1 bg-tertiary-container/80 rounded-t-[1px]" style="height: 85%"></div>
+<div class="flex-1 bg-tertiary-container/80 rounded-t-[1px]" style="height: 95%"></div>
+<div class="flex-1 bg-primary/40 rounded-t-[1px]" style="height: 50%"></div>
+<div class="flex-1 bg-primary/40 rounded-t-[1px]" style="height: 30%"></div>
+<div class="flex-1 bg-primary/40 rounded-t-[1px]" style="height: 25%"></div>
+</div>
+<!-- Progress Line -->
+<div class="w-full h-[3px] bg-white/30 rounded-full relative">
+<div class="absolute left-0 top-0 h-full w-[35%] bg-primary rounded-full"></div>
+<div class="absolute left-[35%] top-1/2 -translate-y-1/2 w-3 h-3 bg-primary rounded-full shadow-lg border-2 border-white"></div>
+</div>
+<div class="flex justify-between text-[10px] text-white/80 font-medium">
+<span>04:12</span>
+<span>12:45</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Video Metadata -->
+<section class="px-4 pt-4 pb-6 border-b border-outline-variant/30">
+<h1 class="font-headline-md-mobile text-on-surface mb-2">Kiến trúc Tương lai: Sự giao thoa giữa AI và Thiết kế bền vững</h1>
+<div class="flex items-center gap-4 text-label-sm text-on-surface-variant mb-4">
+<span>1.2M lượt xem</span>
+<span>•</span>
+<span>2 ngày trước</span>
+<span class="bg-surface-variant px-2 py-0.5 rounded text-primary font-bold">#AI</span>
+</div>
+<!-- Channel Info -->
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-fixed-dim flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional circular avatar of a creative studio logo, featuring minimalist geometric shapes in deep violet and gold against a soft white background. The aesthetic is clean, modern, and high-end, representing a sophisticated media brand with a focus on design and intelligence." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2e8V7LvxmENI0MvBsPkCNc1OPvLLY2sSuivjpt12DEAmz4XFuceR9gBw-iLHhizvn6YPy6mm8QJjtPf-VJG1mvrPiLE4XUTCtTKGz3B9V1dJbXdQf_L1t-1KxhAQ4TfU_FTWuPoNuS0OWxFwIfcI-oou1JGxsAfZa2VDIEGpF99zT8QmQ9pq-TqE8CVty961MbXAUVZ4-chk0YFviWu3H4nYcfnREWda_Su6zRGHYIOAenmdhgRrokRv2aDqkMjlDghUD0sWt4sI"/>
+</div>
+<div>
+<p class="font-label-md text-on-surface">MediaLab AI</p>
+<p class="text-[11px] text-on-surface-variant">850K Người đăng ký</p>
+</div>
+</div>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-full font-label-md">Đăng ký</button>
+</div>
+<!-- Quick Action Buttons -->
+<div class="flex items-center gap-2 overflow-x-auto pb-2 custom-scrollbar">
+<button class="flex items-center gap-2 bg-surface-container-high px-4 py-2 rounded-full whitespace-nowrap">
+<span class="material-symbols-outlined text-on-surface-variant text-xl">thumb_up</span>
+<span class="font-label-md text-on-surface">45K</span>
+</button>
+<button class="flex items-center gap-2 bg-surface-container-high px-4 py-2 rounded-full whitespace-nowrap">
+<span class="material-symbols-outlined text-on-surface-variant text-xl">bookmark</span>
+<span class="font-label-md text-on-surface">Lưu lại</span>
+</button>
+<button class="flex items-center gap-2 bg-surface-container-high px-4 py-2 rounded-full whitespace-nowrap">
+<span class="material-symbols-outlined text-on-surface-variant text-xl">auto_awesome</span>
+<span class="font-label-md text-on-surface">Tóm tắt AI</span>
+</button>
+<button class="flex items-center gap-2 bg-surface-container-high px-4 py-2 rounded-full whitespace-nowrap" onclick="toggleTranscript()">
+<span class="material-symbols-outlined text-on-surface-variant text-xl">description</span>
+<span class="font-label-md text-on-surface">Bản ghi</span>
+</button>
+</div>
+</section>
+<!-- AI Summary Section (Bento Inspired) -->
+<section class="px-4 py-6">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<h2 class="font-title-lg text-on-surface">Tóm tắt Thông minh bởi AI</h2>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div class="col-span-2 p-4 bg-primary-container/10 border border-primary-container/20 rounded-xl">
+<p class="text-on-surface-variant font-body-md leading-relaxed">
+                        Video này khám phá cách các thuật toán AI đang cách mạng hóa kiến trúc bằng cách tối ưu hóa mức tiêu thụ năng lượng và đề xuất các vật liệu xây dựng sinh học mới.
+                    </p>
+</div>
+<div class="p-3 bg-surface-container-low rounded-xl border border-outline-variant/30">
+<span class="text-[10px] uppercase font-bold text-primary mb-1 block">Điểm Nhấn</span>
+<p class="font-label-md text-on-surface">Vật liệu sinh học (03:45)</p>
+</div>
+<div class="p-3 bg-surface-container-low rounded-xl border border-outline-variant/30">
+<span class="text-[10px] uppercase font-bold text-primary mb-1 block">Kết Luận</span>
+<p class="font-label-md text-on-surface">Tương lai bền vững (11:20)</p>
+</div>
+</div>
+</section>
+<!-- Recommended Videos List -->
+<section class="px-4 py-2">
+<h2 class="font-title-lg text-on-surface mb-4">Đề xuất cho bạn</h2>
+<div class="flex flex-col gap-4">
+<!-- Video Card Row -->
+<div class="flex gap-3 group active:scale-95 transition-transform duration-150">
+<div class="relative w-40 h-24 rounded-lg overflow-hidden bg-surface-variant flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A cinematic video thumbnail showing a modern workspace with multiple screens displaying complex 3D architectural models. The lighting is soft and natural from a nearby window, reflecting on clean wooden surfaces. The overall mood is focused and professional, utilizing a palette of soft whites, warm wood tones, and high-tech blue glows from the monitors." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2DxwAIGvJr0tom3WEy3H6DHtQ0yi2Gn5cwStXQ3Mhn21PRMojZtJGwakIp0tJOOKVCtCz3hm4VC3-aR9DknvV5mlZFQ_ahXF9HBUQwzCY995Y7_kDZ4iQ7Tb0Va0YalXWDF5PmILjmz7hS8MpMmWAlUJbjgOQFX58O7mKxux4JwdjK0mNutx-smFKOtFNxhtCPdFVCidkD8KUfMd-wYIiILF_elFcqujih0mqgzQ_AU7TKzBwhGZq5LWOzXb7bbfPbfQGffQzZX8"/>
+<span class="absolute bottom-1 right-1 bg-black/70 text-white text-[10px] px-1 rounded">10:24</span>
+</div>
+<div class="flex flex-col justify-center gap-1">
+<h3 class="font-label-md text-on-surface line-clamp-2">Cách AI thay đổi tư duy thiết kế năm 2024</h3>
+<p class="text-[11px] text-on-surface-variant">Design Mind • 120K lượt xem</p>
+</div>
+</div>
+<div class="flex gap-3 group active:scale-95 transition-transform duration-150">
+<div class="relative w-40 h-24 rounded-lg overflow-hidden bg-surface-variant flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A clean, high-contrast video thumbnail featuring a macro shot of organic building materials like hempcrete and recycled wood. The lighting is studio-quality, highlighting the intricate textures of the sustainable materials. The aesthetic is organic yet sophisticated, with a warm earthy color palette that emphasizes natural beauty and environmental consciousness." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGwEU66y2cyoIOa-FLjIOVbQDQpuZPVjBs9UeRkQHnbU6aeRJabl8d_pbpCj-LIn0vaNERuOYnq6HfsHRnB02lJkF46YKG39OCUTvVy6bHvHquLxtJkUs0am3oxsqIsvXa8JzhbFLCRlqFlv4d7ZPQsSQQrWdZpLrJu-sbO_CGqyax7829h_2tJ5MSbopVH1f-R3Uy6ihhPqRUImqMr1x0-C5gpPjSsKKvt5BFWUUYaXedWvpqTTSFmFTuwShJqC4ofKI05Og6wYU"/>
+<span class="absolute bottom-1 right-1 bg-black/70 text-white text-[10px] px-1 rounded">08:15</span>
+</div>
+<div class="flex flex-col justify-center gap-1">
+<h3 class="font-label-md text-on-surface line-clamp-2">Top 5 vật liệu xây dựng bền vững nhất</h3>
+<p class="text-[11px] text-on-surface-variant">Eco Builder • 45K lượt xem</p>
+</div>
+</div>
+<div class="flex gap-3 group active:scale-95 transition-transform duration-150">
+<div class="relative w-40 h-24 rounded-lg overflow-hidden bg-surface-variant flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A futuristic cityscape thumbnail at night, where skyscrapers are integrated with lush vertical forests. Glowing violet and green lights trace the organic curves of the buildings. The image is hyper-detailed, showcasing a cinematic vision of a harmonious future where technology and nature coexist. The lighting is atmospheric and moody, with high-key neon accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAI2svHe-JIxJf0xRwK0fLE61XdzfplVPrdMvrG83agKTVKLeHQ6VOnGEvDen2IZeJAG48cEOQJPVgZa_dJx9iGnBQKVXJV6pmQmI2wCf_mUJTIzIeJnaTgDzMl8EIkmGqY0oZYcWq6NbZERnlvcRrqLj7Y7g7Ep7OfyA42h2KNdBD2X1qONnJ4tYRycuErfVkrZP82RoUFxU5qaqHWtlvhkSbLjIMFAk4z4f5Y-2aWHkdF2qJKnb1oQjnNO6eayqg5L9LCNVkjp5I"/>
+<span class="absolute bottom-1 right-1 bg-black/70 text-white text-[10px] px-1 rounded">15:40</span>
+</div>
+<div class="flex flex-col justify-center gap-1">
+<h3 class="font-label-md text-on-surface line-clamp-2">Đô thị xanh: Viễn cảnh 2050</h3>
+<p class="text-[11px] text-on-surface-variant">Future Lab • 2.1M lượt xem</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Shell (Mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-safe h-[56px] bg-surface-container shadow-sm">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">home</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Trang chủ</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">explore</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Khám phá</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-3 py-1 scale-95" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">video_library</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Thư viện</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">person</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Cá nhân</span>
+</a>
+</nav>
+<!-- Transcript Bottom Sheet -->
+<div class="transcript-sheet fixed inset-0 z-[60] invisible" id="transcriptSheet">
+<div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="toggleTranscript()"></div>
+<div class="absolute bottom-0 left-0 right-0 h-[751px] bg-white rounded-t-3xl flex flex-col overflow-hidden shadow-2xl">
+<!-- Sheet Handle -->
+<div class="w-full flex flex-col items-center pt-2 pb-4 cursor-pointer" onclick="toggleTranscript()">
+<div class="w-10 h-1.5 bg-outline-variant rounded-full mb-4"></div>
+<h3 class="font-title-lg text-on-surface">Bản ghi Nội dung</h3>
+</div>
+<!-- Transcript Content -->
+<div class="flex-1 overflow-y-auto px-6 pb-24 custom-scrollbar">
+<div class="space-y-6">
+<div class="flex gap-4 group">
+<span class="text-primary font-bold font-label-md shrink-0">00:00</span>
+<p class="text-on-surface-variant font-body-md group-hover:text-primary transition-colors">Chào mừng các bạn đến với tập phim hôm nay về tương lai của ngành kiến trúc thế giới.</p>
+</div>
+<div class="flex gap-4 group bg-primary-container/10 p-3 -mx-3 rounded-lg border-l-4 border-primary">
+<span class="text-primary font-bold font-label-md shrink-0">00:45</span>
+<p class="text-on-surface font-semibold font-body-md">AI không chỉ là một công cụ hỗ trợ vẽ, nó là một người cộng sự thực thụ trong việc tối ưu hóa không gian.</p>
+</div>
+<div class="flex gap-4 group">
+<span class="text-primary font-bold font-label-md shrink-0">01:30</span>
+<p class="text-on-surface-variant font-body-md group-hover:text-primary transition-colors">Hãy nhìn vào ví dụ của tòa nhà "The Edge" tại Amsterdam, nơi AI điều phối mọi luồng khí và ánh sáng.</p>
+</div>
+<div class="flex gap-4 group">
+<span class="text-primary font-bold font-label-md shrink-0">02:15</span>
+<p class="text-on-surface-variant font-body-md group-hover:text-primary transition-colors">Điều này giúp giảm thiểu 70% lượng điện năng tiêu thụ so với các tòa nhà văn phòng thông thường.</p>
+</div>
+<div class="flex gap-4 group">
+<span class="text-primary font-bold font-label-md shrink-0">03:00</span>
+<p class="text-on-surface-variant font-body-md group-hover:text-primary transition-colors">Tiếp theo, chúng ta sẽ nói về vật liệu sinh học, xu hướng đang lên ngôi trong thiết kế bền vững.</p>
+</div>
+<div class="flex gap-4 group">
+<span class="text-primary font-bold font-label-md shrink-0">03:45</span>
+<p class="text-on-surface-variant font-body-md group-hover:text-primary transition-colors">Việc sử dụng sợi nấm để làm gạch xây dựng không còn là chuyện viễn tưởng nữa.</p>
+</div>
+<div class="flex gap-4 group">
+<span class="text-primary font-bold font-label-md shrink-0">04:30</span>
+<p class="text-on-surface-variant font-body-md group-hover:text-primary transition-colors">Các thuật toán AI có thể phân tích cấu trúc của sợi nấm để tạo ra loại vật liệu có độ bền tương đương bê tông.</p>
+</div>
+</div>
+</div>
+<!-- Bottom Search in Transcript -->
+<div class="absolute bottom-0 left-0 right-0 p-4 bg-white border-t border-outline-variant flex items-center gap-3">
+<div class="flex-1 bg-surface-container flex items-center px-4 py-2 rounded-full">
+<span class="material-symbols-outlined text-on-surface-variant mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-full" placeholder="Tìm trong bản ghi..." type="text"/>
+</div>
+<button class="p-2 text-primary" onclick="toggleTranscript()">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</div>
+</div>
+<script>
+        function toggleTranscript() {
+            const sheet = document.getElementById('transcriptSheet');
+            if (sheet.classList.contains('invisible')) {
+                sheet.classList.remove('invisible');
+                setTimeout(() => {
+                    sheet.classList.add('open');
+                }, 10);
+            } else {
+                sheet.classList.remove('open');
+                setTimeout(() => {
+                    sheet.classList.add('invisible');
+                }, 400);
+            }
+        }
+
+        // Simple parallax or lift effect for video cards
+        document.querySelectorAll('.group').forEach(card => {
+            card.addEventListener('touchstart', () => {
+                card.style.transform = 'scale(0.98)';
+            });
+            card.addEventListener('touchend', () => {
+                card.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body></html>

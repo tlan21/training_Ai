@@ -1,0 +1,521 @@
+<!DOCTYPE html><html lang="vi" class="light"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+<script>
+  if (!localStorage.getItem('currentUser')) {
+    window.location.href = '../index.html';
+  }
+  function logout() {
+    localStorage.removeItem('currentUser');
+    window.location.href = '../index.html';
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    const userJson = localStorage.getItem('currentUser');
+    if (userJson) {
+      const user = JSON.parse(userJson);
+      const nameEl = document.getElementById('user-name');
+      const roleEl = document.getElementById('user-role');
+      const avatarEl = document.getElementById('user-avatar');
+      const placeholderEl = document.getElementById('user-avatar-placeholder');
+      if (nameEl) nameEl.textContent = user.name;
+      if (roleEl) roleEl.textContent = user.role;
+      if (avatarEl && user.avatar) {
+        avatarEl.src = user.avatar;
+        avatarEl.classList.remove('hidden');
+        if (placeholderEl) placeholderEl.classList.add('hidden');
+      }
+    }
+  });
+</script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-container": "#c4c4c1",
+                        "inverse-surface": "#322f37",
+                        "on-primary": "#ffffff",
+                        "outline": "#7b7484",
+                        "on-secondary-container": "#5a666d",
+                        "on-background": "#1d1a22",
+                        "on-surface-variant": "#494453",
+                        "primary": "#461599",
+                        "on-secondary-fixed-variant": "#3c494f",
+                        "primary-fixed": "#eaddff",
+                        "surface": "#fef7ff",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#ded8e3",
+                        "surface-container-low": "#f8f1fc",
+                        "surface-bright": "#fef7ff",
+                        "on-tertiary-fixed": "#1a1c1a",
+                        "secondary-container": "#d7e4ec",
+                        "secondary": "#546067",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#50514f",
+                        "on-secondary-fixed": "#111d23",
+                        "background": "#fef7ff",
+                        "surface-variant": "#e7e0eb",
+                        "on-primary-container": "#ceb8ff",
+                        "on-primary-fixed": "#24005b",
+                        "on-error-container": "#93000a",
+                        "error-container": "#ffdad6",
+                        "inverse-primary": "#d1bcff",
+                        "primary-container": "#5e35b1",
+                        "outline-variant": "#cbc3d5",
+                        "surface-container": "#f2ebf7",
+                        "secondary-fixed-dim": "#bbc8d0",
+                        "inverse-on-surface": "#f5eef9",
+                        "surface-container-high": "#ede6f1",
+                        "surface-tint": "#6c45c0",
+                        "tertiary-fixed": "#e3e2e0",
+                        "surface-container-highest": "#e7e0eb",
+                        "on-surface": "#1d1a22",
+                        "secondary-fixed": "#d7e4ec",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed-dim": "#d1bcff",
+                        "tertiary": "#393a38",
+                        "tertiary-fixed-dim": "#c7c6c4",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed-variant": "#464745",
+                        "on-primary-fixed-variant": "#5429a7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "sidebar-width": "260px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "base": "4px",
+                        "toolbar-height": "48px",
+                        "interactive-min": "44px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Inter"],
+                        "label-xs": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "display-sm": ["Inter"],
+                        "code-tabular": ["JetBrains Mono"],
+                        "body-md": ["Inter"],
+                        "title-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }],
+                        "label-xs": ["11px", { "lineHeight": "16px", "fontWeight": "700" }],
+                        "headline-md": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+                        "display-sm": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "code-tabular": ["13px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "title-sm": ["14px", { "lineHeight": "20px", "fontWeight": "600" }]
+                    }
+                },
+            },
+        }
+    }catch(_e){}</script><meta charset="utf-8"></head><body class="font-body-md text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-0 h-full flex flex-col z-40 bg-surface dark:bg-surface-dim border-r border-outline-variant dark:border-outline w-sidebar-width h-screen">
+<div class="p-lg flex items-center gap-sm">
+<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary" style="font-variation-settings: 'FILL' 1;">movie_filter</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed leading-none">AI Video CMS</h1>
+<p class="text-[10px] uppercase tracking-widest text-outline mt-1">Hệ thống biên tập</p>
+</div>
+</div>
+<nav class="flex-1 px-sm py-md space-y-1 overflow-y-auto">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../t_ng_quan_h_th_ng/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="dashboard">dashboard</span>
+<span class="font-body-md">Tổng quan</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../danh_s_ch_video/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="video_library">video_library</span>
+<span class="font-body-md">Video</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../t_i_l_n_h_ng_i_x_l/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="queue_play_next">queue_play_next</span>
+<span class="font-body-md">Hàng đợi xử lý</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../ph_duy_t_c_t_highlight_ai/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-body-md">Highlight AI</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm bg-primary-container text-on-primary-container rounded-lg border-l-4 border-primary transition-all duration-150" href="../qu_n_l_danh_m_c_ph_n_lo_i_video/code.html">
+<span class="material-symbols-outlined" data-icon="category" style="font-variation-settings: 'FILL' 1;">category</span>
+<span class="font-body-md">Danh mục</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../ph_t_m_t_t_ai/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="closed_caption">closed_caption</span>
+<span class="font-body-md">Phụ đề & Tóm tắt</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../th_vi_n_n_i_dung_xu_t_b_n/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="publish">publish</span>
+<span class="font-body-md">Nội dung đã xuất bản</span>
+</a>
+<div class="my-lg border-t border-outline-variant opacity-50"></div>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../c_i_t_h_th_ng/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="settings">settings</span>
+<span class="font-body-md">Cài đặt</span>
+</a>
+</nav>
+<div class="p-md bg-surface-container-low mt-auto border-t border-outline-variant">
+    <div class="flex items-center gap-sm mb-3">
+        <img id="user-avatar" class="w-10 h-10 rounded-full object-cover border border-outline-variant hidden" src="" alt="Avatar">
+        <div id="user-avatar-placeholder" class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary">
+            <span class="material-symbols-outlined">person</span>
+        </div>
+        <div class="flex-1 overflow-hidden">
+            <p id="user-name" class="font-title-sm text-title-sm truncate text-on-surface">Admin CMS</p>
+            <p id="user-role" class="text-xs text-on-surface-variant truncate">Biên tập viên</p>
+        </div>
+    </div>
+    <button onclick="logout()" class="w-full py-1.5 px-3 bg-red-600/10 hover:bg-red-600/20 text-red-600 rounded-lg text-xs font-semibold flex items-center justify-center gap-1 transition-colors">
+        <span class="material-symbols-outlined text-sm">logout</span>
+        Đăng xuất
+    </button>
+</div>
+</aside>
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 right-0 w-[calc(100%-260px)] h-toolbar-height flex justify-between items-center px-lg z-50 bg-surface-container-lowest border-b border-outline-variant">
+<div class="flex items-center gap-lg flex-1">
+<div class="relative w-full max-w-md group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px] group-focus-within:text-primary transition-colors">search</span>
+<input class="w-full pl-10 pr-4 py-1.5 bg-surface-container-low border border-transparent focus:border-primary focus:ring-0 rounded-lg text-body-md transition-all" placeholder="Tìm kiếm danh mục, video..." type="text">
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="flex items-center gap-xs px-sm py-1.5 text-primary bg-primary-container/10 hover:bg-primary-container/20 rounded-lg transition-colors border border-primary/20">
+<span class="material-symbols-outlined text-[18px]">dns</span>
+<span class="font-label-xs">Trạng thái hệ thống</span>
+</button>
+<div class="w-px h-6 bg-outline-variant"></div>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full">
+<span class="material-symbols-outlined">analytics</span>
+</button>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-[260px] pt-[48px] min-h-screen">
+<div class="p-lg">
+<!-- Header Section -->
+<div class="flex justify-between items-end mb-lg">
+<div>
+<nav class="flex items-center gap-2 text-outline mb-2">
+<span class="text-xs">CMS</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-xs font-semibold text-primary">Quản lý Danh mục</span>
+</nav>
+<h2 class="font-display-sm text-display-sm text-on-surface">Quản lý Danh mục</h2>
+<p class="text-on-surface-variant text-body-md mt-1">Phân loại và cấu hình quy tắc gán tự động cho kho nội dung video.</p>
+</div>
+<button class="flex items-center gap-sm px-lg py-2.5 bg-primary text-on-primary rounded-lg font-semibold hover:opacity-90 active:scale-95 transition-all shadow-sm">
+<span class="material-symbols-outlined">add</span>
+<span class="">Thêm danh mục mới</span>
+</button>
+</div>
+<div class="grid grid-cols-12 gap-lg">
+<!-- Main Category Table -->
+<div class="col-span-12 lg:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="px-md py-sm font-label-xs text-outline uppercase tracking-wider w-16 text-center">Icon</th>
+<th class="px-md py-sm font-label-xs text-outline uppercase tracking-wider">Tên danh mục</th>
+<th class="px-md py-sm font-label-xs text-outline uppercase tracking-wider">Mô tả</th>
+<th class="px-md py-sm font-label-xs text-outline uppercase tracking-wider text-center">Video</th>
+<th class="px-md py-sm font-label-xs text-outline uppercase tracking-wider">Quy tắc</th>
+<th class="px-md py-sm font-label-xs text-outline uppercase tracking-wider">Trạng thái</th>
+<th class="px-md py-sm font-label-xs text-outline uppercase tracking-wider text-right">Thao tác</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Highlight (System) -->
+<tr class="hover:bg-primary-container/5 transition-colors group">
+<td class="px-md py-sm text-center">
+<div class="w-10 h-10 mx-auto bg-primary-container/20 text-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined">auto_awesome</span>
+</div>
+</td>
+<td class="px-md py-sm">
+<div class="flex flex-col">
+<span class="font-title-sm text-primary">Highlight</span>
+<span class="inline-flex items-center px-1.5 py-0.5 rounded-md text-[10px] font-bold bg-secondary-container text-on-secondary-container w-fit mt-1">HỆ THỐNG</span>
+</div>
+</td>
+<td class="px-md py-sm max-w-[200px]">
+<p class="text-body-sm text-on-surface-variant line-clamp-2">Danh mục mặc định cho tất cả các clip được cắt tự động bởi AI.</p>
+</td>
+<td class="px-md py-sm text-center">
+<span class="font-code-tabular text-on-surface">1,248</span>
+</td>
+<td class="px-md py-sm">
+<span class="flex items-center gap-1 text-primary text-xs font-semibold">
+<span class="material-symbols-outlined text-xs">bolt</span>
+                                            Tự động (Khóa)
+                                        </span>
+</td>
+<td class="px-md py-sm">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[12px] bg-secondary-fixed text-on-secondary-fixed">
+<span class="w-1.5 h-1.5 rounded-full bg-on-secondary-fixed"></span>
+                                            Đã duyệt
+                                        </span>
+</td>
+<td class="px-md py-sm text-right">
+<div class="flex justify-end gap-1">
+<button class="p-2 text-outline hover:text-primary transition-colors" title="Xem video">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+<button class="p-2 text-outline hover:text-primary transition-colors" title="Cài đặt">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Category: Bóng đá -->
+<tr class="hover:bg-surface-container transition-colors group">
+<td class="px-md py-sm text-center">
+<div class="w-10 h-10 mx-auto bg-surface-container text-on-surface-variant rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined">sports_soccer</span>
+</div>
+</td>
+<td class="px-md py-sm">
+<span class="font-title-sm">Bóng đá</span>
+</td>
+<td class="px-md py-sm max-w-[200px]">
+<p class="text-body-sm text-on-surface-variant line-clamp-2">Các trận đấu và phân tích chuyên sâu về bóng đá quốc tế.</p>
+</td>
+<td class="px-md py-sm text-center">
+<span class="font-code-tabular text-on-surface">452</span>
+</td>
+<td class="px-md py-sm">
+<span class="text-body-sm text-outline">Thủ công</span>
+</td>
+<td class="px-md py-sm">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[12px] bg-secondary-fixed text-on-secondary-fixed">
+<span class="w-1.5 h-1.5 rounded-full bg-on-secondary-fixed"></span>
+                                            Đã duyệt
+                                        </span>
+</td>
+<td class="px-md py-sm text-right">
+<div class="flex justify-end gap-1">
+<button class="p-2 text-outline hover:text-primary transition-colors"><span class="material-symbols-outlined">edit</span></button>
+<button class="p-2 text-outline hover:text-error transition-colors"><span class="material-symbols-outlined">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Category: Tin tức -->
+<tr class="hover:bg-surface-container transition-colors group">
+<td class="px-md py-sm text-center">
+<div class="w-10 h-10 mx-auto bg-surface-container text-on-surface-variant rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined">newspaper</span>
+</div>
+</td>
+<td class="px-md py-sm">
+<span class="font-title-sm">Tin tức</span>
+</td>
+<td class="px-md py-sm max-w-[200px]">
+<p class="text-body-sm text-on-surface-variant line-clamp-2">Bản tin thời sự hàng ngày và tiêu điểm trong tuần.</p>
+</td>
+<td class="px-md py-sm text-center">
+<span class="font-code-tabular text-on-surface">1,023</span>
+</td>
+<td class="px-md py-sm">
+<span class="text-body-sm text-outline">Gắn thẻ từ khóa</span>
+</td>
+<td class="px-md py-sm">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[12px] bg-secondary-fixed text-on-secondary-fixed">
+<span class="w-1.5 h-1.5 rounded-full bg-on-secondary-fixed"></span>
+                                            Đã duyệt
+                                        </span>
+</td>
+<td class="px-md py-sm text-right">
+<div class="flex justify-end gap-1">
+<button class="p-2 text-outline hover:text-primary transition-colors"><span class="material-symbols-outlined">edit</span></button>
+<button class="p-2 text-outline hover:text-error transition-colors"><span class="material-symbols-outlined">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Category: Giải trí -->
+<tr class="hover:bg-surface-container transition-colors group">
+<td class="px-md py-sm text-center">
+<div class="w-10 h-10 mx-auto bg-surface-container text-on-surface-variant rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined">movie</span>
+</div>
+</td>
+<td class="px-md py-sm">
+<span class="font-title-sm">Giải trí</span>
+</td>
+<td class="px-md py-sm max-w-[200px]">
+<p class="text-body-sm text-on-surface-variant line-clamp-2">Gameshow, phim ngắn và nội dung sáng tạo đa nền tảng.</p>
+</td>
+<td class="px-md py-sm text-center">
+<span class="font-code-tabular text-on-surface">312</span>
+</td>
+<td class="px-md py-sm">
+<span class="text-body-sm text-outline">Thủ công</span>
+</td>
+<td class="px-md py-sm">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[12px] border border-amber-300 text-amber-800">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                                            Chờ xử lý
+                                        </span>
+</td>
+<td class="px-md py-sm text-right">
+<div class="flex justify-end gap-1">
+<button class="p-2 text-outline hover:text-primary transition-colors"><span class="material-symbols-outlined">edit</span></button>
+<button class="p-2 text-outline hover:text-error transition-colors"><span class="material-symbols-outlined">delete</span></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Assignment Logic & Recent Videos Panel -->
+<div class="col-span-12 lg:col-span-4 space-y-lg">
+<!-- Rule Settings Widget -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md">
+<div class="flex items-center justify-between mb-md">
+<h3 class="font-title-sm flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-original-icon="auto_settings">circle</span>
+                                Cấu hình Tự động gán AI
+                            </h3>
+<button class="text-primary font-label-xs hover:underline">Chỉnh sửa</button>
+</div>
+<div class="bg-primary-container/10 border border-primary/20 rounded-lg p-md mb-md">
+<div class="flex items-start gap-md">
+<div class="w-10 h-10 shrink-0 bg-primary-container text-on-primary-container rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined">lock</span>
+</div>
+<div>
+<p class="font-semibold text-primary text-body-md">Danh mục Highlight AI</p>
+<p class="text-body-sm text-on-surface-variant mt-1">Hệ thống luôn tự động gán video từ công cụ Highlight AI vào danh mục này. Quy tắc này không thể bị tắt.</p>
+</div>
+</div>
+</div>
+<div class="space-y-sm">
+<label class="flex items-center justify-between p-sm hover:bg-surface-container rounded-lg cursor-pointer transition-colors border border-transparent hover:border-outline-variant">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-outline">tag</span>
+<span class="text-body-md">Gán theo từ khóa AI</span>
+</div>
+<div class="w-10 h-5 bg-primary rounded-full relative">
+<div class="absolute right-1 top-1 w-3 h-3 bg-white rounded-full"></div>
+</div>
+</label>
+<label class="flex items-center justify-between p-sm hover:bg-surface-container rounded-lg cursor-pointer transition-colors border border-transparent hover:border-outline-variant">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-outline">face</span>
+<span class="text-body-md">Nhận diện nhân vật</span>
+</div>
+<div class="w-10 h-5 bg-outline-variant rounded-full relative">
+<div class="absolute left-1 top-1 w-3 h-3 bg-white rounded-full"></div>
+</div>
+</label>
+</div>
+</section>
+<!-- Recent Assignment View -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl flex flex-col h-[400px]">
+<div class="p-md border-b border-outline-variant flex items-center justify-between">
+<h3 class="font-title-sm">Gán video gần đây</h3>
+<span class="material-symbols-outlined text-outline cursor-pointer hover:text-primary">refresh</span>
+</div>
+<div class="flex-1 overflow-y-auto p-sm space-y-sm">
+<!-- Video Item 1 -->
+<div class="flex gap-sm p-sm hover:bg-surface-container rounded-lg group transition-all">
+<div class="w-24 h-14 shrink-0 rounded overflow-hidden relative border border-outline-variant bg-on-background">
+<img class="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-500" data-alt="A cinematic thumbnail showing a soccer stadium under bright lights at night, with a packed crowd and green pitch. High-contrast sports photography style with a plum-tinted color grade." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUD-0u_RaNEpBs1sVkGTL80IiAC698bhH0Q6p5fNsHK8j9XwsJlceBrKr9za8lwzDFln2nVj1uoojjCkQLgbsD5qHmIi_B5_ClqLxp8hjT7Fw_Kl9ANFUvLV5lq_WYHERqd1RDL34zURzMpz23k7huNPX0-z0Jgovi0D0_WurZkuEVCXJ1wv8nNLF-Vfcd51Gwl178oVuTSFKjeAXXsHq_rUwRbcfUh83iQ36Tt_cXl7JsydS7-6eIMLEbbAlY9us9icDR_b90C-I">
+<div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
+<span class="material-symbols-outlined text-white text-lg">play_arrow</span>
+</div>
+</div>
+<div class="min-w-0">
+<p class="font-title-sm text-on-surface truncate leading-tight">Siêu cúp Ngoại hạng 2024</p>
+<div class="flex items-center gap-xs mt-1">
+<span class="inline-block px-1.5 py-0.5 bg-primary-container text-on-primary-container text-[10px] rounded font-bold uppercase">Bóng đá</span>
+<span class="text-[10px] text-outline">• 2 phút trước</span>
+</div>
+</div>
+</div>
+<!-- Video Item 2 -->
+<div class="flex gap-sm p-sm hover:bg-surface-container rounded-lg group transition-all">
+<div class="w-24 h-14 shrink-0 rounded overflow-hidden relative border border-outline-variant bg-on-background">
+<img class="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-500" data-alt="A clean, minimalist news studio background with glowing blue and white abstract screens. Professional broadcast aesthetic with sharp lines and high-quality textures." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQpoJ1RKSJszrzH3ci0kNXoHJYarZN-C3FswfPgQOTB9EQzjCYjKOQdIKgqoSz1g4S06kOdRklcIolhv6qdkXKex0FfgPJ6BENuD1dD4JxR9m3ohafnMtVbvEzGo6G1227RYgIDhY9faVMIcHAT28PaVVeMdazIqFYsXmpMmKVPOklPkvDbGxGbuQebVlxwj4nmiHsfm7c2qLaKsxzutk5jGwJpX6q2gkfHSVptWosRrEA_NUIB7MGjHwaS5xnTOEdcOfFdYzZv0k">
+<div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
+<span class="material-symbols-outlined text-white text-lg">play_arrow</span>
+</div>
+</div>
+<div class="min-w-0">
+<p class="font-title-sm text-on-surface truncate leading-tight">Bản tin công nghệ số sáng</p>
+<div class="flex items-center gap-xs mt-1">
+<span class="inline-block px-1.5 py-0.5 bg-surface-container-high text-on-surface-variant text-[10px] rounded font-bold uppercase">Tin tức</span>
+<span class="text-[10px] text-outline">• 15 phút trước</span>
+</div>
+</div>
+</div>
+<!-- Video Item 3 (Highlight) -->
+<div class="flex gap-sm p-sm hover:bg-surface-container rounded-lg group transition-all">
+<div class="w-24 h-14 shrink-0 rounded overflow-hidden relative border border-outline-variant bg-on-background">
+<img class="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-500" data-alt="Fast-moving particles of light and sparks on a deep indigo background, representing AI-generated highlights. Vibrant energy and technological precision in a dark-mode minimalist style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0hoQGt1uRLad5bfyRUP3v7EPpveU3Bc-EYyMaNXORHGytRaemacrlhf9jKNB059dFtNvXeoxQYqVKQheNn8f1n4hJkCF_4kcTCtGVGguiGvWafpgwH7wBvDE79Aws3VSeuYLdj122plidZKa9nc1kbSKeYLtHLd8jWONwdDdsZgO1IADeDNlj4TekcGV73TFI63dcUj7pa5AP1DkzOI0Zo7AXIiy5IB342ofe_6v0xJVkUg6aKWZaHw2Seqm3CPHWI4bhB5XQ7XQ">
+<div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
+<span class="material-symbols-outlined text-white text-lg">auto_awesome</span>
+</div>
+</div>
+<div class="min-w-0">
+<p class="font-title-sm text-on-surface truncate leading-tight">Bàn thắng đẹp mắt vòng 5</p>
+<div class="flex items-center gap-xs mt-1">
+<span class="inline-flex items-center gap-1 px-1.5 py-0.5 bg-primary text-on-primary text-[10px] rounded font-bold uppercase">
+<span class="material-symbols-outlined text-[10px]">auto_awesome</span>
+                                            Highlight
+                                        </span>
+<span class="text-[10px] text-outline">• 1 giờ trước</span>
+</div>
+</div>
+</div>
+<!-- Video Item 4 -->
+<div class="flex gap-sm p-sm hover:bg-surface-container rounded-lg group transition-all">
+<div class="w-24 h-14 shrink-0 rounded overflow-hidden relative border border-outline-variant bg-on-background">
+<img class="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-500" data-alt="A lush tropical jungle scene with sunlight filtering through large palm leaves, macro photography style. Natural vibrant greens and earth tones, serene and detailed documentary aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_69goVGCQnmaW7qvl9MsVUjKpKaRuRXL99ZwLGAthCjxIt_xfNpCDhV0xn9D2bjtlrnmQv_Uf0tSmsWKp78ac0YfH55cyFSdGEOKy8j9cIJkvAEz4F---LVgEDyI6eVWGr69Wvi4Z7liMMvnTIvlkcBjVwBzO8A8srgfGQvcfajPhBmoidgT9bSq09HVmy12WCnMFPEO0XwQAjWekR0LoJ7kukxSLnCrB7sNvF5khMJ9NbHAcDNmyZIlKxux0WfBihrZIJOczl8c">
+<div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
+<span class="material-symbols-outlined text-white text-lg">play_arrow</span>
+</div>
+</div>
+<div class="min-w-0">
+<p class="font-title-sm text-on-surface truncate leading-tight">Ký sự Rừng nhiệt đới</p>
+<div class="flex items-center gap-xs mt-1">
+<span class="inline-block px-1.5 py-0.5 bg-surface-container-high text-on-surface-variant text-[10px] rounded font-bold uppercase">Tài liệu</span>
+<span class="text-[10px] text-outline">• 3 giờ trước</span>
+</div>
+</div>
+</div>
+</div>
+<div class="p-md bg-surface-container-low border-t border-outline-variant text-center">
+<button class="text-primary text-body-sm font-semibold hover:underline">Xem tất cả video</button>
+</div>
+</section>
+</div>
+</div>
+</div>
+</main>
+<!-- Micro-interaction for Table Rows -->
+<script>
+        document.querySelectorAll('tr').forEach(row => {
+            row.addEventListener('click', (e) => {
+                if(e.target.closest('button')) return;
+                console.log('Row clicked: ' + row.querySelector('.font-title-sm').innerText);
+                // logic to open details or side drawer
+            });
+        });
+    </script>
+
+</body></html>

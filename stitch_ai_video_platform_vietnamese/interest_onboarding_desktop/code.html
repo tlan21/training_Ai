@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VidsAI - Onboarding</title>
+<script>
+   if (!localStorage.getItem('currentUser')) {
+     window.location.href = '../login_desktop/code.html';
+   }
+</script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .interest-card-checked .check-icon {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .interest-card-checked {
+            border-color: #630ed4; /* Primary */
+            background-color: #f5f3ff;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .shimmer-bg {
+            background: linear-gradient(90deg, #F5F5F4 25%, #E7E5E4 50%, #F5F5F4 75%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite linear;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-error-container": "#93000a",
+                      "on-error": "#ffffff",
+                      "surface-dim": "#e0d8d5",
+                      "surface-container-highest": "#e9e1dd",
+                      "on-primary-container": "#ede0ff",
+                      "tertiary-fixed": "#ffdad7",
+                      "surface-tint": "#732ee4",
+                      "secondary-container": "#fea619",
+                      "on-secondary-fixed-variant": "#653e00",
+                      "on-secondary": "#ffffff",
+                      "on-surface-variant": "#4a4455",
+                      "tertiary-fixed-dim": "#ffb3ad",
+                      "tertiary": "#a20017",
+                      "surface-container": "#f4ece8",
+                      "on-secondary-fixed": "#2a1700",
+                      "surface-container-lowest": "#ffffff",
+                      "on-primary": "#ffffff",
+                      "error": "#ba1a1a",
+                      "primary-fixed-dim": "#d2bbff",
+                      "primary-container": "#7c3aed",
+                      "secondary-fixed": "#ffddb8",
+                      "inverse-on-surface": "#f7efeb",
+                      "on-tertiary": "#ffffff",
+                      "on-background": "#1e1b19",
+                      "primary": "#630ed4",
+                      "outline-variant": "#ccc3d8",
+                      "surface-variant": "#e9e1dd",
+                      "outline": "#7b7487",
+                      "secondary": "#855300",
+                      "surface-container-low": "#faf2ee",
+                      "on-tertiary-container": "#ffdfdc",
+                      "inverse-surface": "#33302d",
+                      "on-primary-fixed-variant": "#5a00c6",
+                      "surface-container-high": "#eee7e3",
+                      "secondary-fixed-dim": "#ffb95f",
+                      "on-surface": "#1e1b19",
+                      "surface": "#fff8f5",
+                      "background": "#fff8f5",
+                      "on-tertiary-fixed": "#410004",
+                      "on-secondary-container": "#684000",
+                      "tertiary-container": "#c6252b",
+                      "inverse-primary": "#d2bbff",
+                      "on-tertiary-fixed-variant": "#930013",
+                      "primary-fixed": "#eaddff",
+                      "on-primary-fixed": "#25005a",
+                      "error-container": "#ffdad6",
+                      "surface-bright": "#fff8f5"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "container-margin-mobile": "16px",
+                      "sm": "8px",
+                      "xl": "32px",
+                      "md": "16px",
+                      "lg": "24px",
+                      "xs": "4px",
+                      "unit": "4px",
+                      "gutter": "20px",
+                      "container-margin-desktop": "40px"
+              },
+              "fontFamily": {
+                      "title-lg": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "label-md": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "body-md": ["Inter"],
+                      "label-sm": ["Inter"]
+              },
+              "fontSize": {
+                      "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md overflow-x-hidden">
+<!-- Top Navigation (Shell Suprressed for Onboarding logic, but using simplified version for brand identity) -->
+<header class="w-full h-16 flex items-center justify-between px-container-margin-desktop bg-background border-b border-outline-variant fixed top-0 z-50">
+<div class="flex items-center gap-2">
+<span class="text-primary font-headline-lg font-bold tracking-tight">VidsAI</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex gap-1 items-center bg-surface-container-high px-4 py-1.5 rounded-full" id="step-indicator">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<div class="w-2 h-2 rounded-full bg-outline-variant"></div>
+<div class="w-2 h-2 rounded-full bg-outline-variant"></div>
+<span class="ml-2 font-label-sm text-on-surface-variant">Bước 1 / 3</span>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow pt-32 pb-24 px-container-margin-desktop max-w-[1440px] mx-auto w-full">
+<!-- Header Section -->
+<div class="max-w-2xl mx-auto text-center mb-12">
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-4">Sở thích của bạn là gì?</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Chọn ít nhất 3 hạng mục để chúng tôi cá nhân hóa trải nghiệm của bạn.</p>
+</div>
+<!-- Interests Grid (Bento Style) -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-gutter max-w-5xl mx-auto" id="interest-grid">
+<!-- Category: Bóng đá -->
+<div class="group relative cursor-pointer bg-surface-container-lowest border border-outline-variant rounded-xl p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 interest-card" onclick="toggleInterest(this)">
+<div class="w-full h-32 mb-4 rounded-lg overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A cinematic, high-speed photography shot of a professional soccer ball hitting a stadium net, captured during a night game under intense white spotlights. The scene is clean and minimalist, focusing on the texture of the ball and the motion blur of the net. The color palette features deep violets and sharp whites, maintaining a professional and media-focused aesthetic consistent with the VidsAI brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCIOwpEw3SOsoSeywQaShMHpOiCxP7_4TKcxq_3qhwqzwUfHR9gAglgzEQiMogPF2tUNyGqcZA4XDxiNWSXIPhL2rKo50BYshbIP6hcdCEi3hvgJLcEBwJWRgB4xRbpS8IH9qzvFk-CIkydNxErT3P8V4otKd83TozY045_TVdXuJMNDn1FElvu_1CNPEFweFKFQ9ZAE09mqY_FptYyqPkOAXXpIIxnxZIk5jec4ecmSWs84tnQwaYNETO2WJv_cr7PsD_1a4LB_M"/>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-2xl">sports_soccer</span>
+<span class="font-title-lg text-title-lg">Bóng đá</span>
+</div>
+<div class="check-icon opacity-0 scale-50 transition-all duration-300 bg-primary text-white rounded-full p-1 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'wght' 700">check</span>
+</div>
+</div>
+</div>
+<!-- Category: Thể thao -->
+<div class="group relative cursor-pointer bg-surface-container-lowest border border-outline-variant rounded-xl p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 interest-card" onclick="toggleInterest(this)">
+<div class="w-full h-32 mb-4 rounded-lg overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A minimalist overhead view of a sleek, modern running track with crisp white lines against a deep terracotta red surface. Soft morning light creates gentle shadows, evoking a sense of calm intelligence and focus. The composition is geometric and balanced, utilizing a professional color palette of warm earth tones and clean white highlights, reflecting a sophisticated media-centric design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcSgG5iAIeJAfAOy9wvao-BVfjOBfXNZJnoSorqi76LWnsTG6_k1DEouH5vKWZRwaMdxzomL-dhbBAfD6yp-itQdJPc8XVEwu8nQGKMuO4bE7qK41NJNF5v_DxV8DYjHd0Y_e06YTDOj9T_HEZMD9Fql3LI59XzQwL1t4lES_U-bUsnskEmsytqDYnnwX8PwTntvH7lnkNpWOHuNMQ1vcDEo-oQANHvuKSRJSG7Y6X3wfGEqU3hyVg2-KSLG-NxXrPoxR1xT2_rmA"/>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-2xl">fitness_center</span>
+<span class="font-title-lg text-title-lg">Thể thao</span>
+</div>
+<div class="check-icon opacity-0 scale-50 transition-all duration-300 bg-primary text-white rounded-full p-1 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'wght' 700">check</span>
+</div>
+</div>
+</div>
+<!-- Category: Trò chơi -->
+<div class="group relative cursor-pointer bg-surface-container-lowest border border-outline-variant rounded-xl p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 interest-card" onclick="toggleInterest(this)">
+<div class="w-full h-32 mb-4 rounded-lg overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A high-end, close-up shot of a minimalist gaming controller with glowing violet LED accents, set against a dark, matte background with subtle lens flares. The lighting is moody and cinematic, highlighting the refined textures and ergonomic curves of the device. The aesthetic is futuristic yet sophisticated, leaning into the VidsAI primary violet brand color and advanced technology theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuACKTcZ-4ZEivwfsMj7qtwCyFHIaL8Z74U7aqip7yznTfrlvhCYKAF9Adx3rLuJTlsoRl3NBy3U5gNAskRmXSVwoVzXCi0xfM4TfhEU8arsJunh5fymLAGrR6ygJMYU2k_BHln93b6POHz3JIFSaEezzLPmiRUmH38QVupjn9TQfWG52Q4C1K2MZhMVb9pFRMeOyT4uDZoqT9tsPo7KKaR5Ki8CX8OPwHZAcp4dg1WcZnMQQ-pKeyYptLlCFKLYNFe3dfE8Z8lIF84"/>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-2xl">sports_esports</span>
+<span class="font-title-lg text-title-lg">Trò chơi</span>
+</div>
+<div class="check-icon opacity-0 scale-50 transition-all duration-300 bg-primary text-white rounded-full p-1 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'wght' 700">check</span>
+</div>
+</div>
+</div>
+<!-- Category: Âm nhạc -->
+<div class="group relative cursor-pointer bg-surface-container-lowest border border-outline-variant rounded-xl p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 interest-card" onclick="toggleInterest(this)">
+<div class="w-full h-32 mb-4 rounded-lg overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="An abstract visualization of sound waves rendered in soft, translucent violet and amber layers on a clean white background. The waves ripple with a sense of fluid motion and cinematic precision. This digital art piece uses Refined Minimalism to convey a focused audio experience, blending the warm, gallery-like backdrop with intelligent AI-augmented visual data." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJofBPd9OTT7yieg5Gbwi8qcGa2nG34-zD65NwAt6frakC8KTkr74NIfqOm7yF0Z0HAo7jrd93QL6BnhXntS6nUvn7Zuf4K2eng-NxgDnQU_W45E-3uzXdq4NvOiL5pPYw1TMx5Wya9RXzMtf089uNMTQJE7a5d1CMgZIlpsu10pplXDwY5Iur11Rps_e8747YM_-2WLCdmR_ikFJwcQzCdkYivVRBR_5DIzEnu-USMaFke57KZSJxuyv-bYRSJ31KUBraFWMsVYU"/>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-2xl">music_note</span>
+<span class="font-title-lg text-title-lg">Âm nhạc</span>
+</div>
+<div class="check-icon opacity-0 scale-50 transition-all duration-300 bg-primary text-white rounded-full p-1 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'wght' 700">check</span>
+</div>
+</div>
+</div>
+<!-- Category: Tin tức -->
+<div class="group relative cursor-pointer bg-surface-container-lowest border border-outline-variant rounded-xl p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 interest-card" onclick="toggleInterest(this)">
+<div class="w-full h-32 mb-4 rounded-lg overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A minimalist desktop scene featuring a digital tablet displaying a clean, high-contrast news feed with elegant serif typography. The tablet rests on a light wood surface alongside a single cup of black coffee, bathed in soft, natural window light. The mood is calm and intelligent, emphasizing precision and accessibility in information consumption, consistent with a professional media platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrUZisVA4TSLtJ6GskdfyNFFMxXlgWPluMvxFuKZMcliwZiuPOwyf5v7NKZDNd21OuK7WIWt7aCYk1YYkTNupM8SDCO-1L5em4InPM3XZ9LjL48yyitBQno6StMwwwmXpv-RIMqlN3Li66SYKAfXKezG58GL0VAo9IWy1JJJWaaIwzIvEU3SJM7IR_iNVXtJkEVHUYT4zTQFAy9fhSuf2EJPw8N2C3mXWmGfn3gWIdoUiRho5xVRz2akxQ04s-Xj0RMJ4fkfVS0KY"/>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-2xl">newspaper</span>
+<span class="font-title-lg text-title-lg">Tin tức</span>
+</div>
+<div class="check-icon opacity-0 scale-50 transition-all duration-300 bg-primary text-white rounded-full p-1 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'wght' 700">check</span>
+</div>
+</div>
+</div>
+<!-- Category: Công nghệ -->
+<div class="group relative cursor-pointer bg-surface-container-lowest border border-outline-variant rounded-xl p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 interest-card" onclick="toggleInterest(this)">
+<div class="w-full h-32 mb-4 rounded-lg overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A macro photograph of a high-performance computer chip illuminated by a sophisticated network of glowing violet and deep orange fiber optic lines. The image captures extreme detail and complex architecture, symbolizing advanced AI capabilities. The background is a deep charcoal, creating a cinematic and high-tech atmosphere that feels integrated and innovative." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0r1EHaDalRzdSx5S1HqfKRu5znnI96LaBX5gOAkNhbGvV1n4z8mQz6P_LvW7x1J-mWYPFxkppur-tu1SbVgqz2Urj9aTdg_Bu3v0bA7VMhB_MV2yCEXm0mMEBKo1_L3hW74b36wQLsyFbqIrUJ6RIgQHwUPTGv20990iK0IRt_0HOwDCO9s0SRGPghgrTOqvfYeYN_xsvVZ_lDwlYg1sX5penztBjUuPIKl1TJdSZTFClgHROpXbP2GRtYm2VA6EAf0rUxzvLnC0"/>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-2xl">memory</span>
+<span class="font-title-lg text-title-lg">Công nghệ</span>
+</div>
+<div class="check-icon opacity-0 scale-50 transition-all duration-300 bg-primary text-white rounded-full p-1 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'wght' 700">check</span>
+</div>
+</div>
+</div>
+<!-- Category: Phim ảnh -->
+<div class="group relative cursor-pointer bg-surface-container-lowest border border-outline-variant rounded-xl p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 interest-card" onclick="toggleInterest(this)">
+<div class="w-full h-32 mb-4 rounded-lg overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A minimalist, cinematic still life of a classic director's chair and a professional film camera silhouetted against a warm, amber-lit sunset background. The scene is artistic and evocative, using tonal layers to create depth without visual clutter. The composition is balanced and elegant, appealing to creators and viewers who value cinematic quality and high-end media tools." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwAYEqnZvHFastUM9h21PFoLHVi-i2grcVZE29XR88UX-kLH7z1kJU2JrXnKVJlAXrou0_KTf2wS4RccHRdXD37YSBokbnoioW6VP8ydGwhkLTFW-9hfr8Io0BY_-5bf-EDe_tCpg-VxjQHvTngT2z7o801Cni7f6Ludh3oLCjaFBhlMunFqLtzEA_1OG227my0epgKlFuFQ7_el6FrFpOmeOUklY2wYNjWRk1n9n-rSn_4hs12-UIdO_0pO8joXb42QMJ8ifBrS0"/>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-2xl">movie</span>
+<span class="font-title-lg text-title-lg">Phim ảnh</span>
+</div>
+<div class="check-icon opacity-0 scale-50 transition-all duration-300 bg-primary text-white rounded-full p-1 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'wght' 700">check</span>
+</div>
+</div>
+</div>
+<!-- Category: Giải trí -->
+<div class="group relative cursor-pointer bg-surface-container-lowest border border-outline-variant rounded-xl p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 interest-card" onclick="toggleInterest(this)">
+<div class="w-full h-32 mb-4 rounded-lg overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A festive, minimalist abstract image featuring glowing particles and soft bokeh lights in shades of gold and primary violet against a white gallery backdrop. The image conveys a sense of celebration and dynamic movement. The style is professional and sophisticated, avoiding frantic elements in favor of a focused, cinematic celebration of high-quality entertainment content." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAICfEbkv05N_4vtgrF5R3hAcwg4RrxCrz9A0mA-PPcCzBZNdbUlQ6WFQaJjSoSlBqVjknriVBH2wXkxErOmawWXkGZtYGQB9VGUzHbaRKDRctp3ZoBaNe2AhpAr5qTOJFiTpMyoXxlYByWJ86Yl9n76QX9JP7wHLkEB2wbCOEjvj4FWAahyfoNjBLQIYeqxG61Cng_qtfow_gCvivTrr1igqu57c6CjBIq91F5nVSq2VVj3zr9V-9tvUulK7Bi4Dkp8KwZSE0FFLg"/>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-2xl">theater_comedy</span>
+<span class="font-title-lg text-title-lg">Giải trí</span>
+</div>
+<div class="check-icon opacity-0 scale-50 transition-all duration-300 bg-primary text-white rounded-full p-1 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'wght' 700">check</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Action Bar -->
+<footer class="fixed bottom-0 left-0 w-full bg-background border-t border-outline-variant py-4 px-container-margin-desktop z-50">
+<div class="max-w-5xl mx-auto flex items-center justify-between">
+<div class="flex items-center gap-4">
+<span class="font-label-md text-label-md text-on-surface-variant" id="selected-count">Đã chọn: <span class="text-primary font-bold">0</span>/3</span>
+<div class="w-48 h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary transition-all duration-500" id="progress-bar" style="width: 0%"></div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button onclick="window.location.href='../discovery_desktop/code.html'" class="px-6 py-2 font-label-md text-on-surface-variant hover:text-on-surface transition-colors">Bỏ qua</button>
+<button class="px-8 py-3 bg-outline-variant text-on-surface-variant font-label-md rounded-full cursor-not-allowed transition-all duration-300 flex items-center gap-2 group active:scale-95" disabled="" id="next-btn">
+<span>Hoàn tất và khám phá</span>
+<span class="material-symbols-outlined text-lg">arrow_forward</span>
+</button>
+</div>
+</div>
+</footer>
+<!-- Background Atmospheric Effect -->
+<div class="fixed inset-0 pointer-events-none z-[-1] opacity-50">
+<div class="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-primary opacity-5 rounded-full blur-[120px]"></div>
+<div class="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-secondary opacity-5 rounded-full blur-[120px]"></div>
+</div>
+<script>
+        let selectedInterests = new Set();
+        const minRequired = 3;
+
+        function toggleInterest(card) {
+            const label = card.querySelector('.font-title-lg').textContent;
+            
+            if (selectedInterests.has(label)) {
+                selectedInterests.delete(label);
+                card.classList.remove('interest-card-checked');
+            } else {
+                selectedInterests.add(label);
+                card.classList.add('interest-card-checked');
+            }
+
+            updateUI();
+        }
+
+        function updateUI() {
+            const count = selectedInterests.size;
+            const countDisplay = document.querySelector('#selected-count span');
+            const progressBar = document.querySelector('#progress-bar');
+            const nextBtn = document.querySelector('#next-btn');
+
+            countDisplay.textContent = count;
+            
+            // Update Progress Bar
+            const progress = Math.min((count / minRequired) * 100, 100);
+            progressBar.style.width = `${progress}%`;
+
+            // Update Button State
+            if (count >= minRequired) {
+                nextBtn.classList.remove('bg-outline-variant', 'text-on-surface-variant', 'cursor-not-allowed');
+                nextBtn.classList.add('bg-primary', 'text-white', 'cursor-pointer', 'shadow-md', 'hover:bg-primary-container');
+                nextBtn.disabled = false;
+            } else {
+                nextBtn.classList.add('bg-outline-variant', 'text-on-surface-variant', 'cursor-not-allowed');
+                nextBtn.classList.remove('bg-primary', 'text-white', 'cursor-pointer', 'shadow-md', 'hover:bg-primary-container');
+                nextBtn.disabled = true;
+            }
+        }
+
+        // micro-interaction for cards
+        document.querySelectorAll('.interest-card').forEach(card => {
+            card.addEventListener('mousedown', () => {
+                card.style.transform = 'scale(0.97)';
+            });
+            card.addEventListener('mouseup', () => {
+                card.style.transform = '';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
+        });
+
+        // Next Button Click Animation
+        document.getElementById('next-btn').addEventListener('click', function() {
+            if (!this.disabled) {
+                this.innerHTML = `<span class="animate-spin material-symbols-outlined">progress_activity</span><span>Đang cá nhân hóa...</span>`;
+                setTimeout(() => {
+                    window.location.href = '../discovery_desktop/code.html';
+                }, 1000);
+            }
+        });
+    </script>
+</body></html>

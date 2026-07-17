@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>VidsAI - Onboarding</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "surface-dim": "#e0d8d5",
+                    "surface-container-highest": "#e9e1dd",
+                    "on-primary-container": "#ede0ff",
+                    "tertiary-fixed": "#ffdad7",
+                    "surface-tint": "#732ee4",
+                    "secondary-container": "#fea619",
+                    "on-secondary-fixed-variant": "#653e00",
+                    "on-secondary": "#ffffff",
+                    "on-surface-variant": "#4a4455",
+                    "tertiary-fixed-dim": "#ffb3ad",
+                    "tertiary": "#a20017",
+                    "surface-container": "#f4ece8",
+                    "on-secondary-fixed": "#2a1700",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "primary-fixed-dim": "#d2bbff",
+                    "primary-container": "#7c3aed",
+                    "secondary-fixed": "#ffddb8",
+                    "inverse-on-surface": "#f7efeb",
+                    "on-tertiary": "#ffffff",
+                    "on-background": "#1e1b19",
+                    "primary": "#630ed4",
+                    "outline-variant": "#ccc3d8",
+                    "surface-variant": "#e9e1dd",
+                    "outline": "#7b7487",
+                    "secondary": "#855300",
+                    "surface-container-low": "#faf2ee",
+                    "on-tertiary-container": "#ffdfdc",
+                    "inverse-surface": "#33302d",
+                    "on-primary-fixed-variant": "#5a00c6",
+                    "surface-container-high": "#eee7e3",
+                    "secondary-fixed-dim": "#ffb95f",
+                    "on-surface": "#1e1b19",
+                    "surface": "#fff8f5",
+                    "background": "#fff8f5",
+                    "on-tertiary-fixed": "#410004",
+                    "on-secondary-container": "#684000",
+                    "tertiary-container": "#c6252b",
+                    "inverse-primary": "#d2bbff",
+                    "on-tertiary-fixed-variant": "#930013",
+                    "primary-fixed": "#eaddff",
+                    "on-primary-fixed": "#25005a",
+                    "error-container": "#ffdad6",
+                    "surface-bright": "#fff8f5"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-margin-mobile": "16px",
+                    "sm": "8px",
+                    "xl": "32px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "xs": "4px",
+                    "unit": "4px",
+                    "gutter": "20px",
+                    "container-margin-desktop": "40px"
+            },
+            "fontFamily": {
+                    "title-lg": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-sm": ["Inter"]
+            },
+            "fontSize": {
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #FAFAF9;
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-header {
+            background: rgba(255, 248, 245, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .interest-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .interest-card.active {
+            border-color: #630ed4;
+            background-color: #ede0ff;
+        }
+        .interest-card.active .check-icon {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .interest-card .check-icon {
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.2s ease;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .shimmer-bg {
+            background: linear-gradient(90deg, #F5F5F4 25%, #E7E5E4 50%, #F5F5F4 75%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite linear;
+        }
+        .safe-bottom {
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-background">
+<!-- Progress Bar (Fixed Top) -->
+<div class="fixed top-0 left-0 w-full z-[100] h-1 bg-surface-container">
+<div class="h-full bg-primary transition-all duration-500 ease-out" id="main-progress" style="width: 40%;"></div>
+</div>
+<!-- Mobile Header -->
+<header class="glass-header sticky top-0 z-50 pt-6 pb-4 px-container-margin-mobile border-b border-outline-variant/30">
+<div class="flex items-center justify-between mb-4">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer">arrow_back</span>
+<div class="flex items-center gap-1">
+<span class="text-label-sm font-label-sm text-primary font-bold">BƯỚC 2/5</span>
+</div>
+<div class="w-6"></div> <!-- Spacer -->
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile mb-1">Chào mừng bạn đến với VidsAI</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Chọn ít nhất 3 chủ đề bạn yêu thích để chúng tôi tối ưu hóa trải nghiệm của bạn.</p>
+</header>
+<!-- Main Content: Interest Selection -->
+<main class="px-container-margin-mobile pt-4 pb-32">
+<!-- Bento-ish Grid for Categories -->
+<div class="grid grid-cols-2 gap-4">
+<!-- Category Item 1 -->
+<div class="interest-card relative h-40 rounded-xl overflow-hidden border border-outline-variant bg-surface flex flex-col cursor-pointer group shadow-sm active:scale-95 duration-150" onclick="toggleInterest(this)">
+<div class="h-2/3 w-full overflow-hidden">
+<img class="w-full h-full object-cover grayscale-[0.2] group-hover:scale-110 duration-500" data-alt="A cinematic overhead shot of futuristic technology components, glowing circuit paths in soft purple and white hues, minimalist high-tech aesthetic, bright studio lighting, professional product photography style for VidsAI design system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLR8OXz13sH0qq2qckT399B8HuUsG7Kz0x4xGS6SzfZFbrSonh-H4sLFEd2ccnM3K6i15PXBmtGmTe696navqs8vHSIg_VOiDeVaw8JJWNzc2eN_p8UAiP2mKC62LGq_vrsLYReSiSoY45CGLPaFwCHMSzgw1t30drCDMVYghgP-AFB6y69RMtoZOloIN5UIJM00-_isoe_d_OE6bdZj8PUO-VLF8CKfAK0K9DP8DSHFU9XT8n4RU-UTZpzexU3ja-D0RJxZSBI7U"/>
+</div>
+<div class="p-3 flex justify-between items-center bg-white h-1/3">
+<span class="font-label-md text-label-md font-bold">Công nghệ</span>
+<span class="check-icon material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<!-- Category Item 2 -->
+<div class="interest-card relative h-40 rounded-xl overflow-hidden border border-outline-variant bg-surface flex flex-col cursor-pointer group shadow-sm active:scale-95 duration-150" onclick="toggleInterest(this)">
+<div class="h-2/3 w-full overflow-hidden">
+<img class="w-full h-full object-cover grayscale-[0.2] group-hover:scale-110 duration-500" data-alt="A lush, vibrant botanical scene with exotic tropical leaves, soft morning sunlight filtering through foliage, high-key lighting, soft green and warm beige tones, clean minimalist aesthetic, professional nature photography for VidsAI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsiPEtpfmu2DrT_zmmQLRktQL5Zb930rx1feCT4frwj7Wjnes2-X-L7s1MxgKRwmouF6vJA50MCkoKN8jz3E19-iTCKavrWP18KU6BmGgrHPVUsOyzVrguM85ESOBP8YoTXrS2ioWnGcrwuxbrwD9EBMk6oQgVsjSrm8iy11CpaAgCmwyrYngVHxOIUnPY6t1woA2Wg9Gw_3zquwWA09D32cl-ax_ya4jYlov-fFGYQadXvVc0jYMnJhkLaz7epM6-j0ziEOPTBt0"/>
+</div>
+<div class="p-3 flex justify-between items-center bg-white h-1/3">
+<span class="font-label-md text-label-md font-bold">Đời sống</span>
+<span class="check-icon material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<!-- Category Item 3 (Wide Item) -->
+<div class="interest-card relative h-32 col-span-2 rounded-xl overflow-hidden border border-outline-variant bg-surface flex cursor-pointer group shadow-sm active:scale-95 duration-150" onclick="toggleInterest(this)">
+<div class="w-1/3 h-full overflow-hidden">
+<img class="w-full h-full object-cover grayscale-[0.2] group-hover:scale-110 duration-500" data-alt="A dynamic, blurred action shot of a basketball player in mid-air, high contrast lighting with deep shadows and bright highlights, energetic atmosphere, minimalist sports photography, sophisticated black and white tones with subtle purple accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAO0F8yVkmpAS0JyDCjgz2z9Wn94H7JQdR3_Q09dklOECEsKQd_OfMBGqOrtAHSuY7KY3P9Pwe2hHaxq2ARdwOW_NgL0dZlbFyohtrfZmlxmKzd9flmLAUArnIxhysX6_3MC2l5yNctrHJNmc8kwieAeuUK4PR8WtUZD0K5W7PGRkSpaV1DOTk0zi2yVkrsRoXI36Dky_d3a9hrEVrIhut4NNPy0PxjTp54IkN72iRi78PxPNSCDjPr9_C6OKAo5-XiuFZt-0EvlGs"/>
+</div>
+<div class="p-4 flex-1 flex justify-between items-center bg-white">
+<div>
+<span class="block font-label-md text-label-md font-bold mb-1">Thể thao</span>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">Bóng đá, NBA, Fitness...</span>
+</div>
+<span class="check-icon material-symbols-outlined text-primary text-[24px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<!-- More grid items -->
+<div class="interest-card relative h-40 rounded-xl overflow-hidden border border-outline-variant bg-surface flex flex-col cursor-pointer group shadow-sm active:scale-95 duration-150" onclick="toggleInterest(this)">
+<div class="h-2/3 w-full overflow-hidden">
+<img class="w-full h-full object-cover grayscale-[0.2] group-hover:scale-110 duration-500" data-alt="A sophisticated close-up of high-fashion fabric textures, minimalist silk and linen draped elegantly, soft warm studio lighting, neutral color palette with sophisticated shadows, cinematic editorial style for VidsAI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-6N-xVPDW44Dcx2eou4vR7oWQ_QBHcwAhMTeudsK9ihFSGklSHRyv1Pi3zXQXAb-9nyHKPt-CLd3w7vtKlDbiBdrR6SkP_tnj0kPR4SZuqdeDDFW81JwR33DeEFhrY-9rnSKvH1db6Y7KfkJclw42SqqdvTOrvVZzV-X9zs-ZjN-mVWbNEeFHu7dDJ9SW1EVwJKbyD9p_XvnlySLM1WBUq5GZHsvuNj2CgQsBRSsveAdkeqokU-HIM5h0DZxB3RVePydtVhijiN4"/>
+</div>
+<div class="p-3 flex justify-between items-center bg-white h-1/3">
+<span class="font-label-md text-label-md font-bold">Thời trang</span>
+<span class="check-icon material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<div class="interest-card relative h-40 rounded-xl overflow-hidden border border-outline-variant bg-surface flex flex-col cursor-pointer group shadow-sm active:scale-95 duration-150" onclick="toggleInterest(this)">
+<div class="h-2/3 w-full overflow-hidden">
+<img class="w-full h-full object-cover grayscale-[0.2] group-hover:scale-110 duration-500" data-alt="Exquisite minimalist culinary art, a single drop of sauce on a clean white porcelain plate, macro photography, high-key bright lighting, soft warm tones, professional food styling for a high-end media platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVuqM3dTAYRO8uzQHQG-P2p598bsnnGss70aV3VlxGtMlXfGCuDj2iWR61MLa1pXAenyoM504TY5nJFnhRoL-slzV69bYfUICgxgT6B653xdCkjDj1D0LepGDj_ujo-J5vFIh9oJwC8PYlkNLbHXS3F3fzbfuXQTvZ0uMGUiu885Ppmmu6Wz0yJV2EIA2BgkgOxSTC9jtpMNrwH2GF1dFqrvwH4wyAApSsAFr-p9Gh7bSCPShVWAAGHkbCMd0srLB6vRtkv9mu05Y"/>
+</div>
+<div class="p-3 flex justify-between items-center bg-white h-1/3">
+<span class="font-label-md text-label-md font-bold">Ẩm thực</span>
+<span class="check-icon material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<!-- Row 3 -->
+<div class="interest-card relative h-40 rounded-xl overflow-hidden border border-outline-variant bg-surface flex flex-col cursor-pointer group shadow-sm active:scale-95 duration-150" onclick="toggleInterest(this)">
+<div class="h-2/3 w-full overflow-hidden">
+<img class="w-full h-full object-cover grayscale-[0.2] group-hover:scale-110 duration-500" data-alt="Abstract colorful light trails in a dark space, representing electronic music and nightlife energy, vibrant purples and oranges, long exposure photography, cinematic atmosphere, modern and edgy visual style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSkJBg7rLcjKtJJ-2xBOhqleD-Av_xe8QItZR3ov10EKpeGm3mUJsaGle0Zz_cSiV-8Tu1h9J3qXnbtIG3qWugCojqNOUQ_TT8KiS3LDyk5Gr5RqWmHaINGpthWI2kR2SOMzcT7IeF0jaHeAA02w3C8DY4o6AGWNmRVmLedTRiezxfMplRP3uWg0DIGI4BFuzA7H6Jck4xCbr5Njsv8TkfXqxnoAhnVqYsHTBpFnA2LRHZrUwSwjJjVqQDHIWWxrrRGZRgprC9ExQ"/>
+</div>
+<div class="p-3 flex justify-between items-center bg-white h-1/3">
+<span class="font-label-md text-label-md font-bold">Âm nhạc</span>
+<span class="check-icon material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<div class="interest-card relative h-40 rounded-xl overflow-hidden border border-outline-variant bg-surface flex flex-col cursor-pointer group shadow-sm active:scale-95 duration-150" onclick="toggleInterest(this)">
+<div class="h-2/3 w-full overflow-hidden">
+<img class="w-full h-full object-cover grayscale-[0.2] group-hover:scale-110 duration-500" data-alt="A clean, minimalist workspace with a sleek laptop, a small green plant, and a notebook on a light wood desk, bright natural sunlight, calm and productive atmosphere, professional lifestyle photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIEBIT0hUbRcBB7PgG23M5wSPSFBJq9IZLyeAnN-nqpVW2O15OIeT0ArVwbzfiKVxtSC1pnqggyZk6m7_wZGRvYqD98NSGaKPc0DjDygUGvbzJIs2FAt3q5NVtWoM7dZiI0L1kgqWYPycaXWQ2r-J6Xlp2z8ieYDBubCxMPwiYYFsbw-_j2HZ84ePhaBZgRVnpp3UD3med7YOC9UGWUfv7quCHOVDAevvc1NfW58ww1uI94JOsicqFTnk87cjUX2F-0dRMkR_Bsck"/>
+</div>
+<div class="p-3 flex justify-between items-center bg-white h-1/3">
+<span class="font-label-md text-label-md font-bold">Kinh doanh</span>
+<span class="check-icon material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<!-- Another Wide Item -->
+<div class="interest-card relative h-32 col-span-2 rounded-xl overflow-hidden border border-outline-variant bg-surface flex cursor-pointer group shadow-sm active:scale-95 duration-150" onclick="toggleInterest(this)">
+<div class="w-1/3 h-full overflow-hidden">
+<img class="w-full h-full object-cover grayscale-[0.2] group-hover:scale-110 duration-500" data-alt="A futuristic cinema hall with glowing neon purple accents, wide-angle cinematic perspective, sophisticated lighting, deep blacks and vibrant primary violet, sleek modern design, professional photography for media entertainment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgtM6XQ9QTFB8NXgfOfxChW3Z3r4WRfcJguahbX4lTeulsDEMZi0o9fINCtic2q9O-X4xFcpMCQ90f776wVtj9NhHBxSq8fSMj9nbqOfiRPZX72mNUXGA75iiw_ehrReevQyRqOTkdW3VKM_2O9E-KlZOhbG6aE1jPNNuBHFM3llZ-EvsaIi_ADeDN0ZFaX691g5iJu4Y88yhDS-rwgKaJv7yX9q3gYaVWugeqaV4XX4K4a2FcuBaTfdH0J5ypefm-G_yQwC8SgT4"/>
+</div>
+<div class="p-4 flex-1 flex justify-between items-center bg-white">
+<div>
+<span class="block font-label-md text-label-md font-bold mb-1">Phim ảnh</span>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">Review, Trailer, Hậu trường...</span>
+</div>
+<span class="check-icon material-symbols-outlined text-primary text-[24px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<!-- Row 4 -->
+<div class="interest-card relative h-40 rounded-xl overflow-hidden border border-outline-variant bg-surface flex flex-col cursor-pointer group shadow-sm active:scale-95 duration-150" onclick="toggleInterest(this)">
+<div class="h-2/3 w-full overflow-hidden">
+<img class="w-full h-full object-cover grayscale-[0.2] group-hover:scale-110 duration-500" data-alt="Stunning mountain landscape at golden hour, misty valleys and sharp peaks, soft cinematic lighting, warm orange and cool blue tones, minimalist travel photography, peaceful and adventurous mood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAj2S6Gb-gh46aG3biWgWiQoCXv48yckACjudP3z9lIBLw3XoZwVQXWAX47jGys7R12y-b9TF2tm7g2OntiC7wFCGW64kYbyV9OD8OreT46yDmEa3Wf6JhDyw3krK0eg_1vLDinoCWjQoTTN3QliNBzkGxWTyg6JR8UFjKeKW8H7EZX05w8vlJWlZWPOPaKphzYsd6XXapgPbmTa--FKYbct52NtHodsvNArJPVjBkuv0xijE0tvBMCROA7slxU2rNvRV0b_8KEomQ"/>
+</div>
+<div class="p-3 flex justify-between items-center bg-white h-1/3">
+<span class="font-label-md text-label-md font-bold">Du lịch</span>
+<span class="check-icon material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<div class="interest-card relative h-40 rounded-xl overflow-hidden border border-outline-variant bg-surface flex flex-col cursor-pointer group shadow-sm active:scale-95 duration-150" onclick="toggleInterest(this)">
+<div class="h-2/3 w-full overflow-hidden">
+<img class="w-full h-full object-cover grayscale-[0.2] group-hover:scale-110 duration-500" data-alt="High-end gaming setup with mechanical keyboard and RGB lighting, soft bokeh effect, tech-focused aesthetic, deep blacks and vibrant glowing accents, professional gaming photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKn0meR4EcUadyOfARnDnXyPMQrY0izlzjkBptaApdlZCzBnzB5EtZSOCgG8Lq4_ZQHVGfn5JCDjtDRRL_LGNxudNW5k82dUHIhmjWzXDrxehGq05KIoA5Twk-ebFVfsf5NRB_UoiJ6EVZx4xVFy8Zj8dxD7QBRph5Wv5h9NvysVYtlChGfqUcNkuSztfPW6iXATpdJraWT1yNDaclgaa34rux0-hlfs1yO3lP4IswJLioJgynen_8xV8t5NVRMhwyvL2myjSwA0s"/>
+</div>
+<div class="p-3 flex justify-between items-center bg-white h-1/3">
+<span class="font-label-md text-label-md font-bold">Gaming</span>
+<span class="check-icon material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Sticky Bottom Navigation -->
+<div class="fixed bottom-0 left-0 w-full bg-white/80 backdrop-blur-xl border-t border-outline-variant/30 safe-bottom z-50">
+<div class="px-container-margin-mobile py-4 flex flex-col gap-3">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant" id="selection-counter">Đã chọn: <span class="font-bold text-primary">0</span>/3</span>
+<button class="text-label-sm font-label-sm text-on-surface-variant underline decoration-outline-variant">Bỏ qua</button>
+</div>
+<button class="w-full h-14 bg-outline text-white font-bold rounded-full transition-all duration-300 opacity-50 cursor-not-allowed flex items-center justify-center gap-2" disabled="" id="complete-btn">
+<span>Hoàn tất</span>
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Micro-interaction Scripts -->
+<script>
+        let selectedCount = 0;
+        const requiredCount = 3;
+        const completeBtn = document.getElementById('complete-btn');
+        const counterSpan = document.querySelector('#selection-counter span');
+        const progressBar = document.getElementById('main-progress');
+
+        function toggleInterest(element) {
+            const isActive = element.classList.toggle('active');
+            
+            if (isActive) {
+                selectedCount++;
+                // Simple vibration/haptic feedback simulation
+                element.style.transform = 'scale(0.98)';
+                setTimeout(() => element.style.transform = '', 100);
+            } else {
+                selectedCount--;
+            }
+
+            updateUI();
+        }
+
+        function updateUI() {
+            counterSpan.textContent = selectedCount;
+            
+            // Progress Logic
+            const progressPercentage = Math.min(40 + (selectedCount / requiredCount) * 20, 60);
+            progressBar.style.width = progressPercentage + '%';
+
+            if (selectedCount >= requiredCount) {
+                completeBtn.disabled = false;
+                completeBtn.classList.remove('bg-outline', 'opacity-50', 'cursor-not-allowed');
+                completeBtn.classList.add('bg-primary', 'shadow-lg', 'shadow-primary/25');
+                counterSpan.classList.add('text-secondary'); // Highlight completed goal
+            } else {
+                completeBtn.disabled = true;
+                completeBtn.classList.add('bg-outline', 'opacity-50', 'cursor-not-allowed');
+                completeBtn.classList.remove('bg-primary', 'shadow-lg', 'shadow-primary/25');
+                counterSpan.classList.remove('text-secondary');
+            }
+        }
+
+        completeBtn.addEventListener('click', () => {
+            if (selectedCount >= requiredCount) {
+                completeBtn.innerHTML = '<span class="animate-spin material-symbols-outlined">sync</span>';
+                setTimeout(() => {
+                    alert('Chào mừng đến với VidsAI! Đang tải nguồn cấp dữ liệu của bạn...');
+                }, 1000);
+            }
+        });
+    </script>
+</body></html>

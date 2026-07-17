@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Môi trường ảo
+.venv/
+venv/
+
+# Artefact train (nặng, không đưa vào git)
+checkpoints/
+runs/
+data/raw/
+data/processed/
+data/labels/
+*.pt
+
+# OS
+Thumbs.db
+.DS_Store

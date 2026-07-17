@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Thư viện cá nhân - VidsAI</title>
+<script>
+  if (!localStorage.getItem('currentUser')) {
+    window.location.href = '../login_desktop/code.html';
+  }
+  function logout() {
+    localStorage.removeItem('currentUser');
+    window.location.href = '../login_desktop/code.html';
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    const userJson = localStorage.getItem('currentUser');
+    if (userJson) {
+      const user = JSON.parse(userJson);
+      const avatars = document.querySelectorAll('.user-avatar');
+      avatars.forEach(avatarEl => {
+        if (user.avatar) {
+          avatarEl.src = user.avatar;
+        }
+      });
+    }
+  });
+</script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Config Injection -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "surface-dim": "#e0d8d5",
+                    "surface-container-highest": "#e9e1dd",
+                    "on-primary-container": "#ede0ff",
+                    "tertiary-fixed": "#ffdad7",
+                    "surface-tint": "#732ee4",
+                    "secondary-container": "#fea619",
+                    "on-secondary-fixed-variant": "#653e00",
+                    "on-secondary": "#ffffff",
+                    "on-surface-variant": "#4a4455",
+                    "tertiary-fixed-dim": "#ffb3ad",
+                    "tertiary": "#a20017",
+                    "surface-container": "#f4ece8",
+                    "on-secondary-fixed": "#2a1700",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "primary-fixed-dim": "#d2bbff",
+                    "primary-container": "#7c3aed",
+                    "secondary-fixed": "#ffddb8",
+                    "inverse-on-surface": "#f7efeb",
+                    "on-tertiary": "#ffffff",
+                    "on-background": "#1e1b19",
+                    "primary": "#630ed4",
+                    "outline-variant": "#ccc3d8",
+                    "surface-variant": "#e9e1dd",
+                    "outline": "#7b7487",
+                    "secondary": "#855300",
+                    "surface-container-low": "#faf2ee",
+                    "on-tertiary-container": "#ffdfdc",
+                    "inverse-surface": "#33302d",
+                    "on-primary-fixed-variant": "#5a00c6",
+                    "surface-container-high": "#eee7e3",
+                    "secondary-fixed-dim": "#ffb95f",
+                    "on-surface": "#1e1b19",
+                    "surface": "#fff8f5",
+                    "background": "#fff8f5",
+                    "on-tertiary-fixed": "#410004",
+                    "on-secondary-container": "#684000",
+                    "tertiary-container": "#c6252b",
+                    "inverse-primary": "#d2bbff",
+                    "on-tertiary-fixed-variant": "#930013",
+                    "primary-fixed": "#eaddff",
+                    "on-primary-fixed": "#25005a",
+                    "error-container": "#ffdad6",
+                    "surface-bright": "#fff8f5"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-margin-mobile": "16px",
+                    "sm": "8px",
+                    "xl": "32px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "xs": "4px",
+                    "unit": "4px",
+                    "gutter": "20px",
+                    "container-margin-desktop": "40px"
+            },
+            "fontFamily": {
+                    "title-lg": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-sm": ["Inter"]
+            },
+            "fontSize": {
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .video-card-hover:hover .delete-overlay {
+            opacity: 1;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #ccc3d8;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- TopNavBar (Shared Component) -->
+<header class="hidden md:flex fixed top-0 w-full h-16 items-center justify-between px-container-margin-desktop z-50 bg-background border-b border-outline-variant">
+<div class="flex items-center gap-xl">
+<a class="font-headline-lg text-headline-lg font-bold text-primary" href="../discovery_desktop/code.html">VidsAI</a>
+<nav class="flex gap-lg items-center">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 font-label-md text-label-md" href="../short_video_feed_desktop/code.html">Trang chủ</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 font-label-md text-label-md" href="../discovery_desktop/code.html">Khám phá</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-label-md text-label-md" href="../personal_library_desktop/code.html">Thư viện</a>
+</nav>
+</div>
+<div class="flex-1 max-w-xl px-xl">
+<form action="../multimodal_search_desktop/code.html" class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full h-10 pl-10 pr-4 bg-surface-container-low border border-outline-variant rounded-full focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all font-body-md text-body-md" placeholder="Tìm kiếm video hoặc nội dung..." type="text"/>
+</form>
+</div>
+<div class="flex items-center gap-md">
+<button class="p-2 rounded-full hover:bg-surface-variant transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+</button>
+<button class="p-2 rounded-full hover:bg-surface-variant transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-on-surface-variant">history</span>
+</button>
+<div class="relative">
+  <div onclick="toggleProfileMenu()" class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant cursor-pointer active:scale-95 duration-150">
+    <img class="w-full h-full object-cover user-avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEqYQ8NKIdjE-kPCbHpmjk-jollUulkQ493ARemitZYd46ur-liMJ-gjLpVQdh3jE488GoosDVZe9QNBT_-ZCnbN1l68R9eXXVe92SMZcQCYYKDsoRnydOzBWt3OKI9jyJ8jEOV_Gx2jH1AECc1oy5AO2WafDz8WeSox_8M0a-5COqFYKvtjXP02buA9IhioHEApCjFlYPm3Ur7rs8cz-TGDNmephdY5SYoEI0C0GqeiXGol7mrKzLkcqZdyusFCw3QRhEXBOU6Qw"/>
+  </div>
+  <!-- Dropdown Menu -->
+  <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white border border-outline-variant rounded-xl shadow-lg py-2 hidden z-[100]">
+    <div class="px-4 py-2 border-b border-outline-variant/50 flex flex-col items-start">
+      <p class="text-sm font-bold text-on-surface truncate">Digital Creator</p>
+      <p class="text-xs text-on-surface-variant truncate">user@vidsai.com</p>
+    </div>
+    <a href="../personal_library_desktop/code.html" class="block w-full text-left px-4 py-2 text-sm text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors">Thư viện của tôi</a>
+    <button onclick="logout()" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors flex items-center gap-2">
+      <span class="material-symbols-outlined text-[18px]">logout</span>
+      <span>Đăng xuất</span>
+    </button>
+  </div>
+</div>
+</div>
+</header>
+<!-- Main Content Layout -->
+<main class="pt-16 min-h-screen flex">
+<!-- Sidebar Navigation (Vertical Tabs) -->
+<aside class="w-72 fixed left-0 top-16 bottom-0 border-r border-outline-variant bg-surface-container-lowest p-lg overflow-y-auto custom-scrollbar">
+<div class="flex flex-col gap-sm">
+<h2 class="px-md mb-md font-headline-md text-headline-md text-on-surface">Thư viện</h2>
+<button class="flex items-center gap-md px-md py-3 rounded-xl bg-primary-container text-on-primary-container transition-all group">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<span class="font-label-md text-label-md font-bold">Video đã thích</span>
+</button>
+<button class="flex items-center gap-md px-md py-3 rounded-xl hover:bg-surface-variant text-on-surface-variant transition-all group active:scale-95 duration-150">
+<span class="material-symbols-outlined">schedule</span>
+<span class="font-label-md text-label-md font-medium">Danh sách xem sau</span>
+</button>
+<button class="flex items-center gap-md px-md py-3 rounded-xl hover:bg-surface-variant text-on-surface-variant transition-all group active:scale-95 duration-150">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-md text-label-md font-medium">Lịch sử xem</span>
+</button>
+<div class="my-lg border-t border-outline-variant"></div>
+<div class="px-md mb-sm flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Danh sách của bạn</span>
+<button class="material-symbols-outlined text-primary text-[18px]">add</button>
+</div>
+<button class="flex items-center gap-md px-md py-3 rounded-xl hover:bg-surface-variant text-on-surface-variant transition-all group">
+<span class="material-symbols-outlined">folder</span>
+<span class="font-label-md text-label-md font-medium">Học tập AI</span>
+</button>
+<button class="flex items-center gap-md px-md py-3 rounded-xl hover:bg-surface-variant text-on-surface-variant transition-all group">
+<span class="material-symbols-outlined">movie</span>
+<span class="font-label-md text-label-md font-medium">Phim ngắn yêu thích</span>
+</button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<section class="ml-72 flex-1 p-xl">
+<!-- Content Header -->
+<div class="flex justify-between items-end mb-xl">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Video đã thích</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">24 video lưu trữ trong danh sách này</p>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative inline-block text-left">
+<select class="appearance-none bg-surface-container-low border border-outline-variant rounded-lg px-md py-2 pr-10 font-label-md text-label-md focus:outline-none focus:ring-2 focus:ring-primary/20 text-on-surface-variant">
+<option>Gần đây</option>
+<option>Cũ nhất</option>
+<option>Phổ biến nhất</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Bento/Grid Content -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-gutter">
+<!-- Video Card Template (Repeated) -->
+<div class="group relative flex flex-col gap-sm video-card-hover cursor-pointer" onclick="window.location.href='../video_detail_ai_player_animated_desktop/code.html'">
+<div class="relative aspect-video rounded-xl overflow-hidden bg-surface-container shadow-sm transition-transform duration-300 group-hover:-translate-y-1">
+<img class="w-full h-full object-cover" data-alt="A cinematic 16:9 thumbnail for a video about AI architecture. The image shows a futuristic building with organic flowing lines, illuminated in soft violet and gold light. The sky is a deep twilight blue. Professional architectural photography style, clean, high-resolution, evoking a sense of calm intelligence and advanced technology." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBu8ki5ICtBo0mcMxaD62G6Zym1B0J5Hvazh6MM3QqcGgsW3v073N7Pe7oeDSWXB7eODIZS0RqaTk9YlvQpm-yJSHAYyMbgL286ImRo1c_Wk4WtoXj58zkgSJAi3PejHSEuAF67sWsTSOecUoSM5XCJqPd1oaXyKfz18ZvpH2qDDQj4dlvqGn7TP45pTuwil4N_OLKIEdBBzLJUDd1camO1saLHuRk1I1DRSfZZUV-Taryo4dG0ktH7qE2D_SNn9gmwKnCQcTda7to"/>
+<div class="absolute bottom-2 right-2 bg-black/70 text-white px-2 py-0.5 rounded font-label-sm text-label-sm">12:45</div>
+<!-- Hover Overlay (Remove Icon) -->
+<div class="delete-overlay absolute inset-0 bg-black/20 opacity-0 transition-opacity duration-200 flex items-start justify-end p-2">
+<button class="bg-white/90 hover:bg-error-container hover:text-on-error-container p-2 rounded-full shadow-lg transition-all active:scale-90" title="Xóa khỏi thư viện">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</div>
+<div class="flex gap-sm px-1">
+<div class="flex-1 min-w-0">
+<h3 class="font-title-lg text-title-lg text-on-surface truncate group-hover:text-primary transition-colors">Tương lai của Kiến trúc AI</h3>
+<div class="flex flex-col gap-xs mt-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant">VidsAI Academy</span>
+<span class="font-label-sm text-label-sm text-outline flex items-center gap-1">
+                                    1.2M lượt xem • 2 ngày trước
+                                </span>
+</div>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant">more_vert</button>
+</div>
+<!-- AI Heatmap Peek -->
+<div class="mt-xs px-1">
+<div class="h-1 w-full bg-surface-variant rounded-full overflow-hidden flex items-end">
+<div class="h-full bg-primary w-1/3 opacity-20"></div>
+<div class="h-[150%] bg-tertiary-container w-1/4"></div>
+<div class="h-full bg-primary w-2/3 opacity-40"></div>
+</div>
+<span class="font-label-sm text-[10px] text-outline mt-1 block">Khoảnh khắc nổi bật AI</span>
+</div>
+</div>
+<!-- Video Card 2 -->
+<div class="group relative flex flex-col gap-sm video-card-hover cursor-pointer" onclick="window.location.href='../video_detail_ai_player_animated_desktop/code.html'">
+<div class="relative aspect-video rounded-xl overflow-hidden bg-surface-container shadow-sm transition-transform duration-300 group-hover:-translate-y-1">
+<img class="w-full h-full object-cover" data-alt="A vibrant 16:9 thumbnail showcasing a sleek, modern workspace with multiple high-resolution monitors displaying complex data visualizations. The lighting is warm and natural, coming from a large window overlooking a lush garden. The color palette is rich with greens, wood tones, and soft primary violet accents from the screens. A high-end workspace aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6rN6IxSfljd5N1xRx_6XUdBPbTAsmVENMKChnVU93D4MCzA3B0ChTc8Ef8nAMyspk0ZEQZgupKHisWM1O1XnCC-LJQ1brj2Og1-iT1xHbmf6TP1iCm2OXHHPtLOfmlWO5gD0P9ORcKXFcDBnGJfsSpBVwY8qQrH8aY_ZsKkgZU2ZY_j6Z3lE7P8EUp5lTrbCdhM2QWC4JuaiL9rb0pzCZopfqbT6EvhsOPbtuMPkP4Xyk61v-WANlZugUbT9NZS5iJ_59RUi-FDM"/>
+<div class="absolute bottom-2 right-2 bg-black/70 text-white px-2 py-0.5 rounded font-label-sm text-label-sm">08:20</div>
+<div class="delete-overlay absolute inset-0 bg-black/20 opacity-0 transition-opacity duration-200 flex items-start justify-end p-2">
+<button class="bg-white/90 hover:bg-error-container hover:text-on-error-container p-2 rounded-full shadow-lg transition-all" title="Xóa khỏi thư viện">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</div>
+<div class="flex gap-sm px-1">
+<div class="flex-1 min-w-0">
+<h3 class="font-title-lg text-title-lg text-on-surface truncate group-hover:text-primary transition-colors">Tối ưu hóa quy trình làm việc 2024</h3>
+<div class="flex flex-col gap-xs mt-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Productivity Pro</span>
+<span class="font-label-sm text-label-sm text-outline">500K lượt xem • 1 tuần trước</span>
+</div>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant">more_vert</button>
+</div>
+<div class="mt-xs px-1">
+<div class="h-1 w-full bg-surface-variant rounded-full overflow-hidden flex items-end">
+<div class="h-[80%] bg-primary w-1/2 opacity-30"></div>
+<div class="h-[120%] bg-secondary-container w-1/5"></div>
+<div class="h-full bg-primary w-1/3 opacity-40"></div>
+</div>
+</div>
+</div>
+<!-- Video Card 3 -->
+<div class="group relative flex flex-col gap-sm video-card-hover cursor-pointer" onclick="window.location.href='../video_detail_ai_player_animated_desktop/code.html'">
+<div class="relative aspect-video rounded-xl overflow-hidden bg-surface-container shadow-sm transition-transform duration-300 group-hover:-translate-y-1">
+<img class="w-full h-full object-cover" data-alt="A cinematic 16:9 thumbnail of a high-speed drone racing through a dense, foggy forest. The motion blur creates a sense of extreme speed. The colors are cool teals and deep forest greens, with the bright neon trail of the drone providing a sharp contrast. Modern, high-energy visual style with high production value." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9SxngNp3I6knmgsdf33JGVW-yxwcWuH7FNgqrj52XHmMPNcHfDaSeeCBw4rBA4qqztWxxfbMtC3sORCFfiQ8X2QsVDkCksR6L8fVUVhm2LAlkJurOT6USJGGhrPWDrgIP7-rTS8gfLcl4kRGGcTd7oc_8CAGHFJusYYkz8FwqIA4DfUF5-CpJwG46WdamqdxCojEyhN_hYwJ4wspjllL5zKXaPEu4RHAWZbhgXsif-MXDXMJyFAz-cuY0NEHieZulLG7pxGjjFwE"/>
+<div class="absolute bottom-2 right-2 bg-black/70 text-white px-2 py-0.5 rounded font-label-sm text-label-sm">05:15</div>
+<div class="delete-overlay absolute inset-0 bg-black/20 opacity-0 transition-opacity duration-200 flex items-start justify-end p-2">
+<button class="bg-white/90 hover:bg-error-container hover:text-on-error-container p-2 rounded-full shadow-lg transition-all" title="Xóa khỏi thư viện">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</div>
+<div class="flex gap-sm px-1">
+<div class="flex-1 min-w-0">
+<h3 class="font-title-lg text-title-lg text-on-surface truncate group-hover:text-primary transition-colors">Đỉnh cao Cinematic Drone</h3>
+<div class="flex flex-col gap-xs mt-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant">SkyHigh Visuals</span>
+<span class="font-label-sm text-label-sm text-outline">2.4M lượt xem • 1 tháng trước</span>
+</div>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant">more_vert</button>
+</div>
+<div class="mt-xs px-1">
+<div class="h-1 w-full bg-surface-variant rounded-full overflow-hidden flex items-end">
+<div class="h-full bg-primary w-full opacity-60"></div>
+</div>
+</div>
+</div>
+<!-- Video Card 4 -->
+<div class="group relative flex flex-col gap-sm video-card-hover cursor-pointer" onclick="window.location.href='../video_detail_ai_player_animated_desktop/code.html'">
+<div class="relative aspect-video rounded-xl overflow-hidden bg-surface-container shadow-sm transition-transform duration-300 group-hover:-translate-y-1">
+<img class="w-full h-full object-cover" data-alt="A clean, minimalist 16:9 thumbnail for a coding tutorial. The image features a sleek laptop showing a dark-themed code editor with vibrant syntax highlighting in violet, teal, and gold. The background is a soft, out-of-focus home office setting. The mood is focused and educational with a premium tech aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7y3G1MNwbFmKSb-r3GOHeSGpEQroXdsn20EG1FaQzjUE_kE2cUDeiDs3LVfbg9MXYX1DDC5xpWAUBHwHowyFdoi768UCQkYJleTKdXe9J_6pNdS99D4DwL7AnJ7dlde2KcJIfhbgzD18BsES2URQt2aGAn3axbAaR0f1B-WjyedS55m2ZBkDZviQ93HWbiCwktxY7dWjKKR2l-_fHMZ_5TP_E3TLDin_o68kMp4OYzVSAbYMZzFMA5qx7itUF6Nn2Stm_z22vZlQ"/>
+<div class="absolute bottom-2 right-2 bg-black/70 text-white px-2 py-0.5 rounded font-label-sm text-label-sm">45:30</div>
+<div class="delete-overlay absolute inset-0 bg-black/20 opacity-0 transition-opacity duration-200 flex items-start justify-end p-2">
+<button class="bg-white/90 hover:bg-error-container hover:text-on-error-container p-2 rounded-full shadow-lg transition-all" title="Xóa khỏi thư viện">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</div>
+<div class="flex gap-sm px-1">
+<div class="flex-1 min-w-0">
+<h3 class="font-title-lg text-title-lg text-on-surface truncate group-hover:text-primary transition-colors">Mastering React &amp; Tailwind CSS</h3>
+<div class="flex flex-col gap-xs mt-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant">CodeMasters</span>
+<span class="font-label-sm text-label-sm text-outline">89K lượt xem • 3 ngày trước</span>
+</div>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant">more_vert</button>
+</div>
+<div class="mt-xs px-1">
+<div class="h-1 w-full bg-surface-variant rounded-full overflow-hidden flex items-end">
+<div class="h-full bg-primary w-1/4 opacity-20"></div>
+<div class="h-[140%] bg-tertiary-container w-1/12"></div>
+<div class="h-full bg-primary w-2/3 opacity-40"></div>
+</div>
+</div>
+</div>
+<!-- Repeated skeleton/empty state for bento feel -->
+<div class="flex flex-col gap-sm opacity-50">
+<div class="aspect-video rounded-xl bg-surface-container-highest animate-pulse"></div>
+<div class="h-4 w-3/4 bg-surface-container-highest rounded animate-pulse"></div>
+<div class="h-3 w-1/2 bg-surface-container-highest rounded animate-pulse"></div>
+</div>
+<div class="flex flex-col gap-sm opacity-50">
+<div class="aspect-video rounded-xl bg-surface-container-highest animate-pulse"></div>
+<div class="h-4 w-3/4 bg-surface-container-highest rounded animate-pulse"></div>
+<div class="h-3 w-1/2 bg-surface-container-highest rounded animate-pulse"></div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Shared Component - Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-safe h-[56px] bg-surface-container shadow-sm">
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm">Trang chủ</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-label-sm text-label-sm">Khám phá</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-3 py-1 scale-95 transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">video_library</span>
+<span class="font-label-sm text-label-sm">Thư viện</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm">Cá nhân</span>
+</button>
+</nav>
+<script>
+        // Micro-interactions
+        document.querySelectorAll('.video-card-hover button[title="Xóa khỏi thư viện"]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const card = btn.closest('.video-card-hover');
+                card.style.transform = 'scale(0.95)';
+                card.style.opacity = '0';
+                setTimeout(() => {
+                    card.remove();
+                }, 300);
+            });
+        });
+
+        // Tab switching logic (simulation)
+        const sidebarButtons = document.querySelectorAll('aside button');
+        sidebarButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                sidebarButtons.forEach(b => {
+                    b.classList.remove('bg-primary-container', 'text-on-primary-container');
+                    b.classList.add('hover:bg-surface-variant', 'text-on-surface-variant');
+                    b.querySelector('.material-symbols-outlined').style.fontVariationSettings = "'FILL' 0";
+                });
+                btn.classList.add('bg-primary-container', 'text-on-primary-container');
+                btn.classList.remove('hover:bg-surface-variant', 'text-on-surface-variant');
+                btn.querySelector('.material-symbols-outlined').style.fontVariationSettings = "'FILL' 1";
+                
+                // Update header title based on button text
+                const title = btn.querySelector('span:not(.material-symbols-outlined)').innerText;
+                document.querySelector('h1').innerText = title;
+            });
+        });
+
+        function toggleProfileMenu() {
+            const dropdown = document.getElementById('profile-dropdown');
+            dropdown.classList.toggle('hidden');
+        }
+        document.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('profile-dropdown');
+            const avatar = document.querySelector('.user-avatar');
+            if (dropdown && !dropdown.contains(e.target) && e.target !== avatar && !avatar.contains(e.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+        document.addEventListener('DOMContentLoaded', () => {
+            const userJson = localStorage.getItem('currentUser');
+            if (userJson) {
+                const user = JSON.parse(userJson);
+                const dropdownName = document.querySelector('#profile-dropdown p.font-bold');
+                const dropdownEmail = document.querySelector('#profile-dropdown p.text-xs');
+                if (dropdownName) dropdownName.textContent = user.name;
+                if (dropdownEmail) dropdownEmail.textContent = user.email;
+            }
+        });
+    </script>
+</body></html>

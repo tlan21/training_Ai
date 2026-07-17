@@ -1,0 +1,432 @@
+<!DOCTYPE html><html lang="vi" class="light"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+<script>
+  if (!localStorage.getItem('currentUser')) {
+    window.location.href = '../index.html';
+  }
+  function logout() {
+    localStorage.removeItem('currentUser');
+    window.location.href = '../index.html';
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    const userJson = localStorage.getItem('currentUser');
+    if (userJson) {
+      const user = JSON.parse(userJson);
+      const nameEl = document.getElementById('user-name');
+      const roleEl = document.getElementById('user-role');
+      const avatarEl = document.getElementById('user-avatar');
+      const placeholderEl = document.getElementById('user-avatar-placeholder');
+      if (nameEl) nameEl.textContent = user.name;
+      if (roleEl) roleEl.textContent = user.role;
+      if (avatarEl && user.avatar) {
+        avatarEl.src = user.avatar;
+        avatarEl.classList.remove('hidden');
+        if (placeholderEl) placeholderEl.classList.add('hidden');
+      }
+    }
+  });
+</script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary": "#ffffff",
+                    "surface-container-highest": "#e7e0eb",
+                    "tertiary-fixed-dim": "#c7c6c4",
+                    "primary-fixed": "#eaddff",
+                    "on-secondary-container": "#5a666d",
+                    "on-error-container": "#93000a",
+                    "surface-container-low": "#f8f1fc",
+                    "inverse-primary": "#d1bcff",
+                    "surface-container-high": "#ede6f1",
+                    "on-primary-container": "#ceb8ff",
+                    "secondary-fixed": "#d7e4ec",
+                    "surface-container": "#f2ebf7",
+                    "surface": "#fef7ff",
+                    "tertiary-fixed": "#e3e2e0",
+                    "surface-bright": "#fef7ff",
+                    "secondary": "#546067",
+                    "outline": "#7b7484",
+                    "inverse-surface": "#322f37",
+                    "surface-dim": "#ded8e3",
+                    "on-secondary-fixed": "#111d23",
+                    "on-tertiary-fixed": "#1a1c1a",
+                    "on-primary": "#ffffff",
+                    "on-secondary-fixed-variant": "#3c494f",
+                    "error": "#ba1a1a",
+                    "background": "#fef7ff",
+                    "primary": "#461599",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-fixed-variant": "#464745",
+                    "tertiary-container": "#50514f",
+                    "tertiary": "#393a38",
+                    "on-secondary": "#ffffff",
+                    "on-surface": "#1d1a22",
+                    "error-container": "#ffdad6",
+                    "primary-container": "#5e35b1",
+                    "secondary-container": "#d7e4ec",
+                    "on-surface-variant": "#494453",
+                    "on-primary-fixed-variant": "#5429a7",
+                    "on-error": "#ffffff",
+                    "on-primary-fixed": "#24005b",
+                    "surface-variant": "#e7e0eb",
+                    "inverse-on-surface": "#f5eef9",
+                    "primary-fixed-dim": "#d1bcff",
+                    "secondary-fixed-dim": "#bbc8d0",
+                    "on-background": "#1d1a22",
+                    "surface-tint": "#6c45c0",
+                    "outline-variant": "#cbc3d5",
+                    "on-tertiary-container": "#c4c4c1"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "lg": "24px",
+                    "sidebar-width": "260px",
+                    "xs": "4px",
+                    "sm": "8px",
+                    "toolbar-height": "48px",
+                    "md": "16px",
+                    "interactive-min": "44px",
+                    "base": "4px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "code-tabular": ["JetBrains Mono"],
+                    "body-sm": ["Inter"],
+                    "title-sm": ["Inter"],
+                    "display-sm": ["Inter"],
+                    "label-xs": ["Inter"],
+                    "headline-md": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "code-tabular": ["13px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "body-sm": ["12px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "title-sm": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                    "display-sm": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "label-xs": ["11px", {"lineHeight": "16px", "fontWeight": "700"}],
+                    "headline-md": ["18px", {"lineHeight": "24px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    }catch(_e){}</script><meta charset="utf-8"></head><body class="overflow-hidden">
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-0 h-full flex flex-col z-40 bg-surface dark:bg-surface-dim border-r border-outline-variant dark:border-outline w-sidebar-width h-screen">
+<div class="p-lg flex items-center gap-sm">
+<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary" style="font-variation-settings: 'FILL' 1;">movie_filter</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed leading-none">AI Video CMS</h1>
+<p class="text-[10px] uppercase tracking-widest text-outline mt-1">Hệ thống biên tập</p>
+</div>
+</div>
+<nav class="flex-1 px-sm py-md space-y-1 overflow-y-auto">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../t_ng_quan_h_th_ng/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="dashboard">dashboard</span>
+<span class="font-body-md">Tổng quan</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../danh_s_ch_video/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="video_library">video_library</span>
+<span class="font-body-md">Video</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../t_i_l_n_h_ng_i_x_l/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="queue_play_next">queue_play_next</span>
+<span class="font-body-md">Hàng đợi xử lý</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../ph_duy_t_c_t_highlight_ai/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-body-md">Highlight AI</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../qu_n_l_danh_m_c_ph_n_lo_i_video/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="category">category</span>
+<span class="font-body-md">Danh mục</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm bg-primary-container text-on-primary-container rounded-lg border-l-4 border-primary transition-all duration-150" href="../ph_t_m_t_t_ai/code.html">
+<span class="material-symbols-outlined" data-icon="closed_caption" style="font-variation-settings: 'FILL' 1;">closed_caption</span>
+<span class="font-body-md">Phụ đề & Tóm tắt</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../th_vi_n_n_i_dung_xu_t_b_n/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="publish">publish</span>
+<span class="font-body-md">Nội dung đã xuất bản</span>
+</a>
+<div class="my-lg border-t border-outline-variant opacity-50"></div>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../c_i_t_h_th_ng/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="settings">settings</span>
+<span class="font-body-md">Cài đặt</span>
+</a>
+</nav>
+<div class="p-md bg-surface-container-low mt-auto border-t border-outline-variant">
+    <div class="flex items-center gap-sm mb-3">
+        <img id="user-avatar" class="w-10 h-10 rounded-full object-cover border border-outline-variant hidden" src="" alt="Avatar">
+        <div id="user-avatar-placeholder" class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary">
+            <span class="material-symbols-outlined">person</span>
+        </div>
+        <div class="flex-1 overflow-hidden">
+            <p id="user-name" class="font-title-sm text-title-sm truncate text-on-surface">Admin CMS</p>
+            <p id="user-role" class="text-xs text-on-surface-variant truncate">Biên tập viên</p>
+        </div>
+    </div>
+    <button onclick="logout()" class="w-full py-1.5 px-3 bg-red-600/10 hover:bg-red-600/20 text-red-600 rounded-lg text-xs font-semibold flex items-center justify-center gap-1 transition-colors">
+        <span class="material-symbols-outlined text-sm">logout</span>
+        Đăng xuất
+    </button>
+</div>
+</aside>
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 right-0 w-[calc(100%-260px)] h-toolbar-height flex justify-between items-center px-lg z-50 bg-surface-container-lowest border-b border-outline-variant dark:border-outline">
+<div class="flex items-center gap-md flex-1">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant text-sm" data-icon="search">search</span>
+<input class="w-full pl-lg pr-md py-xs bg-surface-container-low border border-outline-variant rounded-lg font-body-sm text-body-sm focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Tìm kiếm nội dung..." type="text">
+</div>
+</div>
+<div class="flex items-center gap-md">
+<div class="flex items-center gap-sm pr-md border-r border-outline-variant">
+<button class="p-xs text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-xs text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+</button>
+</div>
+<button class="flex items-center gap-xs px-md py-xs bg-primary text-on-primary rounded-lg font-title-sm text-title-sm transition-all active:scale-95">
+<span class="material-symbols-outlined text-sm" data-icon="cloud_done">cloud_done</span>
+                Trạng thái hệ thống
+            </button>
+</div>
+</header>
+<!-- Main Content Stage -->
+<main class="ml-sidebar-width pt-toolbar-height h-screen flex overflow-hidden">
+<!-- Column 1: Video Player -->
+<section class="w-1/3 border-r border-outline-variant flex flex-col bg-surface-container-lowest">
+<div class="p-md flex-1 flex flex-col gap-md">
+<div class="relative aspect-video bg-black rounded-lg overflow-hidden group shadow-md border border-outline-variant">
+<img class="w-full h-full object-cover opacity-80" data-alt="A high-resolution freeze-frame of a cinematic news broadcast in a futuristic studio. Bright violet and charcoal accents. A professional news anchor is visible in a crisp suit, speaking directly to the camera. Overlay UI elements like timestamp and volume bars are rendered in a clean, minimalist style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxYeXi7U6fFXTgN0T9eNITAn_XPZvERb2R_f_eflgZLwxt1agCWLK-62TxrZ72jpZ36Svx5KbhKoHIRkdSb3VUBraSa2OCVy83fzJ4x14LSGPaXkzGvx7M64-2ZNAV-1IUhfJ9r77mR3X35b-Uhv5ZqQAl4Hoe3yx1pqqZRnVWNUhxMjmVqluX4HADJnUJGloYCdD1DPnjHQgShsQhO52X86gJXvU-efXe6zaA2sau5oSgq6i480Th9ynyTpYEGkU8tOdZjyL6fp0">
+<div class="absolute inset-0 flex items-center justify-center">
+<button class="w-12 h-12 bg-primary/90 text-on-primary rounded-full flex items-center justify-center transition-transform hover:scale-110 active:scale-95">
+<span class="material-symbols-outlined text-2xl" data-icon="play_arrow" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</div>
+<!-- Timeline Scrubber Preview -->
+<div class="absolute bottom-0 left-0 right-0 h-1 bg-surface-container-highest">
+<div class="h-full bg-primary w-1/3 relative">
+<div class="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-primary rounded-full border-2 border-white shadow-sm"></div>
+</div>
+</div>
+</div>
+<div class="space-y-md">
+<div class="flex items-center justify-between">
+<h2 class="font-title-sm text-title-sm text-on-surface flex items-center gap-xs">
+<span class="material-symbols-outlined text-sm text-primary" data-icon="movie">movie</span>
+                            Thông tin luồng
+                        </h2>
+<span class="px-sm py-xs bg-surface-container-high rounded text-on-surface-variant font-code-tabular text-code-tabular">04:22 / 12:45</span>
+</div>
+<div class="grid grid-cols-2 gap-sm">
+<div class="p-sm bg-surface-container rounded border border-outline-variant">
+<p class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider mb-1">Độ phân giải</p>
+<p class="font-body-md text-body-md font-semibold">4K (2160p)</p>
+</div>
+<div class="p-sm bg-surface-container rounded border border-outline-variant">
+<p class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider mb-1">FPS</p>
+<p class="font-body-md text-body-md font-semibold">60.00</p>
+</div>
+</div>
+<div class="p-md rounded-lg bg-surface border-2 border-primary/20 flex items-start gap-md">
+<div class="w-8 h-8 rounded bg-primary/10 flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div>
+<p class="font-title-sm text-title-sm text-primary">Gợi ý AI</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-xs leading-relaxed">
+                                AI phát hiện giọng nói chính có âm lượng thấp tại 02:15. Khuyến nghị tăng gain +3dB.
+                            </p>
+<button class="mt-sm px-md py-xs bg-primary/10 text-primary border border-primary/20 rounded hover:bg-primary hover:text-on-primary transition-all font-label-xs text-label-xs">
+                                CHẤP NHẬN
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Column 2: Timestamped Transcript -->
+<section class="w-1/3 border-r border-outline-variant flex flex-col bg-surface">
+<div class="p-md h-full flex flex-col">
+<div class="flex items-center justify-between mb-md">
+<h2 class="font-title-sm text-title-sm text-on-surface">Phụ đề AI (Vietnamese)</h2>
+<div class="flex gap-sm">
+<button class="p-xs text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-sm" data-icon="sync">sync</span></button>
+<button class="p-xs text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-sm" data-icon="download">download</span></button>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar pr-xs space-y-sm">
+<!-- Transcript Item 1 -->
+<div class="p-sm rounded border border-outline-variant hover:bg-white transition-colors group relative cursor-pointer">
+<div class="flex justify-between items-start mb-xs">
+<span class="font-code-tabular text-code-tabular text-primary">00:00 - 00:04</span>
+<span class="px-xs py-[2px] rounded bg-secondary-container text-on-secondary-container font-label-xs text-label-xs">98% tin cậy</span>
+</div>
+<textarea class="w-full p-0 bg-transparent border-none focus:ring-0 font-body-md text-body-md resize-none text-on-surface leading-snug">Chào mừng các bạn đã quay trở lại với chương trình bản tin tối nay.</textarea>
+</div>
+<!-- Transcript Item 2 (Warning State) -->
+<div class="p-sm rounded border border-error/30 bg-error-container/20 hover:bg-error-container/30 transition-colors group relative cursor-pointer">
+<div class="flex justify-between items-start mb-xs">
+<span class="font-code-tabular text-code-tabular text-error">00:04 - 00:08</span>
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-error text-sm" data-icon="warning">warning</span>
+<span class="px-xs py-[2px] rounded bg-error-container text-on-error-container font-label-xs text-label-xs">62% tin cậy</span>
+</div>
+</div>
+<textarea class="w-full p-0 bg-transparent border-none focus:ring-0 font-body-md text-body-md resize-none text-on-surface leading-snug">Hôm nay chúng ta sẽ thảo luận về một chủ đề rất đặc biệt, đó là AI...</textarea>
+<p class="mt-xs font-label-xs text-label-xs text-error">Phát hiện từ nhạy cảm hoặc nhiễu âm.</p>
+</div>
+<!-- Transcript Item 3 (Active State) -->
+<div class="p-sm rounded active-plum-border bg-primary/5 transition-colors group relative cursor-pointer">
+<div class="flex justify-between items-start mb-xs">
+<span class="font-code-tabular text-code-tabular text-primary font-bold">00:08 - 00:12</span>
+<span class="px-xs py-[2px] rounded bg-secondary-container text-on-secondary-container font-label-xs text-label-xs">95% tin cậy</span>
+</div>
+<textarea class="w-full p-0 bg-transparent border-none focus:ring-0 font-body-md text-body-md resize-none text-on-surface leading-snug font-medium">Trong video này, chúng ta sẽ khám phá cách công nghệ đang thay đổi cuộc sống.</textarea>
+<div class="absolute top-sm right-sm hidden group-hover:flex gap-xs">
+<button class="bg-white p-xs rounded shadow-sm border border-outline-variant hover:text-primary"><span class="material-symbols-outlined text-xs" data-icon="check">check</span></button>
+</div>
+</div>
+<!-- Transcript Item 4 -->
+<div class="p-sm rounded border border-outline-variant hover:bg-white transition-colors group relative cursor-pointer opacity-70">
+<div class="flex justify-between items-start mb-xs">
+<span class="font-code-tabular text-code-tabular text-on-surface-variant">00:12 - 00:16</span>
+<span class="px-xs py-[2px] rounded bg-surface-container-high text-on-surface-variant font-label-xs text-label-xs">91% tin cậy</span>
+</div>
+<textarea class="w-full p-0 bg-transparent border-none focus:ring-0 font-body-md text-body-md resize-none text-on-surface leading-snug">Đừng quên nhấn đăng ký để không bỏ lỡ các nội dung mới nhất.</textarea>
+</div>
+<!-- -->
+<div class="p-sm rounded border border-outline-variant hover:bg-white transition-colors group relative cursor-pointer opacity-70">
+<div class="flex justify-between items-start mb-xs">
+<span class="font-code-tabular text-code-tabular text-on-surface-variant">00:16 - 00:20</span>
+<span class="px-xs py-[2px] rounded bg-surface-container-high text-on-surface-variant font-label-xs text-label-xs">94% tin cậy</span>
+</div>
+<textarea class="w-full p-0 bg-transparent border-none focus:ring-0 font-body-md text-body-md resize-none text-on-surface leading-snug">Và bây giờ, hãy bắt đầu vào phần chính của buổi thảo luận.</textarea>
+</div>
+</div>
+<div class="mt-md pt-md border-t border-outline-variant flex items-center justify-between">
+<p class="font-label-xs text-label-xs text-on-surface-variant">TỰ ĐỘNG CUỘN THEO VIDEO</p>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox">
+<div class="w-9 h-5 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</section>
+<!-- Column 3: Summary Editor -->
+<section class="w-1/3 flex flex-col bg-surface-container-low">
+<div class="p-lg flex-1 overflow-y-auto custom-scrollbar space-y-lg">
+<div class="flex items-center justify-between mb-md">
+<h2 class="font-headline-md text-headline-md text-on-surface">Biên tập Tóm tắt</h2>
+<!-- Status Badge -->
+<span class="inline-flex items-center gap-xs px-sm py-xs bg-tertiary-fixed text-on-tertiary-fixed-variant font-label-xs text-label-xs rounded">
+<span class="w-2 h-2 rounded-full bg-tertiary-container"></span>
+                        BẢN NHÁP AI
+                    </span>
+</div>
+<!-- Field: Title -->
+<div class="space-y-xs">
+<label class="font-label-xs text-label-xs text-on-surface-variant uppercase font-bold">Tiêu đề đề xuất</label>
+<input class="w-full px-md py-sm border border-outline-variant rounded bg-white font-body-md text-body-md focus:active-plum-border focus:ring-0 transition-all" type="text" value="Khám phá tương lai của AI trong sản xuất video">
+<div class="flex justify-end mt-1">
+<button class="font-label-xs text-label-xs text-primary flex items-center gap-xs hover:underline">
+<span class="material-symbols-outlined text-[12px]" data-icon="refresh">refresh</span> Thử tiêu đề khác
+                        </button>
+</div>
+</div>
+<!-- Field: Category & Hashtags -->
+<div class="grid grid-cols-2 gap-md">
+<div class="space-y-xs">
+<label class="font-label-xs text-label-xs text-on-surface-variant uppercase font-bold">Chuyên mục</label>
+<select class="w-full px-md py-sm border border-outline-variant rounded bg-white font-body-md text-body-md focus:active-plum-border focus:ring-0">
+<option>Công nghệ</option>
+<option>Giáo dục</option>
+<option>Giải trí</option>
+</select>
+</div>
+<div class="space-y-xs">
+<label class="font-label-xs text-label-xs text-on-surface-variant uppercase font-bold">Độ ưu tiên</label>
+<select class="w-full px-md py-sm border border-outline-variant rounded bg-white font-body-md text-body-md focus:active-plum-border focus:ring-0">
+<option>Cao</option>
+<option selected="">Trung bình</option>
+<option>Thấp</option>
+</select>
+</div>
+</div>
+<!-- Field: Description -->
+<div class="space-y-xs">
+<label class="font-label-xs text-label-xs text-on-surface-variant uppercase font-bold">Mô tả chi tiết</label>
+<textarea class="w-full px-md py-sm border border-outline-variant rounded bg-white font-body-md text-body-md focus:active-plum-border focus:ring-0 resize-none" rows="4">Video tập trung vào sự phát triển thần tốc của các mô hình AI ngôn ngữ và hình ảnh trong năm 2024. Phân tích các tác động tích cực đến hiệu suất làm việc của biên tập viên video.</textarea>
+</div>
+<!-- Field: AI Summary -->
+<div class="space-y-xs">
+<label class="font-label-xs text-label-xs text-on-surface-variant uppercase font-bold">Tóm tắt AI (TL;DR)</label>
+<div class="relative group">
+<textarea class="w-full px-md py-sm border border-outline-variant rounded bg-white font-body-md text-body-md focus:active-plum-border focus:ring-0 resize-none leading-relaxed" rows="6">1. AI đang thay đổi cuộc chơi trong ngành truyền thông.
+2. Tiết kiệm 70% thời gian xử lý hậu kỳ.
+3. Các công cụ mới như Generative AI giúp tạo nội dung sáng tạo hơn.
+4. Tương lai của nghề biên tập viên trong kỷ nguyên máy móc.</textarea>
+<div class="absolute bottom-2 right-2 flex gap-xs">
+<button class="bg-primary-container/10 text-primary p-xs rounded hover:bg-primary-container/20"><span class="material-symbols-outlined text-sm" data-icon="content_copy">content_copy</span></button>
+</div>
+</div>
+</div>
+<!-- Field: Hashtags -->
+<div class="space-y-xs">
+<label class="font-label-xs text-label-xs text-on-surface-variant uppercase font-bold">Thẻ Hashtag</label>
+<div class="flex flex-wrap gap-xs">
+<span class="px-sm py-xs bg-secondary-container text-on-secondary-container rounded-full font-body-sm text-body-sm flex items-center gap-xs">#AI <span class="material-symbols-outlined text-[10px] cursor-pointer" data-icon="close">close</span></span>
+<span class="px-sm py-xs bg-secondary-container text-on-secondary-container rounded-full font-body-sm text-body-sm flex items-center gap-xs">#VideoCMS <span class="material-symbols-outlined text-[10px] cursor-pointer" data-icon="close">close</span></span>
+<span class="px-sm py-xs bg-secondary-container text-on-secondary-container rounded-full font-body-sm text-body-sm flex items-center gap-xs">#TechTrends <span class="material-symbols-outlined text-[10px] cursor-pointer" data-icon="close">close</span></span>
+<button class="px-sm py-xs border border-dashed border-outline-variant text-on-surface-variant rounded-full font-body-sm text-body-sm hover:border-primary hover:text-primary">+ Thêm</button>
+</div>
+</div>
+</div>
+<!-- Action Footer -->
+<div class="p-md bg-surface border-t border-outline-variant flex items-center justify-between gap-md">
+<button class="flex-1 px-md py-sm border border-outline-variant text-on-surface font-title-sm text-title-sm rounded-lg hover:bg-surface-container-high transition-colors active:scale-95">
+                    Hủy thay đổi
+                </button>
+<div class="flex gap-sm">
+<button class="px-lg py-sm bg-surface-container-highest text-on-surface-variant font-title-sm text-title-sm rounded-lg hover:bg-surface-container-high transition-colors active:scale-95">
+                        Lưu bản nháp
+                    </button>
+<button class="px-lg py-sm bg-primary text-on-primary font-title-sm text-title-sm rounded-lg hover:opacity-90 transition-all shadow-md active:scale-95">
+                        Duyệt nội dung
+                    </button>
+</div>
+</div>
+</section>
+</main>
+<!-- Micro-interaction Script -->
+<script>
+        document.querySelectorAll('textarea').forEach(el => {
+            el.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = (this.scrollHeight) + 'px';
+            });
+        });
+
+        // Simple tab switching logic simulation
+        const transcriptItems = document.querySelectorAll('.group.cursor-pointer');
+        transcriptItems.forEach(item => {
+            item.addEventListener('click', () => {
+                transcriptItems.forEach(i => i.classList.remove('active-plum-border', 'bg-primary/5'));
+                item.classList.add('active-plum-border', 'bg-primary/5');
+            });
+        });
+    </script>
+
+</body></html>

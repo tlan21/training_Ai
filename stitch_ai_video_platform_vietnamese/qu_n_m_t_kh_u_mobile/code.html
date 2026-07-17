@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary": "#a20017",
+                    "surface-bright": "#fff8f5",
+                    "secondary": "#855300",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-fixed-dim": "#ffb95f",
+                    "inverse-primary": "#d2bbff",
+                    "on-secondary-fixed": "#2a1700",
+                    "background": "#fff8f5",
+                    "on-secondary-fixed-variant": "#653e00",
+                    "on-background": "#1e1b19",
+                    "surface-dim": "#e0d8d5",
+                    "surface": "#fff8f5",
+                    "tertiary-fixed-dim": "#ffb3ad",
+                    "surface-container-low": "#faf2ee",
+                    "on-primary-fixed-variant": "#5a00c6",
+                    "primary-fixed-dim": "#d2bbff",
+                    "outline-variant": "#ccc3d8",
+                    "surface-container-high": "#eee7e3",
+                    "primary": "#630ed4",
+                    "secondary-container": "#fea619",
+                    "on-tertiary-fixed-variant": "#930013",
+                    "on-primary": "#ffffff",
+                    "on-tertiary-container": "#ffdfdc",
+                    "error": "#ba1a1a",
+                    "secondary-fixed": "#ffddb8",
+                    "on-surface-variant": "#4a4455",
+                    "error-container": "#ffdad6",
+                    "on-primary-fixed": "#25005a",
+                    "primary-container": "#7c3aed",
+                    "tertiary-fixed": "#ffdad7",
+                    "tertiary-container": "#c6252b",
+                    "surface-container": "#f4ece8",
+                    "on-surface": "#1e1b19",
+                    "inverse-surface": "#33302d",
+                    "on-tertiary": "#ffffff",
+                    "inverse-on-surface": "#f7efeb",
+                    "on-secondary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "on-secondary-container": "#684000",
+                    "surface-variant": "#e9e1dd",
+                    "on-error": "#ffffff",
+                    "outline": "#7b7487",
+                    "surface-container-highest": "#e9e1dd",
+                    "primary-fixed": "#eaddff",
+                    "on-tertiary-fixed": "#410004",
+                    "surface-tint": "#732ee4",
+                    "on-primary-container": "#ede0ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "xs": "4px",
+                    "container-margin-mobile": "16px",
+                    "gutter": "20px",
+                    "xl": "32px",
+                    "md": "16px",
+                    "sm": "8px",
+                    "lg": "24px",
+                    "container-margin-desktop": "40px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "title-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-lg-mobile": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .form-input-focus:focus-within {
+            box-shadow: 0 0 0 2px rgba(99, 14, 212, 0.2);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col items-center justify-start relative overflow-hidden">
+<!-- Background Atmosphere -->
+<div class="fixed inset-0 pointer-events-none opacity-20">
+
+</div>
+<!-- Header / Logo -->
+<header class="w-full px-container-margin-mobile pt-12 pb-8 flex justify-center z-10">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[32px]" style="font-variation-settings: 'FILL' 1;">play_circle</span>
+<h1 class="text-headline-md font-headline-md font-bold text-primary tracking-tight">VidsAI</h1>
+</div>
+</header>
+<!-- Main Content -->
+<main class="w-full max-w-[480px] px-container-margin-mobile flex flex-col items-center z-10">
+<!-- Visual Anchor (Style from SCREEN_13 context) -->
+<div class="w-24 h-24 bg-primary-fixed rounded-full flex items-center justify-center mb-8 shadow-sm">
+<span class="material-symbols-outlined text-primary text-[48px]">lock_reset</span>
+</div>
+<div class="text-center mb-10">
+<h2 class="text-headline-lg-mobile font-headline-lg-mobile text-on-surface mb-3">Quên mật khẩu?</h2>
+<p class="text-body-md font-body-md text-on-surface-variant max-w-[280px] mx-auto">
+                Chúng tôi sẽ gửi liên kết khôi phục mật khẩu qua email của bạn
+            </p>
+</div>
+<!-- Form -->
+<form class="w-full space-y-6" onsubmit="event.preventDefault();">
+<div class="space-y-2">
+<label class="text-label-md font-label-md text-on-surface-variant block ml-1" for="identifier">Email hoặc Số điện thoại</label>
+<div class="relative form-input-focus group transition-all duration-300">
+<div class="absolute inset-y-0 left-4 flex items-center pointer-events-none text-on-surface-variant group-focus-within:text-primary transition-colors">
+<span class="material-symbols-outlined">alternate_email</span>
+</div>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl py-4 pl-12 pr-4 text-on-surface text-body-md placeholder:text-outline focus:outline-none focus:border-primary transition-all shadow-sm" id="identifier" name="identifier" placeholder="example@gmail.com" type="text"/>
+</div>
+</div>
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md py-4 rounded-full shadow-lg hover:bg-primary-container active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2" type="submit">
+<span>Gửi liên kết</span>
+<span class="material-symbols-outlined text-[18px]">send</span>
+</button>
+</form>
+<!-- Navigation Back -->
+<div class="mt-12 text-center">
+<a class="inline-flex items-center gap-2 text-primary font-label-md text-label-md hover:underline group" href="#">
+<span class="material-symbols-outlined text-[18px] group-hover:-translate-x-1 transition-transform">arrow_back</span>
+                Quay lại đăng nhập
+            </a>
+</div>
+</main>
+<!-- Aesthetic Footer / Decorative -->
+<footer class="mt-auto w-full py-8 text-center text-label-sm font-label-sm text-outline opacity-60">
+<p>© 2024 VidsAI. Nền tảng video thông minh.</p>
+</footer>
+<!-- Interactive script for UI feedback -->
+<script>
+        document.querySelector('form').addEventListener('submit', function() {
+            const btn = this.querySelector('button');
+            const originalContent = btn.innerHTML;
+            
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin">progress_activity</span> Đang xử lý...';
+            btn.classList.add('opacity-80', 'cursor-not-allowed');
+            
+            setTimeout(() => {
+                btn.innerHTML = '<span class="material-symbols-outlined">check_circle</span> Đã gửi!';
+                btn.classList.remove('bg-primary');
+                btn.classList.add('bg-green-600');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalContent;
+                    btn.classList.remove('bg-green-600', 'opacity-80', 'cursor-not-allowed');
+                    btn.classList.add('bg-primary');
+                }, 3000);
+            }, 1500);
+        });
+    </script>
+</body></html>

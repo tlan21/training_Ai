@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Quên mật khẩu - VidsAI</title>
+<script>
+  if (localStorage.getItem('currentUser')) {
+    window.location.href = '../discovery_desktop/code.html';
+  }
+</script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary": "#a20017",
+                    "surface-bright": "#fff8f5",
+                    "secondary": "#855300",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-fixed-dim": "#ffb95f",
+                    "inverse-primary": "#d2bbff",
+                    "on-secondary-fixed": "#2a1700",
+                    "background": "#fff8f5",
+                    "on-secondary-fixed-variant": "#653e00",
+                    "on-background": "#1e1b19",
+                    "surface-dim": "#e0d8d5",
+                    "surface": "#fff8f5",
+                    "tertiary-fixed-dim": "#ffb3ad",
+                    "surface-container-low": "#faf2ee",
+                    "on-primary-fixed-variant": "#5a00c6",
+                    "primary-fixed-dim": "#d2bbff",
+                    "outline-variant": "#ccc3d8",
+                    "surface-container-high": "#eee7e3",
+                    "primary": "#630ed4",
+                    "secondary-container": "#fea619",
+                    "on-tertiary-fixed-variant": "#930013",
+                    "on-primary": "#ffffff",
+                    "on-tertiary-container": "#ffdfdc",
+                    "error": "#ba1a1a",
+                    "secondary-fixed": "#ffddb8",
+                    "on-surface-variant": "#4a4455",
+                    "error-container": "#ffdad6",
+                    "on-primary-fixed": "#25005a",
+                    "primary-container": "#7c3aed",
+                    "tertiary-fixed": "#ffdad7",
+                    "tertiary-container": "#c6252b",
+                    "surface-container": "#f4ece8",
+                    "on-surface": "#1e1b19",
+                    "inverse-surface": "#33302d",
+                    "on-tertiary": "#ffffff",
+                    "inverse-on-surface": "#f7efeb",
+                    "on-secondary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "on-secondary-container": "#684000",
+                    "surface-variant": "#e9e1dd",
+                    "on-error": "#ffffff",
+                    "outline": "#7b7487",
+                    "surface-container-highest": "#e9e1dd",
+                    "primary-fixed": "#eaddff",
+                    "on-tertiary-fixed": "#410004",
+                    "surface-tint": "#732ee4",
+                    "on-primary-container": "#ede0ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "xs": "4px",
+                    "container-margin-mobile": "16px",
+                    "gutter": "20px",
+                    "xl": "32px",
+                    "md": "16px",
+                    "sm": "8px",
+                    "lg": "24px",
+                    "container-margin-desktop": "40px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "title-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-lg-mobile": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fff8f5;
+            margin: 0;
+            padding: 0;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .cinematic-overlay {
+            background: linear-gradient(135deg, rgba(99, 14, 212, 0.15) 0%, rgba(30, 27, 25, 0.6) 100%);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(231, 229, 228, 0.5);
+        }
+    </style>
+</head>
+<body class="flex min-h-screen overflow-hidden">
+<!-- Background Layer -->
+<div class="fixed inset-0 z-0">
+<div class="w-full h-full bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida/AP1WRLtvVaYhQ-41FVvtgrPPLoPJpZgsn1DTwUX7OpuSD_RcQoStGiDKOec8a_i6mJaW7CUWeHSoxjggKOggEQ_BFtOAJzYZ8b_ZUY5qXiI3EWqz-CK6FJeLxEP_JG7vs3lrynkeMZAOsgwa607ts9GJEhO07talavF9YnVgPkXNTt_pLVzGRiZwp_riyA2q0i0P3gtYD-oYluMYHFrNzb2Jq7dSk06M5-rCHwxO3p_VZ_K55qYfeWSnLhKkSec')"></div>
+<div class="absolute inset-0 cinematic-overlay"></div>
+</div>
+<!-- Main Content Canvas -->
+<main class="relative z-10 flex items-center justify-center w-full min-h-screen p-container-margin-mobile md:p-0">
+<!-- Central Reset Password Card -->
+<div class="w-full max-w-[440px] glass-card rounded-xl p-8 md:p-10 shadow-lg transform transition-all duration-300 hover:scale-[1.01]">
+<!-- Brand Anchor -->
+<div class="flex flex-col items-center mb-8">
+<div class="flex items-center gap-2 mb-6">
+<div class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_circle</span>
+</div>
+<span class="font-headline-md text-headline-md font-bold text-primary">VidsAI</span>
+</div>
+<h1 class="font-headline-md text-headline-md text-on-surface text-center mb-2">Khôi phục mật khẩu</h1>
+<p class="font-body-md text-body-md text-on-surface-variant text-center px-4">Nhập email của bạn để nhận hướng dẫn đặt lại mật khẩu</p>
+</div>
+<!-- Recovery Form -->
+<form class="space-y-6" id="recoveryForm">
+<!-- Input Field -->
+<div class="flex flex-col space-y-2">
+<label class="font-label-md text-label-md text-on-surface-variant" for="recovery-identity">Email hoặc Số điện thoại</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" data-icon="mail">mail</span>
+<input class="w-full pl-10 pr-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all font-body-md text-on-surface" id="recovery-identity" name="identity" placeholder="username@email.com" required="" type="text"/>
+</div>
+</div>
+<!-- Action Button -->
+<button class="group relative w-full flex items-center justify-center py-3.5 px-4 bg-primary text-on-primary font-title-lg text-title-lg rounded-lg hover:bg-primary-container active:scale-95 transition-all duration-200 shadow-md" type="submit">
+<span class="mr-2">Gửi yêu cầu</span>
+<span class="material-symbols-outlined transition-transform group-hover:translate-x-1" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</form>
+<!-- Back Link -->
+<div class="mt-8 pt-6 border-t border-outline-variant text-center">
+<a class="inline-flex items-center gap-2 text-primary font-label-md text-label-md hover:underline hover:opacity-80 transition-opacity" href="../login_desktop/code.html">
+<span class="material-symbols-outlined text-sm" data-icon="arrow_back">arrow_back</span>
+                    Quay lại đăng nhập
+                </a>
+</div>
+</div>
+</main>
+<!-- Micro-interaction Script -->
+<script>
+        document.getElementById('recoveryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerHTML;
+            
+            // Visual feedback for interaction
+            btn.disabled = true;
+            btn.innerHTML = `
+                <span class="animate-spin mr-2">
+                    <span class="material-symbols-outlined" data-icon="progress_activity">progress_activity</span>
+                </span>
+                Đang xử lý...
+            `;
+            
+            // Simulate API call
+            setTimeout(() => {
+                const card = document.querySelector('.glass-card');
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(10px)';
+                
+                setTimeout(() => {
+                    card.innerHTML = `
+                        <div class="flex flex-col items-center text-center py-4">
+                            <div class="w-16 h-16 bg-primary-container rounded-full flex items-center justify-center text-on-primary-container mb-6 animate-bounce">
+                                <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                            </div>
+                            <h2 class="font-headline-md text-headline-md text-on-surface mb-3">Đã gửi yêu cầu!</h2>
+                            <p class="font-body-md text-body-md text-on-surface-variant mb-8 px-2">
+                                Chúng tôi đã gửi email hướng dẫn đến địa chỉ của bạn. Vui lòng kiểm tra hộp thư đến (hoặc thư rác).
+                            </p>
+                            <button onclick="window.location.href='../login_desktop/code.html'" class="w-full py-3 bg-primary text-on-primary font-title-lg text-title-lg rounded-lg hover:bg-primary-container transition-all">
+                                Hoàn tất
+                            </button>
+                        </div>
+                    `;
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 300);
+            }, 1500);
+        });
+    </script>
+</body></html>

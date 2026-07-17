@@ -1,0 +1,589 @@
+<!DOCTYPE html><html lang="vi" class="light"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+<script>
+  if (!localStorage.getItem('currentUser')) {
+    window.location.href = '../index.html';
+  }
+  function logout() {
+    localStorage.removeItem('currentUser');
+    window.location.href = '../index.html';
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    const userJson = localStorage.getItem('currentUser');
+    if (userJson) {
+      const user = JSON.parse(userJson);
+      const nameEl = document.getElementById('user-name');
+      const roleEl = document.getElementById('user-role');
+      const avatarEl = document.getElementById('user-avatar');
+      const placeholderEl = document.getElementById('user-avatar-placeholder');
+      if (nameEl) nameEl.textContent = user.name;
+      if (roleEl) roleEl.textContent = user.role;
+      if (avatarEl && user.avatar) {
+        avatarEl.src = user.avatar;
+        avatarEl.classList.remove('hidden');
+        if (placeholderEl) placeholderEl.classList.add('hidden');
+      }
+    }
+  });
+</script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary": "#ffffff",
+                        "surface-container-highest": "#e7e0eb",
+                        "tertiary-fixed-dim": "#c7c6c4",
+                        "primary-fixed": "#eaddff",
+                        "on-secondary-container": "#5a666d",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#f8f1fc",
+                        "inverse-primary": "#d1bcff",
+                        "surface-container-high": "#ede6f1",
+                        "on-primary-container": "#ceb8ff",
+                        "secondary-fixed": "#d7e4ec",
+                        "surface-container": "#f2ebf7",
+                        "surface": "#fef7ff",
+                        "tertiary-fixed": "#e3e2e0",
+                        "surface-bright": "#fef7ff",
+                        "secondary": "#546067",
+                        "outline": "#7b7484",
+                        "inverse-surface": "#322f37",
+                        "surface-dim": "#ded8e3",
+                        "on-secondary-fixed": "#111d23",
+                        "on-tertiary-fixed": "#1a1c1a",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed-variant": "#3c494f",
+                        "error": "#ba1a1a",
+                        "background": "#fef7ff",
+                        "primary": "#461599",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed-variant": "#464745",
+                        "tertiary-container": "#50514f",
+                        "tertiary": "#393a38",
+                        "on-secondary": "#ffffff",
+                        "on-surface": "#1d1a22",
+                        "error-container": "#ffdad6",
+                        "primary-container": "#5e35b1",
+                        "secondary-container": "#d7e4ec",
+                        "on-surface-variant": "#494453",
+                        "on-primary-fixed-variant": "#5429a7",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed": "#24005b",
+                        "surface-variant": "#e7e0eb",
+                        "inverse-on-surface": "#f5eef9",
+                        "primary-fixed-dim": "#d1bcff",
+                        "secondary-fixed-dim": "#bbc8d0",
+                        "on-background": "#1d1a22",
+                        "surface-tint": "#6c45c0",
+                        "outline-variant": "#cbc3d5",
+                        "on-tertiary-container": "#c4c4c1"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "sidebar-width": "260px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "toolbar-height": "48px",
+                        "md": "16px",
+                        "interactive-min": "44px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "code-tabular": ["JetBrains Mono"],
+                        "body-sm": ["Inter"],
+                        "title-sm": ["Inter"],
+                        "display-sm": ["Inter"],
+                        "label-xs": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "code-tabular": ["13px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "body-sm": ["12px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "title-sm": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                        "display-sm": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "label-xs": ["11px", {"lineHeight": "16px", "fontWeight": "700"}],
+                        "headline-md": ["18px", {"lineHeight": "24px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    }catch(_e){}</script><meta charset="utf-8"></head><body class="bg-background text-on-surface font-body-md">
+<!-- Sidebar Navigation -->
+<aside class="fixed left-0 top-0 h-full flex flex-col z-40 bg-surface dark:bg-surface-dim border-r border-outline-variant dark:border-outline w-sidebar-width h-screen">
+<div class="p-lg flex items-center gap-sm">
+<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary" style="font-variation-settings: 'FILL' 1;">movie_filter</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed leading-none">AI Video CMS</h1>
+<p class="text-[10px] uppercase tracking-widest text-outline mt-1">Hệ thống biên tập</p>
+</div>
+</div>
+<nav class="flex-1 px-sm py-md space-y-1 overflow-y-auto">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../t_ng_quan_h_th_ng/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="dashboard">dashboard</span>
+<span class="font-body-md">Tổng quan</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../danh_s_ch_video/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="video_library">video_library</span>
+<span class="font-body-md">Video</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm bg-primary-container text-on-primary-container rounded-lg border-l-4 border-primary transition-all duration-150" href="../t_i_l_n_h_ng_i_x_l/code.html">
+<span class="material-symbols-outlined" data-icon="queue_play_next" style="font-variation-settings: 'FILL' 1;">queue_play_next</span>
+<span class="font-body-md">Hàng đợi xử lý</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../ph_duy_t_c_t_highlight_ai/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-body-md">Highlight AI</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../qu_n_l_danh_m_c_ph_n_lo_i_video/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="category">category</span>
+<span class="font-body-md">Danh mục</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../ph_t_m_t_t_ai/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="closed_caption">closed_caption</span>
+<span class="font-body-md">Phụ đề & Tóm tắt</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../th_vi_n_n_i_dung_xu_t_b_n/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="publish">publish</span>
+<span class="font-body-md">Nội dung đã xuất bản</span>
+</a>
+<div class="my-lg border-t border-outline-variant opacity-50"></div>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../c_i_t_h_th_ng/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="settings">settings</span>
+<span class="font-body-md">Cài đặt</span>
+</a>
+</nav>
+<div class="p-md bg-surface-container-low mt-auto border-t border-outline-variant">
+    <div class="flex items-center gap-sm mb-3">
+        <img id="user-avatar" class="w-10 h-10 rounded-full object-cover border border-outline-variant hidden" src="" alt="Avatar">
+        <div id="user-avatar-placeholder" class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary">
+            <span class="material-symbols-outlined">person</span>
+        </div>
+        <div class="flex-1 overflow-hidden">
+            <p id="user-name" class="font-title-sm text-title-sm truncate text-on-surface">Admin CMS</p>
+            <p id="user-role" class="text-xs text-on-surface-variant truncate">Biên tập viên</p>
+        </div>
+    </div>
+    <button onclick="logout()" class="w-full py-1.5 px-3 bg-red-600/10 hover:bg-red-600/20 text-red-600 rounded-lg text-xs font-semibold flex items-center justify-center gap-1 transition-colors">
+        <span class="material-symbols-outlined text-sm">logout</span>
+        Đăng xuất
+    </button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-[260px] min-h-screen flex flex-col">
+<!-- Top App Bar -->
+<header class="fixed top-0 right-0 w-[calc(100%-260px)] h-toolbar-height flex justify-between items-center px-lg z-50 bg-surface-container-lowest border-b border-outline-variant">
+<div class="flex items-center gap-md flex-1">
+<div class="relative w-96">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input type="text" placeholder="Tìm kiếm video trong hàng đợi..." class="w-full bg-surface-container rounded-lg border-none pl-10 text-body-md h-9 focus:ring-2 focus:ring-primary">
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="flex items-center gap-xs px-md h-9 bg-primary text-on-primary rounded-lg font-semibold text-body-md hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[18px]">cloud_upload</span>
+                    Tải lên
+                </button>
+<div class="flex items-center gap-sm border-l border-outline-variant pl-md ml-xs">
+<button class="p-xs hover:bg-surface-container rounded-full transition-colors relative">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="p-xs hover:bg-surface-container rounded-full transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">analytics</span>
+</button>
+<div class="h-6 w-[1px] bg-outline-variant mx-xs"></div>
+<span class="text-title-sm text-primary">Trạng thái hệ thống</span>
+</div>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="mt-[48px] p-lg flex flex-col gap-lg">
+<!-- Upload & Monitoring Section (Bento Style) -->
+<div class="grid grid-cols-12 gap-lg">
+<!-- Drag & Drop Area -->
+<div class="col-span-12 lg:col-span-7 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg flex flex-col items-center justify-center border-dashed border-2 hover:border-primary transition-colors cursor-pointer group">
+<div class="w-16 h-16 rounded-full bg-primary-container flex items-center justify-center mb-md group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[32px] text-on-primary-container">upload_file</span>
+</div>
+<h3 class="text-headline-md mb-xs">Tải lên video mới</h3>
+<p class="text-on-surface-variant mb-md text-center max-w-sm">
+                        Kéo và thả tệp video vào đây hoặc chọn từ máy tính. Hỗ trợ định dạng MP4, MKV (tối đa 2GB).
+                    </p>
+<button class="px-lg h-interactive-min bg-primary text-on-primary rounded-lg font-bold flex items-center gap-sm">
+                        Chọn video
+                    </button>
+</div>
+<!-- System Monitoring Chips -->
+<div class="col-span-12 lg:col-span-5 grid grid-cols-2 gap-md">
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-md flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="text-label-xs text-on-surface-variant uppercase">CPU Usage</span>
+<span class="material-symbols-outlined text-primary">memory</span>
+</div>
+<div class="mt-sm">
+<div class="text-display-sm font-code-tabular">42%</div>
+<div class="w-full bg-surface-container-highest h-1 rounded-full mt-xs overflow-hidden">
+<div class="bg-primary h-full" style="width: 42%"></div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-md flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="text-label-xs text-on-surface-variant uppercase">GPU Load (H100)</span>
+<span class="material-symbols-outlined text-primary">developer_board</span>
+</div>
+<div class="mt-sm">
+<div class="text-display-sm font-code-tabular">88%</div>
+<div class="w-full bg-surface-container-highest h-1 rounded-full mt-xs overflow-hidden">
+<div class="bg-error h-full" style="width: 88%"></div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-md flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="text-label-xs text-on-surface-variant uppercase">VRAM Status</span>
+<span class="material-symbols-outlined text-primary">settings_input_component</span>
+</div>
+<div class="mt-sm">
+<div class="text-display-sm font-code-tabular">14.2/80<span class="text-body-sm">GB</span></div>
+<div class="w-full bg-surface-container-highest h-1 rounded-full mt-xs overflow-hidden">
+<div class="bg-primary h-full" style="width: 18%"></div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-md flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="text-label-xs text-on-surface-variant uppercase">Hàng đợi</span>
+<span class="material-symbols-outlined text-primary">list_alt</span>
+</div>
+<div class="mt-sm">
+<div class="text-display-sm font-code-tabular">12 <span class="text-body-sm">tệp</span></div>
+<div class="text-body-sm text-primary font-semibold">4 Workers Online</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Processing Table Section -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl flex flex-col overflow-hidden">
+<!-- Table Header & Filters -->
+<div class="p-md border-b border-outline-variant flex flex-wrap items-center justify-between gap-md">
+<div class="flex items-center gap-md">
+<h2 class="text-headline-md font-bold">Hàng đợi xử lý</h2>
+<div class="flex bg-surface-container rounded-lg p-1">
+<button class="px-md py-1 text-body-sm font-semibold bg-surface-container-lowest rounded shadow-sm">Tất cả</button>
+<button class="px-md py-1 text-body-sm text-on-surface-variant hover:text-on-surface">Đang xử lý (3)</button>
+<button class="px-md py-1 text-body-sm text-on-surface-variant hover:text-on-surface">Đã xong</button>
+</div>
+</div>
+<div class="flex items-center gap-sm">
+<select class="bg-surface-container border-none rounded-lg text-body-sm focus:ring-primary h-9">
+<option>Sắp xếp: Mới nhất</option>
+<option>Sắp xếp: Tên A-Z</option>
+<option>Sắp xếp: Dung lượng</option>
+</select>
+<button class="flex items-center gap-xs px-md h-9 border border-outline-variant rounded-lg text-body-sm font-semibold hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+                            Bộ lọc
+                        </button>
+</div>
+</div>
+<!-- The Data Table -->
+<div class="overflow-x-auto">
+<table class="w-full border-collapse">
+<thead class="bg-surface-container-low text-label-xs text-on-surface-variant uppercase">
+<tr>
+<th class="px-md py-sm text-left font-bold">Thumbnail &amp; Tiêu đề</th>
+<th class="px-md py-sm text-left font-bold">Người đăng</th>
+<th class="px-md py-sm text-left font-bold">Thời lượng</th>
+<th class="px-md py-sm text-left font-bold">Trạng thái hiện tại</th>
+<th class="px-md py-sm text-left font-bold">Tiến độ</th>
+<th class="px-md py-sm text-left font-bold">Thời gian</th>
+<th class="px-md py-sm text-right font-bold">Thao tác</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Row 1: Processing -->
+<tr class="hover:bg-surface-container transition-colors group">
+<td class="px-md py-sm">
+<div class="flex items-center gap-md">
+<div class="relative w-24 h-14 bg-surface-dim rounded overflow-hidden flex-shrink-0">
+<div class="w-full h-full bg-cover bg-center" data-alt="A cinematic sports highlights thumbnail showing a soccer player celebrating a goal under bright stadium floodlights. The style is sharp, editorial, and features vibrant green turf and high-contrast dramatic lighting." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBm5QYsdCkjoU5E1FZ59WsrNSc1tyngwcEpCCLq6Xw2anBYbH5Hf9YVZgsJNeF6Xd8eE_sXgA63aSGanxXDP2ZiXLGQYLagrl7U2jjmkjKdogTP7Gu-wY66_ZP2mcFN-3HOQ-aK7shBr7jyNVpNjwP_9xIQivwFL0j3xPT1IQD7JfRTUnG_r2cls9I_xJxWqxx1ZUPwLgdMg6elrxKbqzf9E2ZkQ_txFfjitmx4GOujR1pE55yW6DCyTkpMygYV-ja6ynRqjgMgCFk')"></div>
+<div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+<span class="material-symbols-outlined text-white animate-spin">sync</span>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="text-title-sm font-semibold">Highlight Việt Nam vs Thái Lan - AFF Cup</span>
+<span class="text-xs text-on-surface-variant font-code-tabular">VID_20231124_01.mp4</span>
+</div>
+</div>
+</td>
+<td class="px-md py-sm text-body-md">Lê Minh Anh</td>
+<td class="px-md py-sm font-code-tabular">12:45</td>
+<td class="px-md py-sm">
+<div class="flex items-center gap-xs text-primary font-semibold text-body-sm">
+<span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+                                        Đang chấm điểm highlight
+                                    </div>
+</td>
+<td class="px-md py-sm w-48">
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-label-xs font-code-tabular">
+<span class="">64%</span>
+<span class="">Xử lý AI</span>
+</div>
+<div class="w-full bg-outline-variant h-2 rounded-full overflow-hidden relative">
+<div class="bg-primary h-full progress-shimmer" style="width: 64%"></div>
+</div>
+</div>
+</td>
+<td class="px-md py-sm text-body-sm text-on-surface-variant font-code-tabular">04:22</td>
+<td class="px-md py-sm text-right">
+<button class="p-sm hover:bg-surface-container-highest rounded-full text-on-surface-variant">
+<span class="material-symbols-outlined">pause_circle</span>
+</button>
+<button class="p-sm hover:bg-surface-container-highest rounded-full text-error">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</td>
+</tr>
+<!-- Row 2: Transcription Stage -->
+<tr class="hover:bg-surface-container transition-colors group">
+<td class="px-md py-sm">
+<div class="flex items-center gap-md">
+<div class="relative w-24 h-14 bg-surface-dim rounded overflow-hidden flex-shrink-0">
+<div class="w-full h-full bg-cover bg-center" data-alt="Close-up thumbnail of a high-tech news studio interview. A person is speaking with a professional lapel microphone clearly visible. The background is softly blurred with cool blue studio lights. The aesthetic is clean, professional, and corporate." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAgPdF_LLB-9cBbxTklvv1CKGIFs86nhZ_rPo5Hb6rIQhRtb_MQWFB8QDfWCFJsKngcSzBtdLdngOYrxGIdF02Em9YKn7c0x6EnX__BiOaJaF_zyiA6Kw-im3z3tW0cX5O9-MVeSv7fjIjD7KgaxLn-j8d4bd5Szi8ZDJGBeOU7tUjTLEMkYWDykF9zwotG9l2-JA_-CxguKNlUMwiHFIeKvbkKvxnNeRCpeJJtfYTEtW-hdXja0sZIQtGHY1Y95NuBpQF3TP8zmnw')"></div>
+</div>
+<div class="flex flex-col">
+<span class="text-title-sm font-semibold">Phỏng vấn độc quyền HLV Park Hang-seo</span>
+<span class="text-xs text-on-surface-variant font-code-tabular">INTERVIEW_V2_FINAL.mkv</span>
+</div>
+</div>
+</td>
+<td class="px-md py-sm text-body-md">Trần Quốc Nam</td>
+<td class="px-md py-sm font-code-tabular">45:20</td>
+<td class="px-md py-sm">
+<div class="flex items-center gap-xs text-secondary font-semibold text-body-sm">
+<span class="material-symbols-outlined text-[18px]">record_voice_over</span>
+                                        Đang nhận dạng giọng nói
+                                    </div>
+</td>
+<td class="px-md py-sm w-48">
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-label-xs font-code-tabular">
+<span class="">21%</span>
+<span class="">STT Engine</span>
+</div>
+<div class="w-full bg-outline-variant h-2 rounded-full overflow-hidden">
+<div class="bg-secondary h-full" style="width: 21%"></div>
+</div>
+</div>
+</td>
+<td class="px-md py-sm text-body-sm text-on-surface-variant font-code-tabular">15:10</td>
+<td class="px-md py-sm text-right">
+<button class="p-sm hover:bg-surface-container-highest rounded-full text-on-surface-variant">
+<span class="material-symbols-outlined">pause_circle</span>
+</button>
+<button class="p-sm hover:bg-surface-container-highest rounded-full text-error">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</td>
+</tr>
+<!-- Row 3: Completed -->
+<tr class="hover:bg-surface-container transition-colors group">
+<td class="px-md py-sm">
+<div class="flex items-center gap-md opacity-70">
+<div class="relative w-24 h-14 bg-surface-dim rounded overflow-hidden flex-shrink-0">
+<div class="w-full h-full bg-cover bg-center" data-alt="A vibrant landscape thumbnail showing a scenic city marathon at sunrise. Hundreds of runners are captured in motion on a bridge with golden light reflecting off the water. Professional cinematography style with wide-angle lens and high dynamic range." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDXzembHrNQkj7z1dA7k5drfDCzHlbj5ADXTLRmegMAP5hpFz_ScuMTz3-46g3DKI-HD9CnWxKzkEjqhWwAhqJJIB1pOe1lZLdLhqWhkUjUTK70YQ8P9NeSwfGtJOHsAxf1LPFuOQb7HgPKl_xCl402_XOYDWV8T0MVEaQ-ojLYdRko3hj5wiCCY60lm4J1AJuRwCg0IPJPgvojtMBx4PR-wD0ArK8ZX7DVlZ1sieX_8nbiYaRr8_DfMw-7q6yluYbI5UWPoL3Nz7A')"></div>
+</div>
+<div class="flex flex-col">
+<span class="text-title-sm font-semibold">Toàn cảnh Marathon Hà Nội 2023</span>
+<span class="text-xs text-on-surface-variant font-code-tabular">MARATHON_FULL_HD.mp4</span>
+</div>
+</div>
+</td>
+<td class="px-md py-sm text-body-md">Nguyễn Thùy Linh</td>
+<td class="px-md py-sm font-code-tabular">120:00</td>
+<td class="px-md py-sm">
+<div class="flex items-center gap-xs text-on-surface-variant font-semibold text-body-sm">
+<span class="material-symbols-outlined text-[18px] text-primary">check_circle</span>
+                                        Hoàn tất
+                                    </div>
+</td>
+<td class="px-md py-sm w-48">
+<div class="w-full bg-outline-variant h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full" style="width: 100%"></div>
+</div>
+</td>
+<td class="px-md py-sm text-body-sm text-on-surface-variant font-code-tabular">01:05:40</td>
+<td class="px-md py-sm text-right">
+<button class="px-md py-1 bg-surface-container-highest text-primary font-bold text-xs rounded uppercase hover:bg-primary hover:text-on-primary transition-all">
+                                        Xem kết quả
+                                    </button>
+</td>
+</tr>
+<!-- Row-->
+<tr class="hover:bg-surface-container transition-colors group">
+<td class="px-md py-sm">
+<div class="flex items-center gap-md">
+<div class="relative w-24 h-14 bg-surface-dim rounded overflow-hidden flex-shrink-0 border-2 border-error/20">
+<div class="w-full h-full bg-cover bg-center grayscale opacity-50" data-alt="A glitched and distorted digital image with artifacts and color bleeding. Represents technical failure and file corruption in a modern, cyber-aesthetic way. Dark background with jagged red and cyan lines." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCo-7uDOzILeNdiHhln4bnHj1Ps9Uks8vkukWaZFd4ruoAnOrL8_oO-xE91gRnOk8-rKrYA00Mqn0wKY6ans12GwAyrmKOf_F-qFN_C8gPa1Vhxfd4GaLg7hw2EoaB1986BwNhTTd8xcZGqwSIq4IAlnBKk7g0ctERGXAIvt1dSmJZRcxulh0L5eWl64FlW1Vd35bP18uAI7mShcI510j-JAA8QRdNLDAi5xt8LisYZ1wHXMVkxfzyUNTjTouCGmvk7lMrmiDLhicI')"></div>
+</div>
+<div class="flex flex-col">
+<span class="text-title-sm font-semibold">Drone shot biển Đà Nẵng</span>
+<span class="text-xs text-on-surface-variant font-code-tabular">DRONE_FOOTAGE_01.mp4</span>
+</div>
+</div>
+</td>
+<td class="px-md py-sm text-body-md">Phạm Thành Nam</td>
+<td class="px-md py-sm font-code-tabular">05:15</td>
+<td class="px-md py-sm">
+<div class="flex items-center gap-xs text-error font-bold text-body-sm">
+<span class="material-symbols-outlined text-[18px]">error</span>
+                                        Lỗi AI: Out of Memory
+                                    </div>
+</td>
+<td class="px-md py-sm w-48">
+<div class="w-full bg-error-container h-2 rounded-full overflow-hidden">
+<div class="bg-error h-full" style="width: 82%"></div>
+</div>
+</td>
+<td class="px-md py-sm text-body-sm text-on-surface-variant font-code-tabular">00:08</td>
+<td class="px-md py-sm text-right">
+<button class="p-sm hover:bg-surface-container-highest rounded-full text-primary">
+<span class="material-symbols-outlined">replay</span>
+</button>
+<button class="p-sm hover:bg-surface-container-highest rounded-full text-error">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</td>
+</tr>
+<!-- Row 5: Pending -->
+<tr class="hover:bg-surface-container transition-colors group">
+<td class="px-md py-sm">
+<div class="flex items-center gap-md">
+<div class="relative w-24 h-14 bg-surface-dim rounded overflow-hidden flex-shrink-0">
+<div class="w-full h-full bg-cover bg-center" data-alt="Clean corporate presentation slide with minimalist charts and text. High-key lighting, bright professional studio environment. Soft focus on a digital screen. Corporate aesthetic with primary blue accents." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCirpEErF1PxIyeog-Fo-vdx9ajO_GHn4FbqqaJZACHSqesTTAAX0be_oMbTEkM1DWZxtdcO3kPdsFVmE8te0Z5IGPJGrj9lQXrxdJo7ZfwzwweFSCOKrum_PVH2LF_ddw_Gb6lhF5yvB-rf7k6Y2fQfZ3RBmVvzdcUAtu2hn8NFMr5mtP3szOVlgtCss8Tp-48gt62NRWiwngJrmxPvfOG_8WuM5cOoYcPEfyDbLf1FfbumzmKaUHgcQiv9wwgcoEGZ0F_gElseZc')"></div>
+</div>
+<div class="flex flex-col">
+<span class="text-title-sm font-semibold">Workshop: Ứng dụng AI trong truyền hình</span>
+<span class="text-xs text-on-surface-variant font-code-tabular">AI_WS_RECORDING.mp4</span>
+</div>
+</div>
+</td>
+<td class="px-md py-sm text-body-md">Admin</td>
+<td class="px-md py-sm font-code-tabular">90:00</td>
+<td class="px-md py-sm">
+<div class="flex items-center gap-xs text-on-surface-variant font-semibold text-body-sm">
+<span class="material-symbols-outlined text-[18px]">schedule</span>
+                                        Đang chờ
+                                    </div>
+</td>
+<td class="px-md py-sm w-48">
+<div class="w-full bg-outline-variant h-2 rounded-full overflow-hidden">
+<div class="bg-surface-container-highest h-full" style="width: 0%"></div>
+</div>
+</td>
+<td class="px-md py-sm text-body-sm text-on-surface-variant font-code-tabular">--:--</td>
+<td class="px-md py-sm text-right">
+<button class="p-sm hover:bg-surface-container-highest rounded-full text-on-surface-variant">
+<span class="material-symbols-outlined">play_arrow</span>
+</button>
+<button class="p-sm hover:bg-surface-container-highest rounded-full text-error">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="p-md bg-surface-container-lowest border-t border-outline-variant flex items-center justify-between">
+<span class="text-body-sm text-on-surface-variant">Hiển thị 1 - 5 của 24 video</span>
+<div class="flex gap-xs">
+<button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded bg-primary text-on-primary font-bold text-sm">1</button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-container transition-colors text-sm">2</button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-container transition-colors text-sm">3</button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Stages Reference / Legend -->
+<section class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-sm">
+<div class="flex flex-col items-center p-sm bg-surface rounded-lg border border-outline-variant text-center opacity-60">
+<span class="material-symbols-outlined text-on-surface-variant">hourglass_empty</span>
+<span class="text-label-xs mt-xs">Đang chờ</span>
+</div>
+<div class="flex flex-col items-center p-sm bg-surface rounded-lg border border-outline-variant text-center opacity-60">
+<span class="material-symbols-outlined text-on-surface-variant">grid_view</span>
+<span class="text-label-xs mt-xs">Tách khung</span>
+</div>
+<div class="flex flex-col items-center p-sm bg-surface rounded-lg border border-outline-variant text-center opacity-60">
+<span class="material-symbols-outlined text-on-surface-variant" data-original-icon="record_">record_voice_over</span>
+<span class="text-label-xs mt-xs">Gọng nói</span>
+</div>
+<div class="flex flex-col items-center p-sm bg-primary-container text-on-primary-container rounded-lg border border-primary text-center">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="text-label-xs mt-xs font-bold">Chấm điểm</span>
+</div>
+<div class="flex flex-col items-center p-sm bg-surface rounded-lg border border-outline-variant text-center opacity-60">
+<span class="material-symbols-outlined text-on-surface-variant">schema</span>
+<span class="text-label-xs mt-xs">Embedding</span>
+</div>
+<div class="flex flex-col items-center p-sm bg-surface rounded-lg border border-outline-variant text-center opacity-60">
+<span class="material-symbols-outlined text-on-surface-variant">article</span>
+<span class="text-label-xs mt-xs">Tóm tắt</span>
+</div>
+<div class="flex flex-col items-center p-sm bg-surface rounded-lg border border-outline-variant text-center opacity-60">
+<span class="material-symbols-outlined text-on-surface-variant">check_circle</span>
+<span class="text-label-xs mt-xs">Hoàn tất</span>
+</div>
+<div class="flex flex-col items-center p-sm bg-surface rounded-lg border border-outline-variant text-center opacity-60">
+<span class="material-symbols-outlined text-error">cancel</span>
+<span class="text-label-xs mt-xs">Thất bại</span>
+</div>
+</section>
+</div>
+</main>
+<!-- Micro-interaction for Upload Simulation -->
+<script>
+        document.querySelector('button:contains("Chọn video")')?.addEventListener('click', () => {
+            alert('Mở trình chọn tệp từ máy tính...');
+        });
+
+        // Add visual feedback for hover on table rows
+        const rows = document.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            row.addEventListener('click', () => {
+                rows.forEach(r => r.classList.remove('bg-surface-container-high'));
+                row.classList.add('bg-surface-container-high');
+            });
+        });
+
+        // Simulating the "contains" selector logic for the script
+        const buttons = document.querySelectorAll('button');
+        buttons.forEach(btn => {
+            if(btn.innerText.includes('Chọn video')) {
+                btn.onclick = () => console.log('Upload triggered');
+            }
+        });
+    </script>
+
+</body></html>

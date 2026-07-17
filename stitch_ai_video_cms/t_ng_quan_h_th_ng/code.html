@@ -1,0 +1,560 @@
+<!DOCTYPE html><html class="light" lang="vi" style=""><svg class="inline-defs-container" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden"></svg><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>AI Video CMS - Tổng quan</title>
+<script>
+  if (!localStorage.getItem('currentUser')) {
+    window.location.href = '../index.html';
+  }
+  function logout() {
+    localStorage.removeItem('currentUser');
+    window.location.href = '../index.html';
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    const userJson = localStorage.getItem('currentUser');
+    if (userJson) {
+      const user = JSON.parse(userJson);
+      const nameEl = document.getElementById('user-name');
+      const roleEl = document.getElementById('user-role');
+      const avatarEl = document.getElementById('user-avatar');
+      const placeholderEl = document.getElementById('user-avatar-placeholder');
+      if (nameEl) nameEl.textContent = user.name;
+      if (roleEl) roleEl.textContent = user.role;
+      if (avatarEl && user.avatar) {
+        avatarEl.src = user.avatar;
+        avatarEl.classList.remove('hidden');
+        if (placeholderEl) placeholderEl.classList.add('hidden');
+      }
+    }
+  });
+</script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FAF9F6;
+        }
+        .sidebar-active {
+            border-left: 4px solid #461599;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbc3d5;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7b7484;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-surface": "#322f37",
+                    "tertiary-fixed-dim": "#c7c6c4",
+                    "inverse-primary": "#d1bcff",
+                    "on-error-container": "#93000a",
+                    "on-primary-container": "#ceb8ff",
+                    "on-background": "#1d1a22",
+                    "error-container": "#ffdad6",
+                    "secondary": "#546067",
+                    "on-tertiary-fixed-variant": "#464745",
+                    "on-secondary-fixed-variant": "#3c494f",
+                    "primary-container": "#5e35b1",
+                    "surface-tint": "#6c45c0",
+                    "surface-container-highest": "#e7e0eb",
+                    "outline-variant": "#cbc3d5",
+                    "on-tertiary-fixed": "#1a1c1a",
+                    "error": "#ba1a1a",
+                    "surface-container-lowest": "#ffffff",
+                    "surface": "#fef7ff",
+                    "inverse-on-surface": "#f5eef9",
+                    "surface-container-high": "#ede6f1",
+                    "on-tertiary-container": "#c4c4c1",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed": "#e3e2e0",
+                    "on-secondary-fixed": "#111d23",
+                    "on-primary-fixed-variant": "#5429a7",
+                    "tertiary": "#393a38",
+                    "surface-bright": "#fef7ff",
+                    "on-primary-fixed": "#24005b",
+                    "surface-variant": "#e7e0eb",
+                    "secondary-fixed": "#d7e4ec",
+                    "primary-fixed": "#eaddff",
+                    "on-secondary-container": "#5a666d",
+                    "surface-dim": "#ded8e3",
+                    "on-surface-variant": "#494453",
+                    "secondary-container": "#d7e4ec",
+                    "background": "#fef7ff",
+                    "primary": "#461599",
+                    "secondary-fixed-dim": "#bbc8d0",
+                    "surface-container": "#f2ebf7",
+                    "outline": "#7b7484",
+                    "on-secondary": "#ffffff",
+                    "on-surface": "#1d1a22",
+                    "on-primary": "#ffffff",
+                    "tertiary-container": "#50514f",
+                    "surface-container-low": "#f8f1fc",
+                    "primary-fixed-dim": "#d1bcff",
+                    "on-tertiary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "interactive-min": "44px",
+                    "sidebar-width": "260px",
+                    "sm": "8px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "toolbar-height": "48px",
+                    "base": "4px",
+                    "xs": "4px"
+            },
+            "fontFamily": {
+                    "body-sm": ["Inter"],
+                    "label-xs": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "title-sm": ["Inter"],
+                    "display-sm": ["Inter"],
+                    "body-md": ["Inter"],
+                    "code-tabular": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "body-sm": ["12px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "label-xs": ["11px", {"lineHeight": "16px", "fontWeight": "700"}],
+                    "headline-md": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "title-sm": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                    "display-sm": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "code-tabular": ["13px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-surface text-on-surface">
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-0 h-full flex flex-col z-40 bg-surface dark:bg-surface-dim border-r border-outline-variant dark:border-outline w-sidebar-width h-screen">
+<div class="p-lg flex items-center gap-sm">
+<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary" style="font-variation-settings: 'FILL' 1;">movie_filter</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed leading-none">AI Video CMS</h1>
+<p class="text-[10px] uppercase tracking-widest text-outline mt-1">Hệ thống biên tập</p>
+</div>
+</div>
+<nav class="flex-1 px-sm py-md space-y-1 overflow-y-auto">
+<a class="flex items-center gap-md px-md py-sm bg-primary-container text-on-primary-container rounded-lg border-l-4 border-primary transition-all duration-150" href="../t_ng_quan_h_th_ng/code.html">
+<span class="material-symbols-outlined" data-icon="dashboard" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-body-md">Tổng quan</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../danh_s_ch_video/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="video_library">video_library</span>
+<span class="font-body-md">Video</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../t_i_l_n_h_ng_i_x_l/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="queue_play_next">queue_play_next</span>
+<span class="font-body-md">Hàng đợi xử lý</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../ph_duy_t_c_t_highlight_ai/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-body-md">Highlight AI</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../qu_n_l_danh_m_c_ph_n_lo_i_video/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="category">category</span>
+<span class="font-body-md">Danh mục</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../ph_t_m_t_t_ai/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="closed_caption">closed_caption</span>
+<span class="font-body-md">Phụ đề & Tóm tắt</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../th_vi_n_n_i_dung_xu_t_b_n/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="publish">publish</span>
+<span class="font-body-md">Nội dung đã xuất bản</span>
+</a>
+<div class="my-lg border-t border-outline-variant opacity-50"></div>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../c_i_t_h_th_ng/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="settings">settings</span>
+<span class="font-body-md">Cài đặt</span>
+</a>
+</nav>
+<div class="p-md bg-surface-container-low mt-auto border-t border-outline-variant">
+    <div class="flex items-center gap-sm mb-3">
+        <img id="user-avatar" class="w-10 h-10 rounded-full object-cover border border-outline-variant hidden" src="" alt="Avatar">
+        <div id="user-avatar-placeholder" class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary">
+            <span class="material-symbols-outlined">person</span>
+        </div>
+        <div class="flex-1 overflow-hidden">
+            <p id="user-name" class="font-title-sm text-title-sm truncate text-on-surface">Admin CMS</p>
+            <p id="user-role" class="text-xs text-on-surface-variant truncate">Biên tập viên</p>
+        </div>
+    </div>
+    <button onclick="logout()" class="w-full py-1.5 px-3 bg-red-600/10 hover:bg-red-600/20 text-red-600 rounded-lg text-xs font-semibold flex items-center justify-center gap-1 transition-colors">
+        <span class="material-symbols-outlined text-sm">logout</span>
+        Đăng xuất
+    </button>
+</div>
+</aside>
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 right-0 w-[calc(100%-260px)] h-toolbar-height flex justify-between items-center px-lg z-50 bg-surface-container-lowest border-b border-outline-variant">
+<div class="flex items-center gap-md flex-1">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant text-sm" data-icon="search">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-full pl-[44px] pr-md py-xs font-body-sm focus:ring-1 focus:ring-primary" placeholder="Tìm kiếm video, metadata hoặc log..." type="text">
+</div>
+</div>
+<div class="flex items-center gap-lg">
+<button class="flex items-center gap-xs px-md py-xs bg-primary text-on-primary rounded-lg font-title-sm hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="dns">dns</span>
+                Trạng thái hệ thống
+            </button>
+<div class="flex items-center gap-md text-on-surface-variant">
+<button class="hover:text-primary transition-colors"><span class="material-symbols-outlined" data-icon="notifications">notifications</span></button>
+<button class="hover:text-primary transition-colors"><span class="material-symbols-outlined" data-icon="analytics">analytics</span></button>
+</div>
+<div class="h-8 w-8 rounded-full overflow-hidden border border-outline">
+<img class="h-full w-full object-cover" data-alt="A professional headshot of a senior system administrator in a high-tech corporate environment. The person is dressed in modern professional attire, looking confident and approachable. The background is a blurred office with minimalist white walls and soft blue accent lighting, emphasizing a corporate and technologically advanced atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrzPBszfO5okSDaqZiK3Bho9HLBk1L0AElU6NeDO0OfsFbakDrOcoDBzqCpuGZBnveC9c8bcYpXlMCt0BJhMv6u710loa_-u8uLsVVOC_KkQ67R3xZilFc264c3maWxJTpFSTCOyJ1T83Tr3KJ9OjYfDRhYBn0H5wgAvDbcRigUtVHudhmT4t7Gr89jtbnQQRZ1Je6feN_CdulRz4LgatZmSZsRI_6dqT1042Z0AoFhAE-WT8WZ306Ls_pHHEzAf7dqB3go42MXR4">
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-[260px] mt-toolbar-height p-lg min-h-screen">
+<!-- Dashboard Header -->
+<div class="flex justify-between items-end mb-lg">
+<div>
+<h2 class="font-display-sm text-display-sm text-on-surface">Tổng quan hệ thống</h2>
+<p class="font-body-md text-on-surface-variant">Chào mừng quay trở lại, Admin. Đây là hiệu suất xử lý hôm nay.</p>
+</div>
+<div class="flex gap-sm">
+<button class="px-md py-sm bg-surface-container-high border border-outline-variant rounded-lg font-title-sm text-on-surface-variant hover:bg-surface-container-highest transition-colors">Tải báo cáo</button>
+<button class="px-md py-sm bg-primary text-on-primary rounded-lg font-title-sm hover:opacity-90 active:scale-95 transition-all">Tải video mới</button>
+</div>
+</div>
+<!-- Key Performance Metrics - Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-md mb-lg">
+<!-- Total Videos -->
+<div class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="text-on-surface-variant font-label-xs uppercase">TỔNG VIDEO XỬ LÝ</span>
+<span class="material-symbols-outlined text-primary" data-icon="video_file">video_file</span>
+</div>
+<div class="mt-md">
+<div class="text-[32px] font-bold text-on-surface leading-none">12,842</div>
+<div class="flex items-center gap-xs mt-xs text-primary font-body-sm">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span>
+<span class="">+12% so với tháng trước</span>
+</div>
+</div>
+</div>
+<!-- AI Efficiency -->
+<div class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="text-on-surface-variant font-label-xs uppercase">HIỆU SUẤT HIGHLIGHT AI</span>
+<span class="material-symbols-outlined text-primary" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div class="mt-md">
+<div class="text-[32px] font-bold text-on-surface leading-none">94.2%</div>
+<div class="flex items-center gap-xs mt-xs text-secondary font-body-sm">
+<span class="material-symbols-outlined text-sm" data-icon="check_circle">check_circle</span>
+<span class="">Độ chính xác trung bình</span>
+</div>
+</div>
+</div>
+<!-- Storage Usage -->
+<div class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="text-on-surface-variant font-label-xs uppercase">DUNG LƯỢNG LƯU TRỮ</span>
+<span class="material-symbols-outlined text-primary" data-icon="database">database</span>
+</div>
+<div class="mt-md">
+<div class="flex items-baseline gap-xs">
+<span class="text-[32px] font-bold text-on-surface leading-none">1.2</span>
+<span class="text-body-md text-on-surface-variant">/ 2.0 TB</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1.5 rounded-full mt-md overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 60%"></div>
+</div>
+<div class="text-label-xs text-on-surface-variant mt-sm">60% đã sử dụng</div>
+</div>
+</div>
+<!-- Active Users -->
+<div class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="text-on-surface-variant font-label-xs uppercase">NGƯỜI DÙNG HOẠT ĐỘNG</span>
+<span class="material-symbols-outlined text-primary" data-icon="person_play">person_play</span>
+</div>
+<div class="mt-md">
+<div class="text-[32px] font-bold text-on-surface leading-none">42</div>
+<div class="flex items-center gap-xs mt-xs text-on-surface-variant font-body-sm">
+<span class="material-symbols-outlined text-sm" data-icon="radio_button_checked">radio_button_checked</span>
+<span class="">Hiện đang trực tuyến</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Middle Section: Chart and Activity -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-lg mb-lg">
+<!-- Trends Chart -->
+<div class="lg:col-span-2 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg">
+<div class="flex justify-between items-center mb-lg">
+<h3 class="font-title-sm text-on-surface">Xu hướng xử lý Video (30 ngày)</h3>
+<div class="flex gap-sm">
+<select class="bg-surface border-outline-variant rounded-lg font-label-xs text-on-surface-variant py-xs">
+<option>Tháng này</option>
+<option>Tháng trước</option>
+</select>
+</div>
+</div>
+<div class="h-[280px] relative w-full overflow-hidden flex items-end justify-between px-md gap-base">
+<!-- Faux Line Chart Visualization -->
+<div class="absolute inset-x-md top-0 bottom-12 border-b border-outline-variant flex items-end">
+<svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1000 200">
+<path d="M0,180 L50,160 L100,170 L150,140 L200,150 L250,100 L300,110 L350,90 L400,120 L450,100 L500,115 L550,60 L600,80 L650,40 L700,70 L750,50 L800,90 L850,70 L900,100 L950,110 L1000,120" fill="none" stroke="#461599" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path>
+<path d="M0,180 L50,160 L100,170 L150,140 L200,150 L250,100 L300,110 L350,90 L400,120 L450,100 L500,115 L550,60 L600,80 L650,40 L700,70 L750,50 L800,90 L850,70 L900,100 L950,110 L1000,120 V200 H0 Z" fill="url(#chartGradient)" opacity="0.1"></path>
+<defs>
+<linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#461599"></stop>
+<stop offset="100%" stop-color="transparent"></stop>
+</linearGradient>
+</defs>
+</svg>
+</div>
+<!-- X Axis Labels -->
+<div class="flex justify-between w-full font-label-xs text-on-surface-variant mt-md">
+<span class="">01 May</span><span class="">07 May</span><span class="">14 May</span><span class="">21 May</span><span class="">28 May</span><span class="">30 May</span>
+</div>
+</div>
+</div>
+<!-- System Alerts -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg flex flex-col">
+<h3 class="font-title-sm text-on-surface mb-md">Cảnh báo hệ thống</h3>
+<div class="flex flex-col gap-sm flex-1 overflow-y-auto max-h-[320px]">
+<div class="p-sm bg-error-container/10 border-l-4 border-error rounded flex gap-sm items-start">
+<span class="material-symbols-outlined text-error text-md" data-icon="warning">warning</span>
+<div>
+<p class="font-title-sm text-on-error-container">Lỗi Worker #04</p>
+<p class="font-body-sm text-on-error-container/80">Quá trình render highlight bị gián đoạn tại 04:22.</p>
+<span class="font-code-tabular text-[10px] text-on-error-container/60">04:23:11 - UTC+7</span>
+</div>
+</div>
+<div class="p-sm bg-surface-container-low border-l-4 border-primary rounded flex gap-sm items-start">
+<span class="material-symbols-outlined text-primary text-md" data-icon="info">info</span>
+<div>
+<p class="font-title-sm text-on-surface">Cập nhật Model AI</p>
+<p class="font-body-sm text-on-surface-variant">Model 'Vision-X' đã được nâng cấp lên v2.4.</p>
+<span class="font-code-tabular text-[10px] text-on-surface-variant/60">Hôm qua, 18:45</span>
+</div>
+</div>
+<div class="p-sm bg-surface-container-low border-l-4 border-outline rounded flex gap-sm items-start">
+<span class="material-symbols-outlined text-secondary text-md" data-icon="storage">storage</span>
+<div>
+<p class="font-title-sm text-on-surface">Dung lượng sắp đầy</p>
+<p class="font-body-sm text-on-surface-variant">Phân vùng lưu trữ tạm đã đạt 85%.</p>
+<span class="font-code-tabular text-[10px] text-on-surface-variant/60">Hôm qua, 09:12</span>
+</div>
+</div>
+</div>
+<button class="mt-md text-primary font-title-sm hover:underline flex items-center gap-xs">
+                    Xem tất cả log <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Recent Activity Section -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden">
+<div class="px-lg py-md border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
+<h3 class="font-title-sm text-on-surface">Highlight AI mới nhất</h3>
+<button class="text-primary font-title-sm hover:underline">Quản lý Highlight</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low/50">
+<th class="px-lg py-sm font-label-xs text-on-surface-variant uppercase">Video</th>
+<th class="px-lg py-sm font-label-xs text-on-surface-variant uppercase">Thời lượng</th>
+<th class="px-lg py-sm font-label-xs text-on-surface-variant uppercase">Độ tin cậy AI</th>
+<th class="px-lg py-sm font-label-xs text-on-surface-variant uppercase">Trạng thái</th>
+<th class="px-lg py-sm font-label-xs text-on-surface-variant uppercase">Hành động</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-low transition-colors group" style="box-shadow: none;">
+<td class="px-lg py-sm">
+<div class="flex items-center gap-md">
+<div class="h-10 w-16 bg-black rounded overflow-hidden relative border border-outline-variant">
+<img class="h-full w-full object-cover opacity-80" data-alt="A cinematic 16:9 video thumbnail showing a futuristic urban skyline at dusk. The scene is characterized by deep purples and high-tech blue neon lights, with subtle lens flares and a shallow depth of field. The style is sharp, editorial, and highly professional, reflecting a high-quality video production." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDraTxkB5qkijyamasaiQjl0yCobwHMUiBGgy_u-cPB-lZy-DC_lB_Ch1xDoMhdZFPH7Nc3J7J_3JstRe1lXkNSpfRCqGz4MDp8C8p_fzvU0_Nq7hQDy_YvU7hpFe1H2lNdsBCYR5InG34SeVh0bjWeuAvcxyiJ1_Qk2EqVf8Wsrutn93bzWXpm6tWuDuCzs6iMJ6Gf2I37qqFbGv8vbx-C7XYGdUHvy6hnSuf-0KSSNzvYqc8twL-SgaOfLGGsuzTadsFLD7rbpog">
+<div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/40 transition-opacity">
+<span class="material-symbols-outlined text-white text-sm" data-icon="play_arrow">play_arrow</span>
+</div>
+</div>
+<div>
+<p class="font-title-sm text-on-surface">Phỏng vấn CEO - Series Đổi mới</p>
+<p class="font-body-sm text-on-surface-variant">highlights_v1_02:44.mp4</p>
+</div>
+</div>
+</td>
+<td class="px-lg py-sm font-code-tabular text-body-sm text-on-surface">00:45 / 12:30</td>
+<td class="px-lg py-sm">
+<div class="flex items-center gap-sm">
+<span class="font-title-sm text-primary">98%</span>
+<div class="w-16 h-1 bg-surface-container-highest rounded-full">
+<div class="bg-primary h-full rounded-full" style="width: 98%"></div>
+</div>
+</div>
+</td>
+<td class="px-lg py-sm">
+<span class="px-sm py-xs bg-surface-container-high text-on-surface-variant text-[11px] font-bold rounded uppercase">Đã duyệt</span>
+</td>
+<td class="px-lg py-sm">
+<div class="flex gap-sm">
+<button class="h-8 w-8 flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-primary-container rounded transition-all">
+<span class="material-symbols-outlined text-[20px]" data-icon="edit">edit</span>
+</button>
+<button class="h-8 w-8 flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-primary-container rounded transition-all">
+<span class="material-symbols-outlined text-[20px]" data-icon="download">download</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group" style="box-shadow: none;">
+<td class="px-lg py-sm">
+<div class="flex items-center gap-md">
+<div class="h-10 w-16 bg-black rounded overflow-hidden relative border border-outline-variant">
+<img class="h-full w-full object-cover opacity-80" data-alt="A professional video frame showcasing a close-up of a high-end camera lens reflecting studio lights. The aesthetic is clean, corporate, and minimalist, with a cool-toned color palette of greys and deep blacks. The lighting is soft and intentional, highlighting the intricate mechanical details of the camera gear." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFLM8nKjFCQebBI6jDqdo2WWW2m-z0kij_xOxB-QMUdwSMQoI705UGU_2aYJnA7A_v-wg3GMzmyk75SXbtBicZv89Tp4bGikaCBWSHb93bGHmhybSbkjYWUr5bubZFRdKCMLtBlPgjOc7HO7wF1AIlFE0DsFas0JVGRDpVhtey4OctcWbBqJ1snMbN6yGvCY6bzexxo_0Q7F7NMHS4HSMsiRqcjG6RLZLfK4Tl5gXiihZV197I44dh2qWqYpZ6oY8nP4sXkpUaOws">
+<div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/40 transition-opacity">
+<span class="material-symbols-outlined text-white text-sm" data-icon="play_arrow">play_arrow</span>
+</div>
+</div>
+<div>
+<p class="font-title-sm text-on-surface">Review Thiết bị Studio 2024</p>
+<p class="font-body-sm text-on-surface-variant">highlights_v2_08:12.mp4</p>
+</div>
+</div>
+</td>
+<td class="px-lg py-sm font-code-tabular text-body-sm text-on-surface">01:20 / 15:45</td>
+<td class="px-lg py-sm">
+<div class="flex items-center gap-sm">
+<span class="font-title-sm text-primary">82%</span>
+<div class="w-16 h-1 bg-surface-container-highest rounded-full">
+<div class="bg-primary h-full rounded-full" style="width: 82%"></div>
+</div>
+</div>
+</td>
+<td class="px-lg py-sm">
+<span class="px-sm py-xs border border-outline text-on-surface-variant text-[11px] font-bold rounded uppercase">Chờ xử lý</span>
+</td>
+<td class="px-lg py-sm">
+<div class="flex gap-sm">
+<button class="h-8 w-8 flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-primary-container rounded transition-all">
+<span class="material-symbols-outlined text-[20px]" data-icon="edit">edit</span>
+</button>
+<button class="h-8 w-8 flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-primary-container rounded transition-all">
+<span class="material-symbols-outlined text-[20px]" data-icon="download">download</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group" style="box-shadow: none;">
+<td class="px-lg py-sm">
+<div class="flex items-center gap-md">
+<div class="h-10 w-16 bg-black rounded overflow-hidden relative border border-outline-variant">
+<img class="h-full w-full object-cover opacity-80" data-alt="A tech-focused video thumbnail featuring a person's hands typing on a glowing mechanical keyboard in a dark room. The lighting consists of vibrant neon purple and pink LED strips reflecting off sleek desk surfaces. The atmosphere is modern, energetic, and tailored for a creative or gaming audience." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJVvYXxM8fAb7TZ701WmwiICQwYDHhu3MX4D3Lm8sT6aMHLsZ8rZGUkIt_xO_AaBIcIJjJ-VBZ8k7kB1nYQWdf40yQj-CbFt1aQtF6QCNWyPB9R765fiBmdO8UX2W7NBkWxp5a0L7aFQQAaqhv2rVekil_BYJq0Sr84b_NY5khcnkTsjkQhk0h4vfJPWtxKu2S5Qv3Fu3T3etwUpH-jrn1YoohfwsH0_sw3AnA8bMgq5sZnsjSOGA_LYwaEEr1WMhkucHqqDFl07k">
+<div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/40 transition-opacity">
+<span class="material-symbols-outlined text-white text-sm" data-icon="play_arrow">play_arrow</span>
+</div>
+</div>
+<div>
+<p class="font-title-sm text-on-surface">Hướng dẫn Build PC Workstation</p>
+<p class="font-body-sm text-on-surface-variant">highlights_v1_00:55.mp4</p>
+</div>
+</div>
+</td>
+<td class="px-lg py-sm font-code-tabular text-body-sm text-on-surface">00:30 / 22:10</td>
+<td class="px-lg py-sm">
+<div class="flex items-center gap-sm">
+<span class="font-title-sm text-error">45%</span>
+<div class="w-16 h-1 bg-surface-container-highest rounded-full">
+<div class="bg-error h-full rounded-full" style="width: 45%"></div>
+</div>
+</div>
+</td>
+<td class="px-lg py-sm">
+<span class="px-sm py-xs text-error text-[11px] font-bold rounded uppercase flex items-center gap-xs">
+                                    Lỗi AI
+                                </span>
+</td>
+<td class="px-lg py-sm">
+<div class="flex gap-sm">
+<button class="h-8 w-8 flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-primary-container rounded transition-all">
+<span class="material-symbols-outlined text-[20px]" data-icon="refresh">refresh</span>
+</button>
+<button class="h-8 w-8 flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-primary-container rounded transition-all">
+<span class="material-symbols-outlined text-[20px]" data-icon="edit">edit</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-md flex justify-center bg-surface-container-low/30">
+<button class="px-lg py-xs text-on-surface-variant font-title-sm hover:text-primary transition-colors flex items-center gap-sm">
+                    Tải thêm dữ liệu <span class="material-symbols-outlined text-sm" data-icon="expand_more">expand_more</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Floating Action Button - Contextual for Home/Dashboard -->
+<button class="fixed bottom-lg right-lg h-14 w-14 rounded-full bg-primary text-on-primary shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all z-50 group">
+<span class="material-symbols-outlined text-2xl" data-icon="add" style="font-variation-settings: &quot;FILL&quot; 1;">add</span>
+<span class="absolute right-full mr-md px-md py-sm bg-inverse-surface text-inverse-on-surface text-body-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-md">
+            Phân tích video mới
+        </span>
+</button>
+<script>
+        // Simple micro-interaction for sidebar tabs
+        document.querySelectorAll('nav a').forEach(tab => {
+            tab.addEventListener('click', function(e) {
+                if(!this.classList.contains('bg-primary-container')) {
+                    // Logic for switching tabs would go here
+                }
+            });
+        });
+
+        // Hover effect for table rows
+        const rows = document.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                row.style.boxShadow = 'inset 4px 0 0 #461599';
+            });
+            row.addEventListener('mouseleave', () => {
+                row.style.boxShadow = 'none';
+            });
+        });
+    </script>
+
+
+
+
+
+
+</body></html>

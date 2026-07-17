@@ -1,0 +1,246 @@
+<!DOCTYPE html><html class="light" lang="vi" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Đăng nhập | VidsAI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script>
+  if (localStorage.getItem('currentUser')) {
+    window.location.href = '../discovery_desktop/code.html';
+  }
+</script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "surface-dim": "#e0d8d5",
+                    "surface-container-highest": "#e9e1dd",
+                    "on-primary-container": "#ede0ff",
+                    "tertiary-fixed": "#ffdad7",
+                    "surface-tint": "#732ee4",
+                    "secondary-container": "#fea619",
+                    "on-secondary-fixed-variant": "#653e00",
+                    "on-secondary": "#ffffff",
+                    "on-surface-variant": "#4a4455",
+                    "tertiary-fixed-dim": "#ffb3ad",
+                    "tertiary": "#a20017",
+                    "surface-container": "#f4ece8",
+                    "on-secondary-fixed": "#2a1700",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "primary-fixed-dim": "#d2bbff",
+                    "primary-container": "#7c3aed",
+                    "secondary-fixed": "#ffddb8",
+                    "inverse-on-surface": "#f7efeb",
+                    "on-tertiary": "#ffffff",
+                    "on-background": "#1e1b19",
+                    "primary": "#630ed4",
+                    "outline-variant": "#ccc3d8",
+                    "surface-variant": "#e9e1dd",
+                    "outline": "#7b7487",
+                    "secondary": "#855300",
+                    "surface-container-low": "#faf2ee",
+                    "on-tertiary-container": "#ffdfdc",
+                    "inverse-surface": "#33302d",
+                    "on-primary-fixed-variant": "#5a00c6",
+                    "surface-container-high": "#eee7e3",
+                    "secondary-fixed-dim": "#ffb95f",
+                    "on-surface": "#1e1b19",
+                    "surface": "#fff8f5",
+                    "background": "#fff8f5",
+                    "on-tertiary-fixed": "#410004",
+                    "on-secondary-container": "#684000",
+                    "tertiary-container": "#c6252b",
+                    "inverse-primary": "#d2bbff",
+                    "on-tertiary-fixed-variant": "#930013",
+                    "primary-fixed": "#eaddff",
+                    "on-primary-fixed": "#25005a",
+                    "error-container": "#ffdad6",
+                    "surface-bright": "#fff8f5"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-margin-mobile": "16px",
+                    "sm": "8px",
+                    "xl": "32px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "xs": "4px",
+                    "unit": "4px",
+                    "gutter": "20px",
+                    "container-margin-desktop": "40px"
+            },
+            "fontFamily": {
+                    "title-lg": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-sm": ["Inter"]
+            },
+            "fontSize": {
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .cinematic-bg {
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex items-center justify-center p-4 md:p-0">
+<!-- Cinematic Background Wrapper -->
+<div class="fixed inset-0 z-0 cinematic-bg overflow-hidden" data-alt="A cinematic production studio with professional high-end cameras on gimbals, soft box lighting arrays, and acoustic foam walls. The atmosphere is professional and high-tech, featuring a sophisticated palette of deep shadows and soft warm highlights. The style is ultra-modern and premium, emphasizing a clean and focused creative workspace with a light-mode aesthetic influence in the highlight areas.">
+<div class="absolute inset-0 bg-gradient-to-br from-black/40 via-transparent to-primary/10"></div>
+<img class="w-full h-full object-cover" data-alt="A wide-angle shot of a state-of-the-art cinematic film studio with professional lighting setups and high-end video production equipment. The scene is bathed in a soft atmospheric glow, featuring warm light-mode tones and professional camera gear. The visual style is polished, minimalist, and expensive, suggesting a platform for elite creators." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-OXktVOe9n_lfvMb8NLXVaQdZxuzVMOblyZ2xYnJW9bv_lt--KlKYNdwlBEiIpRgcrGAbYYPvOXoVseTLnACUfHvHiaomHo4m7xnb7wCdFXptuManl6rIl1y34TP2qSHuSg4PZv7wj2CMjE0e5YH1YQgoNw7GXT5kmh-o1CJhY919oRv8vWYzwy2Xnudc-L0p691swt064sDxTQBYxCnR1zkS_DydxFBRk7YJGzgjPHzT3cS04xvQadQtk1pDnTxnrJ2qNbwHQJA">
+</div>
+<!-- Login Container -->
+<main class="relative z-10 w-full max-w-md">
+<div class="glass-panel border border-outline-variant/30 rounded-xl p-8 shadow-xl transition-all duration-300">
+<!-- Brand Identity -->
+<header class="text-center mb-10">
+<div class="flex justify-center mb-4">
+<div class="w-16 h-16 bg-primary rounded-xl flex items-center justify-center shadow-lg transform -rotate-6">
+<span class="material-symbols-outlined text-on-primary text-4xl" data-icon="videocam">videocam</span>
+</div>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-primary tracking-tight">VidsAI</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">Nâng tầm video của bạn bằng AI</p>
+</header>
+<!-- Login Form -->
+<form class="space-y-6" id="loginForm">
+<!-- Input Group: Email/Phone -->
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface-variant block ml-1" for="identity">Email hoặc Số điện thoại</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" data-icon="person">person</span>
+<input class="w-full pl-10 pr-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none text-body-md" id="identity" name="identity" placeholder="example@email.com" required="" type="text">
+</div>
+</div>
+<!-- Input Group: Password -->
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface-variant block ml-1" for="password">Mật khẩu</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" data-icon="lock">lock</span>
+<input class="w-full pl-10 pr-12 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none text-body-md" id="password" name="password" placeholder="••••••••" required="" type="password">
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-outline hover:text-primary transition-colors" onclick="togglePassword()" type="button">
+<span class="material-symbols-outlined" data-icon="visibility" id="passwordIcon">visibility</span>
+</button>
+</div>
+</div>
+<!-- Helper Actions -->
+<div class="flex items-center justify-between">
+<label class="flex items-center space-x-2 cursor-pointer group">
+<div class="relative flex items-center">
+<input class="peer h-5 w-5 rounded border-outline-variant text-primary focus:ring-primary/20 cursor-pointer" type="checkbox">
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant group-hover:text-on-surface transition-colors">Ghi nhớ tôi</span>
+</label>
+<a class="font-label-md text-label-md text-primary hover:underline transition-all" href="../qu_n_m_t_kh_u_desktop/code.html">Quên mật khẩu?</a>
+</div>
+<!-- Primary Action -->
+<button class="w-full py-4 bg-primary text-on-primary font-title-lg text-title-lg rounded-xl hover:bg-primary-container hover:shadow-lg active:scale-95 transition-all duration-200 shadow-md" type="submit">
+                    Đăng nhập
+                </button>
+</form>
+<!-- Social Logins -->
+<div class="mt-8 pt-6 border-t border-outline-variant/30">
+    <p class="text-xs text-on-surface-variant text-center mb-4 uppercase tracking-wider font-semibold">Đăng nhập nhanh</p>
+    <button onclick="quickLogin()" class="w-full py-3 px-4 border border-primary text-primary hover:bg-primary/5 rounded-xl font-bold flex items-center justify-center gap-2 transition-all active:scale-[0.98]">
+        <span class="material-symbols-outlined">account_circle</span>
+        <span>Digital Creator</span>
+    </button>
+</div>
+<!-- Footer Link -->
+<footer class="mt-8 text-center">
+<p class="font-body-md text-body-md text-on-surface-variant">
+                    Chưa có tài khoản? 
+                    <a class="text-primary font-bold hover:underline transition-all" href="../ng_k_desktop/code.html">Đăng ký ngay</a>
+</p>
+</footer>
+</div>
+</main>
+<script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const passwordIcon = document.getElementById('passwordIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordIcon.innerText = 'visibility_off';
+            } else {
+                passwordInput.type = 'password';
+                passwordIcon.innerText = 'visibility';
+            }
+        }
+
+        // Form feedback interaction
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalContent = btn.innerHTML;
+            
+            btn.innerHTML = `
+                <div class="flex items-center justify-center space-x-2">
+                    <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Đang xử lý...</span>
+                </div>
+            `;
+            btn.disabled = true;
+
+            setTimeout(() => {
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
+            }, 2000);
+        });
+
+        // Micro-interaction for social buttons
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('mousedown', () => btn.classList.add('scale-95'));
+            btn.addEventListener('mouseup', () => btn.classList.remove('scale-95'));
+            btn.addEventListener('mouseleave', () => btn.classList.remove('scale-95'));
+        });
+    </script>
+
+
+
+</body></html>

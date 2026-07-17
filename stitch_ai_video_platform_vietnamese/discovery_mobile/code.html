@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>VidsAI - Khám phá</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary": "#ffffff",
+                    "secondary-fixed-dim": "#ffb95f",
+                    "on-error": "#ffffff",
+                    "secondary-fixed": "#ffddb8",
+                    "on-error-container": "#93000a",
+                    "on-surface-variant": "#4a4455",
+                    "tertiary-fixed": "#ffdad7",
+                    "inverse-on-surface": "#f7efeb",
+                    "on-secondary-fixed-variant": "#653e00",
+                    "surface-dim": "#e0d8d5",
+                    "surface-container": "#f4ece8",
+                    "primary-fixed-dim": "#d2bbff",
+                    "error": "#ba1a1a",
+                    "outline-variant": "#ccc3d8",
+                    "surface-container-high": "#eee7e3",
+                    "tertiary": "#a20017",
+                    "secondary": "#855300",
+                    "on-surface": "#1e1b19",
+                    "background": "#fff8f5",
+                    "surface-container-low": "#faf2ee",
+                    "surface-tint": "#732ee4",
+                    "on-primary-fixed-variant": "#5a00c6",
+                    "on-tertiary-container": "#ffdfdc",
+                    "inverse-primary": "#d2bbff",
+                    "primary": "#630ed4",
+                    "inverse-surface": "#33302d",
+                    "surface-variant": "#e9e1dd",
+                    "on-tertiary-fixed": "#410004",
+                    "on-secondary-container": "#684000",
+                    "on-primary-fixed": "#25005a",
+                    "on-tertiary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#930013",
+                    "surface-container-highest": "#e9e1dd",
+                    "tertiary-fixed-dim": "#ffb3ad",
+                    "on-primary-container": "#ede0ff",
+                    "surface": "#fff8f5",
+                    "error-container": "#ffdad6",
+                    "outline": "#7b7487",
+                    "surface-bright": "#fff8f5",
+                    "tertiary-container": "#c6252b",
+                    "primary-fixed": "#eaddff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-fixed": "#2a1700",
+                    "on-background": "#1e1b19",
+                    "secondary-container": "#fea619",
+                    "primary-container": "#7c3aed"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "20px",
+                    "lg": "24px",
+                    "sm": "8px",
+                    "xs": "4px",
+                    "container-margin-desktop": "40px",
+                    "unit": "4px",
+                    "xl": "32px",
+                    "container-margin-mobile": "16px",
+                    "md": "16px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "title-lg": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .bento-item-large { grid-column: span 2; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation (Desktop Hidden / Mobile Layout from JSON) -->
+<header class="md:hidden sticky top-0 bg-background/80 backdrop-blur-md z-50 border-b border-outline-variant/30 px-container-margin-mobile py-3 flex items-center justify-between">
+<h1 class="font-headline-md-mobile text-headline-md-mobile font-bold text-primary">VidsAI</h1>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer">search</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer">notifications</span>
+</div>
+</header>
+<main class="pb-24">
+<!-- Multimodal Search Area -->
+<section class="px-container-margin-mobile mt-4">
+<div class="relative flex items-center bg-surface-container-low rounded-xl px-4 py-3 shadow-sm ring-1 ring-outline-variant/20">
+<span class="material-symbols-outlined text-outline mr-3">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-label-md flex-grow p-0" placeholder="Tìm kiếm video, hình ảnh..." type="text"/>
+<div class="flex items-center gap-2 border-l border-outline-variant/50 pl-3">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">image_search</span>
+</div>
+</div>
+</section>
+<!-- Categories horizontal scroll -->
+<section class="mt-6">
+<div class="flex overflow-x-auto hide-scrollbar gap-3 px-container-margin-mobile">
+<button class="flex-none bg-primary text-on-primary px-4 py-2 rounded-full font-label-md">Tất cả</button>
+<button class="flex-none bg-surface-container-high text-on-surface px-4 py-2 rounded-full font-label-md">Âm nhạc</button>
+<button class="flex-none bg-surface-container-high text-on-surface px-4 py-2 rounded-full font-label-md">AI nghệ thuật</button>
+<button class="flex-none bg-surface-container-high text-on-surface px-4 py-2 rounded-full font-label-md">Gaming</button>
+<button class="flex-none bg-surface-container-high text-on-surface px-4 py-2 rounded-full font-label-md">Học tập</button>
+<button class="flex-none bg-surface-container-high text-on-surface px-4 py-2 rounded-full font-label-md">Du lịch</button>
+</div>
+</section>
+<!-- Continue Watching (Horizontal Row) -->
+<section class="mt-8">
+<div class="px-container-margin-mobile flex justify-between items-end mb-4">
+<h2 class="font-title-lg text-title-lg">Tiếp tục xem</h2>
+<button class="text-primary font-label-md">Xem tất cả</button>
+</div>
+<div class="flex overflow-x-auto hide-scrollbar gap-4 px-container-margin-mobile">
+<!-- Video Card 1 -->
+<div class="flex-none w-64 group">
+<div class="relative aspect-video rounded-xl overflow-hidden mb-2 shadow-md">
+<img class="w-full h-full object-cover group-active:scale-95 transition-transform duration-200" data-alt="A high-quality cinematic still of a futuristic cyberpunk city at dusk, featuring neon signs reflecting in rain-slicked streets. The color palette is dominated by deep violets and electric blues, matching a professional media-centric aesthetic. The lighting is moody and atmospheric with soft glow effects on the edges of buildings." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDADv4pDbZJ-tvgf2wIRPkn2MAmGsGjMqNOwJIqF-eLVPlFQjmeIxmE1u4XPXVmyTvEmV5pzD6PZ-x0a4t7B1-FaIThe8tiIobbhl5xbx1zhKOnKnsqWUrq6zXEKnOxobO5vDyjRyOvGJeq2dFLdEwu1YmVvBHoFW5OYMKP3kgUatmdv9aHyyXifTJSTOJhXSmg_wKU_JrDSJIu2rCDTtk8chsig_sPjsIRIR5IXm-DefH9efcXIrFyxcLws8NASk5SbDK5d5HhApE"/>
+<div class="absolute bottom-0 left-0 w-full h-1 bg-surface-variant">
+<div class="bg-primary h-full" style="width: 65%;"></div>
+</div>
+<div class="absolute bottom-2 right-2 bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded backdrop-blur-sm">12:45</div>
+</div>
+<p class="font-label-md text-on-surface line-clamp-1">Tương lai của AI trong năm 2024</p>
+<p class="text-[12px] text-on-surface-variant">Kênh Sáng Tạo • 1.2M lượt xem</p>
+</div>
+<!-- Video Card 2 -->
+<div class="flex-none w-64 group">
+<div class="relative aspect-video rounded-xl overflow-hidden mb-2 shadow-md">
+<img class="w-full h-full object-cover group-active:scale-95 transition-transform duration-200" data-alt="A serene landscape of rolling hills in the Scottish Highlands under a soft, golden hour sun. The scene features lush green grass, a distant calm lake, and soft atmospheric haze. The color palette uses warm earthy tones and deep greens, creating a calm and intelligent visual experience for a sophisticated audience." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBy1Jy2fTU96J0c0p6Gp_gUJ4Wfbl4SubNo03ztuttvT1YtdfhLfgE63DL9pq7Y2QnV7HmtzzXcyT53qLGrVF0jFz46D4NBy_pEFSpLxyBC0vwjig3aqjKDbqKyB4_1ve3MLGdIPPldtQIYKNh3a1_CqgppxjfOuq7jwJURLWF5KWpRiAyXPmSMRbiTdJr3A58Iy-tyCO80EzBzG_yZAWpD8KmDHJobCSLni5FD3sXVqH-2CRE6e1bdzfuNCamBGqhbmJZfXTIMNeQ"/>
+<div class="absolute bottom-0 left-0 w-full h-1 bg-surface-variant">
+<div class="bg-primary h-full" style="width: 30%;"></div>
+</div>
+<div class="absolute bottom-2 right-2 bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded backdrop-blur-sm">08:20</div>
+</div>
+<p class="font-label-md text-on-surface line-clamp-1">Khám phá thiên nhiên hoang dã</p>
+<p class="text-[12px] text-on-surface-variant">Nature Pro • 450K lượt xem</p>
+</div>
+</div>
+</section>
+<!-- Recommended Grid (Bento Style Variety) -->
+<section class="mt-10 px-container-margin-mobile">
+<h2 class="font-title-lg text-title-lg mb-4">Gợi ý cho bạn</h2>
+<div class="bento-grid">
+<!-- Large Item (Full Width) -->
+<div class="bento-item-large group">
+<div class="relative aspect-video rounded-2xl overflow-hidden shadow-lg border border-outline-variant/20">
+<img class="w-full h-full object-cover" data-alt="A high-end interior of a modern minimalist music studio with sleek equipment, warm ambient lighting, and acoustic panels. The visual style is refined and sophisticated, featuring a clean layout with subtle shadows and tonal depth. A warm violet accent light provides a connection to the brand's primary color." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1u7HG48JoL4dLdUXkBRB9jjauy1hG2MLUPeewfDGYTBX0C9wX_-J_3MVp11d3oUA5GnlOBYKaGkK9ZFf_EhttrDFiRuaZ1oLxTgCJdtYcwiKT63Hx6SfJDUxVBJWGbjdCZoOOl3EICY_iqvY8rhnjeexxbmJE8hro1-AW0sNqwarz7cLvpvQ7tDF-1tsn-ZWqrIc1mYnBPnybFEjjVZvf3OnD3deUXf4_N-GKUJJckpEFyp-JcQqe8ffNN5W9r5k6fn8zN2g75jE"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-4">
+<div class="flex gap-2 mb-2">
+<span class="bg-primary text-on-primary text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Nổi bật</span>
+</div>
+<h3 class="text-white font-headline-md-mobile line-clamp-2">Cách xây dựng studio âm nhạc tại nhà với ngân sách thấp</h3>
+<div class="flex items-center mt-2 text-white/80 gap-2">
+<div class="w-6 h-6 rounded-full overflow-hidden bg-surface-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a young creative professional with a friendly smile, set against a soft blurred background of a modern office. The lighting is natural and high-key, reinforcing a professional and trustworthy persona for the VidsAI platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuPMRzHCWaaFYPRiTdV6G9ynu7ugPcQvPwZUuyRNfLVq7c9k99qLdx1ce42N2-pc0yZv9Uvts5bIEHTRZiqAraBwkhFXMLkb1MLOgssd-CcsKK_Vjf5TF9bRoxgh1gGAsPVQryCFfAK8ZP82YP-ySIIcNOqSiz9ejH3hxPhZl34Ot3lED0l6iIhUeNCtagT3cYsDJYPV8l7mLHKCWN1jTM9R6paMP4VbkYpXbYhshp5XeeULi3aAP14rAXWZWYz6RvApiHR9gCGGc"/>
+</div>
+<span class="text-label-sm">Producer Pro</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Small Item 1 -->
+<div class="group">
+<div class="relative aspect-square rounded-2xl overflow-hidden shadow-sm border border-outline-variant/10">
+<img class="w-full h-full object-cover" data-alt="A close-up shot of a gourmet dish, featuring a colorful avocado toast with poached egg and micro-greens, presented on a stone plate. The photography style is high-contrast and vibrant, using professional food styling techniques. The background is a clean white marble texture, evoking a premium gallery feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDp64H3BLI2pASEFchPLXn_EMDE9pVjvvrBLkZd-BX_ftEMguqK1XLrXSaNCPj4OnsqdVrez0ydV9RcbOJ3ZhvxQf7vHX9BtaS-sJ5XCquqMVGo6lDOQt97GnIrMK4CH9izfy7OKPJLL95DBHwQW_seTRtNLMOsK4m4fvm_OODencmHIUFwwX8UOsAxqAG2ERDI2fsYrxNjAUdVgSGgICYbXh3bgWcNVYyBbyYXJyR84IYOsXeHVbnuOP9ZeSVf6-4aipJB8-nfQeM"/>
+<div class="absolute top-2 right-2 bg-black/50 backdrop-blur-sm p-1 rounded-lg">
+<span class="material-symbols-outlined text-white text-lg">play_circle</span>
+</div>
+</div>
+<p class="mt-2 font-label-md text-on-surface line-clamp-1">Nấu ăn chuẩn 5 sao</p>
+</div>
+<!-- Small Item 2 -->
+<div class="group">
+<div class="relative aspect-square rounded-2xl overflow-hidden shadow-sm border border-outline-variant/10">
+<img class="w-full h-full object-cover" data-alt="An abstract digital art piece showcasing fluid motion with dynamic waves of light in shades of deep purple and magenta. The aesthetic is futuristic and high-tech, using generative patterns to create a sense of 'calm intelligence'. The composition is balanced and elegant, suitable for a high-end UI design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAONSmD0K6YFR0hxfgX4IydrALutt5IPG7rT4MjXvGQz_qLCuidQQ6pSEk3fCq1FwGnt6nOV-90IM1CD489YUsI_fqTJFKFpLlakm3c_glykpLxWQ_dntBynZCDjHzR8w-47zU0r-OpyGJcMEvgPiEUAJiUVn093K5QqsIsPSwh0C54ewbUBNNCwXREL3QOoJ2drkrozQLm2atSTAjfZ3i32gcRn8euSWY4xyPvAZJj3pEKjCjI0W5kwDJTg7mGERxL9DCklOBSWig"/>
+<div class="absolute top-2 right-2 bg-black/50 backdrop-blur-sm p-1 rounded-lg">
+<span class="material-symbols-outlined text-white text-lg">bolt</span>
+</div>
+</div>
+<p class="mt-2 font-label-md text-on-surface line-clamp-1">AI Shorts: Nghệ thuật số</p>
+</div>
+<!-- Large Vertical Item -->
+<div class="bento-item-large group mt-4">
+<div class="bg-surface-container-low rounded-3xl p-5 flex gap-4 items-center border border-outline-variant/30">
+<div class="w-24 h-32 flex-none rounded-xl overflow-hidden relative">
+<img class="w-full h-full object-cover" data-alt="A vertical cinematic shot of a person walking through a misty forest at dawn, with sunbeams piercing through the trees. The mood is tranquil and introspective, utilizing a soft color palette of greens and golds. The image feels like a high-quality movie frame, emphasizing the 'cinematic experience' of the brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrzFaeqlJLg_PVb8nJsRsyV_N3xJ9jUz8jJ37Qb6KV9SnKuUVuKwrl0UGwx-wNx7S12gosFvY_NE8S1uX2G_0GswslSObrCYTY932yxsE_GY-ddTrO9wddi_wo8HxkHEFrUt3dp38iQOLVP0m9gZRyNXjD4H4FHr9yj3fLElfNq35ePtDiyxzJ50inveS-lj63xjtdANVbg9g1Oo6HXmux24KS6hGA6EPLbtzczZ9x9HSk3OajEugsTHRBsxCr0ZsRg7cyx9mbe4o"/>
+<div class="absolute inset-0 bg-primary/10"></div>
+</div>
+<div class="flex flex-col justify-center">
+<div class="text-primary font-bold text-[10px] tracking-widest uppercase mb-1">Mới nhất</div>
+<h3 class="font-title-lg text-on-surface leading-tight mb-2">Hành trình xuyên Việt: Tập 12</h3>
+<p class="text-label-sm text-on-surface-variant line-clamp-2">Khám phá những cung đường đèo hùng vĩ nhất tại Hà Giang qua góc nhìn cinematic 4K.</p>
+<div class="mt-3 flex items-center text-primary gap-1">
+<span class="font-label-md">Xem ngay</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Trending Section -->
+<section class="mt-10 px-container-margin-mobile">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+<h2 class="font-title-lg text-title-lg">Đang thịnh hành</h2>
+</div>
+<div class="space-y-6">
+<!-- Trending Row 1 -->
+<div class="flex gap-4">
+<div class="w-32 h-20 flex-none rounded-lg overflow-hidden bg-surface-variant relative shadow-sm">
+<img class="w-full h-full object-cover" data-alt="A professional e-sports setup featuring a high-end gaming PC with RGB lighting, dual monitors, and an ergonomic chair. The lighting is dramatic and colorful, with vibrant accents that contrast against the dark room. The image conveys high performance and precision, appealing to creators and viewers alike." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMCAu2TJ-5Fp2uN4Ac5VIZ-eVl1P_qMAdB3xcjYpHfLPQydtDnGO5k9QFfbdCHFfUhPw5At0MiU5dJ9cRIUDIjjLF32zOKlT2Yh9CHM004qgzGdi5FCautKWAj-ILhMhoyilXbazyrilIISLqRrGD1wQODJ-norVQQXvIcV9rxu4HBFh7Eu8u0KWmxdj2tMcS_n8Yz9Wu-wRs49V02c_WGSHyJBmiWr-7X6hfwPMHlXrpuPA2s40oaGLBmyjIbLHigtSAIMTgh0BA"/>
+</div>
+<div class="flex-grow">
+<h4 class="font-label-md text-on-surface line-clamp-2">Top 10 bí mật trong game đình đám nhất tháng này</h4>
+<div class="mt-1 flex items-center text-[12px] text-on-surface-variant">
+<span>Gaming Hub</span>
+<span class="mx-1.5 opacity-50">•</span>
+<span>2.4M views</span>
+</div>
+</div>
+</div>
+<!-- Trending Row 2 -->
+<div class="flex gap-4">
+<div class="w-32 h-20 flex-none rounded-lg overflow-hidden bg-surface-variant relative shadow-sm">
+<img class="w-full h-full object-cover" data-alt="A close-up of a high-tech robotic hand delicately holding a small seedling, symbolizing the harmony between technology and nature. The lighting is clean and soft, with a focus on metallic textures and green organic details. The color palette is modern, using neutral grays with pops of vibrant green." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCV9OedXsA_u_Dc_XrA8zYV8ojlkDdAPsLa5yrXk1-4PNK5I6NUM7-RobxKM7l7O1FUqkZGVtSIoRskCGCL10LDS6XViIWJ3hKODNP8CqZGne_a10RwbKif9MAvjN8v0bIMh-ksyrX7gRbXzgWbPpBYRZKv453Bp-zQSYIYKAKV5kBxG93YoA8TBy542u1e27f35PnF5GXO_oiUt-yQd8OttHCm2gP5wCe9HK_RMNmgc72qd9aUMiFmXWUnQO3FTsr6sOrgA07VCFY"/>
+</div>
+<div class="flex-grow">
+<h4 class="font-label-md text-on-surface line-clamp-2">Công nghệ thay đổi thế giới như thế nào?</h4>
+<div class="mt-1 flex items-center text-[12px] text-on-surface-variant">
+<span>Tech Insider</span>
+<span class="mx-1.5 opacity-50">•</span>
+<span>890K views</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Shell (From JSON) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-safe h-[56px] bg-surface-container dark:bg-surface-container-high shadow-sm">
+<!-- Home -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Trang chủ</span>
+</a>
+<!-- Explore (Active) -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-3 py-1 scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">explore</span>
+<span class="font-label-sm-mobile text-label-sm-mobile font-bold">Khám phá</span>
+</a>
+<!-- Library -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined">video_library</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Thư viện</span>
+</a>
+<!-- Profile -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Cá nhân</span>
+</a>
+</nav>
+<script>
+        // Micro-interactions and touch feedback
+        document.querySelectorAll('.active\\:scale-95').forEach(el => {
+            el.addEventListener('touchstart', () => el.classList.add('scale-95'));
+            el.addEventListener('touchend', () => el.classList.remove('scale-95'));
+        });
+
+        // Simple Fade in for images on scroll
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100');
+                    entry.target.classList.remove('opacity-0');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('img').forEach(img => {
+            img.classList.add('transition-opacity', 'duration-700', 'opacity-0');
+            observer.observe(img);
+        });
+    </script>
+</body></html>

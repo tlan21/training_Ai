@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>VidsAI - Thư viện của bạn</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .active-tab-indicator {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 2px;
+            background-color: #630ed4;
+            transition: all 0.3s ease;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Top Navigation Bar (Shared Component Logic) -->
+<header class="md:hidden fixed top-0 left-0 w-full z-50 bg-background border-b border-outline-variant px-4 h-14 flex items-center justify-between">
+<h1 class="font-headline-md-mobile text-headline-md-mobile font-bold text-primary">VidsAI</h1>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant">history</button>
+<button class="material-symbols-outlined text-on-surface-variant">notifications</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a young Vietnamese creative professional with a friendly smile. The background is a soft-focus studio setting with warm, violet-tinted lighting that matches the VidsAI brand identity. High-quality digital photography with a modern, clean, and sophisticated aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAH-UYHZaOgi-2f9TWQ66ARiFZ97D9wU_JNA-eqwiXudRBs4t0E4MUhu83bL43xh7JcyZg91MxSxcJdxqXHXSJN9BhoNu6bCKJpHwaqElfm7W00Tl5HJRrDzQ-uIV1O3F-15eiQCR7bRznj24idYyomRon6c2gMVkNTneCQiX5vJTjIiChxlHTnn1EH2pR7VywCD_dYTZAB5J55tssfoXfyDls2woxxz-sGnNdIahbghtnYXa7rK9Sqi1PpE3Y2I5noLGMYUUOYOrA"/>
+</div>
+</div>
+</header>
+<main class="pt-14 pb-20 min-h-screen">
+<!-- Horizontal Scrollable Tabs -->
+<nav class="sticky top-14 bg-background z-40 border-b border-outline-variant">
+<div class="flex overflow-x-auto hide-scrollbar px-4 gap-6 relative" id="tab-container">
+<button class="py-4 text-label-md font-label-md whitespace-nowrap text-primary font-bold border-b-2 border-primary transition-all duration-200" onclick="switchTab(this, 'liked')">Đã thích</button>
+<button class="py-4 text-label-md font-label-md whitespace-nowrap text-on-surface-variant font-medium transition-all duration-200" onclick="switchTab(this, 'saved')">Đã lưu</button>
+<button class="py-4 text-label-md font-label-md whitespace-nowrap text-on-surface-variant font-medium transition-all duration-200" onclick="switchTab(this, 'history')">Lịch sử</button>
+</div>
+</nav>
+<!-- Content Sections -->
+<div class="px-4 py-6" id="tab-content">
+<!-- Section: Liked Videos (Default Active) -->
+<section class="space-y-6" id="content-liked">
+<div class="flex items-center justify-between">
+<h2 class="font-title-lg text-title-lg">Video đã thích</h2>
+<span class="text-label-sm text-on-surface-variant">12 video</span>
+</div>
+<!-- Video Item Card -->
+<div class="flex gap-4 group">
+<div class="relative w-40 h-24 flex-shrink-0 rounded-xl overflow-hidden bg-surface-container shadow-sm">
+<img class="w-full h-full object-cover" data-alt="A cinematic 16:9 thumbnail showing a futuristic cityscape of Hanoi at night, glowing with violet and neon orange lights. A digital overlay of an AI heatmap shows peaks of interest. Professional digital art style with deep shadows and vibrant high-key accents in the VidsAI primary palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_v2E856P-nNzGQt-lNUN68mDcqB0xoFVxo4yo2Y4ZD77TnRve6mLvJgaxhPX-feYrdiLsZajBVd-UuaOi9AD5d9OGSg33R-d67A3nU4_LSR60pcFjqF3ldqA9hwvdnGWFKdwBWmNtynW-cuO2PeQZDO4r29DiAt2xi99ZCfU93yR11kit5QIYnkFTAoExih0SXO6u4drrQOL3kyEUkku4tW2_DIrTefh8i2kv359s8fWq3nBZEWECP3N5TjU2hATOm7uoVOl4BAY"/>
+<span class="absolute bottom-1 right-1 bg-black/70 text-white text-[10px] px-1.5 py-0.5 rounded">12:45</span>
+</div>
+<div class="flex flex-col justify-between flex-grow min-w-0">
+<div>
+<div class="flex justify-between items-start">
+<h3 class="font-label-md text-label-md line-clamp-2 pr-2">Tương lai của AI trong sáng tạo nội dung video 2024</h3>
+<button class="material-symbols-outlined text-on-surface-variant text-[20px]">more_vert</button>
+</div>
+<p class="text-label-sm text-on-surface-variant mt-1">TechVision • 2.4tr lượt xem</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[14px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<span class="text-[10px] text-primary font-medium">Đã thích tuần trước</span>
+</div>
+</div>
+</div>
+<!-- Video Item Card 2 -->
+<div class="flex gap-4 group">
+<div class="relative w-40 h-24 flex-shrink-0 rounded-xl overflow-hidden bg-surface-container shadow-sm">
+<img class="w-full h-full object-cover" data-alt="A close-up high-resolution image of a neural network visualization, where threads of light pulse in a violet and deep indigo space. Soft bokeh effects and a sophisticated minimalist composition. Modern tech aesthetic aligned with a premium media platform look." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2hH3VOhJRBGSr2SVEdjX0gY43elpxSjHUfL9dVr2pNIXu5km96r3K9RcmMKIku6ubjnZbypyDumg_91MSs_hx0i9v2KH0EZbiAKN0F3FOPGYRQnf-BjRDJmCned9Wab38mYXStQnMWNODBMOGpNftEq2tHYuFRLqF8j9MV7OlILWTQBqc-0jRnnaNnrgK_opy-ZmOWUefcprYMXOp8cAuM11cF6RMUKYcCK34845iN-og2buDVWbTV3FeQfZETJ5bYAWhmnLjIGQ"/>
+<span class="absolute bottom-1 right-1 bg-black/70 text-white text-[10px] px-1.5 py-0.5 rounded">08:12</span>
+</div>
+<div class="flex flex-col justify-between flex-grow min-w-0">
+<div>
+<div class="flex justify-between items-start">
+<h3 class="font-label-md text-label-md line-clamp-2 pr-2">Hướng dẫn sử dụng VidsAI để tóm tắt video dài</h3>
+<button class="material-symbols-outlined text-on-surface-variant text-[20px]">more_vert</button>
+</div>
+<p class="text-label-sm text-on-surface-variant mt-1">VidsAI Official • 56k lượt xem</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[14px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<span class="text-[10px] text-primary font-medium">Đã thích 2 ngày trước</span>
+</div>
+</div>
+</div>
+<!-- Video Item Card 3 -->
+<div class="flex gap-4 group">
+<div class="relative w-40 h-24 flex-shrink-0 rounded-xl overflow-hidden bg-surface-container shadow-sm">
+<img class="w-full h-full object-cover" data-alt="An artistic representation of a video editing timeline appearing to float in 3D space, with violet light rays cutting through it. The atmosphere is calm and professional. Cinematic lighting with a focus on deep purples and warm highlights. 16:9 aspect ratio." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0P6Ka6Ab9dGZlZG82bpB4hIeTfMsww-3OqVw6DryoOvlZTxdYoQCrdJO1WvNlXs0OzB9yQ6-IUM0hHwZA-3eVfYfSW5qAom6f-nNyrTwoTiCoQ-bZCFGVd92NOn4HtkMZtXmWNvyDegTV3YjdhHw_qDS1-9hJN-VC1wHCxFemOFc_flANLJVWCjA7PxNFFkfMIzhtLcWyS5QNZKH7JaG4akJcBQAfSHR6DWcPfaINDuhKaIbv64bf6OcHDNMxHVlcr6ZanVMfcMk"/>
+<span class="absolute bottom-1 right-1 bg-black/70 text-white text-[10px] px-1.5 py-0.5 rounded">15:30</span>
+</div>
+<div class="flex flex-col justify-between flex-grow min-w-0">
+<div>
+<div class="flex justify-between items-start">
+<h3 class="font-label-md text-label-md line-clamp-2 pr-2">Khám phá tính năng Multi-modal Search mới nhất</h3>
+<button class="material-symbols-outlined text-on-surface-variant text-[20px]">more_vert</button>
+</div>
+<p class="text-label-sm text-on-surface-variant mt-1">Creator Lab • 128k lượt xem</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[14px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<span class="text-[10px] text-primary font-medium">Đã thích 1 tháng trước</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: Saved Videos (Empty State) -->
+<section class="hidden py-12 flex flex-col items-center justify-center text-center" id="content-saved">
+<div class="w-64 h-64 mb-6">
+
+<!-- Background fallback for empty state -->
+<div class="relative flex items-center justify-center">
+<div class="absolute inset-0 bg-primary/5 rounded-full blur-3xl"></div>
+<span class="material-symbols-outlined text-[120px] text-primary/20" style="font-variation-settings: 'FILL' 1;">bookmark</span>
+</div>
+</div>
+<h3 class="font-headline-md-mobile text-headline-md-mobile text-on-surface font-bold mb-2">Bạn chưa lưu video nào</h3>
+<p class="text-on-surface-variant max-w-xs px-4">Hãy lưu lại những nội dung thú vị để xem lại sau bất cứ khi nào bạn muốn.</p>
+<button class="mt-8 px-8 py-3 bg-primary text-on-primary rounded-full font-label-md shadow-lg shadow-primary/20 active:scale-95 transition-transform">Khám phá ngay</button>
+</section>
+<!-- Section: History -->
+<section class="hidden space-y-4" id="content-history">
+<div class="flex items-center justify-between mb-4">
+<h2 class="font-title-lg text-title-lg">Gần đây</h2>
+<button class="text-label-sm text-primary font-bold">Xóa tất cả</button>
+</div>
+<div class="flex gap-4">
+<div class="w-32 h-20 bg-surface-container rounded-lg overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A blurred colorful background representing a dynamic video interface, showing abstract shapes in motion. The style is clean, modern, and high-end, utilizing the VidsAI color palette of primary violets and secondary ambers. Designed for a professional media app." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8uJ4g_mP73bfS7HvCwSqqEPcTTptdmQqPTKizN40k8kqVyWqvDrEHEiVW88atO0EqrYcHYBLt1uHikYn-xBsmyLrEdD9aKXta7MvH_vMzxVa9fy4LcXWHdl63ZZn04pHo0QDzi-7IvGosEOX3i5lcCVPqbhcGx7Wh8SJEdsa6DPOKxlIUbBEYtXUrGvkVJXY3naY4VleAY-9wMRzs3ieAa74HOE84H2J_mSxRAQGfROR96TeZYM4MSi9tAfYRTuzKf5zTDRZbqDI"/>
+</div>
+<div class="flex flex-col justify-center">
+<h4 class="font-label-md text-label-md line-clamp-1">Cách AI thay đổi thế giới phim ảnh</h4>
+<p class="text-label-sm text-on-surface-variant">Đã xem 2 giờ trước</p>
+</div>
+</div>
+<!-- More history items could go here -->
+</section>
+</div>
+</main>
+<!-- Bottom Navigation Bar (Shared Component Logic) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-safe h-[56px] bg-surface-container shadow-sm">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Trang chủ</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Khám phá</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined">video_library</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Thư viện</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-3 py-1 active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Cá nhân</span>
+</a>
+</nav>
+<script>
+        function switchTab(element, tabId) {
+            // Update Tab UI
+            const tabs = document.querySelectorAll('#tab-container button');
+            tabs.forEach(tab => {
+                tab.classList.remove('text-primary', 'font-bold', 'border-b-2', 'border-primary');
+                tab.classList.add('text-on-surface-variant', 'font-medium');
+            });
+            
+            element.classList.remove('text-on-surface-variant', 'font-medium');
+            element.classList.add('text-primary', 'font-bold', 'border-b-2', 'border-primary');
+
+            // Switch Content
+            const sections = ['liked', 'saved', 'history'];
+            sections.forEach(id => {
+                const section = document.getElementById('content-' + id);
+                if (id === tabId) {
+                    section.classList.remove('hidden');
+                } else {
+                    section.classList.add('hidden');
+                }
+            });
+        }
+
+        // Micro-interactions for cards
+        document.querySelectorAll('.group').forEach(card => {
+            card.addEventListener('touchstart', () => {
+                card.style.transform = 'scale(0.98)';
+            });
+            card.addEventListener('touchend', () => {
+                card.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body></html>

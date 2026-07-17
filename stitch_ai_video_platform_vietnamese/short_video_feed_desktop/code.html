@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VidsAI - Short Video Feed</title>
+<script>
+  if (!localStorage.getItem('currentUser')) {
+    window.location.href = '../login_desktop/code.html';
+  }
+  function logout() {
+    localStorage.removeItem('currentUser');
+    window.location.href = '../login_desktop/code.html';
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    const userJson = localStorage.getItem('currentUser');
+    if (userJson) {
+      const user = JSON.parse(userJson);
+      const avatars = document.querySelectorAll('.user-avatar');
+      avatars.forEach(avatarEl => {
+        if (user.avatar) {
+          avatarEl.src = user.avatar;
+        }
+      });
+    }
+  });
+</script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "on-primary": "#ffffff",
+                "secondary-fixed-dim": "#ffb95f",
+                "on-error": "#ffffff",
+                "secondary-fixed": "#ffddb8",
+                "on-error-container": "#93000a",
+                "on-surface-variant": "#4a4455",
+                "tertiary-fixed": "#ffdad7",
+                "inverse-on-surface": "#f7efeb",
+                "on-secondary-fixed-variant": "#653e00",
+                "surface-dim": "#e0d8d5",
+                "surface-container": "#f4ece8",
+                "primary-fixed-dim": "#d2bbff",
+                "error": "#ba1a1a",
+                "outline-variant": "#ccc3d8",
+                "surface-container-high": "#eee7e3",
+                "tertiary": "#a20017",
+                "secondary": "#855300",
+                "on-surface": "#1e1b19",
+                "background": "#fff8f5",
+                "surface-container-low": "#faf2ee",
+                "surface-tint": "#732ee4",
+                "on-primary-fixed-variant": "#5a00c6",
+                "on-tertiary-container": "#ffdfdc",
+                "inverse-primary": "#d2bbff",
+                "primary": "#630ed4",
+                "inverse-surface": "#33302d",
+                "surface-variant": "#e9e1dd",
+                "on-tertiary-fixed": "#410004",
+                "on-secondary-container": "#684000",
+                "on-primary-fixed": "#25005a",
+                "on-tertiary": "#ffffff",
+                "on-tertiary-fixed-variant": "#930013",
+                "surface-container-highest": "#e9e1dd",
+                "tertiary-fixed-dim": "#ffb3ad",
+                "on-primary-container": "#ede0ff",
+                "surface": "#fff8f5",
+                "error-container": "#ffdad6",
+                "outline": "#7b7487",
+                "surface-bright": "#fff8f5",
+                "tertiary-container": "#c6252b",
+                "primary-fixed": "#eaddff",
+                "surface-container-lowest": "#ffffff",
+                "on-secondary": "#ffffff",
+                "on-secondary-fixed": "#2a1700",
+                "on-background": "#1e1b19",
+                "secondary-container": "#fea619",
+                "primary-container": "#7c3aed"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "gutter": "20px",
+                "lg": "24px",
+                "sm": "8px",
+                "xs": "4px",
+                "container-margin-desktop": "40px",
+                "unit": "4px",
+                "xl": "32px",
+                "container-margin-mobile": "16px",
+                "md": "16px"
+            },
+            "fontFamily": {
+                "body-md": ["Inter"],
+                "label-md": ["Inter"],
+                "display-lg": ["Inter"],
+                "headline-md": ["Inter"],
+                "label-sm": ["Inter"],
+                "headline-lg-mobile": ["Inter"],
+                "title-lg": ["Inter"],
+                "headline-lg": ["Inter"],
+                "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .video-container {
+            aspect-ratio: 9/16;
+            max-height: calc(100vh - 120px);
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .blur-overlay {
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 40%);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-hidden">
+<!-- Top Navigation Bar (Shared Component) -->
+<nav class="hidden md:flex fixed top-0 w-full h-16 items-center justify-between px-container-margin-desktop z-50 bg-background border-b border-outline-variant">
+<div class="flex items-center gap-8">
+<a class="font-headline-lg text-headline-lg font-bold text-primary" href="../discovery_desktop/code.html">VidsAI</a>
+<div class="flex items-center gap-6">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-label-md text-label-md" href="../short_video_feed_desktop/code.html">Trang chủ</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 font-label-md text-label-md" href="../discovery_desktop/code.html">Khám phá</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 font-label-md text-label-md" href="../personal_library_desktop/code.html">Thư viện</a>
+</div>
+</div>
+<!-- Multimodal Search -->
+<div class="flex-1 max-w-xl px-8">
+<form action="../multimodal_search_desktop/code.html" class="relative group">
+<input class="w-full bg-surface-container-low border-none rounded-full py-2.5 pl-12 pr-12 focus:ring-2 focus:ring-primary/20 transition-all outline-none text-body-md shadow-[inset_0_1px_3px_rgba(0,0,0,0.05)]" placeholder="Tìm kiếm video bằng hình ảnh hoặc văn bản..." type="text"/>
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<button type="submit" class="absolute right-4 top-1/2 -translate-y-1/2 text-primary cursor-pointer hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">add_a_photo</span>
+</button>
+</form>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+</button>
+<button class="p-2 rounded-full hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">history</span>
+</button>
+<div class="relative">
+  <div onclick="toggleProfileMenu()" class="w-9 h-9 rounded-full overflow-hidden border border-outline-variant cursor-pointer active:scale-95 duration-150">
+    <img class="w-full h-full object-cover user-avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7kqACzSBDolHKOA9achUTMkDLHS2h1B36rEc-cfgyf_yh8ZRMI-Cr0Mwfw_IZxeYukLjGhFi6ERkEK7viy6cHDL2FBad2fvD6iMyhrWwPVQb2eEYWpcvLvd6QIixk8o1o-AZ8oZYHfDdUX_uiIZKFKL5Vwo_tn0YazUIZx1LLMeq0w7FdAZDxDGwD-h1tXGOE2SE4Dox-Te_d4jTXhgR_68wQE80G0liUvvcaW5egPK661wib-RnZSkZu3OB0g8QpopGgDBRGtdk"/>
+  </div>
+  <!-- Dropdown Menu -->
+  <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white border border-outline-variant rounded-xl shadow-lg py-2 hidden z-[100]">
+    <div class="px-4 py-2 border-b border-outline-variant/50 flex flex-col items-start">
+      <p class="text-sm font-bold text-on-surface truncate">Digital Creator</p>
+      <p class="text-xs text-on-surface-variant truncate">user@vidsai.com</p>
+    </div>
+    <a href="../personal_library_desktop/code.html" class="block w-full text-left px-4 py-2 text-sm text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors">Thư viện của tôi</a>
+    <button onclick="logout()" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors flex items-center gap-2">
+      <span class="material-symbols-outlined text-[18px]">logout</span>
+      <span>Đăng xuất</span>
+    </button>
+  </div>
+</div>
+</div>
+</nav>
+<!-- Main Content Grid -->
+<main class="mt-16 h-[calc(100vh-64px)] grid grid-cols-12 gap-gutter px-container-margin-desktop py-md">
+<!-- Left: Contextual Sidebar (Optional/Hidden in focused view) -->
+<aside class="col-span-1 hidden lg:flex flex-col items-center gap-8 py-8 border-r border-outline-variant/30">
+<div class="flex flex-col items-center gap-1 group cursor-pointer">
+<div class="p-3 rounded-xl bg-primary-container text-on-primary-container group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+</div>
+<span class="text-label-sm font-label-sm">Xu hướng</span>
+</div>
+<div class="flex flex-col items-center gap-1 group cursor-pointer text-on-surface-variant">
+<div class="p-3 rounded-xl hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined">group</span>
+</div>
+<span class="text-label-sm font-label-sm">Đang theo dõi</span>
+</div>
+</aside>
+<!-- Center: Video Feed Container -->
+<section class="col-span-12 lg:col-span-7 flex justify-center items-center relative">
+<div class="video-container bg-black rounded-[32px] relative overflow-hidden shadow-2xl group border-[6px] border-surface-container-high">
+<!-- Main Video Image -->
+<img class="w-full h-full object-cover" data-alt="A high-intensity football match at night under bright stadium floodlights. A player in a white and purple jersey is captured in a dynamic action shot just as the ball hits the back of the net. The grass is vibrant green, and the atmosphere is electric with a slight cinematic motion blur. The aesthetic is professional and media-centric, matching the VidsAI design system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCof4vys2ToQ3i99TR7Tj2VRki9Tkeyw9jHi6wuM7BPX7ZQ9eGnTujJXIPmpi3JXtttdbWbysYy_eJtBLAoWUtrOKl4w9NFvigHE2daXXVNwYNqSiJ2XZCbZzKsOS7-HzZVZn7aGSQ9QpRPoVo2-LYIkWh1zBwF434Z7NwNEyGBd8JmNbw46SXejZaZu0GMVuLBO-2A6pjAH_Xa0NaruCfT6NZ7PXhVGQRHpYsUmcBQQVSXNnpqCYHhzlyhL1cjvaPouOCkX9xeuWU"/>
+<!-- Play/Pause Overlay -->
+<div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+<span class="material-symbols-outlined text-white text-[80px] drop-shadow-lg" style="font-variation-settings: 'FILL' 1;">play_circle</span>
+</div>
+<!-- AI Heatmap Seek Bar (Styled Component) -->
+<div class="absolute bottom-0 left-0 w-full px-4 pb-4 group/seekbar">
+<div class="h-12 w-full flex items-end gap-[2px] opacity-60 group-hover/seekbar:opacity-100 transition-opacity">
+<!-- Heatmap bars -->
+<div class="flex-1 bg-primary h-[10%] rounded-t-sm transition-all hover:h-[40%]"></div>
+<div class="flex-1 bg-primary h-[15%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary h-[25%] rounded-t-sm"></div>
+<div class="flex-1 bg-secondary-container h-[45%] rounded-t-sm"></div>
+<div class="flex-1 bg-secondary-container h-[60%] rounded-t-sm"></div>
+<div class="flex-1 bg-tertiary-container h-[90%] rounded-t-sm"></div>
+<div class="flex-1 bg-tertiary-container h-[100%] rounded-t-sm"></div>
+<div class="flex-1 bg-secondary-container h-[70%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary h-[30%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary h-[20%] rounded-t-sm"></div>
+</div>
+<div class="h-1.5 w-full bg-white/30 rounded-full mt-1 relative overflow-hidden">
+<div class="absolute left-0 top-0 h-full w-2/3 bg-primary rounded-full"></div>
+</div>
+</div>
+<!-- Bottom Information Overlay -->
+<div class="absolute bottom-12 left-0 w-full p-6 blur-overlay text-white">
+<div class="flex items-center gap-3 mb-3">
+<div class="w-10 h-10 rounded-full border-2 border-white overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close-up portrait of a sports journalist or creator. The image style is clean, modern, and professional, reflecting the high-performance video context of the VidsAI app. Soft studio lighting with a warm background color from the refined minimalism palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvnFytMbxEWZllFiCqQL_DOdFq55Lk4iNps78PQzHz7f662KSXBruSO1IRf1FUDVyGx32kNKTcpMtw5LfmDN2xokAYbmkQeJT072zEuZhJoABl8etdaPjuTU-DFjFsGw5VQzOSYPzp3ZUBN1_RKApoETwVHfX9EXQnwxg4z2mnGHx_ButTwQ8TcxhxIiaAl2PIWIC-IVcv4AV9O6abRJtbuXP0Z0BmMfrp2SFArwAzcWuLGj3ImcErnsi5MqWmjwxzTzMCol-i4ss"/>
+</div>
+<div>
+<p class="font-bold text-body-md">Sơn Tùng Sports</p>
+<span class="text-label-sm opacity-80">1.2M theo dõi</span>
+</div>
+<button class="ml-2 px-4 py-1.5 bg-primary rounded-full text-label-sm font-bold active:scale-95 transition-transform">Theo dõi</button>
+</div>
+<h2 class="font-headline-md text-headline-md mb-2 leading-tight">Bàn thắng quyết định ở phút 89</h2>
+<div class="flex items-center gap-4 text-label-sm">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px]">music_note</span> Âm thanh gốc - Sơn Tùng</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px]">translate</span> Bản dịch AI: "The deciding goal at 89'"</span>
+</div>
+</div>
+<!-- Side Interaction Panel (Right side inside container or floating) -->
+<div class="absolute right-4 bottom-28 flex flex-col gap-6 text-white z-20">
+<div class="flex flex-col items-center gap-1 group cursor-pointer">
+<div class="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center group-hover:bg-white/20 transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+<span class="text-label-sm font-bold drop-shadow-md">24.5K</span>
+</div>
+<div class="flex flex-col items-center gap-1 group cursor-pointer">
+<div class="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center group-hover:bg-white/20 transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">comment</span>
+</div>
+<span class="text-label-sm font-bold drop-shadow-md">842</span>
+</div>
+<div class="flex flex-col items-center gap-1 group cursor-pointer">
+<div class="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center group-hover:bg-white/20 transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bookmark</span>
+</div>
+<span class="text-label-sm font-bold drop-shadow-md">5.2K</span>
+</div>
+<div class="flex flex-col items-center gap-1 group cursor-pointer">
+<div class="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center group-hover:bg-white/20 transition-all">
+<span class="material-symbols-outlined">share</span>
+</div>
+<span class="text-label-sm font-bold drop-shadow-md">Chia sẻ</span>
+</div>
+<div class="mt-4 flex flex-col items-center gap-2 group cursor-pointer" onclick="window.location.href='../video_detail_ai_player_animated_desktop/code.html'">
+<div class="w-12 h-12 rounded-xl bg-primary border-2 border-white/50 overflow-hidden group-hover:scale-110 transition-transform">
+<img class="w-full h-full object-cover" data-alt="A cinematic wide shot of a full football stadium during a goal celebration. Bright lights, green field, and colorful fans in the background. Professional sports photography style matching the brand's sophisticated aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmJ39Dj-DJr9gS711BUShwYN2hUYTU2k-XHb85G1Ra9efIXHH28JJR7MfKJodzPpp3xe4mCHjl7bmftPx7gfoaUzWCJKtURXpiZoEV5-18h9iFRbTBtWZLIcOoDrUxJ1FdCv7wmr16hx5HIOcDDrUk-sWP-tQeZSJhOnaooTNr4xuqs8k-z8PEsYb1bDnFYGNfua1M6kaYpzAfu1DvC366VKA1iDV8czZxI8aDM9UNHayrxCsyYR2F6PXqBiVDtEo2D73EaylU4rA"/>
+</div>
+<span class="text-[10px] uppercase font-bold tracking-tighter opacity-80">Gốc</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Right: Recommendations Panel -->
+<section class="col-span-12 lg:col-span-4 flex flex-col gap-6 overflow-hidden">
+<div class="flex items-center justify-between">
+<h3 class="font-title-lg text-title-lg">Sắp phát tiếp</h3>
+<span class="text-primary font-bold text-label-md cursor-pointer hover:underline">Tất cả</span>
+</div>
+<div class="flex flex-col gap-4 overflow-y-auto hide-scrollbar pr-2">
+<!-- Recommended Item 1 -->
+<div class="flex gap-3 group cursor-pointer p-2 rounded-2xl hover:bg-surface-container transition-colors" onclick="window.location.href='../video_detail_ai_player_animated_desktop/code.html'">
+<div class="relative w-32 aspect-[9/16] bg-surface-variant rounded-xl overflow-hidden shrink-0 shadow-sm group-hover:shadow-md transition-shadow">
+<img class="w-full h-full object-cover" data-alt="A medium shot of a football goalkeeper making an incredible diving save. The evening sky is deep blue and purple, with bright arena lights highlighting the dramatic spray of water from the grass. Cinematic action style with rich colors and high contrast." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2eWHxuWJdvzRVxmh64VZ6pZQ4Eo9OfB6w-489DzG6T_e7Caetg1Uu2izDKzspTh0aAWDu1gQzQmMApiNar2F7SSJSKxrQ1Lx6FvtRjUfFaGpFH16yj-x5ymhuVtGX8O4WYah7xq_Xh-NGN1WuqlBCAmalvmSjmA_-wzHExN3Cf0FURJ3o-nxfnRDae_iPmc5HsiOpUyWhVMXr59j68JSxHUi4ygWJxDJ7q_BTHH_sY239xIduKZ9S7GXDKi2Sr_ZBThsY07ylxI4"/>
+<div class="absolute bottom-1 right-1 bg-black/60 backdrop-blur-sm text-[10px] px-1.5 py-0.5 rounded text-white font-bold">0:45</div>
+</div>
+<div class="flex flex-col justify-center py-1">
+<h4 class="font-label-md text-label-md text-on-surface line-clamp-2 group-hover:text-primary transition-colors">Khoảnh khắc cứu thua xuất thần của thủ môn</h4>
+<p class="text-on-surface-variant text-label-sm mt-1">Bóng đá TV • 850K xem</p>
+<div class="flex items-center gap-1 mt-2 text-primary">
+<span class="material-symbols-outlined text-[16px]">bolt</span>
+<span class="text-[10px] font-bold uppercase tracking-wider">AI Highlight</span>
+</div>
+</div>
+</div>
+<!-- Recommended Item 2 -->
+<div class="flex gap-3 group cursor-pointer p-2 rounded-2xl hover:bg-surface-container transition-colors" onclick="window.location.href='../video_detail_ai_player_animated_desktop/code.html'">
+<div class="relative w-32 aspect-[9/16] bg-surface-variant rounded-xl overflow-hidden shrink-0 shadow-sm group-hover:shadow-md transition-shadow">
+<img class="w-full h-full object-cover" data-alt="Fans in a football stadium celebrating wildly under a shower of confetti. The lighting is warm and golden, capturing the joy and high energy of the moment. High-end lifestyle photography aesthetic with soft-focus crowd in the background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdbJtxgYoLPP70elxxH6v-18ORb7QssOx0dlOqDaNRbPmd11SAjo5B11yBPXlzaQfDar9ScQSEGtCIs6UT5cGC8AlTtRGsOc1-bfFIsbYc8VuSeQGP72216GPZN7XDlu_04kTTw6z1Z6G2PrfSGbxmtLSg-Fw5ko6srtqQYGQ8Kgh7ry-7NyZ7iU0gUOdZSfPjsBzMb-PU-eFLu7KYhN_wo0kq4hshfDsU79uzeYvbUp-VvNS6iOxC575lcOaxGVwIgEo1zdCrg8E"/>
+<div class="absolute bottom-1 right-1 bg-black/60 backdrop-blur-sm text-[10px] px-1.5 py-0.5 rounded text-white font-bold">1:12</div>
+</div>
+<div class="flex flex-col justify-center py-1">
+<h4 class="font-label-md text-label-md text-on-surface line-clamp-2 group-hover:text-primary transition-colors">Phản ứng của người hâm mộ sau tiếng còi mãn cuộc</h4>
+<p class="text-on-surface-variant text-label-sm mt-1">Cổ Động Viên Việt • 2.1M xem</p>
+<div class="flex items-center gap-1 mt-2 text-secondary-container">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span class="text-[10px] font-bold uppercase tracking-wider">Hot</span>
+</div>
+</div>
+</div>
+<!-- Recommended Item 3 -->
+<div class="flex gap-3 group cursor-pointer p-2 rounded-2xl hover:bg-surface-container transition-colors" onclick="window.location.href='../video_detail_ai_player_animated_desktop/code.html'">
+<div class="relative w-32 aspect-[9/16] bg-surface-variant rounded-xl overflow-hidden shrink-0 shadow-sm group-hover:shadow-md transition-shadow">
+<img class="w-full h-full object-cover" data-alt="A close-up of a high-tech video editing interface showing a timeline and AI heatmaps. The screen glows with shades of purple and blue, reflecting onto a sleek desk surface. Minimalist and sophisticated tech aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDU5Bb2m-E6BnNMRcmcpomU8jSY8Gxz1qg4CTUO-G_nPGSAp_qpFXOXBpzxg8R92u-DAw6_HvlTecDSuOqMMQKiWKbp_Xxy-bfY63fq1YFSERGlx2moAGjCFwD6CB4iW_aferWPiTmW0smkx_RO_2_ENkeKAjRFJ6pa4YcS4UQz-3YChp4QBgA28452Bwy_DcYQsRgLxBzftBSnwNXkCwc07rDgmNpJvclpBMJsjh9LeGGK45HZEKTZ4OslI6dBOZC4uzfK9rzXhX0"/>
+<div class="absolute bottom-1 right-1 bg-black/60 backdrop-blur-sm text-[10px] px-1.5 py-0.5 rounded text-white font-bold">0:58</div>
+</div>
+<div class="flex flex-col justify-center py-1">
+<h4 class="font-label-md text-label-md text-on-surface line-clamp-2 group-hover:text-primary transition-colors">Cách VidsAI phân tích bàn thắng bằng AI</h4>
+<p class="text-on-surface-variant text-label-sm mt-1">VidsAI Lab • 45K xem</p>
+</div>
+</div>
+</div>
+
+</section>
+</main>
+<!-- Bottom Navigation Bar (Mobile only, hidden on desktop per instructions but defined for shell integrity) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-safe h-[56px] bg-surface-container">
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-3 py-1 scale-95 duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Trang chủ</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Khám phá</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1">
+<span class="material-symbols-outlined">video_library</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Thư viện</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Cá nhân</span>
+</div>
+</nav>
+<script>
+        // Micro-interactions for interaction buttons
+        document.querySelectorAll('.material-symbols-outlined').forEach(icon => {
+            icon.parentElement.addEventListener('click', function() {
+                if(this.querySelector('[style*="FILL"]')) {
+                   const fillVal = this.querySelector('span').style.fontVariationSettings;
+                   if(fillVal.includes("'FILL' 1")) {
+                       this.querySelector('span').style.fontVariationSettings = "'FILL' 0";
+                       this.querySelector('span').classList.remove('text-primary', 'text-tertiary-container');
+                   } else {
+                       this.querySelector('span').style.fontVariationSettings = "'FILL' 1";
+                       // Visual feedback based on icon type
+                       if(this.innerText.includes('favorite')) this.querySelector('span').classList.add('text-tertiary-container');
+                       if(this.innerText.includes('bookmark')) this.querySelector('span').classList.add('text-secondary-container');
+                   }
+                }
+                
+                this.classList.add('scale-125');
+                setTimeout(() => this.classList.remove('scale-125'), 150);
+            });
+        });
+
+        // Hover effect for heat map bars
+        const bars = document.querySelectorAll('.video-container .bg-primary, .video-container .bg-secondary-container, .video-container .bg-tertiary-container');
+        bars.forEach(bar => {
+            bar.addEventListener('mouseenter', () => {
+                bar.classList.add('scale-y-110');
+            });
+            bar.addEventListener('mouseleave', () => {
+                bar.classList.remove('scale-y-110');
+            });
+        });
+
+        function toggleProfileMenu() {
+            const dropdown = document.getElementById('profile-dropdown');
+            dropdown.classList.toggle('hidden');
+        }
+        document.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('profile-dropdown');
+            const avatar = document.querySelector('.user-avatar');
+            if (dropdown && !dropdown.contains(e.target) && e.target !== avatar && !avatar.contains(e.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+        document.addEventListener('DOMContentLoaded', () => {
+            const userJson = localStorage.getItem('currentUser');
+            if (userJson) {
+                const user = JSON.parse(userJson);
+                const dropdownName = document.querySelector('#profile-dropdown p.font-bold');
+                const dropdownEmail = document.querySelector('#profile-dropdown p.text-xs');
+                if (dropdownName) dropdownName.textContent = user.name;
+                if (dropdownEmail) dropdownEmail.textContent = user.email;
+            }
+        });
+    </script>
+</body></html>

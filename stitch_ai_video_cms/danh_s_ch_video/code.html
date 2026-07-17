@@ -1,0 +1,517 @@
+<!DOCTYPE html><html lang="vi" class="light"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+<script>
+  if (!localStorage.getItem('currentUser')) {
+    window.location.href = '../index.html';
+  }
+  function logout() {
+    localStorage.removeItem('currentUser');
+    window.location.href = '../index.html';
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    const userJson = localStorage.getItem('currentUser');
+    if (userJson) {
+      const user = JSON.parse(userJson);
+      const nameEl = document.getElementById('user-name');
+      const roleEl = document.getElementById('user-role');
+      const avatarEl = document.getElementById('user-avatar');
+      const placeholderEl = document.getElementById('user-avatar-placeholder');
+      if (nameEl) nameEl.textContent = user.name;
+      if (roleEl) roleEl.textContent = user.role;
+      if (avatarEl && user.avatar) {
+        avatarEl.src = user.avatar;
+        avatarEl.classList.remove('hidden');
+        if (placeholderEl) placeholderEl.classList.add('hidden');
+      }
+    }
+  });
+</script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-surface": "#322f37",
+                    "tertiary-fixed-dim": "#c7c6c4",
+                    "inverse-primary": "#d1bcff",
+                    "on-error-container": "#93000a",
+                    "on-primary-container": "#ceb8ff",
+                    "on-background": "#1d1a22",
+                    "error-container": "#ffdad6",
+                    "secondary": "#546067",
+                    "on-tertiary-fixed-variant": "#464745",
+                    "on-secondary-fixed-variant": "#3c494f",
+                    "primary-container": "#5e35b1",
+                    "surface-tint": "#6c45c0",
+                    "surface-container-highest": "#e7e0eb",
+                    "outline-variant": "#cbc3d5",
+                    "on-tertiary-fixed": "#1a1c1a",
+                    "error": "#ba1a1a",
+                    "surface-container-lowest": "#ffffff",
+                    "surface": "#fef7ff",
+                    "inverse-on-surface": "#f5eef9",
+                    "surface-container-high": "#ede6f1",
+                    "on-tertiary-container": "#c4c4c1",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed": "#e3e2e0",
+                    "on-secondary-fixed": "#111d23",
+                    "on-primary-fixed-variant": "#5429a7",
+                    "tertiary": "#393a38",
+                    "surface-bright": "#fef7ff",
+                    "on-primary-fixed": "#24005b",
+                    "surface-variant": "#e7e0eb",
+                    "secondary-fixed": "#d7e4ec",
+                    "primary-fixed": "#eaddff",
+                    "on-secondary-container": "#5a666d",
+                    "surface-dim": "#ded8e3",
+                    "on-surface-variant": "#494453",
+                    "secondary-container": "#d7e4ec",
+                    "background": "#fef7ff",
+                    "primary": "#461599",
+                    "secondary-fixed-dim": "#bbc8d0",
+                    "surface-container": "#f2ebf7",
+                    "outline": "#7b7484",
+                    "on-secondary": "#ffffff",
+                    "on-surface": "#1d1a22",
+                    "on-primary": "#ffffff",
+                    "tertiary-container": "#50514f",
+                    "surface-container-low": "#f8f1fc",
+                    "primary-fixed-dim": "#d1bcff",
+                    "on-tertiary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "interactive-min": "44px",
+                    "sidebar-width": "260px",
+                    "sm": "8px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "toolbar-height": "48px",
+                    "base": "4px",
+                    "xs": "4px"
+            },
+            "fontFamily": {
+                    "body-sm": ["Inter"],
+                    "label-xs": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "title-sm": ["Inter"],
+                    "display-sm": ["Inter"],
+                    "body-md": ["Inter"],
+                    "code-tabular": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "body-sm": ["12px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "label-xs": ["11px", {"lineHeight": "16px", "fontWeight": "700"}],
+                    "headline-md": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "title-sm": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                    "display-sm": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "code-tabular": ["13px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    }catch(_e){}</script><meta charset="utf-8"></head><body class="bg-background text-on-surface">
+<!-- Sidebar Navigation -->
+<aside class="fixed left-0 top-0 h-full flex flex-col z-40 bg-surface dark:bg-surface-dim border-r border-outline-variant dark:border-outline w-sidebar-width h-screen">
+<div class="p-lg flex items-center gap-sm">
+<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary" style="font-variation-settings: 'FILL' 1;">movie_filter</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed leading-none">AI Video CMS</h1>
+<p class="text-[10px] uppercase tracking-widest text-outline mt-1">Hệ thống biên tập</p>
+</div>
+</div>
+<nav class="flex-1 px-sm py-md space-y-1 overflow-y-auto">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../t_ng_quan_h_th_ng/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="dashboard">dashboard</span>
+<span class="font-body-md">Tổng quan</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm bg-primary-container text-on-primary-container rounded-lg border-l-4 border-primary transition-all duration-150" href="../danh_s_ch_video/code.html">
+<span class="material-symbols-outlined" data-icon="video_library" style="font-variation-settings: 'FILL' 1;">video_library</span>
+<span class="font-body-md">Video</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../t_i_l_n_h_ng_i_x_l/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="queue_play_next">queue_play_next</span>
+<span class="font-body-md">Hàng đợi xử lý</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../ph_duy_t_c_t_highlight_ai/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-body-md">Highlight AI</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../qu_n_l_danh_m_c_ph_n_lo_i_video/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="category">category</span>
+<span class="font-body-md">Danh mục</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../ph_t_m_t_t_ai/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="closed_caption">closed_caption</span>
+<span class="font-body-md">Phụ đề & Tóm tắt</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../th_vi_n_n_i_dung_xu_t_b_n/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="publish">publish</span>
+<span class="font-body-md">Nội dung đã xuất bản</span>
+</a>
+<div class="my-lg border-t border-outline-variant opacity-50"></div>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="../c_i_t_h_th_ng/code.html">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="settings">settings</span>
+<span class="font-body-md">Cài đặt</span>
+</a>
+</nav>
+<div class="p-md bg-surface-container-low mt-auto border-t border-outline-variant">
+    <div class="flex items-center gap-sm mb-3">
+        <img id="user-avatar" class="w-10 h-10 rounded-full object-cover border border-outline-variant hidden" src="" alt="Avatar">
+        <div id="user-avatar-placeholder" class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary">
+            <span class="material-symbols-outlined">person</span>
+        </div>
+        <div class="flex-1 overflow-hidden">
+            <p id="user-name" class="font-title-sm text-title-sm truncate text-on-surface">Admin CMS</p>
+            <p id="user-role" class="text-xs text-on-surface-variant truncate">Biên tập viên</p>
+        </div>
+    </div>
+    <button onclick="logout()" class="w-full py-1.5 px-3 bg-red-600/10 hover:bg-red-600/20 text-red-600 rounded-lg text-xs font-semibold flex items-center justify-center gap-1 transition-colors">
+        <span class="material-symbols-outlined text-sm">logout</span>
+        Đăng xuất
+    </button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-[260px] min-h-screen flex flex-col">
+<!-- Top App Bar -->
+<header class="fixed top-0 right-0 w-[calc(100%-260px)] h-toolbar-height flex justify-between items-center px-lg z-50 bg-surface-container-lowest border-b border-outline-variant dark:border-outline">
+<div class="flex items-center flex-1 max-w-xl">
+<div class="relative w-full group">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline text-[20px] group-focus-within:text-primary">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-full pl-lg pr-md py-1.5 font-body-md text-body-md focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Tìm kiếm video, thẻ hoặc người tạo..." type="text">
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="flex items-center gap-xs px-md py-1.5 bg-primary-container text-on-primary-container rounded-full font-title-sm text-title-sm hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[18px]">bolt</span>
+                    Trạng thái hệ thống
+                </button>
+<div class="flex items-center gap-sm">
+<button class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-surface-container-high text-on-surface-variant relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-surface"></span>
+</button>
+<button class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-surface-container-high text-on-surface-variant">
+<span class="material-symbols-outlined">analytics</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="mt-toolbar-height p-lg flex-1">
+<!-- Header & Actions -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-md mb-lg">
+<div>
+<h2 class="font-display-sm text-display-sm text-on-surface">Danh sách Video</h2>
+<p class="text-body-md text-on-surface-variant">Quản lý và theo dõi quy trình xử lý AI cho tất cả tài nguyên video.</p>
+</div>
+<button class="flex items-center gap-sm px-lg py-sm bg-primary text-on-primary rounded-lg font-title-sm text-title-sm shadow-sm hover:bg-[#5e35b1] transition-colors active:scale-95">
+<span class="material-symbols-outlined">cloud_upload</span>
+                    Tải lên video
+                </button>
+</div>
+<!-- Filters Section -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md mb-lg flex flex-wrap items-center gap-md">
+<div class="flex items-center gap-sm">
+<span class="text-label-xs text-outline uppercase tracking-wider">Danh mục:</span>
+<select class="bg-surface-container-low border border-outline-variant rounded-lg px-md py-1 font-body-sm text-body-sm focus:ring-1 focus:ring-primary outline-none">
+<option>Tất cả video</option>
+<option>Tin tức &amp; Sự kiện</option>
+<option>Giải trí</option>
+<option>Thể thao</option>
+<option>Giáo dục</option>
+</select>
+</div>
+<div class="flex items-center gap-sm">
+<span class="text-label-xs text-outline uppercase tracking-wider">Trạng thái:</span>
+<div class="flex gap-1">
+<button class="px-md py-1 rounded-full bg-primary text-on-primary text-[11px] font-bold">Tất cả</button>
+<button class="px-md py-1 rounded-full border border-outline-variant text-on-surface-variant text-[11px] font-bold hover:bg-surface-container-low">Đã duyệt</button>
+<button class="px-md py-1 rounded-full border border-outline-variant text-on-surface-variant text-[11px] font-bold hover:bg-surface-container-low">Đang xử lý</button>
+</div>
+</div>
+<div class="flex items-center gap-sm ml-auto">
+<span class="text-label-xs text-outline uppercase tracking-wider">Khoảng ngày:</span>
+<div class="flex items-center bg-surface-container-low border border-outline-variant rounded-lg px-sm py-1">
+<input class="bg-transparent border-none p-0 text-body-sm focus:ring-0" type="date">
+<span class="mx-xs text-outline">→</span>
+<input class="bg-transparent border-none p-0 text-body-sm focus:ring-0" type="date">
+</div>
+</div>
+<button class="w-9 h-9 flex items-center justify-center rounded-lg border border-outline-variant hover:bg-surface-container-low text-on-surface-variant">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+</div>
+<!-- Video Data Table -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="px-lg py-sm font-label-xs text-label-xs text-outline uppercase tracking-wider w-12">
+<input class="rounded border-outline-variant text-primary focus:ring-primary" type="checkbox">
+</th>
+<th class="px-md py-sm font-label-xs text-label-xs text-outline uppercase tracking-wider">Thumbnail / Tiêu đề</th>
+<th class="px-md py-sm font-label-xs text-label-xs text-outline uppercase tracking-wider">Ngày tải lên</th>
+<th class="px-md py-sm font-label-xs text-label-xs text-outline uppercase tracking-wider">Thời lượng</th>
+<th class="px-md py-sm font-label-xs text-label-xs text-outline uppercase tracking-wider">Trạng thái</th>
+<th class="px-lg py-sm font-label-xs text-label-xs text-outline uppercase tracking-wider text-right">Thao tác</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Row 1: Processed -->
+<tr class="hover:bg-surface-container transition-colors group">
+<td class="px-lg py-sm">
+<input class="rounded border-outline-variant text-primary focus:ring-primary" type="checkbox">
+</td>
+<td class="px-md py-sm">
+<div class="flex items-center gap-md">
+<div class="relative w-24 h-14 rounded overflow-hidden bg-inverse-surface flex-shrink-0 group-hover:ring-2 ring-primary transition-all">
+<img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="A professional video thumbnail showcasing a vibrant, cinematic landscape during a golden hour sunset. The image is captured with high-definition clarity, featuring deep oranges and soft purples in the sky, reflecting a high-quality content production style. The aesthetic is clean and modern, suitable for a professional CMS dashboard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNj7Ze7lGzcC18W-230nzj4vS8KhfyYykWqcSMFaGSTrvyidOlbWVkzf5oiKaD9iK6DYr4PENMbKBh1wRE-fdduqETbW6Xby0MPd3U1vs4KLP5IlVEX3iXSCkdOY6VwEAllNUvy0YFQTTzLQMT6iNSBTsaqBUXwovXjh6PL69fXGpWQDNOXD_6Ni0ZYzN8DmmWbjtYqXZuiy2FkQqOIkmh3EfQ_WSEmlIXiuotamEnTsjj-MHOWhPUCANOnSZ55LqvCoFVG-ENsNM">
+<div class="absolute bottom-1 right-1 bg-black/70 text-white text-[10px] px-1 rounded font-code-tabular">04:22</div>
+</div>
+<div class="min-w-0">
+<h4 class="font-title-sm text-title-sm text-on-surface truncate">Bản tin công nghệ tuần 42 - Trí tuệ nhân tạo</h4>
+<p class="text-body-sm text-on-surface-variant truncate">tech_news_full_v1.mp4 • MP4 • 1.2 GB</p>
+</div>
+</div>
+</td>
+<td class="px-md py-sm">
+<span class="text-body-sm font-code-tabular text-on-surface-variant">24/10/2023, 14:30</span>
+</td>
+<td class="px-md py-sm">
+<span class="text-body-sm font-code-tabular">00:04:22</span>
+</td>
+<td class="px-md py-sm">
+<span class="inline-flex items-center gap-1.5 px-md py-0.5 rounded-full bg-surface-container-high text-on-surface text-[11px] font-bold">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+                                    Đã duyệt
+                                </span>
+</td>
+<td class="px-lg py-sm text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="w-8 h-8 flex items-center justify-center rounded hover:bg-primary-container hover:text-on-primary-container transition-colors" title="Xem">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded hover:bg-surface-container-highest transition-colors" title="Sửa">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded hover:bg-error-container hover:text-on-error-container transition-colors" title="Xóa">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2: Processing -->
+<tr class="hover:bg-surface-container transition-colors group">
+<td class="px-lg py-sm">
+<input class="rounded border-outline-variant text-primary focus:ring-primary" type="checkbox">
+</td>
+<td class="px-md py-sm">
+<div class="flex items-center gap-md">
+<div class="relative w-24 h-14 rounded overflow-hidden bg-surface-container-highest flex-shrink-0">
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-outline animate-spin">refresh</span>
+</div>
+<img class="w-full h-full object-cover opacity-30 grayscale" data-alt="A minimalist cinematic frame of a modern cityscape at night, featuring glowing neon lights and high-contrast shadows. The visual style is sleek and technological, with a focus on deep blues and cool tones. This thumbnail represents a high-end video asset currently undergoing advanced AI processing in a corporate CMS environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOB3WbvWHCBEm_FeDMjOdN3evO0jl5DQ8Lv2ERm3vDVFgEvfP41-knEHjzVvzQFj60NPL_4wjHHc5v2JA6We2yqS2SNGbfMSSpOInIdYPp0DpgvZgITTjsKvLjPxKfLAJO_1CUX94RAH495UN_F2kBK5hGKsLvCzYz6DiI2ZKI-Rz84UUJ-wvYG4xekKiOuBqx4WNiHArp4EdhsbCCgnObHK0hfaZaZ7AaZpZbd3YWqYdIq0_h0EzH_XvD-8EterrVafhV68uo6HU">
+</div>
+<div class="min-w-0">
+<h4 class="font-title-sm text-title-sm text-on-surface truncate">Phỏng vấn độc quyền: Tương lai Web3</h4>
+<p class="text-body-sm text-on-surface-variant truncate">interview_final_raw.mov • MOV • 4.8 GB</p>
+</div>
+</div>
+</td>
+<td class="px-md py-sm">
+<span class="text-body-sm font-code-tabular text-on-surface-variant">Hôm nay, 09:15</span>
+</td>
+<td class="px-md py-sm">
+<span class="text-body-sm font-code-tabular">00:15:08</span>
+</td>
+<td class="px-md py-sm">
+<span class="inline-flex items-center gap-1.5 px-md py-0.5 rounded-full border border-tertiary-fixed text-on-surface-variant text-[11px] font-bold">
+<span class="w-2 h-2 rounded-full bg-[#f59e0b] animate-pulse"></span>
+                                    Đang xử lý (84%)
+                                </span>
+</td>
+<td class="px-lg py-sm text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="w-8 h-8 flex items-center justify-center rounded text-outline cursor-not-allowed">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded hover:bg-error-container hover:text-on-error-container transition-colors">
+<span class="material-symbols-outlined text-[20px]">stop_circle</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3: Error -->
+<tr class="hover:bg-surface-container transition-colors group">
+<td class="px-lg py-sm">
+<input class="rounded border-outline-variant text-primary focus:ring-primary" type="checkbox">
+</td>
+<td class="px-md py-sm">
+<div class="flex items-center gap-md">
+<div class="relative w-24 h-14 rounded overflow-hidden bg-error-container/20 flex-shrink-0 ring-1 ring-error/20">
+<img class="w-full h-full object-cover opacity-50 sepia-[.2]" data-alt="A vintage technology aesthetic featuring old circuit boards and retro electronic components, captured with a shallow depth of field. The lighting is moody and warm, contrasting with the clinical CMS interface. This image serves as a visual placeholder for a video processing error, maintaining a professional yet illustrative tone." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNWY2eptxBT6VPZ_ITRf20iWOjwlHqmpNygJNf1XCupjSYkjkPz3LKEZ-fbXkfrKsfF-6DzAzPII53rInTeR6sUai_2EIXBvlqzjEdgm4YstPxkv6a9hbi45ihqJ4nkqZcT7CtsSlv0PpFEXvE7_e4Hb2znR2e1RHYFcnFEZ7QVyhmasMxKdp7FGZSqQkiwviVnVECo6Jmp_vtXkt_vQn1fic7hmNcOcrmbGbxvZFwz7UJHAqt_iG9bPm7KHW43EGzkULHQwGqri4">
+<div class="absolute inset-0 flex items-center justify-center bg-error/10">
+<span class="material-symbols-outlined text-error">warning</span>
+</div>
+</div>
+<div class="min-w-0">
+<h4 class="font-title-sm text-title-sm text-on-surface truncate">Hướng dẫn sử dụng hệ thống v2</h4>
+<p class="text-body-sm text-on-surface-variant truncate">tutorial_v2_export.mp4 • MP4 • 850 MB</p>
+</div>
+</div>
+</td>
+<td class="px-md py-sm">
+<span class="text-body-sm font-code-tabular text-on-surface-variant">23/10/2023, 11:20</span>
+</td>
+<td class="px-md py-sm">
+<span class="text-body-sm font-code-tabular">00:08:45</span>
+</td>
+<td class="px-md py-sm">
+<span class="inline-flex items-center gap-1.5 text-error text-[11px] font-bold">
+<span class="material-symbols-outlined text-[14px]">error</span>
+                                    Lỗi AI: File corrupted
+                                </span>
+</td>
+<td class="px-lg py-sm text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="w-8 h-8 flex items-center justify-center rounded hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-[20px]">refresh</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded hover:bg-error-container hover:text-on-error-container transition-colors">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4: Processed -->
+<tr class="hover:bg-surface-container transition-colors group">
+<td class="px-lg py-sm">
+<input class="rounded border-outline-variant text-primary focus:ring-primary" type="checkbox">
+</td>
+<td class="px-md py-sm">
+<div class="flex items-center gap-md">
+<div class="relative w-24 h-14 rounded overflow-hidden bg-inverse-surface flex-shrink-0 group-hover:ring-2 ring-primary transition-all">
+<img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="A cinematic overhead shot of a professional film set, featuring expensive camera equipment, lighting rigs, and a focused production crew in the background. The scene is illuminated by soft studio lights, creating a high-fidelity and professional atmosphere. The color palette is dominated by neutral greys and blacks, with sharp highlights, fitting the authoritative and precise CMS brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnG1iI69nx38UfbX_jje5KvQKGhOinVnnvKc22ZTaz4ofxRLcmFVQdYjy0IByW4QdZvEJcuf6-bZW2viE0knHIhbJQBChAPhtalixSL1TV_ftejSsdqEEWH0VtwYCfQWJxtkXGU8fweu632kdJ2GXi8teEozNVjdslRR7WA61vSvDo3b_nrItG0ZQ7hFBrb0KmuTXOIG8KWjwD4qHKQz-vK4lNO2RTAQFIfbxnGn24jEJlGYAgLV_B4dY19dXvkW5brz5CZzKbIOU">
+<div class="absolute bottom-1 right-1 bg-black/70 text-white text-[10px] px-1 rounded font-code-tabular">12:35</div>
+</div>
+<div class="min-w-0">
+<h4 class="font-title-sm text-title-sm text-on-surface truncate">Behind the scenes: Dự án X</h4>
+<p class="text-body-sm text-on-surface-variant truncate">bts_project_x.mp4 • MP4 • 2.5 GB</p>
+</div>
+</div>
+</td>
+<td class="px-md py-sm">
+<span class="text-body-sm font-code-tabular text-on-surface-variant">22/10/2023, 16:45</span>
+</td>
+<td class="px-md py-sm">
+<span class="text-body-sm font-code-tabular">00:12:35</span>
+</td>
+<td class="px-md py-sm">
+<span class="inline-flex items-center gap-1.5 px-md py-0.5 rounded-full bg-surface-container-high text-on-surface text-[11px] font-bold">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+                                    Đã duyệt
+                                </span>
+</td>
+<td class="px-lg py-sm text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="w-8 h-8 flex items-center justify-center rounded hover:bg-primary-container hover:text-on-primary-container transition-colors" title="Xem">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded hover:bg-surface-container-highest transition-colors" title="Sửa">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded hover:bg-error-container hover:text-on-error-container transition-colors" title="Xóa">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<!-- Pagination -->
+<div class="px-lg py-md flex items-center justify-between bg-surface-container-low border-t border-outline-variant">
+<div class="flex items-center gap-md">
+<span class="text-body-sm text-on-surface-variant">Hiển thị 1-10 của 248 video</span>
+<div class="flex items-center gap-sm">
+<span class="text-label-xs text-outline uppercase tracking-wider">Hàng mỗi trang:</span>
+<select class="bg-transparent border-none p-0 font-body-sm text-body-sm outline-none focus:ring-0 cursor-pointer text-primary font-bold">
+<option>10</option>
+<option>25</option>
+<option>50</option>
+</select>
+</div>
+</div>
+<div class="flex items-center gap-xs">
+<button class="w-8 h-8 flex items-center justify-center rounded hover:bg-surface-container-highest text-outline disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined text-[20px]">chevron_left</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded bg-primary text-on-primary text-[12px] font-bold">1</button>
+<button class="w-8 h-8 flex items-center justify-center rounded hover:bg-surface-container-highest text-on-surface-variant text-[12px] font-bold">2</button>
+<button class="w-8 h-8 flex items-center justify-center rounded hover:bg-surface-container-highest text-on-surface-variant text-[12px] font-bold">3</button>
+<span class="px-sm text-outline">...</span>
+<button class="w-8 h-8 flex items-center justify-center rounded hover:bg-surface-container-highest text-on-surface-variant text-[12px] font-bold">25</button>
+<button class="w-8 h-8 flex items-center justify-center rounded hover:bg-surface-container-highest text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Contextual Toast Notification (Micro-interaction) -->
+<div class="fixed bottom-lg right-lg bg-inverse-surface text-inverse-on-surface px-lg py-sm rounded-lg shadow-xl flex items-center gap-md translate-y-24 opacity-0 transition-all duration-300 z-[100]" id="toast">
+<span class="material-symbols-outlined text-[#86efac]">check_circle</span>
+<span class="font-body-md text-body-md">Đang tải lên "Video_Event_2023.mp4" (45%)</span>
+<button class="material-symbols-outlined text-outline hover:text-white transition-colors" onclick="hideToast()">close</button>
+</div>
+<script>
+        // Simple Micro-interaction script
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(hideToast, 5000);
+        }
+
+        function hideToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.add('translate-y-24', 'opacity-0');
+        }
+
+        // Auto-show toast on load to demonstrate the component
+        window.onload = () => {
+            setTimeout(showToast, 1500);
+        };
+
+        // Table row interaction logic (Select All)
+        const selectAllHeader = document.querySelector('thead input[type="checkbox"]');
+        const rowCheckboxes = document.querySelectorAll('tbody input[type="checkbox"]');
+
+        selectAllHeader.addEventListener('change', function() {
+            rowCheckboxes.forEach(cb => {
+                cb.checked = this.checked;
+                cb.closest('tr').classList.toggle('bg-primary/5', this.checked);
+            });
+        });
+
+        rowCheckboxes.forEach(cb => {
+            cb.addEventListener('change', function() {
+                this.closest('tr').classList.toggle('bg-primary/5', this.checked);
+            });
+        });
+    </script>
+
+</body></html>

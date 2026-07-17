@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VidsAI - Khám phá</title>
+<script>
+  if (!localStorage.getItem('currentUser')) {
+    window.location.href = '../login_desktop/code.html';
+  }
+  function logout() {
+    localStorage.removeItem('currentUser');
+    window.location.href = '../login_desktop/code.html';
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    const userJson = localStorage.getItem('currentUser');
+    if (userJson) {
+      const user = JSON.parse(userJson);
+      const avatars = document.querySelectorAll('.user-avatar');
+      avatars.forEach(avatarEl => {
+        if (user.avatar) {
+          avatarEl.src = user.avatar;
+        }
+      });
+    }
+  });
+</script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary": "#ffffff",
+                    "secondary-fixed-dim": "#ffb95f",
+                    "on-error": "#ffffff",
+                    "secondary-fixed": "#ffddb8",
+                    "on-error-container": "#93000a",
+                    "on-surface-variant": "#4a4455",
+                    "tertiary-fixed": "#ffdad7",
+                    "inverse-on-surface": "#f7efeb",
+                    "on-secondary-fixed-variant": "#653e00",
+                    "surface-dim": "#e0d8d5",
+                    "surface-container": "#f4ece8",
+                    "primary-fixed-dim": "#d2bbff",
+                    "error": "#ba1a1a",
+                    "outline-variant": "#ccc3d8",
+                    "surface-container-high": "#eee7e3",
+                    "tertiary": "#a20017",
+                    "secondary": "#855300",
+                    "on-surface": "#1e1b19",
+                    "background": "#fff8f5",
+                    "surface-container-low": "#faf2ee",
+                    "surface-tint": "#732ee4",
+                    "on-primary-fixed-variant": "#5a00c6",
+                    "on-tertiary-container": "#ffdfdc",
+                    "inverse-primary": "#d2bbff",
+                    "primary": "#630ed4",
+                    "inverse-surface": "#33302d",
+                    "surface-variant": "#e9e1dd",
+                    "on-tertiary-fixed": "#410004",
+                    "on-secondary-container": "#684000",
+                    "on-primary-fixed": "#25005a",
+                    "on-tertiary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#930013",
+                    "surface-container-highest": "#e9e1dd",
+                    "tertiary-fixed-dim": "#ffb3ad",
+                    "on-primary-container": "#ede0ff",
+                    "surface": "#fff8f5",
+                    "error-container": "#ffdad6",
+                    "outline": "#7b7487",
+                    "surface-bright": "#fff8f5",
+                    "tertiary-container": "#c6252b",
+                    "primary-fixed": "#eaddff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-fixed": "#2a1700",
+                    "on-background": "#1e1b19",
+                    "secondary-container": "#fea619",
+                    "primary-container": "#7c3aed"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "20px",
+                    "lg": "24px",
+                    "sm": "8px",
+                    "xs": "4px",
+                    "container-margin-desktop": "40px",
+                    "unit": "4px",
+                    "xl": "32px",
+                    "container-margin-mobile": "16px",
+                    "md": "16px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "title-lg": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .video-card-glow:hover {
+            box-shadow: 0 4px 20px -2px rgba(99, 14, 212, 0.15);
+        }
+        .heatmap-bar {
+            background: linear-gradient(90deg, #630ed4 0%, #fea619 50%, #ba1a1a 100%);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="hidden md:flex fixed top-0 w-full h-16 items-center justify-between px-container-margin-desktop z-50 bg-background dark:bg-surface-container-lowest border-b border-outline-variant">
+<div class="flex items-center gap-8">
+<a class="font-headline-lg text-headline-lg font-bold text-primary dark:text-primary-fixed-dim" href="../discovery_desktop/code.html">VidsAI</a>
+<nav class="flex items-center gap-6">
+<a class="text-on-surface-variant dark:text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 font-label-md text-label-md" href="../short_video_feed_desktop/code.html">Trang chủ</a>
+<a class="text-primary dark:text-primary-fixed-dim font-bold border-b-2 border-primary dark:border-primary-fixed-dim pb-1 font-label-md text-label-md" href="../discovery_desktop/code.html">Khám phá</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 font-label-md text-label-md" href="../personal_library_desktop/code.html">Thư viện</a>
+</nav>
+</div>
+<div class="flex-1 max-w-xl px-12">
+<form action="../multimodal_search_desktop/code.html" class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-full py-2.5 pl-12 pr-12 focus:ring-2 focus:ring-primary/20 text-body-md font-body-md transition-all" placeholder="Tìm kiếm video, hình ảnh, hoặc khoảnh khắc..." type="text"/>
+<button type="submit" class="absolute right-4 top-1/2 -translate-y-1/2 text-primary hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">image</span>
+</button>
+</form>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container rounded-full transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container rounded-full transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined">history</span>
+</button>
+<div class="relative">
+  <div onclick="toggleProfileMenu()" class="w-10 h-10 rounded-full overflow-hidden border-2 border-surface-variant cursor-pointer active:scale-95 duration-150">
+    <img class="w-full h-full object-cover user-avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbUtwnmVp4B5-LZtW2OXiSsDioqS4HeOO50PE7zvgrA-k2HRqxhItD2sCGkg4ywTd-tD2DqP-ee4Je8-qR1nWxlAO_JWKbaCdJyFjbk6N-A_Bq2GHUPy21VnWJVfTRTDhq63zhz6Rxzq8t_6LYBv7s1MsG7YYnuDtx4jur8rWmDFi45qmTOEsNU7amdvRhoHdsoxYx92F3gS2neYMfYUVxfeS9v2GsgyLxlbYbUf3awQpOh7pzYOG0zHc8e-9-Sxm4ehkx4RZPtDU"/>
+  </div>
+  <!-- Dropdown Menu -->
+  <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white border border-outline-variant rounded-xl shadow-lg py-2 hidden z-[100]">
+    <div class="px-4 py-2 border-b border-outline-variant/50">
+      <p class="text-sm font-bold text-on-surface truncate">Digital Creator</p>
+      <p class="text-xs text-on-surface-variant truncate">user@vidsai.com</p>
+    </div>
+    <a href="../personal_library_desktop/code.html" class="block px-4 py-2 text-sm text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors">Thư viện của tôi</a>
+    <button onclick="logout()" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors flex items-center gap-2">
+      <span class="material-symbols-outlined text-[18px]">logout</span>
+      <span>Đăng xuất</span>
+    </button>
+  </div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="pt-20 pb-24 md:pb-8 px-container-margin-mobile md:px-container-margin-desktop max-w-[1440px] mx-auto">
+<!-- Category Filters -->
+<section class="flex items-center gap-3 overflow-x-auto hide-scrollbar py-4 mb-6">
+<button class="bg-primary text-on-primary px-5 py-2 rounded-full font-label-md text-label-md whitespace-nowrap active:scale-95 transition-transform">Tất cả</button>
+<button class="bg-surface-container hover:bg-surface-variant text-on-surface-variant px-5 py-2 rounded-full font-label-md text-label-md whitespace-nowrap active:scale-95 transition-transform">Công nghệ</button>
+<button class="bg-surface-container hover:bg-surface-variant text-on-surface-variant px-5 py-2 rounded-full font-label-md text-label-md whitespace-nowrap active:scale-95 transition-transform">Âm nhạc</button>
+<button class="bg-surface-container hover:bg-surface-variant text-on-surface-variant px-5 py-2 rounded-full font-label-md text-label-md whitespace-nowrap active:scale-95 transition-transform">Trò chơi</button>
+<button class="bg-surface-container hover:bg-surface-variant text-on-surface-variant px-5 py-2 rounded-full font-label-md text-label-md whitespace-nowrap active:scale-95 transition-transform">Giáo dục</button>
+<button class="bg-surface-container hover:bg-surface-variant text-on-surface-variant px-5 py-2 rounded-full font-label-md text-label-md whitespace-nowrap active:scale-95 transition-transform">Thiên nhiên</button>
+<button class="bg-surface-container hover:bg-surface-variant text-on-surface-variant px-5 py-2 rounded-full font-label-md text-label-md whitespace-nowrap active:scale-95 transition-transform">Ẩm thực</button>
+<button class="bg-surface-container hover:bg-surface-variant text-on-surface-variant px-5 py-2 rounded-full font-label-md text-label-md whitespace-nowrap active:scale-95 transition-transform">Thể thao</button>
+</section>
+<!-- Section: Highlight Mới (Featured Layout) -->
+<section class="mb-12">
+<div class="flex items-center justify-between mb-6">
+<h2 class="font-headline-md text-headline-md text-on-surface">Highlight mới</h2>
+<button class="text-primary font-label-md text-label-md flex items-center gap-1 hover:underline">
+                    Xem tất cả <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+<!-- Asymmetric Bento-style Grid for Highlights -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6 h-auto md:h-[520px]">
+<!-- Main Featured Video -->
+<div class="md:col-span-8 group relative overflow-hidden rounded-xl bg-surface-container-low video-card-glow transition-all">
+<div class="aspect-video w-full h-full relative cursor-pointer" onclick="window.location.href='../video_detail_ai_player_animated_desktop/code.html'">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A breathtaking cinematic landscape of a futuristic city at dusk, featuring sleek architectural curves and soft violet neon accents. The lighting is ethereal and warm, creating a high-end cinematic feel that dominates the frame with professional clarity and deep focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIPuvSrpwvmMlG3tF72Te1wSGBS8h9nPgEXu6vAEUgjISKgAnV6KeARU3DQEqeDGUKz2dDhf719naKBGm5t6ylJcOY7icbayXXoGqrjQ78Ag3pFMTyRwjDWO4XoJ2vLmLHiW8yWUgjJiHrDdnOXDiyUPBMjSC5YZn5sDDzR9JGptBu9g9lJ0rxGTXJZqnRQBVAZey9yyf2GX93TnX8LZeygv4ovtnVlgQ-pMfSEOr_8fu6Q54ye7fEEAxLiL2kMQqBGnAnQdsonqQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+<!-- AI Heatmap Overlay -->
+<div class="absolute bottom-0 left-0 w-full px-6 pb-6">
+<div class="flex items-center gap-3 mb-4">
+<span class="bg-primary/90 text-on-primary px-3 py-1 rounded text-label-sm font-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">auto_awesome</span> AI Highlight
+                                </span>
+<span class="text-white/80 text-label-sm font-label-sm">4:25 / 12:40</span>
+</div>
+<div class="h-1.5 w-full bg-white/20 rounded-full overflow-hidden relative mb-4">
+<div class="heatmap-bar h-full w-2/3 rounded-full relative">
+<div class="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-lg"></div>
+</div>
+</div>
+<h3 class="text-white font-headline-md text-headline-md mb-2">Tương lai của Trí tuệ Nhân tạo trong Điện ảnh</h3>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-primary-fixed flex items-center justify-center text-[10px] font-bold">VS</div>
+<span class="text-white/90 text-label-md font-label-md">Vision Studio</span>
+</div>
+<span class="text-white/60 text-label-sm font-label-sm">1.2M lượt xem • 2 giờ trước</span>
+</div>
+</div>
+<!-- Hover Play Action -->
+<div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<div class="w-16 h-16 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center border border-white/30 text-white">
+<span class="material-symbols-outlined text-[40px]" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Secondary Highlights Side Column -->
+<div class="md:col-span-4 flex flex-col gap-6">
+<div class="flex-1 group relative rounded-xl overflow-hidden bg-surface-container-low video-card-glow transition-all cursor-pointer" onclick="window.location.href='../video_detail_ai_player_animated_desktop/code.html'">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A vibrant, high-energy close-up of a digital artist's workspace, filled with glowing tablets and colorful interface elements. The lighting is dynamic with a mix of cool blues and warm amber tones, creating a sense of creative intensity and professional focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXxJvT4iBqFJZDOhX63MxShw93VaZGqSbAyQE1CD8f_nQLhQVVZ1LOdynqYKZlm1sf6vWdSky0E1zFPf_uM6RPHGtNiRv-QKgOgl9HI8SzwuO3It7OgZox9keQO3BR4UStCFPXbcj_0OoiNBjxX4raegUWsqQQYQiNrpXwpck03PkBbwaIn8GM23PmWJELkIuHhYKoSu-xWO6TyosEd2-8C4ladhdr9Xn2SqRDSeSPlyCG9u_Da4Epy2f_6U20eUrkEUqkqbF0IWs"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+<div class="absolute bottom-4 left-4 right-4">
+<span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded text-[10px] font-bold mb-2 inline-block">MỚI</span>
+<h4 class="text-white font-title-lg text-title-lg line-clamp-1">Kỹ thuật Render 2024</h4>
+<p class="text-white/70 text-label-sm font-label-sm">Digital Art Pro • 450K lượt xem</p>
+</div>
+</div>
+<div class="flex-1 group relative rounded-xl overflow-hidden bg-surface-container-low video-card-glow transition-all cursor-pointer" onclick="window.location.href='../video_detail_ai_player_animated_desktop/code.html'">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="An atmospheric aerial shot of a dense pine forest shrouded in morning mist, with golden sunlight breaking through the canopy. The aesthetic is serene, organic, and professional, using a natural palette of deep greens and soft golds to evoke a sense of calm intelligence." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbFCXTJeJf8dyZv-2R6wzMkCYKgrBdVHyymyXoG00UP7y8pDbHwVmQCv67fNXMS9E1yEeHMn9rs8FNVejbnzyoZdg2QyxhamgY2QtgPTzSTp8ZyBKJDbxOZhnl4af8mRQhCACfQJ8XvRxq57v5b3y5Q7tUGvkquV9iSLxVMhkw8UhJIj7a9Z9qbZNYze_CvbAM_XMFdf5QW-yM_qcD79zNf9Eu2yTQEUqVoKdyBzQtfD0LU3BIWxVrwRwqb6eGH_4E_eMlDsc9stE"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+<div class="absolute bottom-4 left-4 right-4">
+<span class="bg-primary/90 text-on-primary px-2 py-0.5 rounded text-[10px] font-bold mb-2 inline-block">AI MOMENT</span>
+<h4 class="text-white font-title-lg text-title-lg line-clamp-1">Khám phá Thiên nhiên 4K</h4>
+<p class="text-white/70 text-label-sm font-label-sm">Earth Lens • 890K lượt xem</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: Đang thịnh hành (Horizontal Row) -->
+<section class="mb-12">
+<div class="flex items-center justify-between mb-6">
+<h2 class="font-headline-md text-headline-md text-on-surface">Đang thịnh hành</h2>
+<div class="flex gap-2">
+<button class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center hover:bg-surface-container transition-colors active:scale-90">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center hover:bg-surface-container transition-colors active:scale-90">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="flex gap-6 overflow-x-auto hide-scrollbar pb-4">
+<!-- Trend Card 1 -->
+<div class="flex-none w-[320px] group cursor-pointer" onclick="window.location.href='../video_detail_ai_player_animated_desktop/code.html'">
+<div class="aspect-video relative rounded-xl overflow-hidden mb-3">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A minimalist tech review setup with a sleek smartphone on a matte gray surface, surrounded by soft bokeh lighting. The palette is professional and clean, using neutral tones and sharp details to convey a high-quality product showcase atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKwlJQgo7tNLzj4PvO5c_DfY2GLnjFJtkuF9PaW0KSa0aADV0GsmKiy9OqMLHjd94uJfFQiIYdrLsfigImciLkyeLHaXbyjqj8FWZHQXEj2VstglU1ZpQpo82HaI-p4QtEaWN_cQWVWWxk7tyLm1WVr-LDGnKUjEQXZ-lPBoCaYqa4rbA52UTUMbgk-hYya8YPuWfJy0Ik8wZ808AeHxsx-yBA4VSWS53pQOP3tzFDX8QbYfZWktITctWyv9VG8Ap2tugHhbfsJr0"/>
+<div class="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">15:30</div>
+<div class="absolute top-2 left-2">
+<span class="bg-primary/90 text-on-primary px-2 py-0.5 rounded text-[10px] font-bold flex items-center gap-1 shadow-lg">
+<span class="material-symbols-outlined text-[12px]">auto_awesome</span> AI Highlight
+                            </span>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex-none"></div>
+<div class="flex-1">
+<h3 class="font-title-lg text-title-lg text-on-surface line-clamp-2 leading-tight mb-1 group-hover:text-primary transition-colors">Đánh giá Smartphone gập thế hệ mới: Đỉnh cao công nghệ</h3>
+<p class="text-on-surface-variant font-label-md text-label-md">TechReview VN</p>
+<p class="text-on-surface-variant font-label-sm text-label-sm">256K lượt xem • 1 ngày trước</p>
+</div>
+</div>
+</div>
+<!-- Trend Card 2 -->
+<div class="flex-none w-[320px] group cursor-pointer" onclick="window.location.href='../video_detail_ai_player_animated_desktop/code.html'">
+<div class="aspect-video relative rounded-xl overflow-hidden mb-3">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A dynamic stage performance with a lead singer silhouetted against a wall of purple and magenta stage lights. The image captures motion blur and lens flares, creating a high-energy and emotional concert atmosphere in a professional digital style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIPJb_DxCqY1TjkhP2oLwXKOxXlmJWHPvUp4ElorcQh2K8dJbtYAauR2y0r1yYxnWSHb4jkWo7yTxSP5Zt8lDy1EjaDSWDU7dkfEIJZH3S0poGAZcViABHtaRqCCmzeXwBOJck2K_LqiG7F7C2SMSWrO6PyhjedI2lmuRtsBZNjYqZb1XGAL4hZ46N5tPukJncMCf8rWpCNET9qGQOmljh9k4D5OHRRFmNbnjIlNxV9XO3HunIK-atCGxgzhzkqIts4KHcY05IzFI"/>
+<div class="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">04:12</div>
+</div>
+<div class="flex gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex-none"></div>
+<div class="flex-1">
+<h3 class="font-title-lg text-title-lg text-on-surface line-clamp-2 leading-tight mb-1 group-hover:text-primary transition-colors">MV Mới: Khoảng Cách Của Chúng Ta (Official Audio)</h3>
+<p class="text-on-surface-variant font-label-md text-label-md">Music Station</p>
+<p class="text-on-surface-variant font-label-sm text-label-sm">1.8M lượt xem • 5 giờ trước</p>
+</div>
+</div>
+</div>
+<!-- Trend Card 3 -->
+<div class="flex-none w-[320px] group cursor-pointer" onclick="window.location.href='../video_detail_ai_player_animated_desktop/code.html'">
+<div class="aspect-video relative rounded-xl overflow-hidden mb-3">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="An exquisite high-end culinary plating of a modern dessert, featuring vibrant fruit purées and delicate chocolate sculptures. The lighting is professional studio-grade, emphasizing textures and colors against a dark, sophisticated backdrop." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvrrlQTOyiP4vAXYkgQSMdEB58LQFiw_h4-7-WaEVsS_Dc4Ra-wUFY-d8p5Zncti7-1bbFISUOThpv7ZwsX2h26g5N6_FEikWpO4Y8fNjtEq5oRCNYrAMxgGNsoNE4gcSIOyKucZlaAVvui-KERRsKfpedtn3e6066SIm-dbx6OM8JM63-MO9prOQ6frxDQGDVc7c30yhW1LaPx2GjC7tpSmLYf9tr0VHRTToRt40k9gKfj40NNOzagEOpFzNrY8bEjgkxgimkW4w"/>
+<div class="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">12:05</div>
+<div class="absolute top-2 left-2">
+<span class="bg-primary/90 text-on-primary px-2 py-0.5 rounded text-[10px] font-bold flex items-center gap-1 shadow-lg">
+<span class="material-symbols-outlined text-[12px]">auto_awesome</span> AI Highlight
+                            </span>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex-none"></div>
+<div class="flex-1">
+<h3 class="font-title-lg text-title-lg text-on-surface line-clamp-2 leading-tight mb-1 group-hover:text-primary transition-colors">Công thức tráng miệng 5 sao tại nhà</h3>
+<p class="text-on-surface-variant font-label-md text-label-md">Chef Minh Master</p>
+<p class="text-on-surface-variant font-label-sm text-label-sm">112K lượt xem • 3 ngày trước</p>
+</div>
+</div>
+</div>
+<!-- Trend Card 4 -->
+<div class="flex-none w-[320px] group cursor-pointer" onclick="window.location.href='../video_detail_ai_player_animated_desktop/code.html'">
+<div class="aspect-video relative rounded-xl overflow-hidden mb-3">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A professional gamer's setup with multiple monitors displaying a high-speed racing game, illuminated by atmospheric RGB lighting in shades of purple and teal. The scene is sharp, modern, and captures the excitement of competitive e-sports." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeDazueipZm_ztJglxhhtKMAmYx9gYdVmX2LwA_mk2pfrt14lkRslymK7SsxQ-SPZKDtCWTcvUWA5L5nBq8f7PAefNUz79tgtL95Ig_bx6yOlLBUcq-NjbMOPYTZ8u0yfZhv_wvLEtA20afOgAZCmUXxJhWIdWtFMzHXwL05HYQZxtJYqtpuJPwHBH4zxmkRkgr0TGBmnx5G5AXtBMTJ7KVUviToM1gbEp04eVDXlwKciZoVVacWkmvJpxfRRQXBVWsGrJ35YKJVY"/>
+<div class="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">22:45</div>
+</div>
+<div class="flex gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex-none"></div>
+<div class="flex-1">
+<h3 class="font-title-lg text-title-lg text-on-surface line-clamp-2 leading-tight mb-1 group-hover:text-primary transition-colors">Chung kết E-Sports Thế giới: Những pha xử lý không tưởng</h3>
+<p class="text-on-surface-variant font-label-md text-label-md">GameLive VN</p>
+<p class="text-on-surface-variant font-label-sm text-label-sm">3.4M lượt xem • 2 ngày trước</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: Dành cho bạn (Standard Grid) -->
+<section class="mb-12">
+<div class="flex items-center justify-between mb-6">
+<h2 class="font-headline-md text-headline-md text-on-surface">Dành cho bạn</h2>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+<!-- Reusable Grid Card Pattern -->
+<script>
+                    const renderCard = (title, author, views, time, highlight = false) => {
+                        return `
+                        <div class="group cursor-pointer">
+                            <div class="aspect-video relative rounded-xl overflow-hidden mb-3 bg-surface-container-low">
+                                <img src="placeholder" data-alt="A professional high-definition lifestyle image related to ${title}, styled with a refined minimalist aesthetic and soft lighting. The color palette incorporates professional neutral tones and subtle pops of primary violet to maintain brand consistency." class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                ${highlight ? `
+                                <div class="absolute top-2 left-2">
+                                    <span class="bg-primary/90 text-on-primary px-2 py-0.5 rounded text-[10px] font-bold flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-[12px]">auto_awesome</span> AI Highlight
+                                    </span>
+                                </div>` : ''}
+                            </div>
+                            <div class="flex gap-3">
+                                <div class="w-9 h-9 rounded-full bg-surface-variant flex-none"></div>
+                                <div class="flex-1">
+                                    <h3 class="font-label-md text-label-md text-on-surface line-clamp-2 leading-tight mb-1 group-hover:text-primary transition-colors">${title}</h3>
+                                    <p class="text-on-surface-variant text-[13px]">${author}</p>
+                                    <p class="text-on-surface-variant text-[12px]">${views} lượt xem • ${time}</p>
+                                </div>
+                            </div>
+                        </div>`;
+                    }
+                </script>
+<!-- Cards (Manual for prompt compliance) -->
+<div class="group cursor-pointer" onclick="window.location.href='../video_detail_ai_player_animated_desktop/code.html'">
+<div class="aspect-video relative rounded-xl overflow-hidden mb-3 bg-surface-container-low">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A futuristic laboratory setting with soft blue lighting and high-tech equipment. A scientist in a white coat is interacting with a glowing holographic display, creating a sense of advanced research and professional scientific exploration." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgcIPRBTLi9oskuNjSX3e5Pozu87AM-aUhqPoe7kAHP13yPl-5vj6nUXp1bEbKoKCwXb3fTUDVAxYXJRPx4IFu1bCqH5NRGgg3RND_QYgbOYKV190dqg0XCkIqfse4MVpidF0AIhJqrVZlGu5lwKl8pt06-zD94dX2a50oKr0WsVaF5Vochh1_FQ08cH3PrPfdjPmDdhaav-NFncQ5k6juUz5owMmznbXXya5dHWeoER3k2QI0TYlqL357ce6IroKZa_O-V1sDs9Q"/>
+<div class="absolute top-2 left-2">
+<span class="bg-primary/90 text-on-primary px-2 py-0.5 rounded text-[10px] font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">auto_awesome</span> AI Highlight
+                            </span>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="w-9 h-9 rounded-full bg-surface-variant flex-none"></div>
+<div class="flex-1">
+<h3 class="font-label-md text-label-md text-on-surface line-clamp-2 leading-tight mb-1 group-hover:text-primary transition-colors">Khám phá vắc xin thế hệ mới bằng AI</h3>
+<p class="text-on-surface-variant text-[13px]">Khoa học 360</p>
+<p class="text-on-surface-variant text-[12px]">42K lượt xem • 12 giờ trước</p>
+</div>
+</div>
+</div>
+<div class="group cursor-pointer" onclick="window.location.href='../video_detail_ai_player_animated_desktop/code.html'">
+<div class="aspect-video relative rounded-xl overflow-hidden mb-3 bg-surface-container-low">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A serene workspace with a minimalist desk, an open laptop, and a steaming cup of coffee next to a green plant. The soft morning light creates a peaceful, focused atmosphere for a productivity-themed video." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfa8JogyDeUMlKy7kf83DGQsGtSEngTsyYpsa2PycgA7Yht_hK-f2W9hMLiPpzo00zfbzCu2lbA_SWGJOwasc0WdW9f8RsmTCON03-0x5aworFoO0oSqbLgPC4fMGlOhd4EHDb1CdoPDh2zo3MZQm2i89FaMkKWCYlEXi_fkLKKgpNXVa9LZAdYoaWRbs0t1nHVOiUe-XicR2LoUmY849kZWMRMHKPOMFYvweNF8Roe6QffsB1Gm0LrtZv3-wJL_TACW8U2bwRgSM"/>
+</div>
+<div class="flex gap-3">
+<div class="w-9 h-9 rounded-full bg-surface-variant flex-none"></div>
+<div class="flex-1">
+<h3 class="font-label-md text-label-md text-on-surface line-clamp-2 leading-tight mb-1 group-hover:text-primary transition-colors">10 thói quen giúp bạn làm việc hiệu quả hơn</h3>
+<p class="text-on-surface-variant text-[13px]">Lối sống Tối giản</p>
+<p class="text-on-surface-variant text-[12px]">128K lượt xem • 2 ngày trước</p>
+</div>
+</div>
+</div>
+<div class="group cursor-pointer" onclick="window.location.href='../video_detail_ai_player_animated_desktop/code.html'">
+<div class="aspect-video relative rounded-xl overflow-hidden mb-3 bg-surface-container-low">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A wide-angle landscape of the Swiss Alps during winter, with snow-capped peaks and a small wooden cabin in the foreground. The lighting is crisp and cool, emphasizing the pristine beauty and professional quality of a high-end travel documentary." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBM76bRKScOMoRUwmXSfnL2Buni_QKhv198873CgOtm9_E3AOoT3xNsG8380vP5kFNIC6pdQsgD3U8Tl16q6z_k1OjxTrpq8bK0VxVouO7e91D0_B__3OfqdJuxxdczkqNaufYLt8-UxJZS5DIuDxk_cudTnwhcBZI2zFOhvdNbZhNgha2FRzBCJFzPf0SxZXafVdad4KVTUlKAvT66vhEDovwm_LelbgUqVoTKkLesH_ijIBR2JQLaZtmUEI56J42v7ve2xDhEUAU"/>
+<div class="absolute top-2 left-2">
+<span class="bg-primary/90 text-on-primary px-2 py-0.5 rounded text-[10px] font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">auto_awesome</span> AI Highlight
+                            </span>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="w-9 h-9 rounded-full bg-surface-variant flex-none"></div>
+<div class="flex-1">
+<h3 class="font-label-md text-label-md text-on-surface line-clamp-2 leading-tight mb-1 group-hover:text-primary transition-colors">Hành trình xuyên dãy Alps: Vẻ đẹp hùng vĩ</h3>
+<p class="text-on-surface-variant text-[13px]">Traveler VN</p>
+<p class="text-on-surface-variant text-[12px]">75K lượt xem • 1 tuần trước</p>
+</div>
+</div>
+</div>
+<div class="group cursor-pointer" onclick="window.location.href='../video_detail_ai_player_animated_desktop/code.html'">
+<div class="aspect-video relative rounded-xl overflow-hidden mb-3 bg-surface-container-low">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A close-up of a modern electric vehicle's interior dashboard, featuring a large touch display and refined leather stitching. The lighting is soft and luxurious, highlighting the premium craftsmanship and technological innovation of a high-end car review." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUGq0rJ6Q6IqFP7YWrPvb8s1SuaQc08bzkcbBVB86nH_uemOnvt6sVifPe0QkcYOMBDCXJmZGudnWS5MzMC6p_6FbmX7NE6qQNI8tCSJqEymPSXiGk2vJN29-b2vL-kw30LX0Vh5YjLcmFwZk6VubLv48tyzdBWOL5-FaIm2pFKXh-3yMeNx3SBcx2QO1H_qIcM4Xgw3nQi-IrTwAGIrj_ZQNW6Jixtg4nGa7ZWI3NemH3kOfksWHMhRTAQHQMWqUkcDFJkKah32g"/>
+</div>
+<div class="flex gap-3">
+<div class="w-9 h-9 rounded-full bg-surface-variant flex-none"></div>
+<div class="flex-1">
+<h3 class="font-label-md text-label-md text-on-surface line-clamp-2 leading-tight mb-1 group-hover:text-primary transition-colors">Xe điện 2024: Liệu có đáng để đầu tư?</h3>
+<p class="text-on-surface-variant text-[13px]">AutoWorld VN</p>
+<p class="text-on-surface-variant text-[12px]">205K lượt xem • 4 ngày trước</p>
+</div>
+</div>
+</div>
+<!-- Extra row for grid density -->
+<div class="group cursor-pointer" onclick="window.location.href='../video_detail_ai_player_animated_desktop/code.html'">
+<div class="aspect-video relative rounded-xl overflow-hidden mb-3 bg-surface-container-low">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="An energetic urban dance performance in an industrial warehouse setting with dramatic spotlighting and smoke effects. The image is dynamic and professionally captured, focusing on the movement and artistic expression of the dancers." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAD6MV01JUf5Ry9UY1Qz5p5h6rSLw_PIbkBi_SuxzKBbaAciuVCfgLZfP4CxVgk_PUSNkMvy74VIrFUlHkkEXy1I70ZS93HSsu9N75cDXxXeCBmsjyFBR3bwXxxi-EVZe1ZE9d_I5uKu6X1P_t48qA3wVdLK9_avLNGqhZ61qwY2uwMuyXIKeLSsR-OaTs36cfXSWwz04Gla9hNhk6AH0X-Ch7pytJ2YzA8YFndg52YgkAGMlhUnF__PKw_ZH9Z63yffyahC3lS5-M"/>
+</div>
+<div class="flex gap-3">
+<div class="w-9 h-9 rounded-full bg-surface-variant flex-none"></div>
+<div class="flex-1">
+<h3 class="font-label-md text-label-md text-on-surface line-clamp-2 leading-tight mb-1 group-hover:text-primary transition-colors">Urban Dance: Phá bỏ mọi giới hạn</h3>
+<p class="text-on-surface-variant text-[13px]">Dance Hub</p>
+<p class="text-on-surface-variant text-[12px]">18K lượt xem • 2 giờ trước</p>
+</div>
+</div>
+</div>
+<div class="group cursor-pointer" onclick="window.location.href='../video_detail_ai_player_animated_desktop/code.html'">
+<div class="aspect-video relative rounded-xl overflow-hidden mb-3 bg-surface-container-low">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A high-tech coding workspace with dark mode interfaces on a widescreen monitor, accented by soft violet neon light strips in the background. The aesthetic is clean, professional, and tailored for a software development tutorial context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtl0ydg-uHIqz__i4-mXKfU0Vd7BnVABccY0Mhw33TWW_iwJOHpQ5H7iBLwWJgT2J8Lw95i00pBKIz07tj_pJWLmAol1Soxv_GGr1b4hv_nG_KKOfgK4Vojew2aPvubu7bcyLoW5Wswql0XeiqNN9vDRBZnFmi4_mYeT8PiJHmZfxcQIWCfF4qw_uFHlMt8nkd3edXaUGpl6mukPS5D3nHrrqMor-ASdA0JoZXW2s_1a1Gg5xCoZh0U6Wjo1FgsuYjEEgcqEOzgi4"/>
+<div class="absolute top-2 left-2">
+<span class="bg-primary/90 text-on-primary px-2 py-0.5 rounded text-[10px] font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">auto_awesome</span> AI Highlight
+                            </span>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="w-9 h-9 rounded-full bg-surface-variant flex-none"></div>
+<div class="flex-1">
+<h3 class="font-label-md text-label-md text-on-surface line-clamp-2 leading-tight mb-1 group-hover:text-primary transition-colors">Học Machine Learning từ con số 0</h3>
+<p class="text-on-surface-variant text-[13px]">Code Academy</p>
+<p class="text-on-surface-variant text-[12px]">92K lượt xem • 5 ngày trước</p>
+</div>
+</div>
+</div>
+<div class="group cursor-pointer" onclick="window.location.href='../video_detail_ai_player_animated_desktop/code.html'">
+<div class="aspect-video relative rounded-xl overflow-hidden mb-3 bg-surface-container-low">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A breathtaking sunset over a tropical island with turquoise waters and white sand. The lighting is warm and golden, creating a serene and luxurious travel vibe that feels like a high-quality cinematic vacation film." src="https://lh3.googleusercontent.com/aida-public/AB6AXuACr_Z-kXO_cBKUulo6u9a8_KUNSkjSYVtwjRgLO3oBoB13lyYeVlrTyh_1Yushle2oeolrhqszyrsc_ExBmvDFo5wAT2dD_ljOVVMFq5X_jW0qmzdkxEy9QLOr4csxeYeCba5bpiC-E_awSrV88sWeSaitdI5TAthbMpkjdV9T9ppsdUy88IdoTnSx9_zkFehcZf88T-16hDzWpk11_Y7QQiYPOTa_5sP0eN0L5y02brLA-9EjoGAwevKXDm9wRkeoFwaNQ5-WB8U"/>
+</div>
+<div class="flex gap-3">
+<div class="w-9 h-9 rounded-full bg-surface-variant flex-none"></div>
+<div class="flex-1">
+<h3 class="font-label-md text-label-md text-on-surface line-clamp-2 leading-tight mb-1 group-hover:text-primary transition-colors">Thiên đường nghỉ dưỡng tại Phú Quốc</h3>
+<p class="text-on-surface-variant text-[13px]">Vietnam Discovery</p>
+<p class="text-on-surface-variant text-[12px]">54K lượt xem • 3 ngày trước</p>
+</div>
+</div>
+</div>
+<div class="group cursor-pointer" onclick="window.location.href='../video_detail_ai_player_animated_desktop/code.html'">
+<div class="aspect-video relative rounded-xl overflow-hidden mb-3 bg-surface-container-low">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A macro shot of a complex mechanical watch movement with intricate gears and springs. The lighting is sharp and technical, emphasizing the precision and craftsmanship of a luxury timepiece." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6PELsJ00ahiUh_RciIphUC8S1g-QE9gbjnEQ24XEAvOzg-zaFxPLYYaKWDW65nnDpeYQzWS_x9dY3xvCJM1l1Cw4K4gVTDwLNT4kdG7_5MVz_aT24kn0MqOamRk-pMLD54q6a9xQiyPkUD9apV2Q1iEfbMFW2ftOntAC-ipXb7ABKWEvJut-rHY_UpfjFocKXFcxX7eCvJDpLWScXHzXPgsVRRQYj1giQ-G4TburORWdaceSyCXmZL1RV8KrERgdEDNIR5vvF5BY"/>
+<div class="absolute top-2 left-2">
+<span class="bg-primary/90 text-on-primary px-2 py-0.5 rounded text-[10px] font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">auto_awesome</span> AI Highlight
+                            </span>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="w-9 h-9 rounded-full bg-surface-variant flex-none"></div>
+<div class="flex-1">
+<h3 class="font-label-md text-label-md text-on-surface line-clamp-2 leading-tight mb-1 group-hover:text-primary transition-colors">Nghệ thuật chế tác đồng hồ cơ khí</h3>
+<p class="text-on-surface-variant text-[13px]">Luxe Life</p>
+<p class="text-on-surface-variant text-[12px]">31K lượt xem • 1 ngày trước</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar (Mobile only, suppressed for Desktop view as per instructions) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-safe h-[56px] bg-surface-container dark:bg-surface-container-high shadow-sm">
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-3 py-1">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm">Trang chủ</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-primary-container dark:bg-primary-fixed-dim text-on-primary-container dark:text-on-primary-fixed-variant rounded-xl px-3 py-1">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">explore</span>
+<span class="font-label-sm text-label-sm">Khám phá</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-3 py-1">
+<span class="material-symbols-outlined">video_library</span>
+<span class="font-label-sm text-label-sm">Thư viện</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-3 py-1">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm">Cá nhân</span>
+</button>
+</nav>
+<script>
+        // Micro-interactions and effects
+        document.querySelectorAll('.video-card-glow').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-4px)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Search bar activation effect
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('shadow-lg');
+            searchInput.parentElement.classList.add('scale-[1.02]');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('shadow-lg');
+            searchInput.parentElement.classList.remove('scale-[1.02]');
+        });
+
+        function toggleProfileMenu() {
+            const dropdown = document.getElementById('profile-dropdown');
+            dropdown.classList.toggle('hidden');
+        }
+        document.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('profile-dropdown');
+            const avatar = document.querySelector('.user-avatar');
+            if (dropdown && !dropdown.contains(e.target) && e.target !== avatar && !avatar.contains(e.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+        document.addEventListener('DOMContentLoaded', () => {
+            const userJson = localStorage.getItem('currentUser');
+            if (userJson) {
+                const user = JSON.parse(userJson);
+                const dropdownName = document.querySelector('#profile-dropdown p.font-bold');
+                const dropdownEmail = document.querySelector('#profile-dropdown p.text-xs');
+                if (dropdownName) dropdownName.textContent = user.name;
+                if (dropdownEmail) dropdownEmail.textContent = user.email;
+            }
+        });
+    </script>
+</body></html>

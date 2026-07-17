@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VidsAI - Chi tiết Video</title>
+<script>
+  if (!localStorage.getItem('currentUser')) {
+    window.location.href = '../login_desktop/code.html';
+  }
+  function logout() {
+    localStorage.removeItem('currentUser');
+    window.location.href = '../login_desktop/code.html';
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    const userJson = localStorage.getItem('currentUser');
+    if (userJson) {
+      const user = JSON.parse(userJson);
+      const avatars = document.querySelectorAll('.user-avatar');
+      avatars.forEach(avatarEl => {
+        if (user.avatar) {
+          avatarEl.src = user.avatar;
+        }
+      });
+    }
+  });
+</script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary": "#ffffff",
+                    "secondary-fixed-dim": "#ffb95f",
+                    "on-error": "#ffffff",
+                    "secondary-fixed": "#ffddb8",
+                    "on-error-container": "#93000a",
+                    "on-surface-variant": "#4a4455",
+                    "tertiary-fixed": "#ffdad7",
+                    "inverse-on-surface": "#f7efeb",
+                    "on-secondary-fixed-variant": "#653e00",
+                    "surface-dim": "#e0d8d5",
+                    "surface-container": "#f4ece8",
+                    "primary-fixed-dim": "#d2bbff",
+                    "error": "#ba1a1a",
+                    "outline-variant": "#ccc3d8",
+                    "surface-container-high": "#eee7e3",
+                    "tertiary": "#a20017",
+                    "secondary": "#855300",
+                    "on-surface": "#1e1b19",
+                    "background": "#fff8f5",
+                    "surface-container-low": "#faf2ee",
+                    "surface-tint": "#732ee4",
+                    "on-primary-fixed-variant": "#5a00c6",
+                    "on-tertiary-container": "#ffdfdc",
+                    "inverse-primary": "#d2bbff",
+                    "primary": "#630ed4",
+                    "inverse-surface": "#33302d",
+                    "surface-variant": "#e9e1dd",
+                    "on-tertiary-fixed": "#410004",
+                    "on-secondary-container": "#684000",
+                    "on-primary-fixed": "#25005a",
+                    "on-tertiary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#930013",
+                    "surface-container-highest": "#e9e1dd",
+                    "tertiary-fixed-dim": "#ffb3ad",
+                    "on-primary-container": "#ede0ff",
+                    "surface": "#fff8f5",
+                    "error-container": "#ffdad6",
+                    "outline": "#7b7487",
+                    "surface-bright": "#fff8f5",
+                    "tertiary-container": "#c6252b",
+                    "primary-fixed": "#eaddff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-fixed": "#2a1700",
+                    "on-background": "#1e1b19",
+                    "secondary-container": "#fea619",
+                    "primary-container": "#7c3aed"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "20px",
+                    "lg": "24px",
+                    "sm": "8px",
+                    "xs": "4px",
+                    "container-margin-desktop": "40px",
+                    "unit": "4px",
+                    "xl": "32px",
+                    "container-margin-mobile": "16px",
+                    "md": "16px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "title-lg": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .heatmap-bar {
+            transition: transform 0.2s ease;
+        }
+        .heatmap-bar:hover {
+            transform: scaleY(1.5);
+            filter: brightness(1.1);
+        }
+        .heatmap-peak {
+            animation: pulse-peak 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-peak {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        .highlight-active {
+            box-shadow: 0 0 15px rgba(124, 58, 237, 0.6);
+            background-color: #7c3aed !important;
+            transition: all 0.3s ease;
+        }
+        .transcript-container::-webkit-scrollbar {
+            width: 4px;
+        }
+        .transcript-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .transcript-container::-webkit-scrollbar-thumb {
+            background: #ccc3d8;
+            border-radius: 10px;
+        }
+        .custom-video-shadow {
+            box-shadow: 0 10px 40px -10px rgba(99, 14, 212, 0.15);
+        }
+        #heatmap-tooltip {
+            pointer-events: none;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen">
+<!-- TopNavBar (Shared Component) -->
+<header class="hidden md:flex fixed top-0 w-full h-16 items-center justify-between px-container-margin-desktop z-50 bg-background border-b border-outline-variant">
+<div class="flex items-center gap-xl">
+<a class="font-headline-lg text-headline-lg font-bold text-primary" href="../discovery_desktop/code.html">VidsAI</a>
+<nav class="flex items-center gap-lg">
+<a class="font-label-md text-label-md text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="../short_video_feed_desktop/code.html">Trang chủ</a>
+<a class="font-label-md text-label-md text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="../discovery_desktop/code.html">Khám phá</a>
+<a class="font-label-md text-label-md text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="../personal_library_desktop/code.html">Thư viện</a>
+</nav>
+</div>
+<div class="flex-1 max-w-xl px-lg">
+<form action="../multimodal_search_desktop/code.html" class="relative flex items-center bg-surface-container rounded-full px-md py-xs">
+<span class="material-symbols-outlined text-outline">search</span>
+<input class="bg-transparent border-none focus:ring-0 w-full text-label-md" placeholder="Tìm kiếm video hoặc nội dung AI..." type="text"/>
+<button type="submit" class="material-symbols-outlined text-outline cursor-pointer hover:text-primary">image</button>
+</form>
+</div>
+<div class="flex items-center gap-md">
+<button class="flex items-center justify-center p-2 text-on-surface-variant hover:text-primary transition-all active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="flex items-center justify-center p-2 text-on-surface-variant hover:text-primary transition-all active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+</button>
+<div class="relative">
+  <div onclick="toggleProfileMenu()" class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant cursor-pointer active:scale-95 duration-150">
+    <img class="w-full h-full object-cover user-avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEqYQ8NKIdjE-kPCbHpmjk-jollUulkQ493ARemitZYd46ur-liMJ-gjLpVQdh3jE488GoosDVZe9QNBT_-ZCnbN1l68R9eXXVe92SMZcQCYYKDsoRnydOzBWt3OKI9jyJ8jEOV_Gx2jH1AECc1oy5AO2WafDz8WeSox_8M0a-5COqFYKvtjXP02buA9IhioHEApCjFlYPm3Ur7rs8cz-TGDNmephdY5SYoEI0C0GqeiXGol7mrKzLkcqZdyusFCw3QRhEXBOU6Qw"/>
+  </div>
+  <!-- Dropdown Menu -->
+  <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white border border-outline-variant rounded-xl shadow-lg py-2 hidden z-[100]">
+    <div class="px-4 py-2 border-b border-outline-variant/50 flex flex-col items-start">
+      <p class="text-sm font-bold text-on-surface truncate">Digital Creator</p>
+      <p class="text-xs text-on-surface-variant truncate">user@vidsai.com</p>
+    </div>
+    <a href="../personal_library_desktop/code.html" class="block w-full text-left px-4 py-2 text-sm text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors">Thư viện của tôi</a>
+    <button onclick="logout()" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors flex items-center gap-2">
+      <span class="material-symbols-outlined text-[18px]">logout</span>
+      <span>Đăng xuất</span>
+    </button>
+  </div>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-20 pb-20 px-container-margin-desktop max-w-[1440px] mx-auto">
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Left Column: Video Player & Content (8 cols) -->
+<div class="col-span-8 flex flex-col gap-lg">
+<!-- Video Player Container -->
+<section class="relative bg-black rounded-xl overflow-hidden aspect-video custom-video-shadow group">
+<div class="absolute inset-0 flex items-center justify-center">
+<img class="w-full h-full object-cover opacity-80" data-alt="A cinematic widescreen video frame showing a futuristic workspace with high-end tech setups. The scene is illuminated with a sophisticated blend of soft warm light and professional violet ambient glows. In the background, large digital displays show generative AI data visualizations. The overall mood is focused, creative, and professional, maintaining a refined minimalist aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZPTR_7Ir5NxStnAlt3muWIoXukfgbRwAokuQzTRtX9FKUyR7Kuz4_ktt3RTH9o0efjEigyc16InWL0QmWNtnKeLtsRz4t6mYZeYc5jIa0F853tD2X4tUHDk9Lubi20nYWrUipuELRg_0r-R9mugSF0rfMqnPftyLPkrqy2UMlOE2-chL3IuKXuB73fbObG1ILDebrLoxdgaVWCAyi65XnBQOglgHAJElHWt11xJFue8cEXkpVZbX797Dczdusde-8FcX_3vu68yc"/>
+<button class="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</div>
+<!-- Floating Tooltip for Heatmap -->
+<div class="fixed hidden bg-surface-container-lowest text-on-surface px-3 py-1 rounded-lg text-label-sm shadow-xl border border-outline-variant font-bold transition-opacity duration-150" id="heatmap-tooltip">
+    98% Intensity
+</div>
+<!-- Bottom Controls & AI Heatmap -->
+<div class="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/80 to-transparent">
+<!-- AI Highlight Heatmap -->
+<div class="relative h-6 w-full flex items-end gap-[2px] mb-4 group/heatmap cursor-crosshair" id="heatmap-area">
+<!-- Heatmap bars -->
+<div class="flex-1 h-2 bg-primary/40 rounded-sm heatmap-bar" data-intensity="32%"></div>
+<div class="flex-1 h-3 bg-primary/50 rounded-sm heatmap-bar" data-intensity="45%"></div>
+<div class="flex-1 h-1 bg-primary/30 rounded-sm heatmap-bar" data-intensity="12%"></div>
+<div class="flex-1 h-4 bg-secondary-container rounded-sm heatmap-bar" data-intensity="68%"></div>
+<div class="flex-1 h-5 bg-secondary-container rounded-sm heatmap-bar" data-intensity="82%"></div>
+<div class="flex-1 h-2 bg-primary/40 rounded-sm heatmap-bar" data-intensity="28%"></div>
+<div class="flex-1 h-6 bg-error rounded-sm heatmap-bar heatmap-peak" data-intensity="95%"></div>
+<div class="flex-1 h-5 bg-error rounded-sm heatmap-bar heatmap-peak" data-intensity="98%"></div>
+<div class="flex-1 h-2 bg-primary/40 rounded-sm heatmap-bar" data-intensity="35%"></div>
+<div class="flex-1 h-3 bg-primary/50 rounded-sm heatmap-bar" data-intensity="42%"></div>
+<div class="flex-1 h-1 bg-primary/30 rounded-sm heatmap-bar" data-intensity="15%"></div>
+<div class="flex-1 h-1 bg-primary/30 rounded-sm heatmap-bar" data-intensity="18%"></div>
+<div class="flex-1 h-4 bg-secondary-container rounded-sm heatmap-bar" data-intensity="70%"></div>
+<div class="flex-1 h-6 bg-error rounded-sm heatmap-bar heatmap-peak" data-intensity="92%"></div>
+<div class="flex-1 h-2 bg-primary/40 rounded-sm heatmap-bar" data-intensity="25%"></div>
+<!-- Repeated blocks for visual representation -->
+<div class="flex-1 h-1 bg-primary/30 rounded-sm heatmap-bar" data-intensity="10%"></div>
+<div class="flex-1 h-3 bg-primary/50 rounded-sm heatmap-bar" data-intensity="40%"></div>
+<div class="flex-1 h-5 bg-secondary-container rounded-sm heatmap-bar" data-intensity="85%"></div>
+<div class="flex-1 h-4 bg-secondary-container rounded-sm heatmap-bar" data-intensity="72%"></div>
+<div class="flex-1 h-6 bg-error rounded-sm heatmap-bar heatmap-peak" data-intensity="99%"></div>
+</div>
+<div class="flex items-center justify-between text-white">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined cursor-pointer">skip_previous</span>
+<span class="material-symbols-outlined cursor-pointer">play_arrow</span>
+<span class="material-symbols-outlined cursor-pointer">skip_next</span>
+<span class="text-label-sm">03:45 / 12:20</span>
+</div>
+<div class="flex items-center gap-md">
+<button class="flex items-center gap-xs bg-primary px-4 py-1.5 rounded-full hover:bg-primary-container transition-all active:scale-95" id="highlight-toggle-btn">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span class="text-label-sm font-bold">Tự động phát Highlight</span>
+</button>
+<span class="material-symbols-outlined cursor-pointer">settings</span>
+<span class="material-symbols-outlined cursor-pointer">fullscreen</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Video Info & AI Summary -->
+<div class="flex flex-col gap-md">
+<div class="flex justify-between items-start">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-2">Sáng tạo tương lai: Cách Generative AI đang thay đổi ngành đồ họa</h2>
+<p class="text-on-surface-variant text-label-md">1.2tr lượt xem • 2 giờ trước</p>
+</div>
+<div class="flex gap-md">
+<button class="flex items-center gap-xs px-4 py-2 bg-surface-container rounded-full hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-lg">thumb_up</span>
+<span class="text-label-md">45k</span>
+</button>
+<button class="flex items-center gap-xs px-4 py-2 bg-surface-container rounded-full hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-lg">share</span>
+<span class="text-label-md">Chia sẻ</span>
+</button>
+</div>
+</div>
+<!-- AI Summary Card (Collapsible) -->
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-md overflow-hidden transition-all duration-300">
+<div class="flex items-center justify-between cursor-pointer" onclick="this.parentElement.classList.toggle('max-h-16');">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<h3 class="font-title-lg text-title-lg text-primary">Tóm tắt nội dung bằng AI</h3>
+</div>
+<span class="material-symbols-outlined transform transition-transform" id="summary-toggle">expand_more</span>
+</div>
+<div class="mt-4 flex flex-col gap-sm">
+<p class="text-body-md text-on-surface-variant">Video này khám phá sự giao thoa giữa nghệ thuật và thuật toán. Những điểm chính bao gồm:</p>
+<ul class="grid grid-cols-1 md:grid-cols-2 gap-md mt-2">
+<li class="flex items-start gap-sm bg-white p-3 rounded-lg border border-outline-variant/30">
+<span class="text-primary font-bold text-label-sm pt-1">01:20</span>
+<p class="text-label-md">Khái niệm cơ bản về Neural Networks trong xử lý hình ảnh.</p>
+</li>
+<li class="flex items-start gap-sm bg-white p-3 rounded-lg border border-outline-variant/30">
+<span class="text-primary font-bold text-label-sm pt-1">04:45</span>
+<p class="text-label-md">Demo các công cụ AI tạo hình ảnh phổ biến nhất hiện nay.</p>
+</li>
+<li class="flex items-start gap-sm bg-white p-3 rounded-lg border border-outline-variant/30">
+<span class="text-primary font-bold text-label-sm pt-1">08:12</span>
+<p class="text-label-md">Dự đoán xu hướng nghề nghiệp Designer trong kỷ nguyên AI.</p>
+</li>
+<li class="flex items-start gap-sm bg-white p-3 rounded-lg border border-outline-variant/30">
+<span class="text-primary font-bold text-label-sm pt-1">11:05</span>
+<p class="text-label-md">Kết luận và những lưu ý về bản quyền tác phẩm AI.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Related Content (Bento Grid Style) -->
+<section class="mt-xl">
+<h3 class="font-title-lg text-title-lg mb-lg">Video liên quan</h3>
+<div class="grid grid-cols-2 gap-gutter">
+<div class="group cursor-pointer">
+<div class="aspect-video rounded-xl overflow-hidden mb-sm relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A vibrant video thumbnail showing high-speed digital motion graphics with streaks of violet and warm amber light. The scene is dynamic and professional, evoking the feeling of a cutting-edge technology documentary. Bright light-mode aesthetic with clean edges and sophisticated color layering." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMouoPsYKAYm2KXXGxBFz3pZ7ptFHx0Vp67-765Clfra1I8CiWEAsxAPPUp9PRdHVu3GLN0ZPx9bZhaAAgexYSfihF4NgrQxOikXc3y9hMqhsJwX3negHoa0T7qniLcr8OUwllgF1JnjvqjtQ677OwfAcj_-ypC7zSLCYN4CtS0MmzznjHQjZzuP8MsQTtCIO05ChOqpLkYi54t8W4pb-2Sun7ZEuTzlRIhNZ6T_iU6F7XaLVa8aEH832eSe4aEMeBiHb-_xy39ZE"/>
+<span class="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] px-1.5 py-0.5 rounded">15:30</span>
+</div>
+<h4 class="font-label-md text-label-md font-bold group-hover:text-primary transition-colors">Quy trình làm phim với Sora AI</h4>
+<p class="text-[12px] text-on-surface-variant">VidsAI Creator • 500k lượt xem</p>
+</div>
+<div class="group cursor-pointer">
+<div class="aspect-video rounded-xl overflow-hidden mb-sm relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A high-quality video thumbnail featuring a modern architectural visualization of a futuristic city at sunset. The lighting is golden and warm, paired with subtle violet shadows. The image has a crisp, professional quality suitable for a high-end tech platform, with a focused cinematic composition." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqfsqYt0FqE5pQjSn57UncK9WJPlPSx1sDtJ5Bazm-Wk9-NCKZlDLSL_iGMCrALmxg7RV_4k4hNcHG-1_HcFjwiCbT1-DIG0DHQdEtFCP8j4nZUCtTN248XL324z5Xw6mNPghqiVMDCr7Y0_BCXjyvo0SjJtTg7jZVEd3z8pmL2vjCFTQpwEkvHRlVLUK4M1sQ83PJSr51sakFd5dsXycNoG6pUoZDW_6lPIlfLDVdJVJwZwtkKBaN1CwHjx1Qv52LuOneWaHCehQ"/>
+<span class="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] px-1.5 py-0.5 rounded">08:45</span>
+</div>
+<h4 class="font-label-md text-label-md font-bold group-hover:text-primary transition-colors">Kiến trúc tương lai và sự hỗ trợ của AI</h4>
+<p class="text-[12px] text-on-surface-variant">Urban Lab • 1.1tr lượt xem</p>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Transcript Panel (4 cols) -->
+<div class="col-span-4 sticky top-20 h-[calc(100vh-120px)] flex flex-col gap-md">
+<div class="bg-surface-container rounded-xl flex flex-col h-full border border-outline-variant">
+<div class="p-md border-b border-outline-variant flex items-center justify-between">
+<h3 class="font-title-lg text-title-lg flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">description</span>
+                            Bản ghi phụ đề
+                        </h3>
+<div class="flex gap-xs">
+<button class="p-1 hover:bg-surface-variant rounded"><span class="material-symbols-outlined text-sm">search</span></button>
+<button class="p-1 hover:bg-surface-variant rounded"><span class="material-symbols-outlined text-sm">more_vert</span></button>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto p-md transcript-container space-y-4">
+<!-- Transcript Items -->
+<div class="group p-2 rounded-lg hover:bg-white/50 cursor-pointer transition-colors border-l-2 border-transparent hover:border-primary">
+<span class="text-primary font-bold text-label-sm block mb-1">00:15</span>
+<p class="text-label-md text-on-surface leading-relaxed">Chào mừng tất cả các bạn đã quay trở lại với VidsAI. Hôm nay chúng ta sẽ cùng khám phá một chủ đề cực kỳ nóng hổi.</p>
+</div>
+<div class="p-2 rounded-lg bg-primary-container/20 border-l-2 border-primary cursor-pointer">
+<span class="text-primary font-bold text-label-sm block mb-1">01:20</span>
+<p class="text-label-md text-on-surface font-semibold leading-relaxed">Đây là phần quan trọng nhất: Cách mà các mạng nơ-ron thực sự 'hiểu' được ngôn ngữ hình ảnh và chuyển hóa chúng.</p>
+</div>
+<div class="group p-2 rounded-lg hover:bg-white/50 cursor-pointer transition-colors border-l-2 border-transparent hover:border-primary">
+<span class="text-primary font-bold text-label-sm block mb-1">02:45</span>
+<p class="text-label-md text-on-surface leading-relaxed">Nếu chúng ta nhìn vào các mô hình diffusion hiện đại, mọi thứ bắt đầu từ những hạt nhiễu ngẫu nhiên.</p>
+</div>
+<div class="group p-2 rounded-lg hover:bg-white/50 cursor-pointer transition-colors border-l-2 border-transparent hover:border-primary">
+<span class="text-primary font-bold text-label-sm block mb-1">04:10</span>
+<p class="text-label-md text-on-surface leading-relaxed">Và từ đó, AI sẽ bóc tách các lớp thông tin để tạo ra một bức tranh hoàn chỉnh mang tính nghệ thuật cao.</p>
+</div>
+<div class="group p-2 rounded-lg hover:bg-white/50 cursor-pointer transition-colors border-l-2 border-transparent hover:border-primary">
+<span class="text-primary font-bold text-label-sm block mb-1">05:30</span>
+<p class="text-label-md text-on-surface leading-relaxed">Rất nhiều designer lo lắng về việc mất việc làm, nhưng thực tế AI là một trợ thủ đắc lực giúp giải phóng sức sáng tạo.</p>
+</div>
+<div class="group p-2 rounded-lg hover:bg-white/50 cursor-pointer transition-colors border-l-2 border-transparent hover:border-primary">
+<span class="text-primary font-bold text-label-sm block mb-1">07:05</span>
+<p class="text-label-md text-on-surface leading-relaxed">Hãy tưởng tượng bạn có thể phác thảo một ý tưởng chỉ trong 5 giây thay vì mất 5 tiếng đồng hồ như trước đây.</p>
+</div>
+<div class="group p-2 rounded-lg hover:bg-white/50 cursor-pointer transition-colors border-l-2 border-transparent hover:border-primary">
+<span class="text-primary font-bold text-label-sm block mb-1">08:50</span>
+<p class="text-label-md text-on-surface leading-relaxed">Tiếp theo, tôi sẽ hướng dẫn các bạn cách tối ưu hóa các dòng lệnh (prompt) để đạt hiệu quả cao nhất.</p>
+</div>
+</div>
+<div class="p-md bg-surface-container-high rounded-b-xl border-t border-outline-variant">
+<button class="w-full flex items-center justify-center gap-sm bg-white border border-outline-variant py-2 rounded-lg text-label-md font-bold text-on-surface hover:bg-primary-container/10 transition-colors">
+<span class="material-symbols-outlined text-sm">download</span>
+                            Tải bản ghi (.txt)
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+        // Toggle summary micro-interaction
+        document.querySelector('[onclick*="toggle"]').addEventListener('click', function() {
+            const icon = this.querySelector('#summary-toggle');
+            if (this.parentElement.classList.contains('max-h-16')) {
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                icon.style.transform = 'rotate(180deg)';
+            }
+        });
+
+        // Floating Heatmap Tooltip Logic
+        const heatmapArea = document.getElementById('heatmap-area');
+        const heatmapTooltip = document.getElementById('heatmap-tooltip');
+        const heatmapBars = document.querySelectorAll('.heatmap-bar');
+
+        heatmapArea.addEventListener('mousemove', (e) => {
+            heatmapTooltip.style.left = (e.clientX + 15) + 'px';
+            heatmapTooltip.style.top = (e.clientY - 25) + 'px';
+        });
+
+        heatmapBars.forEach(bar => {
+            bar.addEventListener('mouseenter', () => {
+                const intensity = bar.getAttribute('data-intensity');
+                heatmapTooltip.textContent = `${intensity} Intensity`;
+                heatmapTooltip.classList.remove('hidden');
+                heatmapTooltip.classList.add('flex');
+            });
+            bar.addEventListener('mouseleave', () => {
+                heatmapTooltip.classList.add('hidden');
+                heatmapTooltip.classList.remove('flex');
+            });
+        });
+
+        // Toggle Auto-play Highlight Button Logic
+        const highlightBtn = document.getElementById('highlight-toggle-btn');
+        highlightBtn.addEventListener('click', () => {
+            highlightBtn.classList.toggle('highlight-active');
+            const icon = highlightBtn.querySelector('.material-symbols-outlined');
+            if (highlightBtn.classList.contains('highlight-active')) {
+                icon.style.fontVariationSettings = "'FILL' 1, 'wght' 700";
+            } else {
+                icon.style.fontVariationSettings = "'FILL' 1, 'wght' 400";
+            }
+        });
+
+        function toggleProfileMenu() {
+            const dropdown = document.getElementById('profile-dropdown');
+            dropdown.classList.toggle('hidden');
+        }
+        document.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('profile-dropdown');
+            const avatar = document.querySelector('.user-avatar');
+            if (dropdown && !dropdown.contains(e.target) && e.target !== avatar && !avatar.contains(e.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+        document.addEventListener('DOMContentLoaded', () => {
+            const userJson = localStorage.getItem('currentUser');
+            if (userJson) {
+                const user = JSON.parse(userJson);
+                const dropdownName = document.querySelector('#profile-dropdown p.font-bold');
+                const dropdownEmail = document.querySelector('#profile-dropdown p.text-xs');
+                if (dropdownName) dropdownName.textContent = user.name;
+                if (dropdownEmail) dropdownEmail.textContent = user.email;
+            }
+        });
+    </script>
+</body></html>

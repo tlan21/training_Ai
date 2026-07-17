@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary": "#ffffff",
+                    "secondary-fixed-dim": "#ffb95f",
+                    "on-error": "#ffffff",
+                    "secondary-fixed": "#ffddb8",
+                    "on-error-container": "#93000a",
+                    "on-surface-variant": "#4a4455",
+                    "tertiary-fixed": "#ffdad7",
+                    "inverse-on-surface": "#f7efeb",
+                    "on-secondary-fixed-variant": "#653e00",
+                    "surface-dim": "#e0d8d5",
+                    "surface-container": "#f4ece8",
+                    "primary-fixed-dim": "#d2bbff",
+                    "error": "#ba1a1a",
+                    "outline-variant": "#ccc3d8",
+                    "surface-container-high": "#eee7e3",
+                    "tertiary": "#a20017",
+                    "secondary": "#855300",
+                    "on-surface": "#1e1b19",
+                    "background": "#fff8f5",
+                    "surface-container-low": "#faf2ee",
+                    "surface-tint": "#732ee4",
+                    "on-primary-fixed-variant": "#5a00c6",
+                    "on-tertiary-container": "#ffdfdc",
+                    "inverse-primary": "#d2bbff",
+                    "primary": "#630ed4",
+                    "inverse-surface": "#33302d",
+                    "surface-variant": "#e9e1dd",
+                    "on-tertiary-fixed": "#410004",
+                    "on-secondary-container": "#684000",
+                    "on-primary-fixed": "#25005a",
+                    "on-tertiary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#930013",
+                    "surface-container-highest": "#e9e1dd",
+                    "tertiary-fixed-dim": "#ffb3ad",
+                    "on-primary-container": "#ede0ff",
+                    "surface": "#fff8f5",
+                    "error-container": "#ffdad6",
+                    "outline": "#7b7487",
+                    "surface-bright": "#fff8f5",
+                    "tertiary-container": "#c6252b",
+                    "primary-fixed": "#eaddff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-fixed": "#2a1700",
+                    "on-background": "#1e1b19",
+                    "secondary-container": "#fea619",
+                    "primary-container": "#7c3aed"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "20px",
+                    "lg": "24px",
+                    "sm": "8px",
+                    "xs": "4px",
+                    "container-margin-desktop": "40px",
+                    "unit": "4px",
+                    "xl": "32px",
+                    "container-margin-mobile": "16px",
+                    "md": "16px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "title-lg": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "label-sm-mobile": ["11px", {"lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #000;
+            color: #fff;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+        .video-container {
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+            background: #000;
+        }
+        .scrim-bottom {
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0) 100%);
+        }
+        .scrim-top {
+            background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 100%);
+        }
+        .ai-heatmap {
+            height: 4px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .ai-heatmap-progress {
+            height: 100%;
+            width: 45%;
+            background: linear-gradient(90deg, #7c3aed 0%, #fea619 70%, #ba1a1a 100%);
+        }
+        .interaction-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            transition: transform 0.15s ease;
+        }
+        .interaction-btn:active {
+            transform: scale(0.9);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background">
+<!-- Video Feed Container -->
+<main class="video-container flex flex-col justify-between">
+<!-- Video Background Layer -->
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full bg-cover bg-center" data-alt="A cinematic vertical 9:16 high-action sports video frame capturing a peak moment of a basketball player executing a dramatic dunk. The lighting is dramatic and focused, highlighting the sweat and determination on the player's face. The arena crowd in the background is blurred with professional bokeh effects. The overall color grading is sophisticated with rich violets and warm golds, maintaining a professional and high-performance media aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDykzEA6kNI8peaRnnji0XDEPHeVMaMQqSzls5hfexKbQuAyovvKMiQwsTvEQ4DXXcFSAXYgJir7JIkeF-CPzMD52SeBdgmcd52_ROlDzmWXVhAaoqIaqn9dLEu1iRCk1ijydspIBvWcR2HvNU8ACUIcIOOzs7q6ofBGj0Q611ypulMHuHC2lkBfb875hlM248Bvf9IzdvnOynayFEbJijXS25YfC_SJfCTLbdEKu3KneY-C4pfCroptwFccQCBtQtg9vFN8D8tfLY')"></div>
+</div>
+<!-- Top Navigation (Mobile Shell Replacement) -->
+<header class="relative z-10 scrim-top pt-safe px-md flex items-center justify-between h-16">
+<div class="flex items-center gap-4">
+<button class="text-white active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[28px]">arrow_back</span>
+</button>
+</div>
+<div class="flex items-center gap-6">
+<span class="font-label-md text-label-md text-white border-b-2 border-white pb-1">Dành cho bạn</span>
+<span class="font-label-md text-label-md text-white/70">Đang theo dõi</span>
+</div>
+<button class="text-white">
+<span class="material-symbols-outlined text-[28px]">search</span>
+</button>
+</header>
+<!-- Right Side Interactions -->
+<aside class="absolute right-4 bottom-[120px] z-20 flex flex-col gap-6 items-center">
+<!-- Publisher Avatar -->
+<div class="relative mb-2">
+<div class="w-12 h-12 rounded-full border-2 border-white overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close-up portrait of a professional sports content creator, styled with studio lighting, vibrant and clear, wearing a sleek modern jersey, against a minimal studio backdrop with soft violet highlights." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBO8rA4mZDFHixhthTP8nTlWMtCovJwacqx8j_ujT7gHI9ne1TxX7N3oQn1c2QVnISPxDw32jLBaQ3iQgd7yi28SkdpeNc7d9ifn3SGLBMPU6-QrGQNxnJEQyTEGsdoOC6sOVRIlTbHCobpyaXujPTD4RdFeL7oWondZj0TxAeuJsUjfscoSYT9e8aGR--wRUTmiDERILWL1RojnhsUPnuqAcltkX_woDMmjf6hawWXooFqSrlBqXoyeFyHJ0p6KCG1S3yvjWfeD5A"/>
+</div>
+<button class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-primary w-5 h-5 rounded-full flex items-center justify-center text-white text-[14px]">
+<span class="material-symbols-outlined text-[16px]">add</span>
+</button>
+</div>
+<!-- Like -->
+<button class="interaction-btn">
+<div class="w-12 h-12 flex items-center justify-center rounded-full bg-black/20 backdrop-blur-md">
+<span class="material-symbols-outlined text-white text-[32px]">favorite</span>
+</div>
+<span class="font-label-sm text-label-sm text-white">12.4K</span>
+</button>
+<!-- Comment -->
+<button class="interaction-btn">
+<div class="w-12 h-12 flex items-center justify-center rounded-full bg-black/20 backdrop-blur-md">
+<span class="material-symbols-outlined text-white text-[32px]">comment</span>
+</div>
+<span class="font-label-sm text-label-sm text-white">856</span>
+</button>
+<!-- Save -->
+<button class="interaction-btn">
+<div class="w-12 h-12 flex items-center justify-center rounded-full bg-black/20 backdrop-blur-md">
+<span class="material-symbols-outlined text-white text-[32px]">bookmark</span>
+</div>
+<span class="font-label-sm text-label-sm text-white">3.2K</span>
+</button>
+<!-- Share -->
+<button class="interaction-btn">
+<div class="w-12 h-12 flex items-center justify-center rounded-full bg-black/20 backdrop-blur-md">
+<span class="material-symbols-outlined text-white text-[32px]">share</span>
+</div>
+<span class="font-label-sm text-label-sm text-white">Chia sẻ</span>
+</button>
+<!-- AI Heatmap Peek -->
+<div class="w-10 h-10 flex items-center justify-center rounded-full bg-primary/40 backdrop-blur-md animate-pulse">
+<span class="material-symbols-outlined text-white text-[24px]">insights</span>
+</div>
+</aside>
+<!-- Bottom Info & Overlay -->
+<footer class="relative z-10 scrim-bottom px-md pb-[80px] pt-12">
+<div class="flex flex-col gap-2 max-w-[80%]">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md text-white">@sportvibe_vn</span>
+<button class="px-4 py-1 bg-white text-black rounded-full font-label-sm text-label-sm font-bold active:scale-95 transition-transform">Theo dõi</button>
+</div>
+<h1 class="font-body-md text-body-md text-white line-clamp-2">
+                    Khoảnh khắc lội ngược dòng đầy cảm xúc của đội tuyển bóng rổ Việt Nam trước những giây cuối cùng! 🏀🔥 #VidsAI #Basketball #Vietnam
+                </h1>
+<!-- AI Transcript Snippet -->
+<div class="mt-3 flex items-start gap-2 bg-black/40 backdrop-blur-lg p-3 rounded-xl border border-white/10">
+<span class="material-symbols-outlined text-primary-fixed-dim text-[20px]">closed_caption</span>
+<p class="font-label-sm text-label-sm text-primary-fixed-dim italic">
+                        "...không thể tin được, một cú ném tuyệt vời đã định đoạt kết quả trận đấu ngay những giây bù giờ..."
+                    </p>
+</div>
+</div>
+<!-- Heatmap Seek Bar -->
+<div class="mt-6 flex flex-col gap-1">
+<div class="ai-heatmap">
+<div class="ai-heatmap-progress"></div>
+</div>
+<div class="flex justify-between items-center px-1">
+<span class="text-[10px] text-white/60">00:45</span>
+<span class="text-[10px] text-white/60">01:30</span>
+</div>
+</div>
+</footer>
+</main>
+<!-- Bottom Navigation Bar (Mandatory Shell) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-safe h-[56px] bg-surface-container dark:bg-surface-container-high shadow-sm">
+<!-- Trang chủ: Active -->
+<a class="flex flex-col items-center justify-center bg-primary-container dark:bg-primary-fixed-dim text-on-primary-container dark:text-on-primary-fixed-variant rounded-xl px-3 py-1 scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" data-weight="fill">home</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Trang chủ</span>
+</a>
+<!-- Khám phá -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-3 py-1 active:bg-surface-variant dark:active:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Khám phá</span>
+</a>
+<!-- Create Button (Custom FAB for the Feed) -->
+<div class="relative -top-4">
+<button class="w-14 h-14 rounded-full bg-primary flex items-center justify-center text-white shadow-lg active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[32px]">add</span>
+</button>
+</div>
+<!-- Thư viện -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-3 py-1 active:bg-surface-variant dark:active:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined">video_library</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Thư viện</span>
+</a>
+<!-- Cá nhân -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-3 py-1 active:bg-surface-variant dark:active:bg-surface-container-highest transition-colors" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm-mobile text-label-sm-mobile">Cá nhân</span>
+</a>
+</nav>
+<script>
+        // Simple Interaction logic
+        const likeBtn = document.querySelectorAll('.interaction-btn')[0];
+        let liked = false;
+        likeBtn.addEventListener('click', () => {
+            liked = !liked;
+            const icon = likeBtn.querySelector('.material-symbols-outlined');
+            icon.style.color = liked ? '#ff4b4b' : 'white';
+            icon.style.fontVariationSettings = liked ? "'FILL' 1" : "'FILL' 0";
+            if(liked) {
+                icon.classList.add('animate-ping');
+                setTimeout(() => icon.classList.remove('animate-ping'), 400);
+            }
+        });
+
+        // Simulating the heatmap progress
+        let progress = 45;
+        const progressBar = document.querySelector('.ai-heatmap-progress');
+        setInterval(() => {
+            progress = (progress + 0.1) % 100;
+            progressBar.style.width = progress + '%';
+        }, 100);
+    </script>
+</body></html>
