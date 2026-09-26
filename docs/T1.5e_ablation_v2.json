@@ -1,0 +1,47 @@
+{
+  "mode": "ablation",
+  "n_val_halves": 16,
+  "n_val_seconds": 43418,
+  "variants": {
+    "fusionv2": {
+      "modality": "fusion",
+      "n_self": 2,
+      "n_params": 5427713,
+      "seeds": [
+        {
+          "seed": 1337,
+          "ckpt": "D:/data_training_ai/kout10\\ckpt_abl_fusionv2_s1337\\highlight_fusion\\best.pt",
+          "tau": 0.47,
+          "val_f1": 0.20281030444964873
+        },
+        {
+          "seed": 1338,
+          "ckpt": "D:/data_training_ai/kout10\\ckpt_abl_fusionv2_s1338\\highlight_fusion\\best.pt",
+          "tau": 0.65,
+          "val_f1": 0.1938114655792756
+        },
+        {
+          "seed": 1339,
+          "ckpt": "D:/data_training_ai/kout10\\ckpt_abl_fusionv2_s1339\\highlight_fusion\\best.pt",
+          "tau": 0.73,
+          "val_f1": 0.20605187319884727
+        },
+        {
+          "seed": 1340,
+          "ckpt": "D:/data_training_ai/kout10\\ckpt_abl_fusionv2_s1340\\highlight_fusion\\best.pt",
+          "tau": 0.78,
+          "val_f1": 0.205874840357599
+        },
+        {
+          "seed": 1341,
+          "ckpt": "D:/data_training_ai/kout10\\ckpt_abl_fusionv2_s1341\\highlight_fusion\\best.pt",
+          "tau": 0.54,
+          "val_f1": 0.1976534296028881
+        }
+      ],
+      "val_f1_mean": 0.2012403826376517,
+      "val_f1_std": 0.004798923525293329
+    }
+  },
+  "best": "fusionv2"
+}

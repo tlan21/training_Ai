@@ -1,0 +1,173 @@
+{
+  "mode": "ablation",
+  "n_val_halves": 16,
+  "n_val_seconds": 43418,
+  "variants": {
+    "fusion": {
+      "modality": "fusion",
+      "n_self": 2,
+      "n_params": 5427713,
+      "seeds": [
+        {
+          "seed": 1337,
+          "ckpt": "D:/data_training_ai/kout8\\ckpt_abl_fusion_s1337\\highlight_fusion\\best.pt",
+          "tau": 0.17,
+          "val_f1": 0.189939469839282
+        },
+        {
+          "seed": 1338,
+          "ckpt": "D:/data_training_ai/kout8\\ckpt_abl_fusion_s1338\\highlight_fusion\\best.pt",
+          "tau": 0.65,
+          "val_f1": 0.21624974157535665
+        },
+        {
+          "seed": 1339,
+          "ckpt": "D:/data_training_ai/kout8\\ckpt_abl_fusion_s1339\\highlight_fusion\\best.pt",
+          "tau": 0.81,
+          "val_f1": 0.21882640586797064
+        },
+        {
+          "seed": 1340,
+          "ckpt": "D:/data_training_ai/kout8\\ckpt_abl_fusion_s1340\\highlight_fusion\\best.pt",
+          "tau": 0.62,
+          "val_f1": 0.22905906130698406
+        },
+        {
+          "seed": 1341,
+          "ckpt": "D:/data_training_ai/kout8\\ckpt_abl_fusion_s1341\\highlight_fusion\\best.pt",
+          "tau": 0.69,
+          "val_f1": 0.2183388157894737
+        },
+        {
+          "seed": 1342,
+          "ckpt": "D:/data_training_ai/kout8\\ckpt_abl_fusion_s1342\\highlight_fusion\\best.pt",
+          "tau": 0.64,
+          "val_f1": 0.21133382826033156
+        },
+        {
+          "seed": 1343,
+          "ckpt": "D:/data_training_ai/kout8\\ckpt_abl_fusion_s1343\\highlight_fusion\\best.pt",
+          "tau": 0.79,
+          "val_f1": 0.22259777885079673
+        }
+      ],
+      "val_f1_mean": 0.2151921573557422,
+      "val_f1_std": 0.011488795106924483
+    },
+    "visual": {
+      "modality": "visual",
+      "n_self": 2,
+      "n_params": 1672961,
+      "seeds": [
+        {
+          "seed": 1337,
+          "ckpt": "D:/data_training_ai/kout8\\ckpt_abl_visual_s1337\\highlight_fusion\\best.pt",
+          "tau": 0.68,
+          "val_f1": 0.15858132898491645
+        },
+        {
+          "seed": 1338,
+          "ckpt": "D:/data_training_ai/kout8\\ckpt_abl_visual_s1338\\highlight_fusion\\best.pt",
+          "tau": 0.65,
+          "val_f1": 0.17304388567858817
+        },
+        {
+          "seed": 1339,
+          "ckpt": "D:/data_training_ai/kout8\\ckpt_abl_visual_s1339\\highlight_fusion\\best.pt",
+          "tau": 0.73,
+          "val_f1": 0.16098945660989458
+        }
+      ],
+      "val_f1_mean": 0.1642048904244664,
+      "val_f1_std": 0.006326960696961118
+    },
+    "audio": {
+      "modality": "audio",
+      "n_self": 2,
+      "n_params": 1623809,
+      "seeds": [
+        {
+          "seed": 1337,
+          "ckpt": "D:/data_training_ai/kout8\\ckpt_abl_audio_s1337\\highlight_fusion\\best.pt",
+          "tau": 0.72,
+          "val_f1": 0.19431891542930924
+        },
+        {
+          "seed": 1338,
+          "ckpt": "D:/data_training_ai/kout8\\ckpt_abl_audio_s1338\\highlight_fusion\\best.pt",
+          "tau": 0.77,
+          "val_f1": 0.19367209971236815
+        },
+        {
+          "seed": 1339,
+          "ckpt": "D:/data_training_ai/kout8\\ckpt_abl_audio_s1339\\highlight_fusion\\best.pt",
+          "tau": 0.6,
+          "val_f1": 0.18123667377398722
+        }
+      ],
+      "val_f1_mean": 0.1897425629718882,
+      "val_f1_std": 0.006020365765640653
+    },
+    "visual_deep": {
+      "modality": "visual",
+      "n_self": 6,
+      "n_params": 4886273,
+      "seeds": [
+        {
+          "seed": 1337,
+          "ckpt": "D:/data_training_ai/kout8\\ckpt_abl_visual_deep_s1337\\highlight_fusion\\best.pt",
+          "tau": 0.68,
+          "val_f1": 0.15282908808088666
+        },
+        {
+          "seed": 1338,
+          "ckpt": "D:/data_training_ai/kout8\\ckpt_abl_visual_deep_s1338\\highlight_fusion\\best.pt",
+          "tau": 0.67,
+          "val_f1": 0.17737789203084836
+        },
+        {
+          "seed": 1339,
+          "ckpt": "D:/data_training_ai/kout8\\ckpt_abl_visual_deep_s1339\\highlight_fusion\\best.pt",
+          "tau": 0.54,
+          "val_f1": 0.16066481994459836
+        }
+      ],
+      "val_f1_mean": 0.16362393335211112,
+      "val_f1_std": 0.01023810555269887
+    },
+    "audio_deep": {
+      "modality": "audio",
+      "n_self": 6,
+      "n_params": 4837121,
+      "seeds": [
+        {
+          "seed": 1337,
+          "ckpt": "D:/data_training_ai/kout8\\ckpt_abl_audio_deep_s1337\\highlight_fusion\\best.pt",
+          "tau": 0.54,
+          "val_f1": 0.1699346405228758
+        },
+        {
+          "seed": 1338,
+          "ckpt": "D:/data_training_ai/kout8\\ckpt_abl_audio_deep_s1338\\highlight_fusion\\best.pt",
+          "tau": 0.79,
+          "val_f1": 0.19504240052185257
+        },
+        {
+          "seed": 1339,
+          "ckpt": "D:/data_training_ai/kout8\\ckpt_abl_audio_deep_s1339\\highlight_fusion\\best.pt",
+          "tau": 0.68,
+          "val_f1": 0.19581180310035354
+        }
+      ],
+      "val_f1_mean": 0.1869296147150273,
+      "val_f1_std": 0.012021365865986908
+    }
+  },
+  "gaps_vs_fusion": {
+    "visual": 0.05098726693127581,
+    "audio": 0.025449594383853996,
+    "visual_deep": 0.05156822400363109,
+    "audio_deep": 0.0282625426407149
+  },
+  "best": "fusion"
+}

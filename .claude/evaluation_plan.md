@@ -29,6 +29,7 @@
 
 ### 2.1. Highlight (trọng tâm luận án)
 - **Đánh giá cấp giây:** ngưỡng hóa điểm sigmoid tại τ tối ưu trên **validation 5 trận weak-label giữ riêng** (@dataset_spec.md §3.4) → F1 trên test 5 trận nhãn người (đóng băng, không dùng chọn τ hay model).
+- **Hậu xử lý điểm/giây (chốt 2026-09-25, trước khi xem test):** cửa sổ suy luận chồng nhau stride 30 s (trung bình các cửa sổ phủ mỗi giây), gộp điểm các seed, trung bình trượt k giây. k chọn trên **validation** trong lưới {1,3,5,9,15,21,31,45} cùng lúc với τ, và baseline RMS/frame-diff được chọn k theo **đúng lưới đó** — so model đã làm mượt với baseline thô là so không công bằng. Cấu hình rút ra từ thí nghiệm chỉ-val (`postproc_val.py`), áp lên test T1.5 vòng 4 đúng **một lần**; đó là lần xem thứ hai của tập test này (lần đầu: quy trình không hậu xử lý, F1 0.1659), ghi rõ trong báo cáo.
 - **Báo cáo chất lượng weak label:** alignment coverage toàn 50 trận + số trận bị loại (< 60% coverage) + Cohen's kappa của 2 người gán test — bảng riêng trong chương thực nghiệm.
 - **Đánh giá cấp đoạn (sát nghiệp vụ):** ghép giây liên tiếp > τ thành đoạn; đoạn đúng khi IoU ≥ 0.5 với đoạn nhãn người → precision/recall cấp đoạn.
 - **Đánh giá cảm quan:** CMS hiển thị heatmap → biên tập viên chấm "dùng được/không" cho 20 video — số liệu human-in-the-loop đưa vào luận án.

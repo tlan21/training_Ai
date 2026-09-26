@@ -1,0 +1,16 @@
+{
+  "id": "traininghighlight/ai-core-embed-b2",
+  "title": "ai-core-embed-b2",
+  "code_file": "run_embed_b2.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": false,
+  "dataset_sources": [
+    "traininghighlight/ai-core",
+    "traininghighlight/soccernet-frames-1fps-b2"
+  ],
+  "competition_sources": [],
+  "kernel_sources": []
+}

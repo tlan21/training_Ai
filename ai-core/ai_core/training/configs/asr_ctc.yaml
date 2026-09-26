@@ -1,0 +1,19 @@
+model:
+  name: asr_ctc
+  d_model: 256
+  n_layers: 8
+  n_heads: 8
+  n_mels: 80
+  n_chars: 95
+train:
+  model: asr_ctc
+  lr: 5.0e-4
+  weight_decay: 0.1
+  batch_size: 16
+  grad_accum: 1
+  max_steps: 120000
+  warmup_ratio: 0.03
+  min_lr_ratio: 0.10
+  precision: bf16
+  seed: 1337
+  metric_name: wer

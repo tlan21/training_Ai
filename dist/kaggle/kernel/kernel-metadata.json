@@ -1,0 +1,17 @@
+{
+  "id": "nguynthanhlan/ai-core-train",
+  "title": "ai-core-train",
+  "code_file": "kaggle_train.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "dataset_sources": [
+    "nguynthanhlan/ai-core",
+    "nguynthanhlan/soccernet-highlight-features",
+    "nguynthanhlan/soccernet-highlight-features-v2"
+  ],
+  "competition_sources": [],
+  "kernel_sources": []
+}

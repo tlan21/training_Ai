@@ -1,0 +1,38 @@
+# Docker build context — chỉ giữ code + checkpoint (nếu có sẵn trên disk).
+# .gitignore KHÔNG ảnh hưởng docker; phải khai báo riêng ở đây.
+
+# Môi trường ảo (cài lại trong image)
+.venv/
+venv/
+
+# Dataset thô — inference KHÔNG cần, rất nặng
+data/raw/
+data/processed/
+data/labels/
+
+# Log train
+runs/
+ai-core/runs/
+
+# Python cache + test
+__pycache__/
+*.py[cod]
+**/.pytest_cache/
+ai-core/ai_core/tests/
+inference-service/tests/
+
+# Git + docs + design (không cần trong image runtime)
+.git/
+.gitignore
+docs/
+stitch_ai_video_cms/
+stitch_ai_video_platform_vietnamese/
+my-agent/
+.claude/
+
+# Secrets (đặt qua -e / env server, không bake vào image)
+**/.env
+
+# GHI CHÚ: KHÔNG loại ai-core/checkpoints/ — nếu build trên máy có sẵn .pt,
+# image sẽ kèm trọng số. Muốn image gọn + thay trọng số linh hoạt → dùng volume mount
+# (-v host/checkpoints:/srv/ai-core/checkpoints) và thêm 'ai-core/checkpoints/' vào đây.

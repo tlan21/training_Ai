@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="vi"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Báo cáo quá trình huấn luyện AI — Phase 1</title>
+<style>
+:root {
+  --surface-0:#f6f5f2; --surface-1:#fcfcfb; --surface-2:#eeede8;
+  --text-primary:#0b0b0b; --text-secondary:#52514e; --text-muted:#7a7975; --line:#dcdbd5;
+  --series-1:#2a78d6; --series-2:#eb6834; --series-3:#1baf7a;
+  --good:#0ca30c; --warning:#fab219; --serious:#ec835a; --critical:#d03b3b;
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    --surface-0:#121211; --surface-1:#1a1a19; --surface-2:#242423;
+    --text-primary:#ffffff; --text-secondary:#c3c2b7; --text-muted:#95948b; --line:#3a3a37;
+    --series-1:#3987e5; --series-2:#d95926; --series-3:#199e70;
+  }
+}
+* { box-sizing:border-box }
+body { margin:0; background:var(--surface-0); color:var(--text-primary);
+  font:15px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif }
+.wrap { max-width:920px; margin:0 auto; padding:40px 22px 80px }
+h1 { font-size:30px; line-height:1.25; margin:0 0 6px; letter-spacing:-.02em }
+h2 { font-size:21px; margin:52px 0 14px; padding-bottom:8px; border-bottom:2px solid var(--line) }
+h3 { font-size:16px; margin:30px 0 8px }
+h4 { font-size:15px; margin:0 }
+p { margin:0 0 12px; color:var(--text-secondary) }
+p.lead { font-size:17px; color:var(--text-primary) }
+ul { color:var(--text-secondary); padding-left:22px }
+li { margin-bottom:6px }
+code { font:13px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;
+  background:var(--surface-2); padding:1px 5px; border-radius:4px }
+b { color:var(--text-primary) }
+.sub { color:var(--text-muted); font-size:14px; margin:0 0 28px }
+figure { margin:20px 0 26px; background:var(--surface-1); border:1px solid var(--line);
+  border-radius:12px; padding:18px 16px 12px; overflow-x:auto }
+figcaption { font-size:13px; color:var(--text-muted); margin-top:10px; padding:0 4px }
+.chart { width:100%; height:auto; display:block }
+.diagram { min-width:1080px }
+.chart .grid { stroke:var(--line); stroke-width:1 }
+.chart .axis { stroke:var(--text-muted); stroke-width:1 }
+.chart .thresh { stroke:var(--critical); stroke-width:2; stroke-dasharray:5 4 }
+.chart .tick { font-size:11px; fill:var(--text-muted) }
+.tick-y { text-anchor:end } .tick-x { text-anchor:middle }
+.chart .dlabel { font-size:12px; font-weight:600; fill:var(--text-primary) }
+.chart .dlabel-sm { font-size:10.5px; fill:var(--text-secondary) }
+.chart .note { font-size:11px; fill:var(--text-muted) }
+.chart .axlabel { font-size:11.5px; fill:var(--text-muted) }
+.diagram .box { fill:var(--surface-2); stroke:var(--line); stroke-width:1 }
+.diagram .box-hi { fill:var(--surface-2); stroke:var(--series-1); stroke-width:2 }
+.diagram .boxt { font-size:12px; font-weight:600; fill:var(--text-primary) }
+.diagram .boxt2 { font-size:11px; fill:var(--text-secondary) }
+.diagram .boxs { font-size:10.5px; fill:var(--text-muted) }
+.diagram .arrow { stroke:var(--text-muted); stroke-width:1.5; fill:none }
+.legend { display:flex; gap:18px; flex-wrap:wrap; margin:2px 4px 10px; font-size:12.5px;
+  color:var(--text-secondary) }
+.legend i { width:11px; height:11px; border-radius:3px; display:inline-block; margin-right:6px }
+table { width:100%; border-collapse:collapse; margin:14px 0 8px; font-size:13.5px }
+th,td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--line); vertical-align:top }
+th { font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-muted);
+  font-weight:600 }
+td { color:var(--text-secondary) }
+.pill { display:inline-block; font-size:11px; font-weight:700; padding:2px 8px;
+  border-radius:99px; white-space:nowrap }
+.pill.good { background:color-mix(in srgb,var(--good) 16%,transparent); color:#0a7d0a }
+.pill.bad,.pill.critical { background:color-mix(in srgb,var(--critical) 16%,transparent);
+  color:#b02f2f }
+.pill.warn,.pill.warning { background:color-mix(in srgb,var(--warning) 24%,transparent);
+  color:#8a5d00 }
+.pill.serious { background:color-mix(in srgb,var(--serious) 22%,transparent); color:#a84a1e }
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) .pill.good { color:#4cc94c }
+  :root:where(:not([data-theme="light"])) .pill.bad,
+  :root:where(:not([data-theme="light"])) .pill.critical { color:#f08585 }
+  :root:where(:not([data-theme="light"])) .pill.warn,
+  :root:where(:not([data-theme="light"])) .pill.warning { color:var(--warning) }
+  :root:where(:not([data-theme="light"])) .pill.serious { color:var(--serious) }
+}
+.hero { display:grid; grid-template-columns:repeat(auto-fit,minmax(158px,1fr)); gap:12px;
+  margin:26px 0 8px }
+.hero div { background:var(--surface-1); border:1px solid var(--line); border-radius:12px;
+  padding:14px 16px }
+.hero .n { font-size:26px; font-weight:700; letter-spacing:-.02em; line-height:1.15 }
+.hero .l { font-size:12.5px; color:var(--text-muted); margin-top:2px }
+.bug { background:var(--surface-1); border:1px solid var(--line);
+  border-left:3px solid var(--line); border-radius:10px; padding:14px 16px; margin:12px 0 }
+.bug.sev-critical { border-left-color:var(--critical) }
+.bug.sev-serious { border-left-color:var(--serious) }
+.bug.sev-warning { border-left-color:var(--warning) }
+.bug header { display:flex; align-items:center; gap:10px; margin-bottom:8px }
+.bug .num { font:12px ui-monospace,monospace; color:var(--text-muted) }
+.bug p { margin:0 0 8px; font-size:14px }
+.bug p.then { margin:0; padding-top:8px; border-top:1px dashed var(--line);
+  color:var(--text-muted); font-size:13.5px }
+blockquote { margin:16px 0; padding:12px 16px; background:var(--surface-1);
+  border-left:3px solid var(--series-1); border-radius:0 8px 8px 0 }
+blockquote p { margin:0; font-size:14.5px }
+.foot { margin-top:56px; padding-top:16px; border-top:1px solid var(--line);
+  font-size:12.5px; color:var(--text-muted) }
+</style></head><body><div class="wrap">
+
+<h1>Quá trình huấn luyện AI — Phase 1 AI Core</h1>
+<p class="sub">Hệ thống phân tích và cắt highlight video · sáu model tự cài từ primitives, không dùng
+trọng số pretrained</p>
+
+<p class="lead">Bốn trong sáu model đã đạt ngưỡng nghiệm thu. Báo cáo này ghi lại cả kết quả và
+đường đi tới kết quả — trong đó phần khó khăn đáng đọc hơn phần số liệu, vì hầu hết lỗi gặp phải
+thuộc loại <b>chạy trót lọt nhưng ra số vô nghĩa</b>, không phải loại làm chương trình dừng.</p>
+
+<div class="hero">
+  <div><div class="n">4/6</div><div class="l">model có checkpoint thật</div></div>
+  <div><div class="n">160</div><div class="l">test tự động pass</div></div>
+  <div><div class="n">30</div><div class="l">phiên bản kernel GPU</div></div>
+  <div><div class="n">97 GB</div><div class="l">dữ liệu đã xử lý</div></div>
+</div>
+
+<h2>1. Tổng quan kết quả</h2>
+<table><thead><tr><th>Task</th><th>Model</th><th>Tham số</th><th>Cấu hình</th><th>Chỉ số chính</th><th>Ngưỡng</th><th>Kết luận</th></tr></thead><tbody><tr><td>T1.1</td><td><b>primitives + optim + BPE</b></td><td>—</td><td>RMSNorm, SwiGLU, RoPE, SDPA, AdamW</td><td>parity &lt; 1e-6 với PyTorch</td><td>mọi test toán học pass</td><td><span class="pill good">ĐẠT</span></td></tr><tr><td>T1.3c</td><td><b>Siamese ViT</b></td><td>5.169.034</td><td>d=256, 6 lớp, proj 128, InfoNCE</td><td>Recall@10 = 0,804</td><td>≥ 0,80</td><td><span class="pill good">ĐẠT</span></td></tr><tr><td>T1.4</td><td><b>ASR CTC</b></td><td>8.354.397</td><td>d=256, 8 lớp, subsample ×4, 93 ký tự</td><td>CER 0,1347 · WER 0,3581</td><td>CER ≤ 0,20 · WER ≤ 0,45</td><td><span class="pill good">ĐẠT</span></td></tr><tr><td>T1.5</td><td><b>Highlight Fusion</b></td><td>5.427.713</td><td>d=256, 2 self + 2 cross, dropout 0,3</td><td>F1 0,1528 (cách baseline +0,049)</td><td>vượt cả 2 baseline ≥ 0,10</td><td><span class="pill bad">CHƯA ĐẠT</span></td></tr><tr><td>T1.7</td><td><b>Two-Tower</b></td><td>404.736</td><td>MLP 3 tầng/tháp → 128-d, softmax + logQ</td><td>NDCG@10 0,0990 (vượt +0,0231)</td><td>vượt popularity</td><td><span class="pill good">ĐẠT</span></td></tr></tbody></table>
+<p>Ba model đạt ngưỡng rõ ràng. <b>T1.5 Highlight Fusion</b> vượt cả hai baseline nhưng chưa đủ biên
+độ 10 điểm mà kế hoạch đánh giá đòi — mục 5 phân tích vì sao, và vì sao chính ngưỡng đó không trung
+lập.</p>
+
+<h2>2. Chuỗi xử lý dữ liệu</h2>
+<figure><svg viewBox="0 0 1062 148" class="chart diagram" role="img">
+<text x="10" y="18" class="axlabel">Chuỗi dữ liệu → model (T1.2 → T1.3c → T1.5). Hộp viền xanh là nơi tham số được học.</text>
+<rect x="10" y="34" width="130" height="62" rx="8" class="box"/>
+<text x="75.0" y="59" class="boxt" text-anchor="middle">80 trận</text>
+<text x="75.0" y="76" class="boxt2" text-anchor="middle">SoccerNet</text>
+<text x="75.0" y="113" class="boxs" text-anchor="middle">28,7 GB · 160 hiệp</text>
+<path d="M143,65.0 L155,65.0" class="arrow"/>
+<path d="M151,61.0 L157,65.0 L151,69.0" class="arrow"/>
+<rect x="162" y="34" width="130" height="62" rx="8" class="box"/>
+<text x="227.0" y="59" class="boxt" text-anchor="middle">Keyframe 1 fps</text>
+<text x="227.0" y="76" class="boxt2" text-anchor="middle">+ WAV 16 kHz</text>
+<text x="227.0" y="113" class="boxs" text-anchor="middle">442.998 ảnh · 155 WAV</text>
+<path d="M295,65.0 L307,65.0" class="arrow"/>
+<path d="M303,61.0 L309,65.0 L303,69.0" class="arrow"/>
+<rect x="314" y="34" width="130" height="62" rx="8" class="box"/>
+<text x="379.0" y="59" class="boxt" text-anchor="middle">Nhãn/giây</text>
+<text x="379.0" y="76" class="boxt2" text-anchor="middle">{0, 1, IGNORE}</text>
+<text x="379.0" y="113" class="boxs" text-anchor="middle">443.021 giây · 4,0% dương</text>
+<path d="M447,65.0 L459,65.0" class="arrow"/>
+<path d="M455,61.0 L461,65.0 L455,69.0" class="arrow"/>
+<rect x="466" y="34" width="130" height="62" rx="8" class="box"/>
+<text x="531.0" y="59" class="boxt" text-anchor="middle">Gom shot</text>
+<text x="531.0" y="76" class="boxt2" text-anchor="middle">histogram L1</text>
+<text x="531.0" y="113" class="boxs" text-anchor="middle">103.048 frame · 8.650 shot</text>
+<path d="M599,65.0 L611,65.0" class="arrow"/>
+<path d="M607,61.0 L613,65.0 L607,69.0" class="arrow"/>
+<rect x="618" y="34" width="130" height="62" rx="8" class="box-hi"/>
+<text x="683.0" y="59" class="boxt" text-anchor="middle">Siamese ViT</text>
+<text x="683.0" y="76" class="boxt2" text-anchor="middle">self-supervised</text>
+<text x="683.0" y="113" class="boxs" text-anchor="middle">Recall@10 = 0,804</text>
+<path d="M751,65.0 L763,65.0" class="arrow"/>
+<path d="M759,61.0 L765,65.0 L759,69.0" class="arrow"/>
+<rect x="770" y="34" width="130" height="62" rx="8" class="box"/>
+<text x="835.0" y="59" class="boxt" text-anchor="middle">Embedding</text>
+<text x="835.0" y="76" class="boxt2" text-anchor="middle">256-d mỗi giây</text>
+<text x="835.0" y="113" class="boxs" text-anchor="middle">160 hiệp · 454 MB</text>
+<path d="M903,65.0 L915,65.0" class="arrow"/>
+<path d="M911,61.0 L917,65.0 L911,69.0" class="arrow"/>
+<rect x="922" y="34" width="130" height="62" rx="8" class="box-hi"/>
+<text x="987.0" y="59" class="boxt" text-anchor="middle">Highlight Fusion</text>
+<text x="987.0" y="76" class="boxt2" text-anchor="middle">2 self + 2 cross</text>
+<text x="987.0" y="113" class="boxs" text-anchor="middle">F1 = 0,1528</text>
+</svg>
+<figcaption>Mỗi hộp là một bước có artifact kiểm được trên đĩa. Hai hộp viền xanh là nơi tham số
+model được học; các bước còn lại là xử lý tín hiệu cổ điển (histogram màu, FFT/mel) — không có model
+pretrained nào trong chuỗi.</figcaption></figure>
+
+<h2>3. Các thuật toán học như thế nào</h2>
+
+<h3>Siamese ViT — học biểu diễn khi không có nhãn</h3>
+<p>Đây là phần đáng chú ý nhất về mặt phương pháp. Không ai gán nhãn cho 443 nghìn khung hình, nên
+model tự tạo bài tập cho mình: lấy <b>hai khung hình thuộc cùng một cú quay camera, cách nhau 1–10
+giây</b> và yêu cầu chúng có biểu diễn gần nhau, đồng thời đẩy xa mọi cặp khác trong cùng batch. Đó
+là InfoNCE — tín hiệu học đến từ chính cấu trúc thời gian của video.</p>
+<p>Chi tiết quyết định thành bại nằm ở chữ <b>cùng cú quay</b>. Lần đầu tôi lấy "cùng hiệp" làm đơn
+vị. Hiệp dài 2.700 giây, nên hai khung cách nhau 5 giây rất thường xuyên vắt qua một cú cắt camera
+hoặc một đoạn replay — model bị dạy rằng hai hình ảnh không liên quan là giống nhau. Recall@10 ra
+<b>0,495</b>, vượt baseline 4,4 lần nên trông như đang học được, nhưng còn xa ngưỡng 0,80.</p>
+<p>Sửa bằng cách phát hiện ranh giới cảnh qua khoảng cách L1 giữa histogram màu của hai khung liền
+nhau, rồi lấy shot làm đơn vị ghép cặp. Cùng với việc tăng từ 25.000 lên 103.048 khung, Recall@10
+lên <b>0,804</b> với median rank 2 — khung đúng gần như luôn nằm ở đầu danh sách.</p>
+
+<h3>ASR CTC — học đọc khi không biết chữ nào ở đâu</h3>
+<p>Bài toán: có 4 giây âm thanh và câu chữ tương ứng, nhưng <b>không biết chữ nào phát ra ở khung
+nào</b>. CTC giải bằng cách xét mọi cách căn chỉnh khả dĩ giữa chuỗi khung và chuỗi ký tự — cho phép
+lặp ký tự và chèn ký hiệu "trống" — rồi cộng xác suất của tất cả các cách căn đó bằng quy hoạch
+động. Model không cần biết căn chỉnh đúng là gì; nó chỉ cần làm tổng xác suất của mọi căn chỉnh hợp
+lệ lớn lên.</p>
+<p>Chính thuộc tính này về sau cho ta timestamp gần như miễn phí: sau khi học xong, khung nào phát ra
+ký tự nào là đọc được, nên cắt phụ đề theo khoảng lặng là việc suy ra chứ không phải phỏng đoán.</p>
+
+<h3>Highlight Fusion — hai luồng tín hiệu nói chuyện với nhau</h3>
+<p>Một pha đáng cắt vào highlight thường để lại dấu vết ở <i>cả</i> hình và tiếng: khung hình dồn về
+khu vực khung thành, và khán giả reo lên. Kiến trúc vì thế cho mỗi luồng tự chú ý trong chính nó
+(hai lớp self-attention) rồi <b>chú ý chéo</b> sang luồng kia (hai lớp cross-attention) — nhánh hình
+được hỏi "trong lúc này âm thanh đang nói gì", và ngược lại.</p>
+<p>Nhãn là một trong ba giá trị cho mỗi giây: dương, âm, hoặc bỏ qua. Giá trị bỏ qua quan trọng hơn
+vẻ ngoài của nó: những lớp hành động mà đài truyền hình lúc cắt lúc không (thẻ vàng, phạt góc) được
+đánh là bỏ qua thay vì âm, để model không bị phạt vì một quyết định mà chính con người cũng không
+nhất quán. Chỉ 4,2% số giây là dương, nên hàm mất mát nhân trọng số 19 cho lớp dương.</p>
+
+<h3>Two-Tower — học sở thích bằng cách so sánh</h3>
+<p>Hai tháp MLP riêng biệt, một cho người dùng một cho video, cùng chiếu về không gian 128 chiều đã
+chuẩn hoá. Điểm tương đồng là tích vô hướng. Model học bằng <b>softmax trong batch</b>: mỗi video mà
+người dùng thực sự thích phải ghi điểm cao hơn toàn bộ video của những người khác trong cùng batch —
+255 đối chứng miễn phí thay vì chỉ một.</p>
+<p>Có một hiệu chỉnh không hiển nhiên. Video phổ biến xuất hiện trong batch nhiều hơn chỉ vì nó phổ
+biến, nên phải trừ <code>log q(i)</code> khỏi điểm theo <b>cột</b> ứng viên. Thiếu bước này, model
+chỉ học lại đúng thứ mà baseline "gợi ý theo độ phổ biến" đã làm, và không thắng nổi baseline đó.</p>
+
+<h2>4. Đường cong huấn luyện ASR</h2>
+<figure>
+<div class="legend"><span><i style="background:var(--series-1)"></i>Loss huấn luyện</span></div>
+<svg viewBox="0 0 680 272" class="chart" role="img">
+<line x1="58" y1="234.0" x2="662" y2="234.0" class="grid"/>
+<text x="50" y="238.0" class="tick tick-y">0.0</text>
+<line x1="58" y1="184.0" x2="662" y2="184.0" class="grid"/>
+<text x="50" y="188.0" class="tick tick-y">2.2</text>
+<line x1="58" y1="134.0" x2="662" y2="134.0" class="grid"/>
+<text x="50" y="138.0" class="tick tick-y">4.4</text>
+<line x1="58" y1="84.0" x2="662" y2="84.0" class="grid"/>
+<text x="50" y="88.0" class="tick tick-y">6.6</text>
+<line x1="58" y1="34.0" x2="662" y2="34.0" class="grid"/>
+<text x="50" y="38.0" class="tick tick-y">8.8</text>
+<text x="58.0" y="252" class="tick tick-x">1</text>
+<text x="360.0" y="252" class="tick tick-x">10.000</text>
+<text x="662.0" y="252" class="tick tick-x">20.000</text>
+<line x1="58" y1="234.0" x2="662" y2="234.0" class="axis"/>
+<path d="M58.0,48.8 L64.0,150.6 L118.4,207.7 L178.8,218.2 L239.2,219.7 L299.6,220.9 L360.0,222.5 L420.4,225.7 L480.8,227.3 L541.2,228.4 L601.6,224.1 L662.0,227.8" fill="none" stroke="var(--series-1)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="58.0" cy="48.8" r="4" fill="var(--series-1)" stroke="var(--surface-1)" stroke-width="2"><title>Loss · step 1 · 8.2</title></circle>
+<circle cx="64.0" cy="150.6" r="4" fill="var(--series-1)" stroke="var(--surface-1)" stroke-width="2"><title>Loss · step 200 · 3.7</title></circle>
+<circle cx="118.4" cy="207.7" r="4" fill="var(--series-1)" stroke="var(--surface-1)" stroke-width="2"><title>Loss · step 2.000 · 1.2</title></circle>
+<circle cx="178.8" cy="218.2" r="4" fill="var(--series-1)" stroke="var(--surface-1)" stroke-width="2"><title>Loss · step 4.000 · 0.7</title></circle>
+<circle cx="239.2" cy="219.7" r="4" fill="var(--series-1)" stroke="var(--surface-1)" stroke-width="2"><title>Loss · step 6.000 · 0.6</title></circle>
+<circle cx="299.6" cy="220.9" r="4" fill="var(--series-1)" stroke="var(--surface-1)" stroke-width="2"><title>Loss · step 8.000 · 0.6</title></circle>
+<circle cx="360.0" cy="222.5" r="4" fill="var(--series-1)" stroke="var(--surface-1)" stroke-width="2"><title>Loss · step 10.000 · 0.5</title></circle>
+<circle cx="420.4" cy="225.7" r="4" fill="var(--series-1)" stroke="var(--surface-1)" stroke-width="2"><title>Loss · step 12.000 · 0.4</title></circle>
+<circle cx="480.8" cy="227.3" r="4" fill="var(--series-1)" stroke="var(--surface-1)" stroke-width="2"><title>Loss · step 14.000 · 0.3</title></circle>
+<circle cx="541.2" cy="228.4" r="4" fill="var(--series-1)" stroke="var(--surface-1)" stroke-width="2"><title>Loss · step 16.000 · 0.2</title></circle>
+<circle cx="601.6" cy="224.1" r="4" fill="var(--series-1)" stroke="var(--surface-1)" stroke-width="2"><title>Loss · step 18.000 · 0.4</title></circle>
+<circle cx="662.0" cy="227.8" r="4" fill="var(--series-1)" stroke="var(--surface-1)" stroke-width="2"><title>Loss · step 20.000 · 0.3</title></circle>
+<text x="658.0" y="214.8" class="dlabel" text-anchor="end">0.274</text>
+<text x="12" y="16" class="axlabel">CTC loss</text>
+<text x="662" y="268" class="axlabel" text-anchor="end">step</text>
+</svg>
+<figcaption>20.000 step ở 1,91 step/giây, tức 175 phút trên Tesla T4. Loss giảm từ 8,185 xuống
+0,274. Dao động ở step 18.000 là do SpecAugment che ngẫu nhiên dải tần và dải thời gian — đúng như
+thiết kế, không phải dấu hiệu mất ổn định.</figcaption></figure>
+
+<figure>
+<div class="legend"><span><i style="background:var(--series-2)"></i>Tỉ lệ lỗi từ trên
+validation</span></div>
+<svg viewBox="0 0 680 272" class="chart" role="img">
+<line x1="58" y1="234.0" x2="662" y2="234.0" class="grid"/>
+<text x="50" y="238.0" class="tick tick-y">0.00</text>
+<line x1="58" y1="184.0" x2="662" y2="184.0" class="grid"/>
+<text x="50" y="188.0" class="tick tick-y">0.17</text>
+<line x1="58" y1="134.0" x2="662" y2="134.0" class="grid"/>
+<text x="50" y="138.0" class="tick tick-y">0.34</text>
+<line x1="58" y1="84.0" x2="662" y2="84.0" class="grid"/>
+<text x="50" y="88.0" class="tick tick-y">0.51</text>
+<line x1="58" y1="34.0" x2="662" y2="34.0" class="grid"/>
+<text x="50" y="38.0" class="tick tick-y">0.68</text>
+<text x="58.0" y="252" class="tick tick-x">2.000</text>
+<text x="326.4" y="252" class="tick tick-x">10.000</text>
+<text x="662.0" y="252" class="tick tick-x">20.000</text>
+<line x1="58" y1="234.0" x2="662" y2="234.0" class="axis"/>
+<path d="M58.0,58.4 L125.1,95.3 L192.2,114.2 L259.3,118.6 L326.4,127.9 L393.6,130.8 L460.7,137.8 L527.8,139.8 L594.9,140.0 L662.0,141.2" fill="none" stroke="var(--series-2)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="58.0" cy="58.4" r="4" fill="var(--series-2)" stroke="var(--surface-1)" stroke-width="2"><title>WER · step 2.000 · 0.60</title></circle>
+<circle cx="125.1" cy="95.3" r="4" fill="var(--series-2)" stroke="var(--surface-1)" stroke-width="2"><title>WER · step 4.000 · 0.47</title></circle>
+<circle cx="192.2" cy="114.2" r="4" fill="var(--series-2)" stroke="var(--surface-1)" stroke-width="2"><title>WER · step 6.000 · 0.41</title></circle>
+<circle cx="259.3" cy="118.6" r="4" fill="var(--series-2)" stroke="var(--surface-1)" stroke-width="2"><title>WER · step 8.000 · 0.39</title></circle>
+<circle cx="326.4" cy="127.9" r="4" fill="var(--series-2)" stroke="var(--surface-1)" stroke-width="2"><title>WER · step 10.000 · 0.36</title></circle>
+<circle cx="393.6" cy="130.8" r="4" fill="var(--series-2)" stroke="var(--surface-1)" stroke-width="2"><title>WER · step 12.000 · 0.35</title></circle>
+<circle cx="460.7" cy="137.8" r="4" fill="var(--series-2)" stroke="var(--surface-1)" stroke-width="2"><title>WER · step 14.000 · 0.33</title></circle>
+<circle cx="527.8" cy="139.8" r="4" fill="var(--series-2)" stroke="var(--surface-1)" stroke-width="2"><title>WER · step 16.000 · 0.32</title></circle>
+<circle cx="594.9" cy="140.0" r="4" fill="var(--series-2)" stroke="var(--surface-1)" stroke-width="2"><title>WER · step 18.000 · 0.32</title></circle>
+<circle cx="662.0" cy="141.2" r="4" fill="var(--series-2)" stroke="var(--surface-1)" stroke-width="2"><title>WER · step 20.000 · 0.32</title></circle>
+<text x="658.0" y="128.2" class="dlabel" text-anchor="end">0.316</text>
+<text x="12" y="16" class="axlabel">WER</text>
+<text x="662" y="268" class="axlabel" text-anchor="end">step</text>
+</svg>
+<figcaption>Tỉ lệ lỗi từ tại 10 mốc đánh giá, giảm đều từ 0,597 xuống 0,316 và <b>vẫn còn đang
+giảm</b> khi hết số step — nghĩa là huấn luyện thêm có thể còn tốt hơn. Đây là năm người nói được
+tách hẳn khỏi tập train, không xuất hiện lần nào trong lúc học.</figcaption>
+<table><thead><tr><th>Step</th><th>WER</th></tr></thead><tbody><tr><td>2.000</td><td>0.5972</td></tr><tr><td>4.000</td><td>0.4717</td></tr><tr><td>6.000</td><td>0.4074</td></tr><tr><td>8.000</td><td>0.3925</td></tr><tr><td>10.000</td><td>0.3609</td></tr><tr><td>12.000</td><td>0.3508</td></tr><tr><td>14.000</td><td>0.3270</td></tr><tr><td>16.000</td><td>0.3204</td></tr><tr><td>18.000</td><td>0.3196</td></tr><tr><td>20.000</td><td>0.3156</td></tr></tbody></table>
+</figure>
+
+<blockquote><p>Kết quả cuối trên <b>tập test chính thức của VIVOS</b> — 760 câu của 19 người nói khác
+hẳn: <b>CER 0,1347</b> (ngưỡng ≤ 0,20) và <b>WER 0,3581</b> (ngưỡng ≤ 0,45). Cách chia train/test
+giữ nguyên như tác giả bộ dữ liệu định sẵn, nên con số này so sánh được với các công bố khác trên
+cùng bộ dữ liệu.</p></blockquote>
+
+<h2>5. T1.5 Highlight Fusion — ba vòng và một kết luận không dễ chịu</h2>
+<figure>
+<div class="legend">
+  <span><i style="background:var(--series-1)"></i>Khoảng cách so với baseline RMS-energy</span>
+  <span><i style="background:var(--series-3)"></i>Khoảng cách so với baseline frame-diff</span>
+</div>
+<svg viewBox="0 0 680 278" class="chart" role="img">
+<line x1="538.2" y1="16" x2="538.2" y2="270" class="thresh"/>
+<text x="538.2" y="11" class="tick" text-anchor="middle">ngưỡng cần đạt: +0,10</text>
+<line x1="210.8" y1="24" x2="210.8" y2="270" class="axis"/>
+<rect x="187.2" y="32" width="23.6" height="26" rx="4" fill="var(--series-1)"><title>Vòng 1 · 20 trận · RMS · -0.0072</title></rect>
+<text x="136" y="49.0" class="tick tick-y">Vòng 1 · 20 trận · RMS</text>
+<text x="218.8" y="49.0" class="dlabel" text-anchor="start">-0.0072</text>
+<rect x="210.8" y="71" width="104.8" height="26" rx="4" fill="var(--series-1)"><title>Vòng 2 · 20 trận · RMS · +0.0320</title></rect>
+<text x="136" y="88.0" class="tick tick-y">Vòng 2 · 20 trận · RMS</text>
+<text x="323.5" y="88.0" class="dlabel" text-anchor="start">+0.0320</text>
+<rect x="210.8" y="110" width="160.8" height="26" rx="4" fill="var(--series-1)"><title>Vòng 3 · 80 trận · RMS · +0.0491</title></rect>
+<text x="136" y="127.0" class="tick tick-y">Vòng 3 · 80 trận · RMS</text>
+<text x="379.5" y="127.0" class="dlabel" text-anchor="start">+0.0491</text>
+<rect x="210.8" y="149" width="76.9" height="26" rx="4" fill="var(--series-3)"><title>Vòng 1 · 20 trận · frame-diff · +0.0235</title></rect>
+<text x="136" y="166.0" class="tick tick-y">Vòng 1 · 20 trận · frame-diff</text>
+<text x="295.7" y="166.0" class="dlabel" text-anchor="start">+0.0235</text>
+<rect x="210.8" y="188" width="205.3" height="26" rx="4" fill="var(--series-3)"><title>Vòng 2 · 20 trận · frame-diff · +0.0627</title></rect>
+<text x="136" y="205.0" class="tick tick-y">Vòng 2 · 20 trận · frame-diff</text>
+<text x="424.0" y="205.0" class="dlabel" text-anchor="start">+0.0627</text>
+<rect x="210.8" y="227" width="272.1" height="26" rx="4" fill="var(--series-3)"><title>Vòng 3 · 80 trận · frame-diff · +0.0831</title></rect>
+<text x="136" y="244.0" class="tick tick-y">Vòng 3 · 80 trận · frame-diff</text>
+<text x="490.8" y="244.0" class="dlabel" text-anchor="start">+0.0831</text>
+</svg>
+<figcaption>Khoảng cách F1 mỗi giây giữa model và từng baseline, đo trên tập test. Vòng 1 còn
+<b>thua</b> baseline âm thanh. Đường gạch đỏ là ngưỡng nghiệm thu.</figcaption>
+<table><thead><tr><th>Vòng</th><th>Dữ liệu</th><th>F1 test (3 seed)</th><th>so với RMS</th><th>so với frame-diff</th><th>Nghiệm thu</th></tr></thead><tbody><tr><td>Vòng 1</td><td>20 trận</td><td>0.1297 ± 0.0084</td><td>-0.0072</td><td>+0.0235</td><td><span class="pill bad">chưa đạt</span></td></tr><tr><td>Vòng 2</td><td>20 trận</td><td>0.1689 ± 0.0109</td><td>+0.0320</td><td>+0.0627</td><td><span class="pill bad">chưa đạt</span></td></tr><tr><td>Vòng 3</td><td>80 trận</td><td>0.1528 ± 0.0116</td><td>+0.0491</td><td>+0.0831</td><td><span class="pill bad">chưa đạt</span></td></tr></tbody></table>
+</figure>
+
+<p>Đọc bảng này cần cẩn thận: F1 tuyệt đối của vòng 3 <i>thấp hơn</i> vòng 2, nhưng hai con số
+<b>không so trực tiếp được</b>. Vòng 3 bốc lại tập test hoàn toàn (16 hiệp của 8 trận, khác 10 hiệp
+của 5 trận trước đó) và baseline trên tập mới cũng tụt tương ứng. Đại lượng so được là khoảng cách:
+−0,007 → +0,032 → <b>+0,049</b>.</p>
+
+<h3>Tăng dữ liệu bốn lần chỉ mua được 0,017 điểm</h3>
+<p>Từ 20 lên 80 trận, số cửa sổ huấn luyện tăng từ 991 lên 5.532 — gấp 5,6 lần. Khoảng cách chỉ tăng
+0,017. Đòn bẩy của dữ liệu đang giảm rõ rệt, nên ngoại suy thô thì để có thêm 0,051 điểm nữa sẽ cần
+gần như toàn bộ 300 trận của bộ dữ liệu.</p>
+
+<h3>Phép đo đắt giá nhất: ngưỡng +0,10 không trung lập</h3>
+<figure>
+<div class="legend">
+  <span><i style="background:var(--series-1)"></i>Model</span>
+  <span><i style="background:var(--series-2)"></i>Baseline mạnh nhất</span>
+</div>
+<svg viewBox="0 0 680 304" class="chart" role="img">
+<line x1="92" y1="10" x2="92" y2="298" class="axis"/>
+<rect x="92" y="14" width="308.6" height="13" rx="4" fill="var(--series-1)"><title>narrow5 · Model F1 0.2080</title></rect>
+<text x="407.6" y="25" class="dlabel-sm">0.2080</text>
+<rect x="92" y="30" width="154.9" height="13" rx="4" fill="var(--series-2)"><title>narrow5 · Baseline mạnh nhất F1 0.1044</title></rect>
+<text x="253.9" y="41" class="dlabel-sm">0.1044</text>
+<text x="80" y="31" class="tick tick-y">narrow5</text>
+<text x="674" y="31" class="note" text-anchor="end">cách +0.1036</text>
+<rect x="92" y="61" width="298.9" height="13" rx="4" fill="var(--series-1)"><title>dil3 · Model F1 0.2015</title></rect>
+<text x="397.9" y="72" class="dlabel-sm">0.2015</text>
+<rect x="92" y="77" width="171.7" height="13" rx="4" fill="var(--series-2)"><title>dil3 · Baseline mạnh nhất F1 0.1157</title></rect>
+<text x="270.7" y="88" class="dlabel-sm">0.1157</text>
+<text x="80" y="78" class="tick tick-y">dil3</text>
+<text x="674" y="78" class="note" text-anchor="end">cách +0.0858</text>
+<rect x="92" y="108" width="305.5" height="13" rx="4" fill="var(--series-1)"><title>dil5 · Model F1 0.2059</title></rect>
+<text x="404.5" y="119" class="dlabel-sm">0.2059</text>
+<rect x="92" y="124" width="197.0" height="13" rx="4" fill="var(--series-2)"><title>dil5 · Baseline mạnh nhất F1 0.1328</title></rect>
+<text x="296.0" y="135" class="dlabel-sm">0.1328</text>
+<text x="80" y="125" class="tick tick-y">dil5</text>
+<text x="674" y="125" class="note" text-anchor="end">cách +0.0731</text>
+<rect x="92" y="155" width="317.5" height="13" rx="4" fill="var(--series-1)"><title>wide5 · Model F1 0.2140</title></rect>
+<text x="416.5" y="166" class="dlabel-sm">0.2140</text>
+<rect x="92" y="171" width="209.6" height="13" rx="4" fill="var(--series-2)"><title>wide5 · Baseline mạnh nhất F1 0.1413</title></rect>
+<text x="308.6" y="182" class="dlabel-sm">0.1413</text>
+<text x="80" y="172" class="tick tick-y">wide5</text>
+<text x="674" y="172" class="note" text-anchor="end">cách +0.0727</text>
+<rect x="92" y="202" width="366.2" height="13" rx="4" fill="var(--series-1)"><title>wide10 · Model F1 0.2468</title></rect>
+<text x="465.2" y="213" class="dlabel-sm">0.2468</text>
+<rect x="92" y="218" width="297.8" height="13" rx="4" fill="var(--series-2)"><title>wide10 · Baseline mạnh nhất F1 0.2007</title></rect>
+<text x="396.8" y="229" class="dlabel-sm">0.2007</text>
+<text x="80" y="219" class="tick tick-y">wide10</text>
+<text x="674" y="219" class="note" text-anchor="end">cách +0.0461</text>
+<rect x="92" y="249" width="301.6" height="13" rx="4" fill="var(--series-1)"><title>dil10 · Model F1 0.2033</title></rect>
+<text x="400.6" y="260" class="dlabel-sm">0.2033</text>
+<rect x="92" y="265" width="247.8" height="13" rx="4" fill="var(--series-2)"><title>dil10 · Baseline mạnh nhất F1 0.1670</title></rect>
+<text x="346.8" y="276" class="dlabel-sm">0.1670</text>
+<text x="80" y="266" class="tick tick-y">dil10</text>
+<text x="674" y="266" class="note" text-anchor="end">cách +0.0363</text>
+</svg>
+<figcaption>Sáu thiết kế nhãn khác nhau, cùng một kiến trúc, chấm trên validation. Khoảng cách giữa
+hai thanh chính là thứ mà tiêu chí nghiệm thu đo.</figcaption>
+<table><thead><tr><th>Biến thể</th><th>% giây dương</th><th>Model F1</th><th>Baseline mạnh nhất</th><th>Khoảng cách</th></tr></thead><tbody><tr><td><code>narrow5</code></td><td>0.46%</td><td>0.2080</td><td>0.1044</td><td><b>+0.1036</b></td></tr><tr><td><code>dil3</code></td><td>2.42%</td><td>0.2015</td><td>0.1157</td><td><b>+0.0858</b></td></tr><tr><td><code>dil5</code></td><td>3.77%</td><td>0.2059</td><td>0.1328</td><td><b>+0.0731</b></td></tr><tr><td><code>wide5</code></td><td>5.12%</td><td>0.2140</td><td>0.1413</td><td><b>+0.0727</b></td></tr><tr><td><code>wide10</code></td><td>9.56%</td><td>0.2468</td><td>0.2007</td><td><b>+0.0461</b></td></tr><tr><td><code>dil10</code></td><td>7.11%</td><td>0.2033</td><td>0.1670</td><td><b>+0.0363</b></td></tr></tbody></table>
+</figure>
+
+<p>Hai kết luận, và kết luận thứ hai mới là kết luận quan trọng.</p>
+<p><b>F1 thô là chỉ báo sai.</b> Biến thể <code>wide10</code> có F1 cao nhất (0,2468) nhưng khoảng
+cách nhỏ gần nhất (+0,046). Nhãn càng nhiều giây dương thì F1 càng dễ cao — với mọi phương pháp, kể
+cả baseline. Chọn thiết kế nhãn theo F1 thô là tự chọn bài toán dễ rồi tưởng model khá lên.</p>
+<p><b>Khoảng cách bị chi phối bởi baseline, không phải bởi model.</b> Qua sáu biến thể, F1 của model
+chỉ dao động trong biên độ <b>0,045</b>, còn baseline mạnh nhất dao động <b>0,096</b> — gấp đôi. Nói
+cách khác, đổi thiết kế nhãn dịch chuyển ngưỡng nghiệm thu gần gấp đôi mức nó dịch chuyển chất lượng
+model.</p>
+<p>Biến thể <code>narrow5</code> vượt +0,10 trên validation, nhưng vượt bằng cơ chế sai: bỏ lớp "dứt
+điểm" khiến baseline RMS-energy mất gần hết tín hiệu (tiếng khán giả reo lúc sút), trong khi model
+gần như đứng yên (0,2080 so với 0,2059 của nhãn hiện tại). Đó là <b>thắng nhờ làm baseline tệ đi</b>,
+kèm theo đổi luôn định nghĩa sản phẩm — "highlight" không còn gồm pha dứt điểm. Quyết định: giữ nhãn
+hiện tại, ghi T1.5 là chưa đạt, và giữ bảng trên làm bằng chứng rằng con số "+0,10" phụ thuộc mạnh
+vào thiết kế nhãn.</p>
+
+<h3>Ablation đa phương thức — phần duy nhất của T1.5 đạt nghiệm thu</h3>
+<figure>
+<div class="legend">
+  <span><i style="background:var(--series-1)"></i>fusion (hình + tiếng)</span>
+  <span><i style="background:var(--series-2)"></i>chỉ âm thanh</span>
+  <span><i style="background:var(--series-3)"></i>chỉ hình ảnh</span>
+</div>
+<svg viewBox="0 0 680 239" class="chart" role="img">
+<line x1="132.0" y1="24" x2="132.0" y2="231" class="axis"/>
+<rect x="132.0" y="32" width="396.5" height="26" rx="4" fill="var(--series-1)"><title>fusion · 0.2152</title></rect>
+<text x="118" y="49.0" class="tick tick-y">fusion</text>
+<text x="536.5" y="49.0" class="dlabel" text-anchor="start">0.2152</text>
+<rect x="132.0" y="71" width="349.5" height="26" rx="4" fill="var(--series-2)"><title>audio · 0.1897</title></rect>
+<text x="118" y="88.0" class="tick tick-y">audio</text>
+<text x="489.5" y="88.0" class="dlabel" text-anchor="start">0.1897</text>
+<rect x="132.0" y="110" width="344.4" height="26" rx="4" fill="var(--series-2)"><title>audio_deep · 0.1869</title></rect>
+<text x="118" y="127.0" class="tick tick-y">audio_deep</text>
+<text x="484.4" y="127.0" class="dlabel" text-anchor="start">0.1869</text>
+<rect x="132.0" y="149" width="302.5" height="26" rx="4" fill="var(--series-3)"><title>visual · 0.1642</title></rect>
+<text x="118" y="166.0" class="tick tick-y">visual</text>
+<text x="442.5" y="166.0" class="dlabel" text-anchor="start">0.1642</text>
+<rect x="132.0" y="188" width="301.4" height="26" rx="4" fill="var(--series-3)"><title>visual_deep · 0.1636</title></rect>
+<text x="118" y="205.0" class="tick tick-y">visual_deep</text>
+<text x="441.4" y="205.0" class="dlabel" text-anchor="start">0.1636</text>
+</svg>
+<figcaption>F1 mỗi giây trên validation. Hai biến thể <code>_deep</code> là <b>đối chứng khớp dung
+lượng</b>: cùng modality nhưng 6 lớp self-attention thay vì 2, đạt ~90% số tham số của fusion.
+</figcaption>
+<table><thead><tr><th>biến thể</th><th>n seed</th><th>tham số</th><th>val F1</th><th>% so fusion</th></tr></thead><tbody><tr><td><code>fusion</code></td><td>7</td><td>5.427.713</td><td><b>0.2152</b> ± 0.0115</td><td>100%</td></tr><tr><td><code>audio</code></td><td>3</td><td>1.623.809</td><td><b>0.1897</b> ± 0.0060</td><td>88%</td></tr><tr><td><code>audio_deep</code></td><td>3</td><td>4.837.121</td><td><b>0.1869</b> ± 0.0120</td><td>87%</td></tr><tr><td><code>visual</code></td><td>3</td><td>1.672.961</td><td><b>0.1642</b> ± 0.0063</td><td>76%</td></tr><tr><td><code>visual_deep</code></td><td>3</td><td>4.886.273</td><td><b>0.1636</b> ± 0.0102</td><td>76%</td></tr></tbody></table>
+</figure>
+
+<p><b>Tại sao năm biến thể, không phải ba.</b> Ba biến thể hiển nhiên (fusion / chỉ-hình / chỉ-tiếng)
+bị nhiễu dung lượng: fusion có 5.427.713 tham số còn nhánh đơn theo thiết kế chỉ 1.672.961 —
+<b>gấp 3,2 lần</b>. Fusion thắng thì chưa phân biệt được "nhờ đa phương thức" với "nhờ nhiều tham số
+hơn", mà ablation này tồn tại đúng để trả lời câu hỏi nhân quả đó.</p>
+
+<p>Kết quả của hai đối chứng dứt khoát: nhân ba tham số cho nhánh đơn <b>không mua được gì</b> —
+<code>visual_deep</code> thấp hơn <code>visual</code> 0,0006 điểm, <code>audio_deep</code> thấp hơn
+<code>audio</code> 0,0028 điểm. Nếu dung lượng là nguyên nhân thì <code>visual_deep</code> đã phải
+bám sát fusion; thực tế nó đứng nguyên chỗ <code>visual</code>. Lợi thế của fusion đến từ
+<b>modality</b>.</p>
+
+<figure>
+<table><thead><tr><th>so sánh</th><th>chênh F1</th><th>Welch t</th><th>df</th><th>p (2 phía)</th><th>khoảng giá trị</th></tr></thead><tbody><tr><td>fusion − visual</td><td><b>+0.0510</b></td><td>7.87</td><td>6.3</td><td><b>0.0002</b></td><td><span class="pill good">tách rời</span></td></tr><tr><td>fusion − visual_deep</td><td><b>+0.0516</b></td><td>5.98</td><td>3.8</td><td><b>0.0046</b></td><td><span class="pill good">tách rời</span></td></tr><tr><td>fusion − audio</td><td><b>+0.0254</b></td><td>4.02</td><td>6.6</td><td><b>0.0058</b></td><td>chồng nhau</td></tr><tr><td>fusion − audio_deep</td><td><b>+0.0283</b></td><td>2.91</td><td>3.3</td><td><b>0.055</b></td><td>chồng nhau</td></tr></tbody></table>
+<figcaption>fusion (7 seed) so với từng biến thể (3 seed). Đây là phép so <b>7 với 3</b>, không cân —
+cân nó đòi thêm 16 lượt huấn luyện.</figcaption></figure>
+
+<p><b>Fusion vượt cả hai đơn phương thức.</b> So với chỉ-hình: p = 0,0002, và khoảng giá trị tách rời
+hoàn toàn. So với chỉ-tiếng: p = 0,0058. Đối chứng <code>audio_deep</code> ở p = 0,055 còn sát mép,
+nhưng vì nó <i>thấp hơn</i> <code>audio</code> nên dung lượng đã bị loại như một cách giải thích.</p>
+
+<p><b>Sắc thái quan trọng cho luận án:</b> chỉ-tiếng với 1,62M tham số đạt <b>88%</b> F1 của fusion
+5,43M tham số, còn chỉ-hình chỉ đạt 76%. Nên phát biểu đầy đủ là: <i>cross-attention đóng góp có ý
+nghĩa, nhưng phần lớn tín hiệu highlight nằm ở âm thanh — hình ảnh là thành phần bổ trợ, không phải
+thành phần chính.</i> Điều này nhất quán với mọi thứ khác trong T1.5: baseline khó vượt luôn là
+RMS-energy, và biến thể nhãn <code>narrow5</code> "thắng" chính bằng cách phá tín hiệu âm thanh của
+baseline.</p>
+
+<h3>Về việc thêm seed sau khi đã thấy kết quả</h3>
+<figure><table><thead><tr><th>seed</th><th>val F1</th><th>τ</th><th>lượt</th></tr></thead><tbody><tr><td>1337</td><td>0.1899 ← ngoại lai</td><td>0.17</td><td>vòng 1</td></tr><tr><td>1338</td><td>0.2162</td><td>0.65</td><td>vòng 1</td></tr><tr><td>1339</td><td>0.2188</td><td>0.81</td><td>vòng 1</td></tr><tr><td>1340</td><td>0.2291</td><td>0.62</td><td>vòng bổ sung</td></tr><tr><td>1341</td><td>0.2183</td><td>0.69</td><td>vòng bổ sung</td></tr><tr><td>1342</td><td>0.2113</td><td>0.64</td><td>vòng bổ sung</td></tr><tr><td>1343</td><td>0.2226</td><td>0.79</td><td>vòng bổ sung</td></tr></tbody></table>
+<figcaption>Cả 7 seed của fusion. Bốn seed bổ sung đều cao hơn trung bình lượt đầu — tức chúng có
+lợi cho giả thuyết đang kiểm, nên cách lấy chúng cần được kiểm tra.</figcaption></figure>
+
+<p>Lượt đầu 3 seed cho fusion − audio = +0,0186 với p ≈ 0,17: <b>không kết luận được</b>. Nguyên nhân
+trực tiếp là seed 1337 — nó chọn ngưỡng τ = 0,17 trong khi 6 seed còn lại chọn 0,62–0,81, và cho F1
+thấp nhất. Bỏ nó ra thì 6 seed còn lại cho 0,2194 ± 0,0055, độ lệch chuẩn giảm một nửa.
+<b>Seed 1337 vẫn nằm trong mọi con số ở trên</b>; ghi ra đây để người đọc biết khoảng giá trị của
+fusion còn chồng lấn với chỉ-tiếng chỉ vì đúng một lượt chạy đó.</p>
+
+<p>Ba điều làm việc thêm seed là tăng cỡ mẫu hợp lệ chứ không phải đi tìm seed đẹp: seed được ấn định
+<b>trước khi chạy</b> (1340–1343, tuần tự tiếp seed cũ); phép so sánh đã định trước từ lượt đầu, chỉ
+tăng n mà không đổi giả thuyết, không đổi tập dữ liệu, không đổi cách chấm; và báo cáo <b>cả 7
+seed</b>, không lọc.</p>
+
+<h2>6. Lịch sử các phiên bản huấn luyện</h2>
+<table><thead><tr><th>Bản</th><th>Nội dung</th><th>Kết quả</th><th>Ghi chú</th></tr></thead><tbody><tr><td><code>v21</code></td><td>Fusion vòng 1</td><td><span class="pill bad">LỖI</span></td><td>binary_cross_entropy bị autocast cấm — chết ngay forward đầu</td></tr><tr><td><code>v22</code></td><td>Fusion vòng 1</td><td><span class="pill good">xong</span></td><td>3 seed × 3000 step, 5,1 phút/seed</td></tr><tr><td><code>v23</code></td><td>Fusion vòng 2</td><td><span class="pill good">xong</span></td><td>sweep 5 config trên val, chọn d=64 / dropout 0,1</td></tr><tr><td><code>v24</code></td><td>Run A: Siamese + embedding</td><td><span class="pill good">xong</span></td><td>gom shot 3 phút → Siamese 167 phút → embedding 19 phút</td></tr><tr><td><code>v25</code></td><td>Fusion vòng 3</td><td><span class="pill good">xong</span></td><td>sweep 5 config trên 80 trận, chọn d=256 / dropout 0,3</td></tr><tr><td><code>v26</code></td><td>Sweep thiết kế nhãn</td><td><span class="pill good">xong</span></td><td>6 biến thể × 4000 step, 63 phút</td></tr><tr><td><code>v27</code></td><td>Two-Tower (train lại)</td><td><span class="pill good">xong</span></td><td>tái lập đúng số cũ sau khi mất checkpoint</td></tr><tr><td><code>v28</code></td><td>ASR CTC</td><td><span class="pill warn">HUỶ</span></td><td>CTC loss 318 giây/step — hết cửa sổ 9 giờ, chưa in nổi dòng tiến độ thứ hai</td></tr><tr><td><code>v29</code></td><td>ASR CTC</td><td><span class="pill warn">HUỶ</span></td><td>thêm log tiến độ → lộ ra step 1 mất 318 giây</td></tr><tr><td><code>v30</code></td><td>ASR CTC</td><td><span class="pill good">xong</span></td><td>20.000 step ở 1,91 step/s, 175 phút → CER 0,1347</td></tr></tbody></table>
+
+<h2>7. Khó khăn gặp phải</h2>
+<p>Xếp theo mức ảnh hưởng tới tính đúng của số liệu. Điểm chung của gần như tất cả: chương trình
+<b>không dừng</b>, không có traceback, và vẫn trả ra một con số trông hợp lý.</p>
+<article class="bug sev-critical"><header><span class="num">01</span><h4>Đúng nhưng không khả thi</h4><span class="pill critical">nghiêm trọng</span></header><p><code>ctc_loss</code> tự cài là vòng lặp Python ba tầng <code>b × t × s</code>. Một batch 16 câu VIVOS (T′≈134, L=121) ra <b>259.424 vòng lặp</b>, mỗi vòng tạo ~6 tensor autograd 0-chiều → ~1,5 triệu node đồ thị mỗi step. Đo được <b>318 giây/step</b> rồi <code>bad allocation</code>.</p><p class="then"><code>test_ctc_parity</code> pass suốt vì nó chấm T=20, B=3, S≤6 — 780 vòng lặp, xong trong vài ms. Nó kiểm <b>tính đúng</b>, không kiểm <b>tính khả thi</b>. Đã vector hoá theo (batch, state): 0,03 giây cho loss, 3,7 giây/step trên CPU — nhanh 86 lần, và parity với <code>torch.nn.CTCLoss</code> lệch <b>0.00e+00</b>.</p></article><article class="bug sev-serious"><header><span class="num">02</span><h4>Nút chỉnh câm</h4><span class="pill serious">nặng</span></header><p><code>cfg.dropout</code> không được truyền xuống <code>TransformerBlock</code> trong <code>HighlightFusion</code>. Chỉnh giá trị không đổi gì, cũng không báo gì.</p><p class="then">Cùng dạng: <code>SpecAugment</code> là <code>nn.Module</code> nên thoát sớm khi <code>self.training</code> là False — mà <code>Dataset</code> không phải Module nên không ai gọi <code>.train()</code>. Khởi tạo rồi dùng thẳng là no-op im lặng. Cả hai đã nối, kèm test khoá.</p></article><article class="bug sev-critical"><header><span class="num">03</span><h4>Rò rỉ theo trận</h4><span class="pill critical">nghiêm trọng</span></header><p>Split chia theo <b>hiệp</b> nên hiệp 1 và hiệp 2 cùng trận rơi vào hai tập khác nhau: 4/5 hiệp test có hiệp anh em nằm trong train. Cùng trận là cùng đội, cùng sân, cùng bình luận viên, cùng bố trí camera.</p><p class="then">Đo được mức thổi phồng: cùng script chấm, checkpoint train trên split rò rỉ cho F1 test <b>0,2818</b>, so với <b>0,1297</b> sau khi tách theo trận — chênh khoảng 0,15 điểm. Phần lớn "kết quả" ban đầu là rò rỉ, không phải khái quát hoá.</p></article><article class="bug sev-serious"><header><span class="num">04</span><h4>Dữ liệu hỏng lặng lẽ</h4><span class="pill serious">nặng</span></header><p>Năm hiệp SoccerNet 224p có stream vorbis rỗng: 6 KB packet so với 33 MB ở hiệp bình thường. <code>ffmpeg</code> vẫn exit 0 và ghi WAV 4 KB → feature còn <b>1 giây</b> → <code>HighlightWindowDataset</code> vẫn sinh một cửa sổ toàn số 0 với nhãn IGNORE.</p><p class="then"><code>g18h1</code> và <code>g18h2</code> nằm trong <b>validation</b> của vòng 1 và vòng 2, nên val "6 hiệp / 3 trận" thực chất chỉ là 4 hiệp / 2 trận. Đã thêm guard <code>--min-seconds</code>: hiệp quá ngắn bị loại và in tên ra; split rỗng thì dừng hẳn thay vì để early-stop im lặng vô hiệu.</p></article><article class="bug sev-serious"><header><span class="num">05</span><h4>522 ảnh toàn byte 0</h4><span class="pill serious">nặng</span></header><p>Khi chuyển 442.998 PNG sang JPEG, tôi kill process giữa lúc đang ghi. Write-cache của Windows mất dữ liệu, để lại <b>522 file</b> có kích thước hợp lý nhưng nội dung toàn byte 0, thành các đoạn liên tiếp ở <code>g01h2</code> (261), <code>g38h1</code> (260), <code>g11h2</code> (1).</p><p class="then">Lần chạy sau thấy <code>os.path.exists</code> trả True nên bỏ qua — 521 frame rác sẽ đi thẳng vào embedding. Đã sửa: ghi qua <code>.tmp</code> rồi <code>os.replace</code>, và điều kiện bỏ qua đổi từ "file tồn tại" sang "file có SOI marker <code>ff d8 ff</code>".</p></article><article class="bug sev-critical"><header><span class="num">06</span><h4>Mất checkpoint</h4><span class="pill critical">nghiêm trọng</span></header><p>Kaggle chỉ giữ output của bản kernel <b>mới nhất</b>. Lệnh <code>kernels output .../&lt;version&gt;</code> nhận đối số version nhưng vẫn trả file của bản mới nhất — không có đường lấy lại.</p><p class="then">Mất checkpoint Siamese (bản v22 bị v23 ghi đè) và Two-Tower. Máy không có GPU chạy được torch nên phải train lại trên Kaggle, kéo theo cả chuỗi: chuyển 443 nghìn PNG sang JPEG, upload 5,9 GB, gom shot, train lại. Đã sửa quy trình: tải artifact <b>ngay khi kernel xong</b>, và gộp các bước phụ thuộc vào cùng một lần chạy.</p></article><article class="bug sev-warning"><header><span class="num">07</span><h4>Checkpoint không tự mô tả</h4><span class="pill warning">cần lưu ý</span></header><p><code>save_checkpoint</code> chỉ lưu <code>ModelConfig</code>, không lưu <code>TrainConfig</code>. Mọi lần train từ notebook để lại checkpoint không cho biết nó được train bằng learning rate / batch size / số step nào.</p><p class="then">Cộng thêm: các file <code>configs/*.yaml</code> trong repo là giá trị <b>dự kiến</b>, đã lệch khỏi thứ chạy thật (<code>siamese</code> ghi 15.000 step / batch 256, thật là 8.000 / 128). Đã lưu <code>train_config</code> vào checkpoint và ghi lại YAML bằng giá trị trích từ chính checkpoint.</p></article><article class="bug sev-serious"><header><span class="num">08</span><h4>Chạy CPU mà không báo</h4><span class="pill serious">nặng</span></header><p><code>extract_vit_embeddings</code> thiếu <code>.to(device)</code> — trên Kaggle T4 vẫn chạy CPU, 5 giờ thay vì 15 phút, không một dòng cảnh báo.</p><p class="then">Bản cũ hơn của cùng file còn <b>quên <code>load_state_dict</code></b>: nó sinh embedding từ trọng số random mà không lỗi gì. Hai lỗi cùng loại trong một file, cùng hậu quả — ra số vô nghĩa thay vì ra lỗi.</p></article><article class="bug sev-serious"><header><span class="num">09</span><h4>Gợi ý rỗng mà HTTP 200</h4><span class="pill serious">nặng</span></header><p>Index Milvus là IVF_FLAT với <code>nlist=1024</code> theo spec, nhưng chỉ có 2.624 vector nên hầu hết cụm rỗng. Kèm filter <code>type == "video"</code>, <code>nprobe=16</code> dò trúng toàn cụm không chứa video → <b>0 kết quả</b>, client nhận HTTP 200 với danh sách trống.</p><p class="then">Bài kiểm tra của chính script export cũng từng xác nhận nhầm: bản đầu để <code>nprobe=16</code> và vẫn PASS, vì search chạy ngay sau <code>insert</code> khi segment chưa lập index nên Milvus brute-force. Sau khi index hình thành, đúng truy vấn đó trả về 0.</p></article><article class="bug sev-warning"><header><span class="num">10</span><h4>Job train là hộp đen</h4><span class="pill warning">cần lưu ý</span></header><p><code>Trainer</code> không in gì trong lúc chạy — mọi output đến sau khi <code>train()</code> trả về. Với job bị huỷ, log dừng ở dòng "tham số:", không phân biệt được <b>chạy chậm</b> với <b>treo</b>, cũng không biết đã tới step nào.</p><p class="then">Điều này đúng với cả tám lần train trước đó, chỉ là chúng đều chạy xong nên không lộ. Đã thêm in tiến độ kèm step/giây và thời gian còn lại — và chính dòng đó phơi ra 318 giây/step của CTC.</p></article><article class="bug sev-warning"><header><span class="num">11</span><h4>Hết đĩa giả dạng hồi quy</h4><span class="pill warning">cần lưu ý</span></header><p>Test suite vỡ <b>18 failed + 18 errors</b> với <code>bad allocation</code> và <code>FileNotFoundError</code> — trông y như hồi quy code sau các sửa đổi.</p><p class="then">Nguyên nhân: ổ hệ thống còn 0,46 GB, mà pytest ghi thư mục tạm ở đó và mỗi lần chạy suite tốn khoảng 0,75 GB. Xoá thư mục tạm là 142 test pass ngay, không sửa một dòng code. Đã đặt <code>tmp_path_retention_policy = "failed"</code> để không bồi lên nữa.</p></article><article class="bug sev-warning"><header><span class="num">12</span><h4>DoD chưa từng được kiểm</h4><span class="pill warning">cần lưu ý</span></header><p>Dòng nghiệm thu "overfit 1 batch, loss ≈ 0" của T1.3a, T1.4b, T1.5b, T1.6a, T1.7a — <b>năm task</b> — chưa bao giờ được chấm. <code>test_overfit_one_batch.py</code> chỉ phủ một model toy, docstring ghi rõ "Model đầy đủ test ở T1.3+".</p><p class="then">Rất dễ tưởng đã xong vì tên test gần giống. Đã bổ sung cho <code>two_tower</code>, <code>asr_ctc</code> và <code>minigpt</code>; còn <code>vit</code> đang chờ danh sách chủ đề.</p></article>
+
+<h2>8. Điều rút ra</h2>
+<p><b>Test có thể xác nhận nhầm.</b> Ba lần trong quá trình này, một test đang pass lại đang che một
+lỗi nghiêm trọng. <code>test_ctc_parity</code> chấm đúng công thức nhưng ở kích thước 780 vòng lặp
+nên không thấy hàm đó không train nổi. Bài kiểm tra của script export Milvus chạy trước khi index
+hình thành nên đo một đường đi không phải đường production. Và <code>test_overfit_one_batch</code>
+chỉ phủ một model toy trong khi tên nó khiến người đọc tin rằng cả sáu model đã được kiểm.</p>
+<p><b>Cấu hình câm nguy hiểm hơn cấu hình sai.</b> <code>cfg.dropout</code> và
+<code>SpecAugment</code> đều là tham số nhận giá trị rồi không dùng. Không có gì báo, và mọi thí
+nghiệm điều chỉnh chúng đều vô nghĩa mà vẫn cho ra bảng số liệu đầy đủ.</p>
+<p><b>Rò rỉ dữ liệu đo được, nên phải đo.</b> Con số 0,2818 so với 0,1297 không phải suy luận — đó là
+cùng một script chấm cùng một model trên hai cách chia dữ liệu. Nếu không tách theo trận, T1.5 đã
+"đạt" nghiệm thu bằng một con số giả.</p>
+<p><b>Job dài phải quan sát được.</b> Hai phiên bản kernel bị huỷ mà không để lại thông tin nào, chỉ
+vì trainer im lặng cho tới khi kết thúc. Một dòng in kèm số step mỗi giây và thời gian còn lại đã đủ
+để phơi ra vấn đề ngay ở dòng đầu tiên.</p>
+
+<h2>9. Trạng thái và việc còn lại</h2>
+<p>Còn hai model để mở cổng chuyển sang Phase 2 và 3:</p>
+<ul>
+<li><b>ViT phân loại</b> — đang chờ danh sách 10 chủ đề phân loại video. Đây là quyết định thuộc về
+chủ dự án, không phải việc kỹ thuật.</li>
+<li><b>Mini-GPT tóm tắt</b> — đã kiểm được model hội tụ và sinh văn bản; còn phần huấn luyện trên
+corpus tiếng Việt.</li>
+</ul>
+<p>T1.5 giữ trạng thái chưa đạt. Hướng duy nhất còn lại là thêm dữ liệu, nhưng số liệu ở mục 5 cho
+thấy đòn bẩy đang giảm, nên đó là quyết định cần cân nhắc chi phí trước khi đổ thêm nguồn lực.</p>
+
+<div class="foot">
+<p>Mọi con số trong báo cáo được trích từ artifact kiểm được: checkpoint <code>.pt</code> kèm
+<code>metrics</code> và <code>train_config</code>, các file <code>docs/T1.5_ket_qua*.json</code>,
+<code>docs/T1.5_do_nhay_nhan.json</code>, và log kernel Kaggle. Không có con số nào là ước lượng.</p>
+<p>Tập test của mỗi task được chấm sau khi mọi siêu tham số đã chốt trên validation. Riêng T1.5, tập
+test được chấm ba lần qua ba vòng — mục 5 công bố cả ba, không thay thế nhau.</p>
+</div>
+</div></body></html>

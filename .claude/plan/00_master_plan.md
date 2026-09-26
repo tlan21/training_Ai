@@ -143,19 +143,19 @@ Orchestrator cập nhật `video_processing_jobs.current_stage` theo từng stag
 ## 3. PHASES & TASK BREAKDOWN (khớp @roadmap.md đã hiệu chỉnh)
 
 ### Phase 0 — Contract & Hạ tầng (W1, song song R&D)
-- [ ] T0.1 docker-compose: postgres, mongo, milvus, kafka, minio, redis
-- [ ] T0.2 Migration SQL đầy đủ (@database_schema.md sau bổ sung) + seed categories + admin user + seed `system_settings` (threshold 75/65, AI_SERVICE_KEY)
-- [ ] T0.3 Skeleton gateway + inference-service với endpoint stub trả mock đúng schema → FE code được ngay từ W1
-- [ ] T0.4 Sinh TypeScript types từ OpenAPI → `cms/src/api-types.ts`, `client/src/api-types.ts`
+- [x] T0.1 docker-compose: postgres, mongo, milvus, kafka, minio, redis
+- [x] T0.2 Migration SQL đầy đủ (@database_schema.md sau bổ sung) + seed categories + admin user + seed `system_settings` (threshold 75/65, AI_SERVICE_KEY)
+- [x] T0.3 Skeleton gateway + inference-service với endpoint stub trả mock đúng schema → FE code được ngay từ W1 (OpenAPI `infra/openapi.yaml` + gateway Go stub `backend/` 39 path build+run OK + inference-service stub)
+- [x] T0.4 Sinh TypeScript types từ OpenAPI → `cms/src/api-types.ts`, `client/src/api-types.ts`
 
 ### Phase 1 — AI Core (W1–W6 GPU tuần tự, chi tiết @01_ai_core_plan.md)
 - [x] T1.1 (W1) primitives + optim + tokenizer + unit tests toán học (gradient check, AdamW parity, BPE roundtrip, SDPA parity)
-- [ ] T1.2 (W1–2) data pipeline: thu thập video, tool gán nhãn, weak-label highlight bằng audio cross-correlation (@dataset_spec.md)
-- [ ] T1.3 (W2) train ViT + Siamese → checkpoint + báo cáo metric (@evaluation_plan.md)
-- [ ] T1.4 (W3–4) train ASR CTC (chạy đêm)
-- [ ] T1.5 (W4) train Highlight Fusion + ablation visual/audio/fusion
+- [ ] T1.2 (W1–2) data pipeline: thu thập video, tool gán nhãn, weak-label highlight bằng audio cross-correlation (@dataset_spec.md) — **T1.2a–d XONG** (80 trận/160 hiệp, 442.998 keyframe, 155 WAV, nhãn/giây {0,1,-1}); **còn T1.2e tool gán nhãn nội bộ**
+- [ ] T1.3 (W2) train ViT + Siamese → checkpoint + báo cáo metric (@evaluation_plan.md) — **T1.3c XONG**: Siamese Recall@10 test 0.804 (≥0.80), median rank 2, vs baseline 0.095/0.226; **T1.3a/b/d CHẶN** vì chưa có danh sách 10 chủ đề; T1.3e xong nửa (có `siamese/best.pt`, thiếu `vit/best.pt`)
+- [x] T1.4 (W3–4) train ASR CTC (chạy đêm) — test VIVOS chính thức (760 câu, 19 người nói khác hẳn): **CER 0.1347** (≤0.20), **WER 0.3581** (≤0.45); 20.000 step ở 1.91 step/s, loss 8.185→0.274, val WER còn đang giảm khi hết step (kernel v30)
+- [x] T1.5 (W4) train Highlight Fusion + ablation visual/audio/fusion — **DoD ĐẠT ở vòng 5** (140 trận/273 hiệp, tập test mới): gộp 3 seed F1 test 0.2632, vượt RMS +0.119 (bootstrap theo trận CI95 [+0.070, +0.166], P(≥0.10)=0.79) và frame-diff +0.158 (CI95 [+0.122, +0.200]) (@docs/T1.5_bao_cao.md §6g). Lịch sử: vòng 3 F1 test 0.1528±0.0116, vượt baseline +0.0491 (cần +0.10); kèm sweep 6 thiết kế nhãn cho thấy ngưỡng +0.10 phụ thuộc mạnh vào thiết kế nhãn (@docs/T1.5_bao_cao.md); **T1.5e ablation ĐẠT**: fusion vượt cả hai đơn phương thức — visual +0.0510 (p 0.0002), audio +0.0254 (p 0.0058), fusion 7 seed; 2 đối chứng khớp dung lượng cho thấy 3× tham số cho nhánh đơn chỉ được −0.0006/−0.0028 nên đóng góp đến từ modality chứ không từ dung lượng
 - [ ] T1.6 (W5–6) pretrain Mini-GPT + fine-tune tóm tắt (chạy đêm)
-- [ ] T1.7 (W6) train Two-Tower (MovieLens + onboarding)
+- [x] T1.7 (W6) train Two-Tower (MovieLens + onboarding) — NDCG@10 0.0990±0.0026 vs pop 0.0760 (3 seed; kernel v27 tái lập đúng số v14), 2.624 vector 128-d → Milvus IP, endpoint recommendation 10 ms (@docs/T1.7_bao_cao.md §10)
 - [ ] T1.8 (W6) inference-service :8001 nạp 6 checkpoint thật + GPU queue + Bearer key + /health (chuyển từ T2.6 lên — điều kiện AI-GATE mục 0)
 
 ### Phase 2 — Backend (W3–5, chi tiết @02_backend_plan.md)

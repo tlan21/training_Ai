@@ -1,0 +1,1067 @@
+openapi: 3.0.3
+info:
+  title: Video AI Platform — Public + CMS API
+  version: 0.1.0
+  description: >
+    Contract-first (master plan §2). Nguồn sự thật cho gateway Go (oapi-codegen)
+    và FE types (openapi-typescript). Điểm highlight thang 0–100; similarity/score 0–1.
+    Error envelope { "error": { "code", "message" } }. Thời gian ISO8601 UTC.
+servers:
+  - url: http://localhost:8000
+    description: Gateway (Gin) — prefix /api
+
+security:
+  - bearerAuth: []
+
+tags:
+  - name: auth
+  - name: users
+  - name: content
+  - name: search
+  - name: interactions
+  - name: cms-videos
+  - name: cms-jobs
+  - name: cms-clips
+  - name: cms-settings
+  - name: cms-categories
+  - name: cms-users
+
+paths:
+  # ---------------- 2.1 Auth ----------------
+  /api/auth/register:
+    post:
+      tags: [auth]
+      summary: Đăng ký
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username, email, password]
+              properties:
+                username: { type: string }
+                email: { type: string, format: email }
+                password: { type: string, format: password, minLength: 6 }
+      responses:
+        "201":
+          description: Tạo user + access token (Set-Cookie refresh HttpOnly)
+          headers:
+            Set-Cookie: { schema: { type: string }, description: refresh_token HttpOnly }
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/AuthResponse" }
+        "409": { $ref: "#/components/responses/Conflict" }
+        "422": { $ref: "#/components/responses/ValidationError" }
+
+  /api/auth/login:
+    post:
+      tags: [auth]
+      summary: Đăng nhập
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, format: email }
+                password: { type: string, format: password }
+      responses:
+        "200":
+          description: access token + cookie
+          headers:
+            Set-Cookie: { schema: { type: string } }
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/AuthResponse" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /api/auth/refresh:
+    post:
+      tags: [auth]
+      summary: Làm mới access token (dùng refresh cookie)
+      security: []
+      responses:
+        "200":
+          description: access token mới
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token: { type: string }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /api/auth/logout:
+    post:
+      tags: [auth]
+      summary: Đăng xuất (xóa cookie + row user_sessions)
+      responses:
+        "204": { description: Đã đăng xuất }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  # ---------------- 2.1 Users ----------------
+  /api/users/me:
+    get:
+      tags: [users]
+      summary: Hồ sơ hiện tại
+      responses:
+        "200":
+          description: user + preferences
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/UserMe" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+    put:
+      tags: [users]
+      summary: Cập nhật hồ sơ
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username: { type: string }
+      responses:
+        "200":
+          description: user
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/User" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /api/users/me/preferences:
+    put:
+      tags: [users]
+      summary: Cập nhật danh mục ưa thích (≥3) — backend khởi tạo lại user vector Milvus
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [category_ids]
+              properties:
+                category_ids:
+                  type: array
+                  minItems: 3
+                  items: { type: string }
+      responses:
+        "200": { description: OK }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "422": { $ref: "#/components/responses/ValidationError" }
+
+  /api/users/me/history:
+    get:
+      tags: [users]
+      summary: Lịch sử xem
+      parameters:
+        - $ref: "#/components/parameters/Cursor"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: items + next_cursor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        clip: { $ref: "#/components/schemas/Clip" }
+                        watched_at: { type: string, format: date-time }
+                        duration_watched: { type: integer }
+                  next_cursor: { type: string, nullable: true }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /api/users/me/likes:
+    get:
+      tags: [users]
+      summary: Clip đã thích
+      parameters:
+        - $ref: "#/components/parameters/Cursor"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: items + next_cursor
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ClipPage" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  # ---------------- 2.2 Client content ----------------
+  /api/feed:
+    get:
+      tags: [content]
+      summary: Feed clip published (recommendation; fallback popularity)
+      parameters:
+        - $ref: "#/components/parameters/Cursor"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: clip page
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ClipPage" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /api/videos:
+    get:
+      tags: [content]
+      summary: Duyệt video processed công khai (Discovery)
+      parameters:
+        - { name: category_id, in: query, schema: { type: string } }
+        - { name: sort, in: query, schema: { type: string, enum: [trending, newest], default: newest } }
+        - $ref: "#/components/parameters/Cursor"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: video page
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items: { $ref: "#/components/schemas/Video" }
+                  next_cursor: { type: string, nullable: true }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /api/videos/{id}:
+    get:
+      tags: [content]
+      summary: Chi tiết video processed (meta + category + clips published)
+      parameters: [ { $ref: "#/components/parameters/PathId" } ]
+      responses:
+        "200":
+          description: video detail
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/VideoDetail" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /api/videos/{id}/analysis:
+    get:
+      tags: [content]
+      summary: Phân tích public (timeline 0–100, summary/key_moments chỉ khi approved)
+      parameters: [ { $ref: "#/components/parameters/PathId" } ]
+      responses:
+        "200":
+          description: analysis public
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PublicAnalysis" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /api/videos/{id}/subtitles:
+    get:
+      tags: [content]
+      summary: Phụ đề
+      parameters: [ { $ref: "#/components/parameters/PathId" } ]
+      responses:
+        "200":
+          description: segments
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Subtitles" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /api/clips/{id}:
+    get:
+      tags: [content]
+      summary: Clip published + video gốc ref
+      parameters: [ { $ref: "#/components/parameters/PathId" } ]
+      responses:
+        "200":
+          description: clip
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Clip" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /api/categories:
+    get:
+      tags: [content]
+      summary: Danh mục public
+      responses:
+        "200":
+          description: list
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Category" }
+
+  # ---------------- 2.2 Search ----------------
+  /api/search/visual:
+    post:
+      tags: [search]
+      summary: Tìm kiếm bằng ảnh (Siamese) — gateway lọc theo min_similarity
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [image]
+              properties:
+                image: { type: string, format: binary }
+                min_similarity: { type: number, format: float, minimum: 0, maximum: 1, default: 0.5 }
+      responses:
+        "200":
+          description: kết quả tương đồng
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items: { $ref: "#/components/schemas/VisualSearchResult" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /api/search:
+    get:
+      tags: [search]
+      summary: Tìm text (Mongo subtitles + Postgres title)
+      parameters:
+        - { name: q, in: query, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: kết quả kèm timestamp câu khớp
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items: { $ref: "#/components/schemas/TextSearchResult" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  # ---------------- 2.2 Interactions ----------------
+  /api/interactions:
+    post:
+      tags: [interactions]
+      summary: Ghi tương tác (tín hiệu Two-Tower)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [video_id, interaction_type]
+              properties:
+                video_id: { type: string }
+                clip_id: { type: string, nullable: true }
+                interaction_type:
+                  type: string
+                  enum: [click, watch_time, like, share, skip, save]
+                duration_watched: { type: integer, nullable: true }
+      responses:
+        "201": { description: Đã ghi }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "422": { $ref: "#/components/responses/ValidationError" }
+
+  # ---------------- 2.3 CMS videos ----------------
+  /api/cms/videos:
+    post:
+      tags: [cms-videos]
+      summary: Upload video (≤2GB) → MinIO + row videos/jobs + Kafka video.uploaded
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file, title]
+              properties:
+                file: { type: string, format: binary }
+                title: { type: string }
+                description: { type: string }
+      responses:
+        "201":
+          description: video + job
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  video: { $ref: "#/components/schemas/Video" }
+                  job: { $ref: "#/components/schemas/Job" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+    get:
+      tags: [cms-videos]
+      summary: Danh sách video mọi trạng thái (page-based)
+      parameters:
+        - { name: status, in: query, schema: { type: string, enum: [uploaded, processing, processed, failed, deleted] } }
+        - $ref: "#/components/parameters/Page"
+      responses:
+        "200":
+          description: page
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/VideoTablePage" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  /api/cms/videos/{id}:
+    get:
+      tags: [cms-videos]
+      summary: Meta + job + analysis refs
+      parameters: [ { $ref: "#/components/parameters/PathId" } ]
+      responses:
+        "200":
+          description: video detail cms
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/VideoDetail" }
+        "404": { $ref: "#/components/responses/NotFound" }
+    delete:
+      tags: [cms-videos]
+      summary: Xóa mềm + xóa vectors Milvus + ẩn clips
+      parameters: [ { $ref: "#/components/parameters/PathId" } ]
+      responses:
+        "204": { description: Đã xóa mềm }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /api/cms/videos/{id}/analysis:
+    get:
+      tags: [cms-videos]
+      summary: Analysis đầy đủ (gồm ai_generated_clips, category_suggestion, summary_status)
+      parameters: [ { $ref: "#/components/parameters/PathId" } ]
+      responses:
+        "200":
+          description: cms analysis
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CmsAnalysis" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /api/cms/videos/{id}/summary/regenerate:
+    post:
+      tags: [cms-videos]
+      summary: Sinh lại tóm tắt/tiêu đề (temperature/top-k khác)
+      parameters: [ { $ref: "#/components/parameters/PathId" } ]
+      responses:
+        "200":
+          description: draft mới
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  summary: { type: string }
+                  suggested_title: { type: string }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /api/cms/videos/{id}/category:
+    put:
+      tags: [cms-videos]
+      summary: Admin duyệt category → ghi Postgres
+      parameters: [ { $ref: "#/components/parameters/PathId" } ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [category_id]
+              properties:
+                category_id: { type: string }
+      responses:
+        "200": { description: OK }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /api/cms/videos/{id}/summary:
+    put:
+      tags: [cms-videos]
+      summary: Sửa draft summary
+      parameters: [ { $ref: "#/components/parameters/PathId" } ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [summary]
+              properties:
+                summary: { type: string }
+      responses:
+        "200": { description: OK }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /api/cms/videos/{id}/summary/approve:
+    post:
+      tags: [cms-videos]
+      summary: Duyệt summary → Client mới thấy
+      parameters: [ { $ref: "#/components/parameters/PathId" } ]
+      responses:
+        "200": { description: Đã duyệt }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /api/cms/videos/{id}/subtitles:
+    put:
+      tags: [cms-videos]
+      summary: Bulk update phụ đề (Mongo)
+      parameters: [ { $ref: "#/components/parameters/PathId" } ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [segments]
+              properties:
+                segments:
+                  type: array
+                  items: { $ref: "#/components/schemas/SubtitleSegment" }
+      responses:
+        "200": { description: OK }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  # ---------------- 2.3 CMS jobs ----------------
+  /api/cms/jobs:
+    get:
+      tags: [cms-jobs]
+      summary: Hàng đợi job + current_stage + progress
+      parameters:
+        - { name: status, in: query, schema: { type: string, enum: [pending, running, completed, failed] } }
+      responses:
+        "200":
+          description: list job
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Job" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  /api/cms/jobs/{id}:
+    get:
+      tags: [cms-jobs]
+      summary: Chi tiết job + error_log
+      parameters: [ { $ref: "#/components/parameters/PathId" } ]
+      responses:
+        "200":
+          description: job
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Job" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /api/cms/jobs/{id}/retry:
+    post:
+      tags: [cms-jobs]
+      summary: Retry (chỉ khi failed) → reset pending + re-produce Kafka
+      parameters: [ { $ref: "#/components/parameters/PathId" } ]
+      responses:
+        "200": { description: OK }
+        "409": { $ref: "#/components/responses/Conflict" }
+
+  /api/cms/jobs/{id}/cancel:
+    post:
+      tags: [cms-jobs]
+      summary: Cancel (chỉ khi pending|running) → failed
+      parameters: [ { $ref: "#/components/parameters/PathId" } ]
+      responses:
+        "200": { description: OK }
+        "409": { $ref: "#/components/responses/Conflict" }
+
+  # ---------------- 2.3 CMS settings & health ----------------
+  /api/cms/settings:
+    get:
+      tags: [cms-settings]
+      summary: system_settings (AI key trả masked)
+      responses:
+        "200":
+          description: settings
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Settings" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+    put:
+      tags: [cms-settings]
+      summary: Cập nhật settings (admin only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SettingsUpdate" }
+      responses:
+        "200": { description: OK }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  /api/cms/system/health:
+    get:
+      tags: [cms-settings]
+      summary: Proxy GET :8001/health (số thật RTX 3060)
+      responses:
+        "200":
+          description: health
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SystemHealth" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  # ---------------- 2.3 CMS clips ----------------
+  /api/cms/clips:
+    post:
+      tags: [cms-clips]
+      summary: Tạo clip (draft→processing) + Kafka clip.cut.requested
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [video_id, title, start_time, end_time]
+              properties:
+                video_id: { type: string }
+                title: { type: string }
+                start_time: { type: number, format: float }
+                end_time: { type: number, format: float }
+      responses:
+        "201":
+          description: clip
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Clip" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+    get:
+      tags: [cms-clips]
+      summary: Danh sách clip theo video/status
+      parameters:
+        - { name: video_id, in: query, schema: { type: string } }
+        - { name: status, in: query, schema: { type: string, enum: [draft, processing, published, rejected] } }
+      responses:
+        "200":
+          description: list
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Clip" }
+
+  /api/cms/clips/{id}:
+    put:
+      tags: [cms-clips]
+      summary: Sửa meta clip
+      parameters: [ { $ref: "#/components/parameters/PathId" } ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title: { type: string }
+                category_id: { type: string }
+      responses:
+        "200": { description: OK }
+        "404": { $ref: "#/components/responses/NotFound" }
+    delete:
+      tags: [cms-clips]
+      summary: Reject/xóa clip
+      parameters: [ { $ref: "#/components/parameters/PathId" } ]
+      responses:
+        "204": { description: Đã xóa }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /api/cms/clips/{id}/publish:
+    post:
+      tags: [cms-clips]
+      summary: Publish (chỉ khi cut xong)
+      parameters: [ { $ref: "#/components/parameters/PathId" } ]
+      responses:
+        "200": { description: Đã publish }
+        "409": { $ref: "#/components/responses/Conflict" }
+
+  # ---------------- 2.3 CMS categories ----------------
+  /api/cms/categories:
+    get:
+      tags: [cms-categories]
+      summary: Danh sách
+      responses:
+        "200":
+          description: list
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Category" }
+    post:
+      tags: [cms-categories]
+      summary: Tạo danh mục
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name: { type: string }
+      responses:
+        "201":
+          description: category
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Category" }
+
+  /api/cms/categories/{id}:
+    put:
+      tags: [cms-categories]
+      summary: Sửa
+      parameters: [ { $ref: "#/components/parameters/PathId" } ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name: { type: string }
+      responses:
+        "200": { description: OK }
+        "404": { $ref: "#/components/responses/NotFound" }
+    delete:
+      tags: [cms-categories]
+      summary: Xóa
+      parameters: [ { $ref: "#/components/parameters/PathId" } ]
+      responses:
+        "204": { description: Đã xóa }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  # ---------------- 2.3 CMS users (admin) ----------------
+  /api/cms/users:
+    get:
+      tags: [cms-users]
+      summary: Danh sách user (admin only)
+      parameters: [ { $ref: "#/components/parameters/Page" } ]
+      responses:
+        "200":
+          description: page
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items: { $ref: "#/components/schemas/User" }
+                  total: { type: integer }
+                  page: { type: integer }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  /api/cms/users/{id}/role:
+    put:
+      tags: [cms-users]
+      summary: Đổi role (admin only)
+      parameters: [ { $ref: "#/components/parameters/PathId" } ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [role]
+              properties:
+                role: { type: string, enum: [admin, editor, client] }
+      responses:
+        "200":
+          description: user
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/User" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    PathId:
+      name: id
+      in: path
+      required: true
+      schema: { type: string }
+    Cursor:
+      name: cursor
+      in: query
+      schema: { type: string }
+    Limit:
+      name: limit
+      in: query
+      schema: { type: integer, default: 10, minimum: 1, maximum: 50 }
+    Page:
+      name: page
+      in: query
+      schema: { type: integer, default: 1, minimum: 1 }
+
+  responses:
+    Unauthorized:
+      description: Thiếu/sai token
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    Forbidden:
+      description: Không đủ quyền (role)
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    NotFound:
+      description: Không tìm thấy
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    Conflict:
+      description: Xung đột trạng thái
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    ValidationError:
+      description: Dữ liệu không hợp lệ
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+
+  schemas:
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code: { type: string, example: VIDEO_NOT_FOUND }
+            message: { type: string }
+
+    User:
+      type: object
+      properties:
+        id: { type: string }
+        username: { type: string }
+        email: { type: string, format: email }
+        avatar_url: { type: string, nullable: true }
+        role: { type: string, enum: [admin, editor, client] }
+        created_at: { type: string, format: date-time }
+
+    UserMe:
+      allOf:
+        - $ref: "#/components/schemas/User"
+        - type: object
+          properties:
+            preferences:
+              type: array
+              items: { type: string }
+              description: category_id[]
+
+    AuthResponse:
+      type: object
+      properties:
+        user: { $ref: "#/components/schemas/User" }
+        access_token: { type: string }
+
+    Category:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+
+    Video:
+      type: object
+      properties:
+        id: { type: string }
+        title: { type: string }
+        description: { type: string, nullable: true }
+        thumbnail_url: { type: string, nullable: true }
+        duration_seconds: { type: number, format: float }
+        status: { type: string, enum: [uploaded, processing, processed, failed, deleted] }
+        category: { $ref: "#/components/schemas/Category" }
+        created_at: { type: string, format: date-time }
+
+    VideoDetail:
+      allOf:
+        - $ref: "#/components/schemas/Video"
+        - type: object
+          properties:
+            clips:
+              type: array
+              items: { $ref: "#/components/schemas/Clip" }
+
+    Clip:
+      type: object
+      properties:
+        id: { type: string }
+        video_id: { type: string }
+        title: { type: string }
+        start_time: { type: number, format: float }
+        end_time: { type: number, format: float }
+        average_score: { type: number, format: float, minimum: 0, maximum: 100 }
+        thumbnail_url: { type: string, nullable: true }
+        playback_url: { type: string, nullable: true, description: MinIO presigned URL }
+        status: { type: string, enum: [draft, processing, published, rejected] }
+        created_at: { type: string, format: date-time }
+
+    ClipPage:
+      type: object
+      properties:
+        items:
+          type: array
+          items: { $ref: "#/components/schemas/Clip" }
+        next_cursor: { type: string, nullable: true }
+
+    VideoTablePage:
+      type: object
+      properties:
+        items:
+          type: array
+          items: { $ref: "#/components/schemas/Video" }
+        total: { type: integer }
+        page: { type: integer }
+
+    Job:
+      type: object
+      properties:
+        id: { type: string }
+        video_id: { type: string }
+        status: { type: string, enum: [pending, running, completed, failed] }
+        current_stage:
+          type: string
+          nullable: true
+          enum: [splitting_frames, embedding, asr_extracting, highlight_scoring, summarizing, completed]
+        progress: { type: integer, minimum: 0, maximum: 100 }
+        error_log: { type: string, nullable: true }
+        updated_at: { type: string, format: date-time }
+
+    TimelineScore:
+      type: object
+      properties:
+        second: { type: integer }
+        score: { type: number, format: float, minimum: 0, maximum: 100 }
+
+    KeyMoment:
+      type: object
+      properties:
+        timestamp: { type: number, format: float }
+        text: { type: string }
+
+    PublicAnalysis:
+      type: object
+      properties:
+        timeline_scores:
+          type: array
+          items: { $ref: "#/components/schemas/TimelineScore" }
+        summary: { type: string, nullable: true }
+        key_moments:
+          type: array
+          items: { $ref: "#/components/schemas/KeyMoment" }
+        hashtags:
+          type: array
+          items: { type: string }
+
+    AiGeneratedClip:
+      type: object
+      properties:
+        start_time: { type: number, format: float }
+        end_time: { type: number, format: float }
+        average_score: { type: number, format: float }
+        reason: { type: string }
+
+    CmsAnalysis:
+      type: object
+      properties:
+        timeline_scores:
+          type: array
+          items: { $ref: "#/components/schemas/TimelineScore" }
+        ai_generated_clips:
+          type: array
+          items: { $ref: "#/components/schemas/AiGeneratedClip" }
+        category_suggestion: { type: string, nullable: true }
+        summary: { type: string, nullable: true }
+        summary_status: { type: string, enum: [draft, approved] }
+        suggested_title: { type: string, nullable: true }
+        key_moments:
+          type: array
+          items: { $ref: "#/components/schemas/KeyMoment" }
+        hashtags:
+          type: array
+          items: { type: string }
+
+    SubtitleSegment:
+      type: object
+      properties:
+        segment_index: { type: integer }
+        start_time: { type: number, format: float }
+        end_time: { type: number, format: float }
+        text: { type: string }
+        confidence: { type: number, format: float, minimum: 0, maximum: 1 }
+        warning: { type: string, nullable: true, enum: [low_confidence, blacklist] }
+
+    Subtitles:
+      type: object
+      properties:
+        segments:
+          type: array
+          items: { $ref: "#/components/schemas/SubtitleSegment" }
+
+    VisualSearchResult:
+      type: object
+      properties:
+        video_id: { type: string }
+        timestamp: { type: number, format: float }
+        similarity_score: { type: number, format: float, minimum: 0, maximum: 1 }
+        thumbnail_url: { type: string }
+
+    TextSearchResult:
+      type: object
+      properties:
+        video_id: { type: string }
+        title: { type: string }
+        timestamp: { type: number, format: float, nullable: true }
+        matched_text: { type: string, nullable: true }
+
+    Settings:
+      type: object
+      properties:
+        highlight_threshold: { type: integer }
+        asr_warning_threshold: { type: integer }
+        auto_highlight_enabled: { type: boolean }
+        auto_subtitle_enabled: { type: boolean }
+        default_subtitle_lang: { type: string }
+        ai_service_api_key: { type: string, description: masked "sk-local-••••" }
+
+    SettingsUpdate:
+      type: object
+      properties:
+        highlight_threshold: { type: integer, minimum: 0, maximum: 100 }
+        asr_warning_threshold: { type: integer, minimum: 0, maximum: 100 }
+        auto_highlight_enabled: { type: boolean }
+        auto_subtitle_enabled: { type: boolean }
+        ai_service_api_key: { type: string }
+
+    SystemHealth:
+      type: object
+      properties:
+        gpu_vram_used: { type: number, format: float }
+        gpu_util: { type: number, format: float }
+        models_loaded:
+          type: array
+          items: { type: string }
+        queue_depth: { type: integer }

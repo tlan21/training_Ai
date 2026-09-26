@@ -1,0 +1,104 @@
+{
+  "n_seconds": {
+    "val": 76338,
+    "test": 72992
+  },
+  "test_halves": [
+    "g115h1",
+    "g115h2",
+    "g129h1",
+    "g129h2",
+    "g138h1",
+    "g138h2",
+    "g38h1",
+    "g38h2",
+    "g45h1",
+    "g45h2",
+    "g52h1",
+    "g52h2",
+    "g53h1",
+    "g53h2",
+    "g58h1",
+    "g58h2",
+    "g60h1",
+    "g62h1",
+    "g62h2",
+    "g68h1",
+    "g68h2",
+    "g75h1",
+    "g75h2",
+    "g96h1",
+    "g96h2",
+    "g98h1",
+    "g98h2"
+  ],
+  "model": {
+    "seeds": [
+      {
+        "ckpt": "D:/data_training_ai/kfusion140/ckpt_fusion_best_s1337/highlight_fusion/best.pt",
+        "seed": 1337,
+        "step": 2800,
+        "k": 9,
+        "tau": 0.53,
+        "val_f1": 0.27135368485969785,
+        "test_f1": 0.2564439768542872
+      },
+      {
+        "ckpt": "D:/data_training_ai/kfusion140/ckpt_fusion_best_s1338/highlight_fusion/best.pt",
+        "seed": 1338,
+        "step": 2300,
+        "k": 9,
+        "tau": 0.47,
+        "val_f1": 0.2540973505853358,
+        "test_f1": 0.24575289575289577
+      },
+      {
+        "ckpt": "D:/data_training_ai/kfusion140/ckpt_fusion_best_s1339/highlight_fusion/best.pt",
+        "seed": 1339,
+        "step": 3500,
+        "k": 9,
+        "tau": 0.57,
+        "val_f1": 0.2521380123857269,
+        "test_f1": 0.2440263188271961
+      }
+    ],
+    "f1_mean": 0.2487410638114597,
+    "f1_std": 0.005492201682331735,
+    "ensemble": {
+      "k": 9,
+      "tau": 0.51,
+      "val_f1": 0.27498921328922765,
+      "test_f1": 0.2631700554528651
+    }
+  },
+  "baselines": {
+    "rms_energy": {
+      "k": 3,
+      "tau": 0.77,
+      "val_f1": 0.11287183764247985,
+      "test_f1": 0.14395280235988203
+    },
+    "frame_diff": {
+      "k": 45,
+      "tau": 0.24,
+      "val_f1": 0.10281978837737521,
+      "test_f1": 0.10518945864956451
+    }
+  },
+  "postproc": {
+    "stride": 30,
+    "smooth_ks": [
+      1,
+      3,
+      5,
+      9,
+      15,
+      21,
+      31,
+      45
+    ],
+    "ensemble": true
+  },
+  "gap_vs_worst_baseline": 0.11921725309298306,
+  "dod_pass": true
+}

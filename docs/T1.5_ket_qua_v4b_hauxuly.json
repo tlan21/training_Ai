@@ -1,0 +1,97 @@
+{
+  "n_seconds": {
+    "val": 54141,
+    "test": 54658
+  },
+  "test_halves": [
+    "g21h1",
+    "g21h2",
+    "g42h1",
+    "g42h2",
+    "g46h1",
+    "g46h2",
+    "g49h1",
+    "g49h2",
+    "g68h1",
+    "g68h2",
+    "g73h1",
+    "g73h2",
+    "g74h1",
+    "g74h2",
+    "g79h1",
+    "g79h2",
+    "g90h1",
+    "g90h2",
+    "g93h1",
+    "g93h2"
+  ],
+  "model": {
+    "seeds": [
+      {
+        "ckpt": "D:/data_training_ai/kfusion100/ckpt_fusion_best_s1337/highlight_fusion/best.pt",
+        "seed": 1337,
+        "step": 2800,
+        "k": 9,
+        "tau": 0.34,
+        "val_f1": 0.2786206896551724,
+        "test_f1": 0.1911728846622775
+      },
+      {
+        "ckpt": "D:/data_training_ai/kfusion100/ckpt_fusion_best_s1338/highlight_fusion/best.pt",
+        "seed": 1338,
+        "step": 2300,
+        "k": 9,
+        "tau": 0.44,
+        "val_f1": 0.2737159109921365,
+        "test_f1": 0.19877431388222752
+      },
+      {
+        "ckpt": "D:/data_training_ai/kfusion100/ckpt_fusion_best_s1339/highlight_fusion/best.pt",
+        "seed": 1339,
+        "step": 2000,
+        "k": 9,
+        "tau": 0.45,
+        "val_f1": 0.301054275673565,
+        "test_f1": 0.1967629324024119
+      }
+    ],
+    "f1_mean": 0.19557004364897232,
+    "f1_std": 0.0032158637232776225,
+    "ensemble": {
+      "k": 9,
+      "tau": 0.4,
+      "val_f1": 0.317110853611433,
+      "test_f1": 0.1936252606493893
+    }
+  },
+  "baselines": {
+    "rms_energy": {
+      "k": 5,
+      "tau": 0.7,
+      "val_f1": 0.19969336910693752,
+      "test_f1": 0.10473038738563364
+    },
+    "frame_diff": {
+      "k": 31,
+      "tau": 0.21,
+      "val_f1": 0.09726130553683959,
+      "test_f1": 0.08264638999431495
+    }
+  },
+  "postproc": {
+    "stride": 30,
+    "smooth_ks": [
+      1,
+      3,
+      5,
+      9,
+      15,
+      21,
+      31,
+      45
+    ],
+    "ensemble": true
+  },
+  "gap_vs_worst_baseline": 0.08889487326375567,
+  "dod_pass": false
+}

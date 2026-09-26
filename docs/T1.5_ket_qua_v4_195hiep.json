@@ -1,0 +1,72 @@
+{
+  "n_seconds": {
+    "val": 54141,
+    "test": 54658
+  },
+  "test_halves": [
+    "g21h1",
+    "g21h2",
+    "g42h1",
+    "g42h2",
+    "g46h1",
+    "g46h2",
+    "g49h1",
+    "g49h2",
+    "g68h1",
+    "g68h2",
+    "g73h1",
+    "g73h2",
+    "g74h1",
+    "g74h2",
+    "g79h1",
+    "g79h2",
+    "g90h1",
+    "g90h2",
+    "g93h1",
+    "g93h2"
+  ],
+  "model": {
+    "seeds": [
+      {
+        "ckpt": "D:/data_training_ai/kfusion100/ckpt_fusion_best_s1337/highlight_fusion/best.pt",
+        "seed": 1337,
+        "step": 2800,
+        "tau": 0.52,
+        "val_f1": 0.21756756756756757,
+        "test_f1": 0.15554488718194914
+      },
+      {
+        "ckpt": "D:/data_training_ai/kfusion100/ckpt_fusion_best_s1338/highlight_fusion/best.pt",
+        "seed": 1338,
+        "step": 2300,
+        "tau": 0.67,
+        "val_f1": 0.21241287753070032,
+        "test_f1": 0.16113490364025693
+      },
+      {
+        "ckpt": "D:/data_training_ai/kfusion100/ckpt_fusion_best_s1339/highlight_fusion/best.pt",
+        "seed": 1339,
+        "step": 2000,
+        "tau": 0.58,
+        "val_f1": 0.2274052478134111,
+        "test_f1": 0.18088911599386817
+      }
+    ],
+    "f1_mean": 0.16585630227202475,
+    "f1_std": 0.010872018742250552
+  },
+  "baselines": {
+    "rms_energy": {
+      "tau": 0.74,
+      "val_f1": 0.19787408013082586,
+      "test_f1": 0.1058489742470537
+    },
+    "frame_diff": {
+      "tau": 0.12,
+      "val_f1": 0.08881004220089779,
+      "test_f1": 0.06759576866799397
+    }
+  },
+  "gap_vs_worst_baseline": 0.06000732802497105,
+  "dod_pass": false
+}

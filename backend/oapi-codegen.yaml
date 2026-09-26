@@ -1,0 +1,9 @@
+# Cấu hình oapi-codegen — sinh Go types + embedded spec từ infra/openapi.yaml.
+# Chạy: oapi-codegen -config backend/oapi-codegen.yaml infra/openapi.yaml
+package: gen
+output: internal/gen/api.gen.go
+generate:
+  models: true
+  embedded-spec: true
+output-options:
+  skip-prune: true

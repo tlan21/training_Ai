@@ -16,6 +16,18 @@ data/processed/
 data/labels/
 *.pt
 
+# Secrets
+.env
+kaggle.json
+
+# NDA SoccerNet: chứa password video + toàn văn NDA. NDA cấm chia sẻ dữ liệu cho người khác,
+# nên password KHÔNG được vào git — collaborator phải tự điền form của SoccerNet.
+DNA.md
+NDA.md
+
+# Snapshot/log playwright MCP — Kaggle tải kaggle.json thẳng vào đây, không được commit
+.playwright-mcp/
+
 # OS
 Thumbs.db
 .DS_Store

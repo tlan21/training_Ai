@@ -1,0 +1,668 @@
+<style>
+  :root{
+    --bg:#f7f9fa; --surface:#ffffff; --surface-2:#eef2f4; --code-bg:#0f1720; --code-ink:#d6e2ec;
+    --ink:#111a20; --muted:#556168; --faint:#8a969d; --border:#dde4e8; --border-strong:#c3ced4;
+    --accent:#0d9488; --accent-ink:#0b6b62; --accent-soft:#d7efec;
+    --ok:#1f9254; --ok-soft:#dcf0e3; --warn:#b7791f; --warn-soft:#f6ecd6; --crit:#c0392b; --crit-soft:#f6dcd8;
+    --mono:ui-monospace,"Cascadia Code","JetBrains Mono","SFMono-Regular",Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --maxw:1200px;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#0c1116; --surface:#121a21; --surface-2:#182028; --code-bg:#0a1017; --code-ink:#cddae5;
+      --ink:#e7edf1; --muted:#9aa8b1; --faint:#6a7882; --border:#243039; --border-strong:#33424d;
+      --accent:#2dd4bf; --accent-ink:#5eead4; --accent-soft:#123733;
+      --ok:#4ade80; --ok-soft:#12301f; --warn:#e0b352; --warn-soft:#332810; --crit:#f0857a; --crit-soft:#361a17;
+    }
+  }
+  :root[data-theme="light"]{
+    --bg:#f7f9fa; --surface:#ffffff; --surface-2:#eef2f4; --code-bg:#0f1720; --code-ink:#d6e2ec;
+    --ink:#111a20; --muted:#556168; --faint:#8a969d; --border:#dde4e8; --border-strong:#c3ced4;
+    --accent:#0d9488; --accent-ink:#0b6b62; --accent-soft:#d7efec;
+    --ok:#1f9254; --ok-soft:#dcf0e3; --warn:#b7791f; --warn-soft:#f6ecd6; --crit:#c0392b; --crit-soft:#f6dcd8;
+  }
+  :root[data-theme="dark"]{
+    --bg:#0c1116; --surface:#121a21; --surface-2:#182028; --code-bg:#0a1017; --code-ink:#cddae5;
+    --ink:#e7edf1; --muted:#9aa8b1; --faint:#6a7882; --border:#243039; --border-strong:#33424d;
+    --accent:#2dd4bf; --accent-ink:#5eead4; --accent-soft:#123733;
+    --ok:#4ade80; --ok-soft:#12301f; --warn:#e0b352; --warn-soft:#332810; --crit:#f0857a; --crit-soft:#361a17;
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;
+    font-size:16px;-webkit-font-smoothing:antialiased}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(16px,4vw,40px)}
+  .layout{display:grid;grid-template-columns:1fr;gap:0}
+  @media(min-width:1000px){.layout{grid-template-columns:250px minmax(0,1fr);gap:48px;align-items:start}}
+
+  /* Header */
+  header.top{border-bottom:1px solid var(--border);background:
+    linear-gradient(180deg,var(--surface),var(--bg));padding:44px 0 34px}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--accent-ink);font-weight:600}
+  h1{font-size:clamp(28px,4.4vw,44px);line-height:1.08;margin:14px 0 12px;letter-spacing:-.02em;
+    text-wrap:balance;font-weight:750}
+  .lede{color:var(--muted);font-size:clamp(16px,1.6vw,18px);max-width:62ch;margin:0}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+  .tag{font-family:var(--mono);font-size:12px;padding:4px 10px;border:1px solid var(--border-strong);
+    border-radius:999px;color:var(--muted);background:var(--surface)}
+
+  /* TOC */
+  nav.toc{position:sticky;top:20px;font-size:14px;padding-top:8px}
+  nav.toc .toc-title{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--faint);margin:0 0 10px}
+  nav.toc ol{list-style:none;margin:0;padding:0;counter-reset:toc}
+  nav.toc li{counter-increment:toc;margin:1px 0}
+  nav.toc a{display:block;padding:6px 10px;border-radius:7px;color:var(--muted);text-decoration:none;
+    border-left:2px solid transparent}
+  nav.toc a::before{content:counter(toc,decimal-leading-zero);font-family:var(--mono);font-size:11px;
+    color:var(--faint);margin-right:9px}
+  nav.toc a:hover{background:var(--surface-2);color:var(--ink)}
+  @media(max-width:999px){nav.toc{position:static;border:1px solid var(--border);border-radius:12px;
+    background:var(--surface);padding:16px 14px;margin:24px 0}}
+
+  main{padding:8px 0 80px;min-width:0}
+  section{padding:34px 0;border-bottom:1px solid var(--border)}
+  section:last-child{border-bottom:0}
+  h2{font-size:clamp(21px,2.6vw,27px);margin:0 0 6px;letter-spacing:-.01em;scroll-margin-top:24px;
+    display:flex;align-items:baseline;gap:12px;text-wrap:balance}
+  h2 .num{font-family:var(--mono);font-size:14px;color:var(--accent);font-weight:600;flex:none}
+  h3{font-size:17px;margin:28px 0 8px;letter-spacing:-.005em}
+  .sub{color:var(--muted);margin:0 0 4px;max-width:70ch}
+  p{max-width:72ch}
+  a{color:var(--accent-ink)}
+
+  /* Code */
+  pre{background:var(--code-bg);color:var(--code-ink);border-radius:12px;padding:16px 18px;overflow-x:auto;
+    font-family:var(--mono);font-size:13.5px;line-height:1.65;border:1px solid #1e2933;margin:14px 0;position:relative}
+  pre code{white-space:pre}
+  code{font-family:var(--mono);font-size:.9em}
+  :not(pre)>code{background:var(--surface-2);color:var(--accent-ink);padding:1.5px 6px;border-radius:5px;
+    border:1px solid var(--border);font-size:.85em}
+  .cmt{color:#6b8394}
+  .kw{color:#7fd1c0}
+  .str{color:#e0b352}
+  pre .path{color:#8bb9d8}
+
+  .copy{position:absolute;top:8px;right:8px;font-family:var(--mono);font-size:11px;color:var(--code-ink);
+    background:#1e2933;border:1px solid #2c3a45;border-radius:6px;padding:3px 9px;cursor:pointer;opacity:.75}
+  .copy:hover{opacity:1;background:#2a3944}
+  .copy:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  /* Tables */
+  .tbl{overflow-x:auto;margin:16px 0;border:1px solid var(--border);border-radius:12px}
+  table{border-collapse:collapse;width:100%;font-size:14px;min-width:520px}
+  th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+  th{background:var(--surface-2);font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);
+    font-weight:600;white-space:nowrap}
+  tr:last-child td{border-bottom:0}
+  td code{white-space:nowrap}
+  .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+  /* Callouts */
+  .note{border-radius:12px;padding:14px 16px;margin:16px 0;border:1px solid var(--border);
+    background:var(--surface);display:flex;gap:12px}
+  .note .ic{font-family:var(--mono);font-weight:700;flex:none;width:22px;height:22px;border-radius:6px;
+    display:grid;place-items:center;font-size:13px;margin-top:1px}
+  .note.tip{border-color:var(--accent);background:var(--accent-soft)}
+  .note.tip .ic{background:var(--accent);color:#fff}
+  .note.warn{border-color:var(--warn);background:var(--warn-soft)}
+  .note.warn .ic{background:var(--warn);color:#fff}
+  .note.crit{border-color:var(--crit);background:var(--crit-soft)}
+  .note.crit .ic{background:var(--crit);color:#fff}
+  .note p{margin:0;max-width:none}
+  .note b{color:var(--ink)}
+
+  /* Pills / status */
+  .pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11.5px;
+    padding:2px 9px;border-radius:999px;font-weight:600;white-space:nowrap}
+  .pill.ok{background:var(--ok-soft);color:var(--ok)}
+  .pill.warn{background:var(--warn-soft);color:var(--warn)}
+  .pill.get{background:var(--accent-soft);color:var(--accent-ink)}
+  .pill.post{background:var(--warn-soft);color:var(--warn)}
+
+  .grid{display:grid;gap:14px;margin:16px 0}
+  @media(min-width:640px){.grid.two{grid-template-columns:1fr 1fr}.grid.three{grid-template-columns:repeat(3,1fr)}}
+  .card{border:1px solid var(--border);border-radius:12px;padding:16px 18px;background:var(--surface)}
+  .card h4{margin:0 0 6px;font-size:15px;display:flex;align-items:center;gap:8px}
+  .card p{margin:0;font-size:14px;color:var(--muted)}
+  .card .k{font-family:var(--mono);font-size:12px;color:var(--accent-ink)}
+
+  ul.clean{padding-left:20px;max-width:72ch}
+  ul.clean li{margin:5px 0}
+  .step{font-family:var(--mono);color:var(--accent);font-weight:700}
+
+  .endpoint{border:1px solid var(--border);border-radius:12px;margin:14px 0;overflow:hidden;background:var(--surface)}
+  .endpoint>summary{cursor:pointer;padding:13px 16px;display:flex;align-items:center;gap:12px;list-style:none;
+    font-family:var(--mono);font-size:13.5px}
+  .endpoint>summary::-webkit-details-marker{display:none}
+  .endpoint>summary:hover{background:var(--surface-2)}
+  .endpoint .path{font-weight:600}
+  .endpoint .model{margin-left:auto;font-size:12px;color:var(--muted)}
+  .endpoint .body{padding:2px 16px 16px;border-top:1px solid var(--border)}
+  .endpoint[open]>summary{border-bottom:1px solid var(--border)}
+
+  footer{color:var(--faint);font-size:13px;padding:30px 0;text-align:center}
+  footer code{color:var(--muted)}
+  ::selection{background:var(--accent);color:#fff}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="eyebrow">Tài liệu vận hành · Phase AI</div>
+    <h1>Hệ thống Phân tích Video &amp; Highlight AI Tự huấn luyện</h1>
+    <p class="lede">Hướng dẫn đầy đủ: cài đặt môi trường, huấn luyện 6 mô hình tự code, cấu hình
+      <code>.env</code>, chạy inference-service, xác thực token và gọi API — cho <code>ai-core</code>
+      và <code>inference-service</code>.</p>
+    <div class="meta">
+      <span class="tag">Python 3.11</span>
+      <span class="tag">PyTorch</span>
+      <span class="tag">FastAPI :8001</span>
+      <span class="tag">1× RTX 3060 12GB</span>
+      <span class="tag">AI-first</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <nav class="toc" aria-label="Mục lục">
+      <p class="toc-title">Nội dung</p>
+      <ol>
+        <li><a href="#kien-truc">Kiến trúc &amp; nguyên tắc</a></li>
+        <li><a href="#setup">Cài đặt môi trường</a></li>
+        <li><a href="#cau-truc">Cấu trúc thư mục</a></li>
+        <li><a href="#train">Huấn luyện AI</a></li>
+        <li><a href="#env">Cấu hình .env</a></li>
+        <li><a href="#run">Chạy inference-service</a></li>
+        <li><a href="#auth">Xác thực &amp; token</a></li>
+        <li><a href="#api">API reference</a></li>
+        <li><a href="#vanhanh">Cách vận hành</a></li>
+        <li><a href="#luutru">Lưu trữ &amp; backup trọng số</a></li>
+        <li><a href="#deploy">Đóng gói &amp; deploy</a></li>
+        <li><a href="#test">Kiểm thử</a></li>
+        <li><a href="#gate">AI-GATE checklist</a></li>
+      </ol>
+    </nav>
+
+    <main>
+
+      <!-- 1 -->
+      <section id="kien-truc">
+        <h2><span class="num">01</span> Kiến trúc &amp; nguyên tắc</h2>
+        <p class="sub">Toàn bộ AI <b>tự code from scratch</b> (không pretrained, không tokenizer ngoài,
+          không pseudo-label). Chỉ dùng PyTorch làm nền tensor + autograd.</p>
+
+        <div class="grid three">
+          <div class="card"><h4>🧠 <span>ai-core</span></h4>
+            <p>Package Python thuần: primitives (attention, RMSNorm, SwiGLU, RoPE), AdamW, BPE, audio DSP,
+              6 model, training + datasets. <b>Không dính web/DB.</b></p></div>
+          <div class="card"><h4>⚙️ <span>inference-service</span></h4>
+            <p>1 process FastAPI <span class="k">:8001</span> nạp cả 6 model, hàng đợi GPU tuần tự,
+              Bearer auth. Sản phẩm bàn giao của Phase AI.</p></div>
+          <div class="card"><h4>🔗 <span>gateway (Phase 2)</span></h4>
+            <p>Go/Gin <span class="k">:8000</span> — public API, JWT người dùng. Chỉ gọi inference-service.
+              <b>Chưa build</b> (AI-GATE chưa mở).</p></div>
+        </div>
+
+        <h3>Luồng xử lý 1 video</h3>
+        <pre><code>upload → ingest (keyframe 1fps + wav) → orchestrator gọi lần lượt:
+   /v1/vision   (ViT: category + embedding)
+   /v1/asr      (CTC: transcript + segments)
+   /v1/highlight(Fusion: điểm 0–100/giây)
+   /v1/completions (Mini-GPT: tóm tắt, tiêu đề)
+ → ghi DB → Admin duyệt → publish → Client thấy feed</code></pre>
+
+        <div class="note tip"><span class="ic">i</span><p><b>4 nguyên tắc bất biến.</b>
+          (1) AI chỉ ra quyết định — FFmpeg xử lý file. (2) Client chỉ thấy dữ liệu đã duyệt.
+          (3) AI đề xuất — Admin quyết. (4) Không gọi AI ngoài — “API key” là key nội bộ tự dựng
+          <code>sk-local-…</code>.</p></div>
+      </section>
+
+      <!-- 2 -->
+      <section id="setup">
+        <h2><span class="num">02</span> Cài đặt môi trường</h2>
+        <p class="sub">Windows + PowerShell/Git-Bash. 1 venv dùng chung cho cả <code>ai-core</code> và
+          <code>inference-service</code>. Dùng <a href="https://docs.astral.sh/uv/">uv</a> cho nhanh
+          (hoặc <code>python -m venv</code> + <code>pip</code>).</p>
+
+        <h3>Bước 1 — Tạo venv</h3>
+        <pre><code><span class="cmt"># từ thư mục gốc dự án D:\traning_ai</span>
+uv venv .venv --python 3.11</code></pre>
+
+        <h3>Bước 2 — Cài PyTorch</h3>
+        <pre><code><span class="cmt"># CPU (máy dev không GPU NVIDIA)</span>
+uv pip install --python .venv/Scripts/python.exe torch --index-url https://download.pytorch.org/whl/cpu
+
+<span class="cmt"># GPU RTX 3060 (máy train/deploy) — CUDA 12.1</span>
+uv pip install --python .venv/Scripts/python.exe torch --index-url https://download.pytorch.org/whl/cu121</code></pre>
+
+        <h3>Bước 3 — Cài dependencies</h3>
+        <pre><code><span class="cmt"># nền tảng train + test</span>
+uv pip install --python .venv/Scripts/python.exe numpy pyyaml pytest tensorboard
+<span class="cmt"># data pipeline (khi có dữ liệu thật)</span>
+uv pip install --python .venv/Scripts/python.exe soundfile decord pillow
+<span class="cmt"># inference-service</span>
+uv pip install --python .venv/Scripts/python.exe fastapi "uvicorn[standard]" python-multipart</code></pre>
+
+        <div class="note warn"><span class="ic">!</span><p>Máy dev hiện tại chạy <b>torch CPU</b> (GPU là AMD, không CUDA).
+          Code chạy + test xanh trên CPU; <b>train thật đạt metric</b> cần máy có <b>RTX 3060 + CUDA</b>.</p></div>
+      </section>
+
+      <!-- 3 -->
+      <section id="cau-truc">
+        <h2><span class="num">03</span> Cấu trúc thư mục</h2>
+        <pre><code><span class="path">traning_ai/</span>
+├── ai-core/                  <span class="cmt"># thuật toán + 6 model tự train</span>
+│   └── ai_core/
+│       ├── primitives/       <span class="cmt"># attention, rmsnorm, swiglu, rope, block, embedding</span>
+│       ├── optim/adamw.py    <span class="cmt"># AdamW tự viết</span>
+│       ├── tokenizer/bpe.py  <span class="cmt"># BPE byte-level vocab 8192</span>
+│       ├── audio/            <span class="cmt"># mel (FFT+filterbank), features 64-d/giây</span>
+│       ├── vision/           <span class="cmt"># patchify, shot_boundary</span>
+│       ├── data/             <span class="cmt"># manifest, weak_label (cross-correlation)</span>
+│       ├── models/           <span class="cmt"># vit, siamese, asr_ctc, highlight_fusion, minigpt, two_tower, ctc</span>
+│       ├── training/         <span class="cmt"># trainer, schedule, checkpoint, configs/*.yaml, datasets/</span>
+│       ├── scripts/          <span class="cmt"># train_bpe, prepare_keyframes, build_weak_labels, train, evaluate</span>
+│       ├── tests/            <span class="cmt"># kiểm chứng toán học (49 test)</span>
+│       └── checkpoints/      <span class="cmt"># {model}/best.pt + last.pt (sinh sau train)</span>
+├── inference-service/        <span class="cmt"># FastAPI :8001</span>
+│   ├── app/                  <span class="cmt"># config, auth, gpu_queue, registry, schemas, services, main, gen_key</span>
+│   ├── tests/test_api.py     <span class="cmt"># 10 test (stub mode)</span>
+│   ├── .env.example          <span class="cmt"># mẫu cấu hình</span>
+│   └── Dockerfile
+└── .venv/                    <span class="cmt"># môi trường ảo dùng chung</span></code></pre>
+      </section>
+
+      <!-- 4 -->
+      <section id="train">
+        <h2><span class="num">04</span> Huấn luyện AI</h2>
+        <p class="sub">Thứ tự dependency cứng (không đảo): <b>T1.1 primitives → T1.2 data → T1.3 ViT+Siamese →
+          T1.4 ASR → T1.5 Fusion → T1.6 Mini-GPT → T1.7 Two-Tower → T1.8 service</b>. GPU train tuần tự trên 1 card.</p>
+
+        <h3><span class="step">4.1</span> Kiểm chứng toán học (bắt buộc trước khi train)</h3>
+        <p>Gradient check, AdamW parity, SDPA parity, CTC parity, BPE roundtrip, overfit-1-batch.</p>
+        <pre><code>cd ai-core
+../.venv/Scripts/python.exe -m pytest ai_core/tests/ -v
+<span class="cmt"># kỳ vọng: 49 passed</span></code></pre>
+
+        <h3><span class="step">4.2</span> Train BPE tokenizer (cho Mini-GPT)</h3>
+        <pre><code>../.venv/Scripts/python.exe -m ai_core.scripts.train_bpe \
+    --corpus "data/text/*.txt" --out data/manifests/bpe_vocab.json --vocab-size 8192</code></pre>
+
+        <h3><span class="step">4.3</span> Chuẩn bị dữ liệu</h3>
+        <pre><code><span class="cmt"># keyframe 1fps + loại frame đen + manifest (split 80/10/10 theo video)</span>
+../.venv/Scripts/python.exe -m ai_core.scripts.prepare_keyframes \
+    --videos data/raw/videos --labels labels.json \
+    --out data/processed/keyframes --manifest data/manifests/vit.json
+
+<span class="cmt"># nhãn highlight weak-label bằng cross-correlation Mel (FFT), loại trận coverage < 0.6</span>
+../.venv/Scripts/python.exe -m ai_core.scripts.build_weak_labels \
+    --full data/raw/matches --highlight data/raw/highlights --out data/labels/highlight</code></pre>
+
+        <h3><span class="step">4.4</span> Train từng model</h3>
+        <p>Mỗi model 1 file config trong <code>ai_core/training/configs/</code>. Hyperparameter khớp
+          <code>model_spec.md</code>, không sửa.</p>
+        <pre><code>../.venv/Scripts/python.exe -m ai_core.scripts.train \
+    --config ai_core/training/configs/vit.yaml --manifest data/manifests/vit.json</code></pre>
+        <div class="tbl"><table>
+          <thead><tr><th>Model</th><th>Config</th><th>LR đỉnh</th><th>Metric mục tiêu</th></tr></thead>
+          <tbody>
+            <tr><td>ViT phân loại</td><td class="mono">vit.yaml</td><td class="mono">3e-4</td><td>Top-1 ≥ 70%</td></tr>
+            <tr><td>Siamese ViT</td><td class="mono">siamese.yaml</td><td class="mono">3e-4</td><td>Recall@10 ≥ 80%</td></tr>
+            <tr><td>ASR CTC</td><td class="mono">asr_ctc.yaml</td><td class="mono">5e-4</td><td>CER ≤ 20%, WER ≤ 45%</td></tr>
+            <tr><td>Highlight Fusion</td><td class="mono">highlight_fusion.yaml</td><td class="mono">3e-4</td><td>F1 &gt; 2 baseline</td></tr>
+            <tr><td>Mini-GPT</td><td class="mono">minigpt_pretrain.yaml</td><td class="mono">6e-4</td><td>ROUGE-L &gt; Lead-1</td></tr>
+            <tr><td>Two-Tower</td><td class="mono">two_tower.yaml</td><td class="mono">3e-4</td><td>NDCG@10 &gt; popularity</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3><span class="step">4.5</span> Checkpoint xuất ra</h3>
+        <p>Trainer luôn ghi <code>checkpoints/{model}/best.pt</code> và <code>last.pt</code>
+          (format: <code>config</code> + <code>state_dict</code> + <code>metrics</code>, kèm <code>bpe_vocab</code> cho Mini-GPT).
+          Service nạp <code>best.pt</code>, fallback <code>last.pt</code>.</p>
+        <div class="note tip"><span class="ic">i</span><p><b>Sidecar cho real path.</b> ASR cần
+          <code>checkpoints/asr_ctc/vocab.json</code> (list ký tự, index 0 = blank); ViT cần
+          <code>checkpoints/vit/classes.json</code> (tên danh mục theo class index). Thiếu → endpoint đó chạy stub.</p></div>
+
+        <h3><span class="step">4.6</span> Đánh giá</h3>
+        <pre><code><span class="cmt"># metric test set đóng băng: accuracy, WER/CER, F1, Recall@10, NDCG@10, ROUGE-L</span>
+../.venv/Scripts/python.exe -m ai_core.scripts.evaluate</code></pre>
+      </section>
+
+      <!-- 5 -->
+      <section id="env">
+        <h2><span class="num">05</span> Cấu hình <code>.env</code></h2>
+        <p class="sub">Copy <code>.env.example</code> → <code>.env</code> (đã gitignore, không commit).
+          <code>app/config.py</code> tự nạp <code>.env</code>; <b>biến env thật ưu tiên hơn</b> giá trị trong file.
+          Không có <code>.env</code> → dùng default.</p>
+        <pre><code>cd inference-service
+cp .env.example .env
+../.venv/Scripts/python.exe -m app.gen_key   <span class="cmt"># sinh AI_SERVICE_KEY, dán vào .env</span></code></pre>
+
+        <div class="tbl"><table>
+          <thead><tr><th>Biến</th><th>Default</th><th>Ý nghĩa</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">AI_SERVICE_KEY</td><td class="mono">sk-local-dev-key</td><td>Bearer key nội bộ (gateway ↔ service). Phải trùng 2 phía.</td></tr>
+            <tr><td class="mono">CHECKPOINT_DIR</td><td class="mono">../ai-core/checkpoints</td><td>Thư mục best.pt 6 model. Thiếu file → STUB.</td></tr>
+            <tr><td class="mono">INFER_DEVICE</td><td class="mono">auto</td><td><code>auto</code> (cuda nếu có) · <code>cpu</code> · <code>cuda</code>.</td></tr>
+            <tr><td class="mono">FORCE_STUB</td><td class="mono">0</td><td><code>1</code> = ép stub kể cả có checkpoint (dev/test không GPU).</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>Ví dụ <code>.env</code></h3>
+        <pre><code>AI_SERVICE_KEY=sk-local-2B7Q5D0kK4OjxbJVIYasVQNPvBCvUPU1gIEDi-4hJRk
+CHECKPOINT_DIR=../ai-core/checkpoints
+INFER_DEVICE=cuda
+FORCE_STUB=0</code></pre>
+      </section>
+
+      <!-- 6 -->
+      <section id="run">
+        <h2><span class="num">06</span> Chạy inference-service</h2>
+
+        <h3>Chế độ STUB (dev, không cần GPU/checkpoint)</h3>
+        <p>Mọi endpoint trả đúng schema với dữ liệu mock → backend/UI code song song trước khi AI train xong.</p>
+        <pre><code>cd inference-service
+FORCE_STUB=1 ../.venv/Scripts/python.exe -m uvicorn app.main:app --port 8001</code></pre>
+
+        <h3>Chế độ THẬT</h3>
+        <pre><code><span class="cmt"># .env: INFER_DEVICE=cuda, FORCE_STUB=0, CHECKPOINT_DIR trỏ checkpoints có best.pt</span>
+../.venv/Scripts/python.exe -m uvicorn app.main:app --host 0.0.0.0 --port 8001</code></pre>
+        <p>Model nào có <code>best.pt</code> sẽ nạp thật, còn lại stub. Kiểm tra bằng
+          <code>GET /health</code> → trường <code>models_loaded</code> / <code>stub_mode</code>.</p>
+
+        <h3>Docker (prod)</h3>
+        <pre><code><span class="cmt"># build từ thư mục gốc — image gộp cả ai-core (PYTHONPATH) + service</span>
+docker build -f inference-service/Dockerfile -t infer-service .
+docker run --gpus all -p 8001:8001 \
+  -e AI_SERVICE_KEY=sk-local-… -e INFER_DEVICE=cuda -e FORCE_STUB=0 \
+  -v $PWD/ai-core/checkpoints:/srv/ai-core/checkpoints infer-service</code></pre>
+      </section>
+
+      <!-- 7 -->
+      <section id="auth">
+        <h2><span class="num">07</span> Xác thực &amp; token</h2>
+        <p class="sub"><code>AI_SERVICE_KEY</code> là <b>shared secret</b> dạng <code>sk-local-…</code> —
+          KHÔNG phải JWT, không hết hạn. So sánh chuỗi bằng nhau; sai/thiếu → 401 error envelope.</p>
+
+        <h3>Sinh key</h3>
+        <pre><code>cd inference-service
+../.venv/Scripts/python.exe -m app.gen_key
+<span class="cmt"># → sk-local-2B7Q5D0kK4OjxbJVIYasVQNPvBCvUPU1gIEDi-4hJRk  (secrets.token_urlsafe(32))</span></code></pre>
+
+        <h3>Dùng key</h3>
+        <ul class="clean">
+          <li>Đặt <b>cùng giá trị</b> ở env inference-service và gateway.</li>
+          <li>Mọi <code>POST /v1/*</code> gửi header <code>Authorization: Bearer ${AI_SERVICE_KEY}</code>.</li>
+          <li><code>GET /health</code> <b>không</b> cần token.</li>
+          <li>Đổi key = revoke tức thì: request với key cũ trả <span class="pill warn">401</span>.</li>
+        </ul>
+
+        <div class="grid two">
+          <div class="card"><h4>🔑 AI service key</h4>
+            <p><span class="k">sk-local-…</span> · nội bộ gateway ↔ inference-service · không hết hạn ·
+              đã có trong bản này.</p></div>
+          <div class="card"><h4>🎫 JWT người dùng</h4>
+            <p>access 15′ + refresh 7 ngày (cookie) · lớp riêng ở <b>gateway Go (Phase 2)</b> ·
+              không liên quan key trên · chưa build.</p></div>
+        </div>
+
+        <h3>Kết quả 401 (đã kiểm chứng)</h3>
+        <pre><code><span class="cmt"># thiếu / sai token</span>
+{"error":{"code":"UNAUTHORIZED","message":"Invalid or missing AI service key"}}</code></pre>
+      </section>
+
+      <!-- 8 -->
+      <section id="api">
+        <h2><span class="num">08</span> API reference</h2>
+        <p class="sub">Base <code>http://localhost:8001</code>. Điểm highlight thang <b>0–100</b>;
+          similarity/score thang <b>0–1</b>. Error envelope <code>{"error":{"code","message"}}</code>.</p>
+
+        <details class="endpoint" open>
+          <summary><span class="pill get">GET</span><span class="path">/health</span><span class="model">không cần token</span></summary>
+          <div class="body">
+            <pre><code>curl -s http://127.0.0.1:8001/health</code></pre>
+            <pre><code>{"status":"ok","gpu_vram_used":0.0,"gpu_util":0.0,
+ "models_loaded":[],"degraded":[],"queue_depth":0,
+ "device":"cpu","stub_mode":true}</code></pre>
+            <p class="sub"><code>degraded</code> = model nạp thật nhưng real path lỗi → đang trả stub.</p>
+          </div>
+        </details>
+
+        <details class="endpoint">
+          <summary><span class="pill post">POST</span><span class="path">/v1/completions</span><span class="model">Mini-GPT</span></summary>
+          <div class="body">
+            <p class="sub">Tóm tắt/tiêu đề (OpenAI-style). Transcript &gt; 1024 token: service tự map-reduce.</p>
+            <pre><code>curl -s -X POST http://127.0.0.1:8001/v1/completions \
+  -H "Authorization: Bearer sk-local-dev-key" -H "Content-Type: application/json" \
+  -d '{"prompt":"Tóm tắt trận đấu...","max_tokens":150,"temperature":0.7}'</code></pre>
+            <pre><code>{"id":"cmpl-primitive-…","object":"text_completion","model":"primitive-gpt-summarizer",
+ "choices":[{"text":"…","index":0,"finish_reason":"stop"}],
+ "usage":{"prompt_tokens":870,"completion_tokens":142,"total_tokens":1012}}</code></pre>
+          </div>
+        </details>
+
+        <details class="endpoint">
+          <summary><span class="pill post">POST</span><span class="path">/v1/asr/completions</span><span class="model">ASR CTC</span></summary>
+          <div class="body">
+            <pre><code>curl -s -X POST http://127.0.0.1:8001/v1/asr/completions \
+  -H "Authorization: Bearer sk-local-dev-key" -H "Content-Type: application/json" \
+  -d '{"audio_url":"https://storage.local/video-999.wav","language":"vi"}'</code></pre>
+            <pre><code>{"object":"asr_completion","full_transcript":"…",
+ "segments":[{"id":0,"start_time":0.0,"end_time":3.5,"text":"…","confidence":0.9}]}</code></pre>
+          </div>
+        </details>
+
+        <details class="endpoint">
+          <summary><span class="pill post">POST</span><span class="path">/v1/highlight/completions</span><span class="model">Fusion</span></summary>
+          <div class="body">
+            <p class="sub">Điểm kịch tính 0–100 mỗi giây + clip đề xuất.</p>
+            <pre><code>curl -s -X POST http://127.0.0.1:8001/v1/highlight/completions \
+  -H "Authorization: Bearer sk-local-dev-key" -H "Content-Type: application/json" \
+  -d '{"video_id":"vid_001","features":{"vision_embeddings":[[…]],"audio_spectrogram_features":[[…]]}}'</code></pre>
+            <pre><code>{"object":"highlight_completion","video_id":"vid_001",
+ "timeline_scores":[{"second":2,"score":85.0}],
+ "recommended_clips":[{"clip_id":"clp_0002","start_time":2.0,"end_time":3.0,"average_score":89.5}]}</code></pre>
+          </div>
+        </details>
+
+        <details class="endpoint">
+          <summary><span class="pill post">POST</span><span class="path">/v1/search/completions</span><span class="model">Siamese</span></summary>
+          <div class="body">
+            <p class="sub">Ảnh (base64/data-URI) → top-k khung hình tương đồng (0–1), lọc theo <code>threshold</code>.</p>
+            <pre><code>-d '{"image":"data:image/jpeg;base64,…","top_k":5,"threshold":0.75}'</code></pre>
+            <pre><code>{"object":"search_completion",
+ "results":[{"video_id":"vid_004","timestamp":45.2,"similarity_score":0.762,"thumbnail_url":"…"}]}</code></pre>
+          </div>
+        </details>
+
+        <details class="endpoint">
+          <summary><span class="pill post">POST</span><span class="path">/v1/recommendation/completions</span><span class="model">Two-Tower</span></summary>
+          <div class="body">
+            <pre><code>-d '{"user_id":"usr_888","limit":10,"context":{"device":"mobile"}}'</code></pre>
+            <pre><code>{"object":"recommendation_completion",
+ "recommendations":[{"video_id":"vid_102","score":0.982,"title":"…","thumbnail_url":"…"}]}</code></pre>
+          </div>
+        </details>
+
+        <details class="endpoint">
+          <summary><span class="pill post">POST</span><span class="path">/v1/vision/completions</span><span class="model">ViT · nội bộ</span></summary>
+          <div class="body">
+            <p class="sub">Chỉ dùng nội bộ pipeline ingest (không expose qua gateway). Keyframe → category + embedding 256.</p>
+            <pre><code>-d '{"keyframes":["frame1.png","data:image/png;base64,…"]}'</code></pre>
+            <pre><code>{"object":"vision_completion","category_suggestion":"the_thao",
+ "embeddings_256":[[…256 số…]]}</code></pre>
+          </div>
+        </details>
+      </section>
+
+      <!-- 9 -->
+      <section id="vanhanh">
+        <h2><span class="num">09</span> Cách vận hành</h2>
+
+        <div class="grid two">
+          <div class="card"><h4>⏳ Hàng đợi GPU tuần tự</h4>
+            <p>Job GPU (vision/asr/highlight/completions) qua 1 <code>asyncio.Queue</code> + 1 worker →
+              không tranh VRAM trên 1 card. Search/recommendation nhẹ, đi thẳng. Xem tải qua
+              <code>queue_depth</code> ở <code>/health</code>.</p></div>
+          <div class="card"><h4>🟢 Stub vs Thật</h4>
+            <p>Registry nạp model nào có <code>best.pt</code> thì dùng thật, còn lại stub.
+              <code>stub_mode=true</code> khi 0 model thật.</p></div>
+          <div class="card"><h4>🟡 Degraded (không âm thầm)</h4>
+            <p>Model thật nhưng real path lỗi (fetch audio hỏng, dtype, …) → tự fallback stub +
+              tên model vào <code>/health.degraded</code>. Không bao giờ trả 500.</p></div>
+          <div class="card"><h4>📉 Ngân sách VRAM</h4>
+            <p>6 model fp16 nạp cùng ~120MB. Inference đỉnh ≤ 4GB (đo bằng
+              <code>torch.cuda.max_memory_allocated</code>). Train ≤ 8GB.</p></div>
+        </div>
+
+        <h3>Giám sát</h3>
+        <pre><code><span class="cmt"># GPU đang bận / hàng đợi sâu?</span>
+curl -s http://127.0.0.1:8001/health | python -m json.tool
+<span class="cmt"># theo dõi loss/metric khi train</span>
+tensorboard --logdir ai-core/runs</code></pre>
+
+        <div class="note crit"><span class="ic">×</span><p><b>Luật AI-first.</b> Phase 2/3 (backend/UI)
+          chỉ bắt đầu sau khi <b>AI-GATE mở</b> (mục 11). Trong lúc GPU train qua đêm, chỉ được làm
+          Phase 0 (contract/stub/docker-compose).</p></div>
+      </section>
+
+      <!-- 10 -->
+      <section id="luutru">
+        <h2><span class="num">10</span> Lưu trữ &amp; backup trọng số</h2>
+        <p class="sub">Train xong sinh ra <b>trọng số (checkpoint)</b> — thứ quý nhất, tốn hàng chục giờ GPU.
+          Dataset thô KHÔNG cần mang đi deploy.</p>
+
+        <div class="grid two">
+          <div class="card"><h4>💾 Trọng số (mang đi)</h4>
+            <p><code>ai-core/checkpoints/{model}/best.pt</code> — dict tự chứa
+              <code>{config, state_dict, bpe_vocab?, metrics}</code> + sidecar
+              <code>asr_ctc/vocab.json</code>, <code>vit/classes.json</code>.</p></div>
+          <div class="card"><h4>🗂️ Dataset (KHÔNG mang)</h4>
+            <p><code>data/raw · processed · labels</code> chỉ dùng lúc train. Inference không đụng tới.</p></div>
+        </div>
+
+        <div class="note crit"><span class="ic">×</span><p><b>Dễ mất nhất.</b> <code>.gitignore</code> loại
+          <code>checkpoints/</code>, <code>*.pt</code>, <code>data/</code> → <b>trọng số KHÔNG nằm trong git</b>.
+          Clone lại máy khác / xóa thư mục = mất sạch. Phải <b>backup thủ công</b>.</p></div>
+
+        <h3>Backup ngay sau train (ngoài git)</h3>
+        <pre><code><span class="cmt"># giữ bản đạt metric trước khi train lại (train ghi đè best.pt/last.pt)</span>
+cp checkpoints/asr_ctc/best.pt backups/asr_ctc_seed1337_cer18.pt
+
+<span class="cmt"># checksum để biết đúng bản</span>
+sha256sum checkpoints/*/best.pt > checkpoints/CHECKSUMS.txt
+
+<span class="cmt"># đẩy lên nơi bền: MinIO (có sẵn trong stack) / S3 / Drive / HF Datasets (trọng số của BẠN — hợp lệ)</span></code></pre>
+
+        <div class="note tip"><span class="ic">i</span><p><b>Không có online-learning.</b> Serving chỉ ĐỌC trọng số,
+          không tự đổi weight → chạy không mất data. Muốn AI “học thêm” = train lại offline → checkpoint mới →
+          thay file + restart.</p></div>
+      </section>
+
+      <!-- 11 -->
+      <section id="deploy">
+        <h2><span class="num">11</span> Đóng gói &amp; deploy</h2>
+        <p class="sub">Đóng gói <b>code + trọng số</b>, KHÔNG kèm dataset/venv/log. 3 file hỗ trợ:
+          <code>.dockerignore</code>, <code>scripts/package_deploy.sh</code>, <code>scripts/verify_checkpoints.sh</code>.</p>
+
+        <div class="tbl"><table>
+          <thead><tr><th>Thành phần</th><th>Deploy?</th><th>Ghi chú</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">inference-service/app</td><td><span class="pill ok">✓</span></td><td>code service</td></tr>
+            <tr><td class="mono">ai-core/ai_core</td><td><span class="pill ok">✓</span></td><td>import như thư viện</td></tr>
+            <tr><td class="mono">checkpoints/*.pt + sidecar</td><td><span class="pill ok">✓</span></td><td>trọng số đã train (bắt buộc cho real)</td></tr>
+            <tr><td class="mono">.env</td><td><span class="pill ok">✓</span></td><td>hoặc set qua env server</td></tr>
+            <tr><td class="mono">data/ · .venv · runs · tests</td><td><span class="pill warn">✗</span></td><td>thừa với inference</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3><span class="step">A.</span> Đóng gói (máy train)</h3>
+        <pre><code>bash scripts/package_deploy.sh dist/
+<span class="cmt"># → dist/deploy_&lt;stamp&gt;.tgz  (code + best.pt + sidecar + CHECKSUMS.txt + MANIFEST.txt)</span>
+<span class="cmt"># chưa train → vẫn đóng code, cảnh báo chỉ chạy STUB</span></code></pre>
+
+        <h3><span class="step">B.</span> Cài trên máy đích</h3>
+        <pre><code>tar xzf deploy_&lt;stamp&gt;.tgz -C /srv/app &amp;&amp; cd /srv/app
+python -m venv .venv
+<span class="cmt"># torch đúng loại máy: CPU hoặc CUDA</span>
+.venv/bin/pip install torch fastapi "uvicorn[standard]" pyyaml numpy soundfile pillow
+cp inference-service/.env.example inference-service/.env   <span class="cmt"># sửa AI_SERVICE_KEY, FORCE_STUB=0</span>
+cd inference-service &amp;&amp; ../.venv/bin/python -m uvicorn app.main:app --host 0.0.0.0 --port 8001</code></pre>
+
+        <h3><span class="step">C.</span> Kiểm chứng sau deploy</h3>
+        <pre><code>bash scripts/verify_checkpoints.sh ai-core/checkpoints http://127.0.0.1:8001/health
+<span class="cmt"># đủ 6 best.pt + sidecar? checksum khớp? stub_mode=false? degraded rỗng?</span></code></pre>
+
+        <h3>Docker (khuyên: code trong image, trọng số mount ngoài)</h3>
+        <pre><code>docker build -f inference-service/Dockerfile -t infer-service .
+docker run --gpus all -p 8001:8001 \
+  -e AI_SERVICE_KEY=sk-local-… -e INFER_DEVICE=cuda -e FORCE_STUB=0 \
+  -v /data/checkpoints:/srv/ai-core/checkpoints \   <span class="cmt"># volume → nâng cấp container không mất trọng số</span>
+  infer-service</code></pre>
+        <div class="note tip"><span class="ic">i</span><p><code>.dockerignore</code> đã loại data/venv/runs/tests khỏi
+          build context. Trọng số: build kèm nếu <code>.pt</code> có sẵn trên disk, HOẶC bỏ ra + dùng
+          <b>volume mount</b> (linh hoạt hơn — thay model không build lại image).</p></div>
+      </section>
+
+      <!-- 12 -->
+      <section id="test">
+        <h2><span class="num">12</span> Kiểm thử</h2>
+        <pre><code><span class="cmt"># ai-core — 49 test (toán học + model + data pipeline)</span>
+cd ai-core &amp;&amp; ../.venv/Scripts/python.exe -m pytest ai_core/tests/ -q
+
+<span class="cmt"># inference-service — 10 test (stub mode: 6 endpoint + health + auth)</span>
+cd inference-service
+FORCE_STUB=1 AI_SERVICE_KEY=sk-local-test ../.venv/Scripts/python.exe -m pytest tests/ -q</code></pre>
+        <div class="tbl"><table>
+          <thead><tr><th>Bộ test</th><th>Nội dung</th><th>Trạng thái</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">ai-core</td><td>gradient/AdamW/SDPA/CTC parity, BPE roundtrip, overfit 6 model, cross-corr FFT, weak-label, siamese pairs</td><td><span class="pill ok">49 passed</span></td></tr>
+            <tr><td class="mono">inference-service</td><td>health, auth 401, 6 endpoint schema + thang điểm, error envelope, degraded</td><td><span class="pill ok">10 passed</span></td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+      <!-- 13 -->
+      <section id="gate">
+        <h2><span class="num">13</span> AI-GATE checklist</h2>
+        <p class="sub">Đủ <b>cả 4</b> mới mở Phase 2/3.</p>
+        <ul class="clean">
+          <li><b>1.</b> T1.1–T1.7 xong: 6 model train xong, unit test toán học pass. <span class="pill ok">code + test ✓</span></li>
+          <li><b>2.</b> Metric đạt ngưỡng <code>evaluation_plan.md §1</code> (hoặc ghi số thật + limitation, được duyệt). <span class="pill warn">cần GPU + dữ liệu</span></li>
+          <li><b>3.</b> Checkpoint 6 model + config + seed trong <code>data/manifests/</code>, load lại được. <span class="pill warn">sau train</span></li>
+          <li><b>4.</b> <code>inference-service :8001</code> nạp 6 checkpoint THẬT + 6 endpoint + <code>/health</code> + GPU queue + Bearer, VRAM ≤ 4GB. <span class="pill ok">khung ✓</span> <span class="pill warn">real path chờ checkpoint</span></li>
+        </ul>
+        <div class="note tip"><span class="ic">i</span><p><b>Trạng thái hiện tại.</b> Toàn bộ code từ thuật toán
+          nguyên thủy → data pipeline → 6 model → inference-service đã chạy được và test xanh (CPU).
+          Còn lại: train thật trên RTX 3060 + dataset để đạt metric và bật real path → mở AI-GATE.</p></div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">Tài liệu vận hành Phase AI · <code>ai-core</code> + <code>inference-service</code> ·
+    nguồn sự thật: <code>.claude/plan/00_master_plan.md</code></div>
+</footer>
+
+<script>
+  // Nút copy cho mỗi khối lệnh
+  document.querySelectorAll('pre').forEach(function(pre){
+    var btn=document.createElement('button');
+    btn.className='copy';btn.type='button';btn.textContent='copy';
+    btn.addEventListener('click',function(){
+      var code=pre.querySelector('code');
+      navigator.clipboard.writeText((code||pre).innerText).then(function(){
+        btn.textContent='đã copy';setTimeout(function(){btn.textContent='copy';},1400);
+      });
+    });
+    pre.appendChild(btn);
+  });
+</script>
