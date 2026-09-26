@@ -6,7 +6,7 @@ from .movielens_dataset import (BPRTripleDataset, build_features, leave_last_k_s
                                  load_movielens_ratings, time_split)
 from .siamese_dataset import SiamesePairDataset
 from .summary_dataset import SummaryPairDataset, normalize_to_asr
-from .text_dataset import InMemoryTokenDataset, TextChunkDataset
+from .text_dataset import InMemoryTokenDataset, TextChunkDataset, TokenFileDataset
 from .vit_dataset import ViTKeyframeDataset
 
 __all__ = [
@@ -15,6 +15,6 @@ __all__ = [
     "BPRTripleDataset", "build_features", "leave_last_k_split", "load_movielens_ratings", "time_split",
     "SiamesePairDataset",
     "SummaryPairDataset", "normalize_to_asr",
-    "InMemoryTokenDataset", "TextChunkDataset",
+    "InMemoryTokenDataset", "TextChunkDataset", "TokenFileDataset",
     "ViTKeyframeDataset",
 ]

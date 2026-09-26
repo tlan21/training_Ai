@@ -6,6 +6,8 @@ the trainer does not depend on a database or web service.
 
 import argparse
 import json
+import math
+import os
 
 import torch
 from torch.utils.data import DataLoader
@@ -20,6 +22,7 @@ from ..training.datasets import (
     SiamesePairDataset,
     SummaryPairDataset,
     TextChunkDataset,
+    TokenFileDataset,
     ViTKeyframeDataset,
     collate_ctc,
     load_movielens_ratings,
@@ -56,6 +59,28 @@ def _summary_metric(model, loader, device):
         ).item()
         count += 1
     return total / max(1, count)
+
+
+def _ppl_metric(max_batches: int):
+    """Perplexity = exp(CE trung bình theo TOKEN) trên val — DoD T1.6b "perplexity giảm ổn định".
+
+    Trung bình theo token chứ không theo batch (như `_summary_metric`): chunk pretrain dài bằng
+    nhau nên hai cách trùng nhau ở đây, nhưng theo token mới đúng định nghĩa khi batch cuối lẻ.
+    Chỉ chấm `max_batches` batch đầu (cố định, không xáo): chấm cả val mỗi lần eval là vài phút
+    GPU, còn đường cong vẫn so được giữa các step vì luôn là cùng các chunk đó.
+    """
+    def metric(model, loader, device):
+        total, count = 0.0, 0
+        for b, (x, y) in enumerate(loader):
+            if b >= max_batches:
+                break
+            logits, _ = model(x.to(device))                  # fp32: 100 batch vẫn nhanh, số chính xác hơn
+            y = y.to(device)
+            total += torch.nn.functional.cross_entropy(
+                logits.float().reshape(-1, logits.shape[-1]), y.reshape(-1), reduction="sum").item()
+            count += y.numel()
+        return math.exp(total / max(1, count))
+    return metric
 
 
 def _vit_metric(model, loader, device):
@@ -166,11 +191,27 @@ def _build_loaders(model_name: str, model_cfg, train_cfg, args):
                 DataLoader(va, batch_size=train_cfg.batch_size) if len(va) else None,
                 {}, _highlight_metric if len(va) else None)
     if model_name == "minigpt":
-        if not args.vocab or (not args.corpus and not args.summary_json):
-            raise SystemExit("minigpt cần --vocab FILE và --corpus GLOB... hoặc --summary-json FILE")
+        if not args.vocab or (not args.corpus and not args.summary_json and not args.tokens):
+            raise SystemExit("minigpt cần --vocab FILE và --tokens DIR / --corpus GLOB... / --summary-json FILE")
         from ..tokenizer import BPETokenizer
         tokenizer = BPETokenizer.load(args.vocab)
         model_cfg.vocab_size = max(model_cfg.vocab_size, tokenizer.vocab_size)
+        if args.tokens:
+            meta = _read_json(os.path.join(args.tokens, "meta.json"))
+            if meta["vocab_size"] != tokenizer.vocab_size:
+                # token encode bằng BPE khác → id trỏ sai chữ, loss vẫn giảm, không có gì báo
+                raise SystemExit(f"tokens encode với vocab {meta['vocab_size']}, --vocab là "
+                                 f"{tokenizer.vocab_size} — sai cặp file")
+            tr = TokenFileDataset(os.path.join(args.tokens, "train.bin"), model_cfg.context_len)
+            va = TokenFileDataset(os.path.join(args.tokens, "val.bin"), model_cfg.context_len)
+            if not len(tr) or not len(va):
+                raise SystemExit(f"tokens rỗng: train {len(tr)} / val {len(va)} chunk")
+            # persistent_workers: Trainer lặp loader vô hạn (_cycle); không giữ worker thì mỗi vòng
+            # dữ liệu tạo lại 2 process — trên Windows (spawn) là vài giây import torch mỗi lần.
+            return (DataLoader(tr, batch_size=train_cfg.batch_size, shuffle=True, drop_last=True,
+                               num_workers=2, pin_memory=True, persistent_workers=True),
+                    DataLoader(va, batch_size=train_cfg.batch_size),
+                    {"bpe_vocab": _read_json(args.vocab)}, _ppl_metric(args.val_batches))
         if args.summary_json:
             pairs = [tuple(item) for item in _read_json(args.summary_json)]
             ds = SummaryPairDataset(pairs, tokenizer, context_len=model_cfg.context_len)
@@ -209,6 +250,8 @@ def main() -> None:
     ap.add_argument("--vocab", help="char vocab JSON (asr)")
     ap.add_argument("--corpus", nargs="*", help="text glob(s) cho minigpt pretrain")
     ap.add_argument("--summary-json", help="JSON [[transcript, summary], ...] cho minigpt fine-tune")
+    ap.add_argument("--tokens", help="thư mục train.bin/val.bin/meta.json của tokenize_corpus (minigpt pretrain)")
+    ap.add_argument("--val-batches", type=int, default=100, help="số batch val mỗi lần chấm perplexity")
     ap.add_argument("--features", help="torch file cho highlight features")
     ap.add_argument("--ratings", help="MovieLens u.data")
     ap.add_argument("--user-features", help="JSON user_id -> feature list")

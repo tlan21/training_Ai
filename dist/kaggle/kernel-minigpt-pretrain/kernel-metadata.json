@@ -1,0 +1,16 @@
+{
+  "id": "traininghighlight/ai-core-minigpt-pretrain",
+  "title": "ai-core-minigpt-pretrain",
+  "code_file": "run_pretrain.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": false,
+  "dataset_sources": [
+    "traininghighlight/ai-core",
+    "traininghighlight/viwiki-tokens-8192"
+  ],
+  "competition_sources": [],
+  "kernel_sources": []
+}

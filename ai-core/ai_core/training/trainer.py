@@ -55,7 +55,12 @@ class Trainer:
         self.optimizer = AdamW(
             split_decay_params(model), lr=cfg.lr, betas=cfg.betas, weight_decay=cfg.weight_decay
         )
-        self._use_amp = cfg.precision == "bf16" and self.device.type == "cuda"
+        # fp16 cho GPU không có bf16 phần cứng (T4/Turing — Kaggle): bf16 ở đó là giả lập, chậm
+        # hơn nhiều lần. fp16 cần GradScaler chống underflow gradient; bf16 thì không.
+        cuda = self.device.type == "cuda"
+        self._amp_dtype = {"bf16": torch.bfloat16, "fp16": torch.float16}.get(cfg.precision) if cuda else None
+        self._use_amp = self._amp_dtype is not None
+        self._scaler = torch.amp.GradScaler("cuda") if self._amp_dtype is torch.float16 else None
         self._warmup_steps = max(1, int(cfg.warmup_ratio * cfg.max_steps))
         self._writer = None
         if cfg.log_dir:
@@ -74,7 +79,7 @@ class Trainer:
 
     def _forward_loss(self, batch) -> torch.Tensor:
         if self._use_amp:
-            with torch.autocast(device_type="cuda", dtype=torch.bfloat16):
+            with torch.autocast(device_type="cuda", dtype=self._amp_dtype):
                 return self.loss_fn(self.model, batch)
         return self.loss_fn(self.model, batch)
 
@@ -97,10 +102,16 @@ class Trainer:
             for _ in range(accum):
                 batch = _to_device(next(data_iter), self.device)
                 loss = self._forward_loss(batch) / accum
-                loss.backward()
+                (self._scaler.scale(loss) if self._scaler else loss).backward()
                 total_loss += loss.item()
+            if self._scaler:
+                self._scaler.unscale_(self.optimizer)            # clip trên gradient THẬT
             torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.cfg.grad_clip)
-            self.optimizer.step()
+            if self._scaler:
+                self._scaler.step(self.optimizer)                # bỏ step nếu grad inf/nan
+                self._scaler.update()
+            else:
+                self.optimizer.step()
 
             if self._writer is not None:
                 self._writer.add_scalar("train/loss", total_loss, step)

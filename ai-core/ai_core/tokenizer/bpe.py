@@ -13,8 +13,11 @@ from typing import Iterable
 _N_BYTES = 256
 SPECIAL_TOKENS = {"<pad>": 256, "<bos>": 257, "<eos>": 258, "<unk>": 259}
 _FIRST_MERGE_ID = 260
-# chunk xen kẽ khoảng trắng/không-khoảng-trắng — merge không vượt biên chunk
-_CHUNK_RE = re.compile(r"\s+|\S+")
+# Một khoảng trắng đứng trước DÍNH vào từ (" phố"), kiểu GPT-2; merge không vượt biên chunk.
+# Bản cũ `\s+|\S+` tách mỗi dấu cách thành chunk riêng → không merge nào gộp được nó với từ, nên
+# tiếng Việt (1 âm tiết/từ) tốn gấp đôi token: câu 20 từ = 41 token, một nửa là ' '. Context 1024
+# khi đó chỉ chứa ~500 từ. `\s+(?!\S)` giữ lại khoảng trắng CUỐI cho từ sau khi có nhiều dấu cách.
+_CHUNK_RE = re.compile(r"\s?\S+|\s+(?!\S)|\s+")
 
 
 def _merge_word(word: tuple[int, ...], pair: tuple[int, int], new_id: int) -> tuple[int, ...]:

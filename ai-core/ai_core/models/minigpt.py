@@ -46,6 +46,9 @@ class MiniGPT(nn.Module):
         device = prompt_ids.device
         B = prompt_ids.shape[0]
         max_len = self.cfg.context_len
+        if prompt_ids.shape[1] > max_len:
+            raise ValueError(f"prompt {prompt_ids.shape[1]} token > context_len {max_len} — "
+                             f"service phải chia đoạn (map-reduce) trước khi gọi")
         cache = KVCache(max_len=max_len, n_layers=len(self.blocks))
         cos, sin = build_rope_cache(max_len, self.head_dim, device=device, dtype=torch.float32)
 
@@ -58,6 +61,8 @@ class MiniGPT(nn.Module):
 
         out = prompt_ids
         for _ in range(max_new_tokens):
+            if out.shape[1] >= max_len:
+                break                                        # hết vị trí RoPE/cache: dừng, không nổ
             logits = next_logits[:, -1] / max(temperature, 1e-5)  # (B, V)
             if top_k > 0:
                 v, _ = torch.topk(logits, min(top_k, logits.shape[-1]))

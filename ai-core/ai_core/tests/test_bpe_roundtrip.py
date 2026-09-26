@@ -42,3 +42,13 @@ def test_save_load_roundtrip(tmp_path):
     s = "xin chào việt nam highlight"
     assert tok2.encode(s) == tok.encode(s)
     assert tok2.decode(tok2.encode(s)) == s
+
+
+def test_space_attaches_to_following_word():
+    """Dấu cách phải dính vào từ sau (" phố"), không đứng riêng. Bản cũ tách riêng từng dấu cách nên
+    tiếng Việt tốn gấp đôi token — câu 20 từ ra 41 token, context 1024 chỉ chứa ~500 từ."""
+    from ai_core.tokenizer.bpe import _CHUNK_RE
+
+    assert _CHUNK_RE.findall("Thành phố Hồ Chí Minh") == ["Thành", " phố", " Hồ", " Chí", " Minh"]
+    for s in ["a  b", "x\n Hà\n\nY", "  đầu", "cuối  ", "\t"]:
+        assert "".join(_CHUNK_RE.findall(s)) == s                  # không mất ký tự nào

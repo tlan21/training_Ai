@@ -35,6 +35,30 @@ class TextChunkDataset(Dataset):
         return chunk[:-1], chunk[1:]     # (input, target) shift-by-one
 
 
+class TokenFileDataset(Dataset):
+    """Token đã encode sẵn (uint16, ghi bởi `scripts.tokenize_corpus`), đọc qua memmap.
+
+    Vì sao không dùng `TextChunkDataset` cho corpus 500 MB+: nó dựng list int Python trong RAM
+    (~150M token ≈ 5 GB) và encode lại mỗi lần train — trên Kaggle là ~1 giờ GPU quota chỉ để
+    tokenize. File uint16 ~300 MB, memmap nên RAM gần như không tốn.
+    """
+
+    def __init__(self, path: str, context_len: int = 1024):
+        import numpy as np
+
+        self.data = np.memmap(path, dtype=np.uint16, mode="r")
+        self.ctx = context_len
+        self.n = max(0, (len(self.data) - 1) // context_len)
+
+    def __len__(self) -> int:
+        return self.n
+
+    def __getitem__(self, idx: int):
+        i = idx * self.ctx
+        chunk = torch.from_numpy(self.data[i:i + self.ctx + 1].astype("int64"))
+        return chunk[:-1], chunk[1:]
+
+
 class InMemoryTokenDataset(Dataset):
     """Nhận sẵn tensor token (dùng test/khi corpus nhỏ)."""
 
