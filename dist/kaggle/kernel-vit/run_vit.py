@@ -154,9 +154,13 @@ def run(seed, max_steps, eval_every, ckpt_dir):
     train_script.main()
 
 
+# v2 bench 40 step: khoi dong worker + 1 lan eval (11s) chiem gan het -> 0.64 s/step, trong khi toc
+# do on dinh la ~0.33 s/step; uoc 10.6h thay vi ~6h va kernel tu dung oan. 300 step van gom khoi
+# dong + eval nen van uoc CAO (an toan cho han 12h), chi khong con vo ly.
+BENCH_STEPS = 300
 t = time.time()
-run(0, 40, 40, '/tmp/bench')                  # 40 step + 1 lan eval + khoi dong worker: uoc CAO
-sec_step = (time.time() - t) / 40
+run(0, BENCH_STEPS, BENCH_STEPS, '/tmp/bench')
+sec_step = (time.time() - t) / BENCH_STEPS
 shutil.rmtree('/tmp/bench', ignore_errors=True)
 need_h = sec_step * MAX_STEPS * len(SEEDS) / 3600
 print(f'BENCH {sec_step:.3f} s/step -> {len(SEEDS)} seed x {MAX_STEPS} step ~ {need_h:.1f} h', flush=True)
