@@ -7,7 +7,7 @@ from .movielens_dataset import (BPRTripleDataset, build_features, leave_last_k_s
 from .siamese_dataset import SiamesePairDataset
 from .summary_dataset import SummaryPairDataset, normalize_to_asr
 from .text_dataset import InMemoryTokenDataset, TextChunkDataset, TokenFileDataset
-from .vit_dataset import ViTKeyframeDataset
+from .vit_dataset import ViTKeyframeDataset, vit_augment
 
 __all__ = [
     "ASRDataset", "CharVocab", "collate_ctc",
@@ -16,5 +16,5 @@ __all__ = [
     "SiamesePairDataset",
     "SummaryPairDataset", "normalize_to_asr",
     "InMemoryTokenDataset", "TextChunkDataset", "TokenFileDataset",
-    "ViTKeyframeDataset",
+    "ViTKeyframeDataset", "vit_augment",
 ]

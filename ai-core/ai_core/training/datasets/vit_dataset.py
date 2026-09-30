@@ -1,9 +1,42 @@
 """ViT keyframe dataset — nhãn video-level, split theo video (dataset_spec §3.1)."""
 
+import math
+
 import torch
 from torch.utils.data import Dataset
 
 from ...data import load_manifest
+
+
+def vit_augment(x: torch.Tensor, scale=(0.25, 1.0), ratio=(3 / 4, 4 / 3), jitter=0.3) -> torch.Tensor:
+    """RandomResizedCrop + lật ngang + color jitter bằng phép tensor (model_spec §2, ViT). x (3,S,S) ∈ [0,1].
+
+    Crop trên ảnh đã ép 224×224 (như lúc eval) nên méo hình khi train xoay quanh đúng mức méo lúc
+    eval. scale tối thiểu 0.25 thay vì 0.08 của ImageNet: nhãn theo video, crop 8% một khung toàn
+    cảnh thường chỉ còn khán giả/tường — nhãn thành nhiễu.
+    """
+    _, h, w = x.shape
+    ch, cw = h, w
+    for _ in range(10):
+        area = h * w * torch.empty(1).uniform_(*scale).item()
+        r = math.exp(torch.empty(1).uniform_(math.log(ratio[0]), math.log(ratio[1])).item())
+        tw, th = round(math.sqrt(area * r)), round(math.sqrt(area / r))
+        if tw <= w and th <= h:
+            cw, ch = tw, th
+            break
+    top = torch.randint(0, h - ch + 1, (1,)).item()
+    left = torch.randint(0, w - cw + 1, (1,)).item()
+    x = torch.nn.functional.interpolate(x[None, :, top:top + ch, left:left + cw], size=(h, w),
+                                        mode="bilinear", align_corners=False)[0]
+    if torch.rand(1).item() < 0.5:
+        x = x.flip(-1)
+    b, c, s = (1 + torch.empty(3).uniform_(-jitter, jitter)).tolist()
+    x = x * b                                                        # độ sáng
+    gray = (0.299 * x[0] + 0.587 * x[1] + 0.114 * x[2])[None]
+    x = (x - gray.mean()) * c + gray.mean()                          # tương phản
+    gray = (0.299 * x[0] + 0.587 * x[1] + 0.114 * x[2])[None]
+    x = (x - gray) * s + gray                                        # bão hoà
+    return x.clamp(0, 1)
 
 
 class ViTKeyframeDataset(Dataset):

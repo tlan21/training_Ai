@@ -25,6 +25,7 @@ from ..training.datasets import (
     TokenFileDataset,
     ViTKeyframeDataset,
     collate_ctc,
+    vit_augment,
     load_movielens_ratings,
     time_split,
 )
@@ -153,10 +154,14 @@ def _build_loaders(model_name: str, model_cfg, train_cfg, args):
     if model_name == "vit":
         if not args.manifest:
             raise SystemExit("vit cần --manifest FILE")
-        tr = ViTKeyframeDataset(args.manifest, "train", model_cfg.img_size)
+        # Augment CHỈ cho train (model_spec §2); val/test giữ ảnh gốc để metric không dao động.
+        tr = ViTKeyframeDataset(args.manifest, "train", model_cfg.img_size, augment=vit_augment)
         va = ViTKeyframeDataset(args.manifest, "val", model_cfg.img_size)
-        return (DataLoader(tr, batch_size=train_cfg.batch_size, shuffle=True),
-                DataLoader(va, batch_size=train_cfg.batch_size),
+        # Giải mã JPEG + augment trên CPU là nút cổ chai (GPU chỉ ~5M tham số); không có worker thì
+        # GPU ngồi chờ phần lớn thời gian. persistent: Trainer lặp loader vô hạn (xem nhánh minigpt).
+        return (DataLoader(tr, batch_size=train_cfg.batch_size, shuffle=True, drop_last=True,
+                           num_workers=args.workers, persistent_workers=args.workers > 0),
+                DataLoader(va, batch_size=train_cfg.batch_size, num_workers=args.workers),
                 {"classes": sorted(tr.class_to_idx, key=tr.class_to_idx.get)}, _vit_metric)
     if model_name == "siamese":
         if not args.manifest:
@@ -251,6 +256,7 @@ def main() -> None:
     ap.add_argument("--corpus", nargs="*", help="text glob(s) cho minigpt pretrain")
     ap.add_argument("--summary-json", help="JSON [[transcript, summary], ...] cho minigpt fine-tune")
     ap.add_argument("--tokens", help="thư mục train.bin/val.bin/meta.json của tokenize_corpus (minigpt pretrain)")
+    ap.add_argument("--workers", type=int, default=0, help="DataLoader workers (vit)")
     ap.add_argument("--val-batches", type=int, default=100, help="số batch val mỗi lần chấm perplexity")
     ap.add_argument("--features", help="torch file cho highlight features")
     ap.add_argument("--ratings", help="MovieLens u.data")

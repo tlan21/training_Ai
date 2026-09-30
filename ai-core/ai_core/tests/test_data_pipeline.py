@@ -113,6 +113,19 @@ def test_vit_class_map_consistent_across_splits(tmp_path):
     assert va.class_to_idx["game"] == tr.class_to_idx["game"]
 
 
+def test_vit_augment_shape_range_and_randomness():
+    from ai_core.training.datasets import vit_augment
+    torch.manual_seed(0)
+    x = torch.rand(3, 32, 32)
+    outs = [vit_augment(x) for _ in range(4)]
+    assert all(o.shape == x.shape and o.min() >= 0 and o.max() <= 1 for o in outs)
+    assert not torch.allclose(outs[0], outs[1])                     # mỗi lần gọi một phép biến đổi khác
+    torch.manual_seed(1)
+    a = vit_augment(x)
+    torch.manual_seed(1)
+    assert torch.equal(a, vit_augment(x))                           # tất định theo seed
+
+
 def test_siamese_no_group_same_frame(tmp_path):
     # Item thiếu group → partner = chính nó (same-frame), KHÔNG lấy cross-video.
     from ai_core.training.datasets.siamese_dataset import SiamesePairDataset

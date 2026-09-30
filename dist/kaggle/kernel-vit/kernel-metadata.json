@@ -1,0 +1,16 @@
+{
+  "id": "traininghighlight/ai-core-vit",
+  "title": "ai-core-vit",
+  "code_file": "run_vit.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": false,
+  "dataset_sources": [
+    "traininghighlight/ai-core",
+    "traininghighlight/vit-4cls-jpg"
+  ],
+  "competition_sources": [],
+  "kernel_sources": []
+}
