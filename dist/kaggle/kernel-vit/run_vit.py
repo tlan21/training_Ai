@@ -34,13 +34,22 @@ EXPECT = {'items': 63784, 'groups': 123,
           'classes': ['bong_da', 'ca_nhac', 'the_thao', 'tin_tuc']}
 
 # ---------------------------------------------------------------- 0. nap ai_core
-sys.path.insert(0, '/kaggle/working')
-if not glob.glob('/kaggle/working/ai_core'):
+# Kaggle TU GIAI NEN ai_core.zip cua dataset code -> trong /kaggle/input chi con thu muc ai_core/
+# (v1 kernel nay chet o day vi chi tim .zip). Nhan ca hai dang, dua ve /tmp/code (khong vao
+# /kaggle/working de khong lan vao output).
+CODE = '/tmp/code'
+if not os.path.isdir(f'{CODE}/ai_core'):
     z = glob.glob('/kaggle/input/**/ai_core.zip', recursive=True)
-    if not z:
-        raise SystemExit('KHONG thay ai_core.zip trong /kaggle/input')
-    with zipfile.ZipFile(z[0]) as f:
-        f.extractall('/kaggle/working')
+    pkg = [os.path.dirname(p) for p in glob.glob('/kaggle/input/**/ai_core/__init__.py', recursive=True)
+           if os.path.isdir(os.path.join(os.path.dirname(p), 'training'))]
+    if z:
+        with zipfile.ZipFile(z[0]) as f:
+            f.extractall(CODE)
+    elif pkg:
+        shutil.copytree(pkg[0], f'{CODE}/ai_core')
+    else:
+        raise SystemExit('KHONG thay ai_core (zip hoac thu muc) trong /kaggle/input')
+sys.path.insert(0, CODE)
 
 import torch                                                            # noqa: E402
 import yaml                                                             # noqa: E402
@@ -87,7 +96,7 @@ cnt = {c: sum(i['label'] == c for i in man['items']) for c in classes}
 print(f"DATA OK: {len(man['items']):,} frame | {len(groups)} video | {cnt}", flush=True)
 
 # ---------------------------------------------------------------- 2. sanity
-os.chdir('/kaggle/working')
+os.chdir(CODE)                       # pytest import ai_core tu cwd
 lines = []
 for name, target in (('gradient check < 1e-4', 'ai_core/tests/test_gradient_check.py'),
                      ('AdamW parity < 1e-6', 'ai_core/tests/test_adamw_parity.py'),
@@ -103,7 +112,7 @@ from ai_core.config import load_configs                                  # noqa:
 from ai_core.optim import AdamW, split_decay_params                      # noqa: E402
 from ai_core.training.datasets import ViTKeyframeDataset                 # noqa: E402
 
-VIT_YAML = '/kaggle/working/ai_core/training/configs/vit.yaml'
+VIT_YAML = f'{CODE}/ai_core/training/configs/vit.yaml'
 model_cfg, _ = load_configs(VIT_YAML)
 torch.manual_seed(0)
 ds = ViTKeyframeDataset(MANIFEST, 'train', model_cfg.img_size)
