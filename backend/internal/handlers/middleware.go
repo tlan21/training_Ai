@@ -11,8 +11,8 @@ func ErrorEnvelope(c *gin.Context, status int, code, message string) {
 	c.JSON(status, gin.H{"error": gin.H{"code": code, "message": message}})
 }
 
-// RequireAuth (skeleton): chỉ kiểm có Bearer token, chưa verify JWT thật (Phase 2 T2.2).
-// Cho phép FE code ngay; sai/thiếu → 401 đúng error envelope.
+// RequireAuth — T2.2: vẫn chỉ check prefix (không verify JWT ở middleware).
+// Verify JWT thật do auth.Service làm ở handler register/login/refresh; middleware chỉ gate 401.
 func RequireAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		auth := c.GetHeader("Authorization")
