@@ -1,6 +1,6 @@
 -- 002_seed.sql — dữ liệu khởi tạo bắt buộc (T0.2). Chạy sau 001_schema.sql.
 
--- 10 danh mục (khớp ViT 10 lớp — model_spec §2, dataset_spec §3.1)
+-- 10 danh mục sản phẩm; ViT MVP chỉ gợi ý 4 lớp (bong_da, the_thao, ca_nhac, tin_tuc).
 INSERT INTO categories (name) VALUES
     ('Bóng đá'),
     ('Thể thao'),

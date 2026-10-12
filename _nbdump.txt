@@ -1,0 +1,247 @@
+=== cell 0 markdown exec=None outs=0
+# Huấn luyện AI Core trên Kaggle GPU (T4 free)
+
+Train 6 mô hình tự code (from-scratch, không pretrained) của dự án **Phân tích Video & Highlight AI**.
+
+## Chuẩn bị (bắt buộc)
+1. **Settings → Accelerator → GPU T4 x2**. KHÔNG chọn P100: P100 là sm_60, torch của Kaggle chỉ
+   build cho sm_70+ → `no kernel image is available`. Cell 0 có guard tự fallback CPU, nhưng CPU
+   chậm hơn nhiều (6 lần train Two-Tower ~30 phút).
+2. **Settings → Internet → ON** (để tải MovieLens + corpus).
+3. Đưa `ai-core` vào Kaggle: `bash dist/kaggle/push_kaggle.sh <username>` (đẩy cả dataset + notebook),
+   hoặc **Add Data → Upload Dataset** đặt tên `ai-core`.
+
+Notebook chạy **Two-Tower end-to-end** ngay (MovieLens tải tự động) → ra `best.pt` thật + metric.
+Các model cần dataset lớn (ViT/ASR/Mini-GPT) có **cell template** — attach dataset rồi chạy.
+
+=== cell 1 markdown exec=None outs=0
+## 0. Kiểm tra GPU + nạp ai_core
+=== cell 2 code exec=None outs=0
+import torch, sys, glob, os, zipfile
+print('torch', torch.__version__, '| CUDA', torch.cuda.is_available(),
+      '|', torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'CPU')
+
+# Guard GPU tương thích: P100 (sm_60) không chạy được torch mới của Kaggle (cần sm_70+ = T4).
+# Thử 1 phép cuda nhỏ; lỗi 'no kernel image' → fallback CPU để không crash.
+if torch.cuda.is_available():
+    try:
+        _ = (torch.zeros(1, device='cuda') + 1).cpu()
+        print('GPU dùng được:', torch.cuda.get_device_name(0))
+    except Exception as e:
+        print('GPU KHÔNG tương thích (', e, ') -> fallback CPU. Chọn Accelerator = GPU T4 x2 để dùng GPU.')
+        torch.cuda.is_available = lambda: False
+
+# Nạp ai_core: dataset có thể là thư mục ai_core/ HOẶC ai_core.zip (tùy cách upload) → xử lý cả 2.
+# CHỈ nhận dir ai_core CÓ __init__.py (tránh folder giải nén rỗng/namespace do zip lồng nhau).
+dirs = [d for d in glob.glob('/kaggle/input/**/ai_core', recursive=True)
+        if os.path.isfile(os.path.join(d, '__init__.py'))]
+zips = glob.glob('/kaggle/input/**/ai_core.zip', recursive=True)
+if dirs:
+    sys.path.insert(0, os.path.dirname(dirs[0]))
+    print('ai_core (dir) từ', os.path.dirname(dirs[0]))
+elif zips:
+    dst = '/kaggle/working/aicore_pkg'
+    with zipfile.ZipFile(zips[0]) as z: z.extractall(dst)
+    sys.path.insert(0, dst)
+    print('ai_core giải nén từ', zips[0], '->', dst)
+else:
+    raise SystemExit('KHÔNG thấy ai_core trong /kaggle/input — Add Data dataset ai-core vào notebook')
+
+import ai_core
+print('ai_core loaded:', getattr(ai_core, '__file__', '?'), '| version', getattr(ai_core, '__version__', '?'))
+from ai_core.primitives import RMSNorm   # xác nhận package đầy đủ (không phải namespace rỗng)
+print('primitives OK')
+
+=== cell 3 markdown exec=None outs=0
+## 1. Sanity check toán học (nhanh, xác nhận code + GPU)
+=== cell 4 code exec=None outs=0
+# Kiểm chứng khối nguyên thủy trước khi train thật
+import torch, copy, math
+from ai_core.primitives import MultiHeadAttention, RMSNorm, build_rope_cache
+from ai_core.optim import AdamW, split_decay_params
+from torch import nn
+
+# SDPA parity
+m = MultiHeadAttention(16, 4, causal=True, use_sdpa=False).eval()
+m2 = copy.deepcopy(m); m2.use_sdpa = True
+x = torch.randn(2, 7, 16)
+print('SDPA parity :', torch.allclose(m(x), m2(x), atol=1e-5))
+
+# AdamW parity vs torch
+torch.manual_seed(0)
+a = nn.Linear(8,1).double(); b = copy.deepcopy(a)
+oa = AdamW(split_decay_params(a), lr=1e-2, weight_decay=0.1)
+ob = torch.optim.AdamW(split_decay_params(b), lr=1e-2, betas=(0.9,0.95), weight_decay=0.1, eps=1e-8)
+X = torch.randn(32,8,dtype=torch.float64); Y = torch.randn(32,1,dtype=torch.float64)
+for _ in range(100):
+    oa.zero_grad(); ((a(X)-Y)**2).mean().backward(); oa.step()
+    ob.zero_grad(); ((b(X)-Y)**2).mean().backward(); ob.step()
+print('AdamW parity:', max((p-q).abs().max().item() for p,q in zip(a.parameters(), b.parameters())) < 1e-6)
+
+=== cell 5 markdown exec=None outs=0
+## 2. Two-Tower — train end-to-end trên MovieLens-100k (chạy ngay)
+
+Dữ liệu người tạo, công khai (hợp lệ dataset_spec §0). Chứng minh full loop train → checkpoint → metric.
+
+=== cell 6 code exec=None outs=0
+# MovieLens: ưu tiên đọc từ dataset đã attach (khỏi cần Internet); fallback tải qua internet
+import os, glob, zipfile, urllib.request
+found = glob.glob('/kaggle/input/**/u.data', recursive=True)
+if found:
+    ML = os.path.dirname(found[0])
+    print('MovieLens từ dataset (offline):', ML)
+else:
+    ML = '/kaggle/working/ml-100k'
+    if not os.path.exists(ML):
+        z = '/kaggle/working/ml.zip'
+        urllib.request.urlretrieve('https://files.grouplens.org/datasets/movielens/ml-100k.zip', z)
+        with zipfile.ZipFile(z) as f: f.extractall('/kaggle/working')
+    print('MovieLens tải qua Internet:', ML)
+print('files:', sorted(os.listdir(ML))[:6])
+
+=== cell 7 code exec=None outs=0
+# Parse u.item/u.data → split THỜI GIAN 3 tầng: fit | val (chọn hyperparameter) | test (đóng băng)
+import torch
+from ai_core.training.datasets import build_features, time_split
+
+n_genre = 19
+item_genres = {}
+with open(f'{ML}/u.item', encoding='latin-1') as f:
+    for line in f:
+        p = line.rstrip('\n').split('|')
+        item_genres[int(p[0])] = torch.tensor([float(x) for x in p[-n_genre:]], dtype=torch.float32)
+
+rows = []
+with open(f'{ML}/u.data') as f:
+    for line in f:
+        u, i, r, ts = map(int, line.split())
+        if r >= 4: rows.append((u, i, ts))
+
+# evaluation_plan §0.2: test đóng băng TRƯỚC khi tinh chỉnh hyperparameter. Sweep chạy trên val,
+# test chỉ chạm 1 lần ở cell cuối. Bảng sweep cũ chọn temp/alpha bằng chính test → số lạc quan,
+# không dùng được cho chương thực nghiệm.
+train_rows, test_rows = time_split(rows, test_ratio=0.2)
+fit_rows, val_rows = time_split(train_rows, test_ratio=0.2)
+
+# Feature dựng RIÊNG cho từng split: log-popularity phải đếm từ đúng phần train của split đó,
+# đếm lẫn val/test là rò rỉ. build_features nằm trong ai_core (không inline) vì logic inline
+# trong notebook chính là nguyên nhân gốc của bug eval T1.7.
+fit_user, fit_video = build_features(fit_rows, item_genres)
+full_user, full_video = build_features(train_rows, item_genres)
+print('items', len(item_genres), '| pos fit', len(fit_rows), 'val', len(val_rows), 'test', len(test_rows))
+print('user_dim', next(iter(full_user.values())).numel(),
+      '| video_dim', next(iter(full_video.values())).numel(), '(genre 19 + log-pop 1 + one-hot)')
+
+=== cell 8 code exec=None outs=0
+# Một hàm = train + eval, dùng cho CẢ sweep val lẫn chốt test → không có đường nào để hai lần
+# đo lệch cấu hình/tập user (đúng lớp bug đã gặp ở T1.7).
+import torch
+from torch.utils.data import DataLoader
+from ai_core.config import ModelConfig, TrainConfig
+from ai_core.models.two_tower import TwoTower
+from ai_core.training import Trainer
+from ai_core.training.datasets import BPRTripleDataset
+from ai_core.training.loss_fns import two_tower_softmax_loss
+from ai_core.scripts.evaluate import eval_recommender, format_recommender_report
+
+
+def run_two_tower(fit, eval_rows, user_feat, video_feat, *, temperature, seed=1337,
+                  max_steps=5000, lr=1e-3, ckpt_dir='/kaggle/working/ckpt_tmp'):
+    """Train trên `fit`, chấm trên `eval_rows` (cùng candidate set cho model và baseline).
+
+    In-batch sampled softmax thay BPR-1-negative: batch 256 → 255 negative miễn phí. BPR chỉ
+    1 negative/positive là nút thắt thật, không phải phân phối negative.
+    neg_alpha=1.0 BẮT BUỘC: softmax cần log_q = log tần suất dữ liệu (xem two_tower_softmax_loss).
+    """
+    ds = BPRTripleDataset(fit, user_feat, video_feat, len(video_feat), seed=seed, neg_alpha=1.0)
+    ld = DataLoader(ds, batch_size=256, shuffle=True, drop_last=True)
+    user_dim = next(iter(user_feat.values())).numel()
+    video_dim = next(iter(video_feat.values())).numel()
+    mcfg = ModelConfig(name='two_tower', proj_dim=128, temperature=temperature,
+                       user_dim=user_dim, video_dim=video_dim)
+    model = TwoTower(mcfg, user_dim=user_dim, video_dim=video_dim)
+    tcfg = TrainConfig(model='two_tower', lr=lr, max_steps=max_steps, warmup_ratio=0.05,
+                       batch_size=256, seed=seed, ckpt_dir=ckpt_dir, log_dir='',
+                       metric_name='ndcg_at_10')
+    trainer = Trainer(model, ld, None, tcfg, loss_fn=two_tower_softmax_loss, model_cfg=mcfg)
+    stats = trainer.train()
+    m = eval_recommender(model, user_feat, video_feat, fit, eval_rows, k=10, device=trainer.device)
+    m['final_loss'] = float(stats['final_loss'])
+    return m, model, trainer
+
+=== cell 9 code exec=None outs=0
+# Sweep temperature TRÊN VAL — test vẫn đóng băng. temperature là knob duy nhất còn ý nghĩa:
+# sim ∈ [-1,1] sau L2-norm, còn log_q ≈ -7, temperature quyết định tỉ lệ giữa hai số đó.
+# neg_alpha cố định 1.0 (softmax cần đúng giá trị này), không sweep.
+sweep = {}
+for t in (0.05, 0.1, 0.2):
+    m, _, _ = run_two_tower(fit_rows, val_rows, fit_user, fit_video, temperature=t)
+    sweep[t] = m
+    print(f'--- temperature={t} | VAL ---')
+    print(format_recommender_report(m), '| final_loss', round(m['final_loss'], 4))
+
+best_temp = max(sweep, key=lambda t: sweep[t]['model_ndcg'])
+print('\n=> chọn temperature =', best_temp, '(theo val NDCG@10, chưa hề nhìn test)')
+
+=== cell 10 code exec=None outs=0
+# CHỐT T1.7: 3 seed trên train đầy đủ, chấm TEST đúng một lần (evaluation_plan §0.2 + §0.3).
+# Cổng = NDCG@10 vượt popularity (§1 cột 'Mục tiêu chấp nhận'). Recall@10 là metric phụ phải
+# báo cáo, KHÔNG phải điều kiện pass.
+import shutil
+from ai_core.scripts.evaluate import aggregate_runs, format_seed_report
+
+runs = []
+for seed in (1337, 7, 2024):
+    m, model, trainer = run_two_tower(train_rows, test_rows, full_user, full_video,
+                                      temperature=best_temp, seed=seed,
+                                      ckpt_dir=f'/kaggle/working/ckpt_seed{seed}')
+    runs.append(m)
+    print(f'--- seed {seed} | TEST ---')
+    print(format_recommender_report(m), '| final_loss', round(m['final_loss'], 4))
+    if seed == 1337:
+        # Checkpoint xuất = seed mặc định, KHÔNG phải seed tốt nhất trên test (chọn theo test = leak).
+        shutil.rmtree('/kaggle/working/checkpoints', ignore_errors=True)
+        shutil.copytree('/kaggle/working/ckpt_seed1337', '/kaggle/working/checkpoints')
+
+print()
+print(format_seed_report(aggregate_runs(runs)))
+
+=== cell 11 markdown exec=None outs=0
+## 3. Template 5 model còn lại (attach dataset rồi chạy)
+
+Mỗi model cần dataset thật. Attach qua **Add Data**, sửa đường dẫn `TODO`, rồi chạy `scripts.train`.
+GPU T4: ViT/Siamese/Fusion vài giờ; ASR/Mini-GPT nặng — chia phiên (Kaggle 30h/tuần, mỗi phiên ~12h).
+
+=== cell 12 code exec=None outs=0
+# --- ViT phân loại (cần keyframe + nhãn) ---
+# 1) Attach dataset ảnh keyframe, tạo manifest bằng scripts.prepare_keyframes
+# 2) Train:
+# !python -m ai_core.scripts.train \
+#     --config /kaggle/input/ai-core/ai_core/training/configs/vit.yaml \
+#     --manifest /kaggle/working/manifests/vit.json   # TODO đường dẫn manifest thật
+print('ViT: attach keyframe dataset + manifest rồi bỏ comment lệnh train')
+
+=== cell 13 code exec=None outs=0
+# --- ASR CTC (VIVOS / Common Voice vi) ---
+# Attach dataset VIVOS trên Kaggle, dựng CharVocab từ transcript, train:
+# !python -m ai_core.scripts.train --config .../asr_ctc.yaml --manifest .../asr.json --vocab .../char_vocab.json
+# LƯU Ý: xuất kèm checkpoints/asr_ctc/vocab.json cho inference real path
+print('ASR: attach VIVOS, tạo manifest + char_vocab.json')
+
+=== cell 14 code exec=None outs=0
+# --- Mini-GPT (BPE + pretrain text + fine-tune tóm tắt) ---
+# 1) train BPE: !python -m ai_core.scripts.train_bpe --corpus '.../*.txt' --out /kaggle/working/bpe.json
+# 2) pretrain: !python -m ai_core.scripts.train --config .../minigpt_pretrain.yaml --manifest ...
+# 3) fine-tune tóm tắt: config minigpt_finetune_summary.yaml
+print('Mini-GPT: train BPE → pretrain → fine-tune (chạy đêm, chia phiên)')
+
+=== cell 15 markdown exec=None outs=0
+## 4. Đóng gói checkpoint để tải về
+=== cell 16 code exec=None outs=0
+# Nén checkpoints (best.pt + sidecar) để Download từ panel Output
+import shutil, os
+os.makedirs('/kaggle/working/checkpoints', exist_ok=True)
+shutil.make_archive('/kaggle/working/checkpoints_export', 'zip', '/kaggle/working/checkpoints')
+print('Tải: /kaggle/working/checkpoints_export.zip')
+for r,_,fs in os.walk('/kaggle/working/checkpoints'):
+    for f in fs: print(os.path.join(r,f))

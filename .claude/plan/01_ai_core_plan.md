@@ -553,7 +553,7 @@ Khớp master plan mục 3 Phase 1 và lịch @model_spec.md mục 4. GPU tuần
 | Sub | Việc | DoD |
 |---|---|---|
 | T1.3a | `vit.py` + `configs/vit.yaml` + train | overfit-1-batch loss≈0; train hội tụ |
-| T1.3b | eval ViT + 2 baseline (LogReg histogram, kNN pixel) | Top-1 ≥ 70% (10 lớp) |
+| T1.3b | eval ViT + 2 baseline (LogReg histogram, kNN pixel) | Top-1 ≥ 70% (4 lớp MVP) |
 | T1.3c | `siamese.py` + `configs/siamese.yaml` + train | Recall@10 ≥ 80% / 1.000 query |
 | T1.3d | ablation kiến trúc (PostLN+GELU+PE vs bản dự án) | bảng số liệu (@evaluation_plan 2.2) |
 | T1.3e | export `checkpoints/vit/best.pt`, `siamese/best.pt` | service nạp thử OK |

@@ -15,6 +15,12 @@ For this project, do not infer contracts from prose specs when codegen files exi
 - Older specs are context only and must not override OpenAPI or master plan.
 - Work one task ID at a time and follow `.claude/plan/00_master_plan.md` section 5 when using weaker models.
 
+## T1.3 ViT MVP — quyết định đã chốt
+
+- ViT chỉ huấn luyện 4 lớp: `bong_da`, `the_thao`, `ca_nhac`, `tin_tuc`.
+- Gán `bong_da` cho mọi video bóng đá; `the_thao` chỉ gồm môn thể thao khác. Không thêm lớp ViT trong MVP.
+- PostgreSQL vẫn có 10 danh mục sản phẩm; 6 danh mục còn lại chưa có gợi ý tự động từ ViT.
+
 ## Session Startup (bắt buộc mỗi phiên)
 
 - **AI-FIRST (luật cứng):** Phase 1 AI Core phải hoàn chỉnh trước tiên (AI-GATE mục 0 `.claude/plan/00_master_plan.md`). CẤM làm task Phase 2/3 khi AI-GATE chưa mở; Phase 0 chỉ chen lúc GPU bận train.

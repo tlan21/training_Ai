@@ -1,0 +1,72 @@
+[{"stream_name":"stderr","time":7.028992387,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":7.029081976,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":7.029086579,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":7.029089326,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":7.624956732,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":7.624985237,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":7.624990141,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":7.624993813,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":13.381450713,"data":"torch 2.10.0+cu128 | CUDA True | Tesla T4\n"}
+,{"stream_name":"stdout","time":13.70189459,"data":"GPU dùng được: Tesla T4\n"}
+,{"stream_name":"stdout","time":13.701926421,"data":"ai_core (dir) từ /kaggle/input/datasets/tminhkhoa/ai-core/ai_core\n"}
+,{"stream_name":"stdout","time":13.70193185,"data":"ai_core loaded: /kaggle/input/datasets/tminhkhoa/ai-core/ai_core/ai_core/__init__.py | version 0.1.0\n"}
+,{"stream_name":"stdout","time":13.701936105,"data":"primitives OK\n"}
+,{"stream_name":"stdout","time":14.059345309,"data":"SDPA parity : True\n"}
+,{"stream_name":"stdout","time":18.900929417,"data":"AdamW parity: True\n"}
+,{"stream_name":"stdout","time":18.954558075,"data":"MovieLens từ dataset (offline): /kaggle/input/datasets/tminhkhoa/ai-core\n"}
+,{"stream_name":"stdout","time":18.954580596,"data":"files: ['ai_core', 'u.data', 'u.item']\n"}
+,{"stream_name":"stdout","time":19.39030077,"data":"items 1682 | pos fit 39795 val 6820 test 8760\n"}
+,{"stream_name":"stdout","time":19.390335739,"data":"user fit 942 | val 682 | test 876\n"}
+,{"stream_name":"stdout","time":19.390340535,"data":"user_dim 942 | video_dim 1702 (genre 19 + log-pop 1 + one-hot)\n"}
+,{"stream_name":"stdout","time":174.653281621,"data":"--- temperature=0.05 | VAL ---\n"}
+,{"stream_name":"stdout","time":174.653358186,"data":"same users (682/682 eligible users), same candidate set\n"}
+,{"stream_name":"stdout","time":174.653365568,"data":"Two-Tower  NDCG@10=0.1189  Recall@10=0.1122\n"}
+,{"stream_name":"stdout","time":174.653370147,"data":"Popularity NDCG@10=0.0846  Recall@10=0.0751\n"}
+,{"stream_name":"stdout","time":174.653379184,"data":"NDCG (cổng T1.7): PASS | Recall (metric chính, không phải cổng): trên baseline | loss 4.6205 | best_step 3500\n"}
+,{"stream_name":"stdout","time":326.026515434,"data":"--- temperature=0.1 | VAL ---\n"}
+,{"stream_name":"stdout","time":326.026554609,"data":"same users (682/682 eligible users), same candidate set\n"}
+,{"stream_name":"stdout","time":326.026560496,"data":"Two-Tower  NDCG@10=0.1225  Recall@10=0.1151\n"}
+,{"stream_name":"stdout","time":326.026565138,"data":"Popularity NDCG@10=0.0846  Recall@10=0.0751\n"}
+,{"stream_name":"stdout","time":326.026569627,"data":"NDCG (cổng T1.7): PASS | Recall (metric chính, không phải cổng): trên baseline | loss 4.7321 | best_step 2000\n"}
+,{"stream_name":"stdout","time":476.55977264,"data":"--- temperature=0.2 | VAL ---\n"}
+,{"stream_name":"stdout","time":476.559825165,"data":"same users (682/682 eligible users), same candidate set\n"}
+,{"stream_name":"stdout","time":476.559832209,"data":"Two-Tower  NDCG@10=0.1161  Recall@10=0.1106\n"}
+,{"stream_name":"stdout","time":476.559848316,"data":"Popularity NDCG@10=0.0846  Recall@10=0.0751\n"}
+,{"stream_name":"stdout","time":476.559852115,"data":"NDCG (cổng T1.7): PASS | Recall (metric chính, không phải cổng): trên baseline | loss 4.8796 | best_step 2500\n"}
+,{"stream_name":"stdout","time":476.559856739,"data":"\n"}
+,{"stream_name":"stdout","time":476.559864953,"data":"=\u003e chọn temperature = 0.1 (theo val NDCG@10, chưa hề nhìn test)\n"}
+,{"stream_name":"stdout","time":628.697217642,"data":"--- seed 1337 | TEST ---\n"}
+,{"stream_name":"stdout","time":628.6972866,"data":"same users (876/876 eligible users), same candidate set\n"}
+,{"stream_name":"stdout","time":628.697294348,"data":"Two-Tower  NDCG@10=0.1019  Recall@10=0.0944\n"}
+,{"stream_name":"stdout","time":628.69729967,"data":"Popularity NDCG@10=0.0760  Recall@10=0.0674\n"}
+,{"stream_name":"stdout","time":628.697304272,"data":"NDCG (cổng T1.7): PASS | Recall (metric chính, không phải cổng): trên baseline | loss 4.7321 | best_step 2000 | val_ndcg@best 0.1225\n"}
+,{"stream_name":"stdout","time":781.507063599,"data":"--- seed 7 | TEST ---\n"}
+,{"stream_name":"stdout","time":781.507102043,"data":"same users (876/876 eligible users), same candidate set\n"}
+,{"stream_name":"stdout","time":781.507107943,"data":"Two-Tower  NDCG@10=0.0969  Recall@10=0.0889\n"}
+,{"stream_name":"stdout","time":781.507111294,"data":"Popularity NDCG@10=0.0760  Recall@10=0.0674\n"}
+,{"stream_name":"stdout","time":781.50711453,"data":"NDCG (cổng T1.7): PASS | Recall (metric chính, không phải cổng): trên baseline | loss 4.7769 | best_step 3000 | val_ndcg@best 0.1160\n"}
+,{"stream_name":"stdout","time":943.317047784,"data":"--- seed 2024 | TEST ---\n"}
+,{"stream_name":"stdout","time":943.317096069,"data":"same users (876/876 eligible users), same candidate set\n"}
+,{"stream_name":"stdout","time":943.317105547,"data":"Two-Tower  NDCG@10=0.0983  Recall@10=0.0906\n"}
+,{"stream_name":"stdout","time":943.317110035,"data":"Popularity NDCG@10=0.0760  Recall@10=0.0674\n"}
+,{"stream_name":"stdout","time":943.317126569,"data":"NDCG (cổng T1.7): PASS | Recall (metric chính, không phải cổng): trên baseline | loss 4.7764 | best_step 1000 | val_ndcg@best 0.1197\n"}
+,{"stream_name":"stdout","time":943.317133747,"data":"\n"}
+,{"stream_name":"stdout","time":943.317139198,"data":"3 seed\n"}
+,{"stream_name":"stdout","time":943.317144724,"data":"Two-Tower  NDCG@10=0.0990±0.0026  Recall@10=0.0913±0.0028\n"}
+,{"stream_name":"stdout","time":943.317149766,"data":"Popularity NDCG@10=0.0760±0.0000  Recall@10=0.0674±0.0000\n"}
+,{"stream_name":"stdout","time":943.317154445,"data":"gap NDCG=+0.0231 (std tổng 0.0026) | T1.7: PASS\n"}
+,{"stream_name":"stdout","time":943.334079735,"data":"ViT: attach keyframe dataset + manifest rồi bỏ comment lệnh train\n"}
+,{"stream_name":"stdout","time":943.346547405,"data":"ASR: attach VIVOS, tạo manifest + char_vocab.json\n"}
+,{"stream_name":"stdout","time":943.358457399,"data":"Mini-GPT: train BPE → pretrain → fine-tune (chạy đêm, chia phiên)\n"}
+,{"stream_name":"stdout","time":943.544970858,"data":"Tải: /kaggle/working/checkpoints_export.zip\n"}
+,{"stream_name":"stdout","time":943.545003911,"data":"/kaggle/working/checkpoints/two_tower/last.pt\n"}
+,{"stream_name":"stdout","time":943.545013698,"data":"/kaggle/working/checkpoints/two_tower/best.pt\n"}
+,{"stream_name":"stderr","time":948.866416074,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":948.86644682,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":949.027392926,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":949.027418745,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":949.654327902,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":949.958204605,"data":"[NbConvertApp] Writing 29374 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":952.453363139,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":953.371330982,"data":"[NbConvertApp] Writing 338086 bytes to __results__.html\n"}
+]

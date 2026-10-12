@@ -1,0 +1,20 @@
+model:
+  name: two_tower
+  proj_dim: 128
+  temperature: 0.1
+train:
+  batch_size: 256
+  ckpt_dir: _tmp_tt/ck
+  grad_accum: 1
+  log_dir: ''
+  loss: two_tower_softmax
+  lr: 0.001
+  max_steps: 120
+  metric_name: ndcg_at_10
+  min_lr_ratio: 0.1
+  model: two_tower
+  neg_alpha: 1.0
+  precision: bf16
+  seed: 1337
+  warmup_ratio: 0.05
+  weight_decay: 0.1

@@ -1,0 +1,79 @@
+[{"stream_name":"stderr","time":6.020923151,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":6.020990197,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":6.020996524,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":6.021000715,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":6.580233393,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":6.580266423,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":6.580272424,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":6.5802768050000005,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":11.650752698,"data":"/usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:435: UserWarning: \n"}
+,{"stream_name":"stderr","time":11.650792088,"data":"    Found GPU0 Tesla P100-PCIE-16GB which is of cuda capability 6.0.\n"}
+,{"stream_name":"stderr","time":11.650795905,"data":"    Minimum and Maximum cuda capability supported by this version of PyTorch is\n"}
+,{"stream_name":"stderr","time":11.650798482999999,"data":"    (7.0) - (12.0)\n"}
+,{"stream_name":"stderr","time":11.650800933,"data":"    \n"}
+,{"stream_name":"stderr","time":11.650803086,"data":"  queued_call()\n"}
+,{"stream_name":"stderr","time":11.650805283,"data":"/usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:435: UserWarning: \n"}
+,{"stream_name":"stderr","time":11.650807627,"data":"    Please install PyTorch with a following CUDA\n"}
+,{"stream_name":"stderr","time":11.650809882,"data":"    configurations:  12.6 following instructions at\n"}
+,{"stream_name":"stderr","time":11.650812089,"data":"    https://pytorch.org/get-started/locally/\n"}
+,{"stream_name":"stderr","time":11.650814292,"data":"    \n"}
+,{"stream_name":"stderr","time":11.650816376,"data":"  queued_call()\n"}
+,{"stream_name":"stderr","time":11.650818553,"data":"/usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:435: UserWarning: \n"}
+,{"stream_name":"stderr","time":11.650820914,"data":"Tesla P100-PCIE-16GB with CUDA capability sm_60 is not compatible with the current PyTorch installation.\n"}
+,{"stream_name":"stderr","time":11.650823275,"data":"The current PyTorch install supports CUDA capabilities sm_70 sm_75 sm_80 sm_86 sm_90 sm_100 sm_120.\n"}
+,{"stream_name":"stderr","time":11.65082555,"data":"If you want to use the Tesla P100-PCIE-16GB GPU with PyTorch, please check the instructions at https://pytorch.org/get-started/locally/\n"}
+,{"stream_name":"stderr","time":11.650827872,"data":"\n"}
+,{"stream_name":"stderr","time":11.65083012,"data":"  queued_call()\n"}
+,{"stream_name":"stderr","time":11.650835288,"data":"\n"}
+,{"stream_name":"stderr","time":11.650837486,"data":"/usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:435: UserWarning: \n"}
+,{"stream_name":"stderr","time":11.65083983,"data":"    Found GPU0 Tesla P100-PCIE-16GB which is of cuda capability 6.0.\n"}
+,{"stream_name":"stderr","time":11.650842111,"data":"    Minimum and Maximum cuda capability supported by this version of PyTorch is\n"}
+,{"stream_name":"stderr","time":11.650844449000001,"data":"    (7.0) - (12.0)\n"}
+,{"stream_name":"stderr","time":11.650846586,"data":"    \n"}
+,{"stream_name":"stderr","time":11.650848662,"data":"  queued_call()\n"}
+,{"stream_name":"stderr","time":11.650867751,"data":"/usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:435: UserWarning: \n"}
+,{"stream_name":"stderr","time":11.650870331,"data":"    Please install PyTorch with a following CUDA\n"}
+,{"stream_name":"stderr","time":11.650872639,"data":"    configurations:  12.6 following instructions at\n"}
+,{"stream_name":"stderr","time":11.650874926,"data":"    https://pytorch.org/get-started/locally/\n"}
+,{"stream_name":"stderr","time":11.650877116,"data":"    \n"}
+,{"stream_name":"stderr","time":11.650879217,"data":"  queued_call()\n"}
+,{"stream_name":"stderr","time":11.650881404,"data":"/usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:435: UserWarning: \n"}
+,{"stream_name":"stderr","time":11.650883643,"data":"Tesla P100-PCIE-16GB with CUDA capability sm_60 is not compatible with the current PyTorch installation.\n"}
+,{"stream_name":"stderr","time":11.650886048,"data":"The current PyTorch install supports CUDA capabilities sm_70 sm_75 sm_80 sm_86 sm_90 sm_100 sm_120.\n"}
+,{"stream_name":"stderr","time":11.650888392,"data":"If you want to use the Tesla P100-PCIE-16GB GPU with PyTorch, please check the instructions at https://pytorch.org/get-started/locally/\n"}
+,{"stream_name":"stderr","time":11.650890752,"data":"\n"}
+,{"stream_name":"stderr","time":11.650892928,"data":"  queued_call()\n"}
+,{"stream_name":"stdout","time":11.655854163,"data":"torch 2.10.0+cu128 | CUDA True | Tesla P100-PCIE-16GB\n"}
+,{"stream_name":"stdout","time":11.65671678,"data":"GPU KHÔNG tương thích ( CUDA error: no kernel image is available for execution on the device\n"}
+,{"stream_name":"stdout","time":11.656721586,"data":"Search for `cudaErrorNoKernelImageForDevice' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.\n"}
+,{"stream_name":"stdout","time":11.656724566,"data":"CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.\n"}
+,{"stream_name":"stdout","time":11.656727139000001,"data":"For debugging consider passing CUDA_LAUNCH_BLOCKING=1\n"}
+,{"stream_name":"stdout","time":11.656730164,"data":"Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.\n"}
+,{"stream_name":"stdout","time":11.656732918,"data":" ) -\u003e fallback CPU. Chọn Accelerator = GPU T4 x2 để dùng GPU.\n"}
+,{"stream_name":"stdout","time":11.772871695,"data":"ai_core (dir) từ /kaggle/input/datasets/tminhkhoa/ai-core/ai_core\n"}
+,{"stream_name":"stdout","time":11.772905451,"data":"ai_core loaded: /kaggle/input/datasets/tminhkhoa/ai-core/ai_core/ai_core/__init__.py | version 0.1.0\n"}
+,{"stream_name":"stdout","time":11.772910574,"data":"primitives OK\n"}
+,{"stream_name":"stdout","time":11.924024431,"data":"SDPA parity : True\n"}
+,{"stream_name":"stdout","time":16.855897643,"data":"AdamW parity: True\n"}
+,{"stream_name":"stdout","time":16.897223607,"data":"MovieLens từ dataset (offline): /kaggle/input/datasets/tminhkhoa/ai-core\n"}
+,{"stream_name":"stdout","time":16.897252176,"data":"files: ['ai_core', 'u.data', 'u.item']\n"}
+,{"stream_name":"stdout","time":17.19634208,"data":"users 753 | items 1683 | pos train 44300 test 11075\n"}
+,{"stream_name":"stdout","time":39.119086651,"data":"{'final_loss': 0.5627474784851074, 'step': 3000, 'seed': 1337}\n"}
+,{"stream_name":"stdout","time":39.283749886,"data":"Two-Tower  NDCG@10=0.0444  Recall@10=0.0139\n"}
+,{"stream_name":"stdout","time":39.283782063,"data":"Popularity NDCG@10=0.1167  Recall@10=0.0737\n"}
+,{"stream_name":"stdout","time":39.28378882,"data":"=\u003e Two-Tower CHƯA vượt popularity (mục tiêu evaluation_plan §1)\n"}
+,{"stream_name":"stdout","time":39.304234873,"data":"ViT: attach keyframe dataset + manifest rồi bỏ comment lệnh train\n"}
+,{"stream_name":"stdout","time":39.315647421,"data":"ASR: attach VIVOS, tạo manifest + char_vocab.json\n"}
+,{"stream_name":"stdout","time":39.327781217,"data":"Mini-GPT: train BPE → pretrain → fine-tune (chạy đêm, chia phiên)\n"}
+,{"stream_name":"stdout","time":39.373956862,"data":"Tải: /kaggle/working/checkpoints_export.zip\n"}
+,{"stream_name":"stdout","time":39.373988576,"data":"/kaggle/working/checkpoints/two_tower/last.pt\n"}
+,{"stream_name":"stdout","time":39.373998473,"data":"/kaggle/working/checkpoints/two_tower/best.pt\n"}
+,{"stream_name":"stderr","time":44.327813069,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":44.32784201,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":44.474219872,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":44.47424714,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":45.060600874,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":45.363513119,"data":"[NbConvertApp] Writing 24739 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":47.665044176,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":48.497716119,"data":"[NbConvertApp] Writing 334136 bytes to __results__.html\n"}
+]

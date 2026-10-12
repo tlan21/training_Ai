@@ -1,0 +1,55 @@
+=== cell 8 ===
+# Một hàm = train + early-stop theo val + eval, dùng cho CẢ sweep lẫn chốt test → không có đường
+# nào để hai lần đo lệch cấu hình/tập user (đúng lớp bug đã gặp ở T1.7).
+import torch
+from torch.utils.data import DataLoader
+from ai_core.config import ModelConfig, TrainConfig
+from ai_core.models.two_tower import TwoTower
+from ai_core.training import Trainer
+from ai_core.training.checkpoint import load_checkpoint
+from ai_core.training.datasets import BPRTripleDataset
+from ai_core.training.loss_fns import two_tower_softmax_loss
+from ai_core.scripts.evaluate import eval_recommender, format_recommender_report
+
+
+def run_two_tower(eval_rows, *, temperature, seed=1337, max_steps=5000, lr=1e-3,
+                  eval_every=500, ckpt_dir='/kaggle/working/ckpt_tmp'):
+    """Train trên fit_rows, chọn checkpoint tốt nhất theo VAL, rồi chấm `eval_rows`.
+
+    In-batch sampled softmax thay BPR-1-negative: batch 256 → 255 negative miễn phí. BPR chỉ
+    1 negative/positive là nút thắt thật, không phải phân phối negative.
+    neg_alpha=1.0 BẮT BUỘC: softmax cần log_q = log tần suất dữ liệu (xem two_tower_softmax_loss).
+
+    Early-stop luôn theo VAL, kể cả khi eval_rows=test_rows — chọn checkpoint theo test là leak.
+    Vì vậy train chỉ dùng fit_rows ở mọi lần gọi: `val` phải sạch để làm mốc chọn checkpoint.
+    """
+    ds = BPRTripleDataset(fit_rows, user_feat, video_feat, len(video_feat), seed=seed, neg_alpha=1.0)
+    ld = DataLoader(ds, batch_size=256, shuffle=True, drop_last=True)
+    user_dim = next(iter(user_feat.values())).numel()
+    video_dim = next(iter(video_feat.values())).numel()
+    mcfg = ModelConfig(name='two_tower', proj_dim=128, temperature=temperature,
+                       user_dim=user_dim, video_dim=video_dim)
+    model = TwoTower(mcfg, user_dim=user_dim, video_dim=video_dim)
+    tcfg = TrainConfig(model='two_tower', lr=lr, max_steps=max_steps, warmup_ratio=0.05,
+                       batch_size=256, seed=seed, ckpt_dir=ckpt_dir, log_dir='',
+                       eval_every=eval_every, metric_name='ndcg_at_10')
+
+    # Trainer đưa `val_loader` thẳng vào compute_metric mà không tự iterate → truyền list row
+    # val, để metric là NDCG@10 THẬT (full ranking) chứ không phải NDCG in-batch của
+    # _two_tower_metric. Không có cách nào khác để early-stop theo đúng metric của cổng T1.7.
+    def val_ndcg(m, rows, device):
+        return eval_recommender(m, user_feat, video_feat, fit_rows, rows, k=10, device=device)['model_ndcg']
+
+    trainer = Trainer(model, ld, val_rows, tcfg, loss_fn=two_tower_softmax_loss, model_cfg=mcfg,
+                      compute_metric=val_ndcg)
+    stats = trainer.train()
+
+    # Model trong bộ nhớ là step CUỐI; nạp lại best.pt (chọn theo val) nếu không thì early-stop vô nghĩa.
+    best = load_checkpoint(f'{ckpt_dir}/two_tower/best.pt', map_location=trainer.device)
+    model.load_state_dict(best['state_dict'])
+    m = eval_recommender(model, user_feat, video_feat, fit_rows, eval_rows, k=10, device=trainer.device)
+    m['final_loss'] = float(stats['final_loss'])
+    m['best_val_ndcg'] = float(best['metrics'].get('ndcg_at_10', float('nan')))
+    m['best_step'] = int(best['metrics'].get('step', -1))
+    return m, model, trainer
+

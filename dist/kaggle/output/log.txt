@@ -1,0 +1,78 @@
+stderr | 0.00s - Debugger warning: It seems that frozen modules are being used, which may
+stderr | 0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+stderr | 0.00s - to python to disable frozen modules.
+stderr | 0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+stderr | 0.00s - Debugger warning: It seems that frozen modules are being used, which may
+stderr | 0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+stderr | 0.00s - to python to disable frozen modules.
+stderr | 0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+stderr | /usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:435: UserWarning:
+stderr |     Found GPU0 Tesla P100-PCIE-16GB which is of cuda capability 6.0.
+stderr |     Minimum and Maximum cuda capability supported by this version of PyTorch is
+stderr |     (7.0) - (12.0)
+stderr | 
+stderr |   queued_call()
+stderr | /usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:435: UserWarning:
+stderr |     Please install PyTorch with a following CUDA
+stderr |     configurations:  12.6 following instructions at
+stderr |     https://pytorch.org/get-started/locally/
+stderr | 
+stderr |   queued_call()
+stderr | /usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:435: UserWarning:
+stderr | Tesla P100-PCIE-16GB with CUDA capability sm_60 is not compatible with the current PyTorch installation.
+stderr | The current PyTorch install supports CUDA capabilities sm_70 sm_75 sm_80 sm_86 sm_90 sm_100 sm_120.
+stderr | If you want to use the Tesla P100-PCIE-16GB GPU with PyTorch, please check the instructions at https://pytorch.org/get-started/locally/
+stderr | 
+stderr |   queued_call()
+stderr | 
+stderr | /usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:435: UserWarning:
+stderr |     Found GPU0 Tesla P100-PCIE-16GB which is of cuda capability 6.0.
+stderr |     Minimum and Maximum cuda capability supported by this version of PyTorch is
+stderr |     (7.0) - (12.0)
+stderr | 
+stderr |   queued_call()
+stderr | /usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:435: UserWarning:
+stderr |     Please install PyTorch with a following CUDA
+stderr |     configurations:  12.6 following instructions at
+stderr |     https://pytorch.org/get-started/locally/
+stderr | 
+stderr |   queued_call()
+stderr | /usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:435: UserWarning:
+stderr | Tesla P100-PCIE-16GB with CUDA capability sm_60 is not compatible with the current PyTorch installation.
+stderr | The current PyTorch install supports CUDA capabilities sm_70 sm_75 sm_80 sm_86 sm_90 sm_100 sm_120.
+stderr | If you want to use the Tesla P100-PCIE-16GB GPU with PyTorch, please check the instructions at https://pytorch.org/get-started/locally/
+stderr | 
+stderr |   queued_call()
+stdout | torch 2.10.0+cu128 | CUDA True | Tesla P100-PCIE-16GB
+stdout | GPU KHÔNG tương thích ( CUDA error: no kernel image is available for execution on the device
+stdout | Search for `cudaErrorNoKernelImageForDevice' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.
+stdout | CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+stdout | For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+stdout | Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+stdout |  ) -> fallback CPU. Chọn Accelerator = GPU T4 x2 để dùng GPU.
+stdout | ai_core (dir) từ /kaggle/input/datasets/tminhkhoa/ai-core/ai_core
+stdout | ai_core loaded: /kaggle/input/datasets/tminhkhoa/ai-core/ai_core/ai_core/__init__.py | version 0.1.0
+stdout | primitives OK
+stdout | SDPA parity : True
+stdout | AdamW parity: True
+stdout | MovieLens từ dataset (offline): /kaggle/input/datasets/tminhkhoa/ai-core
+stdout | files: ['ai_core', 'u.data', 'u.item']
+stdout | users 753 | items 1683 | pos train 44300 test 11075
+stdout | {'final_loss': 0.5627474784851074, 'step': 3000, 'seed': 1337}
+stdout | Two-Tower  NDCG@10=0.0444  Recall@10=0.0139
+stdout | Popularity NDCG@10=0.1167  Recall@10=0.0737
+stdout | => Two-Tower CHƯA vượt popularity (mục tiêu evaluation_plan §1)
+stdout | ViT: attach keyframe dataset + manifest rồi bỏ comment lệnh train
+stdout | ASR: attach VIVOS, tạo manifest + char_vocab.json
+stdout | Mini-GPT: train BPE → pretrain → fine-tune (chạy đêm, chia phiên)
+stdout | Tải: /kaggle/working/checkpoints_export.zip
+stdout | /kaggle/working/checkpoints/two_tower/last.pt
+stdout | /kaggle/working/checkpoints/two_tower/best.pt
+stderr | /usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\|'
+stderr |   cells[i][c] = re.sub('\\\\\|', '|', cell)
+stderr | /usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\_'
+stderr |   text = re.sub(r'_', '\_', text) # Escape underscores in display text
+stderr | [NbConvertApp] Converting notebook __notebook__.ipynb to notebook
+stderr | [NbConvertApp] Writing 24739 bytes to __notebook__.ipynb
+stderr | [NbConvertApp] Converting notebook __notebook__.ipynb to html
+stderr | [NbConvertApp] Writing 334136 bytes to __results__.html

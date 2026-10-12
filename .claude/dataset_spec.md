@@ -23,7 +23,7 @@
 
 | Mô hình | Nguồn dữ liệu | Cách gán nhãn | Quy mô tối thiểu |
 |---|---|---|---|
-| ViT phân loại | Keyframes tự trích từ video sưu tầm | Tự gán tay (tool nội bộ) | 10 danh mục × 1.000 ảnh |
+| ViT phân loại | Keyframes tự trích từ video sưu tầm | Tự gán tay (tool nội bộ) | 4 danh mục × ≥20 video; mục tiêu ≥1.000 keyframe sạch/lớp |
 | Siamese ViT | Frame cùng cảnh / khác cảnh từ chính kho video | Tự sinh cặp (self-supervised, xem 3.2) | 50.000 cặp |
 | ASR tiếng Việt | VIVOS, Common Voice vi, VLSP (nếu xin được) | Transcript người tạo có sẵn trong dataset | ≥ 30 giờ (mục tiêu 100 giờ) |
 | Highlight Seq2Seq | Trận đấu full + bản highlight chính thức đã phát sóng | Weak supervision đối chiếu audio (xem 3.4) | 50 trận |
@@ -50,9 +50,10 @@ Ghi rõ trong luận án: mọi dataset trên chỉ cung cấp **dữ liệu th�
 
 ## 3. Chi tiết Pipeline Dữ liệu từng Mô hình
 
-### 3.1. ViT Phân loại Danh mục
-- **Thu thập:** 200–300 video (bóng đá, game, ca nhạc, tin tức... theo bảng `categories`). Decord trích keyframe **1 frame/giây** — nhịp trích chuẩn toàn hệ thống, khớp chấm điểm highlight từng giây và luồng ingest CMS.
-- **Gán nhãn:** nhãn theo video (video thuộc danh mục nào → mọi keyframe mang nhãn đó). 1 người gán 300 video ≈ 1 ngày công.
+### 3.1. ViT Phân loại Danh mục — MVP 4 lớp
+- **Lớp đã chốt:** `bong_da`, `the_thao`, `ca_nhac`, `tin_tuc`. Video bóng đá luôn là `bong_da`; `the_thao` chỉ gồm môn khác, tránh chồng nhãn.
+- **Thu thập:** tối thiểu 20 video/lớp (80 video); Decord trích keyframe **1 frame/giây** — nhịp trích chuẩn toàn hệ thống, khớp chấm điểm highlight từng giây và luồng ingest CMS. Mục tiêu ≥1.000 keyframe sạch/lớp.
+- **Gán nhãn:** nhãn theo video (video thuộc danh mục nào → mọi keyframe mang nhãn đó). Các danh mục PostgreSQL ngoài 4 lớp này chưa được ViT gợi ý trong MVP.
 - **Làm sạch:** loại frame đen/chuyển cảnh bằng ngưỡng độ lệch chuẩn pixel (thuật toán cổ điển).
 - **Split:** 80/10/10 **theo video**, không theo frame — tránh leakage frame cùng video nằm cả train lẫn test.
 

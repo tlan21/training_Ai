@@ -31,7 +31,7 @@ Mọi mô hình dùng chung 1 khối tự code, cấu hình bằng tham số:
 
 | Mô hình | d_model | Layers | Heads | Context | Vocab/Input | Params | VRAM train (bf16) |
 |---|---|---|---|---|---|---|---|
-| **ViT phân loại** | 256 | 6 | 8 | 197 token (224², patch 16) | 10–20 lớp | ~5M | ~3GB @ batch 128 |
+| **ViT phân loại** | 256 | 6 | 8 | 197 token (224², patch 16) | 4 lớp MVP | ~5M | ~3GB @ batch 128 |
 | **Siamese ViT** | dùng chung backbone ViT + projection head 256→128 (train **tuần tự**: ViT phân loại xong → freeze backbone → train projection head InfoNCE; nếu ablation cần thì unfreeze 2 block cuối) | | | | InfoNCE, τ=0.07 | +0.03M | ~4GB @ batch 256 (in-batch neg) |
 | **ASR (Encoder + CTC)** | 256 | 8 | 8 | ~1500 frame (30s audio) | 95 ký tự | ~7M | ~5GB @ batch 16 |
 | **Highlight Fusion** | 256 | 4 (2 self + 2 cross-attn) | 8 | 120 giây/cửa sổ | vector **Siamese ViT** 256 + audio 64 | ~4M | ~2GB @ batch 32 |

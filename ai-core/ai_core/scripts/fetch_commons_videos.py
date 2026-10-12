@@ -55,7 +55,7 @@ def _open(url: str, timeout: int = 300, tries: int = 5):
             last = e
     raise last
 
-# Danh mục Commons → tên category của dự án. Mặc định 4 nhóm đã kiểm là có video thật.
+# Danh mục Commons → 4 nhãn ViT MVP đã chốt; `the_thao` không gồm bóng đá khi gán nhãn.
 DEFAULT_CATEGORIES = {
     "bong_da": "Category:Videos of association football",
     "the_thao": "Category:Videos of sports",

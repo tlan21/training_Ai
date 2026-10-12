@@ -16,7 +16,7 @@
 
 | Mô hình | Metric chính | Metric phụ | Baseline (tự cài, không pretrained) | Mục tiêu chấp nhận |
 |---|---|---|---|---|
-| **ViT phân loại** | Top-1 Accuracy | Macro-F1, confusion matrix | (a) Logistic Regression trên histogram màu; (b) k-NN trên raw pixel downscale | Top-1 ≥ 70% trên 10 lớp (chance = 10%) |
+| **ViT phân loại** | Top-1 Accuracy | Macro-F1, confusion matrix | (a) Logistic Regression trên histogram màu; (b) k-NN trên raw pixel downscale | Top-1 ≥ 70% trên 4 lớp (chance = 25%) |
 | **Siamese ViT (Visual Search)** | Recall@1/5/10 | mAP, median rank | (a) So khớp histogram màu; (b) template matching độ phân giải thấp | Recall@10 ≥ 80% trên 1.000 query |
 | **ASR** | **WER** trên VIVOS test | CER, RTF (tốc độ); **WER trên 1–2h test out-of-domain tự transcribe** (@dataset_spec.md §3.3) | Không có baseline chạy được (mọi ASR baseline đều pretrained) → so với số liệu công bố trên VIVOS trong phần bàn luận. **Ablation decoding: greedy CTC vs beam search + char 5-gram LM tự train** | CER ≤ 20%, WER ≤ 45% (limitation ghi rõ) |
 | **Highlight Fusion** | **F1 từng giây** trên 5 trận gán tay | mAP, Spearman ρ với nhãn người, IoU cấp đoạn | (a) Đỉnh năng lượng audio (RMS energy peak); (b) độ lớn chuyển động frame-diff; (c) chỉ-visual và chỉ-audio (ablation) | F1 vượt cả 2 baseline cổ điển ≥ 10 điểm |

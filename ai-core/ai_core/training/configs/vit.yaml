@@ -5,7 +5,7 @@ model:
   n_heads: 8
   img_size: 224
   patch_size: 16
-  n_classes: 10
+  n_classes: 4
 train:
   model: vit
   lr: 3.0e-4
