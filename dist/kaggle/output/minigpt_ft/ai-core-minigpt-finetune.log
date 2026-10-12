@@ -1,0 +1,18 @@
+[{"stream_name":"stdout","time":10.653104447,"data":"torch 2.11.0+cu128 | Tesla T4\n"}
+,{"stream_name":"stdout","time":10.65315917,"data":"precision: fp16\n"}
+,{"stream_name":"stdout","time":11.507041188,"data":"pairs dir: /kaggle/input/datasets/traininghighlight/wiki-summary-pairs\n"}
+,{"stream_name":"stdout","time":14.817633715,"data":"pairs train 96,000 val 12,000 test 12,000\n"}
+,{"stream_name":"stdout","time":14.954696848,"data":"vocab cands []\n"}
+,{"stream_name":"stdout","time":14.954726104,"data":"ckpt cands ['/kaggle/input/notebooks/traininghighlight/ai-core-minigpt-pretrain/ckpt_minigpt/minigpt/best.pt', '/kaggle/input/notebooks/traininghighlight/ai-core-minigpt-pretrain/ckpt_minigpt/minigpt/best.pt']\n"}
+,{"stream_name":"stderr","time":14.955215368,"data":"Traceback (most recent call last):\n"}
+,{"stream_name":"stderr","time":14.95552178,"data":"  File \"/kaggle/src/script.py\", line 72, in \u003cmodule\u003e\n"}
+,{"stream_name":"stderr","time":14.955532875,"data":"    vocab_path = vocab_path or vocab_cands[0]\n"}
+,{"stream_name":"stderr","time":14.955536549,"data":"                               ~~~~~~~~~~~^^^\n"}
+,{"stream_name":"stderr","time":14.955540047,"data":"IndexError: list index out of range\n"}
+,{"stream_name":"stderr","time":20.5413858,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":20.541433317,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":20.869405145,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":20.869435388,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":21.754061562,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":22.831044177,"data":"[NbConvertApp] Writing 320435 bytes to __results__.html\n"}
+]
