@@ -2,11 +2,24 @@ package config
 
 import "os"
 
-// Config — env cho gateway (mở rộng ở Phase 2: DSN, brokers, JWT keys...).
+// Config — env cho gateway + workers (02_backend_plan.md §2/§7 2.1.8).
+// Mặc định đều trỏ local/docker-compose; thiếu DB thì adapter trả ErrNotFound, gateway vẫn chạy với mocks.
 type Config struct {
 	Port         string
-	AIBaseURL    string // inference-service :8001
-	AIServiceKey string // sk-local-...
+	AIBaseURL    string
+	AIServiceKey string
+	PostgresDSN  string
+	MongoURI     string
+	MongoDB      string
+	MilvusHost   string
+	MilvusPort   string
+	KafkaBrokers string
+	MinioEndpoint string
+	MinioAccess  string
+	MinioSecret  string
+	MinioBucket  string
+	RedisAddr    string
+	JWTSecret    string
 }
 
 func Load() Config {
@@ -14,6 +27,18 @@ func Load() Config {
 		Port:         env("GATEWAY_PORT", "8000"),
 		AIBaseURL:    env("AI_BASE_URL", "http://localhost:8001"),
 		AIServiceKey: env("AI_SERVICE_KEY", "sk-local-dev-key"),
+		PostgresDSN:  env("POSTGRES_DSN", "postgres://postgres:postgres@localhost:5432/traning_ai?sslmode=disable"),
+		MongoURI:     env("MONGO_URI", "mongodb://localhost:27017"),
+		MongoDB:      env("MONGO_DB", "traning_ai"),
+		MilvusHost:   env("MILVUS_HOST", "localhost"),
+		MilvusPort:   env("MILVUS_PORT", "19530"),
+		KafkaBrokers: env("KAFKA_BROKERS", "localhost:9092"),
+		MinioEndpoint: env("MINIO_ENDPOINT", "localhost:9000"),
+		MinioAccess:  env("MINIO_ACCESS_KEY", "minioadmin"),
+		MinioSecret:  env("MINIO_SECRET_KEY", "minioadmin"),
+		MinioBucket:  env("MINIO_BUCKET", "raw-videos"),
+		RedisAddr:    env("REDIS_ADDR", "localhost:6379"),
+		JWTSecret:    env("JWT_SECRET", "dev-jwt-secret-change-me"),
 	}
 }
 
