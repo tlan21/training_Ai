@@ -1,0 +1,16 @@
+{
+  "id": "traininghighlight/ai-core-minigpt-finetune",
+  "title": "ai-core-minigpt-finetune",
+  "code_file": "run_finetune.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": false,
+  "dataset_sources": [
+    "traininghighlight/ai-core",
+    "traininghighlight/wiki-summary-pairs"
+  ],
+  "competition_sources": [],
+  "kernel_sources": ["traininghighlight/ai-core-minigpt-pretrain"]
+}
