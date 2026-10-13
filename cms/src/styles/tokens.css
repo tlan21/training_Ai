@@ -1,23 +1,49 @@
 :root {
-  --bg-base: #0f1115;
-  --bg-surface: #171a21;
-  --bg-surface-2: #1f242e;
-  --border: #2a303c;
-  --primary: #3b82f6;
-  --primary-hover: #2563eb;
+  /* Stitch light — analytica/DESIGN.md + index.html tailwind-config */
+  --primary: #461599;
+  --primary-container: #5e35b1;
+  --primary-fixed: #eaddff;
+  --on-primary: #ffffff;
+  --on-primary-container: #ceb8ff;
+  --surface: #fef7ff;
+  --surface-dim: #ded8e3;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #f8f1fc;
+  --surface-container: #f2ebf7;
+  --surface-container-high: #ede6f1;
+  --surface-container-highest: #e7e0eb;
+  --background: #fef7ff;
+  --on-surface: #1d1a22;
+  --on-surface-variant: #494453;
+  --outline: #7b7484;
+  --outline-variant: #cbc3d5;
+  --surface-variant: #e7e0eb;
+  --error: #ba1a1a;
+  --error-container: #ffdad6;
+  --on-error: #ffffff;
+  --on-error-container: #93000a;
+  --secondary: #546067;
+  --secondary-container: #d7e4ec;
+  --on-secondary-container: #5a666d;
+  /* legacy aliases for existing components */
+  --bg-base: #fef7ff;
+  --bg-surface: #ffffff;
+  --bg-surface-2: #f8f1fc;
+  --border: #cbc3d5;
+  --primary-hover: #5e35b1;
   --success: #22c55e;
   --warning: #f59e0b;
-  --danger: #ef4444;
-  --info: #38bdf8;
-  --text-primary: #e5e7eb;
-  --text-secondary: #9ca3af;
-  --text-muted: #6b7280;
+  --danger: #ba1a1a;
+  --info: #6c45c0;
+  --text-primary: #1d1a22;
+  --text-secondary: #494453;
+  --text-muted: #7b7484;
 }
 * { box-sizing: border-box; }
 body {
   font-family: Inter, system-ui, sans-serif;
-  background: var(--bg-base);
-  color: var(--text-primary);
+  background: radial-gradient(circle at 10% 20%, rgba(94, 53, 177, 0.08) 0%, transparent 40%), radial-gradient(circle at 90% 80%, rgba(70, 21, 153, 0.05) 0%, transparent 40%), #fef7ff;
+  color: var(--on-surface);
   margin: 0;
   line-height: 1.5;
 }
