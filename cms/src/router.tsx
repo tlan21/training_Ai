@@ -3,6 +3,7 @@ import { useAuthStore } from "./stores/authStore";
 import { Sidebar } from "./components/common/Sidebar";
 import { TopBar } from "./components/common/TopBar";
 import LoginPage from "./pages/LoginPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import DashboardPage from "./pages/DashboardPage";
 import QueuePage from "./pages/QueuePage";
 import HighlightPage from "./pages/HighlightPage";
@@ -35,6 +36,7 @@ function Shell() {
 }
 export const router = createBrowserRouter([
   { path: "/login", element: <LoginPage /> },
+  { path: "/forgot-password", element: <ForgotPasswordPage /> },
   {
     element: <Guard><Shell /></Guard>,
     children: [

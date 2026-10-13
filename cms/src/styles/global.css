@@ -1,8 +1,15 @@
 @import "./tokens.css";
 .card { background: var(--surface-container-lowest); border: 1px solid var(--outline-variant); border-radius: 8px; }
-.btn-primary { background: var(--primary); color: var(--on-primary); border: none; border-radius: 8px; padding: 8px 16px; cursor: pointer; }
+.btn-primary { background: var(--primary); color: var(--on-primary); border: none; border-radius: 8px; padding: 8px 16px; cursor: pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px; }
 .btn-primary:hover { background: var(--primary-container); }
-.input { background: rgba(255,255,255,0.5); border: 1px solid var(--outline-variant); color: var(--on-surface); border-radius: 8px; padding: 8px 12px; }
+.input { background: rgba(255,255,255,0.5); border: 1px solid var(--outline-variant); color: var(--on-surface); border-radius: 8px; padding: 12px 12px; line-height:1.2; }
 .input:focus { outline: none; box-shadow: 0 0 0 3px rgba(94,53,177,0.15); border-color: var(--primary-container); }
+/* input có icon: padding tách riêng, không dùng shorthand đè */
+.input--with-left-icon { padding-left: 44px !important; }
+.input--with-right-icon { padding-right: 44px !important; }
+.input-icon { position:absolute; top:50%; transform:translateY(-50%); display:inline-flex; align-items:center; justify-content:center; pointer-events:none; color:var(--outline); }
+.input-icon--left { left:12px; }
+.input-icon--right { right:12px; }
+.input-icon--action { pointer-events:auto; cursor:pointer; background:none; border:none; padding:4px; color:var(--outline); display:inline-flex; }
 .badge { padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
 .glass-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.5); box-shadow: 0 8px 32px rgba(70,21,153,0.04); border-radius: 16px; }

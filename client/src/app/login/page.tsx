@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { apiClient } from "@/lib/apiClient";
 import { useAuthStore } from "@/stores/authStore";
+import { Icon } from "@/components/Icon";
+import "@/app/login.css";
 export default function LoginPage() {
   const [email, setEmail] = useState("client@test.local");
   const [password, setPassword] = useState("password123");
@@ -35,28 +37,28 @@ export default function LoginPage() {
       </header>
       <section style={{ maxWidth: 360, width: "100%", margin: "0 auto", display: "grid", gap: 16 }}>
         <div style={{ display: "grid", gap: 4 }}>
-          <label style={{ fontSize: 11, fontWeight: 600, color: "var(--on-surface-variant)", marginLeft: 4 }}>Email hoặc Số điện thoại</label>
-          <div style={{ position: "relative" }}>
-            <span className="material-symbols-outlined" style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", color: "var(--outline)", fontSize: 20 }}>person</span>
-            <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@example.com" style={{ width: "100%", height: 56, paddingLeft: 44, paddingRight: 12, background: "var(--surface-container-lowest)", border: "1px solid var(--outline-variant)", borderRadius: 12, fontSize: 15, outline: "none" }} />
+          <label htmlFor="cl-email" style={{ fontSize: 11, fontWeight: 600, color: "var(--on-surface-variant)", marginLeft: 4 }}>Email hoặc Số điện thoại</label>
+          <div className="input-wrap">
+            <span className="input-icon input-icon--left" aria-hidden><Icon name="person" size={20} /></span>
+            <input id="cl-email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@example.com" className="input input--with-left-icon login-input" />
           </div>
         </div>
         <div style={{ display: "grid", gap: 4 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", padding: "0 4px" }}>
-            <label style={{ fontSize: 11, fontWeight: 600, color: "var(--on-surface-variant)" }}>Mật khẩu</label>
-            <span style={{ fontSize: 11, color: "var(--primary)", cursor: "pointer" }}>Quên mật khẩu?</span>
+          <div style={{ display: "flex", justifyContent: "space-between", padding: "0 4px", alignItems: "center" }}>
+            <label htmlFor="cl-password" style={{ fontSize: 11, fontWeight: 600, color: "var(--on-surface-variant)" }}>Mật khẩu</label>
+            <Link href="/forgot-password" style={{ fontSize: 11, color: "var(--primary)" }}>Quên mật khẩu?</Link>
           </div>
-          <div style={{ position: "relative" }}>
-            <span className="material-symbols-outlined" style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", color: "var(--outline)", fontSize: 20 }}>lock</span>
-            <input type={show ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} onKeyDown={(e) => e.key === "Enter" && submit()} placeholder="••••••••" style={{ width: "100%", height: 56, paddingLeft: 44, paddingRight: 44, background: "var(--surface-container-lowest)", border: "1px solid var(--outline-variant)", borderRadius: 12, fontSize: 15, outline: "none" }} />
-            <button type="button" onClick={() => setShow((v) => !v)} style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "var(--outline)" }}>
-              <span className="material-symbols-outlined" style={{ fontSize: 20 }}>{show ? "visibility_off" : "visibility"}</span>
+          <div className="input-wrap">
+            <span className="input-icon input-icon--left" aria-hidden><Icon name="lock" size={18} /></span>
+            <input id="cl-password" type={show ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} onKeyDown={(e) => e.key === "Enter" && submit()} placeholder="••••••••" className="input input--with-left-icon input--with-right-icon login-input" />
+            <button type="button" onClick={() => setShow((v) => !v)} aria-label={show ? "Ẩn mật khẩu" : "Hiện mật khẩu"} className="input-icon input-icon--right input-icon--action">
+              <Icon name={show ? "visibility_off" : "visibility"} size={20} />
             </button>
           </div>
         </div>
         {err && <div style={{ background: "var(--error-container)", color: "var(--on-error-container)", padding: 10, borderRadius: 8, fontSize: 13 }}>{err}</div>}
-        <button onClick={submit} disabled={loading} style={{ width: "100%", height: 56, background: "var(--primary)", color: "var(--on-primary)", borderRadius: 12, border: "none", fontWeight: 700, fontSize: 15, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
-          {loading ? "Đang xử lý…" : <>Đăng nhập <span className="material-symbols-outlined" style={{ fontSize: 18 }}>arrow_forward</span></>}
+        <button onClick={submit} disabled={loading} className="btn-primary" style={{ width: "100%", height: 56, fontSize: 15, fontWeight: 700, gap: 8 }}>
+          {loading ? "Đang xử lý…" : <><span>Đăng nhập</span><Icon name="arrow_forward" size={18} /></>}
         </button>
       </section>
       <footer style={{ padding: "40px 0 24px", textAlign: "center" }}>

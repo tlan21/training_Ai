@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { apiClient } from "@/lib/apiClient";
 import { useAuthStore } from "@/stores/authStore";
+import { Icon } from "@/components/Icon";
+import "../login.css";
 export default function RegisterPage() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -42,32 +44,32 @@ export default function RegisterPage() {
             <p style={{ fontSize: 14, color: "var(--on-surface-variant)", marginTop: 4 }}>Khám phá sức mạnh của video AI ngay hôm nay.</p>
           </div>
           <div style={{ display: "grid", gap: 12 }}>
-            <label style={{ fontSize: 13, fontWeight: 600, color: "var(--on-surface-variant)", marginLeft: 4 }}>Họ và tên</label>
-            <div style={{ position: "relative" }}>
-              <span className="material-symbols-outlined" style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", color: "var(--on-surface-variant)", opacity: 0.6, fontSize: 20 }}>person</span>
-              <input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Nguyễn Văn A" style={{ width: "100%", padding: "14px 14px 14px 44px", borderRadius: 12, border: "1px solid var(--outline-variant)", background: "var(--surface-container-lowest)", fontSize: 15, outline: "none" }} />
+            <label htmlFor="rg-name" style={{ fontSize: 13, fontWeight: 600, color: "var(--on-surface-variant)", marginLeft: 4 }}>Họ và tên</label>
+            <div className="input-wrap">
+              <span className="input-icon input-icon--left" aria-hidden><Icon name="person" size={18} /></span>
+              <input id="rg-name" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Nguyễn Văn A" className="input input--with-left-icon login-input" style={{ padding: "14px 14px 14px 44px" }} />
             </div>
-            <label style={{ fontSize: 13, fontWeight: 600, color: "var(--on-surface-variant)", marginLeft: 4 }}>Email hoặc Số điện thoại</label>
-            <div style={{ position: "relative" }}>
-              <span className="material-symbols-outlined" style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", color: "var(--on-surface-variant)", opacity: 0.6, fontSize: 20 }}>alternate_email</span>
-              <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email@vidsai.vn" style={{ width: "100%", padding: "14px 14px 14px 44px", borderRadius: 12, border: "1px solid var(--outline-variant)", background: "var(--surface-container-lowest)", fontSize: 15, outline: "none" }} />
+            <label htmlFor="rg-email" style={{ fontSize: 13, fontWeight: 600, color: "var(--on-surface-variant)", marginLeft: 4 }}>Email hoặc Số điện thoại</label>
+            <div className="input-wrap">
+              <span className="input-icon input-icon--left" aria-hidden><Icon name="alternate_email" size={18} /></span>
+              <input id="rg-email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email@vidsai.vn" className="input input--with-left-icon login-input" style={{ padding: "14px 14px 14px 44px" }} />
             </div>
-            <label style={{ fontSize: 13, fontWeight: 600, color: "var(--on-surface-variant)", marginLeft: 4 }}>Mật khẩu</label>
-            <div style={{ position: "relative" }}>
-              <span className="material-symbols-outlined" style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", color: "var(--on-surface-variant)", opacity: 0.6, fontSize: 20 }}>lock</span>
-              <input type={show ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" style={{ width: "100%", padding: "14px 44px 14px 44px", borderRadius: 12, border: "1px solid var(--outline-variant)", background: "var(--surface-container-lowest)", fontSize: 15, outline: "none" }} />
-              <button type="button" onClick={() => setShow((v) => !v)} style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "var(--on-surface-variant)" }}>
-                <span className="material-symbols-outlined" style={{ fontSize: 20 }}>{show ? "visibility_off" : "visibility"}</span>
+            <label htmlFor="rg-pass" style={{ fontSize: 13, fontWeight: 600, color: "var(--on-surface-variant)", marginLeft: 4 }}>Mật khẩu</label>
+            <div className="input-wrap">
+              <span className="input-icon input-icon--left" aria-hidden><Icon name="lock" size={18} /></span>
+              <input id="rg-pass" type={show ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" className="input input--with-left-icon input--with-right-icon login-input" style={{ padding: "14px 44px 14px 44px" }} />
+              <button type="button" onClick={() => setShow((v) => !v)} aria-label={show ? "Ẩn mật khẩu" : "Hiện mật khẩu"} className="input-icon input-icon--right input-icon--action">
+                <Icon name={show ? "visibility_off" : "visibility"} size={20} />
               </button>
             </div>
-            <label style={{ fontSize: 13, fontWeight: 600, color: "var(--on-surface-variant)", marginLeft: 4 }}>Xác nhận mật khẩu</label>
-            <div style={{ position: "relative" }}>
-              <span className="material-symbols-outlined" style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", color: "var(--on-surface-variant)", opacity: 0.6, fontSize: 20 }}>verified_user</span>
-              <input type="password" value={confirm} onChange={(e) => setConfirm(e.target.value)} placeholder="••••••••" style={{ width: "100%", padding: "14px 14px 14px 44px", borderRadius: 12, border: "1px solid var(--outline-variant)", background: "var(--surface-container-lowest)", fontSize: 15, outline: "none" }} />
+            <label htmlFor="rg-confirm" style={{ fontSize: 13, fontWeight: 600, color: "var(--on-surface-variant)", marginLeft: 4 }}>Xác nhận mật khẩu</label>
+            <div className="input-wrap">
+              <span className="input-icon input-icon--left" aria-hidden><Icon name="verified_user" size={18} /></span>
+              <input id="rg-confirm" type="password" value={confirm} onChange={(e) => setConfirm(e.target.value)} placeholder="••••••••" className="input input--with-left-icon login-input" style={{ padding: "14px 14px 14px 44px" }} />
             </div>
             {err && <div style={{ background: "var(--error-container)", color: "var(--on-error-container)", padding: 10, borderRadius: 8, fontSize: 13 }}>{err}</div>}
-            <button onClick={submit} style={{ width: "100%", padding: 14, background: "var(--primary)", color: "var(--on-primary)", borderRadius: 12, border: "none", fontWeight: 700, fontSize: 15, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
-              Đăng ký ngay <span className="material-symbols-outlined" style={{ fontSize: 18 }}>arrow_forward</span>
+            <button onClick={submit} className="btn-primary" style={{ width: "100%", padding: 14, fontSize: 15 }}>
+              <span>Đăng ký ngay</span> <Icon name="arrow_forward" size={18} />
             </button>
           </div>
         </section>

@@ -61,12 +61,21 @@ func RequireRole(allowed ...string) gin.HandlerFunc {
 	}
 }
 
-// CORS đơn giản cho dev (CMS :5173, Client :3000).
+// CORS cho dev — hỗ trợ withCredentials (refresh cookie).
+// Khi có Origin (browser) thì echo lại Origin đó + Allow-Credentials, không dùng *.
 func CORS() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.Header("Access-Control-Allow-Origin", "*")
+		origin := c.GetHeader("Origin")
+		if origin != "" {
+			c.Header("Access-Control-Allow-Origin", origin)
+			c.Header("Access-Control-Allow-Credentials", "true")
+			c.Header("Vary", "Origin")
+		} else {
+			c.Header("Access-Control-Allow-Origin", "*")
+		}
 		c.Header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS")
 		c.Header("Access-Control-Allow-Headers", "Authorization,Content-Type")
+		c.Header("Access-Control-Expose-Headers", "Set-Cookie")
 		if c.Request.Method == http.MethodOptions {
 			c.AbortWithStatus(http.StatusNoContent)
 			return

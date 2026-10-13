@@ -1,0 +1,12 @@
+.input-wrap{position:relative;display:flex;align-items:center}
+.input{width:100%;height:56px;background:var(--surface-container-lowest);border:1px solid var(--outline-variant);border-radius:12px;font-size:15px;outline:none;padding:0 12px;line-height:1.2}
+.input:focus{border-color:var(--primary);box-shadow:0 0 0 2px rgba(115,46,228,0.15)}
+.input--with-left-icon{padding-left:44px !important}
+.input--with-right-icon{padding-right:44px !important}
+.login-input{color:var(--on-surface)}
+.input-icon{position:absolute;top:50%;transform:translateY(-50%);display:inline-flex;align-items:center;justify-content:center;color:var(--outline);pointer-events:none}
+.input-icon--left{left:12px}
+.input-icon--right{right:12px}
+.input-icon--action{pointer-events:auto;cursor:pointer;background:none;border:none;padding:4px;color:var(--outline);display:inline-flex}
+.btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--primary);color:var(--on-primary);border:none;border-radius:12px;font-weight:700;cursor:pointer}
+.btn-primary:disabled{opacity:0.6;cursor:not-allowed}
