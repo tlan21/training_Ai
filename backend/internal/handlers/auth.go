@@ -1,7 +1,9 @@
 package handlers
 
 import (
+	"context"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 
@@ -11,39 +13,35 @@ import (
 // AuthHandlers — T2.2: register/login/refresh/logout + users/* (me, preferences, history, likes).
 
 type AuthHandlers struct {
-	authSvc    authService
-	userRepo   userRepo
-	sessionRepo sessionRepo
-	vectorStore vectorStoreI
-	categoryRepo categoryRepo
+	authSvc         authService
+	userRepo        userRepo
+	vectorStore     vectorStoreI
+	categoryRepo    categoryRepo
 	interactionRepo interactionRepo
 }
 
 type authService interface {
-	Register(ctx interface{}, username, email, password string) (*domain.User, string, string, error)
-	Login(ctx interface{}, email, password string) (*domain.User, string, string, error)
-	Refresh(ctx interface{}, rawRefresh string) (string, string, error)
-	Logout(ctx interface{}, rawRefresh string) error
+	Register(ctx context.Context, username, email, password string) (*domain.User, string, string, error)
+	Login(ctx context.Context, email, password string) (*domain.User, string, string, error)
+	Refresh(ctx context.Context, rawRefresh string) (string, string, error)
+	Logout(ctx context.Context, rawRefresh string) error
 }
 type userRepo interface {
-	Get(ctx interface{}, id string) (*domain.User, error)
-	UpdateProfile(ctx interface{}, id string, username *string) (*domain.User, error)
-	List(ctx interface{}, page, size int) ([]domain.User, int, error)
-	SetRole(ctx interface{}, id string, r domain.Role) (*domain.User, error)
+	Get(ctx context.Context, id string) (*domain.User, error)
+	UpdateProfile(ctx context.Context, id string, username *string) (*domain.User, error)
+	List(ctx context.Context, page, size int) ([]domain.User, int, error)
+	SetRole(ctx context.Context, id string, r domain.Role) (*domain.User, error)
 }
-type sessionRepo interface{}
 type vectorStoreI interface {
-	UpsertUser(ctx interface{}, userID string, vector []float32, tags []string) error
+	UpsertUser(ctx context.Context, userID string, vector []float32, tags []string) error
 }
 type categoryRepo interface {
-	List(ctx interface{}) ([]domain.Category, error)
+	List(ctx context.Context) ([]domain.Category, error)
 }
 type interactionRepo interface {
-	History(ctx interface{}, userID string, cursor *string, limit int) ([]domain.HistoryItem, *string, error)
-	Likes(ctx interface{}, userID string, cursor *string, limit int) ([]domain.Clip, *string, error)
+	History(ctx context.Context, userID string, cursor *string, limit int) ([]domain.HistoryItem, *string, error)
+	Likes(ctx context.Context, userID string, cursor *string, limit int) ([]domain.Clip, *string, error)
 }
-
-var _ = NewAuthHandlers // mark used; wired in cmd/gateway/main.go T2.2
 
 func NewAuthHandlers(a authService, u userRepo, vec vectorStoreI, cat categoryRepo, inter interactionRepo) *AuthHandlers {
 	return &AuthHandlers{authSvc: a, userRepo: u, vectorStore: vec, categoryRepo: cat, interactionRepo: inter}
@@ -108,6 +106,97 @@ func (h *AuthHandlers) Logout(c *gin.Context) {
 	c.Status(http.StatusNoContent)
 }
 
+func (h *AuthHandlers) GetMe(c *gin.Context) {
+	uid := c.GetString("user_id")
+	u, err := h.userRepo.Get(c.Request.Context(), uid)
+	if err != nil {
+		handleDomainErr(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, toUserMe(u, []string{}))
+}
+
+func (h *AuthHandlers) UpdateMe(c *gin.Context) {
+	uid := c.GetString("user_id")
+	var req struct {
+		Username *string `json:"username"`
+	}
+	if err := c.ShouldBindJSON(&req); err != nil {
+		ErrorEnvelope(c, http.StatusUnprocessableEntity, "VALIDATION_ERROR", err.Error())
+		return
+	}
+	u, err := h.userRepo.UpdateProfile(c.Request.Context(), uid, req.Username)
+	if err != nil {
+		handleDomainErr(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, toUserMe(u, []string{}))
+}
+
+func (h *AuthHandlers) UpdatePreferences(c *gin.Context) {
+	var req struct {
+		CategoryIDs []string `json:"category_ids" binding:"required"`
+	}
+	if err := c.ShouldBindJSON(&req); err != nil {
+		ErrorEnvelope(c, http.StatusUnprocessableEntity, "VALIDATION_ERROR", err.Error())
+		return
+	}
+	if len(req.CategoryIDs) < 3 {
+		ErrorEnvelope(c, http.StatusUnprocessableEntity, "VALIDATION_ERROR", "category_ids must have at least 3 items")
+		return
+	}
+	cats, err := h.categoryRepo.List(c.Request.Context())
+	if err != nil {
+		handleDomainErr(c, err)
+		return
+	}
+	catSet := map[string]bool{}
+	for _, cc := range cats {
+		catSet[cc.ID] = true
+		catSet[cc.Name] = true
+	}
+	for _, id := range req.CategoryIDs {
+		if !catSet[id] {
+			ErrorEnvelope(c, http.StatusUnprocessableEntity, "VALIDATION_ERROR", "unknown category: "+id)
+			return
+		}
+	}
+	uid := c.GetString("user_id")
+	vec := make([]float32, 128)
+	_ = h.vectorStore.UpsertUser(c.Request.Context(), uid, vec, req.CategoryIDs)
+	c.Status(http.StatusOK)
+}
+
+func (h *AuthHandlers) History(c *gin.Context) {
+	uid := c.GetString("user_id")
+	limit := parseLimit(c.Query("limit"), 10)
+	cursor := strPtr(c.Query("cursor"))
+	if c.Query("cursor") == "" {
+		cursor = nil
+	}
+	items, next, err := h.interactionRepo.History(c.Request.Context(), uid, cursor, limit)
+	if err != nil {
+		handleDomainErr(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"items": items, "next_cursor": next})
+}
+
+func (h *AuthHandlers) Likes(c *gin.Context) {
+	uid := c.GetString("user_id")
+	limit := parseLimit(c.Query("limit"), 10)
+	cursor := strPtr(c.Query("cursor"))
+	if c.Query("cursor") == "" {
+		cursor = nil
+	}
+	items, next, err := h.interactionRepo.Likes(c.Request.Context(), uid, cursor, limit)
+	if err != nil {
+		handleDomainErr(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"items": items, "next_cursor": next})
+}
+
 func handleDomainErr(c *gin.Context, err error) {
 	if de, ok := err.(*domain.DomainError); ok {
 		ErrorEnvelope(c, de.Status, de.Code, de.Message)
@@ -117,5 +206,24 @@ func handleDomainErr(c *gin.Context, err error) {
 }
 
 func toUserMe(u *domain.User, prefs []string) gin.H {
+	if prefs == nil {
+		prefs = []string{}
+	}
 	return gin.H{"id": u.ID, "username": u.Username, "email": u.Email, "role": string(u.Role), "preferences": prefs}
 }
+
+func parseLimit(s string, def int) int {
+	if s == "" {
+		return def
+	}
+	n, err := strconv.Atoi(s)
+	if err != nil || n <= 0 {
+		return def
+	}
+	if n > 50 {
+		return 50
+	}
+	return n
+}
+
+func strPtr(s string) *string { return &s }
