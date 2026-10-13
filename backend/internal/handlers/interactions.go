@@ -1,0 +1,56 @@
+package handlers
+
+import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+
+	"traning_ai/backend/internal/domain"
+	"traning_ai/backend/internal/ports"
+)
+
+type InteractionHandlers struct {
+	interactions ports.InteractionRepository
+}
+
+func NewInteractionHandlers(interactions ports.InteractionRepository) *InteractionHandlers {
+	return &InteractionHandlers{interactions: interactions}
+}
+
+// POST /api/interactions — {video_id, clip_id?, interaction_type, duration_watched?}
+func (h *InteractionHandlers) Create(c *gin.Context) {
+	var req struct {
+		VideoID         string  `json:"video_id" binding:"required"`
+		ClipID          *string `json:"clip_id"`
+		InteractionType string  `json:"interaction_type" binding:"required"`
+		DurationWatched *int    `json:"duration_watched"`
+	}
+	if err := c.ShouldBindJSON(&req); err != nil {
+		ErrorEnvelope(c, http.StatusUnprocessableEntity, "VALIDATION_ERROR", err.Error())
+		return
+	}
+	allowed := map[string]bool{"click": true, "watch_time": true, "like": true, "share": true, "skip": true, "save": true}
+	if !allowed[req.InteractionType] {
+		ErrorEnvelope(c, http.StatusUnprocessableEntity, "VALIDATION_ERROR", "invalid interaction_type")
+		return
+	}
+	if req.InteractionType == "watch_time" && req.DurationWatched != nil && *req.DurationWatched < 0 {
+		ErrorEnvelope(c, http.StatusUnprocessableEntity, "VALIDATION_ERROR", "duration_watched must be >=0")
+		return
+	}
+	uid := c.GetString("user_id")
+	dw := 0
+	if req.DurationWatched != nil {
+		dw = *req.DurationWatched
+	}
+	it := &domain.Interaction{
+		UserID: uid, VideoID: req.VideoID, ClipID: req.ClipID,
+		InteractionType: domain.InteractionType(req.InteractionType),
+		DurationWatched: dw,
+	}
+	if err := h.interactions.Add(c.Request.Context(), it); err != nil {
+		handleDomainErr(c, err)
+		return
+	}
+	c.Status(http.StatusCreated)
+}
