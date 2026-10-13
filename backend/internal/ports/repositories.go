@@ -37,8 +37,16 @@ type UserRepository interface {
 	Get(ctx context.Context, id string) (*domain.User, error)
 	GetByEmail(ctx context.Context, email string) (*domain.User, error)
 	UpdateProfile(ctx context.Context, id string, username *string) (*domain.User, error)
+	UpdatePassword(ctx context.Context, id string, newHash string) error
 	SetRole(ctx context.Context, id string, r domain.Role) (*domain.User, error)
 	List(ctx context.Context, page, size int) ([]domain.User, int, error)
+}
+
+type PasswordResetRepository interface {
+	Create(ctx context.Context, userID, tokenHash string, expiresAt time.Time) (string, error)
+	GetByHash(ctx context.Context, tokenHash string) (*domain.PasswordReset, error)
+	Delete(ctx context.Context, id string) error
+	DeleteByUser(ctx context.Context, userID string) error
 }
 
 type SessionRepository interface {

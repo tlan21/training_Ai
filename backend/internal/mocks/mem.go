@@ -279,6 +279,16 @@ func (r *UserRepoMem) UpdateProfile(_ context.Context, id string, username *stri
 	cp := *v
 	return &cp, nil
 }
+func (r *UserRepoMem) UpdatePassword(_ context.Context, id string, newHash string) error {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	v, ok := r.M[id]
+	if !ok {
+		return domain.ErrUserNotFound
+	}
+	v.PasswordHash = newHash
+	return nil
+}
 func (r *UserRepoMem) SetRole(_ context.Context, id string, role domain.Role) (*domain.User, error) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
@@ -340,6 +350,49 @@ func (r *SessionRepoMem) Delete(_ context.Context, id string) error {
 	return nil
 }
 func (r *SessionRepoMem) DeleteByUser(_ context.Context, uid string) error {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	for k, v := range r.M {
+		if v.UserID == uid {
+			delete(r.M, k)
+		}
+	}
+	return nil
+}
+
+type PasswordResetRepoMem struct {
+	mu sync.Mutex
+	M  map[string]*domain.PasswordReset
+}
+
+func NewPasswordResetRepoMem() *PasswordResetRepoMem {
+	return &PasswordResetRepoMem{M: map[string]*domain.PasswordReset{}}
+}
+func (r *PasswordResetRepoMem) Create(_ context.Context, uid, hash string, exp time.Time) (string, error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	id := "rst_" + hash[:8]
+	r.M[id] = &domain.PasswordReset{ID: id, UserID: uid, TokenHash: hash, ExpiresAt: exp, CreatedAt: time.Now()}
+	return id, nil
+}
+func (r *PasswordResetRepoMem) GetByHash(_ context.Context, hash string) (*domain.PasswordReset, error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	for _, v := range r.M {
+		if v.TokenHash == hash {
+			cp := *v
+			return &cp, nil
+		}
+	}
+	return nil, domain.ErrNotFound
+}
+func (r *PasswordResetRepoMem) Delete(_ context.Context, id string) error {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	delete(r.M, id)
+	return nil
+}
+func (r *PasswordResetRepoMem) DeleteByUser(_ context.Context, uid string) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	for k, v := range r.M {

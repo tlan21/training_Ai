@@ -25,6 +25,8 @@ type authService interface {
 	Login(ctx context.Context, email, password string) (*domain.User, string, string, error)
 	Refresh(ctx context.Context, rawRefresh string) (string, string, error)
 	Logout(ctx context.Context, rawRefresh string) error
+	ForgotPassword(ctx context.Context, email string) (string, error)
+	ResetPassword(ctx context.Context, token, newPassword string) error
 }
 type userRepo interface {
 	Get(ctx context.Context, id string) (*domain.User, error)
@@ -104,6 +106,42 @@ func (h *AuthHandlers) Logout(c *gin.Context) {
 	_ = h.authSvc.Logout(c.Request.Context(), raw)
 	c.SetCookie("refresh", "", -1, "/", "", false, true)
 	c.Status(http.StatusNoContent)
+}
+
+func (h *AuthHandlers) ForgotPassword(c *gin.Context) {
+	var req struct {
+		Email string `json:"email" binding:"required"`
+	}
+	if err := c.ShouldBindJSON(&req); err != nil {
+		ErrorEnvelope(c, http.StatusUnprocessableEntity, "VALIDATION_ERROR", err.Error())
+		return
+	}
+	token, err := h.authSvc.ForgotPassword(c.Request.Context(), req.Email)
+	if err != nil {
+		handleDomainErr(c, err)
+		return
+	}
+	resp := gin.H{"message": "Nếu email tồn tại, mã đặt lại đã được tạo"}
+	if token != "" {
+		resp["reset_token"] = token
+	}
+	c.JSON(http.StatusOK, resp)
+}
+
+func (h *AuthHandlers) ResetPassword(c *gin.Context) {
+	var req struct {
+		Token       string `json:"token" binding:"required"`
+		NewPassword string `json:"new_password" binding:"required,min=8"`
+	}
+	if err := c.ShouldBindJSON(&req); err != nil {
+		ErrorEnvelope(c, http.StatusBadRequest, "VALIDATION_ERROR", err.Error())
+		return
+	}
+	if err := h.authSvc.ResetPassword(c.Request.Context(), req.Token, req.NewPassword); err != nil {
+		handleDomainErr(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "Đã đặt lại mật khẩu"})
 }
 
 func (h *AuthHandlers) GetMe(c *gin.Context) {

@@ -50,7 +50,8 @@ func main() {
 		})
 	}
 
-	authSvc := auth.New(userRepo, sessionRepo, jwtSvc)
+	resetRepo := mocks.NewPasswordResetRepoMem()
+	authSvc := auth.NewWithResets(userRepo, sessionRepo, resetRepo, jwtSvc)
 	authH := handlers.NewAuthHandlers(authSvc, userRepo, vectorStore, categoryRepo, interactionRepo)
 	contentH := handlers.NewContentHandlers(videoRepo, clipRepo, categoryRepo, interactionRepo, analysisStore, subtitleStore, cache, aiClient, objectStorage)
 	searchH := handlers.NewSearchHandlers(videoRepo, subtitleStore, cache, aiClient)
@@ -83,6 +84,8 @@ func main() {
 	api.POST("/auth/register", authH.Register)
 	api.POST("/auth/login", authH.Login)
 	api.POST("/auth/refresh", authH.Refresh)
+	api.POST("/auth/forgot-password", authH.ForgotPassword)
+	api.POST("/auth/reset-password", authH.ResetPassword)
 
 	// --- protected (JWT) ---
 	protected := api.Group("")

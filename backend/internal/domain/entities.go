@@ -23,6 +23,14 @@ type Session struct {
 	CreatedAt        time.Time
 }
 
+type PasswordReset struct {
+	ID        string
+	UserID    string
+	TokenHash string
+	ExpiresAt time.Time
+	CreatedAt time.Time
+}
+
 type Video struct {
 	ID              string
 	Title           string

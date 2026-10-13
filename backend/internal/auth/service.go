@@ -14,18 +14,24 @@ import (
 )
 
 const (
-	accessTTL  = 15 * time.Minute
-	refreshTTL = 7 * 24 * time.Hour
+	accessTTL       = 15 * time.Minute
+	refreshTTL      = 7 * 24 * time.Hour
+	resetTTL        = 30 * time.Minute
 )
 
 type Service struct {
 	users    ports.UserRepository
 	sessions ports.SessionRepository
+	resets   ports.PasswordResetRepository
 	jwt      *JWT
 }
 
 func New(users ports.UserRepository, sessions ports.SessionRepository, jwt *JWT) *Service {
 	return &Service{users: users, sessions: sessions, jwt: jwt}
+}
+
+func NewWithResets(users ports.UserRepository, sessions ports.SessionRepository, resets ports.PasswordResetRepository, jwt *JWT) *Service {
+	return &Service{users: users, sessions: sessions, resets: resets, jwt: jwt}
 }
 
 func (s *Service) Register(ctx context.Context, username, email, password string) (*domain.User, string, string, error) {
@@ -85,6 +91,45 @@ func (s *Service) Logout(ctx context.Context, rawRefresh string) error {
 		return nil
 	}
 	return s.sessions.Delete(ctx, sess.ID)
+}
+
+func (s *Service) ForgotPassword(ctx context.Context, email string) (string, error) {
+	u, err := s.users.GetByEmail(ctx, email)
+	if err != nil {
+		// không lộ email tồn tại — trả token rỗng, caller vẫn 200
+		return "", nil
+	}
+	raw := randomToken()
+	h := hashRefresh(raw)
+	if s.resets != nil {
+		_, _ = s.resets.Create(ctx, u.ID, h, time.Now().Add(resetTTL))
+	}
+	return raw, nil
+}
+
+func (s *Service) ResetPassword(ctx context.Context, rawToken, newPassword string) error {
+	if len(newPassword) < 8 {
+		return domain.NewError("VALIDATION_ERROR", "new_password must be at least 8 chars", 400)
+	}
+	if s.resets == nil {
+		return domain.NewError("UNAUTHORIZED", "Invalid or expired reset token", 401)
+	}
+	h := hashRefresh(rawToken)
+	rec, err := s.resets.GetByHash(ctx, h)
+	if err != nil {
+		return domain.NewError("UNAUTHORIZED", "Invalid or expired reset token", 401)
+	}
+	if time.Now().After(rec.ExpiresAt) {
+		_ = s.resets.Delete(ctx, rec.ID)
+		return domain.NewError("UNAUTHORIZED", "Reset token expired", 401)
+	}
+	hash, _ := bcrypt.GenerateFromPassword([]byte(newPassword), 12)
+	if err := s.users.UpdatePassword(ctx, rec.UserID, string(hash)); err != nil {
+		return err
+	}
+	_ = s.resets.Delete(ctx, rec.ID)
+	_ = s.sessions.DeleteByUser(ctx, rec.UserID)
+	return nil
 }
 
 func (s *Service) issueTokens(ctx context.Context, u *domain.User) (*domain.User, string, string, error) {

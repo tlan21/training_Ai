@@ -104,6 +104,52 @@ paths:
         "204": { description: Đã đăng xuất }
         "401": { $ref: "#/components/responses/Unauthorized" }
 
+  /api/auth/forgot-password:
+    post:
+      tags: [auth]
+      summary: Yêu cầu đặt lại mật khẩu (gửi token qua email — dev trả token)
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email]
+              properties:
+                email: { type: string, format: email }
+      responses:
+        "200":
+          description: Nếu email tồn tại, token reset đã tạo (dev trả token để client test không cần email)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: { type: string }
+                  reset_token: { type: string, description: "Chỉ trả khi dev (không gửi email thật)" }
+        "422": { $ref: "#/components/responses/ValidationError" }
+
+  /api/auth/reset-password:
+    post:
+      tags: [auth]
+      summary: Đặt lại mật khẩu bằng token từ forgot-password
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [token, new_password]
+              properties:
+                token: { type: string }
+                new_password: { type: string, format: password, minLength: 8 }
+      responses:
+        "200": { description: Đã đặt lại mật khẩu }
+        "400": { $ref: "#/components/responses/ValidationError" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
   # ---------------- 2.1 Users ----------------
   /api/users/me:
     get:
