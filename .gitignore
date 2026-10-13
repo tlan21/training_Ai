@@ -18,6 +18,9 @@ data/labels/
 
 # Secrets
 .env
+.env.local
+cms/.env
+client/.env.local
 kaggle.json
 
 # NDA SoccerNet: chứa password video + toàn văn NDA. NDA cấm chia sẻ dữ liệu cho người khác,
