@@ -1,0 +1,24 @@
+:root {
+  --bg-base: #0f1115;
+  --bg-surface: #171a21;
+  --bg-surface-2: #1f242e;
+  --border: #2a303c;
+  --primary: #3b82f6;
+  --primary-hover: #2563eb;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --info: #38bdf8;
+  --text-primary: #e5e7eb;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: Inter, system-ui, sans-serif;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.5;
+}
+a { color: inherit; text-decoration: none; }

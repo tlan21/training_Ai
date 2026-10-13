@@ -28,6 +28,12 @@ NDA.md
 # Snapshot/log playwright MCP — Kaggle tải kaggle.json thẳng vào đây, không được commit
 .playwright-mcp/
 
+# CMS / Frontend
+cms/dist/
+cms/node_modules/
+client/dist/
+client/node_modules/
+
 # OS
 Thumbs.db
 .DS_Store
