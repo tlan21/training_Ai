@@ -4,6 +4,14 @@ import { Sidebar } from "./components/common/Sidebar";
 import { TopBar } from "./components/common/TopBar";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
+import QueuePage from "./pages/QueuePage";
+import HighlightPage from "./pages/HighlightPage";
+import SubtitlesPage from "./pages/SubtitlesPage";
+import VideosPage from "./pages/VideosPage";
+import ClipsPage from "./pages/ClipsPage";
+import CategoriesPage from "./pages/CategoriesPage";
+import UsersPage from "./pages/UsersPage";
+import SettingsPage from "./pages/SettingsPage";
 import Placeholder from "./pages/Placeholder";
 
 function Guard({ allow, children }: { allow?: string[]; children: React.ReactNode }) {
@@ -32,14 +40,14 @@ export const router = createBrowserRouter([
     children: [
       { path: "/", element: <Navigate to="/dashboard" replace /> },
       { path: "/dashboard", element: <DashboardPage /> },
-      { path: "/videos", element: <Placeholder title="Danh sách Video" /> },
-      { path: "/queue", element: <Placeholder title="Hàng đợi xử lý" /> },
-      { path: "/highlight", element: <Placeholder title="Highlight AI" /> },
-      { path: "/categories", element: <Placeholder title="Danh mục" /> },
-      { path: "/subtitles", element: <Placeholder title="Phụ đề & Tóm tắt" /> },
-      { path: "/published", element: <Placeholder title="Nội dung đã xuất bản" /> },
-      { path: "/settings", element: <Placeholder title="Cài đặt" /> },
-      { path: "/users", element: <Guard allow={["admin"]}><Placeholder title="Người dùng" /></Guard> },
+      { path: "/videos", element: <VideosPage /> },
+      { path: "/queue", element: <QueuePage /> },
+      { path: "/highlight", element: <HighlightPage /> },
+      { path: "/categories", element: <CategoriesPage /> },
+      { path: "/subtitles", element: <SubtitlesPage /> },
+      { path: "/published", element: <ClipsPage /> },
+      { path: "/settings", element: <SettingsPage /> },
+      { path: "/users", element: <Guard allow={["admin"]}><UsersPage /></Guard> },
     ],
   },
 ]);
