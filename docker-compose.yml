@@ -202,6 +202,14 @@ services:
     ports: ["5173:80"]
     depends_on:
       gateway: { condition: service_healthy }
+  client:
+    build: { context: ., dockerfile: client/Dockerfile }
+    image: video-ai-client
+    ports: ["3000:3000"]
+    environment:
+      NEXT_PUBLIC_API_BASE: http://localhost:8000
+    depends_on:
+      gateway: { condition: service_healthy }
 
 volumes:
   pg_data:

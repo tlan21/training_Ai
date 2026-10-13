@@ -31,8 +31,9 @@ NDA.md
 # CMS / Frontend
 cms/dist/
 cms/node_modules/
-client/dist/
+client/.next/
 client/node_modules/
+client/dist/
 
 # OS
 Thumbs.db
