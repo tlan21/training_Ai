@@ -1,11 +1,11 @@
 import { useEffect, useRef } from "react";
-export function scoreToColor(score: number): string {
-  return score > 75 ? "var(--danger)" : "var(--primary)";
+export function scoreToColor(score: number, threshold = 75): string {
+  return score > threshold ? "var(--danger)" : "var(--primary)";
 }
 export function xToSecond(x: number, width: number, duration: number): number {
   return Math.round((x / width) * duration);
 }
-export function HeatmapTimeline({ scores, duration, currentTime, onSeek, height = 80 }: { scores: { second: number; score: number }[]; duration: number; currentTime: number; onSeek: (s: number) => void; height?: number }) {
+export function HeatmapTimeline({ scores, duration, currentTime, onSeek, height = 80, threshold = 75 }: { scores: { second: number; score: number }[]; duration: number; currentTime: number; onSeek: (s: number) => void; height?: number; threshold?: number }) {
   const ref = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const c = ref.current;
@@ -44,9 +44,9 @@ export function HeatmapTimeline({ scores, duration, currentTime, onSeek, height 
     ctx.strokeStyle = "var(--primary)";
     ctx.lineWidth = 1.5;
     ctx.stroke();
-    // danger segments
+    // danger segments — use settings threshold
     scores.forEach((s) => {
-      if (s.score > 75) {
+      if (s.score > threshold) {
         const x = (s.second / duration) * W;
         const y = H - (s.score / 100) * H;
         ctx.fillStyle = "var(--danger)";
@@ -57,7 +57,7 @@ export function HeatmapTimeline({ scores, duration, currentTime, onSeek, height 
     const mx = (currentTime / duration) * W;
     ctx.fillStyle = "var(--text-primary)";
     ctx.fillRect(mx, 0, 2, H);
-  }, [scores, duration, currentTime, height]);
+  }, [scores, duration, currentTime, height, threshold]);
   return (
     <canvas
       ref={ref}

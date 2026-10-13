@@ -1,8 +1,9 @@
 import { useRef, useState } from "react";
-import { useCmsVideo, useCmsAnalysis, useCreateClip, usePublishClip } from "../hooks/useCms";
+import { useCmsVideo, useCmsAnalysis, useCreateClip, usePublishClip, useSettings } from "../hooks/useCms";
 import { VideoPlayer, PlayerHandle } from "../components/player/VideoPlayer";
 import { HeatmapTimeline } from "../components/heatmap/HeatmapTimeline";
 import { useReviewStore } from "../stores/reviewStore";
+import { useToast } from "../components/common/Toast";
 
 export default function HighlightPage() {
   const [videoId, setVideoId] = useState("vid_stub01");
@@ -11,6 +12,9 @@ export default function HighlightPage() {
   const createClip = useCreateClip();
   const publishClip = usePublishClip();
   const review = useReviewStore();
+  const toast = useToast();
+  const settings = useSettings();
+  const threshold = settings.data?.highlight_threshold ?? 75;
   const playerRef = useRef<PlayerHandle>(null);
   const scores: { second: number; score: number }[] = analysis.data?.timeline_scores ?? [];
   const aiClips: any[] = analysis.data?.ai_generated_clips ?? [];
@@ -28,17 +32,18 @@ export default function HighlightPage() {
         <div>
           <VideoPlayer ref={playerRef} src={video.data?.raw_file_path ?? ""} onTimeUpdate={(t) => review.setCurrentTime(t)} />
           <div style={{ marginTop: 12 }}>
-            <HeatmapTimeline scores={scores} duration={duration} currentTime={review.currentTime} onSeek={(s) => playerRef.current?.seekTo(s)} />
+            <HeatmapTimeline scores={scores} duration={duration} currentTime={review.currentTime} onSeek={(s) => playerRef.current?.seekTo(s)} threshold={threshold} />
+            <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 4 }}>Ngưỡng highlight: {threshold} — vùng đỏ = &gt;{threshold}</div>
           </div>
           <div style={{ display: "flex", gap: 8, marginTop: 12, alignItems: "center" }}>
             <label>Start <input className="input" type="number" value={review.editing.start} onChange={(e) => review.setStart(Number(e.target.value))} style={{ width: 90 }} /></label>
             <label>End <input className="input" type="number" value={review.editing.end} onChange={(e) => review.setEnd(Number(e.target.value))} style={{ width: 90 }} /></label>
             <input className="input" placeholder="Tiêu đề" value={review.editing.title} onChange={(e) => review.setTitle(e.target.value)} style={{ flex: 1 }} />
             <button className="btn-primary" onClick={async () => {
-              const r: any = await createClip.mutateAsync({ video_id: videoId, title: review.editing.title || "Highlight", start_time: review.editing.start, end_time: review.editing.end });
-              setClipId(r.id ?? r.clip?.id ?? null);
+              try { const r: any = await createClip.mutateAsync({ video_id: videoId, title: review.editing.title || "Highlight", start_time: review.editing.start, end_time: review.editing.end }); setClipId(r.id ?? r.clip?.id ?? null); toast.ok("Đã tạo clip — đang cắt"); }
+              catch (e: any) { toast.err(e?.apiError?.message ?? e.message); }
             }}>Export Clip</button>
-            {clipId && <button className="btn-primary" onClick={() => publishClip.mutate(clipId)}>Publish</button>}
+            {clipId && <button className="btn-primary" onClick={() => publishClip.mutate(clipId, { onSuccess: () => toast.ok("Đã xuất bản"), onError: (e: any) => toast.err(e?.apiError?.message ?? e.message) })}>Publish</button>}
           </div>
         </div>
         <div className="card" style={{ padding: 12, height: "fit-content" }}>

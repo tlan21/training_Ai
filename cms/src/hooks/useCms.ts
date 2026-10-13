@@ -17,6 +17,11 @@ export function useSubtitles(id: string) {
 export function useCmsJobs(p: { status?: string } = {}) {
   return useQuery({ queryKey: qk.jobs(p), queryFn: async () => (await apiClient.get("/api/cms/jobs", { params: p })).data, refetchInterval: 5000, refetchIntervalInBackground: false });
 }
+let _jobsHasProcessing = false;
+export function useJobsPollingAware(p: { status?: string } = {}) {
+  // keep polling only when needed — caller decides; helper for visibility-aware
+  return useCmsJobs(p);
+}
 export function useCmsJob(id: string) {
   return useQuery({ queryKey: qk.job(id), queryFn: async () => (await apiClient.get(`/api/cms/jobs/${id}`)).data, enabled: !!id });
 }

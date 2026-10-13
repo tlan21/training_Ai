@@ -44,5 +44,6 @@ export function useSystemHealth() {
     queryKey: qk.health(),
     queryFn: async () => (await apiClient.get("/api/cms/system/health")).data,
     refetchInterval: 5000,
+    refetchIntervalInBackground: false,
   });
 }

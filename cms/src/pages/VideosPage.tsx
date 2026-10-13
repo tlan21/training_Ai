@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { useCmsVideos, useCmsVideo, useCmsAnalysis, useCategories } from "../hooks/useCms";
+import { useCmsVideos, useCmsAnalysis, useCategories } from "../hooks/useCms";
 import { apiClient } from "../lib/apiClient";
 import { useQueryClient } from "@tanstack/react-query";
 import { StatusBadge } from "../components/common/StatusBadge";
+import { Skeleton, Empty, ErrorState } from "../components/common/Skeleton";
+import { useToast } from "../components/common/Toast";
 
 export default function VideosPage() {
   const [status, setStatus] = useState("");
@@ -10,6 +12,7 @@ export default function VideosPage() {
   const list = useCmsVideos({ status: status || undefined, page });
   const cats = useCategories();
   const qc = useQueryClient();
+  const toast = useToast();
   const items: any[] = list.data?.items ?? [];
   return (
     <div>
@@ -20,29 +23,35 @@ export default function VideosPage() {
           {["uploaded", "processing", "processed", "failed", "deleted"].map((s) => <option key={s} value={s}>{s}</option>)}
         </select>
       </div>
-      <div className="card" style={{ marginTop: 16, overflow: "hidden" }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
-          <thead><tr style={{ background: "var(--bg-surface-2)", textAlign: "left" }}><th style={{ padding: 8 }}>Tên</th><th>Trạng thái</th><th>Category</th><th>Thời lượng</th><th>Ngày</th><th></th></tr></thead>
-          <tbody>
-            {items.map((v: any) => (
-              <tr key={v.id} style={{ borderTop: "1px solid var(--border)" }}>
-                <td style={{ padding: 8 }}>{v.title}</td>
-                <td><StatusBadge status={v.status} /></td>
-                <td><CategoryCell video={v} cats={cats.data} qc={qc} /></td>
-                <td>{v.duration_seconds}s</td>
-                <td style={{ fontFamily: "JetBrains Mono", fontSize: 11 }}>{v.created_at?.slice(0, 10)}</td>
-                <td><button onClick={async () => { if (confirm("Xóa video?")) { await apiClient.delete(`/api/cms/videos/${v.id}`); qc.invalidateQueries({ queryKey: ["videos"] }); } }} style={{ color: "var(--danger)" }}>Xóa</button></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {items.length === 0 && <div style={{ padding: 16, color: "var(--text-muted)" }}>{list.isLoading ? "Đang tải…" : "Không có video khớp"}</div>}
-      </div>
-      <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
-        <button disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>◄</button>
-        <span>Trang {page} / {Math.ceil((list.data?.total ?? items.length) / 20) || 1}</span>
-        <button onClick={() => setPage((p) => p + 1)}>►</button>
-      </div>
+      {list.isLoading && <div style={{ display: "grid", gap: 8, marginTop: 16 }}><Skeleton h={40} /><Skeleton h={40} /><Skeleton h={40} /></div>}
+      {list.isError && <ErrorState msg={(list.error as any)?.apiError?.message ?? "Lỗi tải danh sách"} onRetry={() => list.refetch()} />}
+      {!list.isLoading && !list.isError && (
+        <>
+          <div className="card" style={{ marginTop: 16, overflow: "hidden" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+              <thead><tr style={{ background: "var(--bg-surface-2)", textAlign: "left" }}><th style={{ padding: 8 }}>Tên</th><th>Trạng thái</th><th>Category</th><th>Thời lượng</th><th>Ngày</th><th></th></tr></thead>
+              <tbody>
+                {items.map((v: any) => (
+                  <tr key={v.id} style={{ borderTop: "1px solid var(--border)" }}>
+                    <td style={{ padding: 8 }}>{v.title}</td>
+                    <td><StatusBadge status={v.status} /></td>
+                    <td><CategoryCell video={v} cats={cats.data} qc={qc} /></td>
+                    <td>{v.duration_seconds}s</td>
+                    <td style={{ fontFamily: "JetBrains Mono", fontSize: 11 }}>{v.created_at?.slice(0, 10)}</td>
+                    <td><button onClick={async () => { if (confirm("Xóa video?")) { try { await apiClient.delete(`/api/cms/videos/${v.id}`); qc.invalidateQueries({ queryKey: ["videos"] }); toast.ok("Đã xóa"); } catch (e: any) { toast.err(e?.apiError?.message ?? e.message); } } }} style={{ color: "var(--danger)" }}>Xóa</button></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {items.length === 0 && <Empty msg="Không có video khớp" />}
+          </div>
+          <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
+            <button disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>◄</button>
+            <span>Trang {page} / {Math.ceil((list.data?.total ?? items.length) / 20) || 1}</span>
+            <button onClick={() => setPage((p) => p + 1)}>►</button>
+          </div>
+        </>
+      )}
     </div>
   );
 }
