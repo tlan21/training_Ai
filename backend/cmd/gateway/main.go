@@ -6,9 +6,11 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 
 	"traning_ai/backend/internal/auth"
 	"traning_ai/backend/internal/config"
+	"traning_ai/backend/internal/domain"
 	"traning_ai/backend/internal/gen"
 	"traning_ai/backend/internal/handlers"
 	"traning_ai/backend/internal/handlers/cms"
@@ -38,6 +40,14 @@ func main() {
 	// Seed vài category để PUT /preferences ≥3 pass ngay
 	for _, name := range []string{"Bóng đá", "Thể thao", "Ca nhạc", "Tin tức", "Game", "Phim"} {
 		_, _ = categoryRepo.Create(context.Background(), name)
+	}
+	// Seed admin (mem-mock không đọc PG seed) — trùng với infra/postgres/init/002_seed.sql
+	{
+		hash, _ := bcrypt.GenerateFromPassword([]byte("admin123"), bcrypt.DefaultCost)
+		_ = userRepo.Create(context.Background(), &domain.User{
+			ID: "usr_admin", Username: "admin", Email: "admin@local",
+			PasswordHash: string(hash), Role: domain.RoleAdmin,
+		})
 	}
 
 	authSvc := auth.New(userRepo, sessionRepo, jwtSvc)

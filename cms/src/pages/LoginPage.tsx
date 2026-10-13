@@ -4,7 +4,7 @@ import { useLogin } from "../hooks/useAuth";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("admin@local");
-  const [password, setPassword] = useState("123456");
+  const [password, setPassword] = useState("admin123");
   const nav = useNavigate();
   const m = useLogin();
   return (
