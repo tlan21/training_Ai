@@ -7,6 +7,7 @@ import { useAuthStore } from "@/stores/authStore";
 export default function LoginPage() {
   const [email, setEmail] = useState("client@test.local");
   const [password, setPassword] = useState("password123");
+  const [show, setShow] = useState(false);
   const [err, setErr] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -23,15 +24,47 @@ export default function LoginPage() {
     finally { setLoading(false); }
   };
   return (
-    <div style={{ minHeight: "100vh", display: "grid", placeItems: "center", padding: 16, background: "var(--bg-base)" }}>
-      <div style={{ width: "100%", maxWidth: 360, display: "grid", gap: 16 }}>
-        <div style={{ textAlign: "center" }}><div style={{ fontSize: 28, fontWeight: 800 }}>VidsAI</div><div style={{ color: "var(--text-secondary)", fontSize: 13 }}>Xem highlight bằng AI</div></div>
-        <input style={{ background: "var(--bg-surface-2)", border: "1px solid var(--border)", borderRadius: 8, padding: 12, color: "var(--text-primary)", width: "100%" }} placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <input style={{ background: "var(--bg-surface-2)", border: "1px solid var(--border)", borderRadius: 8, padding: 12, color: "var(--text-primary)", width: "100%" }} type="password" placeholder="Mật khẩu" value={password} onChange={(e) => setPassword(e.target.value)} onKeyDown={(e) => e.key === "Enter" && submit()} />
-        {err && <div style={{ background: "#450a0a", color: "#fecaca", padding: 10, borderRadius: 8, fontSize: 13 }}>{err}</div>}
-        <button onClick={submit} disabled={loading} style={{ background: "var(--accent)", color: "white", padding: 12, borderRadius: 8, border: "none", fontWeight: 700, width: "100%" }}>{loading ? "Đang xử lý…" : "Đăng nhập"}</button>
-        <div style={{ textAlign: "center", fontSize: 13, color: "var(--text-secondary)" }}>Chưa có tài khoản? <Link href="/register" style={{ color: "var(--accent)" }}>Đăng ký</Link></div>
-      </div>
+    <div style={{ minHeight: "100vh", background: "var(--background)", padding: "0 16px", display: "flex", flexDirection: "column" }}>
+      <div style={{ position: "fixed", top: -96, left: -96, width: 256, height: 256, background: "rgba(99,14,212,0.08)", borderRadius: 9999, filter: "blur(40px)", pointerEvents: "none" }} />
+      <header style={{ padding: "80px 0 48px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <div style={{ width: 64, height: 64, background: "var(--primary-container)", borderRadius: 16, display: "grid", placeItems: "center", marginBottom: 16, boxShadow: "0 8px 24px rgba(99,14,212,0.2)" }}>
+          <span className="material-symbols-outlined" style={{ fontSize: 32, color: "var(--on-primary-container)", fontVariationSettings: "'FILL' 1" }}>movie_filter</span>
+        </div>
+        <div style={{ fontSize: 24, fontWeight: 800, color: "var(--primary)" }}>VidsAI</div>
+        <div style={{ fontSize: 13, color: "var(--on-surface-variant)", marginTop: 4 }}>Trí tuệ nhân tạo cho video của bạn</div>
+      </header>
+      <section style={{ maxWidth: 360, width: "100%", margin: "0 auto", display: "grid", gap: 16 }}>
+        <div style={{ display: "grid", gap: 4 }}>
+          <label style={{ fontSize: 11, fontWeight: 600, color: "var(--on-surface-variant)", marginLeft: 4 }}>Email hoặc Số điện thoại</label>
+          <div style={{ position: "relative" }}>
+            <span className="material-symbols-outlined" style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", color: "var(--outline)", fontSize: 20 }}>person</span>
+            <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@example.com" style={{ width: "100%", height: 56, paddingLeft: 44, paddingRight: 12, background: "var(--surface-container-lowest)", border: "1px solid var(--outline-variant)", borderRadius: 12, fontSize: 15, outline: "none" }} />
+          </div>
+        </div>
+        <div style={{ display: "grid", gap: 4 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", padding: "0 4px" }}>
+            <label style={{ fontSize: 11, fontWeight: 600, color: "var(--on-surface-variant)" }}>Mật khẩu</label>
+            <span style={{ fontSize: 11, color: "var(--primary)", cursor: "pointer" }}>Quên mật khẩu?</span>
+          </div>
+          <div style={{ position: "relative" }}>
+            <span className="material-symbols-outlined" style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", color: "var(--outline)", fontSize: 20 }}>lock</span>
+            <input type={show ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} onKeyDown={(e) => e.key === "Enter" && submit()} placeholder="••••••••" style={{ width: "100%", height: 56, paddingLeft: 44, paddingRight: 44, background: "var(--surface-container-lowest)", border: "1px solid var(--outline-variant)", borderRadius: 12, fontSize: 15, outline: "none" }} />
+            <button type="button" onClick={() => setShow((v) => !v)} style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "var(--outline)" }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 20 }}>{show ? "visibility_off" : "visibility"}</span>
+            </button>
+          </div>
+        </div>
+        {err && <div style={{ background: "var(--error-container)", color: "var(--on-error-container)", padding: 10, borderRadius: 8, fontSize: 13 }}>{err}</div>}
+        <button onClick={submit} disabled={loading} style={{ width: "100%", height: 56, background: "var(--primary)", color: "var(--on-primary)", borderRadius: 12, border: "none", fontWeight: 700, fontSize: 15, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+          {loading ? "Đang xử lý…" : <>Đăng nhập <span className="material-symbols-outlined" style={{ fontSize: 18 }}>arrow_forward</span></>}
+        </button>
+      </section>
+      <footer style={{ padding: "40px 0 24px", textAlign: "center" }}>
+        <div style={{ fontSize: 14, color: "var(--on-surface-variant)" }}>Chưa có tài khoản? <Link href="/register" style={{ color: "var(--primary)", fontWeight: 700 }}>Đăng ký ngay</Link></div>
+        <div style={{ marginTop: 20, display: "flex", gap: 16, justifyContent: "center", fontSize: 11, opacity: 0.6 }}>
+          <a href="#">Điều khoản</a><a href="#">Bảo mật</a><a href="#">Trợ giúp</a>
+        </div>
+      </footer>
     </div>
   );
 }
