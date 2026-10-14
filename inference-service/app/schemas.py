@@ -41,8 +41,8 @@ class CompletionResponse(BaseModel):
 class SearchRequest(BaseModel):
     model: str = "primitive-siamese-vit"
     image: str = Field(..., description="data URI base64 hoặc path")
-    top_k: int = 5
-    threshold: float = 0.75
+    top_k: int = Field(5, ge=1, le=100)
+    threshold: float = Field(0.75, ge=0, le=1)
 
 
 class SearchResult(BaseModel):

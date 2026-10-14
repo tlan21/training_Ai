@@ -1,5 +1,11 @@
 import axios from "axios";
 import { useAuthStore } from "../stores/authStore";
+import type { components } from "../api-types";
+
+export function errorMessage(error: unknown): string {
+  if (axios.isAxiosError<components["schemas"]["Error"]>(error)) return error.response?.data?.error?.message ?? error.message;
+  return error instanceof Error ? error.message : "Không thực hiện được thao tác";
+}
 
 export const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE || "",
@@ -19,7 +25,7 @@ apiClient.interceptors.response.use(
   (r) => r,
   async (err) => {
     const orig = err.config;
-    if (err.response?.status === 401 && !orig._retry) {
+    if (err.response?.status === 401 && orig && !orig._retry && !orig.url?.startsWith("/api/auth/")) {
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           queue.push((t) => {

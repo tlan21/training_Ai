@@ -1,6 +1,7 @@
 package cms
 
 import (
+	"math"
 	"net/http"
 	"time"
 
@@ -12,13 +13,15 @@ import (
 )
 
 type ClipHandlers struct {
-	clips  ports.ClipRepository
-	videos ports.VideoRepository
-	bus    ports.EventBus
+	clips    ports.ClipRepository
+	videos   ports.VideoRepository
+	bus      ports.EventBus
+	cache    ports.Cache
+	analyses ports.AnalysisStore
 }
 
-func NewClipHandlers(clips ports.ClipRepository, videos ports.VideoRepository, bus ports.EventBus) *ClipHandlers {
-	return &ClipHandlers{clips: clips, videos: videos, bus: bus}
+func NewClipHandlers(clips ports.ClipRepository, videos ports.VideoRepository, bus ports.EventBus, cache ports.Cache, analyses ports.AnalysisStore) *ClipHandlers {
+	return &ClipHandlers{clips: clips, videos: videos, bus: bus, cache: cache, analyses: analyses}
 }
 
 // POST /api/cms/clips — {video_id,title,start_time,end_time} → draft→processing + Kafka clip.cut.requested
@@ -33,13 +36,17 @@ func (h *ClipHandlers) Create(c *gin.Context) {
 		handlers.ErrorEnvelope(c, http.StatusUnprocessableEntity, "VALIDATION_ERROR", err.Error())
 		return
 	}
-	if req.EndTime <= req.StartTime {
+	if req.StartTime < 0 || req.EndTime <= req.StartTime {
 		handlers.ErrorEnvelope(c, http.StatusUnprocessableEntity, "VALIDATION_ERROR", "end_time must be > start_time")
 		return
 	}
 	v, err := h.videos.Get(c.Request.Context(), req.VideoID)
 	if err != nil {
 		handlers.ErrorEnvelope(c, http.StatusNotFound, "VIDEO_NOT_FOUND", "Video not found")
+		return
+	}
+	if v.Status != domain.VideoProcessed {
+		handlers.ErrorEnvelope(c, 409, "CONFLICT", "Video has not finished processing")
 		return
 	}
 	if req.EndTime > v.DurationSeconds+0.5 && v.DurationSeconds > 0 {
@@ -52,10 +59,31 @@ func (h *ClipHandlers) Create(c *gin.Context) {
 		AverageScore: 0, Status: domain.ClipProcessing,
 		CreatedAt: time.Now(), UpdatedAt: time.Now(),
 	}
-	_ = h.clips.Create(c.Request.Context(), cl)
-	_ = h.bus.Publish(c.Request.Context(), "clip.cut.requested", cl.ID, gin.H{
+	analysis, err := h.analyses.Get(c.Request.Context(), req.VideoID)
+	if err != nil {
+		handlers.ErrorEnvelope(c, 503, "AI_UNAVAILABLE", "Video analysis is not available")
+		return
+	}
+	var total, weight float64
+	for _, score := range analysis.TimelineScores {
+		overlap := math.Max(0, math.Min(float64(score.Second+1), req.EndTime)-math.Max(float64(score.Second), req.StartTime))
+		total += overlap * score.Score
+		weight += overlap
+	}
+	if weight > 0 {
+		cl.AverageScore = math.Round(total/weight*100) / 100
+	}
+	if err := h.clips.Create(c.Request.Context(), cl); err != nil {
+		handlers.ErrorEnvelope(c, 500, "INTERNAL", err.Error())
+		return
+	}
+	if err := h.bus.Publish(c.Request.Context(), "clip.cut.requested", cl.ID, gin.H{
 		"clip_id": cl.ID, "video_id": cl.VideoID, "start_time": cl.StartTime, "end_time": cl.EndTime,
-	})
+	}); err != nil {
+		_ = h.clips.SetStatus(c.Request.Context(), cl.ID, domain.ClipRejected)
+		handlers.ErrorEnvelope(c, 503, "INTERNAL", err.Error())
+		return
+	}
 	c.JSON(http.StatusCreated, toClipCMS(cl))
 }
 
@@ -116,6 +144,7 @@ func (h *ClipHandlers) Delete(c *gin.Context) {
 		return
 	}
 	_ = h.clips.SetStatus(c.Request.Context(), id, domain.ClipRejected)
+	h.invalidateFeed(c)
 	c.Status(http.StatusNoContent)
 }
 
@@ -127,12 +156,28 @@ func (h *ClipHandlers) Publish(c *gin.Context) {
 		handlers.ErrorEnvelope(c, http.StatusNotFound, "CLIP_NOT_FOUND", "Clip not found")
 		return
 	}
-	if cl.ClipFilePath == nil || *cl.ClipFilePath == "" {
+	if cl.ClipFilePath == nil || *cl.ClipFilePath == "" || (cl.Status != domain.ClipDraft && cl.Status != domain.ClipPublished) {
 		handlers.ErrorEnvelope(c, http.StatusConflict, "CLIP_NOT_READY", "Clip not ready for publish")
 		return
 	}
-	_ = h.clips.SetStatus(c.Request.Context(), id, domain.ClipPublished)
+	v, err := h.videos.GetProcessed(c.Request.Context(), cl.VideoID)
+	if err != nil || v == nil {
+		handlers.ErrorEnvelope(c, 409, "CLIP_NOT_READY", "Source video is not available for publishing")
+		return
+	}
+	if err := h.clips.SetStatus(c.Request.Context(), id, domain.ClipPublished); err != nil {
+		handlers.ErrorEnvelope(c, 500, "INTERNAL", err.Error())
+		return
+	}
+	h.invalidateFeed(c)
 	c.Status(http.StatusOK)
+}
+
+func (h *ClipHandlers) invalidateFeed(c *gin.Context) {
+	if h.cache != nil {
+		// Change the shared revision so every user's cached feed expires on the next read.
+		_ = h.cache.Set(c.Request.Context(), "feed:revision", newID(), 24*time.Hour)
+	}
 }
 
 func toClipCMS(cl *domain.Clip) gin.H {

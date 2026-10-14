@@ -13,7 +13,7 @@ import ClipsPage from "./pages/ClipsPage";
 import CategoriesPage from "./pages/CategoriesPage";
 import UsersPage from "./pages/UsersPage";
 import SettingsPage from "./pages/SettingsPage";
-import Placeholder from "./pages/Placeholder";
+import { useState } from "react";
 
 function Guard({ allow, children }: { allow?: string[]; children: React.ReactNode }) {
   const { accessToken, user } = useAuthStore();
@@ -22,12 +22,14 @@ function Guard({ allow, children }: { allow?: string[]; children: React.ReactNod
   return <>{children}</>;
 }
 function Shell() {
+  const [menuOpen, setMenuOpen] = useState(false);
   return (
-    <div style={{ display: "flex" }}>
-      <Sidebar />
-      <div style={{ marginLeft: 260, flex: 1, minHeight: "100vh", display: "flex", flexDirection: "column" }}>
-        <TopBar />
-        <main style={{ padding: 24, flex: 1 }}>
+    <div className="cms-shell">
+      <Sidebar open={menuOpen} onClose={() => setMenuOpen(false)} />
+      {menuOpen && <button className="sidebar-backdrop" aria-label="Đóng điều hướng" onClick={() => setMenuOpen(false)} />}
+      <div className="cms-workspace">
+        <TopBar onMenu={() => setMenuOpen((open) => !open)} />
+        <main className="cms-main">
           <Outlet />
         </main>
       </div>
@@ -48,7 +50,7 @@ export const router = createBrowserRouter([
       { path: "/categories", element: <CategoriesPage /> },
       { path: "/subtitles", element: <SubtitlesPage /> },
       { path: "/published", element: <ClipsPage /> },
-      { path: "/settings", element: <SettingsPage /> },
+      { path: "/settings", element: <Guard allow={["admin"]}><SettingsPage /></Guard> },
       { path: "/users", element: <Guard allow={["admin"]}><UsersPage /></Guard> },
     ],
   },

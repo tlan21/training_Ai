@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiClient } from "../lib/apiClient";
 import { useAuthStore } from "../stores/authStore";
 import { qk } from "../lib/queryKeys";
+import type { components } from "../api-types";
 
 export function useLogin() {
   return useMutation({
@@ -42,7 +43,7 @@ export function useJobs(params: { status?: string }) {
 export function useSystemHealth() {
   return useQuery({
     queryKey: qk.health(),
-    queryFn: async () => (await apiClient.get("/api/cms/system/health")).data,
+    queryFn: async () => (await apiClient.get<components["schemas"]["SystemHealth"]>("/api/cms/system/health")).data,
     refetchInterval: 5000,
     refetchIntervalInBackground: false,
   });

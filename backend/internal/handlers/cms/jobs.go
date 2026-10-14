@@ -11,12 +11,13 @@ import (
 )
 
 type JobHandlers struct {
-	jobs ports.JobRepository
-	bus  ports.EventBus
+	jobs   ports.JobRepository
+	bus    ports.EventBus
+	videos ports.VideoRepository
 }
 
-func NewJobHandlers(jobs ports.JobRepository, bus ports.EventBus) *JobHandlers {
-	return &JobHandlers{jobs: jobs, bus: bus}
+func NewJobHandlers(jobs ports.JobRepository, bus ports.EventBus, videos ports.VideoRepository) *JobHandlers {
+	return &JobHandlers{jobs: jobs, bus: bus, videos: videos}
 }
 
 func (h *JobHandlers) List(c *gin.Context) {
@@ -54,8 +55,20 @@ func (h *JobHandlers) Retry(c *gin.Context) {
 		handlers.ErrorEnvelope(c, http.StatusConflict, "CONFLICT", "only failed jobs can be retried")
 		return
 	}
-	_ = h.jobs.SetStatus(c.Request.Context(), id, domain.JobPending, false, false)
-	_ = h.bus.Publish(c.Request.Context(), "video.uploaded", j.VideoID, gin.H{"video_id": j.VideoID})
+	v, err := h.videos.Get(c.Request.Context(), j.VideoID)
+	if err != nil {
+		handlers.ErrorEnvelope(c, 404, "VIDEO_NOT_FOUND", "Video not found")
+		return
+	}
+	if err := h.jobs.SetStatus(c.Request.Context(), id, domain.JobPending, false, false); err != nil {
+		handlers.ErrorEnvelope(c, 500, "INTERNAL", err.Error())
+		return
+	}
+	if err := h.bus.Publish(c.Request.Context(), "video.uploaded", j.VideoID, gin.H{"video_id": j.VideoID, "raw_file_path": v.RawFilePath}); err != nil {
+		_ = h.jobs.SetStatus(c.Request.Context(), id, domain.JobFailed, false, false)
+		handlers.ErrorEnvelope(c, 503, "INTERNAL", err.Error())
+		return
+	}
 	c.Status(http.StatusOK)
 }
 

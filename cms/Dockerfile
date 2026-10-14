@@ -11,5 +11,5 @@ RUN npm run build
 FROM nginx:alpine
 COPY --from=builder /src/dist /usr/share/nginx/html
 # SPA fallback: mọi route không phải file → index.html
-RUN printf 'server { listen 80; root /usr/share/nginx/html; index index.html; location / { try_files $uri $uri/ /index.html; } location /api/ { proxy_pass http://gateway:8000; proxy_set_header Host $host; } }\n' > /etc/nginx/conf.d/default.conf
+COPY cms/nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80

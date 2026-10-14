@@ -1,65 +1,73 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { apiClient } from "@/lib/apiClient";
-const thumbs: Record<string, string> = {
-  "Bóng đá": "https://lh3.googleusercontent.com/aida-public/AB6AXuAO0F8yVkmpAS0JyDCjgz2z9Wn94H7JQdR3_Q09dklOECEsKQd_OfMBGqOrtAHSuY7KY3P9Pwe2hHaxq2ARdwOW_NgL0dZlbFyohtrfZmlxmKzd9flmLAUArnIxhysX6_3MC2l5yNctrHJNmc8kwieAeuUK4PR8WtUZD0K5W7PGRkSpaV1DOTk0zi2yVkrsRoXI36Dky_d3a9hrEVrIhut4NNPy0PxjTp54IkN72iRi78PxPNSCDjPr9_C6OKAo5-XiuFZt-0EvlGs",
+import { useQueryClient } from "@tanstack/react-query";
+import { useCategories } from "@/lib/content";
+import { useAuthStore } from "@/stores/authStore";
+import { apiClient, errorMessage } from "@/lib/apiClient";
+import { PageState } from "@/components/Media";
+import { Icon } from "@/components/Icon";
+const categoryArt: Record<string, {
+    mobile: number;
+    desktop: number;
+    icon: string;
+}> = {
+    "Bóng đá": { mobile: 2, desktop: 0, icon: "sports_soccer" }, "Thể thao": { mobile: 2, desktop: 1, icon: "fitness_center" }, "Ca nhạc": { mobile: 5, desktop: 3, icon: "music_note" },
+    "Âm nhạc": { mobile: 5, desktop: 3, icon: "music_note" }, "Tin tức": { mobile: 6, desktop: 4, icon: "newspaper" }, "Công nghệ": { mobile: 0, desktop: 5, icon: "memory" },
+    "Phim ảnh": { mobile: 7, desktop: 6, icon: "movie" }, "Giải trí": { mobile: 1, desktop: 7, icon: "theater_comedy" }, "Ẩm thực": { mobile: 4, desktop: 7, icon: "restaurant" },
+    "Du lịch": { mobile: 8, desktop: 7, icon: "flight" }, "Giáo dục": { mobile: 6, desktop: 4, icon: "school" }, "Game": { mobile: 9, desktop: 2, icon: "sports_esports" },
+    "Trò chơi": { mobile: 9, desktop: 2, icon: "sports_esports" }
 };
 export default function OnboardingPage() {
-  const [cats, setCats] = useState<{ id: string; name: string }[]>([]);
-  const [sel, setSel] = useState<string[]>([]);
-  const router = useRouter();
-  useEffect(() => { apiClient.get("/api/categories").then((r) => setCats(r.data)).catch(() => setCats([{ id: "cat_bongda", name: "Bóng đá" }, { id: "cat_canhac", name: "Ca nhạc" }, { id: "cat_tintuc", name: "Tin tức" }])); }, []);
-  const toggle = (id: string) => setSel((s) => s.includes(id) ? s.filter((x) => x !== id) : [...s, id]);
-  const submit = async () => {
-    if (sel.length < 3) return;
-    try { await apiClient.put("/api/users/me/preferences", { category_ids: sel }); } catch {}
-    router.push("/feed");
-  };
-  const progress = Math.min(40 + (sel.length / 3) * 20, 60);
-  return (
-    <div style={{ minHeight: "100vh", background: "#FAFAF9", paddingBottom: 100 }}>
-      <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: 4, background: "#f4ece8", zIndex: 50 }}>
-        <div style={{ height: "100%", background: "var(--primary)", width: `${progress}%`, transition: "width 0.5s" }} />
-      </div>
-      <header style={{ position: "sticky", top: 4, background: "rgba(255,248,245,0.85)", backdropFilter: "blur(12px)", padding: "24px 16px 16px", borderBottom: "1px solid rgba(204,195,216,0.3)", zIndex: 40 }}>
-        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12 }}>
-          <span className="material-symbols-outlined" style={{ color: "var(--on-surface-variant)", cursor: "pointer" }} onClick={() => router.back()}>arrow_back</span>
-          <span style={{ fontSize: 11, fontWeight: 700, color: "var(--primary)" }}>BƯỚC 2/5</span>
-          <span style={{ width: 24 }} />
-        </div>
-        <h1 style={{ fontSize: 22, fontWeight: 800, margin: 0, color: "var(--on-surface)" }}>Chào mừng bạn đến với VidsAI</h1>
-        <p style={{ fontSize: 14, color: "var(--on-surface-variant)", marginTop: 4 }}>Chọn ít nhất 3 chủ đề bạn yêu thích để chúng tôi tối ưu hóa trải nghiệm của bạn.</p>
-      </header>
-      <main style={{ padding: "16px 16px 24px", maxWidth: 640, margin: "0 auto" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-          {cats.map((c) => {
-            const active = sel.includes(c.id);
-            return (
-              <div key={c.id} onClick={() => toggle(c.id)} style={{ height: active ? 160 : 160, borderRadius: 12, overflow: "hidden", border: active ? "2px solid var(--primary)" : "1px solid var(--outline-variant)", background: active ? "#ede0ff" : "white", display: "flex", flexDirection: "column", cursor: "pointer", boxShadow: "0 1px 4px rgba(0,0,0,0.06)", transition: "all 0.2s" }}>
-                <div style={{ flex: "2 1 0", overflow: "hidden", background: "#f4ece8" }}>
-                  {thumbs[c.name] ? <img src={thumbs[c.name]} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", opacity: active ? 1 : 0.85 }} /> : <div style={{ width: "100%", height: "100%", display: "grid", placeItems: "center", color: "var(--outline)", fontSize: 24 }}><span className="material-symbols-outlined">category</span></div>}
-                </div>
-                <div style={{ padding: 10, display: "flex", justifyContent: "space-between", alignItems: "center", background: "white" }}>
-                  <span style={{ fontWeight: 700, fontSize: 13 }}>{c.name}</span>
-                  <span className="material-symbols-outlined" style={{ fontSize: 18, color: "var(--primary)", opacity: active ? 1 : 0, transform: active ? "scale(1)" : "scale(0.5)", transition: "all 0.2s" }}>check_circle</span>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </main>
-      <div style={{ position: "fixed", bottom: 0, left: 0, width: "100%", background: "rgba(255,255,255,0.85)", backdropFilter: "blur(12px)", borderTop: "1px solid rgba(204,195,216,0.3)", padding: "16px 16px calc(16px + env(safe-area-inset-bottom))", zIndex: 50 }}>
-        <div style={{ maxWidth: 640, margin: "0 auto" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12, fontSize: 11, fontWeight: 600 }}>
-            <span style={{ color: "var(--on-surface-variant)" }}>Đã chọn: <span style={{ color: sel.length >= 3 ? "var(--secondary-container)" : "var(--primary)", fontWeight: 800 }}>{sel.length}</span>/3</span>
-            <button onClick={() => router.push("/feed")} style={{ color: "var(--on-surface-variant)", textDecoration: "underline", background: "none", border: "none", fontSize: 11, cursor: "pointer" }}>Bỏ qua</button>
-          </div>
-          <button onClick={submit} disabled={sel.length < 3} style={{ width: "100%", height: 56, borderRadius: 9999, border: "none", background: sel.length >= 3 ? "var(--primary)" : "#7b7487", color: "white", fontWeight: 800, fontSize: 15, display: "flex", alignItems: "center", justifyContent: "center", gap: 8, opacity: sel.length < 3 ? 0.5 : 1, boxShadow: sel.length >= 3 ? "0 8px 24px rgba(99,14,212,0.2)" : "none" }}>
-            Hoàn tất <span className="material-symbols-outlined" style={{ fontSize: 18 }}>chevron_right</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  );
+    const categories = useCategories();
+    const [selected, setSelected] = useState<string[]>([]);
+    const [saving, setSaving] = useState(false);
+    const [error, setError] = useState("");
+    const { user, ready } = useAuthStore();
+    const router = useRouter();
+    const query = useQueryClient();
+    useEffect(() => { if (ready && user?.preferences)
+        setSelected(user.preferences); }, [ready, user]);
+    const toggle = (id: string) => setSelected(s => s.includes(id) ? s.filter(x => x !== id) : [...s, id]);
+    const complete = async () => {
+        setSaving(true);
+        setError("");
+        try {
+            await apiClient.put("/api/users/me/preferences", { category_ids: selected });
+            if (user)
+                useAuthStore.setState({ user: { ...user, preferences: selected } });
+            await query.invalidateQueries({ queryKey: ["/api/feed"] });
+            router.push("/feed");
+        }
+        catch (e) {
+            setError(errorMessage(e));
+        }
+        finally {
+            setSaving(false);
+        }
+    };
+    const skip = () => { sessionStorage.setItem(`onboarding-skipped-${user?.id}`, "1"); router.push("/feed"); };
+    return <div className="onboarding-page">
+  <div className="onboard-progress"><div style={{ width: "40%" }}/></div>
+  <div className="onboard-desktop-header desktop-only"><span className="brand">VidsAI</span><div className="onboard-desktop-step"><i className="step-dot"/><i className="step-dot"/><i className="step-dot"/><span>Bước 1 / 3</span></div></div>
+  <header className="onboard-header">
+   <div className="onboard-step mobile-only"><button className="icon-button" onClick={() => router.back()} aria-label="Quay lại"><Icon name="arrow_back"/></button><span>BƯỚC 2/5</span><span style={{ width: 40 }}/></div>
+   <h1><span className="mobile-only">Chào mừng bạn đến với VidsAI</span><span className="desktop-only">Sở thích của bạn là gì?</span></h1>
+   <p><span className="mobile-only">Chọn ít nhất 3 chủ đề bạn yêu thích để chúng tôi tối ưu hóa trải nghiệm của bạn.</span><span className="desktop-only">Chọn ít nhất 3 hạng mục để chúng tôi cá nhân hóa trải nghiệm của bạn.</span></p>
+  </header>
+  {categories.isPending ? <PageState loading/> : categories.error ? <PageState error={categories.error} retry={() => categories.refetch()}/> : categories.data?.length ? <main className="onboard-grid">
+   {categories.data.filter(c => c.id).map((c, i) => {
+                const art = categoryArt[c.name || ""];
+                return <button key={c.id} aria-pressed={selected.includes(c.id!)} onClick={() => toggle(c.id!)} className={`interest-card ${["Thể thao", "Phim ảnh"].includes(c.name || "") ? "wide" : ""} ${selected.includes(c.id!) ? "selected" : ""}`}>
+    <span className="thumbnail"><picture><source media="(min-width:1024px)" srcSet={`/stitch/interest_onboarding_desktop-${art?.desktop ?? i % 8}.jpg`}/>{/* eslint-disable-next-line @next/next/no-img-element */}<img src={`/stitch/interest_onboarding_mobile-${art?.mobile ?? i % 10}.jpg`} alt=""/></picture></span>
+    <span className="interest-label"><span><span className="desktop-only"><Icon name={art?.icon || "interests"}/></span>{c.name}{c.name === "Thể thao" && <small>Bóng đá, NBA, Fitness...</small>}{c.name === "Phim ảnh" && <small>Review, Trailer, Hậu trường...</small>}</span><span className="check"><Icon name="check_circle" filled size={24}/></span></span>
+   </button>;
+            })}
+  </main> : <PageState empty="Chưa có chủ đề"/>}
+  <footer className="onboard-footer"><div className="onboard-footer-inner">
+   {error && <p className="error-banner" role="alert">{error}</p>}
+   <div className="onboard-count"><span>Đã chọn: <b>{selected.length}</b>/3</span><div className="onboard-progress-bottom desktop-only"><div style={{ width: `${Math.min(100, selected.length / 3 * 100)}%` }}/></div><button onClick={skip} disabled={saving}>Bỏ qua</button></div>
+   <button className="btn-primary onboard-complete" disabled={selected.length < 3 || saving} onClick={complete}>{saving ? "Đang lưu…" : <><span className="mobile-only">Hoàn tất</span><span className="desktop-only">Hoàn tất và khám phá</span></>}<Icon name="chevron_right" size={20}/></button>
+  </div></footer>
+ </div>;
 }

@@ -5,6 +5,7 @@ search/recommendation: encode nhẹ + (thật) query Milvus — stub trả mock 
 """
 
 import base64
+import binascii
 import hashlib
 import io
 import time
@@ -12,12 +13,17 @@ import uuid
 
 from . import schemas
 from .registry import registry
+from .config import settings
+from fastapi import HTTPException
 
 
 def _warn(where: str, model_name: str, e: Exception) -> None:
     """Log lỗi real path + đánh dấu model degraded (health phản ánh) — không âm thầm nuốt lỗi."""
-    print(f"[services] real path '{where}' (model {model_name}) lỗi ({type(e).__name__}: {e}) → fallback stub")
+    action = "fallback stub" if settings.force_stub else "request failed"
+    print(f"[services] real path '{where}' (model {model_name}) lỗi ({type(e).__name__}: {e}) → {action}")
     registry.mark_degraded(model_name)
+    if not settings.force_stub:
+        raise HTTPException(503, detail={"code": "AI_UNAVAILABLE", "message": f"{where}: {type(e).__name__}: {e}"}) from e
 
 
 def _now() -> int:
@@ -87,6 +93,23 @@ def _real_summarize(req: schemas.CompletionRequest) -> str:
 # ---------------- Visual Search /v1/search/completions ----------------
 
 def run_search(req: schemas.SearchRequest) -> schemas.SearchResponse:
+    if not settings.force_stub:
+        from . import visual_index
+        t0 = time.perf_counter()
+        try:
+            image = _load_keyframe(req.image)
+        except (OSError, ValueError, binascii.Error) as exc:
+            raise HTTPException(422, detail={"code": "VALIDATION_ERROR", "message": "Invalid JPEG/PNG/WebP image (max 20 megapixels)"}) from exc
+        try:
+            vector = visual_index.encode([image])[0]
+            hits = visual_index.search(vector, req.top_k, req.threshold)
+        except Exception as exc:
+            _warn("search/siamese/milvus", "siamese", exc)
+        return schemas.SearchResponse(
+            id=_rid("vsearch-primitive"), created=_now(), model=req.model,
+            results=[schemas.SearchResult(**hit) for hit in hits],
+            query_metadata={"execution_time_ms": round((time.perf_counter() - t0) * 1000, 2)},
+        )
     t0 = time.time()
     # stub: sinh kết quả ổn định theo ảnh, giảm dần similarity, lọc theo threshold
     rng = _seed_from(req.image[:64])
@@ -123,7 +146,7 @@ def run_highlight(req: schemas.HighlightRequest) -> schemas.HighlightResponse:
         scores = [round(50 + 40 * ((i * 37) % 100 - 50) / 50, 1) for i in range(n)]
         scores = [max(0.0, min(100.0, s)) for s in scores]
 
-    timeline = [schemas.TimelineScore(second=i + 1, score=s) for i, s in enumerate(scores)]
+    timeline = [schemas.TimelineScore(second=i, score=s) for i, s in enumerate(scores)]
     clips = _peaks_to_clips(scores, threshold=75.0)
     return schemas.HighlightResponse(
         id=_rid("hl-primitive"), created=_now(), model=req.model, video_id=req.video_id,
@@ -137,19 +160,24 @@ def _real_highlight(req: schemas.HighlightRequest) -> list[float]:
     dt = registry.model_dtype                     # khớp dtype model (half trên CUDA) để tránh mismatch
     if len(req.features.vision_embeddings) != len(req.features.audio_spectrogram_features):
         raise ValueError("vision_embeddings và audio_spectrogram_features phải cùng số giây")
-    v = torch.tensor([req.features.vision_embeddings], device=registry.device, dtype=dt)
-    a = torch.tensor([req.features.audio_spectrogram_features], device=registry.device, dtype=dt)
+    if not req.features.vision_embeddings:
+        raise ValueError("empty highlight features")
+    scores = []
+    window = 120  # Same window length used to train the Fusion checkpoint.
     with torch.no_grad():
-        out = model(v, a)[0]                      # (T,) sigmoid 0–1
-    return [round(float(x) * 100, 1) for x in out]  # ×100 thang 0–100
+        for start in range(0, len(req.features.vision_embeddings), window):
+            v = torch.tensor([req.features.vision_embeddings[start:start+window]], device=registry.device, dtype=dt)
+            a = torch.tensor([req.features.audio_spectrogram_features[start:start+window]], device=registry.device, dtype=dt)
+            scores.extend(round(float(x) * 100, 1) for x in model(v, a)[0])
+    return scores
 
 
 def _peaks_to_clips(scores: list[float], threshold: float) -> list[schemas.RecommendedClip]:
     clips, start = [], None
     for i, s in enumerate(scores):
-        if s >= threshold and start is None:
+        if s > threshold and start is None:
             start = i
-        elif s < threshold and start is not None:
+        elif s <= threshold and start is not None:
             seg = scores[start:i]
             clips.append(schemas.RecommendedClip(
                 clip_id=f"clp_{start:04d}", start_time=float(start), end_time=float(i),
@@ -208,6 +236,49 @@ def _fetch_audio(audio_url: str):
 
 
 def _real_asr(req: schemas.ASRRequest):
+    texts, segments = [], []
+    offset = 0.0
+    # Bound attention to 20 seconds; preserve absolute timestamps across windows.
+    for chunk in _audio_chunks(req.audio_url):
+        duration = chunk.numel() / 16000
+        if chunk.numel() < 400 or float(chunk.abs().max()) < 1e-4:
+            offset += duration
+            continue
+        text, parts = _decode_asr(chunk)
+        texts.append(text)
+        for part in parts:
+            part.id = len(segments)
+            part.start_time += offset
+            part.end_time += offset
+            segments.append(part)
+        offset += duration
+    return " ".join(texts).strip(), segments
+
+
+def _audio_chunks(audio_url):
+    import numpy as np
+    import soundfile as sf
+    import torch
+    if audio_url.startswith(("http://", "https://")):
+        # shortcut: direct HTTP audio loads whole; upload ingest uses streaming shared WAV paths.
+        signal = _fetch_audio(audio_url)
+        for start in range(0, signal.numel(), 20*16000):
+            yield signal[start:start+20*16000]
+        return
+    with sf.SoundFile(audio_url) as audio:
+        while True:
+            data = audio.read(20*audio.samplerate, dtype="float32")
+            if not len(data):
+                break
+            if data.ndim > 1:
+                data = data.mean(axis=1)
+            if audio.samplerate != 16000:
+                count = int(len(data)*16000/audio.samplerate)
+                data = np.interp(np.linspace(0, len(data)-1, count), np.arange(len(data)), data)
+            yield torch.from_numpy(np.asarray(data, dtype=np.float32))
+
+
+def _decode_asr(signal):
     import torch
     from ai_core.audio.mel import log_mel_spectrogram
     from ai_core.models.ctc import ctc_greedy_decode, ctc_segments
@@ -215,7 +286,6 @@ def _real_asr(req: schemas.ASRRequest):
     if vocab is None:
         raise NotImplementedError("thiếu char_vocab cho ASR (checkpoints/asr_ctc/vocab.json)")
     model = registry.models["asr_ctc"]
-    signal = _fetch_audio(req.audio_url)
     mel = log_mel_spectrogram(signal, n_mels=80, sr=16000).unsqueeze(0).to(
         device=registry.device, dtype=registry.model_dtype)          # khớp dtype model
     lengths = torch.tensor([mel.shape[2]], device=registry.device)
@@ -264,14 +334,14 @@ def _milvus_collection():
     try:
         from pymilvus import Collection, connections, utility
 
-        connections.connect(alias="default", host=settings.milvus_host, port=settings.milvus_port)
+        connections.connect(alias="default", host=settings.milvus_host, port=settings.milvus_port, timeout=3)
         if utility.has_collection(settings.milvus_collection):
             col = Collection(settings.milvus_collection)
             col.load()
         else:
             print(f"[services] Milvus chưa có collection {settings.milvus_collection}")
     except Exception as e:
-        print(f"[services] không nối được Milvus ({type(e).__name__}: {e}) → recommendation dùng stub")
+        print(f"[services] không nối được Milvus ({type(e).__name__}: {e}) → recommendation unavailable")
     _milvus_cache["col"] = col
     return col
 
@@ -317,6 +387,8 @@ def run_recommendation(req: schemas.RecommendationRequest) -> schemas.Recommenda
         _warn("recommendation/milvus", "two_tower", e)
 
     if recs is None:
+        if not settings.force_stub:
+            raise HTTPException(503, detail={"code": "AI_UNAVAILABLE", "message": "Recommendation index unavailable; gateway uses popularity fallback"})
         rng = _seed_from(req.user_id)
         recs = [
             schemas.Recommendation(
@@ -361,23 +433,34 @@ def _load_keyframe(ref: str, img_size: int = 224):
     import torch
     from PIL import Image
     if ref.startswith("data:"):                      # data URI → phần base64 sau dấu phẩy
-        img = Image.open(io.BytesIO(base64.b64decode(ref.split(",", 1)[1]))).convert("RGB")
+        img = Image.open(io.BytesIO(base64.b64decode(ref.split(",", 1)[1])))
     elif os.path.exists(ref):                        # path cục bộ
-        img = Image.open(ref).convert("RGB")
+        img = Image.open(ref)
     else:                                            # base64 trần
-        img = Image.open(io.BytesIO(base64.b64decode(ref))).convert("RGB")
-    img = img.resize((img_size, img_size))
+        img = Image.open(io.BytesIO(base64.b64decode(ref)))
+    if img.width * img.height > 20_000_000:
+        raise ValueError("Image exceeds 20 megapixels")
+    img = img.convert("RGB").resize((img_size, img_size))
     return torch.from_numpy(np.asarray(img)).float().div(255.0).permute(2, 0, 1)
 
 
 def _real_vision(req: schemas.VisionRequest):
     import torch
     model = registry.models["vit"]
-    imgs = torch.stack([_load_keyframe(k) for k in req.keyframes]).to(
-        device=registry.device, dtype=registry.model_dtype)          # khớp dtype model
+    if not req.keyframes:
+        raise ValueError("empty keyframes")
+    embeddings, total_logits = [], None
     with torch.no_grad():
-        logits, emb = model(imgs, return_embedding=True)   # logits (N,cls), emb (N,256)
-    idx = int(logits.float().mean(0).argmax().item())      # video-level: trung bình logits
+        for start in range(0, len(req.keyframes), 16):
+            imgs = torch.stack([_load_keyframe(k) for k in req.keyframes[start:start+16]]).to(device=registry.device, dtype=registry.model_dtype)
+            logits, emb = model(imgs, return_embedding=True)
+            summed = logits.float().sum(0)
+            total_logits = summed if total_logits is None else total_logits + summed
+            embeddings.extend(emb.float().cpu().tolist())
+    idx = int(total_logits.argmax().item())
     classes = registry.vit_classes
     category = classes[idx] if classes and idx < len(classes) else f"class_{idx}"
-    return category, emb.float().cpu().tolist()
+    if not settings.force_stub:
+        from .visual_index import index_frames
+        index_frames(req.keyframes)
+    return category, embeddings

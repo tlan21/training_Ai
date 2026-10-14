@@ -167,12 +167,12 @@ Orchestrator cập nhật `video_processing_jobs.current_stage` theo từng stag
 - [ ] ~~T2.6~~ → đã chuyển thành T1.8 (AI-FIRST, mục 0). Phase 2 chỉ còn tiêu thụ :8001 có sẵn.
 
 ### Phase 3 — Frontend (W5–7, chi tiết @03_cms_ui_plan.md, @04_client_ui_plan.md)
-- [ ] T3.1 CMS: 10 màn (login, dashboard, upload/queue, video list, highlight review, **subtitle+summary gộp 1 màn 3 cột theo Stitch**, clips/thư viện xuất bản, categories, users, **settings — tab Cấu hình AI**). Design reference: `stitch_ai_video_cms/` + CẮT-list @03_cms_ui_plan.md mục 7
-- [ ] T3.2 Client: 8 màn (auth, onboarding, feed, video detail, visual search, text search, profile, **discovery**). Design reference: `stitch_ai_video_platform_vietnamese/` + CẮT-list @04_client_ui_plan.md mục 8
+- [ ] T3.1 CMS: 10 màn (login, dashboard, upload/queue, video list, highlight review, **subtitle+summary gộp 1 màn 3 cột theo Stitch**, clips/thư viện xuất bản, categories, users, **settings — tab Cấu hình AI**). **UI IMPLEMENTED / VERIFIED — 2026-10-14; Design Parity FULL còn PARTIAL**: đã sửa toàn CMS, SVG/fonts local, responsive, form/toast/heatmap; 30 case Playwright PASS (28 UI + 2 AI thật/MinIO), Go vet/test/build + CMS build + Client tsc/Next --no-lint PASS; CMS đã rebuild. Chưa tick DONE vì thiếu contract/backend nguồn phát video gốc/metadata/analytics/rules/editor fields và Settings chưa persist. Báo cáo + screenshot: `docs/T3.1_cms_design_parity.md`; theo dõi `.claude/TodoWrite.md`. Design reference: `stitch_ai_video_cms/` + CẮT-list @03_cms_ui_plan.md mục 7
+- [ ] T3.2 **UI IMPLEMENTED / VERIFIED (2026-10-14); DESIGN PARITY FULL = PARTIAL**. Client: 8 màn (auth, onboarding, feed, video detail, visual search, text search, profile, **discovery**). Design reference: `stitch_ai_video_platform_vietnamese/` + CẮT-list @04_client_ui_plan.md mục 8. Client Docker :3000, **42 Playwright PASS** gồm flow AI thật + video playback/seek; Go/CMS/Client full lint/build PASS. Thiếu URL video gốc/saved-list/analytics API; chưa tick DONE 100%. Báo cáo `docs/T3.2_client_design_parity.md`.
 
 ### Phase 4 — Tích hợp & Tối ưu (W7–8)
-- [ ] T4.1 E2E: upload → processed → duyệt → publish → hiện feed (test tự động Playwright)
-- [ ] T4.2 Visual search < 2s; Redis cache; HNSW tuning (M=16, efConstruction=200)
+- [x] T4.1 E2E: upload → processed → duyệt → publish → hiện feed (test tự động Playwright) — **DONE — REAL UPLOAD/AI FLOW**: Nginx/gateway 2 GiB file; PostgreSQL/Mongo/MinIO/Kafka/Redis thật; PyAV ingest; Vision/ASR/Fusion/Mini-GPT checkpoint thật **CPU**, không silent fallback. Playwright **2 passed (21.7s)** với file >16 MiB, clip MinIO 206; persistence sau gateway restart PASS (sample `vid_dm3nf6fi23us`). Go vet/test/build + PG/Mongo integration + Python 19 tests + CMS tsc/Vite + Client tsc/Next --no-lint PASS. **Limitation:** chưa test toàn file 2 GiB/VRAM/leak; Mini-GPT T1.6c quality FAIL giữ nguyên; Siamese/Milvus/vector recommendation, một số memory adapter/player UX chưa hoàn thiện. Chi tiết `docs/T4.1_bao_cao.md`; todo `.claude/TodoWrite.md`. T4.2/T4.3 chưa bắt đầu.
+- [ ] T4.2 **IN PROGRESS (2026-10-14)** — Visual search < 2s; Redis cache; HNSW tuning (M=16, efConstruction=200). Theo dõi `.claude/TodoWrite.md`; chưa bắt đầu T4.3.
 - [ ] T4.3 Đo VRAM inference ≤ 4GB, kiểm memory leak 20 video liên tiếp
 
 ### Phase 5 — Kiểm thử & Bàn giao (W9–12)

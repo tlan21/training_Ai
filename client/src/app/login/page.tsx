@@ -1,72 +1,60 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { apiClient } from "@/lib/apiClient";
-import { useAuthStore } from "@/stores/authStore";
+import type { components } from "@/api-types";
+import { AuthFrame, AuthField } from "@/components/AuthFrame";
 import { Icon } from "@/components/Icon";
-import "@/app/login.css";
+import { apiClient, errorMessage } from "@/lib/apiClient";
+import { useAuthStore } from "@/stores/authStore";
 export default function LoginPage() {
-  const [email, setEmail] = useState("client@test.local");
-  const [password, setPassword] = useState("password123");
-  const [show, setShow] = useState(false);
-  const [err, setErr] = useState("");
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
-  const setAuth = useAuthStore((s) => s.setAuth);
-  const submit = async () => {
-    setErr(""); setLoading(true);
-    try {
-      const r = await apiClient.post("/api/auth/login", { email, password });
-      setAuth({ accessToken: r.data.access_token, user: r.data.user });
-      const prefs = r.data.user?.preferences ?? [];
-      if (prefs.length < 3) router.push("/onboarding");
-      else router.push("/feed");
-    } catch (e: any) { setErr(e?.response?.data?.error?.message ?? e.message); }
-    finally { setLoading(false); }
-  };
-  return (
-    <div style={{ minHeight: "100vh", background: "var(--background)", padding: "0 16px", display: "flex", flexDirection: "column" }}>
-      <div style={{ position: "fixed", top: -96, left: -96, width: 256, height: 256, background: "rgba(99,14,212,0.08)", borderRadius: 9999, filter: "blur(40px)", pointerEvents: "none" }} />
-      <header style={{ padding: "80px 0 48px", display: "flex", flexDirection: "column", alignItems: "center" }}>
-        <div style={{ width: 64, height: 64, background: "var(--primary-container)", borderRadius: 16, display: "grid", placeItems: "center", marginBottom: 16, boxShadow: "0 8px 24px rgba(99,14,212,0.2)" }}>
-          <span className="material-symbols-outlined" style={{ fontSize: 32, color: "var(--on-primary-container)", fontVariationSettings: "'FILL' 1" }}>movie_filter</span>
-        </div>
-        <div style={{ fontSize: 24, fontWeight: 800, color: "var(--primary)" }}>VidsAI</div>
-        <div style={{ fontSize: 13, color: "var(--on-surface-variant)", marginTop: 4 }}>Trí tuệ nhân tạo cho video của bạn</div>
-      </header>
-      <section style={{ maxWidth: 360, width: "100%", margin: "0 auto", display: "grid", gap: 16 }}>
-        <div style={{ display: "grid", gap: 4 }}>
-          <label htmlFor="cl-email" style={{ fontSize: 11, fontWeight: 600, color: "var(--on-surface-variant)", marginLeft: 4 }}>Email hoặc Số điện thoại</label>
-          <div className="input-wrap">
-            <span className="input-icon input-icon--left" aria-hidden><Icon name="person" size={20} /></span>
-            <input id="cl-email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@example.com" className="input input--with-left-icon login-input" />
-          </div>
-        </div>
-        <div style={{ display: "grid", gap: 4 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", padding: "0 4px", alignItems: "center" }}>
-            <label htmlFor="cl-password" style={{ fontSize: 11, fontWeight: 600, color: "var(--on-surface-variant)" }}>Mật khẩu</label>
-            <Link href="/forgot-password" style={{ fontSize: 11, color: "var(--primary)" }}>Quên mật khẩu?</Link>
-          </div>
-          <div className="input-wrap">
-            <span className="input-icon input-icon--left" aria-hidden><Icon name="lock" size={18} /></span>
-            <input id="cl-password" type={show ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} onKeyDown={(e) => e.key === "Enter" && submit()} placeholder="••••••••" className="input input--with-left-icon input--with-right-icon login-input" />
-            <button type="button" onClick={() => setShow((v) => !v)} aria-label={show ? "Ẩn mật khẩu" : "Hiện mật khẩu"} className="input-icon input-icon--right input-icon--action">
-              <Icon name={show ? "visibility_off" : "visibility"} size={20} />
-            </button>
-          </div>
-        </div>
-        {err && <div style={{ background: "var(--error-container)", color: "var(--on-error-container)", padding: 10, borderRadius: 8, fontSize: 13 }}>{err}</div>}
-        <button onClick={submit} disabled={loading} className="btn-primary" style={{ width: "100%", height: 56, fontSize: 15, fontWeight: 700, gap: 8 }}>
-          {loading ? "Đang xử lý…" : <><span>Đăng nhập</span><Icon name="arrow_forward" size={18} /></>}
-        </button>
-      </section>
-      <footer style={{ padding: "40px 0 24px", textAlign: "center" }}>
-        <div style={{ fontSize: 14, color: "var(--on-surface-variant)" }}>Chưa có tài khoản? <Link href="/register" style={{ color: "var(--primary)", fontWeight: 700 }}>Đăng ký ngay</Link></div>
-        <div style={{ marginTop: 20, display: "flex", gap: 16, justifyContent: "center", fontSize: 11, opacity: 0.6 }}>
-          <a href="#">Điều khoản</a><a href="#">Bảo mật</a><a href="#">Trợ giúp</a>
-        </div>
-      </footer>
-    </div>
-  );
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [show, setShow] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+    const [remember, setRemember] = useState(false);
+    const router = useRouter();
+    const ready = useAuthStore(s => s.ready);
+    const query = useQueryClient();
+    useEffect(() => { const stored = localStorage.getItem("client-remember-email"); if (stored) {
+        setEmail(stored);
+        setRemember(true);
+    } }, []);
+    const submit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!ready || loading)
+            return;
+        setLoading(true);
+        setError("");
+        try {
+            const { data } = await apiClient.post<components["schemas"]["AuthResponse"]>("/api/auth/login", { email: email.trim(), password });
+            if (!data.access_token || !data.user)
+                throw new Error("Phản hồi đăng nhập không hợp lệ.");
+            query.clear();
+            useAuthStore.getState().setAuth({ accessToken: data.access_token, user: data.user });
+            const { data: me } = await apiClient.get<components["schemas"]["UserMe"]>("/api/users/me");
+            useAuthStore.getState().setAuth({ accessToken: data.access_token, user: me });
+            if (remember)
+                localStorage.setItem("client-remember-email", email.trim());
+            else
+                localStorage.removeItem("client-remember-email");
+            const skipped = sessionStorage.getItem(`onboarding-skipped-${me.id}`);
+            router.push((me.preferences?.length || 0) >= 3 || skipped ? "/feed" : "/onboarding");
+        }
+        catch (e) {
+            setError(errorMessage(e));
+        }
+        finally {
+            setLoading(false);
+        }
+    };
+    return <AuthFrame mode="login"><form onSubmit={submit} className="auth-form">
+    <AuthField id="email" label="Email hoặc Số điện thoại" icon="person" type="email" autoComplete="email" required placeholder="name@example.com" desktopPlaceholder="example@email.com" value={email} onChange={e => setEmail(e.target.value)}/>
+    <div className="login-password"><Link className="forgot-mobile mobile-only" href="/forgot-password">Quên mật khẩu?</Link><AuthField id="password" label="Mật khẩu" icon="lock" type={show ? "text" : "password"} autoComplete="current-password" required placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)} action={<button className="input-icon input-icon--right input-icon--action" type="button" aria-label={show ? "Ẩn mật khẩu" : "Hiện mật khẩu"} onClick={() => setShow(!show)}><Icon name={show ? "visibility_off" : "visibility"} size={22}/></button>}/></div>
+    <div className="remember-row desktop-only"><label><input type="checkbox" checked={remember} onChange={e => setRemember(e.target.checked)}/>Ghi nhớ tôi</label><Link href="/forgot-password">Quên mật khẩu?</Link></div>
+    {error && <p className="error-banner" role="alert">{error}</p>}
+    <button type="submit" className="btn-primary auth-submit" disabled={loading || !ready}>{loading ? "Đang xử lý…" : "Đăng nhập"}{!loading && <span className="mobile-only"><Icon name="arrow_forward"/></span>}</button>
+  </form><div className="quick-login desktop-only"><p>Đăng nhập nhanh</p><button className="btn-outline" disabled title="Đăng nhập nhanh chưa khả dụng"><Icon name="account_circle"/>Digital Creator</button></div></AuthFrame>;
 }

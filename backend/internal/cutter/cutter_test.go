@@ -1,10 +1,8 @@
 package cutter
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
-	"io"
 	"os"
 	"testing"
 
@@ -24,12 +22,7 @@ func TestCutter_HandleOne_Happy(t *testing.T) {
 
 	// seed raw object so fetch works
 	store.Objs["raw-videos/vid_1.mp4"] = []byte("fake-mp4")
-	// make GetObject work for our store — monkey by providing real bytes via custom store
-	// ObjectStorageMem.GetObject currently returns ErrNotFound; override fetch by pre-populating and using custom get
-	// Workaround: use a wrapper that returns the bytes
-	store2 := &memStoreWithGet{ObjectStorageMem: store, data: map[string][]byte{"raw-videos/vid_1.mp4": []byte("fake-mp4")}}
-
-	svc := New(clipRepo, videoRepo, store2, bus, "raw-videos", "clips")
+	svc := New(clipRepo, videoRepo, store, bus, "raw-videos", "clips")
 	svc.tmpDir = os.TempDir()
 	svc.WithExecFn(func(ctx context.Context, in, out string, start, end float64) error {
 		if start != 2 || end != 12 {
@@ -64,24 +57,17 @@ func TestCutter_HandleOne_BadRange(t *testing.T) {
 
 type captureBus struct {
 	*mocks.EventBusMem
-	Published []struct{ Topic, Key string; Raw []byte }
+	Published []struct {
+		Topic, Key string
+		Raw        []byte
+	}
 }
 
 func (c *captureBus) Publish(ctx context.Context, topic, key string, payload any) error {
 	raw, _ := json.Marshal(payload)
-	c.Published = append(c.Published, struct{ Topic, Key string; Raw []byte }{Topic: topic, Key: key, Raw: raw})
+	c.Published = append(c.Published, struct {
+		Topic, Key string
+		Raw        []byte
+	}{Topic: topic, Key: key, Raw: raw})
 	return c.EventBusMem.Publish(ctx, topic, key, payload)
-}
-
-type memStoreWithGet struct {
-	*mocks.ObjectStorageMem
-	data map[string][]byte
-}
-
-func (m *memStoreWithGet) GetObject(_ context.Context, bucket, key string) (io.ReadCloser, error) {
-	k := bucket + "/" + key
-	if b, ok := m.data[k]; ok {
-		return io.NopCloser(bytes.NewReader(b)), nil
-	}
-	return nil, domain.ErrNotFound
 }

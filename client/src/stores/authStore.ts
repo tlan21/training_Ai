@@ -1,11 +1,21 @@
 "use client";
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
-type User = { id: string; username: string; email: string; role: string; preferences?: string[] };
-type S = { accessToken: string | null; user: User | null; setAuth: (p: { accessToken: string; user: User }) => void; setToken: (t: string) => void; logout: () => void; };
-export const useAuthStore = create<S>()(persist((set) => ({
-  accessToken: null, user: null,
-  setAuth: ({ accessToken, user }) => set({ accessToken, user }),
-  setToken: (accessToken) => set({ accessToken }),
-  logout: () => set({ accessToken: null, user: null }),
-}), { name: "client-auth", partialize: (s) => ({ accessToken: s.accessToken, user: s.user }) }));
+import type { components } from "@/api-types";
+type State = {
+    accessToken: string | null;
+    user: components["schemas"]["UserMe"] | null;
+    ready: boolean;
+    setAuth: (p: {
+        accessToken: string;
+        user: components["schemas"]["UserMe"];
+    }) => void;
+    setToken: (t: string) => void;
+    setReady: () => void;
+    logout: () => void;
+};
+export const useAuthStore = create<State>((set) => ({
+    accessToken: null, user: null, ready: false,
+    setAuth: ({ accessToken, user }) => set({ accessToken, user, ready: true }),
+    setToken: (accessToken) => set({ accessToken }), setReady: () => set({ ready: true }),
+    logout: () => set({ accessToken: null, user: null, ready: true }),
+}));

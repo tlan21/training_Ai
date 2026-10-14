@@ -1,7 +1,9 @@
 package mocks
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"io"
 	"sync"
 	"time"
@@ -414,7 +416,8 @@ func (r *JobRepoMem) Create(_ context.Context, vid string) (*domain.ProcessingJo
 	defer r.mu.Unlock()
 	j := &domain.ProcessingJob{ID: "job_" + vid, VideoID: vid, Status: domain.JobPending, QueueName: "video_ingest_queue"}
 	r.M[j.ID] = j
-	return j, nil
+	cp := *j
+	return &cp, nil
 }
 func (r *JobRepoMem) Get(_ context.Context, id string) (*domain.ProcessingJob, error) {
 	r.mu.Lock()
@@ -539,7 +542,7 @@ func (r *CategoryRepoMem) Delete(_ context.Context, id string) error {
 }
 
 type InteractionRepoMem struct {
-	mu sync.Mutex
+	mu    sync.Mutex
 	Items []domain.Interaction
 	Clips map[string]*domain.Clip
 }
@@ -802,8 +805,9 @@ func (v *VectorStoreMem) SearchVideosForUser(_ context.Context, uid string, limi
 // --- Infra mocks ---
 
 type EventBusMem struct {
-	mu     sync.Mutex
-	Events []struct {
+	mu       sync.Mutex
+	handlers map[string][]func(context.Context, []byte) error
+	Events   []struct {
 		Topic string
 		Key   string
 		Raw   []byte
@@ -811,22 +815,34 @@ type EventBusMem struct {
 }
 
 func NewEventBusMem() *EventBusMem { return &EventBusMem{} }
-func (b *EventBusMem) Publish(_ context.Context, topic, key string, payload any) error {
-	b.mu.Lock()
-	defer b.mu.Unlock()
-	raw := []byte{}
-	if payload != nil {
-		// minimal marshal
-		raw = []byte(`{}`)
+func (b *EventBusMem) Publish(ctx context.Context, topic, key string, payload any) error {
+	raw, err := json.Marshal(payload)
+	if err != nil {
+		return err
 	}
+	b.mu.Lock()
 	b.Events = append(b.Events, struct {
 		Topic string
 		Key   string
 		Raw   []byte
 	}{Topic: topic, Key: key, Raw: raw})
+	handlers := append([]func(context.Context, []byte) error(nil), b.handlers[topic]...)
+	b.mu.Unlock()
+	// Unlock before delivery: a consumer may publish the next pipeline event.
+	for _, handler := range handlers {
+		if err := handler(ctx, raw); err != nil {
+			return err
+		}
+	}
 	return nil
 }
-func (b *EventBusMem) Consume(_ context.Context, _, _ string, _ func(context.Context, []byte) error) error {
+func (b *EventBusMem) Consume(_ context.Context, topic, _ string, handler func(context.Context, []byte) error) error {
+	b.mu.Lock()
+	defer b.mu.Unlock()
+	if b.handlers == nil {
+		b.handlers = make(map[string][]func(context.Context, []byte) error)
+	}
+	b.handlers[topic] = append(b.handlers[topic], handler)
 	return nil
 }
 
@@ -837,7 +853,10 @@ type ObjectStorageMem struct {
 
 func NewObjectStorageMem() *ObjectStorageMem { return &ObjectStorageMem{Objs: map[string][]byte{}} }
 func (s *ObjectStorageMem) PutStream(_ context.Context, bucket, key string, r io.Reader, _ int64, _ string) (string, error) {
-	b, _ := io.ReadAll(r)
+	b, err := io.ReadAll(r)
+	if err != nil {
+		return "", err
+	}
 	s.mu.Lock()
 	s.Objs[bucket+"/"+key] = b
 	s.mu.Unlock()
@@ -849,7 +868,11 @@ func (s *ObjectStorageMem) GetPresigned(_ context.Context, _, key string, _ time
 func (s *ObjectStorageMem) GetObject(_ context.Context, bucket, key string) (io.ReadCloser, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	return nil, domain.ErrNotFound
+	b, ok := s.Objs[bucket+"/"+key]
+	if !ok {
+		return nil, domain.ErrNotFound
+	}
+	return io.NopCloser(bytes.NewReader(b)), nil
 }
 func (s *ObjectStorageMem) Delete(_ context.Context, bucket, key string) error {
 	s.mu.Lock()
@@ -858,6 +881,7 @@ func (s *ObjectStorageMem) Delete(_ context.Context, bucket, key string) error {
 	return nil
 }
 
+// shortcut: memory cache ignores TTL; wire Redis before cache/load benchmarks.
 type CacheMem struct {
 	mu sync.Mutex
 	M  map[string]string

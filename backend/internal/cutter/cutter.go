@@ -16,10 +16,10 @@ import (
 
 // cutRequested mirrors master plan §2.5 + §4b: gateway publishes clip.cut.requested.
 type cutRequested struct {
-	ClipID   string  `json:"clip_id"`
-	VideoID  string  `json:"video_id"`
-	Start    float64 `json:"start_time"`
-	End      float64 `json:"end_time"`
+	ClipID  string  `json:"clip_id"`
+	VideoID string  `json:"video_id"`
+	Start   float64 `json:"start_time"`
+	End     float64 `json:"end_time"`
 }
 
 type cutCompleted struct {
@@ -52,7 +52,9 @@ func New(clips ports.ClipRepository, videos ports.VideoRepository, storage ports
 }
 
 // WithExecFn overrides ffmpeg execution (tests).
-func (s *Service) WithExecFn(fn func(ctx context.Context, in, out string, start, end float64) error) { s.execFn = fn }
+func (s *Service) WithExecFn(fn func(ctx context.Context, in, out string, start, end float64) error) {
+	s.execFn = fn
+}
 
 // HandleOne processes a single raw payload (used by tests and by Consume handler).
 func (s *Service) HandleOne(ctx context.Context, payload []byte) error {
@@ -63,7 +65,7 @@ func (s *Service) HandleOne(ctx context.Context, payload []byte) error {
 	if req.ClipID == "" || req.VideoID == "" {
 		return fmt.Errorf("missing clip_id/video_id")
 	}
-	if req.End <= req.Start {
+	if req.Start < 0 || req.End <= req.Start {
 		return s.fail(ctx, req.ClipID, "end must be > start")
 	}
 
@@ -106,7 +108,10 @@ func (s *Service) HandleOne(ctx context.Context, payload []byte) error {
 		return s.fail(ctx, clip.ID, fmt.Sprintf("open cut: %v", err))
 	}
 	defer f.Close()
-	fi, _ := f.Stat()
+	fi, err := f.Stat()
+	if err != nil {
+		return s.fail(ctx, clip.ID, err.Error())
+	}
 	key := fmt.Sprintf("clips/%s.mp4", req.ClipID)
 	path, err := s.storage.PutStream(ctx, s.clipsBucket, key, f, fi.Size(), "video/mp4")
 	if err != nil {
@@ -114,14 +119,19 @@ func (s *Service) HandleOne(ctx context.Context, payload []byte) error {
 	}
 
 	// update DB
-	_ = s.clips.SetFilePath(ctx, clip.ID, path)
-	_ = s.clips.SetStatus(ctx, clip.ID, "draft") // ready for publish (§4b handler sets draft → publish later)
+	if err := s.clips.SetFilePath(ctx, clip.ID, path); err != nil {
+		return s.fail(ctx, clip.ID, err.Error())
+	}
+	if err := s.clips.SetStatus(ctx, clip.ID, "draft"); err != nil {
+		return s.fail(ctx, clip.ID, err.Error())
+	}
 
 	// publish completed
 	return s.bus.Publish(ctx, "clip.cut.completed", req.ClipID, cutCompleted{ClipID: req.ClipID, ClipFilePath: path, Ok: true})
 }
 
 func (s *Service) fail(ctx context.Context, clipID, msg string) error {
+	_ = s.clips.SetStatus(ctx, clipID, "rejected")
 	_ = s.bus.Publish(ctx, "clip.cut.completed", clipID, cutCompleted{ClipID: clipID, Ok: false, Error: msg})
 	return fmt.Errorf("%s", msg)
 }

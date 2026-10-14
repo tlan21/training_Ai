@@ -1,0 +1,48 @@
+{
+  "device": "cpu",
+  "live_rows": 18,
+  "index": {
+    "index_type": "HNSW",
+    "metric_type": "COSINE",
+    "params": {
+      "M": 16,
+      "efConstruction": 200
+    }
+  },
+  "index_progress": {
+    "total_rows": 52,
+    "indexed_rows": 52,
+    "pending_index_rows": 0,
+    "state": "Finished"
+  },
+  "sweep": [
+    {
+      "ef": 64,
+      "mean_recall_at_10_ties": 1.0,
+      "p95_ms": 5.1691176503481975,
+      "max_ms": 5.599838999842177
+    },
+    {
+      "ef": 100,
+      "mean_recall_at_10_ties": 1.0,
+      "p95_ms": 4.894966250049033,
+      "max_ms": 7.358245000432362
+    },
+    {
+      "ef": 128,
+      "mean_recall_at_10_ties": 1.0,
+      "p95_ms": 3.479125750118328,
+      "max_ms": 3.5506149997672765
+    },
+    {
+      "ef": 256,
+      "mean_recall_at_10_ties": 1.0,
+      "p95_ms": 2.638625199915623,
+      "max_ms": 2.7500670003064442
+    }
+  ],
+  "first_search_after_load_ms": 5.956660999800079,
+  "consistency": "Session",
+  "selected_ef": 100,
+  "reason": "gateway top_k=100 requires ef>=100; smallest passing setting"
+}

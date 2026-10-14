@@ -15,7 +15,7 @@ type S = {
 };
 export const useUploadStore = create<S>((set, get) => ({
   file: null, loaded: 0, total: 0, status: "idle", controller: null,
-  start: (file) => set({ file, loaded: 0, total: file.size, status: "uploading", controller: new AbortController() }),
+  start: (file) => set({ file, loaded: 0, total: file.size, status: "uploading", error: undefined, controller: new AbortController() }),
   progress: (loaded, total) => set({ loaded, total }),
   done: () => set({ status: "success" }),
   fail: (error) => set({ status: "error", error }),

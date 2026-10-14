@@ -6,7 +6,7 @@ const db = db.getSiblingDB(process.env.MONGO_APP_DB || "video_ai");
 // 3.1 subtitles — phụ đề ASR
 db.createCollection("subtitles");
 db.subtitles.createIndex({ video_id: 1 }, { unique: true });
-db.subtitles.createIndex({ "segments.text": "text" });   // text search phụ đề (GET /api/search)
+db.subtitles.createIndex({ "segments.text": "text" }, { default_language: "none", language_override: "_text_language" });
 
 // 3.2 video_analyses — điểm highlight + tóm tắt
 db.createCollection("video_analyses");

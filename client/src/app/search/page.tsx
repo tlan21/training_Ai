@@ -1,110 +1,107 @@
 "use client";
-import { useState } from "react";
+/* eslint-disable @next/next/no-img-element -- Browser blob previews are local and bypass the image optimizer. */
+import { Suspense, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { apiClient } from "@/lib/apiClient";
+import { useSearchParams } from "next/navigation";
+import { useQueries, useQuery } from "@tanstack/react-query";
+import type { components } from "@/api-types";
+import { AppNav, MobileHeader } from "@/components/AppNav";
 import { BottomNav } from "@/components/BottomNav";
-export default function SearchPage() {
-  const [tab, setTab] = useState<"visual" | "text">("text");
-  const [q, setQ] = useState("");
-  const [visualResults, setVisualResults] = useState<any[]>([]);
-  const [textResults, setTextResults] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [similarity, setSimilarity] = useState(85);
-  const doVisual = async (file: File) => {
-    setLoading(true);
-    const fd = new FormData(); fd.append("image", file); fd.append("min_similarity", String(similarity / 100));
-    try { const r = await apiClient.post("/api/search/visual", fd, { headers: { "Content-Type": "multipart/form-data" } }); setVisualResults(r.data.results ?? []); } catch (e) { setVisualResults([]); } finally { setLoading(false); }
-  };
-  const doText = async (qq: string) => {
-    if (!qq) { setTextResults([]); return; }
-    setLoading(true);
-    try { const r = await apiClient.get("/api/search", { params: { q: qq } }); setTextResults(r.data.items ?? []); } catch { setTextResults([]); } finally { setLoading(false); }
-  };
-  return (
-    <div style={{ maxWidth: 640, margin: "0 auto", minHeight: "100dvh", background: "var(--background)", paddingBottom: 72 }}>
-      <header style={{ position: "sticky", top: 0, zIndex: 20, display: "flex", alignItems: "center", gap: 12, padding: "12px 16px", background: "rgba(255,248,245,0.85)", backdropFilter: "blur(12px)", borderBottom: "1px solid var(--outline-variant)" }}>
-        <Link href="/feed" style={{ width: 36, height: 36, borderRadius: 9999, display: "grid", placeItems: "center", background: "var(--surface-container)" }}><span className="material-symbols-outlined" style={{ fontSize: 20 }}>arrow_back</span></Link>
-        <h1 style={{ fontSize: 18, fontWeight: 800, color: "var(--primary)" }}>Tìm kiếm</h1>
-        <span className="material-symbols-outlined" style={{ marginLeft: "auto", color: "var(--on-surface-variant)" }}>history</span>
-      </header>
-      <div style={{ display: "flex", padding: 6, background: "var(--surface-container)", borderRadius: 12, margin: "16px 16px 0", gap: 6 }}>
-        <button onClick={() => setTab("text")} style={{ flex: 1, padding: "8px 12px", borderRadius: 8, border: "none", background: tab === "text" ? "var(--primary)" : "transparent", color: tab === "text" ? "var(--on-primary)" : "var(--on-surface-variant)", fontWeight: 700, fontSize: 13, boxShadow: tab === "text" ? "0 2px 8px rgba(99,14,212,0.2)" : "none" }}>Văn bản</button>
-        <button onClick={() => setTab("visual")} style={{ flex: 1, padding: "8px 12px", borderRadius: 8, border: "none", background: tab === "visual" ? "var(--primary)" : "transparent", color: tab === "visual" ? "var(--on-primary)" : "var(--on-surface-variant)", fontWeight: 700, fontSize: 13, boxShadow: tab === "visual" ? "0 2px 8px rgba(99,14,212,0.2)" : "none" }}>Hình ảnh</button>
-      </div>
-      {tab === "text" ? (
-        <div style={{ padding: "16px 16px 0" }}>
-          <div style={{ position: "relative" }}>
-            <span className="material-symbols-outlined" style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", color: "var(--outline)", fontSize: 20 }}>search</span>
-            <input value={q} onChange={(e) => { setQ(e.target.value); doText(e.target.value); }} placeholder="Nhập mô tả video hoặc khoảnh khắc..." style={{ width: "100%", padding: "14px 44px 14px 44px", background: "white", border: "1px solid var(--outline-variant)", borderRadius: 16, fontSize: 14, outline: "none", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }} />
-            <span className="material-symbols-outlined" style={{ position: "absolute", right: 14, top: "50%", transform: "translateY(-50%)", color: "var(--primary)", fontSize: 20 }}>mic</span>
-          </div>
-          <div style={{ display: "flex", gap: 8, marginTop: 12, flexWrap: "wrap" as any }}>
-            {(["#ng_ký", "#ambient", "#thiên_nhiên", "#vlog"] as const).map((t) => (
-              <span key={t} onClick={() => { setQ(t.slice(1)); doText(t.slice(1)); }} style={{ padding: "6px 12px", background: "var(--surface-container-high)", borderRadius: 9999, fontSize: 11, color: "var(--on-surface-variant)", cursor: "pointer" }}>{t}</span>
-            ))}
-          </div>
-          <h3 style={{ fontSize: 15, fontWeight: 700, marginTop: 20 }}>Kết quả tìm kiếm</h3>
-          {loading ? <div style={{ padding: 16, color: "var(--on-surface-variant)", textAlign: "center" }}>Đang tìm…</div> : null}
-          <div style={{ display: "grid", gap: 12, marginTop: 12 }}>
-            {textResults.map((r: any, i: number) => (
-              <Link key={i} href={`/videos/${r.video_id}?t=${r.timestamp ?? 0}`} style={{ display: "flex", gap: 12, background: "white", border: "1px solid var(--outline-variant)", borderRadius: 16, padding: 10, boxShadow: "0 1px 6px rgba(0,0,0,0.04)" }}>
-                <div style={{ width: 120, height: 72, borderRadius: 8, background: "var(--surface-variant)", overflow: "hidden", flexShrink: 0 }} />
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontWeight: 700, fontSize: 13, display: "-webkit-box", WebkitLineClamp: 1, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{r.title ?? r.video_id}</div>
-                  <div style={{ fontSize: 11, color: "var(--on-surface-variant)", fontStyle: "italic", marginTop: 4, display: "-webkit-box", WebkitLineClamp: 1, WebkitBoxOrient: "vertical", overflow: "hidden" }}>"{r.matched_text ?? ""}"</div>
-                  <div style={{ fontSize: 10, color: "var(--outline)", marginTop: 4 }}>{r.timestamp != null ? `${r.timestamp.toFixed(1)}s` : ""}</div>
-                </div>
-                <div style={{ width: 32, height: 32, borderRadius: 9999, background: "var(--primary)", display: "grid", placeItems: "center", flexShrink: 0, alignSelf: "center" }}>
-                  <span className="material-symbols-outlined" style={{ color: "white", fontSize: 16, fontVariationSettings: "'FILL' 1" }}>play_arrow</span>
-                </div>
-              </Link>
-            ))}
-            {textResults.length === 0 && q && !loading && <div style={{ color: "var(--on-surface-variant)", fontSize: 13, textAlign: "center", padding: 16 }}>Không có kết quả cho "{q}"</div>}
-          </div>
-        </div>
-      ) : (
-        <div style={{ padding: "16px 16px 0" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-            <label style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: 20, background: "white", border: "2px dashed var(--outline-variant)", borderRadius: 16, cursor: "pointer", textAlign: "center" }}>
-              <div style={{ width: 44, height: 44, borderRadius: 9999, background: "var(--primary-container)", display: "grid", placeItems: "center", marginBottom: 8 }}><span className="material-symbols-outlined" style={{ color: "var(--on-primary-container)" }}>photo_library</span></div>
-              <span style={{ fontSize: 12, fontWeight: 600 }}>Chọn từ thư viện</span>
-              <input type="file" accept="image/*" style={{ display: "none" }} onChange={(e) => { const f = e.target.files?.[0]; if (f) doVisual(f); }} />
-            </label>
-            <label style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: 20, background: "white", border: "2px dashed var(--outline-variant)", borderRadius: 16, cursor: "pointer", textAlign: "center" }}>
-              <div style={{ width: 44, height: 44, borderRadius: 9999, background: "var(--secondary-container)", display: "grid", placeItems: "center", marginBottom: 8 }}><span className="material-symbols-outlined" style={{ color: "var(--on-secondary-container)" }}>photo_camera</span></div>
-              <span style={{ fontSize: 12, fontWeight: 600 }}>Mở máy ảnh</span>
-              <input type="file" accept="image/*" capture="environment" style={{ display: "none" }} onChange={(e) => { const f = e.target.files?.[0]; if (f) doVisual(f); }} />
-            </label>
-          </div>
-          <div style={{ marginTop: 12, display: "flex", gap: 8, background: "var(--surface-container-low)", padding: 12, borderRadius: 12, border: "1px solid var(--outline-variant)", fontSize: 12, color: "var(--on-surface-variant)", alignItems: "center" }}>
-            <span className="material-symbols-outlined" style={{ color: "var(--primary)", fontSize: 18 }}>info</span> AI sẽ tìm video có khung hình tương đồng với ảnh của bạn.
-          </div>
-          <div style={{ marginTop: 12, display: "flex", gap: 8, alignItems: "center" }}>
-            <span style={{ fontSize: 11, color: "var(--on-surface-variant)", whiteSpace: "nowrap" as any }}>Tương đồng {similarity}%</span>
-            <input type="range" min={50} max={100} value={similarity} onChange={(e) => setSimilarity(Number(e.target.value))} style={{ flex: 1, accentColor: "var(--primary)" }} />
-          </div>
-          {loading && <div style={{ padding: 16, textAlign: "center", color: "var(--on-surface-variant)" }}>Đang so khớp…</div>}
-          <div style={{ display: "grid", gap: 12, marginTop: 12 }}>
-            {visualResults.map((r: any, i: number) => (
-              <div key={i} style={{ display: "flex", gap: 12, background: "white", border: "1px solid var(--outline-variant)", borderRadius: 16, padding: 10, boxShadow: "0 1px 6px rgba(0,0,0,0.04)" }}>
-                <div style={{ width: 120, height: 72, borderRadius: 8, background: "var(--surface-variant)", overflow: "hidden", flexShrink: 0, position: "relative" }}>
-                  {r.thumbnail_url ? <img src={r.thumbnail_url} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : null}
-                  <span style={{ position: "absolute", bottom: 4, right: 4, background: "rgba(0,0,0,0.65)", color: "white", fontSize: 10, padding: "2px 6px", borderRadius: 4 }}>{r.timestamp?.toFixed(1)}s</span>
-                </div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontWeight: 700, fontSize: 13 }}>{r.video_id}</div>
-                  <div style={{ fontSize: 10, fontWeight: 700, marginTop: 4, color: r.similarity_score > 0.9 ? "#008631" : "var(--primary)", background: r.similarity_score > 0.9 ? "rgba(0,134,49,0.1)" : "rgba(99,14,212,0.1)", display: "inline-block", padding: "2px 6px", borderRadius: 4 }}>{(r.similarity_score * 100).toFixed(0)}% Tương đồng</div>
-                  <div style={{ fontSize: 11, color: "var(--on-surface-variant)", fontStyle: "italic", marginTop: 4, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>—</div>
-                </div>
-                <Link href={`/videos/${r.video_id}?t=${r.timestamp}`} style={{ width: 32, height: 32, borderRadius: 9999, background: "var(--primary)", display: "grid", placeItems: "center", flexShrink: 0, alignSelf: "center" }}>
-                  <span className="material-symbols-outlined" style={{ color: "white", fontSize: 16, fontVariationSettings: "'FILL' 1" }}>play_arrow</span>
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-      <BottomNav active="home" />
-    </div>
-  );
+import { Icon } from "@/components/Icon";
+import { Thumbnail, PageState } from "@/components/Media";
+import { apiClient } from "@/lib/apiClient";
+import { useAuthStore } from "@/stores/authStore";
+import { formatTime, type VisualResults, type TextResults } from "@/lib/content";
+function Search() {
+    const sp = useSearchParams();
+    const [tab, setTab] = useState<"text" | "visual">(sp.get("tab") === "visual" ? "visual" : "text");
+    const [q, setQ] = useState(sp.get("q") || "");
+    const [debounced, setDebounced] = useState(q);
+    const ready = useAuthStore(s => s.ready);
+    const [file, setFile] = useState<File | null>(null);
+    const [revision, setRevision] = useState(0);
+    const [preview, setPreview] = useState("");
+    const [uploadError, setUploadError] = useState("");
+    const [similarity, setSimilarity] = useState(85);
+    const [threshold, setThreshold] = useState(85);
+    const [duration, setDuration] = useState<number | null>(null);
+    const [sort, setSort] = useState("match");
+    const [view, setView] = useState("grid");
+    const [count, setCount] = useState(12);
+    const [recent, setRecent] = useState<string[]>([]);
+    const imageInput = useRef<HTMLInputElement>(null);
+    const cameraInput = useRef<HTMLInputElement>(null);
+    useEffect(() => { const timer = setTimeout(() => setDebounced(q.trim()), 300); return () => clearTimeout(timer); }, [q]);
+    useEffect(() => { const timer = setTimeout(() => setThreshold(similarity), 300); return () => clearTimeout(timer); }, [similarity]);
+    useEffect(() => { if (!file) {
+        setPreview("");
+        return;
+    } const url = URL.createObjectURL(file); setPreview(url); return () => URL.revokeObjectURL(url); }, [file]);
+    useEffect(() => { const value = sessionStorage.getItem("client-searches"); if (value) {
+        try {
+            const stored: unknown = JSON.parse(value);
+            if (Array.isArray(stored))
+                setRecent(stored.filter((v): v is string => typeof v === "string").slice(0, 3));
+        }
+        catch { }
+    } }, []);
+    useEffect(() => { if (!debounced)
+        return; setRecent(old => { const next = [debounced, ...old.filter(v => v !== debounced)].slice(0, 3); sessionStorage.setItem("client-searches", JSON.stringify(next)); return next; }); }, [debounced]);
+    useEffect(() => { if (sp.get("tab") === "visual")
+        setTab("visual"); }, [sp]);
+    const text = useQuery({ queryKey: ["search", debounced], enabled: ready && tab === "text" && !!debounced, queryFn: async ({ signal }) => (await apiClient.get<TextResults>("/api/search", { params: { q: debounced }, signal })).data });
+    const visual = useQuery({ queryKey: ["visual-search", revision, threshold], enabled: ready && tab === "visual" && !!file, retry: false, queryFn: async ({ signal }) => { const form = new FormData(); form.append("image", file!); form.append("min_similarity", String(threshold / 100)); return (await apiClient.post<VisualResults>("/api/search/visual", form, { signal })).data; } });
+    const choose = (f?: File) => {
+        setUploadError("");
+        if (!f)
+            return;
+        if (!["image/jpeg", "image/png", "image/webp"].includes(f.type) || f.size > 5 * 1024 * 1024) {
+            setUploadError("Chọn ảnh JPG, PNG hoặc WebP, tối đa 5 MB.");
+            setFile(null);
+            return;
+        }
+        setFile(f);
+        setRevision(v => v + 1);
+        setCount(12);
+    };
+    const visualItems = visual.data?.results || [];
+    const textItems = text.data?.items || [];
+    const ids = Array.from(new Set((tab === "visual" ? visualItems : textItems).map(r => r.video_id).filter((id): id is string => !!id)));
+    const meta = useQueries({ queries: ids.map(id => ({ queryKey: ["video", id], enabled: ready, queryFn: async () => (await apiClient.get<components["schemas"]["VideoDetail"]>(`/api/videos/${id}`)).data })) });
+    const videoById = new Map(meta.map((m, i) => [ids[i], m.data]));
+    const rows = tab === "visual" ? visualItems.map(r => ({ id: r.video_id, time: r.timestamp || 0, score: r.similarity_score, title: videoById.get(r.video_id || "")?.title, description: videoById.get(r.video_id || "")?.description, thumb: r.thumbnail_url })) : textItems.map(r => ({ id: r.video_id, time: r.timestamp || 0, score: undefined, title: r.title, description: r.matched_text, thumb: videoById.get(r.video_id || "")?.thumbnail_url }));
+    const filtered = rows.filter(r => { if (duration === null)
+        return true; const n = videoById.get(r.id || "")?.duration_seconds; if (n == null)
+        return false; return duration === 0 ? n < 60 : duration === 1 ? n >= 60 && n <= 300 : duration === 2 ? n > 300 && n <= 1200 : n > 1200; }).sort((a, b) => sort === "newest" ? (videoById.get(b.id || "")?.created_at || "").localeCompare(videoById.get(a.id || "")?.created_at || "") : (b.score || 0) - (a.score || 0));
+    const requested = tab === "text" ? !!debounced : !!file;
+    const resultQuery = tab === "text" ? text : visual;
+    const loading = requested && resultQuery.isPending;
+    const changeTab = (value: "text" | "visual") => { setTab(value); setDuration(null); setCount(12); };
+    const uploadArea = <div className="upload-grid">
+  <button className="image-uploader" onClick={() => imageInput.current?.click()} onDragOver={e => e.preventDefault()} onDrop={e => { e.preventDefault(); choose(e.dataTransfer.files[0]); }}>
+   <span><Icon name="photo_library" size={28}/></span><span className="mobile-only">Chọn từ thư viện</span><span className="desktop-only">Kéo và thả ảnh vào đây</span><small className="desktop-only">Hoặc</small><span className="btn-primary desktop-only">Chọn ảnh</span>
+  </button>
+  <button className="image-uploader camera" onClick={() => cameraInput.current?.click()}><span><Icon name="photo_camera" size={28}/></span><span>Mở máy ảnh</span></button>
+  <div className="search-preview">{preview ? <>{/* eslint-disable-next-line @next/next/no-img-element */}<img src={preview} alt="Ảnh tìm kiếm"/><small>{file?.name}</small></> : <><Icon name="visibility" size={36}/><span>Xem trước ảnh</span></>}</div>
+ </div>;
+    return <div className="content-page"><AppNav active="search" search={false}/><MobileHeader title="Tìm kiếm" back><Link className="icon-button" href="/profile?view=library&tab=history" aria-label="Lịch sử xem"><Icon name="history"/></Link></MobileHeader>
+ <main className="search-main"><h1 className="search-title">Tìm kiếm đa phương thức</h1><div className="search-layout"><section className="search-input-panel">
+ <div className="search-tabs" role="tablist" aria-label="Phương thức tìm kiếm"><button role="tab" aria-selected={tab === "text"} className={tab === "text" ? "active" : ""} onClick={() => changeTab("text")}><span className="mobile-only">Văn bản</span><span className="desktop-only">Tìm bằng văn bản</span></button><button role="tab" aria-selected={tab === "visual"} className={tab === "visual" ? "active" : ""} onClick={() => changeTab("visual")}><span className="mobile-only">Hình ảnh</span><span className="desktop-only">Tìm bằng hình ảnh</span></button></div>
+ {tab === "text" ? <><form className="input-wrap search-input" onSubmit={e => { e.preventDefault(); setDebounced(q.trim()); }}><span className="input-icon input-icon--left"><Icon name="search" size={24}/></span><input aria-label="Mô tả video hoặc khoảnh khắc" className="input input--with-left-icon input--with-right-icon" placeholder="Nhập mô tả video hoặc khoảnh khắc..." value={q} onChange={e => { setQ(e.target.value); setCount(12); }}/><button type="button" className="input-icon input-icon--right input-icon--action mobile-only" disabled title="Tìm bằng giọng nói chưa khả dụng" aria-label="Tìm bằng giọng nói"><Icon name="mic" size={24}/></button></form>
+ <div className="search-tags"><span className="desktop-only">Tìm kiếm gần đây:</span>{["#cinematic", "#thien-nhien", "#nấu-ăn", "#vlog"].map(tag => <button className="mobile-only" key={tag} onClick={() => setQ(tag.slice(1))}>{tag}</button>)}{recent.map(item => <button className="desktop-only" key={item} onClick={() => setQ(item)}>{item}</button>)}{!recent.length && <small className="desktop-only">Chưa có tìm kiếm gần đây.</small>}</div></> : <>{uploadArea}<div className="search-info"><Icon name="info"/><p>AI sẽ tìm kiếm video có khung hình tương đồng với ảnh bạn cung cấp.</p></div>{uploadError && <p className="error-banner upload-error" role="alert">{uploadError}</p>}</>}
+ <input ref={imageInput} type="file" accept="image/jpeg,image/png,image/webp" hidden aria-label="Ảnh từ thư viện" onChange={e => { choose(e.target.files?.[0]); e.target.value = ""; }}/><input ref={cameraInput} type="file" accept="image/*" capture="environment" hidden aria-label="Ảnh từ máy ảnh" onChange={e => { choose(e.target.files?.[0]); e.target.value = ""; }}/>
+ </section>
+ <aside className={`search-filters ${tab === "text" ? "text-filters" : ""}`}><h2 className="filter-title"><Icon name="tune"/>Bộ lọc</h2><div className="filter-controls">
+ <div><label htmlFor="similarity">Mức độ tương đồng: <span style={{ color: "var(--primary)" }}>{similarity}%</span></label><input id="similarity" type="range" min={50} max={100} value={similarity} disabled={tab === "text"} onChange={e => setSimilarity(Number(e.target.value))}/><div className="filter-scale"><span>Rộng</span><span>Chính xác</span></div></div>
+ <div className="filter-duration"><label>Thời lượng video</label><div className="duration-buttons">{[["Ngắn", "< 1p"], ["Vừa", "1–5p"], ["Dài", "5–20p"], ["Rất dài", "> 20p"]].map(([label, range], i) => <button key={label} className={duration === i ? "active" : ""} aria-pressed={duration === i} onClick={() => setDuration(duration === i ? null : i)}>{label}<span>{range}</span></button>)}</div></div>
+ <div className="filter-sort"><label htmlFor="sort">Sắp xếp theo</label><select id="sort" value={sort} onChange={e => setSort(e.target.value)}><option value="match">Độ khớp cao nhất</option><option value="newest">Mới nhất</option><option disabled>Phổ biến nhất (chưa có dữ liệu)</option></select></div>
+ </div></aside></div>
+ <section className="search-results-section"><div className="section-heading"><h2>Kết quả tìm kiếm <span className="result-count">({filtered.length} kết quả)</span></h2><div className="result-view-controls"><button className={`icon-button ${view === "grid" ? "active" : ""}`} onClick={() => setView("grid")} aria-label="Hiển thị lưới"><Icon name="grid_view"/></button><button className={`icon-button ${view === "list" ? "active" : ""}`} onClick={() => setView("list")} aria-label="Hiển thị danh sách"><Icon name="view_list"/></button></div></div>
+ {loading || resultQuery.error || !filtered.length ? <PageState loading={loading} error={requested ? resultQuery.error : null} empty={!requested ? "Nhập mô tả hoặc chọn ảnh để tìm kiếm." : "Không có kết quả phù hợp."} retry={() => resultQuery.refetch()}/> : <div className={`search-results ${view === "list" ? "list" : ""}`}>{filtered.slice(0, count).map((result, i) => <article className="search-result" key={`${result.id}-${result.time}-${i}`}>
+ <Link className="media-frame" href={`/videos/${result.id}?t=${result.time}`} aria-label={result.title || result.id}><Thumbnail src={result.thumb}/><time className="time-badge">{formatTime(videoById.get(result.id || "")?.duration_seconds)}</time></Link>
+ <div className="result-body"><h3 className="line-clamp-2">{result.title || result.id}</h3>{result.score != null && <span className={`match-badge ${result.score >= .95 ? "high" : ""}`}>{Math.round(result.score * 100)}% TƯƠNG ĐỒNG</span>}<span className="jump-scene"><Icon name="schedule" size={14}/>Xuất hiện tại {formatTime(result.time)}</span><p className="result-description">{result.description || "Khung hình tương đồng trong video."}</p><div className="result-footer"><span>VidsAI</span><Link href={`/videos/${result.id}?t=${result.time}`}>Chi tiết</Link></div></div><Link href={`/videos/${result.id}?t=${result.time}`} className="result-play" aria-label={`Đến cảnh ${formatTime(result.time)}`}><Icon name="play_arrow" size={20}/></Link>
+ </article>)}</div>}
+ {filtered.length > count && <div className="load-more"><button className="pill" onClick={() => setCount(n => n + 12)}><Icon name="refresh" size={20}/>Tải thêm kết quả</button></div>}
+ </section></main><BottomNav active="search"/></div>;
 }
+export default function SearchPage() { return <Suspense fallback={<PageState loading/>}><Search /></Suspense>; }

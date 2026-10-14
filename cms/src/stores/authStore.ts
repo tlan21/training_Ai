@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
 import { apiClient } from "../lib/apiClient";
 
 type User = { id: string; username: string; email: string; role: string };
@@ -24,6 +24,14 @@ export const useAuthStore = create<State>()(
         set({ accessToken: null, user: null });
       },
     }),
-    { name: "cms-auth", partialize: (s) => ({ accessToken: s.accessToken, user: s.user }) },
+    { name: "cms-auth", partialize: (s) => ({ accessToken: s.accessToken, user: s.user }), storage: createJSONStorage(() => ({
+      getItem: (name) => localStorage.getItem(name) ?? sessionStorage.getItem(name),
+      setItem: (name, value) => {
+        const remember = localStorage.getItem("cms-remember") !== "false";
+        (remember ? sessionStorage : localStorage).removeItem(name);
+        (remember ? localStorage : sessionStorage).setItem(name, value);
+      },
+      removeItem: (name) => { localStorage.removeItem(name); sessionStorage.removeItem(name); },
+    })) },
   ),
 );

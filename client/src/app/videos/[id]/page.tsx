@@ -1,156 +1,139 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
-import Link from "next/link";
-import { apiClient } from "@/lib/apiClient";
+import { useQuery } from "@tanstack/react-query";
+import type { components } from "@/api-types";
+import { useAuthStore } from "@/stores/authStore";
+import { apiClient, errorMessage } from "@/lib/apiClient";
 import { usePlayerStore, buildHighlightRanges, nextHighlightStart } from "@/stores/playerStore";
-export default function VideoDetailPage() {
-  const { id } = useParams<{ id: string }>();
-  const sp = useSearchParams();
-  const t = sp.get("t");
-  const [video, setVideo] = useState<any>(null);
-  const [analysis, setAnalysis] = useState<any>(null);
-  const [subs, setSubs] = useState<any>(null);
-  const [err, setErr] = useState("");
-  const vRef = useRef<HTMLVideoElement>(null);
-  const store = usePlayerStore();
-  useEffect(() => {
-    apiClient.get(`/api/videos/${id}`).then((r) => setVideo(r.data)).catch((e) => setErr(e?.response?.data?.error?.message ?? e.message));
-    apiClient.get(`/api/videos/${id}/analysis`).then((r) => setAnalysis(r.data)).catch(() => {});
-    apiClient.get(`/api/videos/${id}/subtitles`).then((r) => setSubs(r.data)).catch(() => {});
-    apiClient.post("/api/interactions", { video_id: id, interaction_type: "click" }).catch(() => {});
-    return () => { apiClient.post("/api/interactions", { video_id: id, interaction_type: "watch_time", duration_watched: Math.floor(store.currentTime) }).catch(() => {}); };
-  }, [id]);
-  useEffect(() => {
-    if (vRef.current) store.register(vRef.current);
-  }, []);
-  useEffect(() => {
-    if (t && vRef.current) { const tt = Number(t); if (!isNaN(tt)) vRef.current.currentTime = tt; }
-  }, [t, video]);
-  const scores: { second: number; score: number }[] = analysis?.timeline_scores ?? [];
-  const ranges = buildHighlightRanges(scores, 75);
-  const onAuto = () => {
-    const on = !store.autoHighlight; store.setAuto(on);
-    if (on) { const nxt = nextHighlightStart(store.currentTime, ranges); if (nxt !== null) store.seekTo(nxt); }
-  };
-  const segments: any[] = subs?.segments ?? [];
-  const activeIdx = segments.findIndex((s: any) => store.currentTime >= s.start_time && store.currentTime < s.end_time);
-  const [sheetOpen, setSheetOpen] = useState(false);
-  if (err) return <div style={{ padding: 24, color: "var(--danger)" }}>{err} — <Link href="/feed" style={{ color: "var(--primary)" }}>Về feed</Link></div>;
-  if (!video) return <div style={{ padding: 24, color: "var(--on-surface-variant)" }}>Đang tải…</div>;
-  return (
-    <div style={{ maxWidth: 640, margin: "0 auto", background: "var(--background)", minHeight: "100dvh", paddingBottom: 80 }}>
-      <header style={{ position: "sticky", top: 0, zIndex: 20, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px", background: "rgba(255,248,245,0.85)", backdropFilter: "blur(12px)", borderBottom: "1px solid var(--outline-variant)" }}>
-        <button onClick={() => history.back()} style={{ background: "none", border: "none", cursor: "pointer" }}><span className="material-symbols-outlined">arrow_back_ios</span></button>
-        <span style={{ fontWeight: 700, color: "var(--primary)" }}>VidsAI</span>
-        <span className="material-symbols-outlined">share</span>
-      </header>
-      <div style={{ position: "relative", background: "black", aspectRatio: "16/9", overflow: "hidden" }}>
-        <video ref={vRef} src={video.raw_file_path ?? video.playback_url ?? ""} controls style={{ width: "100%", height: "100%", objectFit: "contain" }} onTimeUpdate={(e) => store.onTimeUpdate((e.target as HTMLVideoElement).currentTime)} onLoadedMetadata={(e) => store.setDuration((e.target as HTMLVideoElement).duration)} poster={video.thumbnail_url ?? undefined} />
-        <span style={{ position: "absolute", top: 12, right: 12, background: "rgba(0,0,0,0.5)", color: "white", fontSize: 10, padding: "4px 8px", borderRadius: 9999, backdropFilter: "blur(4px)" }}>AI Augmented</span>
-      </div>
-      <div style={{ padding: "8px 16px", display: "flex", flexDirection: "column", gap: 8, background: "black", color: "white" }}>
-        <div style={{ display: "flex", gap: 2, height: 24, alignItems: "end" }}>
-          {scores.slice(0, 24).map((s, i) => (
-            <div key={i} onClick={() => store.seekTo(s.second)} style={{ flex: 1, height: `${Math.max(20, s.score)}%`, background: s.score > 75 ? "var(--secondary-container)" : s.score > 40 ? "var(--secondary)" : "rgba(124,58,237,0.35)", borderRadius: "2px 2px 0 0", cursor: "pointer" }} title={`${s.second}s: ${s.score}`} />
-          ))}
-        </div>
-        <div style={{ height: 3, background: "rgba(255,255,255,0.25)", borderRadius: 9999, position: "relative" }}>
-          <div style={{ position: "absolute", left: 0, top: 0, height: "100%", width: `${Math.min(100, (store.currentTime / (store.duration || 1)) * 100)}%`, background: "var(--primary)", borderRadius: 9999 }} />
-          <div style={{ position: "absolute", left: `calc(${Math.min(100, (store.currentTime / (store.duration || 1)) * 100)}% - 6px)`, top: "50%", transform: "translateY(-50%)", width: 12, height: 12, borderRadius: 9999, background: "var(--primary)", border: "2px solid white", boxShadow: "0 2px 8px rgba(0,0,0,0.3)" }} />
-        </div>
-        <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10, color: "rgba(255,255,255,0.7)" }}><span>{Math.floor(store.currentTime / 60).toString().padStart(2, "0")}:{(Math.floor(store.currentTime % 60)).toString().padStart(2, "0")}</span><span>{Math.floor((store.duration || 0) / 60).toString().padStart(2, "0")}:{(Math.floor((store.duration || 0) % 60)).toString().padStart(2, "0")}</span></div>
-      </div>
-      <button onClick={onAuto} style={{ margin: "12px 16px", padding: "8px 12px", borderRadius: 8, border: "none", background: store.autoHighlight ? "var(--primary)" : "var(--surface-container-high)", color: store.autoHighlight ? "var(--on-primary)" : "var(--on-surface)", fontWeight: 600, fontSize: 13 }}>⚡ {store.autoHighlight ? "Tắt" : "Bật"} Auto Play Highlights</button>
-      <section style={{ padding: "16px 16px 0" }}>
-        <h1 style={{ fontSize: 16, fontWeight: 700, lineHeight: 1.3 }}>{video.title}</h1>
-        <div style={{ display: "flex", gap: 8, fontSize: 11, color: "var(--on-surface-variant)", marginTop: 6 }}>
-          <span>{video.view_count ?? "1.2M"} lượt xem</span><span>•</span><span>{video.created_at ? new Date(video.created_at).toLocaleDateString("vi-VN") : "2 ngày trước"}</span>
-          {video.category?.name && <span style={{ background: "var(--surface-variant)", padding: "2px 6px", borderRadius: 4, color: "var(--primary)", fontWeight: 700 }}>#{video.category.name}</span>}
-        </div>
-        <div style={{ display: "flex", gap: 8, marginTop: 12, overflowX: "auto" }}>
-          <button style={{ display: "flex", gap: 6, alignItems: "center", background: "var(--surface-container-high)", padding: "8px 12px", borderRadius: 9999, border: "none", whiteSpace: "nowrap" }}><span className="material-symbols-outlined" style={{ fontSize: 18 }}>thumb_up</span> 45K</button>
-          <button style={{ display: "flex", gap: 6, alignItems: "center", background: "var(--surface-container-high)", padding: "8px 12px", borderRadius: 9999, border: "none", whiteSpace: "nowrap" }}><span className="material-symbols-outlined" style={{ fontSize: 18 }}>bookmark</span> Lưu lại</button>
-          <button onClick={() => setSheetOpen(true)} style={{ display: "flex", gap: 6, alignItems: "center", background: "var(--surface-container-high)", padding: "8px 12px", borderRadius: 9999, border: "none", whiteSpace: "nowrap" }}><span className="material-symbols-outlined" style={{ fontSize: 18 }}>description</span> Bản ghi</button>
-        </div>
-      </section>
-      {analysis?.summary && (
-        <section style={{ padding: "16px 16px 0" }}>
-          <div style={{ display: "flex", gap: 6, alignItems: "center", marginBottom: 8 }}><span className="material-symbols-outlined" style={{ color: "var(--primary)", fontVariationSettings: "'FILL' 1", fontSize: 18 }}>auto_awesome</span><h2 style={{ fontSize: 16, fontWeight: 700 }}>Tóm tắt Thông minh bởi AI</h2></div>
-          <div style={{ background: "rgba(124,58,237,0.08)", border: "1px solid rgba(124,58,237,0.15)", borderRadius: 12, padding: 12 }}>
-            <div style={{ fontSize: 14, color: "var(--on-surface-variant)", lineHeight: 1.6 }}>{analysis.summary}</div>
-            {analysis.hashtags?.length ? <div style={{ marginTop: 8, display: "flex", gap: 6, flexWrap: "wrap" as any }}>{analysis.hashtags.map((h: string) => <span key={h} style={{ fontSize: 11, color: "var(--primary)", background: "var(--primary-fixed)", padding: "2px 8px", borderRadius: 9999 }}>{h}</span>)}</div> : null}
-          </div>
-          {analysis?.key_moments?.length ? (
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginTop: 12 }}>
-              {analysis.key_moments.slice(0, 2).map((k: any, i: number) => (
-                <div key={i} onClick={() => store.seekTo(k.timestamp)} style={{ background: "var(--surface-container-low)", border: "1px solid var(--outline-variant)", borderRadius: 12, padding: 10, cursor: "pointer" }}>
-                  <div style={{ fontSize: 10, fontWeight: 700, color: "var(--primary)", textTransform: "uppercase" as any }}>{i === 0 ? "Điểm Nhấn" : "Kết Luận"}</div>
-                  <div style={{ fontSize: 13, fontWeight: 600, marginTop: 4 }}>{k.text} ({Math.floor(k.timestamp / 60)}:{String(Math.floor(k.timestamp % 60)).padStart(2, "0")})</div>
-                </div>
-              ))}
-            </div>
-          ) : null}
-        </section>
-      )}
-      <section style={{ padding: "16px 16px 0" }}>
-        <h2 style={{ fontSize: 16, fontWeight: 700 }}>Đề xuất cho bạn</h2>
-        <div style={{ display: "grid", gap: 12, marginTop: 12 }}>
-          {(video.clips ?? []).slice(0, 3).map((c: any) => (
-            <Link key={c.id} href={`/videos/${id}?t=${c.start_time}`} style={{ display: "flex", gap: 12 }}>
-              <div style={{ width: 140, height: 80, borderRadius: 8, background: "var(--surface-variant)", overflow: "hidden", flexShrink: 0 }} />
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 13, fontWeight: 600, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{c.title}</div>
-                <div style={{ fontSize: 11, color: "var(--on-surface-variant)", marginTop: 4 }}>{c.start_time.toFixed(1)}–{c.end_time.toFixed(1)}s</div>
-              </div>
-            </Link>
-          ))}
-          {(video.clips ?? []).length === 0 && <div style={{ fontSize: 13, color: "var(--on-surface-variant)" }}>Chưa có clip highlight cho video này.</div>}
-        </div>
-      </section>
-      <nav style={{ position: "fixed", bottom: 0, left: 0, width: "100%", display: "flex", justifyContent: "space-around", alignItems: "center", padding: "0 16px", paddingBottom: "env(safe-area-inset-bottom)", height: 56, background: "var(--surface-container, white)", borderTop: "1px solid var(--outline-variant)", zIndex: 30 }}>
-        <Link href="/feed" style={{ display: "flex", flexDirection: "column", alignItems: "center", color: "var(--on-surface-variant)" }}><span className="material-symbols-outlined">home</span><span style={{ fontSize: 10 }}>Trang chủ</span></Link>
-        <Link href="/discover" style={{ display: "flex", flexDirection: "column", alignItems: "center", color: "var(--on-surface-variant)" }}><span className="material-symbols-outlined">explore</span><span style={{ fontSize: 10 }}>Khám phá</span></Link>
-        <Link href="/profile" style={{ display: "flex", flexDirection: "column", alignItems: "center", background: "var(--primary-container)", color: "var(--on-primary-container)", borderRadius: 12, padding: "4px 12px" }}><span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>video_library</span><span style={{ fontSize: 10 }}>Thư viện</span></Link>
-        <Link href="/profile" style={{ display: "flex", flexDirection: "column", alignItems: "center", color: "var(--on-surface-variant)" }}><span className="material-symbols-outlined">person</span><span style={{ fontSize: 10 }}>Cá nhân</span></Link>
-      </nav>
-      {sheetOpen && (
-        <div style={{ position: "fixed", inset: 0, zIndex: 50 }}>
-          <div onClick={() => setSheetOpen(false)} style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.4)", backdropFilter: "blur(4px)" }} />
-          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, maxHeight: "75dvh", background: "white", borderRadius: "24px 24px 0 0", display: "flex", flexDirection: "column", overflow: "hidden", boxShadow: "0 -8px 32px rgba(0,0,0,0.15)" }}>
-            <div onClick={() => setSheetOpen(false)} style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: "8px 0 12px", cursor: "pointer" }}>
-              <div style={{ width: 40, height: 4, borderRadius: 9999, background: "var(--outline-variant)" }} />
-              <h3 style={{ fontSize: 16, fontWeight: 700, marginTop: 8 }}>Bản ghi Nội dung</h3>
-            </div>
-            <div style={{ flex: 1, overflow: "auto", padding: "0 24px 24px", display: "grid", gap: 12 }}>
-              {segments.map((s: any, i: number) => (
-                <div key={i} data-seg data-text={s.text.toLowerCase()} onClick={() => { store.seekTo(s.start_time); setSheetOpen(false); }} style={{ display: "flex", gap: 12, padding: i === activeIdx ? 12 : "0", background: i === activeIdx ? "rgba(124,58,237,0.08)" : "transparent", borderLeft: i === activeIdx ? "4px solid var(--primary)" : "4px solid transparent", borderRadius: 8, cursor: "pointer" }}>
-                  <span style={{ fontWeight: 700, color: "var(--primary)", fontSize: 13, flexShrink: 0 }}>{String(Math.floor(s.start_time / 60)).padStart(2, "0")}:{(Math.floor(s.start_time % 60)).toString().padStart(2, "0")}</span>
-                  <span style={{ fontSize: 14, color: i === activeIdx ? "var(--on-surface)" : "var(--on-surface-variant)", fontWeight: i === activeIdx ? 600 : 400 }}>{s.text}</span>
-                </div>
-              ))}
-              {segments.length === 0 && <div style={{ color: "var(--on-surface-variant)", fontSize: 13, padding: 12 }}>Chưa có phụ đề</div>}
-            </div>
-            <div style={{ padding: 12, borderTop: "1px solid var(--outline-variant)", display: "flex", gap: 8, background: "white" }}>
-              <div style={{ flex: 1, background: "var(--surface-container)", borderRadius: 9999, padding: "8px 16px", display: "flex", gap: 8, alignItems: "center" }}>
-                <span className="material-symbols-outlined" style={{ color: "var(--on-surface-variant)", fontSize: 18 }}>search</span>
-                <input placeholder="Tìm trong bản ghi..." onChange={(e) => {
-                  const q = e.target.value.toLowerCase();
-                  document.querySelectorAll("[data-seg]").forEach((el) => {
-                    const t = (el as HTMLElement).dataset.text ?? "";
-                    (el as HTMLElement).style.display = t.includes(q) ? "" : "none";
-                  });
-                }} style={{ flex: 1, border: "none", background: "transparent", outline: "none", fontSize: 13 }} />
-              </div>
-              <button onClick={() => {
-                const blob = new Blob([segments.map((s: any) => `[${s.start_time.toFixed(1)}-${s.end_time.toFixed(1)}] ${s.text}`).join("\n")], { type: "text/plain" });
-                const url = URL.createObjectURL(blob); const a = document.createElement("a"); a.href = url; a.download = `${id}.txt`; a.click(); URL.revokeObjectURL(url);
-              }} style={{ padding: "8px 12px", borderRadius: 9999, border: "none", background: "var(--primary)", color: "white", fontWeight: 600, fontSize: 13 }}>Tải .txt</button>
-              <button onClick={() => setSheetOpen(false)} style={{ padding: 8, borderRadius: 9999, border: "none", background: "transparent" }}><span className="material-symbols-outlined">close</span></button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
+import { useWatchTime } from "@/lib/useWatchTime";
+import { formatTime, formatDate, track, shareVideo } from "@/lib/content";
+import { AppNav, MobileHeader } from "@/components/AppNav";
+import { BottomNav } from "@/components/BottomNav";
+import { Icon } from "@/components/Icon";
+import { PageState, Thumbnail } from "@/components/Media";
+import { Transcript } from "@/components/Transcript";
+function VideoDetail() {
+    const { id } = useParams<{
+        id: string;
+    }>();
+    const search = useSearchParams();
+    const ready = useAuthStore(s => s.ready);
+    const video = useQuery({ queryKey: ["video", id], enabled: ready, queryFn: async () => (await apiClient.get<components["schemas"]["VideoDetail"]>(`/api/videos/${id}`)).data });
+    const analysis = useQuery({ queryKey: ["analysis", id], enabled: ready, queryFn: async () => (await apiClient.get<components["schemas"]["PublicAnalysis"]>(`/api/videos/${id}/analysis`)).data });
+    const subs = useQuery({ queryKey: ["subtitles", id], enabled: ready, queryFn: async () => (await apiClient.get<components["schemas"]["Subtitles"]>(`/api/videos/${id}/subtitles`)).data });
+    // shortcut: VideoDetail has no original playback URL; use published clips until the contract supplies it.
+    const clips = video.data?.clips?.filter(c => c.status === "published") || [];
+    const requested = Number(search.get("t") || 0);
+    const validTime = Number.isFinite(requested) && requested >= 0 ? requested : 0;
+    const initialClip = clips.find(c => c.id === search.get("clip")) || clips.find(c => validTime >= (c.start_time || 0) && validTime < (c.end_time || 0)) || clips[0];
+    const [selected, setSelected] = useState<string | null>(null);
+    const selectedClip = clips.find(c => c.id === selected) || initialClip;
+    const clip = useQuery({ queryKey: ["clip", selectedClip?.id], enabled: !!selectedClip?.id, queryFn: async () => (await apiClient.get<components["schemas"]["Clip"]>(`/api/clips/${selectedClip?.id}`)).data });
+    const ref = useRef<HTMLVideoElement | null>(null);
+    const dialog = useRef<HTMLDialogElement>(null);
+    const pendingSeek = useRef<number | null>(null);
+    const store = usePlayerStore();
+    const [sheet, setSheet] = useState(false);
+    const [message, setMessage] = useState("");
+    const [mediaError, setMediaError] = useState(false);
+    const [liked, setLiked] = useState(false);
+    const [saved, setSaved] = useState(false);
+    const [summaryOpen, setSummaryOpen] = useState(true);
+    const [rate,setRate]=useState(1);
+    const offset = selectedClip?.start_time || 0;
+    const end = selectedClip?.end_time || 0;
+    const source = clip.data?.playback_url;
+    const register = useCallback((el: HTMLVideoElement | null) => { ref.current = el; usePlayerStore.getState().register(el, offset); }, [offset]);
+    useEffect(() => { setSelected(null); pendingSeek.current = validTime; setMediaError(false); }, [id, validTime]);
+    useEffect(() => { if (ready)
+        track({ video_id: id, interaction_type: "click" }); }, [id, ready]);
+    useEffect(() => { setMediaError(false); }, [source]);
+    useEffect(() => { if (!message)
+        return; const timer = setTimeout(() => setMessage(""), 4500); return () => clearTimeout(timer); }, [message]);
+    useEffect(() => { if (sheet && !dialog.current?.open)
+        dialog.current?.showModal();
+    else if (!sheet && dialog.current?.open)
+        dialog.current.close(); }, [sheet]);
+    useWatchTime(ref, id, selectedClip?.id, true, source);
+    const seek = (time: number) => {
+        const target = clips.find(c => time >= (c.start_time || 0) && time < (c.end_time || 0));
+        if (!target) {
+            setMessage("Khoảnh khắc này chưa có clip được xuất bản. Nguồn phát video gốc chưa khả dụng.");
+            return;
+        }
+        if (target.id !== selectedClip?.id) {
+            pendingSeek.current = time;
+            setSelected(target.id || null);
+        }
+        else
+            store.seekTo(time);
+    };
+    const scores = useMemo(() => analysis.data?.timeline_scores || [], [analysis.data]);
+    const ranges = useMemo(() => buildHighlightRanges(scores.filter(s => (s.second || 0) >= offset && (s.second || 0) < end)), [scores, offset, end]);
+    const onTime = (el: HTMLVideoElement) => {
+        const time = el.currentTime + offset;
+        store.onTimeUpdate(time);
+        if (store.autoHighlight && !ranges.some(r => time >= r.start && time < r.end)) {
+            const next = nextHighlightStart(time, ranges);
+            if (next !== null)
+                store.seekTo(next);
+            else
+                store.setAuto(false);
+        }
+    };
+    const auto = () => { const on = !store.autoHighlight; store.setAuto(on); if (on && !ranges.some(r => store.currentTime >= r.start && store.currentTime < r.end)) {
+        const next = nextHighlightStart(store.currentTime, ranges);
+        if (next !== null)
+            store.seekTo(next);
+        else
+            store.setAuto(false);
+    } };
+    const share = async () => { try {
+        await shareVideo(id, selectedClip?.id);
+        if (!navigator.share)
+            setMessage("Đã sao chép liên kết.");
+    }
+    catch (e) {
+        if (!(e instanceof DOMException && e.name === "AbortError"))
+            setMessage(errorMessage(e));
+    } };
+    const action = (type: "like" | "save") => { if (type === "like")
+        setLiked(v => !v);
+    else
+        setSaved(v => !v); track({ video_id: id, clip_id: selectedClip?.id, interaction_type: type }); };
+    const segments = subs.data?.segments || [];
+    const currentSegment = segments.find(s => store.currentTime >= (s.start_time || 0) && store.currentTime < (s.end_time || 0));
+    const transcriptProps = { segments, loading: subs.isPending, error: subs.error, currentTime: store.currentTime, seek, retry: () => { void subs.refetch(); }, videoId: id };
+    if (video.isPending || video.error)
+        return <div className="content-page"><AppNav active="discover"/><MobileHeader center back/><PageState loading={video.isPending} error={video.error} retry={() => video.refetch()}/><BottomNav active="library"/></div>;
+    const data = video.data;
+    return <div className="content-page"><AppNav active="discover"/><MobileHeader center back><button className="icon-button" onClick={share} aria-label="Chia sẻ video"><Icon name="share" size={22}/></button></MobileHeader>
+ <main className="detail-main"><div className="detail-left">
+ <section className="detail-player">
+  <video key={selectedClip?.id} ref={register} src={source || undefined} poster={selectedClip?.thumbnail_url || data?.thumbnail_url || undefined} playsInline preload="metadata" onTimeUpdate={e => onTime(e.currentTarget)} onPlay={() => store.setPlaying(true)} onPause={() => store.setPlaying(false)} onError={() => setMediaError(true)} onLoadedMetadata={e => { e.currentTarget.playbackRate=rate;store.setDuration(data?.duration_seconds || end); const time = pendingSeek.current ?? validTime; if (time >= offset && time < end)
+        e.currentTarget.currentTime = time - offset; pendingSeek.current = null; }}/>
+  <span className="player-tag mobile-only">AI Augmented</span>
+  {(clip.isPending && selectedClip || clip.error || !source || mediaError) && <div className="player-unavailable" role={clip.error || mediaError ? "alert" : "status"}><Icon name="smart_display" size={36}/>{clip.isPending && selectedClip ? "Đang tải clip…" : clip.error ? errorMessage(clip.error) : !selectedClip ? "Video chưa có clip được xuất bản." : "Không thể phát clip."}{clip.error && <button className="btn-outline" onClick={() => clip.refetch()}>Thử lại</button>}</div>}
+  {source && !mediaError && <><div className="detail-center-controls"><button aria-label="Lùi 10 giây" onClick={() => store.seekTo(Math.max(offset, store.currentTime - 10))}><Icon name="replay_10" size={32}/></button><button aria-label={store.isPlaying ? "Tạm dừng" : "Phát video"} onClick={store.togglePlay}><Icon name={store.isPlaying ? "pause" : "play_arrow"} size={36}/></button><button aria-label="Toàn màn hình" onClick={() => void ref.current?.requestFullscreen()}><Icon name="fullscreen" size={28}/></button></div>
+   {currentSegment?.text && <div className="subtitle-overlay">{currentSegment.text}</div>}
+  </>}
+  <div className="player-bottom">
+   <div className="heatmap" aria-label="Heatmap điểm highlight">{scores.map((s, i) => <button key={i} aria-label={`Đến ${formatTime(s.second)}, điểm ${Math.round(s.score || 0)}`} title={`${formatTime(s.second)} · Cường độ: ${Math.round(s.score || 0)}/100`} onClick={() => seek(s.second || 0)} style={{ height: `${Math.max(8, s.score || 0)}%`, background: (s.score || 0) > 75 ? "#c6252b" : (s.score || 0) >= 40 ? "#fea619" : "#630ed4" }}/>)}{!!scores.length && <i className="heatmap-cursor" style={{ left: `${Math.min(100, store.currentTime / (data?.duration_seconds || 1) * 100)}%` }}/>}</div>
+   <input aria-label="Vị trí phát video" className="detail-seek" type="range" min={offset} max={end || 1} step={.1} value={Math.min(end || 1, Math.max(offset, store.currentTime))} disabled={!source} onChange={e => store.seekTo(Number(e.target.value))}/>
+   <div className="player-toolbar"><div className="desktop-player-controls"><button className="icon-button" aria-label="Lùi 10 giây" onClick={() => store.seekTo(Math.max(offset, store.currentTime - 10))}><Icon name="skip_previous" size={20}/></button><button className="icon-button" aria-label={store.isPlaying ? "Tạm dừng" : "Phát video"} onClick={store.togglePlay}><Icon name={store.isPlaying ? "pause" : "play_arrow"} size={20}/></button><button className="icon-button" aria-label="Tiến 10 giây" onClick={() => store.seekTo(Math.min(end, store.currentTime + 10))}><Icon name="skip_next" size={20}/></button></div><time>{formatTime(store.currentTime)}<span className="desktop-only"> / {formatTime(data?.duration_seconds)}</span></time><time className="player-end-time">{formatTime(data?.duration_seconds)}</time><button className="auto-highlight desktop-only" aria-pressed={store.autoHighlight} onClick={auto} disabled={!source || !ranges.length}><Icon name="auto_awesome" size={16}/>Tự động phát Highlight</button><details className="player-settings desktop-only"><summary className="icon-button" aria-label="Cài đặt trình phát"><Icon name="settings"/></summary><div><label htmlFor="playback-rate">Tốc độ phát</label><select id="playback-rate" value={rate} onChange={e=>{const value=Number(e.target.value);setRate(value);if(ref.current)ref.current.playbackRate=value;}}>{[.5,.75,1,1.25,1.5,2].map(value=><option key={value} value={value}>{value}×</option>)}</select></div></details><button className="icon-button desktop-only" onClick={() => void ref.current?.requestFullscreen()} aria-label="Toàn màn hình"><Icon name="fullscreen"/></button></div>
+  </div>
+ </section>
+ <div className="notice detail-error">Đang xem clip đã xuất bản{selectedClip ? ` (${formatTime(offset)}–${formatTime(end)})` : ""}. Video gốc chưa có nguồn phát.</div>
+ <div className="auto-highlight-mobile"><button className="auto-highlight" aria-pressed={store.autoHighlight} onClick={auto} disabled={!source || !ranges.length}><Icon name="auto_awesome" size={16}/>Tự động phát Highlight</button></div>
+ <section className="detail-metadata"><h1>{data?.title}</h1><div className="video-metadata-line"><span>{formatDate(data?.created_at)}</span><span>{formatTime(data?.duration_seconds)}</span>{data?.category?.name && <span className="category">#{data.category.name}</span>}</div>
+ <div className="detail-channel"><span className="avatar"><Icon name="movie_filter" size={22}/></span><div><p>VidsAI</p><small>Video đã xử lý</small></div></div>
+ <div className="detail-quick-actions hide-scrollbar"><button aria-pressed={liked} className={liked ? "active" : ""} onClick={() => action("like")}><Icon name="thumb_up" size={20}/>{liked ? "Đã thích" : "Thích"}</button><button className={`mobile-action ${saved ? "active" : ""}`} aria-pressed={saved} onClick={() => action("save")}><Icon name="bookmark" size={20} filled={saved}/>Lưu lại</button><button className="mobile-action" onClick={() => { setSummaryOpen(true); document.getElementById("ai-summary")?.scrollIntoView({ behavior: "smooth" }); }} disabled={!analysis.data?.summary}><Icon name="auto_awesome" size={20}/>Tóm tắt AI</button><button className="mobile-action" onClick={() => setSheet(true)}><Icon name="description" size={20}/>Bản ghi</button><button className="desktop-only" onClick={share}><Icon name="share" size={20}/>Chia sẻ</button></div></section>
+ {analysis.isPending ? <PageState loading/> : analysis.error ? <div className="detail-error"><PageState error={analysis.error} retry={() => analysis.refetch()}/></div> : analysis.data?.summary && <section className="summary-section" id="ai-summary"><button className="summary-heading" onClick={() => setSummaryOpen(!summaryOpen)} aria-expanded={summaryOpen}><span className="mobile-only"><Icon name="auto_awesome" filled/></span><span className="desktop-only"><Icon name="bolt"/></span><h2><span className="mobile-only">Tóm tắt Thông minh bởi AI</span><span className="desktop-only">Tóm tắt nội dung bằng AI</span></h2><Icon name="expand_more" size={18}/></button>{summaryOpen && <><p className="summary-content">{analysis.data.summary}</p>{!!analysis.data.key_moments?.length && <div className="moment-grid">{analysis.data.key_moments.map((moment, i) => <button key={i} onClick={() => seek(moment.timestamp || 0)}><small><span className="mobile-only">{i === 0 ? "Điểm Nhấn" : i === 1 ? "Kết Luận" : "Điểm Nhấn"}</span><time className="desktop-only">{formatTime(moment.timestamp)}</time></small><span>{moment.text} <time className="mobile-only">({formatTime(moment.timestamp)})</time></span></button>)}</div>}{!!analysis.data.hashtags?.length && <div className="summary-hashtags">{analysis.data.hashtags.map(h => <span key={h}>{h.startsWith("#") ? h : `#${h}`}</span>)}</div>}</>}</section>}
+ <section className="related-section"><h2><span className="mobile-only">Đề xuất cho bạn</span><span className="desktop-only">Video liên quan</span></h2><div className="related-list">{clips.map(c => <button className="related-card" key={c.id} onClick={() => { pendingSeek.current = c.start_time || 0; setSelected(c.id || null); store.seekTo(c.start_time || 0); }}><div className="media-frame"><Thumbnail src={c.thumbnail_url}/><time className="time-badge">{formatTime((c.end_time || 0) - (c.start_time || 0))}</time></div><div><h3 className="line-clamp-2">{c.title}</h3><small>VidsAI · AI Highlight</small></div></button>)}</div>{!clips.length && <PageState empty="Chưa có clip highlight cho video này."/>}</section>
+ </div><aside className="transcript-desktop"><Transcript {...transcriptProps}/></aside></main>
+ <dialog ref={dialog} className="transcript-dialog" onCancel={() => setSheet(false)} onClose={() => setSheet(false)} onClick={e => { if (e.target === e.currentTarget)
+        setSheet(false); }}>{sheet && <Transcript {...transcriptProps} close={() => setSheet(false)}/>}</dialog>
+ <BottomNav active="library"/>{message && <div className="feed-toast" role="status">{message}</div>}</div>;
 }
+export default function VideoDetailPage() { return <Suspense fallback={<PageState loading/>}><VideoDetail /></Suspense>; }

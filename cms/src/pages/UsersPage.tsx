@@ -1,45 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import type { components } from "../api-types";
 import { useCmsUsers, useUpdateRole } from "../hooks/useCms";
 import { useAuthStore } from "../stores/authStore";
-
+import { Icon } from "../components/common/Icon";
+import { Pagination } from "../components/common/Media";
+import { Skeleton, Empty, ErrorState } from "../components/common/Skeleton";
+import { useToast } from "../components/common/Toast";
+import { errorMessage } from "../lib/apiClient";
 export default function UsersPage() {
-  const [page] = useState(1);
+  const [page, setPage] = useState(1);
   const list = useCmsUsers(page);
-  const upd = useUpdateRole();
-  const meId = useAuthStore((s) => s.user?.id);
-  const items: any[] = list.data?.items ?? list.data ?? [];
-  return (
-    <div>
-      <h2>Người dùng (admin only)</h2>
-      <div className="card" style={{ marginTop: 16, overflow: "hidden" }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
-          <thead><tr style={{ background: "var(--bg-surface-2)", textAlign: "left" }}><th style={{ padding: 8 }}>Username</th><th>Email</th><th>Role</th><th>Hành động</th></tr></thead>
-          <tbody>
-            {items.map((u: any) => (
-              <tr key={u.id} style={{ borderTop: "1px solid var(--border)" }}>
-                <td style={{ padding: 8 }}>{u.username}</td>
-                <td>{u.email}</td>
-                <td>
-                  <select className="input" defaultValue={u.role} id={`role-${u.id}`} disabled={u.id === meId} style={{ padding: "4px 8px" }}>
-                    <option value="admin">admin</option>
-                    <option value="editor">editor</option>
-                    <option value="client">client</option>
-                  </select>
-                </td>
-                <td>
-                  <button disabled={u.id === meId} onClick={() => {
-                    const el = document.getElementById(`role-${u.id}`) as HTMLSelectElement;
-                    if (el) upd.mutate({ id: u.id, role: el.value });
-                  }} style={{ color: u.id === meId ? "var(--text-muted)" : "var(--primary)" }}>
-                    Lưu
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {items.length === 0 && <div style={{ padding: 16, color: "var(--text-muted)" }}>{list.isLoading ? "Đang tải…" : "Không có user"}</div>}
-      </div>
-    </div>
-  );
+  const myId = useAuthStore((state) => state.user?.id);
+  return <div><div className="page-header"><div><h2>Quản lý người dùng</h2><p>Quản lý tài khoản và phân quyền truy cập CMS.</p></div></div><section className="card table-card"><div className="table-scroll"><table className="data-table users-table"><thead><tr><th>Tên người dùng</th><th>Email</th><th>Vai trò</th><th>Hành động</th></tr></thead><tbody>{list.data?.items?.map((user) => <UserRow key={user.id} user={user} isMe={user.id === myId} />)}</tbody></table></div>{list.isLoading ? <div className="panel-body"><Skeleton h={48} /><Skeleton h={48} /></div> : list.isError ? <ErrorState msg={errorMessage(list.error)} onRetry={() => list.refetch()} /> : !list.data?.items?.length && <Empty msg="Chưa có người dùng" />}<Pagination page={page} total={list.data?.total ?? 0} onPage={setPage} /></section></div>;
+}
+function UserRow({ user, isMe }: { user: components["schemas"]["User"]; isMe: boolean }) {
+  const [role, setRole] = useState(user.role ?? "client");
+  const update = useUpdateRole();
+  const toast = useToast();
+  useEffect(() => setRole(user.role ?? "client"), [user.role]);
+  return <tr><td><div className="account-row"><span className="avatar"><Icon name="person" size={20} /></span><div><strong>{user.username}</strong>{isMe && <p className="micro">Tài khoản của bạn</p>}</div></div></td><td>{user.email}</td><td><select className="input compact-input" aria-label={`Vai trò của ${user.username}`} value={role} onChange={(event) => setRole(event.target.value as NonNullable<components["schemas"]["User"]["role"]>)} disabled={isMe || update.isPending}><option value="admin">Quản trị viên</option><option value="editor">Biên tập viên</option><option value="client">Người xem</option></select></td><td><button className="btn-text" disabled={isMe || update.isPending || role === user.role} onClick={() => user.id && update.mutate({ id: user.id, role }, { onSuccess: () => toast.ok("Đã cập nhật vai trò"), onError: (error) => toast.err(errorMessage(error)) })}><Icon name="save" size={18} />{update.isPending ? "Đang lưu…" : "Lưu"}</button></td></tr>;
 }

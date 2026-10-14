@@ -1,30 +1,43 @@
 import axios from "axios";
 import { useAuthStore } from "@/stores/authStore";
+import type { components, paths } from "@/api-types";
 export const apiClient = axios.create({ baseURL: process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8000", withCredentials: true });
 apiClient.interceptors.request.use((cfg) => {
-  const t = useAuthStore.getState().accessToken;
-  if (t) cfg.headers.Authorization = `Bearer ${t}`;
-  return cfg;
+    const token = useAuthStore.getState().accessToken;
+    if (token)
+        cfg.headers.Authorization = `Bearer ${token}`;
+    return cfg;
 });
-let refreshing = false;
-let queue: Array<(t: string | null) => void> = [];
-apiClient.interceptors.response.use(
-  (r) => r,
-  async (err) => {
+let refreshRequest: Promise<string> | null = null;
+export function refreshSession() {
+    if (!refreshRequest)
+        refreshRequest = axios.post<paths["/api/auth/refresh"]["post"]["responses"][200]["content"]["application/json"]>(`${apiClient.defaults.baseURL}/api/auth/refresh`, {}, { withCredentials: true }).then(({ data }) => {
+            if (!data.access_token)
+                throw new Error("Phiên đăng nhập không hợp lệ.");
+            useAuthStore.getState().setToken(data.access_token);
+            return data.access_token;
+        }).finally(() => { refreshRequest = null; });
+    return refreshRequest;
+}
+apiClient.interceptors.response.use(r => r, async (err) => {
     const orig = err.config;
-    if (err.response?.status === 401 && !orig._retry) {
-      if (refreshing) return new Promise((res, rej) => { queue.push((t) => t ? (orig.headers.Authorization = `Bearer ${t}`, res(apiClient(orig))) : rej(err)); });
-      orig._retry = true; refreshing = true;
-      try {
-        const r = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8000"}/api/auth/refresh`, {}, { withCredentials: true });
-        const tok = r.data.access_token;
-        useAuthStore.getState().setToken(tok);
-        queue.forEach((cb) => cb(tok)); queue = [];
-        orig.headers.Authorization = `Bearer ${tok}`;
-        return apiClient(orig);
-      } catch (e) { queue.forEach((cb) => cb(null)); queue = []; useAuthStore.getState().logout(); if (typeof window !== "undefined") window.location.href = "/login"; return Promise.reject(e); }
-      finally { refreshing = false; }
+    if (orig && err.response?.status === 401 && !orig._retry && !orig.url?.startsWith("/api/auth/")) {
+        orig._retry = true;
+        try {
+            const token = await refreshSession();
+            orig.headers.Authorization = `Bearer ${token}`;
+            return apiClient(orig);
+        }
+        catch {
+            useAuthStore.getState().logout();
+            if (typeof window !== "undefined")
+                window.location.assign("/login");
+        }
     }
     return Promise.reject(err);
-  },
-);
+});
+export function errorMessage(error: unknown) {
+    if (axios.isAxiosError<components["schemas"]["Error"]>(error))
+        return error.response?.data?.error?.message || "Không thể kết nối máy chủ. Vui lòng thử lại.";
+    return error instanceof Error ? error.message : "Không thể thực hiện yêu cầu.";
+}

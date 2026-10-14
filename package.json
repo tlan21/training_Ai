@@ -1,0 +1,13 @@
+{
+  "name": "training-ai-e2e",
+  "private": true,
+  "scripts": {
+    "test:e2e": "playwright test",
+    "test:e2e:types": "tsc -p e2e/tsconfig.json"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}

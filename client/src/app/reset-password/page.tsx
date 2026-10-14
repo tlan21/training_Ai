@@ -1,65 +1,42 @@
 "use client";
 import { Suspense, useState } from "react";
 import Link from "next/link";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { AuthFrame, AuthField } from "@/components/AuthFrame";
 import { Icon } from "@/components/Icon";
-import { apiClient } from "@/lib/apiClient";
-import "../login.css";
+import { apiClient, errorMessage } from "@/lib/apiClient";
 function ResetForm() {
-  const sp = useSearchParams();
-  const initial = sp.get("token") ?? "";
-  const [token, setToken] = useState(initial);
-  const [pw, setPw] = useState("");
-  const [confirm, setConfirm] = useState("");
-  const [err, setErr] = useState("");
-  const [ok, setOk] = useState(false);
-  const router = useRouter();
-  const submit = async () => {
-    setErr("");
-    if (pw.length < 8) { setErr("Mật khẩu phải ≥8 ký tự"); return; }
-    if (pw !== confirm) { setErr("Xác nhận không khớp"); return; }
-    try {
-      await apiClient.post("/api/auth/reset-password", { token, new_password: pw });
-      setOk(true);
-      setTimeout(() => router.push("/login"), 1500);
-    } catch (e: any) { setErr(e?.response?.data?.error?.message ?? e.message); }
-  };
-  if (ok) return (
-    <div style={{ minHeight: "100vh", display: "grid", placeItems: "center", padding: 16, background: "var(--background)" }}>
-      <div style={{ background: "white", border: "1px solid var(--outline-variant)", borderRadius: 16, padding: 24, maxWidth: 360, width: "100%", textAlign: "center" }}>
-        <div style={{ color: "var(--primary)", fontWeight: 800 }}>Đã đặt lại mật khẩu!</div>
-        <div style={{ fontSize: 13, color: "var(--on-surface-variant)", marginTop: 8 }}>Đang chuyển về đăng nhập…</div>
-        <Link href="/login" style={{ display: "inline-block", marginTop: 12, color: "var(--primary)", fontWeight: 700 }}>Đăng nhập ngay</Link>
-      </div>
-    </div>
-  );
-  return (
-    <div style={{ minHeight: "100vh", background: "var(--background)", padding: "0 16px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-      <div style={{ width: "100%", maxWidth: 360, display: "grid", gap: 16, background: "white", border: "1px solid var(--outline-variant)", borderRadius: 16, padding: 20 }}>
-        <h2 style={{ fontSize: 16, fontWeight: 800 }}>Đặt lại mật khẩu</h2>
-        <p style={{ fontSize: 13, color: "var(--on-surface-variant)" }}>Dán token từ bước quên mật khẩu và nhập mật khẩu mới.</p>
-        <label style={{ fontSize: 11, fontWeight: 700, color: "var(--on-surface-variant)", letterSpacing: 1, textTransform: "uppercase" }}>Token</label>
-        <div className="input-wrap">
-          <span className="input-icon input-icon--left" aria-hidden><Icon name="verified_user" size={18} /></span>
-          <input value={token} onChange={(e) => setToken(e.target.value)} placeholder="paste reset_token" className="input input--with-left-icon login-input" />
-        </div>
-        <label style={{ fontSize: 11, fontWeight: 700, color: "var(--on-surface-variant)", letterSpacing: 1, textTransform: "uppercase" }}>Mật khẩu mới</label>
-        <div className="input-wrap">
-          <span className="input-icon input-icon--left" aria-hidden><Icon name="lock" size={18} /></span>
-          <input type="password" value={pw} onChange={(e) => setPw(e.target.value)} placeholder="≥8 ký tự" className="input input--with-left-icon login-input" />
-        </div>
-        <label style={{ fontSize: 11, fontWeight: 700, color: "var(--on-surface-variant)", letterSpacing: 1, textTransform: "uppercase" }}>Xác nhận</label>
-        <div className="input-wrap">
-          <span className="input-icon input-icon--left" aria-hidden><Icon name="verified_user" size={18} /></span>
-          <input type="password" value={confirm} onChange={(e) => setConfirm(e.target.value)} placeholder="••••••••" className="input input--with-left-icon login-input" />
-        </div>
-        {err && <div style={{ background: "var(--error-container)", color: "var(--on-error-container)", padding: 10, borderRadius: 8, fontSize: 13 }}>{err}</div>}
-        <button onClick={submit} className="btn-primary" style={{ width: "100%" }}><span>Đặt lại mật khẩu</span><Icon name="arrow_forward" size={16} /></button>
-        <Link href="/login" style={{ textAlign: "center", fontSize: 13, color: "var(--primary)" }}>← Về đăng nhập</Link>
-      </div>
-    </div>
-  );
+    const sp = useSearchParams();
+    const [token, setToken] = useState(sp.get("token") || "");
+    const [password, setPassword] = useState("");
+    const [confirm, setConfirm] = useState("");
+    const [show, setShow] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+    const [done, setDone] = useState(false);
+    const submit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setError("");
+        if (password !== confirm) {
+            setError("Mật khẩu xác nhận không khớp.");
+            return;
+        }
+        setLoading(true);
+        try {
+            await apiClient.post("/api/auth/reset-password", { token, new_password: password });
+            setDone(true);
+        }
+        catch (e) {
+            setError(errorMessage(e));
+        }
+        finally {
+            setLoading(false);
+        }
+    };
+    return <AuthFrame mode="reset">{done ? <div className="auth-form"><p className="notice" role="status">Đã đặt lại mật khẩu thành công.</p><Link className="btn-primary" href="/login">Đăng nhập ngay</Link></div> : <form className="auth-form" onSubmit={submit}>
+ <AuthField id="token" label="Mã khôi phục" icon="verified_user" required value={token} onChange={e => setToken(e.target.value)} placeholder="Mã đặt lại mật khẩu"/>
+ <AuthField id="password" label="Mật khẩu mới" icon="lock" required minLength={8} autoComplete="new-password" type={show ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} placeholder="Ít nhất 8 ký tự" action={<button type="button" className="input-icon input-icon--right input-icon--action" aria-label={show ? "Ẩn mật khẩu" : "Hiện mật khẩu"} onClick={() => setShow(!show)}><Icon name={show ? "visibility_off" : "visibility"} size={22}/></button>}/>
+ <AuthField id="confirm" label="Xác nhận mật khẩu" icon="verified_user" required minLength={8} autoComplete="new-password" type="password" value={confirm} onChange={e => setConfirm(e.target.value)} placeholder="Nhập lại mật khẩu"/>
+ {error && <p className="error-banner" role="alert">{error}</p>}<button className="btn-primary auth-submit" disabled={loading}>{loading ? "Đang cập nhật…" : "Đặt lại mật khẩu"}<Icon name="arrow_forward" size={18}/></button></form>}</AuthFrame>;
 }
-export default function ResetPasswordPage() {
-  return <Suspense fallback={<div style={{ padding: 40, textAlign: "center" }}>Đang tải…</div>}><ResetForm /></Suspense>;
-}
+export default function ResetPasswordPage() { return <Suspense fallback={<div className="page-state">Đang tải…</div>}><ResetForm /></Suspense>; }

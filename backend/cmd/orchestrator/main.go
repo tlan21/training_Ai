@@ -16,11 +16,10 @@ func main() {
 	jobRepo := mocks.NewJobRepoMem()
 	ana := mocks.NewAnalysisStoreMem()
 	sub := mocks.NewSubtitleStoreMem()
-	vec := mocks.NewVectorStoreMem()
 	ai := &mocks.AIClientMem{}
 	bus := mocks.NewEventBusMem()
 
-	r := orchestrator.New(videoRepo, jobRepo, ana, sub, vec, ai, bus)
+	r := orchestrator.New(videoRepo, jobRepo, ana, sub, ai, bus)
 	log.Printf("orchestrator ready kafka=%s (stub bus — wire kafka-go when needed)", cfg.KafkaBrokers)
 
 	_ = bus.Consume(context.Background(), "video.uploaded", "orch-uploaded", r.HandleUploaded)

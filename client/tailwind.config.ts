@@ -1,19 +1,3 @@
 import type { Config } from "tailwindcss";
-
-const config: Config = {
-  content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
-  theme: {
-    extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-      },
-    },
-  },
-  plugins: [],
-};
+const config: Config = { content: ["./src/**/*.{ts,tsx}"], theme: { extend: { colors: {"on-error-container": "#93000a", "on-error": "#ffffff", "surface-dim": "#e0d8d5", "surface-container-highest": "#e9e1dd", "on-primary-container": "#ede0ff", "tertiary-fixed": "#ffdad7", "surface-tint": "#732ee4", "secondary-container": "#fea619", "on-secondary-fixed-variant": "#653e00", "on-secondary": "#ffffff", "on-surface-variant": "#4a4455", "tertiary-fixed-dim": "#ffb3ad", "tertiary": "#a20017", "surface-container": "#f4ece8", "on-secondary-fixed": "#2a1700", "surface-container-lowest": "#ffffff", "on-primary": "#ffffff", "error": "#ba1a1a", "primary-fixed-dim": "#d2bbff", "primary-container": "#7c3aed", "secondary-fixed": "#ffddb8", "inverse-on-surface": "#f7efeb", "on-tertiary": "#ffffff", "on-background": "#1e1b19", "primary": "#630ed4", "outline-variant": "#ccc3d8", "surface-variant": "#e9e1dd", "outline": "#7b7487", "secondary": "#855300", "surface-container-low": "#faf2ee", "on-tertiary-container": "#ffdfdc", "inverse-surface": "#33302d", "on-primary-fixed-variant": "#5a00c6", "surface-container-high": "#eee7e3", "secondary-fixed-dim": "#ffb95f", "on-surface": "#1e1b19", "surface": "#fff8f5", "background": "#fff8f5", "on-tertiary-fixed": "#410004", "on-secondary-container": "#684000", "tertiary-container": "#c6252b", "inverse-primary": "#d2bbff", "on-tertiary-fixed-variant": "#930013", "primary-fixed": "#eaddff", "on-primary-fixed": "#25005a", "error-container": "#ffdad6", "surface-bright": "#fff8f5"}, spacing: {"container-margin-mobile":"16px","container-margin-desktop":"40px","gutter":"20px"}, fontFamily: {sans:["Inter","system-ui","sans-serif"]} } }, plugins: [] };
 export default config;

@@ -47,12 +47,10 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
-  # ---- MinIO / Milvus / Kafka: optional (profile: full).
-  # Gateway/Orchestrator chạy mem-mock nên không cần để check CMS.
-  # Bật khi cần:  docker compose --profile full up -d
+  # MinIO/Kafka/Milvus are required for real upload and visual search.
   minio:
-    image: quay.io/minio/minio:RELEASE.2024-06-13T22-53-53Z
-    profiles: ["full"]
+    build: { context: ., dockerfile: infra/minio/Dockerfile }
+    image: video-ai-minio
     command: server /data --console-address ":9001"
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
@@ -80,7 +78,6 @@ services:
       "
   etcd:
     image: quay.io/coreos/etcd:v3.5.14
-    profiles: ["full"]
     environment:
       ETCD_AUTO_COMPACTION_MODE: revision
       ETCD_AUTO_COMPACTION_RETENTION: "1000"
@@ -95,7 +92,6 @@ services:
       retries: 10
   milvus:
     image: milvusdb/milvus:v2.4.9
-    profiles: ["full"]
     command: ["milvus", "run", "standalone"]
     environment:
       ETCD_ENDPOINTS: etcd:2379
@@ -103,7 +99,9 @@ services:
       MINIO_ACCESS_KEY_ID: ${MINIO_ROOT_USER:-minioadmin}
       MINIO_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD:-minioadmin}
       MINIO_BUCKET_NAME: milvus
-    ports: ["19530:19530", "9091:9091"]
+      # Build HNSW even for the small local demo corpus, rather than silently brute-forcing <1024 rows.
+      INDEXCOORD_SEGMENT_MINSEGMENTNUMROWSTOENABLEINDEX: "1"
+    ports: ["127.0.0.1:19530:19530", "127.0.0.1:9091:9091"]
     volumes: [milvus_data:/var/lib/milvus]
     depends_on:
       etcd: { condition: service_healthy }
@@ -116,7 +114,6 @@ services:
       start_period: 60s
   kafka:
     image: apache/kafka:3.8.0
-    profiles: ["full"]
     environment:
       KAFKA_NODE_ID: "1"
       KAFKA_PROCESS_ROLES: broker,controller
@@ -127,7 +124,7 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: "1"
-      CLUSTER_ID: "video-ai-kafka-cluster-id-123456"
+      CLUSTER_ID: "MkU3OEVBNTcwNTJENDM2Qk"
     ports: ["9092:9092"]
     volumes: [kafka_data:/var/lib/kafka/data]
     healthcheck:
@@ -136,6 +133,53 @@ services:
       timeout: 10s
       retries: 12
       start_period: 20s
+  inference-service:
+    build: { context: ., dockerfile: inference-service/Dockerfile }
+    image: video-ai-inference
+    ports: ["127.0.0.1:8001:8001"]
+    environment:
+      AI_SERVICE_KEY: ${AI_SERVICE_KEY:-sk-local-dev-key-change-me}
+      CHECKPOINT_DIR: /srv/ai-core/checkpoints
+      INFER_DEVICE: ${INFER_DEVICE:-cpu}
+      FORCE_STUB: "0"
+      OMP_NUM_THREADS: "2"
+      MKL_NUM_THREADS: "2"
+      MILVUS_HOST: milvus
+      MINIO_ENDPOINT: minio:9000
+      MINIO_ACCESS_KEY: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD:-12345678}
+    volumes:
+      - ./ai-core/checkpoints:/srv/ai-core/checkpoints:ro
+      - ingest_work:/srv/work:ro
+    depends_on:
+      milvus: { condition: service_healthy }
+      minio: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "python", "-c", "import json,urllib.request; h=json.load(urllib.request.urlopen('http://localhost:8001/health')); assert not h['stub_mode'] and len(h['models_loaded'])==6"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+  kafka-init:
+    image: apache/kafka:3.8.0
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - "for topic in video.uploaded video.preprocessed ai.stage.completed clip.cut.requested clip.cut.completed; do /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092 --create --if-not-exists --replication-factor 1 --partitions 1 --topic $$topic || exit 1; done"
+    depends_on:
+      kafka: { condition: service_healthy }
+  ingest-worker:
+    image: video-ai-inference
+    command: ["python", "/srv/ingest-worker/main.py"]
+    environment:
+      KAFKA_BROKERS: kafka:9092
+      MINIO_ENDPOINT: minio:9000
+      MINIO_ACCESS_KEY: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD:-12345678}
+    volumes:
+      - ingest_work:/srv/work
+    depends_on:
+      kafka-init: { condition: service_completed_successfully }
+      minio: { condition: service_healthy }
   gateway:
     build: { context: ., dockerfile: backend/Dockerfile }
     image: video-ai-gateway
@@ -150,18 +194,25 @@ services:
       MILVUS_PORT: "19530"
       KAFKA_BROKERS: kafka:9092
       MINIO_ENDPOINT: minio:9000
-      MINIO_ACCESS_KEY: minioadmin
-      MINIO_SECRET_KEY: "12345678"
+      MINIO_PUBLIC_ENDPOINT: localhost:9000
+      MINIO_ACCESS_KEY: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD:-12345678}
       MINIO_BUCKET: videos
       REDIS_ADDR: redis:6379
       REDIS_PASSWORD: "123456"
       JWT_SECRET: change-me-32-random-chars__openssl-rand-hex-32
-      AI_SERVICE_KEY: sk-local-dev-key-change-me
+      AI_SERVICE_KEY: ${AI_SERVICE_KEY:-sk-local-dev-key-change-me}
       AI_BASE_URL: http://inference-service:8001
     depends_on:
       postgres: { condition: service_healthy }
       mongo: { condition: service_healthy }
       redis: { condition: service_healthy }
+      kafka: { condition: service_healthy }
+      kafka-init: { condition: service_completed_successfully }
+      minio: { condition: service_healthy }
+      inference-service: { condition: service_healthy }
+    volumes:
+      - ingest_work:/srv/work
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost:8000/healthz"]
       interval: 10s
@@ -219,3 +270,4 @@ volumes:
   etcd_data:
   milvus_data:
   kafka_data:
+  ingest_work:

@@ -1,91 +1,75 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
-import { apiClient } from "@/lib/apiClient";
+import { useRouter } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import type { components } from "@/api-types";
+import { AppNav, MobileHeader } from "@/components/AppNav";
 import { BottomNav } from "@/components/BottomNav";
+import { Icon } from "@/components/Icon";
+import { Thumbnail, PageState } from "@/components/Media";
+import { useCategories, useVideos, useClipPage, useHistory, formatTime, formatDate, type Video, type Clip } from "@/lib/content";
+import { apiClient } from "@/lib/apiClient";
+function VideoCard({ video, published }: {
+    video: Video;
+    published: boolean;
+}) {
+    return <Link className="video-card" href={`/videos/${video.id}`}><div className="media-frame"><Thumbnail src={video.thumbnail_url}/>{published && <span className="card-badge ai-badge"><Icon name="auto_awesome" size={12}/>AI Highlight</span>}<time className="time-badge">{formatTime(video.duration_seconds)}</time></div><h3 className="line-clamp-2">{video.title}</h3><small>VidsAI · {video.category?.name || "Video"}<br />{formatDate(video.created_at)}</small></Link>;
+}
+function ClipCard({ clip }: {
+    clip: Clip;
+}) {
+    return <Link className="video-card" href={`/videos/${clip.video_id}?clip=${clip.id}`}><div className="media-frame"><Thumbnail src={clip.thumbnail_url}/><span className="card-badge ai-badge"><Icon name="auto_awesome" size={12}/>AI Highlight</span><time className="time-badge">{formatTime((clip.end_time || 0) - (clip.start_time || 0))}</time></div><h3 className="line-clamp-2">{clip.title}</h3><small>VidsAI · {formatDate(clip.created_at)}</small></Link>;
+}
 export default function DiscoverPage() {
-  const [cats, setCats] = useState<{ id: string; name: string }[]>([]);
-  const [active, setActive] = useState<string>("");
-  const [videos, setVideos] = useState<any[]>([]);
-  const [sort, setSort] = useState<"newest" | "trending">("newest");
-  useEffect(() => { apiClient.get("/api/categories").then((r) => setCats(r.data)).catch(() => {}); }, []);
-  useEffect(() => {
-    apiClient.get("/api/videos", { params: { category_id: active || undefined, sort } }).then((r) => setVideos(r.data.items ?? [])).catch(() => setVideos([]));
-  }, [active, sort]);
-  return (
-    <div style={{ minHeight: "100dvh", background: "var(--background)", paddingBottom: 72 }}>
-      <header style={{ position: "sticky", top: 0, zIndex: 20, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px", background: "rgba(255,248,245,0.85)", backdropFilter: "blur(12px)", borderBottom: "1px solid var(--outline-variant)" }}>
-        <span style={{ fontWeight: 800, fontSize: 18, color: "var(--primary)" }}>VidsAI</span>
-        <div style={{ display: "flex", gap: 12, color: "var(--on-surface-variant)" }}>
-          <span className="material-symbols-outlined">search</span>
-          <span className="material-symbols-outlined">notifications</span>
-        </div>
-      </header>
-      <section style={{ padding: "12px 16px" }}>
-        <div style={{ display: "flex", background: "var(--surface-container-low)", borderRadius: 12, padding: "10px 12px", gap: 8, alignItems: "center", border: "1px solid var(--outline-variant)" }}>
-          <span className="material-symbols-outlined" style={{ color: "var(--outline)", fontSize: 20 }}>search</span>
-          <input placeholder="Tìm kiếm video, hình ảnh..." style={{ flex: 1, border: "none", background: "transparent", outline: "none", fontSize: 13 }} />
-          <span className="material-symbols-outlined" style={{ color: "var(--primary)", fontVariationSettings: "'FILL' 1" }}>image_search</span>
-        </div>
-      </section>
-      <section style={{ padding: "0 16px", display: "flex", gap: 8, overflowX: "auto", scrollbarWidth: "none" } as any}>
-        <button onClick={() => setActive("")} style={{ flexShrink: 0, padding: "8px 16px", borderRadius: 9999, border: "none", background: active === "" ? "var(--primary)" : "var(--surface-container-high)", color: active === "" ? "var(--on-primary)" : "var(--on-surface)", fontWeight: 600, fontSize: 13 }}>Tất cả</button>
-        {cats.map((c) => (
-          <button key={c.id} onClick={() => setActive(c.id)} style={{ flexShrink: 0, padding: "8px 16px", borderRadius: 9999, border: "none", background: active === c.id ? "var(--primary)" : "var(--surface-container-high)", color: active === c.id ? "var(--on-primary)" : "var(--on-surface)", fontWeight: 600, fontSize: 13 }}>{c.name}</button>
-        ))}
-      </section>
-      <section style={{ padding: "16px 16px 0" }}>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <h2 style={{ fontSize: 16, fontWeight: 700 }}>Tiếp tục xem</h2>
-          <Link href="/feed" style={{ color: "var(--primary)", fontSize: 13, fontWeight: 600 }}>Xem tất cả</Link>
-        </div>
-        <div style={{ display: "flex", gap: 12, overflowX: "auto", marginTop: 12, scrollbarWidth: "none" } as any}>
-          {videos.slice(0, 2).map((v: any) => (
-            <Link key={v.id} href={`/videos/${v.id}`} style={{ minWidth: 240, flexShrink: 0 }}>
-              <div style={{ aspectRatio: "16/9", borderRadius: 12, background: "var(--surface-variant)", overflow: "hidden", position: "relative" }}>
-                {v.thumbnail_url ? <img src={v.thumbnail_url} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : null}
-                <span style={{ position: "absolute", bottom: 6, right: 6, background: "rgba(0,0,0,0.65)", color: "white", fontSize: 10, padding: "2px 6px", borderRadius: 4 }}>12:45</span>
-                <div style={{ position: "absolute", bottom: 0, left: 0, width: "100%", height: 4, background: "var(--surface-variant)" }}><div style={{ height: "100%", width: "65%", background: "var(--primary)" }} /></div>
-              </div>
-              <div style={{ fontSize: 13, fontWeight: 600, marginTop: 6, display: "-webkit-box", WebkitLineClamp: 1, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{v.title}</div>
-              <div style={{ fontSize: 11, color: "var(--on-surface-variant)" }}>{v.category?.name ?? ""} • 1.2M lượt xem</div>
-            </Link>
-          ))}
-          {videos.length === 0 && <div style={{ color: "var(--on-surface-variant)", fontSize: 13 }}>Không có video</div>}
-        </div>
-      </section>
-      <section style={{ padding: "16px 16px 0" }}>
-        <h2 style={{ fontSize: 16, fontWeight: 700 }}>Gợi ý cho bạn</h2>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 12 }}>
-          {videos.slice(0, 3).map((v: any, i: number) => (
-            <Link key={v.id} href={`/videos/${v.id}`} style={{ gridColumn: i === 0 ? "span 2" : "span 1", borderRadius: 16, overflow: "hidden", background: "var(--surface-container-lowest)", border: "1px solid var(--outline-variant)", display: "block" }}>
-              <div style={{ aspectRatio: i === 0 ? "16/9" : "1/1", background: "var(--surface-variant)", position: "relative" }}>
-                {v.thumbnail_url ? <img src={v.thumbnail_url} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : null}
-                {i === 0 && <span style={{ position: "absolute", top: 8, left: 8, background: "var(--primary)", color: "white", fontSize: 10, fontWeight: 700, padding: "4px 8px", borderRadius: 9999 }}>Nổi bật</span>}
-              </div>
-              <div style={{ padding: 10 }}>
-                <div style={{ fontSize: 13, fontWeight: 700, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{v.title}</div>
-                <div style={{ fontSize: 11, color: "var(--on-surface-variant)", marginTop: 4 }}>{v.category?.name ?? ""}</div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-      <section style={{ padding: "16px 16px 0" }}>
-        <h2 style={{ fontSize: 16, fontWeight: 700, display: "flex", gap: 6 }}><span className="material-symbols-outlined" style={{ color: "var(--secondary)", fontVariationSettings: "'FILL' 1" }}>trending_up</span> Đang thịnh hành</h2>
-        <div style={{ display: "grid", gap: 12, marginTop: 12 }}>
-          {videos.slice(0, 2).map((v: any) => (
-            <Link key={v.id} href={`/videos/${v.id}`} style={{ display: "flex", gap: 12 }}>
-              <div style={{ width: 120, height: 72, borderRadius: 8, background: "var(--surface-variant)", flexShrink: 0, overflow: "hidden" }}>{v.thumbnail_url ? <img src={v.thumbnail_url} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : null}</div>
-              <div>
-                <div style={{ fontSize: 13, fontWeight: 600, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{v.title}</div>
-                <div style={{ fontSize: 11, color: "var(--on-surface-variant)", marginTop: 4 }}>Gaming Hub • 2.4M views</div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-      <BottomNav active="discover" />
-    </div>
-  );
+    const [category, setCategory] = useState("");
+    const [q, setQ] = useState("");
+    const categories = useCategories();
+    const newest = useVideos(category, "newest");
+    const trending = useVideos(category, "trending");
+    const feed = useClipPage("/api/feed");
+    const history = useHistory();
+    const router = useRouter();
+    const trendRef = useRef<HTMLDivElement>(null);
+    const newItems = newest.data?.pages.flatMap(p => p.items || []) || [];
+    const trendItems = trending.data?.pages.flatMap(p => p.items || []) || [];
+    const clips = feed.data?.pages.flatMap(p => p.items || []) || [];
+    const viewed = history.data?.pages.flatMap(p => p.items || []) || [];
+    const published = new Set(clips.map(c => c.video_id));
+    const hero = newItems[0];
+    const analysis = useQuery({ queryKey: ["analysis", hero?.id], enabled: !!hero?.id, queryFn: async () => (await apiClient.get<components["schemas"]["PublicAnalysis"]>(`/api/videos/${hero?.id}/analysis`)).data });
+    const filteredClips = category ? clips.filter(c => newItems.some(v => v.id === c.video_id) || trendItems.some(v => v.id === c.video_id)) : clips;
+    const newestState = newest.isPending || newest.error || !newItems.length;
+    const recommendation = feed.isPending || feed.error || !filteredClips.length;
+    return <div className="content-page"><AppNav active="discover"/><MobileHeader />
+ <form className="discovery-mobile-search mobile-only" onSubmit={e => { e.preventDefault(); router.push(`/search?q=${encodeURIComponent(q)}`); }}><div className="input-wrap"><span className="input-icon input-icon--left"><Icon name="search"/></span><input aria-label="Tìm kiếm video" placeholder="Tìm kiếm video, hình ảnh..." value={q} onChange={e => setQ(e.target.value)}/><Link href="/search?tab=visual" className="input-icon input-icon--right" aria-label="Tìm bằng hình ảnh"><Icon name="image_search"/></Link></div></form>
+ <section className="category-chips hide-scrollbar" aria-label="Danh mục"><button className={`pill ${!category ? "active" : ""}`} onClick={() => setCategory("")}>Tất cả</button>{categories.data?.map(c => <button key={c.id} className={`pill ${category === c.id ? "active" : ""}`} onClick={() => setCategory(c.id || "")}>{c.name}</button>)}</section>
+ {categories.error && <div className="content-main"><PageState error={categories.error} retry={() => categories.refetch()}/></div>}
+ <main className="content-main">
+ <div className="mobile-discovery">
+  <section className="discovery-section"><div className="section-heading"><h2>Tiếp tục xem</h2><Link href="/profile?view=library&tab=history" className="link">Xem tất cả</Link></div>
+   {history.isPending || history.error || !viewed.length ? <PageState loading={history.isPending} error={history.error} empty="Chưa có lịch sử xem." retry={() => history.refetch()}/> : <div className="continue-row hide-scrollbar">{viewed.map((item, i) => item.clip && <Link className="continue-card" href={`/videos/${item.clip.video_id}?clip=${item.clip.id}`} key={item.clip.id || i}><div className="media-frame"><Thumbnail src={item.clip.thumbnail_url}/><time className="time-badge">{formatTime((item.clip.end_time || 0) - (item.clip.start_time || 0))}</time></div><h3 className="line-clamp-2">{item.clip.title}</h3><small>VidsAI · {formatDate(item.watched_at)}</small></Link>)}</div>}
+  </section>
+  <section className="discovery-section"><div className="section-heading"><h2>Gợi ý cho bạn</h2></div>
+   {recommendation ? <PageState loading={feed.isPending} error={feed.error} empty="Chưa có clip phù hợp." retry={() => feed.refetch()}/> : <div className="bento-grid">{filteredClips.slice(0, 3).map((clip, i) => <Link key={clip.id} className="bento-card" href={`/videos/${clip.video_id}?clip=${clip.id}`}><div className="media-frame"><Thumbnail src={clip.thumbnail_url}/>{i === 0 ? <div className="bento-overlay"><span className="ai-badge" style={{ alignSelf: "flex-start" }}>NỔI BẬT</span><h3 className="line-clamp-2">{clip.title}</h3><small>VidsAI</small></div> : <span className="card-badge ai-badge"><Icon name={i === 1 ? "play_circle" : "bolt"} size={16}/></span>}</div>{i > 0 && <h3 className="line-clamp-2">{clip.title}</h3>}</Link>)}</div>}
+   {hero && <Link className="newest-callout" href={`/videos/${hero.id}`}><div className="media-frame"><Thumbnail src={hero.thumbnail_url}/></div><div><small>MỚI NHẤT</small><h3 className="line-clamp-2">{hero.title}</h3><p className="line-clamp-2">{hero.description || hero.category?.name}</p><span className="link">Xem ngay →</span></div></Link>}
+  </section>
+  <section className="discovery-section"><div className="section-heading"><h2><Icon name="trending_up"/>Đang thịnh hành</h2></div>{trending.isPending || trending.error || !trendItems.length ? <PageState loading={trending.isPending} error={trending.error} empty="Chưa có video." retry={() => trending.refetch()}/> : <div className="trending-row">{trendItems.slice(0, 4).map(video => <Link className="trending-card" href={`/videos/${video.id}`} key={video.id}><div className="media-frame"><Thumbnail src={video.thumbnail_url}/></div><div><h3 className="line-clamp-2">{video.title}</h3><small>VidsAI · {video.category?.name || formatDate(video.created_at)}</small></div></Link>)}</div>}</section>
+ </div>
+ <div className="desktop-discovery">
+  <section className="discovery-section"><div className="section-heading"><h2>Highlight mới</h2><button className="link" onClick={() => newest.fetchNextPage()} disabled={!newest.hasNextPage || newest.isFetchingNextPage}>Xem tất cả <Icon name="arrow_forward" size={16}/></button></div>
+   {newestState ? <PageState loading={newest.isPending} error={newest.error} empty="Chưa có video." retry={() => newest.refetch()}/> : <div className="discovery-hero">
+    <Link className="discovery-hero-main" href={`/videos/${hero.id}`}><div className="media-frame"><Thumbnail src={hero.thumbnail_url}/><div className="bento-overlay">
+     {published.has(hero.id) && <span className="ai-badge" style={{ alignSelf: "flex-start" }}><Icon name="auto_awesome" size={12}/>AI Highlight</span>}
+     {!!analysis.data?.timeline_scores?.length && <div className="mini-heatmap">{analysis.data.timeline_scores.map((s, i) => <div key={i} style={{ flex: 1, background: (s.score || 0) > 75 ? "#ba1a1a" : (s.score || 0) >= 40 ? "#fea619" : "#630ed4" }}/>)}</div>}
+     <h3 className="line-clamp-2">{hero.title}</h3><small>VidsAI · {hero.category?.name} · {formatDate(hero.created_at)}</small></div></div></Link>
+    <div className="discovery-hero-side">{newItems.slice(1, 3).map((v, i) => <Link href={`/videos/${v.id}`} key={v.id}><div className="media-frame"><Thumbnail src={v.thumbnail_url}/><div className="bento-overlay"><span className="ai-badge" style={{ alignSelf: "flex-start", background: i === 0 ? "var(--secondary-container)" : "var(--primary)" }}>{i === 0 ? "MỚI" : published.has(v.id) ? "AI MOMENT" : "VIDEO"}</span><h3 className="line-clamp-2">{v.title}</h3><small>VidsAI · {v.category?.name}</small></div></div></Link>)}</div>
+   </div>}
+  </section>
+  <section className="discovery-section"><div className="section-heading"><h2>Đang thịnh hành</h2><div><button className="icon-button" aria-label="Video trước" onClick={() => trendRef.current?.scrollBy({ left: -350, behavior: "smooth" })}><Icon name="chevron_left"/></button><button className="icon-button" aria-label="Video tiếp theo" onClick={() => trendRef.current?.scrollBy({ left: 350, behavior: "smooth" })}><Icon name="chevron_right"/></button></div></div>
+   {trending.isPending || trending.error || !trendItems.length ? <PageState loading={trending.isPending} error={trending.error} empty="Chưa có video." retry={() => trending.refetch()}/> : <div className="trending-desktop-row hide-scrollbar" ref={trendRef}>{trendItems.map(v => <VideoCard key={v.id} video={v} published={published.has(v.id)}/>)}</div>}
+  </section>
+  <section className="discovery-section"><div className="section-heading"><h2>Dành cho bạn</h2></div>{recommendation ? <PageState loading={feed.isPending} error={feed.error} empty="Chưa có clip phù hợp." retry={() => feed.refetch()}/> : <div className="video-grid">{filteredClips.map(c => <ClipCard key={c.id} clip={c}/>)}</div>}{feed.hasNextPage && <div className="load-more"><button className="btn-outline" disabled={feed.isFetchingNextPage} onClick={() => feed.fetchNextPage()}>Tải thêm</button></div>}</section>
+ </div>
+ </main><BottomNav active="discover"/></div>;
 }

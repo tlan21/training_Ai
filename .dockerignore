@@ -3,7 +3,13 @@
 
 # Môi trường ảo (cài lại trong image)
 .venv/
+**/.venv/
 venv/
+**/node_modules/
+client/.next/
+cms/dist/
+playwright-report/
+test-results/
 
 # Dataset thô — inference KHÔNG cần, rất nặng
 data/raw/
@@ -11,6 +17,7 @@ data/processed/
 data/labels/
 
 # Log train
+ai-core/checkpoints/
 runs/
 ai-core/runs/
 
@@ -33,6 +40,4 @@ my-agent/
 # Secrets (đặt qua -e / env server, không bake vào image)
 **/.env
 
-# GHI CHÚ: KHÔNG loại ai-core/checkpoints/ — nếu build trên máy có sẵn .pt,
-# image sẽ kèm trọng số. Muốn image gọn + thay trọng số linh hoạt → dùng volume mount
-# (-v host/checkpoints:/srv/ai-core/checkpoints) và thêm 'ai-core/checkpoints/' vào đây.
+# Checkpoints are mounted read-only by compose, not copied into images.

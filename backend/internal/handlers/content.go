@@ -48,7 +48,11 @@ func (h *ContentHandlers) Feed(c *gin.Context) {
 	uid := c.GetString("user_id")
 	cursor := c.Query("cursor")
 	limit := parseLimit(c.Query("limit"), 10)
-	cacheKey := "feed:" + uid + ":" + cursor
+	revision := ""
+	if h.cache != nil {
+		revision, _, _ = h.cache.Get(c.Request.Context(), "feed:revision")
+	}
+	cacheKey := "feed:" + revision + ":" + uid + ":" + cursor + ":" + c.DefaultQuery("limit", "10")
 	if h.cache != nil {
 		if v, ok, _ := h.cache.Get(c.Request.Context(), cacheKey); ok {
 			var cached gin.H

@@ -1,69 +1,115 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { apiClient } from "@/lib/apiClient";
+import { useQuery } from "@tanstack/react-query";
+import type { components } from "@/api-types";
+import { AppNav } from "@/components/AppNav";
 import { BottomNav } from "@/components/BottomNav";
-type Clip = { id: string; video_id: string; title: string; thumbnail_url?: string; playback_url?: string; average_score?: number };
+import { Icon } from "@/components/Icon";
+import { PageState, Thumbnail } from "@/components/Media";
+import { useClipPage, formatTime, track, shareVideo, type Clip } from "@/lib/content";
+import { apiClient, errorMessage } from "@/lib/apiClient";
+import { useWatchTime } from "@/lib/useWatchTime";
+function FeedClip({ clip, active, onMessage }: {
+    clip: Clip;
+    active: boolean;
+    onMessage: (s: string) => void;
+}) {
+    const ref = useRef<HTMLVideoElement>(null);
+    const [playing, setPlaying] = useState(false);
+    const [muted, setMuted] = useState(true);
+    const [time, setTime] = useState(0);
+    const [duration, setDuration] = useState(0);
+    const [liked, setLiked] = useState(false);
+    const [saved, setSaved] = useState(false);
+    const [mediaError, setMediaError] = useState(false);
+    const subs = useQuery({ queryKey: ["subtitles", clip.video_id], enabled: active && !!clip.video_id, queryFn: async () => (await apiClient.get<components["schemas"]["Subtitles"]>(`/api/videos/${clip.video_id}/subtitles`)).data });
+    const analysis = useQuery({ queryKey: ["analysis", clip.video_id], enabled: active && !!clip.video_id, queryFn: async () => (await apiClient.get<components["schemas"]["PublicAnalysis"]>(`/api/videos/${clip.video_id}/analysis`)).data });
+    const segment = subs.data?.segments?.find(s => time + (clip.start_time || 0) >= (s.start_time || 0) && time + (clip.start_time || 0) < (s.end_time || 0));
+    const scores = analysis.data?.timeline_scores?.filter(s => (s.second || 0) >= (clip.start_time || 0) && (s.second || 0) < (clip.end_time || 0)) || [];
+    useEffect(() => {
+        const el = ref.current;
+        if (!el)
+            return;
+        const update = () => { if (active && !document.hidden)
+            void el.play().catch(() => setPlaying(false));
+        else
+            el.pause(); };
+        update();
+        document.addEventListener("visibilitychange", update);
+        return () => { el.pause(); document.removeEventListener("visibilitychange", update); };
+    }, [active, clip.playback_url]);
+    useEffect(() => { if (active && clip.video_id)
+        track({ video_id: clip.video_id, clip_id: clip.id, interaction_type: "click" }); }, [active, clip.video_id, clip.id]);
+    useWatchTime(ref, clip.video_id, clip.id, active, clip.playback_url);
+    const action = (type: "like" | "save") => { if (type === "like")
+        setLiked(v => !v);
+    else
+        setSaved(v => !v); if (clip.video_id)
+        track({ video_id: clip.video_id, clip_id: clip.id, interaction_type: type }); };
+    const share = async () => { if (!clip.video_id)
+        return; try {
+        await shareVideo(clip.video_id, clip.id);
+        if (!navigator.share)
+            onMessage("Đã sao chép liên kết.");
+    }
+    catch (e) {
+        if (!(e instanceof DOMException && e.name === "AbortError"))
+            onMessage(errorMessage(e));
+    } };
+    return <article className="feed-clip" data-clip-id={clip.id}>
+  <video ref={ref} src={clip.playback_url || undefined} poster={clip.thumbnail_url || undefined} preload={active ? "metadata" : "none"} playsInline muted={muted} loop onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} onTimeUpdate={e => setTime(e.currentTarget.currentTime)} onLoadedMetadata={e => setDuration(e.currentTarget.duration)} onError={() => setMediaError(true)}/>
+  <div className="feed-mobile-top"><Link href="/discover" className="icon-button" aria-label="Quay lại Khám phá"><Icon name="arrow_back" size={28}/></Link><span>Dành cho bạn</span><Link href="/search" className="icon-button" aria-label="Tìm kiếm"><Icon name="search" size={28}/></Link></div>
+  {(!clip.playback_url || mediaError) && <div className="player-unavailable" role="alert">Không thể phát clip này.<button className="btn-outline" onClick={() => { setMediaError(false); ref.current?.load(); }}>Thử lại</button></div>}
+  <button className="feed-player-button" aria-label={playing ? "Tạm dừng" : "Phát video"} onClick={() => { const el = ref.current; if (el) {
+        if (el.paused)
+            void el.play().catch(() => onMessage("Không thể phát video."));
+        else
+            el.pause();
+    } }} style={{ opacity: playing ? 0 : 1 }}><Icon name={playing ? "pause" : "play_arrow"} size={36}/></button>
+  <button className="feed-mute" aria-label={muted ? "Bật âm thanh" : "Tắt âm thanh"} onClick={() => setMuted(!muted)}><Icon name={muted ? "volume_off" : "volume_up"} size={20}/></button>
+  <aside className="feed-actions">
+   <button className="feed-action" aria-label="Thích" aria-pressed={liked} onClick={() => action("like")}><span><Icon name="favorite" size={32} filled={liked}/></span><span>{liked ? "Đã thích" : "Thích"}</span></button>
+   <button className="feed-action" aria-label="Lưu clip" aria-pressed={saved} onClick={() => action("save")}><span><Icon name="bookmark" size={32} filled={saved}/></span><span>{saved ? "Đã lưu" : "Lưu"}</span></button>
+   <button className="feed-action" aria-label="Chia sẻ" onClick={share}><span><Icon name="share" size={32}/></span><span>Chia sẻ</span></button>
+   <Link className="feed-insights" href={`/videos/${clip.video_id}`} aria-label="Phân tích AI"><Icon name="insights" size={24}/></Link>
+  </aside>
+  <footer className="feed-bottom"><div className="feed-copy"><strong>@VidsAI</strong><h1 className="line-clamp-2">{clip.title}</h1><Link href={`/videos/${clip.video_id}`} className="feed-original"><Icon name="smart_display" size={18}/>Xem video gốc</Link>{segment?.text?.trim() && <div className="feed-caption"><Icon name="closed_caption" size={20}/><p>{segment.text}</p></div>}</div>
+   {!!scores.length && <div className="feed-heatmap desktop-only">{scores.map((s, i) => <span key={i} title={`${Math.round(s.score || 0)}/100`} style={{ height: `${Math.max(8, s.score || 0)}%`, background: (s.score || 0) > 75 ? "#c6252b" : (s.score || 0) >= 40 ? "#fea619" : "#630ed4" }}/>)}</div>}
+   <input type="range" min={0} max={duration || 1} step={.1} value={Math.min(time, duration || 1)} aria-label="Vị trí phát clip" onChange={e => { if (ref.current)
+        ref.current.currentTime = Number(e.target.value); }}/>
+   <div className="feed-times"><time>{formatTime(time)}</time><time>{formatTime(duration || (clip.end_time || 0) - (clip.start_time || 0))}</time></div>
+  </footer>
+ </article>;
+}
 export default function FeedPage() {
-  const [items, setItems] = useState<Clip[]>([]);
-  const [cursor, setCursor] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [active, setActive] = useState(0);
-  const refs = useRef<(HTMLDivElement | null)[]>([]);
-  const load = async (c?: string | null) => {
-    setLoading(true);
-    try { const r = await apiClient.get("/api/feed", { params: { cursor: c ?? undefined, limit: 10 } }); setItems((prev) => c ? [...prev, ...(r.data.items ?? [])] : (r.data.items ?? [])); setCursor(r.data.next_cursor ?? null); } catch {} finally { setLoading(false); }
-  };
-  useEffect(() => { load(null); }, []);
-  useEffect(() => {
-    const obs = new IntersectionObserver((entries) => {
-      entries.forEach((e) => { if (e.isIntersecting) { const idx = Number((e.target as HTMLElement).dataset.idx); setActive(idx); const clip = items[idx]; if (clip) apiClient.post("/api/interactions", { video_id: clip.video_id, clip_id: clip.id, interaction_type: "click" }).catch(() => {}); } });
-    }, { threshold: 0.7 });
-    refs.current.forEach((el) => el && obs.observe(el));
-    return () => obs.disconnect();
-  }, [items]);
-  const track = (clip: Clip, type: string, extra: any = {}) => apiClient.post("/api/interactions", { video_id: clip.video_id, clip_id: clip.id, interaction_type: type, ...extra }).catch(() => {});
-  const [liked, setLiked] = useState<Set<string>>(new Set());
-  const toggleLike = (c: Clip) => {
-    const on = liked.has(c.id);
-    setLiked((s) => { const n = new Set(s); if (on) n.delete(c.id); else n.add(c.id); return n; });
-    track(c, "like");
-  };
-  return (
-    <div style={{ background: "black", minHeight: "100dvh", paddingBottom: 56 }}>
-      <header style={{ position: "sticky", top: 0, zIndex: 10, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px", background: "linear-gradient(to bottom, rgba(0,0,0,0.5), transparent)", color: "white" }}>
-        <span style={{ fontSize: 11, fontWeight: 700, borderBottom: "2px solid white", paddingBottom: 2 }}>Dành cho bạn</span>
-        <Link href="/search" style={{ color: "white" }}><span className="material-symbols-outlined">search</span></Link>
-      </header>
-      {loading && items.length === 0 ? <div style={{ padding: 40, textAlign: "center", color: "white" }}>Đang tải…</div> : null}
-      {items.length === 0 && !loading ? <div style={{ padding: 40, textAlign: "center", color: "white" }}>Chưa có nội dung — <Link href="/onboarding" style={{ color: "var(--primary)" }}>chọn chủ đề</Link></div> : null}
-      <div style={{ scrollSnapType: "y mandatory", scrollBehavior: "smooth" }}>
-        {items.map((clip, i) => (
-          <div key={clip.id} data-idx={i} ref={(el) => { refs.current[i] = el; }} style={{ height: "calc(100dvh - 56px)", scrollSnapAlign: "start", position: "relative", overflow: "hidden", background: "black" }}>
-            <div style={{ position: "absolute", inset: 0, background: clip.thumbnail_url ? `url(${clip.thumbnail_url}) center/cover` : "var(--bg-surface-2)", opacity: 0.9 }} />
-            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 40%, transparent 70%)" }} />
-            <aside style={{ position: "absolute", right: 12, bottom: 100, display: "flex", flexDirection: "column", gap: 16, alignItems: "center", zIndex: 2 }}>
-              <button onClick={() => toggleLike(clip)} style={{ width: 44, height: 44, borderRadius: 9999, background: "rgba(0,0,0,0.25)", backdropFilter: "blur(8px)", border: "none", display: "grid", placeItems: "center", color: liked.has(clip.id) ? "#ff4b4b" : "white" }}>
-                <span className="material-symbols-outlined" style={{ fontVariationSettings: liked.has(clip.id) ? "'FILL' 1" : "'FILL' 0", fontSize: 28 }}>favorite</span>
-              </button>
-              <div style={{ fontSize: 10, color: "white", fontWeight: 600 }}>Like</div>
-              <button onClick={() => track(clip, "save")} style={{ width: 44, height: 44, borderRadius: 9999, background: "rgba(0,0,0,0.25)", backdropFilter: "blur(8px)", border: "none", display: "grid", placeItems: "center", color: "white" }}>
-                <span className="material-symbols-outlined" style={{ fontSize: 24 }}>bookmark</span>
-              </button>
-              <button onClick={() => track(clip, "share")} style={{ width: 44, height: 44, borderRadius: 9999, background: "rgba(0,0,0,0.25)", backdropFilter: "blur(8px)", border: "none", display: "grid", placeItems: "center", color: "white" }}>
-                <span className="material-symbols-outlined" style={{ fontSize: 24 }}>share</span>
-              </button>
-            </aside>
-            <div style={{ position: "absolute", bottom: 20, left: 12, right: 60, zIndex: 2, color: "white" }}>
-              <div style={{ fontWeight: 700, fontSize: 13 }}>@{clip.video_id.slice(0, 8)}</div>
-              <div style={{ fontSize: 13, marginTop: 4, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" as any }}>{clip.title}</div>
-              <Link href={`/videos/${clip.video_id}`} style={{ display: "inline-block", marginTop: 8, background: "white", color: "black", padding: "6px 12px", borderRadius: 9999, fontSize: 12, fontWeight: 700 }}>Xem video gốc</Link>
-            </div>
-          </div>
-        ))}
-      </div>
-      {cursor && <button onClick={() => load(cursor)} style={{ width: "100%", padding: 12, background: "black", color: "white", border: "none" }}>Tải thêm</button>}
-      <BottomNav active="home" />
-    </div>
-  );
+    const feed = useClipPage("/api/feed");
+    const clips = feed.data?.pages.flatMap(p => p.items || []) || [];
+    const [active, setActive] = useState(0);
+    const [message, setMessage] = useState("");
+    const root = useRef<HTMLDivElement>(null);
+    const { fetchNextPage, hasNextPage, isFetchingNextPage } = feed;
+    useEffect(() => { if (!message)
+        return; const timer = setTimeout(() => setMessage(""), 4000); return () => clearTimeout(timer); }, [message]);
+    useEffect(() => {
+        const el = root.current;
+        if (!el)
+            return;
+        const observer = new IntersectionObserver(entries => { for (const entry of entries)
+            if (entry.isIntersecting)
+                setActive(Number((entry.target as HTMLElement).dataset.index)); }, { root: el, threshold: .7 });
+        el.querySelectorAll("[data-index]").forEach(item => observer.observe(item));
+        return () => observer.disconnect();
+    }, [clips.length]);
+    useEffect(() => { if (active >= clips.length - 2 && hasNextPage && !isFetchingNextPage)
+        void fetchNextPage(); }, [active, clips.length, hasNextPage, isFetchingNextPage, fetchNextPage]);
+    const next = clips.filter((_, i) => i !== active);
+    return <div className="feed-page"><AppNav active="home"/><main className="feed-layout">
+  <aside className="feed-trending-nav"><Link href="/discover"><span className="icon-button"><Icon name="trending_up"/></span>Xu hướng</Link></aside>
+  {feed.isPending || feed.error || !clips.length ? <div className="feed-empty"><PageState loading={feed.isPending} error={feed.error} empty="Chưa có clip được xuất bản." retry={() => feed.refetch()}/>{!feed.isPending && !feed.error && <Link href="/onboarding" className="btn-primary">Chọn chủ đề yêu thích</Link>}</div> : <div className="feed-scroll" ref={root} aria-label="Video feed">
+   {clips.map((clip, i) => <div key={clip.id} data-index={i} style={{ height: "100%" }}><FeedClip clip={clip} active={active === i} onMessage={setMessage}/></div>)}
+   {feed.hasNextPage && <div className="page-state"><button className="btn-primary" disabled={feed.isFetchingNextPage} onClick={() => feed.fetchNextPage()}>Tải thêm</button></div>}
+  </div>}
+  <section className="feed-upnext"><div className="section-heading"><h2>Sắp phát tiếp</h2><Link href="/discover" className="link">Tất cả</Link></div><div className="feed-upnext-list">{next.map(clip => <Link className="upnext-card" href={`/videos/${clip.video_id}?clip=${clip.id}`} key={clip.id}><div className="media-frame"><Thumbnail src={clip.thumbnail_url}/><time className="time-badge">{formatTime((clip.end_time || 0) - (clip.start_time || 0))}</time></div><div><h3 className="line-clamp-2">{clip.title}</h3><small>VidsAI · {formatTime((clip.end_time || 0) - (clip.start_time || 0))}</small><span className="ai-badge"><Icon name="bolt" size={16}/>AI Highlight</span></div></Link>)}{!next.length && <PageState empty="Chưa có clip tiếp theo"/>}</div><div className="feed-promo"><small>GỢI Ý</small><h3>Tạo Highlight Video của riêng bạn chỉ trong vài giây.</h3><button className="btn-primary" disabled title="Tạo highlight được thực hiện trong CMS">Thử ngay miễn phí</button></div></section>
+ </main><BottomNav active="home" camera/>{message && <div className="feed-toast" role="status">{message}</div>}</div>;
 }

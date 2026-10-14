@@ -16,7 +16,6 @@ func TestRunner_RetrySuccessOnThird(t *testing.T) {
 	jobRepo := mocks.NewJobRepoMem()
 	ana := mocks.NewAnalysisStoreMem()
 	sub := mocks.NewSubtitleStoreMem()
-	vec := mocks.NewVectorStoreMem()
 	bus := mocks.NewEventBusMem()
 
 	vid := &domain.Video{ID: "vid_1", RawFilePath: "raw-videos/vid_1.mp4", DurationSeconds: 0, Status: domain.VideoUploaded}
@@ -37,6 +36,9 @@ func TestRunner_RetrySuccessOnThird(t *testing.T) {
 			return &domain.ASRResult{FullTranscript: "hello", Segments: []domain.Segment{{Text: "hello"}}}, nil
 		},
 		HighlightFn: func(vid string, ve [][]float32, af [][]float32) (*domain.HighlightResult, error) {
+			if len(ve) != 1 || ve[0][0] != 0.1 || len(af) != 1 || af[0][0] != 7 {
+				t.Fatalf("lost per-video features: vision=%v audio=%v", ve, af)
+			}
 			return &domain.HighlightResult{TimelineScores: []domain.SecondScore{{Second: 0, Score: 80}}}, nil
 		},
 		SummarizeFn: func(p string, n int) (*domain.SummaryResult, error) {
@@ -44,10 +46,10 @@ func TestRunner_RetrySuccessOnThird(t *testing.T) {
 		},
 	}
 
-	r := New(videoRepo, jobRepo, ana, sub, vec, ai, bus)
+	r := New(videoRepo, jobRepo, ana, sub, ai, bus)
 	r.WithSleep(func(time.Duration) {}) // no wait
 
-	prep := preprocessed{VideoID: "vid_1", KeyframesPath: "k", AudioPath: "a", Duration: 60}
+	prep := preprocessed{VideoID: "vid_1", KeyframesPath: "k", AudioPath: "a", Duration: 60, AudioFeatures: [][]float32{{7}}}
 	if err := r.RunChain(context.Background(), job, prep); err != nil {
 		t.Fatalf("RunChain: %v", err)
 	}
@@ -69,7 +71,6 @@ func TestRunner_FailPermanent(t *testing.T) {
 	jobRepo := mocks.NewJobRepoMem()
 	ana := mocks.NewAnalysisStoreMem()
 	sub := mocks.NewSubtitleStoreMem()
-	vec := mocks.NewVectorStoreMem()
 	bus := &captureBus{EventBusMem: mocks.NewEventBusMem()}
 
 	_ = videoRepo.Create(context.Background(), &domain.Video{ID: "vid_1", RawFilePath: "raw-videos/vid_1.mp4", Status: domain.VideoUploaded})
@@ -78,7 +79,7 @@ func TestRunner_FailPermanent(t *testing.T) {
 	ai := &mocks.AIClientMem{
 		VisionFn: func(s []string) (*domain.VisionResult, error) { return nil, errors.New("perm") },
 	}
-	r := New(videoRepo, jobRepo, ana, sub, vec, ai, bus)
+	r := New(videoRepo, jobRepo, ana, sub, ai, bus)
 	r.WithSleep(func(time.Duration) {})
 
 	prep := preprocessed{VideoID: "vid_1", KeyframesPath: "k", AudioPath: "a", Duration: 10}
@@ -108,6 +109,17 @@ func TestStateMachine_Order(t *testing.T) {
 	nxt, ok := NextStage(domain.StageEmbedding)
 	if !ok || nxt != domain.StageAsrExtracting {
 		t.Fatalf("next %v %v", nxt, ok)
+	}
+}
+
+func TestRunner_CompletedReplayDoesNotNeedRemovedArtifacts(t *testing.T) {
+	videos := mocks.NewVideoRepoMem()
+	jobs := mocks.NewJobRepoMem()
+	job, _ := jobs.Create(context.Background(), "vid_done")
+	_ = jobs.SetStatus(context.Background(), job.ID, domain.JobCompleted, false, true)
+	runner := New(videos, jobs, mocks.NewAnalysisStoreMem(), mocks.NewSubtitleStoreMem(), &mocks.AIClientMem{}, mocks.NewEventBusMem())
+	if err := runner.HandlePreprocessed(context.Background(), []byte(`{"video_id":"vid_done","duration":8,"keyframes_path":"already-removed"}`)); err != nil {
+		t.Fatalf("completed replay failed: %v", err)
 	}
 }
 

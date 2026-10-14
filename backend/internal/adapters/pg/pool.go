@@ -1,6 +1,18 @@
 package pg
 
-// ponytail: stub pool — pgx wiring when T2.1.4 needs real DB, currently uses mocks
-type Pool struct{ DSN string }
+import (
+	"context"
+	"github.com/jackc/pgx/v5/pgxpool"
+)
 
-func New(dsn string) *Pool { return &Pool{DSN: dsn} }
+func New(ctx context.Context, dsn string) (*pgxpool.Pool, error) {
+	db, err := pgxpool.New(ctx, dsn)
+	if err != nil {
+		return nil, err
+	}
+	if err := db.Ping(ctx); err != nil {
+		db.Close()
+		return nil, err
+	}
+	return db, nil
+}

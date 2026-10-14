@@ -6,11 +6,16 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"golang.org/x/crypto/bcrypt"
 
+	"traning_ai/backend/internal/adapters/aihttp"
+	"traning_ai/backend/internal/adapters/kafka"
+	"traning_ai/backend/internal/adapters/milvus"
+	"traning_ai/backend/internal/adapters/minio"
+	"traning_ai/backend/internal/adapters/mongo"
+	"traning_ai/backend/internal/adapters/pg"
+	"traning_ai/backend/internal/adapters/redis"
 	"traning_ai/backend/internal/auth"
 	"traning_ai/backend/internal/config"
-	"traning_ai/backend/internal/domain"
 	"traning_ai/backend/internal/gen"
 	"traning_ai/backend/internal/handlers"
 	"traning_ai/backend/internal/handlers/cms"
@@ -21,45 +26,51 @@ func main() {
 	cfg := config.Load()
 	jwtSvc := auth.NewJWT(cfg.JWTSecret)
 
-	// T2.1 mocks mem — đủ chạy E2E không cần PG/Mongo thật; sau này thay bằng pg/mongo adapter theo env.
-	userRepo := mocks.NewUserRepoMem()
-	sessionRepo := mocks.NewSessionRepoMem()
-	vectorStore := mocks.NewVectorStoreMem()
-	categoryRepo := mocks.NewCategoryRepoMem()
+	ctx := context.Background()
+	db, err := pg.New(ctx, cfg.PostgresDSN)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+	documents, err := mongo.New(ctx, cfg.MongoURI, cfg.MongoDB)
+	if err != nil {
+		log.Fatal(err)
+	}
+	objectStorage, err := minio.New(ctx, cfg.MinioEndpoint, cfg.MinioPublicEndpoint, cfg.MinioAccess, cfg.MinioSecret)
+	if err != nil {
+		log.Fatal(err)
+	}
+	cache, err := redis.New(ctx, cfg.RedisAddr)
+	if err != nil {
+		log.Fatal(err)
+	}
+	userRepo := &pg.UserRepo{DB: db}
+	sessionRepo := &pg.SessionRepo{DB: db}
+	vectorStore := milvus.NewFrames("http://"+cfg.MilvusHost+":"+cfg.MilvusPort, mocks.NewVectorStoreMem())
+	categoryRepo := &pg.CategoryRepo{DB: db}
 	interactionRepo := mocks.NewInteractionRepoMem()
-	videoRepo := mocks.NewVideoRepoMem()
-	clipRepo := mocks.NewClipRepoMem()
-	jobRepo := mocks.NewJobRepoMem()
-	analysisStore := mocks.NewAnalysisStoreMem()
-	subtitleStore := mocks.NewSubtitleStoreMem()
-	cache := mocks.NewCacheMem()
-	eventBus := mocks.NewEventBusMem()
-	objectStorage := mocks.NewObjectStorageMem()
-	aiClient := &mocks.AIClientMem{}
-
-	// Seed vài category để PUT /preferences ≥3 pass ngay
-	for _, name := range []string{"Bóng đá", "Thể thao", "Ca nhạc", "Tin tức", "Game", "Phim"} {
-		_, _ = categoryRepo.Create(context.Background(), name)
+	videoRepo := &pg.VideoRepo{DB: db}
+	clipRepo := &pg.ClipRepo{DB: db}
+	jobRepo := &pg.JobRepo{DB: db}
+	analysisStore := &mongo.AnalysisStore{Collection: documents.Collection("video_analyses")}
+	subtitleStore := &mongo.SubtitleStore{Collection: documents.Collection("subtitles")}
+	eventBus := kafka.New(cfg.KafkaBrokers)
+	aiClient := aihttp.New(cfg.AIBaseURL, cfg.AIServiceKey)
+	if _, err := aiClient.Health(ctx); err != nil {
+		log.Fatal(err)
 	}
-	// Seed admin (mem-mock không đọc PG seed) — trùng với infra/postgres/init/002_seed.sql
-	{
-		hash, _ := bcrypt.GenerateFromPassword([]byte("admin123"), bcrypt.DefaultCost)
-		_ = userRepo.Create(context.Background(), &domain.User{
-			ID: "usr_admin", Username: "admin", Email: "admin@local",
-			PasswordHash: string(hash), Role: domain.RoleAdmin,
-		})
-	}
+	wirePipeline(videoRepo, jobRepo, clipRepo, analysisStore, subtitleStore, aiClient, eventBus, objectStorage)
 
 	resetRepo := mocks.NewPasswordResetRepoMem()
 	authSvc := auth.NewWithResets(userRepo, sessionRepo, resetRepo, jwtSvc)
 	authH := handlers.NewAuthHandlers(authSvc, userRepo, vectorStore, categoryRepo, interactionRepo)
 	contentH := handlers.NewContentHandlers(videoRepo, clipRepo, categoryRepo, interactionRepo, analysisStore, subtitleStore, cache, aiClient, objectStorage)
-	searchH := handlers.NewSearchHandlers(videoRepo, subtitleStore, cache, aiClient)
+	searchH := handlers.NewSearchHandlers(videoRepo, subtitleStore, cache, aiClient, clipRepo, objectStorage)
 	interH := handlers.NewInteractionHandlers(interactionRepo)
 
-	videoCMS := cms.NewVideoHandlers(videoRepo, jobRepo, analysisStore, subtitleStore, vectorStore, cache, eventBus, objectStorage, aiClient)
-	jobCMS := cms.NewJobHandlers(jobRepo, eventBus)
-	clipCMS := cms.NewClipHandlers(clipRepo, videoRepo, eventBus)
+	videoCMS := cms.NewVideoHandlers(videoRepo, jobRepo, analysisStore, subtitleStore, vectorStore, cache, eventBus, objectStorage, aiClient, clipRepo)
+	jobCMS := cms.NewJobHandlers(jobRepo, eventBus, videoRepo)
+	clipCMS := cms.NewClipHandlers(clipRepo, videoRepo, eventBus, cache, analysisStore)
 	catCMS := cms.NewCategoryHandlers(categoryRepo, cache)
 	userCMS := cms.NewUserHandlers(userRepo)
 	sysCMS := cms.NewSystemHandlers(aiClient)
@@ -151,7 +162,7 @@ func main() {
 	cmsUsers.GET("", userCMS.List)
 	cmsUsers.PUT("/:id/role", userCMS.SetRole)
 
-	log.Printf("gateway :%s (T2.5 wired, no stubs) → AI %s", cfg.Port, cfg.AIBaseURL)
+	log.Printf("gateway :%s (PostgreSQL/Mongo/MinIO/Kafka/Redis, real AI) → AI %s", cfg.Port, cfg.AIBaseURL)
 	if err := r.Run(":" + cfg.Port); err != nil {
 		log.Fatal(err)
 	}

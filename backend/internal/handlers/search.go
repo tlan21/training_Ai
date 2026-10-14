@@ -1,29 +1,52 @@
 package handlers
 
 import (
+	"bytes"
+	"crypto/sha256"
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
+	"image"
+	_ "image/jpeg"
+	_ "image/png"
+	"io"
+	"math"
 	"net/http"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
 
+	"traning_ai/backend/internal/domain"
 	"traning_ai/backend/internal/ports"
 )
 
 type SearchHandlers struct {
-	videos ports.VideoRepository
-	subs   ports.SubtitleStore
-	cache  ports.Cache
-	ai     ports.AIClient
+	videos  ports.VideoRepository
+	subs    ports.SubtitleStore
+	cache   ports.Cache
+	ai      ports.AIClient
+	clips   ports.ClipRepository
+	storage ports.ObjectStorage
 }
 
-func NewSearchHandlers(videos ports.VideoRepository, subs ports.SubtitleStore, cache ports.Cache, ai ports.AIClient) *SearchHandlers {
-	return &SearchHandlers{videos: videos, subs: subs, cache: cache, ai: ai}
+func NewSearchHandlers(videos ports.VideoRepository, subs ports.SubtitleStore, cache ports.Cache, ai ports.AIClient, clips ports.ClipRepository, storage ports.ObjectStorage) *SearchHandlers {
+	return &SearchHandlers{videos: videos, subs: subs, cache: cache, ai: ai, clips: clips, storage: storage}
 }
 
 // POST /api/search/visual — multipart image ≤5MB → base64 → AI Search → filter min_similarity
 func (h *SearchHandlers) Visual(c *gin.Context) {
+	c.Request.Body = http.MaxBytesReader(c.Writer, c.Request.Body, 8*1024*1024)
+	defer func() {
+		if c.Request.MultipartForm != nil {
+			_ = c.Request.MultipartForm.RemoveAll()
+		}
+	}()
+	if err := c.Request.ParseMultipartForm(1024 * 1024); err != nil {
+		ErrorEnvelope(c, 422, "VALIDATION_ERROR", "invalid multipart image (max 5MB)")
+		return
+	}
 	f, hdr, err := c.Request.FormFile("image")
 	if err != nil {
 		ErrorEnvelope(c, http.StatusUnprocessableEntity, "VALIDATION_ERROR", "image required")
@@ -34,32 +57,97 @@ func (h *SearchHandlers) Visual(c *gin.Context) {
 		ErrorEnvelope(c, http.StatusUnprocessableEntity, "VALIDATION_ERROR", "image too large (max 5MB)")
 		return
 	}
-	buf := make([]byte, hdr.Size)
-	if _, err := f.Read(buf); err != nil {
+	buf, err := io.ReadAll(io.LimitReader(f, 5*1024*1024+1))
+	if err != nil || len(buf) == 0 || len(buf) > 5*1024*1024 {
 		ErrorEnvelope(c, http.StatusUnprocessableEntity, "VALIDATION_ERROR", "read image failed")
 		return
 	}
-	b64 := base64.StdEncoding.EncodeToString(buf)
-	res, err := h.ai.Search(c.Request.Context(), b64, 10, 0.5)
-	if err != nil {
-		handleDomainErr(c, err)
+	kind := http.DetectContentType(buf)
+	if kind != "image/jpeg" && kind != "image/png" && kind != "image/webp" {
+		ErrorEnvelope(c, 422, "VALIDATION_ERROR", "image must be JPEG, PNG or WebP")
 		return
+	}
+	if kind != "image/webp" {
+		cfg, _, err := image.DecodeConfig(bytes.NewReader(buf))
+		if err != nil || cfg.Width <= 0 || cfg.Height <= 0 || int64(cfg.Width)*int64(cfg.Height) > 20_000_000 {
+			ErrorEnvelope(c, 422, "VALIDATION_ERROR", "invalid image or more than 20 megapixels")
+			return
+		}
 	}
 	threshold := 0.5
 	if v := c.PostForm("min_similarity"); v != "" {
-		if parsed, perr := parseFloat(v); perr == nil {
-			threshold = parsed
+		parsed, perr := strconv.ParseFloat(v, 64)
+		if perr != nil || math.IsNaN(parsed) || math.IsInf(parsed, 0) || parsed < 0 || parsed > 1 {
+			ErrorEnvelope(c, 422, "VALIDATION_ERROR", "min_similarity must be between 0 and 1")
+			return
+		}
+		threshold = parsed
+	}
+	ctx := c.Request.Context()
+	revision := ""
+	if h.cache != nil {
+		revision, _, _ = h.cache.Get(ctx, "feed:revision")
+	}
+	cacheKey := fmt.Sprintf("search:visual:%s:%x:%g", revision, sha256.Sum256(buf), threshold)
+	var res domain.SearchResult
+	hit := false
+	if h.cache != nil {
+		if value, ok, _ := h.cache.Get(ctx, cacheKey); ok {
+			hit = json.Unmarshal([]byte(value), &res) == nil
+		}
+	}
+	if !hit {
+		// shortcut: filter the best 100 frames after search; move visibility into the index when private frames crowd out public hits.
+		fresh, err := h.ai.Search(ctx, base64.StdEncoding.EncodeToString(buf), 100, threshold)
+		if err != nil {
+			handleDomainErr(c, err)
+			return
+		}
+		res = *fresh
+		if h.cache != nil {
+			if value, err := json.Marshal(res); err == nil {
+				_ = h.cache.Set(ctx, cacheKey, string(value), 120*time.Second)
+			}
 		}
 	}
 	results := make([]gin.H, 0)
+	allowed := map[string]bool{}
 	for _, hit := range res.Hits {
 		if hit.SimilarityScore < threshold {
 			continue
 		}
+		// Recheck publication on cache hits; never expose stale/deleted/draft media.
+		if _, checked := allowed[hit.VideoID]; !checked {
+			if _, err := h.videos.GetProcessed(ctx, hit.VideoID); err == nil {
+				published, err := h.clips.ListPublishedByVideo(ctx, hit.VideoID)
+				allowed[hit.VideoID] = err == nil && len(published) > 0
+			} else {
+				allowed[hit.VideoID] = false
+			}
+		}
+		if !allowed[hit.VideoID] {
+			continue
+		}
+		thumbnail := hit.ThumbnailURL
+		if h.storage != nil {
+			parts := strings.SplitN(thumbnail, "/", 2)
+			if len(parts) != 2 || parts[0] != "thumbnails" {
+				continue
+			}
+			var err error
+			thumbnail, err = h.storage.GetPresigned(ctx, parts[0], parts[1], time.Hour)
+			if err != nil {
+				handleDomainErr(c, err)
+				return
+			}
+		}
 		results = append(results, gin.H{
 			"video_id": hit.VideoID, "timestamp": hit.Timestamp,
-			"similarity_score": hit.SimilarityScore, "thumbnail_url": hit.ThumbnailURL,
+			"similarity_score": hit.SimilarityScore, "thumbnail_url": thumbnail,
 		})
+		if len(results) == 10 {
+			break
+		}
 	}
 	c.JSON(http.StatusOK, gin.H{"results": results})
 }
@@ -113,30 +201,6 @@ func (h *SearchHandlers) Text(c *gin.Context) {
 		}
 	}
 	c.JSON(http.StatusOK, resp)
-}
-
-func parseFloat(s string) (float64, error) {
-	var f float64
-	_, err := parseFloatScan(s, &f)
-	return f, err
-}
-
-func parseFloatScan(s string, out *float64) (int, error) {
-	// small helper avoiding strconv import churn — use std
-	n, err := scanFloat(s)
-	if err == nil {
-		*out = n
-	}
-	return 0, err
-}
-
-func scanFloat(s string) (float64, error) {
-	// delegate to standard library via json number trick
-	var v float64
-	if err := json.Unmarshal([]byte(s), &v); err != nil {
-		return 0, err
-	}
-	return v, nil
 }
 
 func containsFold(s, sub string) bool {

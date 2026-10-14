@@ -1,32 +1,22 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import type { paths } from "../api-types";
+import { apiClient, errorMessage } from "../lib/apiClient";
+import { Icon } from "../components/common/Icon";
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
-  const [sent, setSent] = useState(false);
-  return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: 16 }}>
-      <div className="glass-card" style={{ width: "100%", maxWidth: 460, padding: 32 }}>
-        <h1 style={{ fontSize: 18, fontWeight: 800, color: "var(--primary)" }}>Quên mật khẩu</h1>
-        <p style={{ fontSize: 13, color: "var(--on-surface-variant)", marginTop: 8 }}>Nhập email để nhận hướng dẫn đặt lại mật khẩu. Hiện chưa cấu hình gửi email — vui lòng liên hệ quản trị viên để cấp lại mật khẩu.</p>
-        {!sent ? (
-          <div style={{ display: "grid", gap: 12, marginTop: 16 }}>
-            <label htmlFor="fp-email" style={{ fontSize: 11, fontWeight: 700, color: "var(--on-surface-variant)", letterSpacing: 1, textTransform: "uppercase" }}>Email</label>
-            <div style={{ position: "relative" }}>
-              <span className="material-symbols-outlined input-icon input-icon--left" aria-hidden>mail</span>
-              <input id="fp-email" className="input input--with-left-icon" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="admin@stitch.ai" style={{ width: "100%" }} />
-            </div>
-            <button className="btn-primary" onClick={() => setSent(true)} style={{ width: "100%", justifyContent: "center" }}>
-              <span>Gửi yêu cầu</span><span className="material-symbols-outlined" style={{ fontSize: 16 }} aria-hidden>send</span>
-            </button>
-            <Link to="/login" style={{ textAlign: "center", fontSize: 13, color: "var(--primary)", display: "block", marginTop: 4 }}>← Quay lại đăng nhập</Link>
-          </div>
-        ) : (
-          <div style={{ marginTop: 16, padding: 12, background: "var(--surface-container-low)", border: "1px solid var(--outline-variant)", borderRadius: 8, fontSize: 13 }}>
-            Đã ghi nhận yêu cầu cho <strong>{email || "—"}</strong>. Vui lòng liên hệ quản trị viên (admin) qua kênh nội bộ để được cấp lại mật khẩu. API reset qua email sẽ bổ sung khi có hạ tầng gửi mail.
-            <div style={{ marginTop: 12 }}><Link to="/login" className="btn-primary" style={{ textDecoration: "none" }}>Về đăng nhập</Link></div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
+  const [token, setToken] = useState("");
+  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [done, setDone] = useState(false);
+  const submit = async (event: React.FormEvent) => {
+    event.preventDefault(); setBusy(true); setError("");
+    try {
+      if (token) { await apiClient.post("/api/auth/reset-password", { token, new_password: password }); setDone(true); setToken(""); setPassword(""); setMessage("Đã đặt lại mật khẩu. Bạn có thể đăng nhập bằng mật khẩu mới."); }
+      else { const result = await apiClient.post<paths["/api/auth/forgot-password"]["post"]["responses"][200]["content"]["application/json"]>("/api/auth/forgot-password", { email }); setMessage(result.data.message ?? "Yêu cầu đã được gửi."); setToken(result.data.reset_token ?? ""); }
+    } catch (failure) { setError(errorMessage(failure)); } finally { setBusy(false); }
+  };
+  return <div className="auth-page"><form className="glass-card auth-card" onSubmit={submit}><div className="auth-logo"><span className="auth-brand-mark"><Icon name="movie_filter" /></span><h1>{token ? "Đặt lại mật khẩu" : "Quên mật khẩu"}</h1><p>AI Video CMS</p></div>{error && <div className="auth-error" role="alert"><Icon name="error" size={18} />{error}</div>}{message && <p className="auth-message" role="status">{message}</p>}{!done && <div className="auth-fields">{token ? <><label className="field" htmlFor="new-cms-password"><span>Mật khẩu mới</span><div className="input-wrap"><span className="input-icon input-icon--left"><Icon name="lock" size={18} /></span><input id="new-cms-password" className="input input--with-left-icon" type="password" value={password} minLength={8} onChange={(event) => setPassword(event.target.value)} autoComplete="new-password" required /></div></label><p className="micro">Đặt mật khẩu tối thiểu 8 ký tự.</p></> : <label className="field" htmlFor="fp-email"><span>Email</span><div className="input-wrap"><span className="input-icon input-icon--left"><Icon name="mail" size={18} /></span><input id="fp-email" className="input input--with-left-icon" type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="admin@local" autoComplete="email" required /></div></label>}<button className="btn-primary" disabled={busy}>{busy ? "Đang xử lý…" : token ? "Đặt lại mật khẩu" : "Gửi yêu cầu"}<Icon name="send" size={18} /></button></div>}<Link className="auth-back" to="/login">Quay lại đăng nhập</Link></form></div>;
 }

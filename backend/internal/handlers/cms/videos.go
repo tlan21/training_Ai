@@ -1,6 +1,7 @@
 package cms
 
 import (
+	"errors"
 	"net/http"
 	"strconv"
 	"time"
@@ -22,21 +23,38 @@ type VideoHandlers struct {
 	bus      ports.EventBus
 	storage  ports.ObjectStorage
 	ai       ports.AIClient
+	clips    ports.ClipRepository
 }
 
 func NewVideoHandlers(
 	videos ports.VideoRepository, jobs ports.JobRepository,
 	analyses ports.AnalysisStore, subs ports.SubtitleStore, vecs ports.VectorStore,
-	cache ports.Cache, bus ports.EventBus, storage ports.ObjectStorage, ai ports.AIClient,
+	cache ports.Cache, bus ports.EventBus, storage ports.ObjectStorage, ai ports.AIClient, clips ports.ClipRepository,
 ) *VideoHandlers {
 	return &VideoHandlers{
 		videos: videos, jobs: jobs, analyses: analyses, subs: subs,
-		vecs: vecs, cache: cache, bus: bus, storage: storage, ai: ai,
+		vecs: vecs, cache: cache, bus: bus, storage: storage, ai: ai, clips: clips,
 	}
 }
 
 // POST /api/cms/videos — multipart ≤2GB → MinIO + rows + Kafka video.uploaded (admin|editor)
 func (h *VideoHandlers) Create(c *gin.Context) {
+	const maxFileSize = 2 * 1024 * 1024 * 1024
+	if c.Request.ContentLength > maxFileSize+1024*1024 {
+		handlers.ErrorEnvelope(c, 413, "PAYLOAD_TOO_LARGE", "file too large (max 2GB)")
+		return
+	}
+	c.Request.Body = http.MaxBytesReader(c.Writer, c.Request.Body, maxFileSize+1024*1024)
+	if err := c.Request.ParseMultipartForm(8 * 1024 * 1024); err != nil {
+		var sizeError *http.MaxBytesError
+		if errors.As(err, &sizeError) {
+			handlers.ErrorEnvelope(c, 413, "PAYLOAD_TOO_LARGE", "file too large (max 2GB)")
+		} else {
+			handlers.ErrorEnvelope(c, 422, "VALIDATION_ERROR", err.Error())
+		}
+		return
+	}
+	defer c.Request.MultipartForm.RemoveAll()
 	title := c.PostForm("title")
 	if title == "" {
 		handlers.ErrorEnvelope(c, http.StatusUnprocessableEntity, "VALIDATION_ERROR", "title required")
@@ -48,7 +66,7 @@ func (h *VideoHandlers) Create(c *gin.Context) {
 		return
 	}
 	defer file.Close()
-	if hdr.Size > 2*1024*1024*1024 {
+	if hdr.Size > maxFileSize {
 		handlers.ErrorEnvelope(c, http.StatusRequestEntityTooLarge, "PAYLOAD_TOO_LARGE", "file too large (max 2GB)")
 		return
 	}
@@ -64,7 +82,6 @@ func (h *VideoHandlers) Create(c *gin.Context) {
 		Status: domain.VideoUploaded, UploadedBy: strPtr(uid),
 		CreatedAt: time.Now(), UpdatedAt: time.Now(),
 	}
-	key := "raw-videos/" + v.ID + ".mp4"
 	ct := hdr.Header.Get("Content-Type")
 	if ct == "" {
 		ct = "video/mp4"
@@ -74,11 +91,23 @@ func (h *VideoHandlers) Create(c *gin.Context) {
 		handlers.ErrorEnvelope(c, http.StatusInternalServerError, "INTERNAL", err.Error())
 		return
 	}
-	_ = key
 	v.RawFilePath = path
-	_ = h.videos.Create(c.Request.Context(), v)
-	job, _ := h.jobs.Create(c.Request.Context(), v.ID)
-	_ = h.bus.Publish(c.Request.Context(), "video.uploaded", v.ID, gin.H{"video_id": v.ID, "raw_file_path": path})
+	if err := h.videos.Create(c.Request.Context(), v); err != nil {
+		_ = h.storage.Delete(c.Request.Context(), "raw-videos", v.ID+".mp4")
+		handlers.ErrorEnvelope(c, 500, "INTERNAL", err.Error())
+		return
+	}
+	job, err := h.jobs.Create(c.Request.Context(), v.ID)
+	if err != nil {
+		handlers.ErrorEnvelope(c, 500, "INTERNAL", err.Error())
+		return
+	}
+	if err := h.bus.Publish(c.Request.Context(), "video.uploaded", v.ID, gin.H{"video_id": v.ID, "raw_file_path": path}); err != nil {
+		_ = h.jobs.SetError(c.Request.Context(), job.ID, err.Error())
+		_ = h.jobs.SetStatus(c.Request.Context(), job.ID, domain.JobFailed, false, false)
+		handlers.ErrorEnvelope(c, 503, "INTERNAL", err.Error())
+		return
+	}
 	c.JSON(http.StatusCreated, gin.H{"video": toVideoCMS(v), "job": toJobCMS(job)})
 }
 
@@ -118,13 +147,23 @@ func (h *VideoHandlers) Delete(c *gin.Context) {
 		handlers.ErrorEnvelope(c, http.StatusNotFound, "VIDEO_NOT_FOUND", "Video not found")
 		return
 	}
-	_ = h.videos.SoftDelete(c.Request.Context(), id)
-	_ = h.vecs.DeleteFrames(c.Request.Context(), id)
-	// HideByVideo via clips repo would need injection; skip in minimal wire (still tested via mem)
+	if err := h.vecs.DeleteFrames(c.Request.Context(), id); err != nil {
+		handlers.ErrorEnvelope(c, 503, "AI_UNAVAILABLE", "Vector cleanup failed; retry deletion: "+err.Error())
+		return
+	}
+	if err := h.videos.SoftDelete(c.Request.Context(), id); err != nil {
+		handlers.ErrorEnvelope(c, 500, "INTERNAL", err.Error())
+		return
+	}
+	if err := h.clips.HideByVideo(c.Request.Context(), id); err != nil {
+		handlers.ErrorEnvelope(c, 500, "INTERNAL", err.Error())
+		return
+	}
 	_ = h.analyses.Delete(c.Request.Context(), id)
 	_ = h.subs.Delete(c.Request.Context(), id)
 	if h.cache != nil {
-		_ = h.cache.Delete(c.Request.Context(), "subs:"+id, "feed:*")
+		_ = h.cache.Delete(c.Request.Context(), "subs:"+id)
+		_ = h.cache.Set(c.Request.Context(), "feed:revision", newID(), 24*time.Hour)
 	}
 	c.Status(http.StatusNoContent)
 }

@@ -17,6 +17,13 @@ from .registry import registry
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     registry.load_all()
+    if not settings.force_stub and registry.stub_mode:
+        raise RuntimeError(f"Real inference requires all checkpoints: {registry.load_error}")
+    if not settings.force_stub:
+        import torch
+        from . import visual_index
+        visual_index.collection()
+        visual_index.encode([torch.zeros(3, 224, 224)])
     gpu_queue.start()
     yield
     await gpu_queue.stop()
@@ -68,7 +75,7 @@ async def vision(req: schemas.VisionRequest):
 # ---- nhẹ (encode + Milvus) — không chiếm GPU lâu ----
 
 @app.post("/v1/search/completions", response_model=schemas.SearchResponse, dependencies=[Depends(require_bearer)])
-async def search(req: schemas.SearchRequest):
+def search(req: schemas.SearchRequest):
     return services.run_search(req)
 
 
