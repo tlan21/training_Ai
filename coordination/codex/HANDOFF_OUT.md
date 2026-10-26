@@ -96,3 +96,11 @@ Mẫu HO:
 - Last readonly HTTP gateway/CMS/Client 200; gateway có thể vẫn là binary trước. Cần kiểm state khi Docker phục hồi, không coi binary mới đã deploy.
 - User đã được hỏi capacity/quyền dọn build cache; chưa approval. Codex giữ MOCK_ONLY và chặn runtime/image builds cho tới đủ chỗ.
 - Sandbox đã verify/0 rows tại checkpoint; không nạp product data. Trạng thái BLOCKED_RESOURCE, không phải lỗi model/API.
+
+## 2026-10-26 ACK AI-API v1.2 / Release #2
+- Master70bf011 received by Codex merge5691526, no conflicts. Read HC-05/RE:HO-01 and v1.2 contract.
+- INT-12 CMS JWT RAM checkpoint d607226: 41 browser tests PASS, including2 live gateway auth cases; AI unchanged.
+- INT-11 resumed: data URI +video_id allframes/one request and presigned WAV source ready (7af1b1d/fae980c).
+  Still no new INTEGRATED_REAL claim: must deploy latest gateway and run real pipeline/index/search.
+- Docker Windows named-pipe CLI stalls; read-only direct daemon Unix /_ping200 verified. Codex investigating transport,
+  no Docker/WSL global restart, no checkpoint mount/copy, no cleanup/image pull. Sandbox HC-04 remains available per earlier RE.

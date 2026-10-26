@@ -19,7 +19,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-08 | T5.2 | Soak test 48 h | BLOCKED | INT-07 |
 | INT-09 | T5.3 | Docs bàn giao hệ thống | TODO | INT-05..08 |
 | INT-10 | — | Forgot-password giữ nguyên, ngoài release hiện tại | DEFERRED / OUT_OF_SCOPE | D1, HC-02 |
-| INT-11 | INT-01 | HTTP media giữa gateway Docker và inference host | PARTIAL | RESOURCE; AI v1.2 master + real tests |
+| INT-11 | INT-01 | HTTP media giữa gateway Docker và inference host | IN_PROGRESS | Release#2 received; direct daemon transport works |
 | INT-12 | T2.2/T3.1 | CMS access JWT chỉ ở RAM, refresh khi reload | REVIEW | 41 E2E PASS; live gateway cookie rotation |
 | INT-13 | INT-00 | Image ingest riêng + kiểm clean build | BLOCKED | RESOURCE Docker disk |
 
@@ -141,12 +141,12 @@ T2.5, T3.1, T3.2 = PARTIAL.
 
 
 ### INT-11 — Portable media transport cho AI host
-- T gốc: INT-01 | Owner: CODEX | Status: PARTIAL (v1.2 source/unit PASS; runtime RESOURCE blocked)
+- T gốc: INT-01 | Owner: CODEX | Status: IN_PROGRESS (2026-10-26, Release#2 received)
 - Depends on: INT-00; full real upload/search chờ HO-01 + AI-01 release trên master + AI-07 UP.
 - Acceptance: Vision gửi ảnh base64 (contract có sẵn), ASR nhận WAV qua URL MinIO presigned; không gửi path Docker cho host,
   không shared mount/checkpoint; staging WAV cleanup/error handling; unit + mock pipeline tests PASS. Indexing media mới thật chờ contract Claude.
 - Changed dự kiến: aihttp + tests, gateway preprocessing/audio staging + tests; tracker/handoff.
-- Next action: Claude đã công bố v1.2 video_id; source consume tại fae980c. Chờ capacity + release/master/API_READY, rebuild và real pipeline/index/search.
+- Next action: Release#2 master70bf011 merged5691526; v1.2 API_READY. Restore Docker CLI transport, latest Linux gateway, real pipeline/index/search; no image pull.
 - Evidence: VERIFIED-NOW verification/INT-11.md; Go checks/Linux builds và script persistence/fallback sau đổi transport PASS.
   v1.2 metadata unit 3 package PASS, Linux/runtime metadata chưa deploy; master pending tại checkpoint. | Commits: 7af1b1d, fae980c.
 - Checkpoint: Lane codex / Changed HTTP client+pipeline+tests / Verified mock transport/fallback PASS / Contract no / Next capacity + real gate.
@@ -163,7 +163,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
   gồm 2 case gateway/Postgres thật login200/refresh200/cookie rotation/logout204. JWT/user chỉ RAM, legacy storage removed;
   cookie HttpOnly; remember false giữ reload cùng session; logout/refresh race và logout503/reload PASS.
   10-item login parity report +4 screenshots/measurements; full CMS parity vẫn thuộc INT-05.
-- Commits: implementation checkpoint int(auth): keep CMS tokens in memory and restore cookie sessions (SHA recorded next checkpoint).
+- Commits: d607226 (implementation +41 E2E evidence), 5691526 (receive Release#2).
 - Next action: chờ release Codex được user yêu cầu; tiếp INT-11 với Release#2. Không push/master update trong task này.
 - Checkpoint: Lane codex; Changed auth+fixtures+login parity; Verified 41 E2E + types/build PASS; Contract touched no; Next safe task INT-11.
 
