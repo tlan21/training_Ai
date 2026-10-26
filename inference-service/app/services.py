@@ -17,11 +17,26 @@ from .config import settings
 from fastapi import HTTPException
 
 
+class InvalidInput(ValueError):
+    """Request content the model cannot use (unreadable image/audio, wrong feature shape) — not a model failure."""
+
+
+class DependencyError(RuntimeError):
+    """Milvus/MinIO behind a capability failed — reported in /health.dependencies, not as model failure."""
+
+    def __init__(self, dependency: str, error: Exception):
+        super().__init__(f"{type(error).__name__}: {error}")
+        self.dependency = dependency
+
+
 def _warn(where: str, model_name: str, e: Exception) -> None:
-    """Log lỗi real path + đánh dấu model degraded (health phản ánh) — không âm thầm nuốt lỗi."""
+    """Log lỗi real path; chỉ lỗi inference thật mới đánh dấu model degraded (D15). Status code giữ 503 như contract."""
     action = "fallback stub" if settings.force_stub else "request failed"
     print(f"[services] real path '{where}' (model {model_name}) lỗi ({type(e).__name__}: {e}) → {action}")
-    registry.mark_degraded(model_name)
+    if isinstance(e, DependencyError):
+        registry.dependencies[e.dependency] = "unavailable"
+    elif not isinstance(e, InvalidInput):
+        registry.mark_degraded(model_name)
     if not settings.force_stub:
         raise HTTPException(503, detail={"code": "AI_UNAVAILABLE", "message": f"{where}: {type(e).__name__}: {e}"}) from e
 
@@ -45,6 +60,7 @@ def run_completion(req: schemas.CompletionRequest) -> schemas.CompletionResponse
     if registry.is_real("minigpt"):
         try:
             text = _real_summarize(req)
+            registry.degraded.discard("minigpt")
         except Exception as e:  # noqa: BLE001 — không bao giờ 500, fallback stub
             _warn("summarize", "minigpt", e)
     if text is None:
@@ -123,9 +139,14 @@ def run_search(req: schemas.SearchRequest) -> schemas.SearchResponse:
             raise HTTPException(422, detail={"code": "VALIDATION_ERROR", "message": "Invalid JPEG/PNG/WebP image (max 20 megapixels)"}) from exc
         try:
             vector = visual_index.encode([image])[0]
+        except Exception as exc:
+            _warn("search/siamese", "siamese", exc)
+        registry.degraded.discard("siamese")
+        try:
             hits = visual_index.search(vector, req.top_k, req.threshold)
         except Exception as exc:
-            _warn("search/siamese/milvus", "siamese", exc)
+            _warn("search/milvus", "siamese", DependencyError("visual_index", exc))
+        registry.dependencies["visual_index"] = "ok"
         return schemas.SearchResponse(
             id=_rid("vsearch-primitive"), created=_now(), model=req.model,
             results=[schemas.SearchResult(**hit) for hit in hits],
@@ -160,6 +181,7 @@ def run_highlight(req: schemas.HighlightRequest) -> schemas.HighlightResponse:
     if registry.is_real("highlight_fusion"):
         try:
             scores = _real_highlight(req)
+            registry.degraded.discard("highlight_fusion")
         except Exception as e:  # noqa: BLE001
             _warn("highlight", "highlight_fusion", e)
     if scores is None:
@@ -179,10 +201,13 @@ def _real_highlight(req: schemas.HighlightRequest) -> list[float]:
     import torch
     model = registry.models["highlight_fusion"]
     dt = registry.model_dtype                     # khớp dtype model (half trên CUDA) để tránh mismatch
-    if len(req.features.vision_embeddings) != len(req.features.audio_spectrogram_features):
-        raise ValueError("vision_embeddings và audio_spectrogram_features phải cùng số giây")
-    if not req.features.vision_embeddings:
-        raise ValueError("empty highlight features")
+    vision, audio = req.features.vision_embeddings, req.features.audio_spectrogram_features
+    if len(vision) != len(audio):
+        raise InvalidInput("vision_embeddings và audio_spectrogram_features phải cùng số giây")
+    if not vision:
+        raise InvalidInput("empty highlight features")
+    if any(len(v) != 256 for v in vision) or any(len(a) != 64 for a in audio):
+        raise InvalidInput("highlight features phải là vision 256-d và audio 64-d")
     scores = []
     window = 120  # Same window length used to train the Fusion checkpoint.
     with torch.no_grad():
@@ -219,6 +244,7 @@ def run_asr(req: schemas.ASRRequest) -> schemas.ASRResponse:
     if registry.is_real("asr_ctc"):
         try:
             result = _real_asr(req)
+            registry.degraded.discard("asr_ctc")
         except Exception as e:  # noqa: BLE001
             _warn("asr", "asr_ctc", e)
     if result is None:
@@ -282,11 +308,18 @@ def _audio_chunks(audio_url):
     import torch
     if audio_url.startswith(("http://", "https://")):
         # shortcut: direct HTTP audio loads whole; upload ingest uses streaming shared WAV paths.
-        signal = _fetch_audio(audio_url)
+        try:
+            signal = _fetch_audio(audio_url)
+        except Exception as e:
+            raise InvalidInput(f"audio_url không đọc được: {type(e).__name__}: {e}") from e
         for start in range(0, signal.numel(), 20*16000):
             yield signal[start:start+20*16000]
         return
-    with sf.SoundFile(audio_url) as audio:
+    try:
+        audio = sf.SoundFile(audio_url)
+    except Exception as e:
+        raise InvalidInput(f"audio_url không đọc được: {type(e).__name__}: {e}") from e
+    with audio:
         while True:
             data = audio.read(20*audio.samplerate, dtype="float32")
             if not len(data):
@@ -345,26 +378,59 @@ _milvus_cache: dict = {}
 _NPROBE = 128
 
 
+# ponytail: a failed dependency is re-probed at most every 30 s (requests + /health share the limit).
+_DEP_RETRY_S = 30
+_dep_checked: dict[str, float] = {}
+
+
+def _due(name: str) -> bool:
+    now = time.monotonic()
+    if now - _dep_checked.get(name, float("-inf")) < _DEP_RETRY_S:
+        return False
+    _dep_checked[name] = now
+    return True
+
+
 def _milvus_collection():
-    """Collection Two-Tower, cache lại. None nếu không nối được → endpoint rơi về stub."""
-    if "col" in _milvus_cache:
+    """Collection Two-Tower đã nối, hoặc None. Thất bại không cache vĩnh viễn: thử lại sau _DEP_RETRY_S."""
+    if _milvus_cache.get("col") is not None:
         return _milvus_cache["col"]
+    if not _due("recommendation_index"):
+        return None
     from .config import settings
 
-    col = None
     try:
         from pymilvus import Collection, connections, utility
 
         connections.connect(alias="default", host=settings.milvus_host, port=settings.milvus_port, timeout=3)
-        if utility.has_collection(settings.milvus_collection):
-            col = Collection(settings.milvus_collection)
-            col.load()
-        else:
+        if not utility.has_collection(settings.milvus_collection):
             print(f"[services] Milvus chưa có collection {settings.milvus_collection}")
+            registry.dependencies["recommendation_index"] = "missing_collection"
+            return None
+        col = Collection(settings.milvus_collection)
+        col.load()
     except Exception as e:
         print(f"[services] không nối được Milvus ({type(e).__name__}: {e}) → recommendation unavailable")
+        registry.dependencies["recommendation_index"] = "unavailable"
+        return None
+    registry.dependencies["recommendation_index"] = "ok"
     _milvus_cache["col"] = col
     return col
+
+
+def refresh_dependencies() -> None:
+    """/health tự phục hồi: thử lại dependency chưa ok (giới hạn bởi _DEP_RETRY_S)."""
+    if settings.force_stub:
+        return
+    if registry.dependencies.get("recommendation_index") != "ok":
+        _milvus_collection()
+    if registry.dependencies.get("visual_index") == "unavailable" and _due("visual_index"):
+        from . import visual_index
+        try:
+            visual_index.search([1.0] * 128, 1, 2.0, timeout=2)   # threshold > 1: probe only, no hits returned
+            registry.dependencies["visual_index"] = "ok"
+        except Exception as e:  # noqa: BLE001
+            print(f"[services] visual_index vẫn lỗi ({type(e).__name__}: {e})")
 
 
 def _reco_from_milvus(user_id: str, limit: int) -> list[schemas.Recommendation] | None:
@@ -405,7 +471,8 @@ def run_recommendation(req: schemas.RecommendationRequest) -> schemas.Recommenda
     try:
         recs = _reco_from_milvus(req.user_id, req.limit)
     except Exception as e:
-        _warn("recommendation/milvus", "two_tower", e)
+        _milvus_cache.pop("col", None)       # reconnect on a later request instead of reusing a dead handle
+        _warn("recommendation/milvus", "two_tower", DependencyError("recommendation_index", e))
 
     if recs is None:
         if not settings.force_stub:
@@ -469,11 +536,17 @@ def _real_vision(req: schemas.VisionRequest):
     import torch
     model = registry.models["vit"]
     if not req.keyframes:
-        raise ValueError("empty keyframes")
+        raise InvalidInput("empty keyframes")
+
+    def _keyframe(ref):
+        try:
+            return _load_keyframe(ref)
+        except (OSError, ValueError, binascii.Error) as e:
+            raise InvalidInput(f"keyframe không đọc được (JPEG/PNG/WebP ≤20 MP): {type(e).__name__}: {e}") from e
     embeddings, total_logits = [], None
     with torch.no_grad():
         for start in range(0, len(req.keyframes), 16):
-            imgs = torch.stack([_load_keyframe(k) for k in req.keyframes[start:start+16]]).to(device=registry.device, dtype=registry.model_dtype)
+            imgs = torch.stack([_keyframe(k) for k in req.keyframes[start:start+16]]).to(device=registry.device, dtype=registry.model_dtype)
             logits, emb = model(imgs, return_embedding=True)
             summed = logits.float().sum(0)
             total_logits = summed if total_logits is None else total_logits + summed
@@ -481,7 +554,15 @@ def _real_vision(req: schemas.VisionRequest):
     idx = int(total_logits.argmax().item())
     classes = registry.vit_classes
     category = classes[idx] if classes and idx < len(classes) else f"class_{idx}"
+    registry.degraded.discard("vit")
     if not settings.force_stub:
         from .visual_index import index_frames
-        index_frames(req.keyframes)
+        try:
+            indexed = index_frames(req.keyframes)
+        except ValueError as e:
+            raise InvalidInput(str(e)) from e
+        except Exception as e:  # noqa: BLE001 — MinIO/Milvus behind the frame index
+            raise DependencyError("visual_index", e) from e
+        if indexed:
+            registry.dependencies["visual_index"] = "ok"
     return category, embeddings

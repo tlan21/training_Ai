@@ -169,7 +169,9 @@ class HealthResponse(BaseModel):
     gpu_vram_used: float              # MB
     gpu_util: float                   # %
     models_loaded: list[str]
-    degraded: list[str]               # model nạp thật nhưng real path lỗi → đang trả stub
+    degraded: list[str]               # model có inference lỗi thật gần nhất (input sai không tính); tự gỡ khi chạy lại được
+    # AI-API v1.1: capability phụ thuộc hạ tầng → "ok" | "unavailable" | "missing_collection". Không phải lỗi model.
+    dependencies: dict[str, str] = {}
     queue_depth: int
     device: str
     stub_mode: bool

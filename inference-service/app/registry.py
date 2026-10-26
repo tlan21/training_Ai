@@ -28,7 +28,8 @@ class ModelRegistry:
         self.asr_vocab: list[str] | None = None   # char vocab cho ASR (index 0 = blank)
         self.vit_classes: list[str] | None = None # tên danh mục ViT (theo class index)
         self.loaded: list[str] = []               # tên model nạp THẬT
-        self.degraded: set[str] = set()           # model nạp thật nhưng real path lỗi → đang trả stub
+        self.degraded: set[str] = set()           # model có lần inference lỗi thật, gỡ khi lần sau chạy được
+        self.dependencies: dict[str, str] = {}    # visual_index / recommendation_index → ok|unavailable|missing_collection
         self.stub_mode = True
         self.load_error: str | None = None
 

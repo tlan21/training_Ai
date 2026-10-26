@@ -105,3 +105,10 @@ Quyết định user D14 (PROJECT_STATUS mục 5). Claude **không** chạy `exp
   `id == user_id`, search `type == "video"`. Đổi tham số nào → handoff trước (D9).
 - Nạp dữ liệu thật chỉ khi schema, ID mapping, dim, metric, tiêu chí nghiệm thu được cả hai xác minh trong handoff. Tới lúc đó giữ popularity fallback,
   INT-03 phần personalized không DONE.
+
+## 2026-10-26 REL AI-API v1.1-rc1 — DRAFT (AI-10, quyết định user D15; tương thích ngược)
+- `/health` thêm `dependencies: {str: str}` (mặc định `{}`): `visual_index`, `recommendation_index` → `ok | unavailable | missing_collection`.
+  Mock Go (`backend/internal/mocks/ai_http.go`) không cần sửa; nếu CMS muốn hiển thị thì đọc field này (tùy Codex).
+- `degraded` đổi ngữ nghĩa: chỉ model có inference lỗi thật; input sai (vẫn trả 503/422 như cũ) và lỗi Milvus không làm model degraded; tự gỡ khi chạy lại được.
+- Status code không đổi. Recommendation thử lại Milvus mỗi 30 s (không cần restart service khi Codex tạo collection).
+- Vẫn DRAFT theo D16 cho tới AI-07 + release.

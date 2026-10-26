@@ -84,7 +84,6 @@ def _data_uri(jpg):
 def test_health_real_and_auth():
     status, body = _example("health", "GET", "/health", auth=False)
     health = schemas.HealthResponse.model_validate(body)
-    # `degraded` is sticky after any failed request (even bad input), so it is not a startup check.
     assert status == 200 and not health.stub_mode and set(health.models_loaded) == MODELS
     status, body = _example("completions", "POST", "/v1/completions", {"prompt": "x", "max_tokens": 1}, auth=False, kind="error")
     assert status == 401 and body["error"]["code"] == "UNAUTHORIZED"
@@ -113,6 +112,7 @@ def test_vision_then_highlight(media):
     bad = {"video_id": "vid_ai01example", "features": {"vision_embeddings": vision.embeddings_256[:n], "audio_spectrogram_features": audio[: n - 1]}}
     status, body = _example("highlight", "POST", "/v1/highlight/completions", bad, kind="error")
     assert status == 503 and body["error"]["code"] == "AI_UNAVAILABLE"
+    assert "highlight_fusion" not in _call("GET", "/health", auth=False)[1]["degraded"]   # bad input ≠ model failure
 
 
 def test_asr(media):
@@ -122,6 +122,7 @@ def test_asr(media):
     assert status == 200 and all(0 <= s.start_time <= s.end_time for s in asr.segments)
     status, body = _example("asr", "POST", "/v1/asr/completions", {"audio_url": wav + ".missing.wav", "language": "vi"}, kind="error")
     assert status == 503 and body["error"]["code"] == "AI_UNAVAILABLE"
+    assert "asr_ctc" not in _call("GET", "/health", auth=False)[1]["degraded"]   # bad input ≠ model failure
 
 
 def test_completions():
@@ -139,6 +140,7 @@ def test_search_needs_milvus(media):
     assert status == 200 and len(out.results) <= 5 and all(0 <= r.similarity_score <= 1 for r in out.results)
     status, body = _example("search", "POST", "/v1/search/completions", {"image": _data_uri(frames[0]), "top_k": 0}, kind="error")
     assert status == 422 and body["error"]["code"] == "VALIDATION_ERROR"
+    assert _call("GET", "/health", auth=False)[1]["dependencies"]["visual_index"] == "ok"
 
 
 def test_recommendation_contract():
@@ -147,3 +149,6 @@ def test_recommendation_contract():
         schemas.RecommendationResponse.model_validate(body)
     else:  # index missing or user without vector: gateway falls back to popularity
         assert status == 503 and body["error"]["code"] == "AI_UNAVAILABLE"
+    health = _call("GET", "/health", auth=False)[1]
+    assert health["dependencies"]["recommendation_index"] in {"ok", "missing_collection", "unavailable"}
+    assert "two_tower" not in health["degraded"]

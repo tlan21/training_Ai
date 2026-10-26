@@ -3,7 +3,7 @@
  "body": {
   "error": {
    "code": "AI_UNAVAILABLE",
-   "message": "asr: LibsndfileError: Error opening 'D:\\\\tmp\\\\ai01_20261026\\\\media\\\\clip.wav.missing.wav': System error."
+   "message": "asr: InvalidInput: audio_url không đọc được: LibsndfileError: Error opening 'D:\\\\tmp\\\\ai01_20261026\\\\media\\\\clip.wav.missing.wav': System error."
   }
  }
 }

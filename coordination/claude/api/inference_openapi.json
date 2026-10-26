@@ -588,6 +588,14 @@
             "type": "array",
             "title": "Degraded"
           },
+          "dependencies": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Dependencies",
+            "default": {}
+          },
           "queue_depth": {
             "type": "integer",
             "title": "Queue Depth"

@@ -3,7 +3,7 @@
  "body": {
   "error": {
    "code": "AI_UNAVAILABLE",
-   "message": "highlight: ValueError: vision_embeddings và audio_spectrogram_features phải cùng số giây"
+   "message": "highlight: InvalidInput: vision_embeddings và audio_spectrogram_features phải cùng số giây"
   }
  }
 }

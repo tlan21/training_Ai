@@ -1,5 +1,6 @@
 """FastAPI inference-service — 1 process, 6 endpoint + /health, port 8001 (master plan §2.4)."""
 
+import asyncio
 from contextlib import asynccontextmanager
 
 from fastapi import Depends, FastAPI, Request
@@ -26,6 +27,8 @@ async def lifespan(app: FastAPI):
         vector = visual_index.encode([torch.zeros(3, 224, 224)])[0]
         # First query after load exceeds the 1 s request budget (DEADLINE_EXCEEDED → 503); warm it here.
         visual_index.search(vector, 1, 0.0, timeout=60)
+        registry.dependencies["visual_index"] = "ok"
+        services.refresh_dependencies()   # recommendation index is optional at startup; status only
     gpu_queue.start()
     yield
     await gpu_queue.stop()
@@ -91,6 +94,7 @@ async def recommendation(req: schemas.RecommendationRequest):
 
 @app.get("/health", response_model=schemas.HealthResponse)
 async def health():
+    await asyncio.to_thread(services.refresh_dependencies)   # rate-limited re-probe → self-recovery
     vram, util = registry.gpu_stats()
     all_names = ["vit", "siamese", "asr_ctc", "highlight_fusion", "minigpt", "two_tower"]
     return schemas.HealthResponse(
@@ -103,6 +107,7 @@ async def health():
         # biết đã đủ 6 model hay chưa (điều kiện T1.8) nên không mất thông tin nào.
         models_loaded=sorted(registry.loaded),
         degraded=sorted(registry.degraded),
+        dependencies=dict(sorted(registry.dependencies.items())),
         queue_depth=gpu_queue.depth,
         device=registry.device,
         stub_mode=registry.stub_mode,

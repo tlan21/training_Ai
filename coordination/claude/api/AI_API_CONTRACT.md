@@ -1,6 +1,6 @@
 # AI API Contract — inference-service :8001
 
-**Version: AI-API v1.0-rc1 — DRAFT (2026-10-26).** Owner: Claude. Codex chỉ đọc
+**Version: AI-API v1.1-rc1 — DRAFT (2026-10-26).** Owner: Claude. Codex chỉ đọc
 (`git show claude/ai-core:coordination/claude/api/AI_API_CONTRACT.md`, hoặc bản trên `master` sau release).
 Nguồn code: `inference-service/app/schemas.py`, `app/main.py`, `app/services.py`, `app/visual_index.py` trên `claude/ai-core` (AI-01).
 Đi kèm: `inference_openapi.json` (export `app.main:app.openapi()`, không sửa tay) và `examples/` (request/response/error sinh từ chạy thật, mục 4).
@@ -13,7 +13,7 @@ thành công thật; Codex được dùng mock, chưa được đánh `INTEGRATE
 
 | Endpoint | Trạng thái v1.0-rc1 | Ứng viên API_READY |
 |---|---|---|
-| `GET /health` | `DRAFT` | ✓ (AI-10 sẽ thêm trạng thái dependency, chỉ thêm field) |
+| `GET /health` | `DRAFT` | ✓ (v1.1: thêm `dependencies`, chỉ thêm field) |
 | `POST /v1/vision/completions` | `DRAFT` | ✓ |
 | `POST /v1/asr/completions` | `DRAFT` | ✓ |
 | `POST /v1/highlight/completions` | `DRAFT` | ✓ |
@@ -33,7 +33,7 @@ thành công thật; Codex được dùng mock, chưa được đánh `INTEGRATE
 |---|---|---|
 | 401 | `UNAUTHORIZED` | thiếu/sai Bearer key |
 | 422 | `VALIDATION_ERROR` | body sai schema (thiếu field, `top_k` ngoài 1–100, …); search: ảnh không phải JPEG/PNG/WebP hoặc >20 MP |
-| 503 | `AI_UNAVAILABLE` | real path lỗi: vision ảnh hỏng/>20 MP, file audio không đọc được, lệch số giây highlight, Milvus lỗi/thiếu collection. Không bao giờ trả stub lặng lẽ khi `FORCE_STUB=0` |
+| 503 | `AI_UNAVAILABLE` | real path lỗi: vision ảnh hỏng/>20 MP, file audio không đọc được, sai số giây/chiều highlight (input sai — **không** làm model degraded); Milvus lỗi/thiếu collection (dependency); inference lỗi thật (model degraded). Không bao giờ trả stub lặng lẽ khi `FORCE_STUB=0` |
 | 4xx/5xx khác | `HTTP_ERROR` | lỗi HTTP chung |
 
 - Khởi động (`FORCE_STUB=0`): lifespan bắt buộc đủ 6 checkpoint, kết nối Milvus `video_frame_embeddings` và chạy 1 search warmup; thiếu bất kỳ → process thoát
@@ -129,7 +129,7 @@ Resp: `{"id","object":"recommendation_completion","created","model","recommendat
 - Hành vi thật (sửa so với v0.x): trả **503 `AI_UNAVAILABLE`** khi Milvus không kết nối, khi chưa có collection `user_recommendation_embeddings`,
   **và khi user chưa có vector (cold-start)** hoặc ANN trả 0 video. Gateway dùng popularity fallback cho mọi 503.
 - Hiện tại collection chưa tồn tại trong Milvus của stack → luôn 503 (`examples/recommendation.*`). Chưa có ví dụ 200 thật → giữ `DRAFT`.
-- Service cache kết quả nối Milvus lần đầu (kể cả thất bại) tới khi restart process.
+- Nối Milvus thất bại / thiếu collection: thử lại tối đa mỗi 30 s (request hoặc `/health`), không cần restart. Trạng thái ở `/health.dependencies.recommendation_index`.
 
 ### 2.6 `POST /v1/completions` — Mini-GPT (OpenAI-style) — DRAFT (ứng viên)
 Req: `{"model"?: str, "prompt": str, "max_tokens": ≥1 (mặc định 150), "temperature": 0–2 (mặc định 0.7), "top_p": 0.9, "frequency_penalty": 0, "presence_penalty": 0}`
@@ -138,15 +138,21 @@ Resp: `{"id","object":"text_completion","created","model","choices":[{"text","in
 - Chất lượng: tóm tắt video thật còn bịa/lặp (human 1.6/5, AI-03). Chỉ dùng làm **draft** để admin duyệt.
 
 ### 2.7 `GET /health` — DRAFT (ứng viên)
-Resp: `{"status":"ok","gpu_vram_used": MB,"gpu_util": %,"models_loaded":[...],"degraded":[...],"queue_depth":int,"device":"cpu|cuda","stub_mode":bool,"load_error": str|null}`
+Resp: `{"status":"ok","gpu_vram_used": MB,"gpu_util": %,"models_loaded":[...],"degraded":[...],"dependencies":{str: str},"queue_depth":int,"device":"cpu|cuda","stub_mode":bool,"load_error": str|null}`
 - Integration test thật phải assert `stub_mode == false` và `models_loaded` đủ 6 key ở mục 1.
-- `degraded`: model đã có **ít nhất 1 request real-path lỗi kể từ startup**, kể cả lỗi do input (file không tồn tại, lệch chiều). Dính tới khi restart;
-  không dùng làm tín hiệu model hỏng.
+- `degraded` (D15, v1.1): model có **inference lỗi thật** ở lần gọi gần nhất. Input không hợp lệ (422, ảnh/audio không đọc được, sai số giây/chiều highlight)
+  và lỗi dependency **không** tính. Tự gỡ khi model chạy thành công lần sau.
+- `dependencies` (mới ở v1.1, mặc định `{}` → client cũ bỏ qua được): trạng thái hạ tầng sau từng capability, không phải lỗi model.
+  Key: `visual_index` (Milvus `video_frame_embeddings` + MinIO thumbnail; dùng cho search và index frame của vision),
+  `recommendation_index` (Milvus `user_recommendation_embeddings`). Giá trị: `ok` | `unavailable` | `missing_collection`.
+  `/health` tự thử lại dependency chưa `ok` tối đa mỗi 30 s → trạng thái tự phục hồi khi Milvus/collection được sửa. `FORCE_STUB=1` → `{}`.
 
 ## 3. Changelog
 - **v0 (2026-10-26)** — DRAFT, ghi lại API hiện có tại baseline `15976b3`. Không đổi code.
 - **v0.1 (2026-10-26)** — DRAFT, chỉ tài liệu: thêm thang sẵn sàng (1b) và quyền runtime :8001 thuộc Claude, Codex chỉ HTTP/mock (1c). Schema không đổi.
 - **v0.2 (2026-10-26)** — DRAFT, chỉ tài liệu (AI-06): nguồn checkpoint canonical, thang sẵn sàng có bằng chứng HTTP thật (1b); ghi rõ startup thật cần Milvus và `PYTHONUTF8=1` trên Windows. Schema không đổi.
+- **v1.1-rc1 (2026-10-26)** — AI-10 (D15). Tương thích ngược: chỉ thêm `/health.dependencies` (default `{}`); status code không đổi.
+  Đổi ngữ nghĩa `degraded` (chỉ lỗi inference thật, tự phục hồi); recommendation thử lại Milvus mỗi 30 s thay vì cache thất bại tới restart.
 - **v1.0-rc1 (2026-10-26)** — AI-01 (ban đầu ghi "v1.0, 6 endpoint API_READY"; đính chính theo D16 → mọi endpoint DRAFT, 6 ứng viên). Schema request/response **không đổi** so với v0.x.
   Thêm `inference_openapi.json`, `examples/`, `tests/test_live_smoke.py`. Sửa hành vi: startup chạy 1 search warmup Milvus (trước đây search đầu tiên
   sau startup có thể 503 `DEADLINE_EXCEEDED` vì vượt timeout 1 s). Sửa tài liệu cho khớp code: cold-start recommendation trả 503 (không phải 200),
