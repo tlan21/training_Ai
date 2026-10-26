@@ -125,7 +125,7 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   Kaggle private kernel `traininghighlight/ai-vram-t4-run-v1` v3, 2×T4 (đo GPU 0), driver 580.178.04, CUDA 12.8, torch 2.11.0+cu128, fp16; 6 ckpt SHA khớp contract;
   20 request tuần tự (vision 32 frame, ASR 25 s, highlight 120 s, completions map-reduce, Siamese 32) 20/20 OK. Sau nạp: nvidia-smi 305 MiB; peak 347 MiB
   (PyTorch reserved 210, allocated 133); tail allocated 82 MiB ổn định. Dry-run CPU cục bộ trước khi push. v1 (input nhỏ) → v2 (input xấu nhất) → v3 (+nvidia-smi).
-- Commits: 06dcb0e (nhận task), 3a380dc (kernel+builder), 4b47b5a (v2), c5d0e60 (v3), (commit báo cáo) | Checkpoint:
+- Commits: 06dcb0e (nhận task), 3a380dc (kernel+builder), 4b47b5a (v2), c5d0e60 (v3), 9918151 (báo cáo) | Checkpoint:
   ```
   Lane: claude
   Changed: dist/kaggle/kernel-vram-t4/{build_dataset.py,run_vram_t4.py,kernel-metadata.json}, docs/T4.3_bao_cao.md, coordination/claude/{TASKS,SESSION,HANDOFF_OUT}.md, evidence/AI-04_2026-10-26/**
