@@ -1,0 +1,90 @@
+{
+  "status": "PAIRED_PILOT_COMPLETE_HUMAN_QUALITY_NOT_SCORED",
+  "sample_ids": [
+    "sample_01",
+    "sample_10",
+    "sample_28"
+  ],
+  "candidate_sha256": "70ec4790fc539fb0e012f6cef8012ae181ada08d9a593cda3d9358cbdfef3cfe",
+  "active_sha256": "cf9cfa7141d40f9d40b0065ae68855ff39ffe750260ee7b42c7c0eac719330ac",
+  "asr_checkpoint_provenance": {
+    "baseline": "8f87986781cfb3d4716691f2051e5798187693e2452f9f41b28ca4a753ea5531",
+    "candidate": "d03ef0a962220618e90e5ff478a2fbab5ff35dd68deb539a4933eb7c15a4f3de",
+    "minigpt": "cf9cfa7141d40f9d40b0065ae68855ff39ffe750260ee7b42c7c0eac719330ac"
+  },
+  "device": "cpu",
+  "dtype": "float32",
+  "torch": "2.13.0+cpu",
+  "temperature": 0,
+  "max_tokens": 96,
+  "elapsed_seconds": 18.73399999999947,
+  "new_asr_run": false,
+  "production_weights_changed": false,
+  "new_human_quality_score": null,
+  "historical_shared_mean": 1.6,
+  "active_cache_parity_cases": 9,
+  "nonempty_generations": 18,
+  "policy": "Three previously inspected clips: diagnostic only, no training/tuning/checkpoint selection/deployment",
+  "protected_hashes": {
+    "D:\\data_training_ai\\minigpt_real_video_20261015\\asr_candidate_comparison_3_20261019\\confirmed_draft_minigpt.json": "e6bdac5c502f1f5d69909c7d4c019d1f61a1e9fb3f3a17a513a2850becaa213a",
+    "D:\\data_training_ai\\minigpt_real_video_20261015\\asr_candidate_comparison_3_20261019\\comparison.json": "7ad2134b9c5ff4dcf5ec08576d18bd9f97ef384dd0db5838a398ee60f5425bca",
+    "D:\\data_training_ai\\minigpt_real_video_20261015\\evaluation\\samples.json": "cbd87b7406ad26fca111f9fe7a7ad0e53315cead018a64cb0dbfdea778399c27",
+    "D:\\data_training_ai\\minigpt_real_video_20261015\\asr_ground_truth_30\\references.csv": "a6ee473b2b1fe4a7106879cb011f131724c4b60297faec5c1ae682088934987f",
+    "E:\\traning_ai\\inference-service\\app\\services.py": "a1dfbee9e7ff009b50f4500bc950b5c462a9407743c36ea45d87376d6cc7e209",
+    "E:\\traning_ai\\ai-core\\checkpoints\\minigpt\\best.pt": "cf9cfa7141d40f9d40b0065ae68855ff39ffe750260ee7b42c7c0eac719330ac",
+    "D:\\data_training_ai\\minigpt_news\\mixed_replay_output_v1\\replay_run\\minigpt\\best.pt": "70ec4790fc539fb0e012f6cef8012ae181ada08d9a593cda3d9358cbdfef3cfe",
+    "D:\\data_training_ai\\minigpt_real_video_20261015\\evaluation\\ratings_rater_1.csv": "6b0e7741353624bc1d6b63966854ef244e6b7d5a17cbf2668aeb00446630f1fd",
+    "D:\\data_training_ai\\minigpt_real_video_20261015\\evaluation\\ratings_rater_2.csv": "9e2e7de45f577ecfd0f820b86670f12c20346b087f4796a00b0ed5fa6870c062",
+    "D:\\data_training_ai\\minigpt_real_video_20261015\\evaluation\\ratings_rater_3.csv": "9e2e7de45f577ecfd0f820b86670f12c20346b087f4796a00b0ed5fa6870c062",
+    "D:\\data_training_ai\\minigpt_real_video_20261015\\evaluation\\video\\sample_01.mp4": "9973fb36796779991b3b881395a9baab5b1f5d1f31169972baaa5c97385e86ed",
+    "D:\\data_training_ai\\minigpt_real_video_20261015\\evaluation\\video\\sample_10.mp4": "d659e37f2755fde986c5ba8b14eb8f196a6422142422f88c828de4036ae92da2",
+    "D:\\data_training_ai\\minigpt_real_video_20261015\\evaluation\\video\\sample_28.mp4": "a0e88bbbf9290227887f4139823c0e10bbe78482c26a9a69cfb873171162187b"
+  },
+  "directory": "D:\\data_training_ai\\minigpt_news\\mixed_replay_video_pilot_3_v1",
+  "comparison_sha256": "3a30f4a10404535bc56e0f7191db0d40c82bbaa967b3b80c13649cc5f2b0335e",
+  "script_sha256": "705ca9b1228aacdeb10c8d46696bc3464abdd185b9fd78ef9e1bda58035c7185",
+  "review_sha256": "ddc4ff755848ca5e3e7985bf262624340b6ca65be6dbc32b342ebc341ce4e2fa",
+  "production_recommendation": "DO_NOT_PROMOTE_REAL_INPUT_ERRORS",
+  "report": "docs/T1.6_mixed_video_pilot.md",
+  "prior_frozen_source_identity_verified": true,
+  "go_vet_test_build": "PASS",
+  "cms_tsc_vite": "PASS",
+  "client_tsc_next_no_lint": "PASS",
+  "render_unit_test": "PASS",
+  "browser_check": {
+    "status": "PASS",
+    "checks": [
+      {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "cards": 3,
+        "pairs": 9,
+        "videosPlayed": 3,
+        "noHorizontalOverflow": true,
+        "screenshot": "D:/data_training_ai/minigpt_news/mixed_replay_video_pilot_3_v1/review_1440.png"
+      },
+      {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "cards": 3,
+        "pairs": 9,
+        "videosPlayed": 3,
+        "noHorizontalOverflow": true,
+        "screenshot": "D:/data_training_ai/minigpt_news/mixed_replay_video_pilot_3_v1/review_390.png"
+      }
+    ]
+  },
+  "visual_qc": "PASS",
+  "next_safe_task": "Separate human-authored real-domain train/validation pairs from new videos outside frozen30; no test pseudo-labels",
+  "artifact_hashes": {
+    "D:\\data_training_ai\\minigpt_news\\mixed_replay_video_pilot_3_v1\\comparison.json": "3a30f4a10404535bc56e0f7191db0d40c82bbaa967b3b80c13649cc5f2b0335e",
+    "D:\\data_training_ai\\minigpt_news\\mixed_replay_video_pilot_3_v1\\review.html": "ddc4ff755848ca5e3e7985bf262624340b6ca65be6dbc32b342ebc341ce4e2fa",
+    "D:\\data_training_ai\\minigpt_news\\mixed_replay_video_pilot_3_v1\\review.txt": "0ed4416d8d0e1c37b2b7ed5062a8c250139ff2fc8dd0a6a5ee2c236f76af57ef",
+    "D:\\data_training_ai\\minigpt_news\\mixed_replay_video_pilot_3_v1\\browser_verification.json": "d75746ebd2b1f69da6b1d13d8188145063d74b83b0a02a585f751cd75d7c8649",
+    "E:\\traning_ai\\docs\\T1.6_mixed_video_pilot.md": "bc7cdb3278902f13dc0d099dc2f544d1118679098fa1bce52b6a1215743b143e"
+  }
+}

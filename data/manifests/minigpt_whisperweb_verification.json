@@ -1,0 +1,33 @@
+{
+  "status": "PASS_EXPORT_INTEGRITY_NOT_SEMANTIC_ACCURACY",
+  "checked_at": "2026-10-19T09:57:47.175Z",
+  "clips": 40,
+  "media_duration_seconds": 1200,
+  "train": 30,
+  "val": 10,
+  "export_files": 120,
+  "export_bytes": 95244,
+  "review_flags": {
+    "UNKNOWN_END_TIME_SRT_EXPORT_USES_FALLBACK": 6,
+    "REPEATED_8_WORD_SEQUENCE": 5,
+    "TIME_OUTSIDE_CLIP": 14
+  },
+  "flagged_samples": 22,
+  "max_non_null_segment_end_seconds": 32.34,
+  "exact_duplicate_transcripts": [],
+  "clip_audio_video_hashes": "PASS_80",
+  "preparation_packet_hashes": "PASS_7",
+  "frozen_files_and_active_weights": "PASS_8",
+  "txt_json_agreement": "PASS_40",
+  "human_verified": false,
+  "training_ready": false,
+  "training_started": false,
+  "go_vet_test_build": "PASS",
+  "cms_tsc_vite": "PASS",
+  "client_tsc_next": "PASS",
+  "collector_self_check": "PASS",
+  "semantic_audit": "NOT_PERFORMED",
+  "provider_model_revision": "NOT_EXPOSED_BY_UI",
+  "browser": "156.0.8078.4",
+  "collector_sha256": "742530070a171e4c63a25415398025f0294dad2568160e65b4b96afed22594d9"
+}

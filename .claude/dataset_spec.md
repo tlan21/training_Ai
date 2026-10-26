@@ -65,6 +65,8 @@ Ghi rõ trong luận án: mọi dataset trên chỉ cung cấp **dữ liệu th�
 - Đây là **self-supervised trên chính dữ liệu của mình** — đúng tinh thần "tự huấn luyện", không vi phạm ràng buộc.
 
 ### 3.3. ASR Tiếng Việt
+- **English supplement (2026-10-20):** Mini LibriSpeech/OpenSLR31 CC-BY-4.0:1519train/5.310743h; dev-clean-2 speaker partitions seed1337→580val/0.977111h +509test/1.058710h. Raw book-text labels retained; no external ASR pseudo-labels. Candidate133 vocabulary unchanged; original Vietnamese tests remain frozen. This is read-English coverage, not verified Vietnamese-English/legal-domain coverage. Preparation/provenance/checks: @../docs/T1.4_asr_english_preparation.md. Training not started.
+- **Lossless label convention (2026-10-20):** NFC + uppercase + collapse whitespace ở bước chuẩn bị; giữ nguyên chữ tiếng Anh, số, dấu và mã định danh của reference, không tự dịch/đổi dạng số/đoán tên. Encoder dừng khi train label chứa ký tự ngoài vocab và báo sample/path/codepoint; không xóa ký tự. Vocabulary bổ sung chỉ từ train, giữIDs/checkpoint-head compatibility. Validation/test chấm rawreference đầy đủ, không thêm ký tự held-out vào vocab hoặc rút gọn reference. Chi tiết/giới hạn actual93/133symbols và preflight: @../docs/T1.4_asr_label_contract.md.
 - **Train:** VIVOS train (11h) + Common Voice vi (+ VLSP nếu có). Resample toàn bộ 16kHz mono.
 - **Nhãn:** transcript ký tự tiếng Việt — bộ ký tự ~95 ký tự (chữ có dấu + số + khoảng trắng). **Char-level, không cần tokenizer ngoài.**
 - **Augmentation:** speed perturbation 0.9×/1.0×/1.1× (resample DSP tự code) — nhân 3 dữ liệu train ảo; cộng SpecAugment tại @model_spec.md §2.

@@ -1,0 +1,98 @@
+{
+  "date": "2026-10-15",
+  "status": "AUTOMATIC ROUGE-L PASS; HUMAN/DEPLOYMENT PENDING",
+  "checks": "1000 IDs/references/Lead1/scores, split SHA1/group disjointness, best-val selection, checkpoint/BPE/config/finite weights verified",
+  "metrics": {
+    "model": {
+      "rouge1": 0.21291103519844112,
+      "rouge2": 0.10895719448903182,
+      "rougeL": 0.20230786056078187
+    },
+    "lead1": {
+      "rouge1": 0.21242315328303252,
+      "rouge2": 0.11332544298663355,
+      "rougeL": 0.18710923963883994
+    }
+  },
+  "rougeL_delta": 0.015198620921941934,
+  "paired_bootstrap_ci95": [
+    0.003964594977625914,
+    0.026687251239920093
+  ],
+  "wins_ties_losses": [
+    497,
+    39,
+    464
+  ],
+  "zero_rougeL_count": 226,
+  "empty_prediction_count": 0,
+  "exact_title_matches": 1,
+  "test_target_perplexity_cpu_fp32": 11.708132872160945,
+  "test_target_tokens": 15444,
+  "checkpoint_sha256": "cf9cfa7141d40f9d40b0065ae68855ff39ffe750260ee7b42c7c0eac719330ac",
+  "checkpoint_path": "D:\\data_training_ai\\minigpt_news\\output-v2\\news_run\\minigpt\\best.pt",
+  "selected_stage": "asr",
+  "selected_step": 3000,
+  "smoke": [
+    {
+      "format": "title",
+      "text": "LĐBĐ Pháp đoạt giải VĐQG Tây Ban Nha",
+      "input_id": "743093ddcd839f2a1a11c8469d1b2a0df40cb6a7ce00a0658ba58728a7459c3f",
+      "device": "CPU fp32"
+    },
+    {
+      "format": "sum",
+      "text": "(TNO) Tổng thống Pháp Lavrovia Lavrovia đã giành được vị trí số 1 trong bảng xếp hạng các giải đấu quốc tế và các giải đấu quốc tế trong năm nay.",
+      "input_id": "743093ddcd839f2a1a11c8469d1b2a0df40cb6a7ce00a0658ba58728a7459c3f",
+      "device": "CPU fp32"
+    },
+    {
+      "format": "cap",
+      "text": "LĐBĐ Pháp đoạt giải VĐQG Tây Ban Nha",
+      "input_id": "743093ddcd839f2a1a11c8469d1b2a0df40cb6a7ce00a0658ba58728a7459c3f",
+      "device": "CPU fp32"
+    }
+  ],
+  "first_five_predictions": [
+    {
+      "id": "743093ddcd839f2a1a11c8469d1b2a0df40cb6a7ce00a0658ba58728a7459c3f",
+      "reference": "La Liga - giải VĐQG số 1 thế giới năm 2010",
+      "prediction": "LĐBĐ Pháp đoạt giải VĐQG Tây Ban Nha",
+      "lead1": "(LĐO) - La Liga (giải VĐQG Tây Ban Nha) đã được Liên đoàn thống kê và lịch sử bóng đá thế giới (IFFHS) bầu chọn là giải VĐQG số 1 thế giới năm 2010.",
+      "rouge_l": 0.2105263157894737,
+      "lead1_rouge_l": 0.39999999999999997
+    },
+    {
+      "id": "867735e85876849a558ea27db6245c500e817fbe917e3dd9af1fe239de4f58f3",
+      "reference": "Hàn Quốc áp dụng chính sách làm việc tối đa 52 giờ/tuần",
+      "prediction": "Hàn Quốc: Nhiều chính sách mới để giảm chi phí lao động",
+      "lead1": "Bắt đầu từ tháng 7/2018, người lao động Hàn Quốc sẽ làm việc tối đa 52 giờ một tuần theo chính sách mới nhằm đảm bảo cân bằng cuộc sống và công việc.",
+      "rouge_l": 0.25,
+      "lead1_rouge_l": 0.3111111111111111
+    },
+    {
+      "id": "7fa6177908f0066376f254255c3b971fecc0138730e35a07c5e70c05b238e28c",
+      "reference": "2 năm ngày Sir Alex chia tay United: Một thời “ông Kẹ”",
+      "prediction": "Những bóng hồng đáng sợ trên sân nhà",
+      "lead1": "(Bình luận bóng đá) - Ngày này 2 năm về trước, cả Old Trafford xúc động nói lời chia tay Sir Alex.",
+      "rouge_l": 0.0,
+      "lead1_rouge_l": 0.23529411764705885
+    },
+    {
+      "id": "c9d43e67636bf4dd91708dc987f0925af797ab796a33032464cf014b4836f82e",
+      "reference": "Tổng thống Trump: Cuộc điện đàm giải quyết bất đồng thương mại với Chủ tịch Tập Cận Bình diễn ra 'rất tốt đẹp'",
+      "prediction": "Tổng thống Trump: 'Bất đồng thương mại sẽ là vấn đề toàn cầu'",
+      "lead1": "Tổng thống Mỹ Donald Trump ngày 1/11 cho biết đã có cuộc điện đàm 'rất tốt đẹp' với Chủ tịch Trung Quốc Tập Cận Bình về bất đồng thương mại giữa hai nền kinh tế hàng đầu thế giới cũng như kế hoạch gặp nhau tại Hội nghị thượng đỉnh Nhóm các nền kinh tế phát triển và mới nổi hàng đầu thế giới (G20) dự kiến diễn ra vào cuối tháng này ở Buenos Aires.",
+      "rouge_l": 0.33333333333333337,
+      "lead1_rouge_l": 0.24242424242424246
+    },
+    {
+      "id": "92056e473c20746204763711252a80337cf07328d92da173896cb4dc746e13d4",
+      "reference": "Xuất hành đầu năm Ất Mùi, ngày nào tốt?",
+      "prediction": "Tết này sẽ có ảnh hưởng lớn đến đời sống của người Việt",
+      "lead1": "Xuất hành là lần đi ra khỏi nhà đầu tiên trong năm mới.",
+      "rouge_l": 0.0,
+      "lead1_rouge_l": 0.3636363636363637
+    }
+  ]
+}

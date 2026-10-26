@@ -63,12 +63,14 @@ class MiniGPT(nn.Module):
         for _ in range(max_new_tokens):
             if out.shape[1] >= max_len:
                 break                                        # hết vị trí RoPE/cache: dừng, không nổ
-            logits = next_logits[:, -1] / max(temperature, 1e-5)  # (B, V)
+            logits = next_logits[:, -1]
+            if temperature != 0:
+                logits = logits / max(temperature, 1e-5)
             if top_k > 0:
                 v, _ = torch.topk(logits, min(top_k, logits.shape[-1]))
                 logits[logits < v[:, [-1]]] = float("-inf")
-            probs = torch.softmax(logits, dim=-1)
-            nxt = torch.multinomial(probs, 1)                # (B, 1)
+            nxt = (logits.argmax(dim=-1, keepdim=True) if temperature == 0
+                   else torch.multinomial(torch.softmax(logits, dim=-1), 1))
             out = torch.cat([out, nxt], dim=1)
             if eos_id is not None and bool((nxt == eos_id).all()):
                 break

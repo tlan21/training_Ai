@@ -1,0 +1,125 @@
+{
+  "status": "PREPARATION_VERIFIED_HUMAN_LABELS_PENDING",
+  "directory": "D:\\data_training_ai\\minigpt_domain_v1_20261019",
+  "videos": 20,
+  "clips": 40,
+  "clip_seconds": 30,
+  "duration_seconds": 1200,
+  "channel_splits": {
+    "UCfJb13P1cwuuHs5osogpTIg": "val",
+    "UCcYAUt0vaYYcFGU_KgM7UZg": "train",
+    "UC4t0tgldykbxC-RjoGsFBeA": "train",
+    "UC7o6B2tBb9vuNIpdfgtRD3Q": "train"
+  },
+  "train_clips": 30,
+  "val_clips": 10,
+  "sources_sha256": "b2d28391cde01bf34b2f87c2763f1e43311feb51050c8356b852ec0be86e3f96",
+  "selection_sha256": "127b9745207e07c1d2b78577785031331731da05a2d152d6c6e1b9a4947a364b",
+  "media_samples_sha256": "efa1b6108724d01e378ade735ff6126c869dddeb24e46e1db2a05d82cb22f50e",
+  "human_labels_completed": 0,
+  "training_ready": false,
+  "frozen_sources_excluded": 10,
+  "frozen_channels_excluded": 6,
+  "speaker_identity": "Unknown until human annotation; channel disjointness is a proxy, not verified speaker disjointness",
+  "exact_pcm_duplicates": 0,
+  "near_duplicate_content": "Not certified; human source review still required",
+  "source_bytes": 499544485,
+  "production_weights_changed": false,
+  "samples_sha256": "6e863b168541e155613fb27517d5a455dca931b193bf6b859ddc20ec77c6f4e0",
+  "asr_checkpoints": {
+    "active": "8f87986781cfb3d4716691f2051e5798187693e2452f9f41b28ca4a753ea5531",
+    "candidate": "d03ef0a962220618e90e5ff478a2fbab5ff35dd68deb539a4933eb7c15a4f3de"
+  },
+  "services_sha256": "a1dfbee9e7ff009b50f4500bc950b5c462a9407743c36ea45d87376d6cc7e209",
+  "asr_input_generations": 80,
+  "asr_elapsed_seconds": 37.53099999999995,
+  "asr_device": "cpu",
+  "asr_dtype": "float32",
+  "asr_torch": "2.13.0+cpu",
+  "empty_asr_inputs": 0,
+  "over_budget_sample_ids": [],
+  "labels_blank_sha256": "60a1c6299f8b316d09b4306b92a3ebb14d91f8c91bb88ed620bf4c12ceb44767",
+  "review_sha256": "d44b6d35724fc3e7fba669f87ac5caf20e9720c8352d37287bdb8373216948b5",
+  "vocab_sha256": "649ffc66d05bdda9c4586fe5500284dc5feef90414a8762ef4d541331937d713",
+  "packet_json_sha256": "0cfb46a6c076e8e6e42fff51fcbd2456648cde05b9ee2558425747a2a5090054",
+  "task_status": "DONE_PREPARATION_ONLY",
+  "report": "docs/T1.6_real_domain_preparation.md",
+  "review_url": "http://127.0.0.1:8890/index.html",
+  "max_noisy_prompt_tokens": 229,
+  "noisy_prompt_capacity": 416,
+  "unit_tests_passed": 20,
+  "actual_blank_import": "REJECTED_AS_EXPECTED_NO_ACCEPTED_DATASET",
+  "browser_verification": {
+    "status": "PASS",
+    "checks": [
+      {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "cards": 40,
+        "blankLabels": 40,
+        "videosPlayed": 4,
+        "noHorizontalOverflow": true,
+        "blankExportRoundtrip": true,
+        "unicodeAutosaveReload": true
+      },
+      {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "cards": 40,
+        "blankLabels": 40,
+        "videosPlayed": 4,
+        "noHorizontalOverflow": true,
+        "blankExportRoundtrip": true,
+        "unicodeAutosaveReload": true
+      }
+    ],
+    "policy": "Temporary browser contexts only; TEST_ONLY exports are blank fixtures, not human labels"
+  },
+  "visual_qc": "PASS",
+  "go_vet_test_build": "PASS",
+  "cms_tsc_vite": "PASS",
+  "client_tsc_next_no_lint": "PASS",
+  "new_training_run": false,
+  "new_external_model_calls": false,
+  "frozen_quality_ratings_changed": false,
+  "historical_shared_mean": 1.6,
+  "next_safe_task": "Human authors listen/write40transcript-summary pairs, export JSON, then import and review; no training before valid labels",
+  "source_split_counts": {
+    "train": {
+      "videos": 15,
+      "clips": 30,
+      "channels": 3
+    },
+    "val": {
+      "videos": 5,
+      "clips": 10,
+      "channels": 1
+    }
+  },
+  "script_sha256": {
+    "annotation.html": "8a09bb379fda0c111c5e21391071afbe52f17e37b900c5afd903deaf50a8fb9b",
+    "build_packet.py": "759be08d2b3c88b7d14a77132115d575b3e834c910ba024d752284b09a8ab69b",
+    "check_review.cjs": "fdce99f35a3c819eba644d0f933417477affed5b52a6085a2151051f03c90a6a",
+    "import_labels.py": "c024cd7fab091bb3f0f4bf9b7b1aaa0f40edb0c17f8e59a822811221fc560d59",
+    "prepare_asr_inputs.py": "0d0ed44f096a9bfb644113f73e27e8a24b2579cf2b97ed02b981b8498736600d",
+    "prepare_media.py": "a26cc21f051719d6b44a6240cad311a8965299780f4dfb50b0239bc8b4067f2f",
+    "test_domain_packet.py": "47898271069897df0d8bc93a2780897098eb4eb26c63e63065fa0ec02dccc56a"
+  },
+  "artifact_sha256": {
+    "sources.json": "b2d28391cde01bf34b2f87c2763f1e43311feb51050c8356b852ec0be86e3f96",
+    "selection.json": "127b9745207e07c1d2b78577785031331731da05a2d152d6c6e1b9a4947a364b",
+    "media_samples.json": "efa1b6108724d01e378ade735ff6126c869dddeb24e46e1db2a05d82cb22f50e",
+    "samples.json": "6e863b168541e155613fb27517d5a455dca931b193bf6b859ddc20ec77c6f4e0",
+    "packet.json": "0cfb46a6c076e8e6e42fff51fcbd2456648cde05b9ee2558425747a2a5090054",
+    "labels_blank.json": "60a1c6299f8b316d09b4306b92a3ebb14d91f8c91bb88ed620bf4c12ceb44767",
+    "index.html": "d44b6d35724fc3e7fba669f87ac5caf20e9720c8352d37287bdb8373216948b5",
+    "README.md": "022a75980621ca3ab5117fb7be32f07b4ce426bb8edf441238bdeea47c6a8f71",
+    "frozen_guard.json": "c4fd4c1c94d966827deb6a307453f8d09afedf9506ef881bdc5e00931237289a",
+    "qa\\browser_verification.json": "c8f5cf8eeb51708ced8c6bdebe9fdaf368ab8ef2c5d73895bef8d34d6c7b7800"
+  },
+  "report_sha256": "ab849bd8ce8e360bd599fc12d7d9f155e71559d3ee9193ae3730330ac43604df"
+}

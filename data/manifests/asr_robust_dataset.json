@@ -1,0 +1,132 @@
+{
+  "status": "PREPARED — TRAINING NOT STARTED",
+  "dataset": "D:\\data_training_ai\\asr_robust\\kaggle_dataset",
+  "manifest_sha256": "e2dbb144b3ec78b265200ec05b490066ab9c04107943a833da891e1c64fb9ae3",
+  "seed": 1337,
+  "sr": 16000,
+  "source": {
+    "dataset": "google/fleurs",
+    "config": "vi_vn",
+    "revision": "168de341b3db6859a9bac1c50a2ef5e3b47647e0",
+    "license": "CC-BY-4.0",
+    "validation": {
+      "url": "https://huggingface.co/datasets/google/fleurs/resolve/168de341b3db6859a9bac1c50a2ef5e3b47647e0/vi_vn/validation/0000.parquet",
+      "file": "D:\\data_training_ai\\asr_robust\\raw\\fleurs_vi\\validation.parquet",
+      "sha256": "a6d7cf5fd0711ba5437e6f59f244e72207616aaa6b721f5f7bb2efb98eed1e20",
+      "bytes": 274630187
+    },
+    "train": {
+      "url": "https://huggingface.co/datasets/google/fleurs/resolve/168de341b3db6859a9bac1c50a2ef5e3b47647e0/vi_vn/train/0000.parquet",
+      "file": "D:\\data_training_ai\\asr_robust\\raw\\fleurs_vi\\train.parquet",
+      "sha256": "6a754f3497f7b9b60549963372a7780bf2e60d2508030aec917da57a86af9251",
+      "bytes": 2073226755
+    },
+    "test": {
+      "url": "https://huggingface.co/datasets/google/fleurs/resolve/168de341b3db6859a9bac1c50a2ef5e3b47647e0/vi_vn/test/0000.parquet",
+      "file": "D:\\data_training_ai\\asr_robust\\raw\\fleurs_vi\\test.parquet",
+      "sha256": "65325be18bef84bb97b5bad1145958ae752919bb0b6696e7cfa8409ef5c46c77",
+      "bytes": 691128728
+    }
+  },
+  "statistics": {
+    "vivos_train": {
+      "examples": 10567,
+      "hours": 12.933708385416667,
+      "oov_characters": []
+    },
+    "vivos_val": {
+      "examples": 1093,
+      "hours": 1.9873784722222223,
+      "oov_characters": []
+    },
+    "vivos_test": {
+      "examples": 760,
+      "hours": 0.7459846006944445,
+      "oov_characters": []
+    },
+    "fleurs_train": {
+      "examples": 2994,
+      "hours": 9.076483333333334,
+      "oov_characters": []
+    },
+    "fleurs_val": {
+      "examples": 361,
+      "hours": 1.1943166666666667,
+      "oov_characters": [
+        "Ñ"
+      ]
+    },
+    "fleurs_test": {
+      "examples": 857,
+      "hours": 3.0038,
+      "oov_characters": [
+        "~",
+        "½",
+        "¾",
+        "Ğ",
+        "Ş"
+      ]
+    }
+  },
+  "source_checkpoint_sha256": "8f87986781cfb3d4716691f2051e5798187693e2452f9f41b28ca4a753ea5531",
+  "vivos_manifest_sha256": "8a4573cd66b647ce00f3ae1a81ef458de472df8ff765518f65d2ff68c60bb47f",
+  "vivos_archive_sha256": "43e98ad4a3435dc882ebc158910aebab63d152ab8e12992884324e029a7a4587",
+  "vivos_val_speakers": [
+    "VIVOSSPK24",
+    "VIVOSSPK35",
+    "VIVOSSPK37",
+    "VIVOSSPK40",
+    "VIVOSSPK46"
+  ],
+  "original_n_chars": 93,
+  "n_chars": 133,
+  "added_training_characters": [
+    "!",
+    "\"",
+    "$",
+    "%",
+    "&",
+    "'",
+    "+",
+    ",",
+    "-",
+    ".",
+    "/",
+    "0",
+    "1",
+    "2",
+    "3",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    ";",
+    "<",
+    ">",
+    "F",
+    "J",
+    "W",
+    "Z",
+    "[",
+    "]",
+    "¥",
+    "°",
+    "²",
+    "Ç",
+    "Ö",
+    "Ü",
+    "–",
+    "—",
+    "‘",
+    "’",
+    "”"
+  ],
+  "label_provenance": "VIVOS prompts + FLEURS human-translated prompts read by humans; upstream NFC/FST text normalization, not machine ASR.",
+  "exclusions": "No YouTube30, pretrained drafts, external weights/tokenizers or test-derived vocab additions.",
+  "licenses": {
+    "vivos": "CC-BY-NC-SA-4.0",
+    "fleurs": "CC-BY-4.0"
+  },
+  "fleurs_archive_sha256": "07ff34f2b3a665200d6a38c38156ec1a5e1410af1a81b8ded4a33a1451b83789"
+}

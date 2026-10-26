@@ -1,0 +1,1325 @@
+{
+  "status": "RECEIVED_REVIEW_FEEDBACK_NOT_APPROVED_TRAINING_LABELS",
+  "checked_at": "2026-10-20T09:11:58.782567+00:00",
+  "source_download": "C:\\Users\\PC\\Downloads\\reviewed_whisper_domain_v1.json",
+  "source_mtime_utc": "2026-10-20T09:04:40.842758+00:00",
+  "saved_review": "D:\\data_training_ai\\minigpt_domain_v1_20261019\\whisper_review_v1\\received_860f8068d0bd\\reviewed_whisper_domain_v1.json",
+  "file_sha256": "860f8068d0bd16398bbf1d2fd99bc24e276e01c55ca6b5343c78df757ca9e5a4",
+  "bytes": 73967,
+  "reviewer": "khoa minh",
+  "protocol": "whisper-review-v1",
+  "packet_sha256": "6e863b168541e155613fb27517d5a455dca931b193bf6b859ddc20ec77c6f4e0",
+  "drafts_sha256": "8c99a66e23cc695988bc55e9c786f35b0aac1e7310f52c181530948944c827d8",
+  "counts": {
+    "records": 40,
+    "transcripts_nonempty": 40,
+    "edited_transcripts": 39,
+    "summaries_nonempty": 37,
+    "summaries_empty": 3,
+    "verified": 0,
+    "feedback_nonempty": 33,
+    "summary_equals_transcript": 31,
+    "summary_over_budget": 25,
+    "summary_incomplete_sentence": 16,
+    "transcript_over_budget": 0
+  },
+  "blank_summary_ids": [
+    "dom_cvZqE-2LEG8_1",
+    "dom_p7FlzMrLDSo_2",
+    "dom_9BHoS_sDlUw_2"
+  ],
+  "rows": [
+    {
+      "sample_id": "dom_wzKzkenrYew_1",
+      "split": "val",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": false,
+      "summary_tokens_including_eos": 75,
+      "source_prompt_tokens": 125,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "FEEDBACK_OR_REJECTION_PRESENT_PRESERVED",
+        "SUMMARY_INCOMPLETE_SENTENCE"
+      ],
+      "user_feedback": "Sai chính tả nhiều, thiếu dấu, xác định sai ký tự"
+    },
+    {
+      "sample_id": "dom_f7VbxhaVtfk_1",
+      "split": "val",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": false,
+      "summary_tokens_including_eos": 60,
+      "source_prompt_tokens": 147,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "FEEDBACK_OR_REJECTION_PRESENT_PRESERVED",
+        "SUMMARY_INCOMPLETE_SENTENCE"
+      ],
+      "user_feedback": "Sai chính tả không phân biệt được tiếng anh"
+    },
+    {
+      "sample_id": "dom_wYRFi4-KWek_2",
+      "split": "val",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": false,
+      "summary_tokens_including_eos": 88,
+      "source_prompt_tokens": 118,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "FEEDBACK_OR_REJECTION_PRESENT_PRESERVED"
+      ],
+      "user_feedback": "Sai chính tả nhiều, các từ hay nhầm, kinh tế, lĩnh vực, trăng trưởng"
+    },
+    {
+      "sample_id": "dom_vlSB_Kyx_kA_1",
+      "split": "train",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": false,
+      "summary_tokens_including_eos": 139,
+      "source_prompt_tokens": 155,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "FEEDBACK_OR_REJECTION_PRESENT_PRESERVED",
+        "SUMMARY_OVER_95_BPE_PLUS_EOS"
+      ],
+      "user_feedback": "Sai chính tả nhiều các từ hay sai: chủ trì, lực lượng, thiết yếu, nguy cơ, khu vực"
+    },
+    {
+      "sample_id": "dom_vlSB_Kyx_kA_2",
+      "split": "train",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": true,
+      "summary_tokens_including_eos": 153,
+      "source_prompt_tokens": 157,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "FEEDBACK_OR_REJECTION_PRESENT_PRESERVED",
+        "SUMMARY_OVER_95_BPE_PLUS_EOS"
+      ],
+      "user_feedback": "Các từ sai chính tả: dĩ truyền,trật chẽ,zet nhiệp, tess,kháng huyen đúng là : di truyền, chặt chẽ, xét nghiệm, test, kháng nguyên"
+    },
+    {
+      "sample_id": "dom_soszp1_iK0E_1",
+      "split": "train",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": true,
+      "summary_tokens_including_eos": 111,
+      "source_prompt_tokens": 115,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "FEEDBACK_OR_REJECTION_PRESENT_PRESERVED",
+        "SUMMARY_INCOMPLETE_SENTENCE",
+        "SUMMARY_OVER_95_BPE_PLUS_EOS"
+      ],
+      "user_feedback": "Các từ sai : lượt, hùng hầu, ra đình, Tất tên, xâu, bày, Báo như, giữ án, đặc thay mai, của ngủ hộ từ đúng là: luật, hủng hâu, gia đìnhm tất nhiên, sâu, bảy, Bao nhiêu, dự án, Đặng Thai Mai"
+    },
+    {
+      "sample_id": "dom_b3Y2ckFkva0_2",
+      "split": "train",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": true,
+      "summary_tokens_including_eos": 128,
+      "source_prompt_tokens": 132,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "FEEDBACK_OR_REJECTION_PRESENT_PRESERVED",
+        "SUMMARY_INCOMPLETE_SENTENCE",
+        "SUMMARY_OVER_95_BPE_PLUS_EOS"
+      ],
+      "user_feedback": "Từ sai: cho thư, môi, giá vụ, Nhồi ra, Hề bộ bắt động sản, mỗi nhỏ, sự đổi lực đất đài, thờ hướng cho phá từ đúng: cho thuê, mua, nghĩa vụ, Ngoài ra, Hiệp hội bất động sản,  08-NQTW, sửa đổi luật đât đai, theo hướng cho phép"
+    },
+    {
+      "sample_id": "dom_x1x03SI8jV0_1",
+      "split": "train",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": true,
+      "summary_tokens_including_eos": 108,
+      "source_prompt_tokens": 112,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "FEEDBACK_OR_REJECTION_PRESENT_PRESERVED",
+        "SUMMARY_OVER_95_BPE_PLUS_EOS"
+      ],
+      "user_feedback": "Dễ tích, mf, Chù Chì Chùa Tây Tàn, mô, vó, ngày 1 năm tháng 7 năm 1945. 50946,50, từ đúng: Diện tích, m2m Chủ trì, tây tạng, 15 tháng 07, năm 1946"
+    },
+    {
+      "sample_id": "dom_x1x03SI8jV0_2",
+      "split": "train",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": true,
+      "summary_tokens_including_eos": 96,
+      "source_prompt_tokens": 99,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "FEEDBACK_OR_REJECTION_PRESENT_PRESERVED"
+      ],
+      "user_feedback": "Bala, Nhi hiện nay,vũ kia, 1 bởi tháng tư năm 2010, quý bán thật dân, 1,41 quý đê, buu bên ở dê,1 trong 1 của quý định nèo, quý định số 2666,y D C T Ngay Mung Hai thắng bởi năm 2006. Quy D C T Ngay Mung Hai thắng bởi năm 2006. Quy D U B Nở D."
+    },
+    {
+      "sample_id": "dom_Q95eDJlAhyI_1",
+      "split": "train",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": true,
+      "summary_tokens_including_eos": 129,
+      "source_prompt_tokens": 131,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "FEEDBACK_OR_REJECTION_PRESENT_PRESERVED",
+        "SUMMARY_OVER_95_BPE_PLUS_EOS"
+      ],
+      "user_feedback": "báo tùi trẻ,hợp tác sã, lọc cay, trong bà, hành hưởng, dây dời, Rất mơ, máy nhà, vẫn trái ái, từng trường, ông tin bà xét, thiến nay, và giết thì , Sông bằng sự sạch chianày đã trở thành hiện thực., để ai lại vừa sau, báo tự trẻ thủ đô và ngân hàng hợp tắp sã vẻ."
+    },
+    {
+      "sample_id": "dom_any7NAvA7AY_1",
+      "split": "train",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": true,
+      "summary_tokens_including_eos": 139,
+      "source_prompt_tokens": 142,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "FEEDBACK_OR_REJECTION_PRESENT_PRESERVED",
+        "SUMMARY_OVER_95_BPE_PLUS_EOS"
+      ],
+      "user_feedback": "Đi tài dựng cho tế trẻ,và đọc tư bởi nướng nhật, Tư tư tư đàn với xương hỗ trợ tâm chiến ra khá trảy của giáo tổ phía nhật, xây vượn một chiếm hoạch mục đập và đàn nhẹt nhiều quả nhất.\" Tại chương trình, đại diện các trường đại học Ý Tín đã cùng cấp thông tin cập nhật về phương án từng xinh năm 2025. Các mốc thời gian quan trọng, phương thức sẽ trình mới cũng như những điểm thay đổi đáng chú ý trong huy trế. Các truyên gia cũng chực tiếp lắng nghe và giải đáp các câu hỏi của học sinh về chọn ngành. Chọn chương hay câu hội nghề nghề"
+    },
+    {
+      "sample_id": "dom_any7NAvA7AY_2",
+      "split": "train",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": true,
+      "summary_tokens_including_eos": 113,
+      "source_prompt_tokens": 117,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "FEEDBACK_OR_REJECTION_PRESENT_PRESERVED",
+        "SUMMARY_INCOMPLETE_SENTENCE",
+        "SUMMARY_OVER_95_BPE_PLUS_EOS"
+      ],
+      "user_feedback": "chiếm thức thiểu tiếp sâu,thấy chiếm chắc rằng là, có hát trở đến đầu hướp, thấy được vần rồi.,các trình xách học bồng, Như có mùi hôm nay,bây giờ em đang giúp cho choh có cánh nhìn toàn diện, thực tế hơn để đưa ra lựa chọn phù hợp."
+    },
+    {
+      "sample_id": "dom_DNM7BTlJnxA_2",
+      "split": "train",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": true,
+      "summary_tokens_including_eos": 97,
+      "source_prompt_tokens": 101,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "FEEDBACK_OR_REJECTION_PRESENT_PRESERVED",
+        "SUMMARY_INCOMPLETE_SENTENCE",
+        "SUMMARY_OVER_95_BPE_PLUS_EOS"
+      ],
+      "user_feedback": "Để báo chí thú 300 45 các phẩm của 48 cơ quan báo chí, trong đó có 7 cơ quan báo chí Hà Nội, 41 cơ quan bảo chí Trung ương, bộ nành, địa phương người tham dự với đầy bảo chí Hà Nội."
+    },
+    {
+      "sample_id": "dom_cvZqE-2LEG8_1",
+      "split": "train",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": false,
+      "summary_equals_transcript": false,
+      "summary_tokens_including_eos": 1,
+      "source_prompt_tokens": 73,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "FEEDBACK_OR_REJECTION_PRESENT_PRESERVED",
+        "SUMMARY_EMPTY"
+      ],
+      "user_feedback": "\"Đó đại năng bà này cũng bố, nó chỉ có to và một phần mời, hoặc một phần năng của chạy xa bình thường của đại năng gần, vì không di khỏe và đại, khô, cho nên là cũng bút thể của nhỏ. Lột chạy thịt, ít thương hiệu trà sức khỏe chuyên sâu, mang trong mình sứ mệnh bảo tồn và phát triển."
+    },
+    {
+      "sample_id": "dom_Hew7T-qHV-8_1",
+      "split": "train",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": true,
+      "summary_tokens_including_eos": 96,
+      "source_prompt_tokens": 99,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "FEEDBACK_OR_REJECTION_PRESENT_PRESERVED"
+      ],
+      "user_feedback": "Cái trọng của bánh cân 18 giờ trên cân dù tức báo sài gòn đầu tư tệ chính. Với những tình tích mới nhất và nóng nhất về các lĩnh vật kinh tế, đời sống, dân sinh trong và ngoài nước được chúng tôi cập nhật trong ngày. Vừa rồi là những thông tin chính mà chúng tôi gửi đến quý sáng dạ hôm nay. Để tiện theo dõi và cập nhật gửi đến cuối sáng dã hôm nay để tiện theo dõi và tập nhật thông tin, cuối sáng dã hãy nhấn vào nút chuông đang kí cần."
+    },
+    {
+      "sample_id": "dom_6CDgfB3MhmA_1",
+      "split": "train",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": true,
+      "summary_tokens_including_eos": 99,
+      "source_prompt_tokens": 102,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "FEEDBACK_OR_REJECTION_PRESENT_PRESERVED",
+        "SUMMARY_OVER_95_BPE_PLUS_EOS"
+      ],
+      "user_feedback": "Cái trạng của tháng giá, người tán dự, tình thức, dương sinh,trị tiết"
+    },
+    {
+      "sample_id": "dom_6CDgfB3MhmA_2",
+      "split": "train",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": true,
+      "summary_tokens_including_eos": 137,
+      "source_prompt_tokens": 141,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "FEEDBACK_OR_REJECTION_PRESENT_PRESERVED",
+        "SUMMARY_OVER_95_BPE_PLUS_EOS"
+      ],
+      "user_feedback": "hội nhớ,chính phẩy hai đến chính phẩy 4% 1 năm khá phổ biến, thoả thượng, lại xuất, chính phẩy 5% 1 ,Cũ thểố lượng"
+    },
+    {
+      "sample_id": "dom_NNbXoXEWEfY_1",
+      "split": "train",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": false,
+      "summary_tokens_including_eos": 129,
+      "source_prompt_tokens": 133,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "SUMMARY_OVER_95_BPE_PLUS_EOS"
+      ],
+      "user_feedback": ""
+    },
+    {
+      "sample_id": "dom_NNbXoXEWEfY_2",
+      "split": "train",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": true,
+      "summary_tokens_including_eos": 102,
+      "source_prompt_tokens": 106,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "FEEDBACK_OR_REJECTION_PRESENT_PRESERVED",
+        "SUMMARY_INCOMPLETE_SENTENCE",
+        "SUMMARY_OVER_95_BPE_PLUS_EOS"
+      ],
+      "user_feedback": "tính tĩa,thống kỳ, chính thắng năm 2016,chính phải,Đúng hấp"
+    },
+    {
+      "sample_id": "dom_9BHoS_sDlUw_1",
+      "split": "train",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": true,
+      "summary_tokens_including_eos": 75,
+      "source_prompt_tokens": 78,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "FEEDBACK_OR_REJECTION_PRESENT_PRESERVED"
+      ],
+      "user_feedback": "Cái trạng của các giả, cuối vị đang xem bản tin người đáng giờ trên kênh dù sức chuyên đề xây gong đầu tư tài chính An Lai, với những tình tức mới nhất, nấu nhất về các lĩnh cực kinh tế, thị trường, bà đời sống dương sinh trong và ngoài nước, được chúng tôi cập nhật linh tục trong này và sau đây là thông tin chi tiết. Và sau đây là thông tin chỉ tiếc."
+    },
+    {
+      "sample_id": "dom_p7FlzMrLDSo_1",
+      "split": "train",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": true,
+      "summary_tokens_including_eos": 75,
+      "source_prompt_tokens": 78,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "FEEDBACK_OR_REJECTION_PRESENT_PRESERVED"
+      ],
+      "user_feedback": "[MUSIK] IMPCHEAO Cuyết khán giả quý vị đang xem mặc tin 18 giờ trên kênh Youtube. Quýến đề sai gòn tổ tư tịch chính t Chập nhật linh tục trong ngày và sau đây là thông tin chỉ tiết."
+    },
+    {
+      "sample_id": "dom_p7FlzMrLDSo_2",
+      "split": "train",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": false,
+      "summary_equals_transcript": false,
+      "summary_tokens_including_eos": 1,
+      "source_prompt_tokens": 135,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "FEEDBACK_OR_REJECTION_PRESENT_PRESERVED",
+        "SUMMARY_EMPTY"
+      ],
+      "user_feedback": "chân lịch không quá ,sức định"
+    },
+    {
+      "sample_id": "dom_wzKzkenrYew_2",
+      "split": "val",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": true,
+      "summary_tokens_including_eos": 123,
+      "source_prompt_tokens": 127,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "FEEDBACK_OR_REJECTION_PRESENT_PRESERVED",
+        "SUMMARY_INCOMPLETE_SENTENCE",
+        "SUMMARY_OVER_95_BPE_PLUS_EOS"
+      ],
+      "user_feedback": "chấn mẻ Inaugz,linh hoạt kết thước.,thamáy ,gửi cầu,giúp lộ chỉ trận rất là lớn, các do nhiệp"
+    },
+    {
+      "sample_id": "dom_f7VbxhaVtfk_2",
+      "split": "val",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": true,
+      "summary_tokens_including_eos": 134,
+      "source_prompt_tokens": 137,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "FEEDBACK_OR_REJECTION_PRESENT_PRESERVED",
+        "SUMMARY_INCOMPLETE_SENTENCE",
+        "SUMMARY_OVER_95_BPE_PLUS_EOS"
+      ],
+      "user_feedback": "sản thương mại điện từ các điểm và hẳn hẳn ôc Cốt, truyên ngành,rất hẳn của bắt,nhật tình,suy nghiệp,trễ biến,Lăng này là lăng, họ chảo là Việt Nam, Apple đi rồi. Thì làng hứa nhất cũng cũng có 1 cái hiệu quả rồi. Ừ, mà trước đây tôi đã..."
+    },
+    {
+      "sample_id": "dom_wYRFi4-KWek_1",
+      "split": "val",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": true,
+      "summary_tokens_including_eos": 111,
+      "source_prompt_tokens": 115,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "FEEDBACK_OR_REJECTION_PRESENT_PRESERVED",
+        "SUMMARY_OVER_95_BPE_PLUS_EOS"
+      ],
+      "user_feedback": "thứ hạn"
+    },
+    {
+      "sample_id": "dom_-1Is0o2ZWk0_1",
+      "split": "val",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": true,
+      "summary_tokens_including_eos": 92,
+      "source_prompt_tokens": 95,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "FEEDBACK_OR_REJECTION_PRESENT_PRESERVED"
+      ],
+      "user_feedback": "mức 930 p 5 tỷ do làm ý. Đây là mức câu nhất từ trước khiến này, kiểm soát ở 1/3/3% tỷ giá và lại sống."
+    },
+    {
+      "sample_id": "dom_-1Is0o2ZWk0_2",
+      "split": "val",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": true,
+      "summary_tokens_including_eos": 97,
+      "source_prompt_tokens": 100,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "FEEDBACK_OR_REJECTION_PRESENT_PRESERVED",
+        "SUMMARY_INCOMPLETE_SENTENCE",
+        "SUMMARY_OVER_95_BPE_PLUS_EOS"
+      ],
+      "user_feedback": "Vìa Nam là một trong những quốc gia có độ mở kinh tế lớn nhất thế giới với mặng lưới FTA dụng khắp. Các FTA thuyện mới với tiêu trưởng cao như hệp định đ tác toàn diện và tiến bộ suyen thái bình dương, CPTPP, hệ định thương mại tự do Việt Nam, Linh Minh Châu Âu,"
+    },
+    {
+      "sample_id": "dom_uY0zUhWOLJM_1",
+      "split": "val",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": true,
+      "summary_tokens_including_eos": 119,
+      "source_prompt_tokens": 122,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "SUMMARY_INCOMPLETE_SENTENCE",
+        "SUMMARY_OVER_95_BPE_PLUS_EOS"
+      ],
+      "user_feedback": ""
+    },
+    {
+      "sample_id": "dom_uY0zUhWOLJM_2",
+      "split": "val",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": true,
+      "summary_tokens_including_eos": 122,
+      "source_prompt_tokens": 126,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "FEEDBACK_OR_REJECTION_PRESENT_PRESERVED",
+        "SUMMARY_INCOMPLETE_SENTENCE",
+        "SUMMARY_OVER_95_BPE_PLUS_EOS"
+      ],
+      "user_feedback": "Một hình trình lãm đa truyền đề, tạo lên hệ sinh thái cách lối toàn diện cho ngành công nghiệp như máy móc thích bị công nghiệp, tư động hóa và công nghệ, ngũ kim và dùng cụ cầm tay, điều khiển từ động hóa, công nghệ hành cắt và gia công kim loại, dựa máy em vong bí và sử lý bề mặt, đầu nối và dây cắp địa. Tham gia, tổ chức một cái trình lãm trên ngành trong quân khổ vena mắt, đó là trình lãm về công nghệ tr chương động hoá, IT, SPO và có thể nói là sau 3 năm có trước, tôi thấy, nó có tắt xúc rất là tốt đứa"
+    },
+    {
+      "sample_id": "dom_soszp1_iK0E_2",
+      "split": "train",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": true,
+      "summary_tokens_including_eos": 117,
+      "source_prompt_tokens": 121,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "FEEDBACK_OR_REJECTION_PRESENT_PRESERVED",
+        "SUMMARY_OVER_95_BPE_PLUS_EOS"
+      ],
+      "user_feedback": "980 có đang kỳ đất đài, nụt thuyết đất phi đâu nghiệp,100 linh năm nhằm ,đen buồn ,dọng tính,kinh đã bảo dàng các"
+    },
+    {
+      "sample_id": "dom_b3Y2ckFkva0_1",
+      "split": "train",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": true,
+      "summary_tokens_including_eos": 123,
+      "source_prompt_tokens": 126,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "FEEDBACK_OR_REJECTION_PRESENT_PRESERVED",
+        "SUMMARY_INCOMPLETE_SENTENCE",
+        "SUMMARY_OVER_95_BPE_PLUS_EOS"
+      ],
+      "user_feedback": "sắp phát,Cộ thể ,đối tư dự án, gần xác nhà nước"
+    },
+    {
+      "sample_id": "dom_qoYByuKMIv4_1",
+      "split": "train",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": true,
+      "summary_tokens_including_eos": 132,
+      "source_prompt_tokens": 136,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "SUMMARY_OVER_95_BPE_PLUS_EOS"
+      ],
+      "user_feedback": ""
+    },
+    {
+      "sample_id": "dom_qoYByuKMIv4_2",
+      "split": "train",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": true,
+      "summary_tokens_including_eos": 103,
+      "source_prompt_tokens": 106,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "SUMMARY_OVER_95_BPE_PLUS_EOS"
+      ],
+      "user_feedback": ""
+    },
+    {
+      "sample_id": "dom_Q95eDJlAhyI_2",
+      "split": "train",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": true,
+      "summary_tokens_including_eos": 109,
+      "source_prompt_tokens": 112,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "FEEDBACK_OR_REJECTION_PRESENT_PRESERVED",
+        "SUMMARY_OVER_95_BPE_PLUS_EOS"
+      ],
+      "user_feedback": "chúng tôi đại diện cho báo tụi trẻ thú đối.Chào cái xuất hối trợ, xe thiệt, chào qua"
+    },
+    {
+      "sample_id": "dom_sTeS-7km_NM_1",
+      "split": "train",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": true,
+      "summary_tokens_including_eos": 72,
+      "source_prompt_tokens": 76,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "SUMMARY_INCOMPLETE_SENTENCE"
+      ],
+      "user_feedback": ""
+    },
+    {
+      "sample_id": "dom_sTeS-7km_NM_2",
+      "split": "train",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": true,
+      "summary_tokens_including_eos": 94,
+      "source_prompt_tokens": 98,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "FEEDBACK_OR_REJECTION_PRESENT_PRESERVED"
+      ],
+      "user_feedback": "liệu ITSIN,sách tuyển sướng,cần những chiều rất ký để án tuyển sinh"
+    },
+    {
+      "sample_id": "dom_DNM7BTlJnxA_1",
+      "split": "train",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": true,
+      "summary_tokens_including_eos": 84,
+      "source_prompt_tokens": 87,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "SUMMARY_INCOMPLETE_SENTENCE"
+      ],
+      "user_feedback": ""
+    },
+    {
+      "sample_id": "dom_cvZqE-2LEG8_2",
+      "split": "train",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": false,
+      "summary_tokens_including_eos": 60,
+      "source_prompt_tokens": 63,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "FEEDBACK_OR_REJECTION_PRESENT_PRESERVED",
+        "SUMMARY_INCOMPLETE_SENTENCE"
+      ],
+      "user_feedback": "giữ bảnùi vũ và dựng thếm miếng. Vụ trẻ."
+    },
+    {
+      "sample_id": "dom_Hew7T-qHV-8_2",
+      "split": "train",
+      "edited_from_whisper": true,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": true,
+      "summary_equals_transcript": true,
+      "summary_tokens_including_eos": 123,
+      "source_prompt_tokens": 127,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "FEEDBACK_OR_REJECTION_PRESENT_PRESERVED",
+        "SUMMARY_OVER_95_BPE_PLUS_EOS"
+      ],
+      "user_feedback": "cảnh hàng hồng quốc tế,ghi kích,đừng sát tốc độ cao ,chục bắt nằm,tướng đừng sát lào cài, ha nội, hai phòng."
+    },
+    {
+      "sample_id": "dom_9BHoS_sDlUw_2",
+      "split": "train",
+      "edited_from_whisper": false,
+      "verified": false,
+      "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+      "summary_nonempty": false,
+      "summary_equals_transcript": false,
+      "summary_tokens_including_eos": 1,
+      "source_prompt_tokens": 121,
+      "blockers": [
+        "NOT_CONFIRMED",
+        "SUMMARY_EMPTY"
+      ],
+      "user_feedback": ""
+    }
+  ],
+  "vocab_findings": {
+    "active_repo_checkpoint": {
+      "checkpoint_sha256": "8f87986781cfb3d4716691f2051e5798187693e2452f9f41b28ca4a753ea5531",
+      "characters_including_blank": 93,
+      "missing_english_uppercase": [
+        "F",
+        "J",
+        "W",
+        "Z"
+      ],
+      "missing_digits": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
+      ],
+      "missing_punctuation": [
+        "%",
+        ",",
+        "-",
+        ".",
+        "/"
+      ],
+      "examples_unsupported": {
+        "FTA": [
+          "F"
+        ],
+        "WTO": [
+          "W"
+        ],
+        "CPTPP": [],
+        "COVID-19": [
+          "-",
+          "1",
+          "9"
+        ],
+        "08-NQ/TW": [
+          "-",
+          "/",
+          "0",
+          "8",
+          "W"
+        ],
+        "2666/QD-UBND": [
+          "-",
+          "/",
+          "2",
+          "6"
+        ],
+        "2020": [
+          "0",
+          "2"
+        ],
+        "9.4%": [
+          "%",
+          ".",
+          "9"
+        ]
+      }
+    },
+    "candidate_not_promoted": {
+      "checkpoint_sha256": "d03ef0a962220618e90e5ff478a2fbab5ff35dd68deb539a4933eb7c15a4f3de",
+      "characters_including_blank": 133,
+      "missing_english_uppercase": [],
+      "missing_digits": [],
+      "missing_punctuation": [],
+      "examples_unsupported": {
+        "FTA": [],
+        "WTO": [],
+        "CPTPP": [],
+        "COVID-19": [],
+        "08-NQ/TW": [],
+        "2666/QD-UBND": [],
+        "2020": [],
+        "9.4%": []
+      }
+    }
+  },
+  "user_reported_error_groups": [
+    "English/code switching/acronyms",
+    "legal document identifiers and article references",
+    "numbers, dates, percentages and amounts",
+    "place names/proper names",
+    "Vietnamese compound words and spelling"
+  ],
+  "scope_note": "Reviewed page contains Whisper-base drafts. Feedback is not a paired accuracy measurement of project active/candidate ASR. Local project vocabulary restrictions were audited separately.",
+  "feedback_field_note": "User comments occupy reject_reason. Preserved as supplied; not automatically cleared or reinterpreted as verified corrections.",
+  "semantic_review": "User reports review complete; all exported verified flags remain false. No independent audio audit.",
+  "wer": null,
+  "cer": null,
+  "metrics_reason": "No approved complete word-level reference supplied; partial edits/feedback are not gold references.",
+  "training_ready": false,
+  "accepted_dataset_created": false,
+  "training_started": false,
+  "production_weights_changed": false,
+  "api_contract_changed": false,
+  "checks": {
+    "json_and_protocol": "PASS",
+    "source_draft_binding": "PASS",
+    "ids": "PASS_40_UNIQUE",
+    "media_hashes": "PASS_80",
+    "download_copy_sha256": "PASS_IDENTICAL",
+    "frozen_data_active_weights": "PASS_8",
+    "vocabulary_metadata": "PASS_TWO_KNOWN_CHECKPOINTS",
+    "encode_decode_examples": "PASS_ACTIVE_DROPS_UNSUPPORTED_CANDIDATE_PRESERVES_EXAMPLES"
+  },
+  "vocabulary_coverage": {
+    "active_repo_checkpoint": {
+      "normalization": "NFC + uppercase, no punctuation/number rewriting",
+      "examples_encode_decode": {
+        "FTA": "TA",
+        "WTO": "TO",
+        "CPTPP": "CPTPP",
+        "2020": "",
+        "9.4%": "4",
+        "08-NQ/TW": "NQT"
+      },
+      "affected_review_transcripts": 40,
+      "unsupported_counts": {
+        "8": 16,
+        "5": 20,
+        "-": 9,
+        "9": 17,
+        "0": 51,
+        "%": 20,
+        ".": 130,
+        "2": 33,
+        "6": 12,
+        ",": 269,
+        "1": 36,
+        "W": 3,
+        "Z": 2,
+        "\"": 16,
+        "3": 24,
+        "7": 14,
+        "/": 4,
+        "(": 1,
+        ")": 1,
+        "F": 2,
+        "?": 2
+      },
+      "rows": [
+        {
+          "sample_id": "dom_wzKzkenrYew_1",
+          "unsupported_characters": {
+            "8": 1,
+            "5": 1,
+            "-": 3,
+            "9": 1,
+            "0": 7,
+            "%": 5,
+            ".": 4,
+            "2": 2,
+            "6": 1,
+            ",": 3,
+            "1": 1
+          }
+        },
+        {
+          "sample_id": "dom_f7VbxhaVtfk_1",
+          "unsupported_characters": {
+            ",": 23,
+            ".": 1,
+            "W": 1,
+            "Z": 1
+          }
+        },
+        {
+          "sample_id": "dom_wYRFi4-KWek_2",
+          "unsupported_characters": {
+            ",": 6,
+            "2": 1,
+            ".": 3
+          }
+        },
+        {
+          "sample_id": "dom_vlSB_Kyx_kA_1",
+          "unsupported_characters": {
+            "\"": 5,
+            ".": 6,
+            ",": 10,
+            "5": 1,
+            "3": 4,
+            "0": 1,
+            "2": 3
+          }
+        },
+        {
+          "sample_id": "dom_vlSB_Kyx_kA_2",
+          "unsupported_characters": {
+            ",": 14,
+            ".": 5,
+            "3": 4,
+            "0": 1,
+            "1": 2,
+            "2": 3,
+            "8": 1
+          }
+        },
+        {
+          "sample_id": "dom_soszp1_iK0E_1",
+          "unsupported_characters": {
+            ",": 3,
+            "2": 2,
+            "0": 4,
+            ".": 6,
+            "7": 1,
+            "8": 1,
+            "3": 1
+          }
+        },
+        {
+          "sample_id": "dom_b3Y2ckFkva0_2",
+          "unsupported_characters": {
+            "\"": 4,
+            ",": 8,
+            ".": 2,
+            "0": 1,
+            "8": 1,
+            "-": 1,
+            "W": 1
+          }
+        },
+        {
+          "sample_id": "dom_x1x03SI8jV0_1",
+          "unsupported_characters": {
+            "7": 4,
+            ",": 14,
+            "8": 2,
+            "2": 1,
+            "1": 7,
+            "5": 3,
+            "9": 4,
+            "6": 1,
+            ".": 3
+          }
+        },
+        {
+          "sample_id": "dom_x1x03SI8jV0_2",
+          "unsupported_characters": {
+            ".": 4,
+            "2": 7,
+            "0": 11,
+            "1": 7,
+            "6": 4,
+            "3": 1,
+            "7": 1,
+            ",": 5,
+            "-": 2,
+            "5": 2,
+            "/": 2
+          }
+        },
+        {
+          "sample_id": "dom_Q95eDJlAhyI_1",
+          "unsupported_characters": {
+            ",": 5,
+            ".": 5,
+            "1": 1,
+            "0": 1,
+            "-": 1,
+            "6": 1
+          }
+        },
+        {
+          "sample_id": "dom_any7NAvA7AY_1",
+          "unsupported_characters": {
+            "\"": 3,
+            ".": 6,
+            ",": 4,
+            "2": 2,
+            "0": 1,
+            "5": 1
+          }
+        },
+        {
+          "sample_id": "dom_any7NAvA7AY_2",
+          "unsupported_characters": {
+            ",": 5,
+            ".": 3
+          }
+        },
+        {
+          "sample_id": "dom_DNM7BTlJnxA_2",
+          "unsupported_characters": {
+            ",": 8,
+            ".": 1,
+            "\"": 2,
+            "3": 1,
+            "5": 1,
+            "8": 1,
+            "7": 1,
+            "1": 1
+          }
+        },
+        {
+          "sample_id": "dom_cvZqE-2LEG8_1",
+          "unsupported_characters": {
+            "\"": 1,
+            ",": 6,
+            "6": 1,
+            "0": 1,
+            ".": 2
+          }
+        },
+        {
+          "sample_id": "dom_Hew7T-qHV-8_1",
+          "unsupported_characters": {
+            "1": 1,
+            "8": 1,
+            ".": 4,
+            ",": 3
+          }
+        },
+        {
+          "sample_id": "dom_6CDgfB3MhmA_1",
+          "unsupported_characters": {
+            ",": 7,
+            "1": 2,
+            "8": 2,
+            ".": 4,
+            "/": 1,
+            "9": 1
+          }
+        },
+        {
+          "sample_id": "dom_6CDgfB3MhmA_2",
+          "unsupported_characters": {
+            ".": 5,
+            ",": 6,
+            "9": 3,
+            "2": 1,
+            "-": 1,
+            "%": 2,
+            "5": 1,
+            "7": 2
+          }
+        },
+        {
+          "sample_id": "dom_NNbXoXEWEfY_1",
+          "unsupported_characters": {
+            ",": 8,
+            ".": 4,
+            "7": 1,
+            "1": 1,
+            "0": 2
+          }
+        },
+        {
+          "sample_id": "dom_NNbXoXEWEfY_2",
+          "unsupported_characters": {
+            "9": 3,
+            "3": 3,
+            "2": 4,
+            "%": 5,
+            ".": 3,
+            ",": 8,
+            "0": 7,
+            "5": 1,
+            "6": 3,
+            "1": 2,
+            "8": 2,
+            "7": 1
+          }
+        },
+        {
+          "sample_id": "dom_9BHoS_sDlUw_1",
+          "unsupported_characters": {
+            ",": 6,
+            "1": 1,
+            "8": 1,
+            ".": 1
+          }
+        },
+        {
+          "sample_id": "dom_p7FlzMrLDSo_1",
+          "unsupported_characters": {
+            ",": 6,
+            "1": 1,
+            "8": 1,
+            ".": 1
+          }
+        },
+        {
+          "sample_id": "dom_p7FlzMrLDSo_2",
+          "unsupported_characters": {
+            ",": 9,
+            "2": 1,
+            "0": 2,
+            "%": 1,
+            ".": 3,
+            "3": 2,
+            "1": 2,
+            "/": 1
+          }
+        },
+        {
+          "sample_id": "dom_wzKzkenrYew_2",
+          "unsupported_characters": {
+            ",": 8,
+            "Z": 1,
+            ".": 3,
+            "\"": 1
+          }
+        },
+        {
+          "sample_id": "dom_f7VbxhaVtfk_2",
+          "unsupported_characters": {
+            ",": 8,
+            ".": 8,
+            "2": 1,
+            "1": 1
+          }
+        },
+        {
+          "sample_id": "dom_wYRFi4-KWek_1",
+          "unsupported_characters": {
+            ",": 7,
+            ".": 3
+          }
+        },
+        {
+          "sample_id": "dom_-1Is0o2ZWk0_1",
+          "unsupported_characters": {
+            ".": 4,
+            "9": 1,
+            "3": 3,
+            "0": 2,
+            ",": 4,
+            "5": 2,
+            "(": 1,
+            ")": 1,
+            "2": 2,
+            "1": 1,
+            "%": 1
+          }
+        },
+        {
+          "sample_id": "dom_-1Is0o2ZWk0_2",
+          "unsupported_characters": {
+            "7": 1,
+            "5": 2,
+            "-": 1,
+            "8": 1,
+            "%": 1,
+            ",": 3,
+            ".": 2,
+            "1": 1,
+            "F": 2
+          }
+        },
+        {
+          "sample_id": "dom_uY0zUhWOLJM_1",
+          "unsupported_characters": {
+            ",": 9,
+            ".": 1
+          }
+        },
+        {
+          "sample_id": "dom_uY0zUhWOLJM_2",
+          "unsupported_characters": {
+            ",": 13,
+            ".": 1,
+            "3": 1
+          }
+        },
+        {
+          "sample_id": "dom_soszp1_iK0E_2",
+          "unsupported_characters": {
+            "9": 1,
+            "8": 1,
+            "0": 2,
+            ",": 3,
+            ".": 4,
+            "1": 1,
+            "5": 1
+          }
+        },
+        {
+          "sample_id": "dom_b3Y2ckFkva0_1",
+          "unsupported_characters": {
+            ".": 3,
+            ",": 5
+          }
+        },
+        {
+          "sample_id": "dom_qoYByuKMIv4_1",
+          "unsupported_characters": {
+            ",": 9,
+            ".": 3,
+            "?": 1
+          }
+        },
+        {
+          "sample_id": "dom_qoYByuKMIv4_2",
+          "unsupported_characters": {
+            ",": 1,
+            "?": 1
+          }
+        },
+        {
+          "sample_id": "dom_Q95eDJlAhyI_2",
+          "unsupported_characters": {
+            ".": 4,
+            "6": 1,
+            "0": 1,
+            "2": 1,
+            "1": 1,
+            ",": 2
+          }
+        },
+        {
+          "sample_id": "dom_sTeS-7km_NM_1",
+          "unsupported_characters": {
+            ".": 1,
+            ",": 3
+          }
+        },
+        {
+          "sample_id": "dom_sTeS-7km_NM_2",
+          "unsupported_characters": {
+            ".": 3,
+            "W": 1,
+            ",": 5
+          }
+        },
+        {
+          "sample_id": "dom_DNM7BTlJnxA_1",
+          "unsupported_characters": {
+            ",": 4,
+            ".": 2,
+            "1": 1
+          }
+        },
+        {
+          "sample_id": "dom_cvZqE-2LEG8_2",
+          "unsupported_characters": {
+            ",": 2,
+            ".": 1
+          }
+        },
+        {
+          "sample_id": "dom_Hew7T-qHV-8_2",
+          "unsupported_characters": {
+            ",": 9,
+            ".": 6,
+            "5": 1,
+            "0": 6,
+            "3": 2,
+            "7": 1
+          }
+        },
+        {
+          "sample_id": "dom_9BHoS_sDlUw_2",
+          "unsupported_characters": {
+            ",": 7,
+            "3": 2,
+            ".": 5,
+            "5": 3,
+            "%": 5,
+            "7": 1,
+            "9": 3,
+            "2": 2,
+            "1": 1,
+            "0": 1
+          }
+        }
+      ],
+      "note": "Coverage diagnostic only; reviewed text is not an approved acoustic reference."
+    },
+    "candidate_not_promoted": {
+      "normalization": "NFC + uppercase, no punctuation/number rewriting",
+      "examples_encode_decode": {
+        "FTA": "FTA",
+        "WTO": "WTO",
+        "CPTPP": "CPTPP",
+        "2020": "2020",
+        "9.4%": "9.4%",
+        "08-NQ/TW": "08-NQ/TW"
+      },
+      "affected_review_transcripts": 3,
+      "unsupported_counts": {
+        "(": 1,
+        ")": 1,
+        "?": 2
+      },
+      "rows": [
+        {
+          "sample_id": "dom_-1Is0o2ZWk0_1",
+          "unsupported_characters": {
+            "(": 1,
+            ")": 1
+          }
+        },
+        {
+          "sample_id": "dom_qoYByuKMIv4_1",
+          "unsupported_characters": {
+            "?": 1
+          }
+        },
+        {
+          "sample_id": "dom_qoYByuKMIv4_2",
+          "unsupported_characters": {
+            "?": 1
+          }
+        }
+      ],
+      "note": "Coverage diagnostic only; reviewed text is not an approved acoustic reference."
+    }
+  }
+}

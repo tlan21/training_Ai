@@ -1,0 +1,493 @@
+{
+  "status": "AUTO_DETECT_DIAGNOSTIC_8_NOT_REVIEW_BATCH",
+  "packet_sha256": "5daba6dab9c2fa358e1a84fc13312907874784875dd3ba33c8bb51c35f046c22",
+  "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+  "settings": {
+    "model": "whisper-base (291MB)",
+    "multilingual": true,
+    "language": "Auto Detect",
+    "task": "Transcribe",
+    "quantized": false
+  },
+  "engine": "WhisperWeb free local browser UI",
+  "model_revision_exposed": false,
+  "human_verified": false,
+  "training_ready": false,
+  "jobs": [
+    {
+      "sample_id": "ext2_uvs5djEOuH4_1",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "language": "Auto Detect",
+        "task": "Transcribe",
+        "quantized": false
+      },
+      "finished_at": "2026-10-22T04:09:40.795234+00:00",
+      "review_flags": [
+        "UNKNOWN_END_TIME_SRT_EXPORT_USES_FALLBACK",
+        "REPEATED_8_WORD_SEQUENCE"
+      ],
+      "outputs": [
+        {
+          "file": "ext2_uvs5djEOuH4_1.txt",
+          "bytes": 892,
+          "sha256": "9bec03fb6d3e4c144ad1d2f23e8c530c477636bdc8aefb0103106dd4246c3e89"
+        },
+        {
+          "file": "ext2_uvs5djEOuH4_1.json",
+          "bytes": 947,
+          "sha256": "ac7cd5d83083771c8b211e52204c49c8f01c615901441ab96188b590d85c8b32"
+        },
+        {
+          "file": "ext2_uvs5djEOuH4_1.srt",
+          "bytes": 925,
+          "sha256": "3a4d069cdd3247cc49f0c31a4e568efa4136fc2894492ea5acfd51cae2b290bd"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_uvs5djEOuH4_2",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "language": "Auto Detect",
+        "task": "Transcribe",
+        "quantized": false
+      },
+      "finished_at": "2026-10-22T04:11:21.249693+00:00",
+      "review_flags": [
+        "UNKNOWN_END_TIME_SRT_EXPORT_USES_FALLBACK",
+        "REPEATED_8_WORD_SEQUENCE"
+      ],
+      "outputs": [
+        {
+          "file": "ext2_uvs5djEOuH4_2.txt",
+          "bytes": 1333,
+          "sha256": "800c5e64404db576f430ce7697c8d9b9fcd50bf90b49007b6d78fc71597d2fde"
+        },
+        {
+          "file": "ext2_uvs5djEOuH4_2.json",
+          "bytes": 1388,
+          "sha256": "8a9e00531ca9d7d79561ee474e0b5dadbe5c4177b3dea0e85cc1bee4daff95b3"
+        },
+        {
+          "file": "ext2_uvs5djEOuH4_2.srt",
+          "bytes": 1366,
+          "sha256": "808ba4890b810ccf98c33672c231166f5f56adaff567e43b70c27304fd8a4d45"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_uvs5djEOuH4_3",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "language": "Auto Detect",
+        "task": "Transcribe",
+        "quantized": false
+      },
+      "finished_at": "2026-10-22T04:12:17.936Z",
+      "review_flags": [
+        "UNKNOWN_END_TIME_SRT_EXPORT_USES_FALLBACK",
+        "REPEATED_8_WORD_SEQUENCE"
+      ],
+      "outputs": [
+        {
+          "file": "ext2_uvs5djEOuH4_3.txt",
+          "bytes": 1780,
+          "sha256": "8d136d81f309126704a941303e40c434ef3eb7fb63c9192da826a1fde95833bc"
+        },
+        {
+          "file": "ext2_uvs5djEOuH4_3.json",
+          "bytes": 1835,
+          "sha256": "149feb5320db725bcede34d7be870e36d88c9b29cf16564fa28fdb8940eaf7a3"
+        },
+        {
+          "file": "ext2_uvs5djEOuH4_3.srt",
+          "bytes": 1813,
+          "sha256": "deaa890217b5cc75c7a3f249bb6404a9afcbb2cebb94a216492d66d58d0bb851"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_uvs5djEOuH4_4",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "language": "Auto Detect",
+        "task": "Transcribe",
+        "quantized": false
+      },
+      "finished_at": "2026-10-22T04:12:48.703Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2_uvs5djEOuH4_4.txt",
+          "bytes": 291,
+          "sha256": "f619ac7b4eeee5f428f387f612eb492891d3aa9944380c758a18efa8f6fc6c2b"
+        },
+        {
+          "file": "ext2_uvs5djEOuH4_4.json",
+          "bytes": 393,
+          "sha256": "9c472c22a2975a44e7a87a85f45744e20982edf93881c7bd0c75d4bbd066189d"
+        },
+        {
+          "file": "ext2_uvs5djEOuH4_4.srt",
+          "bytes": 357,
+          "sha256": "7b85859847e811029487720d51b8b403c76eef0db14bbbaf45c1e4751321b329"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_uvs5djEOuH4_5",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "language": "Auto Detect",
+        "task": "Transcribe",
+        "quantized": false
+      },
+      "finished_at": "2026-10-22T06:34:09.820Z",
+      "review_flags": [
+        "UNKNOWN_END_TIME_SRT_EXPORT_USES_FALLBACK",
+        "REPEATED_8_WORD_SEQUENCE"
+      ],
+      "outputs": [
+        {
+          "file": "ext2_uvs5djEOuH4_5.txt",
+          "bytes": 1770,
+          "sha256": "b571ab9defe48c434a9dbb8f5cb4a2661b42f3541019a31317edf93d4ee15c0f"
+        },
+        {
+          "file": "ext2_uvs5djEOuH4_5.json",
+          "bytes": 1923,
+          "sha256": "ffa19d77694875bfdd5cce8252ddb79daa4dc8202780b33296946aa4eadb5c43"
+        },
+        {
+          "file": "ext2_uvs5djEOuH4_5.srt",
+          "bytes": 1869,
+          "sha256": "801a463ca9c90f0b2f3c5b95579fb55ac00f5ad8e954cac499ebe3aac2095abd"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_uvs5djEOuH4_6",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "language": "Auto Detect",
+        "task": "Transcribe",
+        "quantized": false
+      },
+      "finished_at": "2026-10-22T06:35:28.347Z",
+      "review_flags": [
+        "UNKNOWN_END_TIME_SRT_EXPORT_USES_FALLBACK",
+        "REPEATED_8_WORD_SEQUENCE"
+      ],
+      "outputs": [
+        {
+          "file": "ext2_uvs5djEOuH4_6.txt",
+          "bytes": 1771,
+          "sha256": "bf30ea64c228fe095ffe82d299f9088e621c1820eafbecab8e05f80661957ab2"
+        },
+        {
+          "file": "ext2_uvs5djEOuH4_6.json",
+          "bytes": 1875,
+          "sha256": "e1e4ca7fb69d2d969e3116cd4344043b662952d83f0b4a0ae4b8282827e20aeb"
+        },
+        {
+          "file": "ext2_uvs5djEOuH4_6.srt",
+          "bytes": 1837,
+          "sha256": "29104d7b1f576acc55d2368edfac062be58993e74cbc40a661ebcc6c61ee35ea"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_DL_TeDUv_LI_1",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "language": "Auto Detect",
+        "task": "Transcribe",
+        "quantized": false
+      },
+      "finished_at": "2026-10-22T06:36:39.248Z",
+      "review_flags": [
+        "UNKNOWN_END_TIME_SRT_EXPORT_USES_FALLBACK",
+        "REPEATED_8_WORD_SEQUENCE"
+      ],
+      "outputs": [
+        {
+          "file": "ext2_DL_TeDUv_LI_1.txt",
+          "bytes": 1334,
+          "sha256": "33c113dab4127aaf48e3146b6ebb7bd29f85c7e3bfc5e56caa49d40abeef61b1"
+        },
+        {
+          "file": "ext2_DL_TeDUv_LI_1.json",
+          "bytes": 1389,
+          "sha256": "5022cee73b3f0827ead87765ee7b10f2a85077555b84447b5fdeda2e8d8f72ea"
+        },
+        {
+          "file": "ext2_DL_TeDUv_LI_1.srt",
+          "bytes": 1367,
+          "sha256": "b13fab81364b7ea82251b8c12a3ea79d3adef449d5da912c557cd6a7cdc5255d"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_DL_TeDUv_LI_2",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "language": "Auto Detect",
+        "task": "Transcribe",
+        "quantized": false
+      },
+      "finished_at": "2026-10-22T06:38:25.572Z",
+      "review_flags": [
+        "UNKNOWN_END_TIME_SRT_EXPORT_USES_FALLBACK",
+        "REPEATED_8_WORD_SEQUENCE"
+      ],
+      "outputs": [
+        {
+          "file": "ext2_DL_TeDUv_LI_2.txt",
+          "bytes": 1334,
+          "sha256": "33c113dab4127aaf48e3146b6ebb7bd29f85c7e3bfc5e56caa49d40abeef61b1"
+        },
+        {
+          "file": "ext2_DL_TeDUv_LI_2.json",
+          "bytes": 1389,
+          "sha256": "5022cee73b3f0827ead87765ee7b10f2a85077555b84447b5fdeda2e8d8f72ea"
+        },
+        {
+          "file": "ext2_DL_TeDUv_LI_2.srt",
+          "bytes": 1367,
+          "sha256": "b13fab81364b7ea82251b8c12a3ea79d3adef449d5da912c557cd6a7cdc5255d"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_DL_TeDUv_LI_3",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_mHatGR-AoLY_1",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_mHatGR-AoLY_2",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_mHatGR-AoLY_3",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_mHatGR-AoLY_4",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_mHatGR-AoLY_5",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_mHatGR-AoLY_6",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_mHatGR-AoLY_7",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2__9FWeRZBOSQ_1",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2__9FWeRZBOSQ_2",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2__9FWeRZBOSQ_3",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2__9FWeRZBOSQ_4",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2__9FWeRZBOSQ_5",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2__9FWeRZBOSQ_6",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_TeE0V-91_OU_1",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_TeE0V-91_OU_2",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_TeE0V-91_OU_3",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_TeE0V-91_OU_4",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_TeE0V-91_OU_5",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_TeE0V-91_OU_6",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_TeE0V-91_OU_7",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_TeE0V-91_OU_8",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_YNlLf8-cFao_1",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_YNlLf8-cFao_2",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_YNlLf8-cFao_3",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_YNlLf8-cFao_4",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_YNlLf8-cFao_5",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_YNlLf8-cFao_6",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_-wJIxQwbjOM_1",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_-wJIxQwbjOM_2",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_-wJIxQwbjOM_3",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_-wJIxQwbjOM_4",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_-wJIxQwbjOM_5",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_-wJIxQwbjOM_6",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_Dh8IdZtdYfk_1",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_Dh8IdZtdYfk_2",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_Dh8IdZtdYfk_3",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_Dh8IdZtdYfk_4",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_Dh8IdZtdYfk_5",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_Dh8IdZtdYfk_6",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_Dh8IdZtdYfk_7",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_Dh8IdZtdYfk_8",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_qlt8lkh_G5k_1",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_qlt8lkh_G5k_2",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_qlt8lkh_G5k_3",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_qlt8lkh_G5k_4",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_qlt8lkh_G5k_5",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_qlt8lkh_G5k_6",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_qlt8lkh_G5k_7",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_qlt8lkh_G5k_8",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_qlt8lkh_G5k_9",
+      "status": "PENDING"
+    },
+    {
+      "sample_id": "ext2_qlt8lkh_G5k_10",
+      "status": "PENDING"
+    }
+  ],
+  "drafts_sha256": "922ba6443ac4cce52b43cee4794f76eb96bda367206ba4ee2d4f94701704d547",
+  "transcripts_downloaded": 8,
+  "checked_at": "2026-10-22T06:38:26.133Z",
+  "directory": "D:\\data_training_ai\\asr_domain_expansion_v2_20261022\\whisperweb_drafts_v2",
+  "superseded_reason": "7/8 repeated 8-word sequences; MP4 AutoDetect also repeated. Explicit Vietnamese pilot yields nonrepeating sentences; remains unverified.",
+  "new_batch_directory": "D:\\data_training_ai\\asr_domain_expansion_v2_20261022\\whisperweb_drafts_v3"
+}

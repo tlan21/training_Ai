@@ -1,0 +1,75 @@
+{
+  "seed": 1337,
+  "n_test": 1000,
+  "selected_stage": "asr",
+  "selected_step": 3000,
+  "validation_metric": 0.20128670785550362,
+  "rouge_l": 0.20230786056078187,
+  "lead1_rouge_l": 0.18710923963883994,
+  "delta": 0.015198620921941934,
+  "delta_ci95": [
+    0.003964594977625914,
+    0.026687251239920093
+  ],
+  "automatic_threshold_pass": true,
+  "human_evaluation": "PENDING: 30 real ASR transcripts, 3 raters, mean >=3/5",
+  "elapsed_hours": 3.038259654773606,
+  "checkpoint_sha1": "656acdd50eaeacbcf45a00b02edeb77ba69447b5",
+  "dataset": {
+    "source": "https://huggingface.co/datasets/ademax/binhvq-news-corpus",
+    "revision": "3347fc072b366e468feaa42b5ef9b99012b0b0d4",
+    "seed": 1337,
+    "license": "Unspecified news-content rights; upstream MIT applies to scripts only. Private research, no redistribution.",
+    "selection": "First 80000 eligible unique articles of pinned train shard 0; 95/5 group split. First 1000 eligible unique official test articles, frozen before training.",
+    "dedup": "sha256(casefold(normalized body)[:2000]); test identities excluded from train/val",
+    "raw_files": {
+      "train-00000-of-00011-1e25e804b9e0fdf3.parquet": "5366c501c08d9f064a8d4d07c6c7e2b5f67e2611",
+      "test-00000-of-00001-aec29ea4bf388ca7.parquet": "ddd2da2d485318c4a95ab777492cc244e48b4791"
+    },
+    "splits": {
+      "train": {
+        "count": 76000,
+        "sha1": "f40b03298f26380ff386a1f4c913cf32aeb894c8"
+      },
+      "val": {
+        "count": 4000,
+        "sha1": "8a6fab787c54c1338833f997b175c158ebdd1bf5"
+      },
+      "test": {
+        "count": 1000,
+        "sha1": "4c4859d692f233a6b3d73db9a4df550e52081134"
+      }
+    },
+    "evaluation": {
+      "val_count": 128,
+      "test_count": 1000,
+      "metric": "word ROUGE-L F1, existing scorer",
+      "baseline": "Full first sentence of identical visible clean input, no character truncation",
+      "context_tokens": 512,
+      "max_new_tokens": 96,
+      "decode": "greedy, EOS stop"
+    }
+  },
+  "stages": [
+    {
+      "stage": "clean",
+      "metric": 0.15168885850988034,
+      "train": {
+        "final_loss": 1.7876584604382515,
+        "step": 16000,
+        "seed": 1337
+      },
+      "best_step": 7000
+    },
+    {
+      "stage": "asr",
+      "metric": 0.20128670785550362,
+      "train": {
+        "final_loss": 2.440085917711258,
+        "step": 4000,
+        "seed": 1337
+      },
+      "best_step": 3000
+    }
+  ]
+}

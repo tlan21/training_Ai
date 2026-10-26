@@ -1,0 +1,58 @@
+{
+  "checkpoint_sha256": "cf9cfa7141d40f9d40b0065ae68855ff39ffe750260ee7b42c7c0eac719330ac",
+  "selection": "Mean of clean and ASR-noisy validation title ROUGE-L; no test tuning",
+  "train_counts": {
+    "train_articles": 76000,
+    "sum_eligible": 75581,
+    "title_or_cap_target_instances": 228000,
+    "sum_target_instances": 75581,
+    "sum_training_fraction": 0.2489648561668879
+  },
+  "audited_train_prefix_rows": 256,
+  "validation_policy": "first8 sum-eligible validation records from index128; fixed before output inspection",
+  "validation_indices": [
+    129,
+    130,
+    131,
+    132,
+    133,
+    134,
+    135,
+    136
+  ],
+  "prompt_parity_checked": 253,
+  "test_data_used": false,
+  "three_video_clips_used_for_selection": false,
+  "real_checkpoint_cache_full_forward_parity_8steps": true,
+  "status": "DIAGNOSTIC COMPLETE - NO WEIGHT OR PRODUCTION CHANGES",
+  "services_sha256": "a1dfbee9e7ff009b50f4500bc950b5c462a9407743c36ea45d87376d6cc7e209",
+  "script_sha256": "b363f239e18f7bf2b5ea65e5ed05a264d713254b3a47d1f982673be3ae726970",
+  "packet": "D:\\data_training_ai\\minigpt_news\\pipeline_diagnostic_20261019",
+  "raw_packet_sha256": "9eb1d252894e909abbc29e573b01465062b03b89e016d031af34a3591d75487d",
+  "report": "docs/T1.6_pipeline_diagnostic.md",
+  "report_sha256": "bc9788adee866b99cb705d072e8f0a651590ef2d470fd9b5f66791a334f629e5",
+  "clean_train_prefix_audit": {
+    "eligible_n": 253,
+    "source_truncated": 144,
+    "target_truncated": 11,
+    "target_has_parenthesized_prefix": 46,
+    "target_contains_duplicate_trigrams": 28
+  },
+  "validation_diagnostic": {
+    "n": 8,
+    "production_calls": 16,
+    "summary_rouge_l_full_reference": 0.1749668404054818,
+    "prefix_summary_rouge_l_capped_reference": 0.1935339046687791,
+    "lead1_rouge_l_capped_reference": 0.20970235412680258
+  },
+  "verification": {
+    "python_tests_passed": 16,
+    "python_subtests_passed": 4,
+    "go_vet_test_build": "PASS",
+    "cms_tsc_vite": "PASS",
+    "client_tsc_next_build_no_lint": "PASS",
+    "live_http_e2e": "NOT RUN - Docker engine unavailable",
+    "gpu_inference": "NOT RUN - no NVIDIA GPU"
+  },
+  "next_safe_task": "Prepare grounded human-authored summary data and sum-based validation selection before another training run; frozen clips excluded."
+}

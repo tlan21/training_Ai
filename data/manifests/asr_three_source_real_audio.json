@@ -1,0 +1,71 @@
+{
+  "status": "PAIRED_OUTPUTS_VERIFIED_NO_GOLD_METRICS",
+  "checkpoints": {
+    "active": "8f87986781cfb3d4716691f2051e5798187693e2452f9f41b28ca4a753ea5531",
+    "parent": "d03ef0a962220618e90e5ff478a2fbab5ff35dd68deb539a4933eb7c15a4f3de",
+    "three_source": "05713a55380e60d88b7313fa442b583c2184655e0c7d441094a9eaa280d80493"
+  },
+  "device": "cpu",
+  "dtype": "float32",
+  "torch": "2.13.0+cpu",
+  "elapsed_seconds": 35.60900000000004,
+  "fresh_generations": 120,
+  "cached_baseline_exact_text_matches": {
+    "active": 40,
+    "parent": 40
+  },
+  "statistics": {
+    "empty_outputs": {
+      "active": 0,
+      "parent": 0,
+      "three_source": 0
+    },
+    "changed_vs_parent": 40,
+    "original_domain_partition": {
+      "val": 10,
+      "train": 30
+    },
+    "feedback_notes_preserved": 33
+  },
+  "production_services_sha256": "a1dfbee9e7ff009b50f4500bc950b5c462a9407743c36ea45d87376d6cc7e209",
+  "cached_samples_sha256": "6e863b168541e155613fb27517d5a455dca931b193bf6b859ddc20ec77c6f4e0",
+  "protected_hashes": {
+    "D:\\data_training_ai\\minigpt_real_video_20261015\\sources.json": "5e3b8bbc7d92138458f485693409d4f588802d66a079ec46e68edb04f9dbc37a",
+    "D:\\data_training_ai\\minigpt_real_video_20261015\\evaluation\\samples.json": "cbd87b7406ad26fca111f9fe7a7ad0e53315cead018a64cb0dbfdea778399c27",
+    "D:\\data_training_ai\\minigpt_real_video_20261015\\asr_ground_truth_30\\references.csv": "a6ee473b2b1fe4a7106879cb011f131724c4b60297faec5c1ae682088934987f",
+    "D:\\data_training_ai\\minigpt_real_video_20261015\\evaluation\\ratings_rater_1.csv": "6b0e7741353624bc1d6b63966854ef244e6b7d5a17cbf2668aeb00446630f1fd",
+    "D:\\data_training_ai\\minigpt_real_video_20261015\\evaluation\\ratings_rater_2.csv": "9e2e7de45f577ecfd0f820b86670f12c20346b087f4796a00b0ed5fa6870c062",
+    "D:\\data_training_ai\\minigpt_real_video_20261015\\evaluation\\ratings_rater_3.csv": "9e2e7de45f577ecfd0f820b86670f12c20346b087f4796a00b0ed5fa6870c062",
+    "E:\\traning_ai\\ai-core\\checkpoints\\minigpt\\best.pt": "cf9cfa7141d40f9d40b0065ae68855ff39ffe750260ee7b42c7c0eac719330ac",
+    "E:\\traning_ai\\ai-core\\checkpoints\\asr_ctc\\best.pt": "8f87986781cfb3d4716691f2051e5798187693e2452f9f41b28ca4a753ea5531",
+    "D:\\data_training_ai\\asr_robust\\kaggle_dataset\\asr_robust_manifest.json": "e2dbb144b3ec78b265200ec05b490066ab9c04107943a833da891e1c64fb9ae3",
+    "D:\\data_training_ai\\asr_robust\\kaggle_dataset\\robust_vocab.json": "594d8ce0bd509cb6c21e6497b689cd237bafce6d89dfbce9a466f883df39bcf9",
+    "D:\\data_training_ai\\asr_robust\\outputs-v2\\asr_robust_run\\asr_ctc\\best.pt": "d03ef0a962220618e90e5ff478a2fbab5ff35dd68deb539a4933eb7c15a4f3de",
+    "D:\\data_training_ai\\minigpt_domain_v1_20261019\\whisper_review_v1\\received_860f8068d0bd\\reviewed_whisper_domain_v1.json": "860f8068d0bd16398bbf1d2fd99bc24e276e01c55ca6b5343c78df757ca9e5a4",
+    "D:\\data_training_ai\\minigpt_domain_v1_20261019\\samples.json": "6e863b168541e155613fb27517d5a455dca931b193bf6b859ddc20ec77c6f4e0",
+    "D:\\data_training_ai\\asr_three_source_v1_20261020\\outputs-v1\\asr_three_source_run\\asr_ctc\\best.pt": "05713a55380e60d88b7313fa442b583c2184655e0c7d441094a9eaa280d80493",
+    "E:\\traning_ai\\inference-service\\app\\services.py": "a1dfbee9e7ff009b50f4500bc950b5c462a9407743c36ea45d87376d6cc7e209"
+  },
+  "real_video_wer_cer": null,
+  "training_ready": false,
+  "checkpoint_deployed": false,
+  "limitations": [
+    "40 clips are an already inspected diagnostic set, not a new independent benchmark.",
+    "No approved gold transcript or human accuracy score; feedback and model outputs are not references.",
+    "CPU FP32 timings do not measure GPU service latency or six-model inference VRAM."
+  ],
+  "packet": "D:\\data_training_ai\\asr_three_source_v1_20261020\\real_audio_comparison_20261021",
+  "output_hashes": {
+    "comparison.json": "c71ec82b0871d421b0ae2bf84dfaf96df9e637f8dc752e94a74485b513d781e7",
+    "comparison.txt": "6fd9a237977aec365358c885a3fd2e1ca9189337d5541eebc32a5fafa8a37b5e"
+  },
+  "python_tests": 139,
+  "go_vet_test_build": "PASS",
+  "cms_tsc_vite": "PASS",
+  "client_tsc_next": "PASS",
+  "promotion_decision": "HOLD_NO_PROMOTION",
+  "verified_at": "2026-10-21T03:25:37.985366+00:00",
+  "runner_sha256": "6aa0182d096fefa82cfb3714d2ac1845d6d34a42ab2c3d75d518c3b5009a2e66",
+  "training_plot_sha256": "d756c184982961c8f10101fd0f7ebdf9cbf4245df885ea60f4c9179638da9b51",
+  "training_metrics_sha256": "fb24c2fa643e52b27de84d0f9a5f16dadd4faf00e9c8f5875598095f56d76af7"
+}

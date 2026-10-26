@@ -3,8 +3,9 @@ FROM python:3.11-slim
 
 WORKDIR /srv
 
-# torch CPU mặc định; đổi sang cu121 wheel khi deploy GPU RTX 3060.
-RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
+# CPU by default; the NVIDIA Compose override selects a CUDA wheel.
+ARG TORCH_INDEX_URL=https://download.pytorch.org/whl/cpu
+RUN pip install --no-cache-dir torch --index-url ${TORCH_INDEX_URL}
 COPY inference-service/requirements.txt /srv/requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 

@@ -1,0 +1,146 @@
+{
+  "status": "PENDING — NO HUMAN MEAN ASSIGNED",
+  "completed": 0,
+  "required": 90,
+  "missing": 90,
+  "mean": null,
+  "threshold_pass": null,
+  "raters": {
+    "rater_1": {
+      "completed": 0,
+      "mean": null
+    },
+    "rater_2": {
+      "completed": 0,
+      "mean": null
+    },
+    "rater_3": {
+      "completed": 0,
+      "mean": null
+    }
+  },
+  "samples": {
+    "sample_01": {
+      "completed": 0,
+      "mean": null
+    },
+    "sample_02": {
+      "completed": 0,
+      "mean": null
+    },
+    "sample_03": {
+      "completed": 0,
+      "mean": null
+    },
+    "sample_04": {
+      "completed": 0,
+      "mean": null
+    },
+    "sample_05": {
+      "completed": 0,
+      "mean": null
+    },
+    "sample_06": {
+      "completed": 0,
+      "mean": null
+    },
+    "sample_07": {
+      "completed": 0,
+      "mean": null
+    },
+    "sample_08": {
+      "completed": 0,
+      "mean": null
+    },
+    "sample_09": {
+      "completed": 0,
+      "mean": null
+    },
+    "sample_10": {
+      "completed": 0,
+      "mean": null
+    },
+    "sample_11": {
+      "completed": 0,
+      "mean": null
+    },
+    "sample_12": {
+      "completed": 0,
+      "mean": null
+    },
+    "sample_13": {
+      "completed": 0,
+      "mean": null
+    },
+    "sample_14": {
+      "completed": 0,
+      "mean": null
+    },
+    "sample_15": {
+      "completed": 0,
+      "mean": null
+    },
+    "sample_16": {
+      "completed": 0,
+      "mean": null
+    },
+    "sample_17": {
+      "completed": 0,
+      "mean": null
+    },
+    "sample_18": {
+      "completed": 0,
+      "mean": null
+    },
+    "sample_19": {
+      "completed": 0,
+      "mean": null
+    },
+    "sample_20": {
+      "completed": 0,
+      "mean": null
+    },
+    "sample_21": {
+      "completed": 0,
+      "mean": null
+    },
+    "sample_22": {
+      "completed": 0,
+      "mean": null
+    },
+    "sample_23": {
+      "completed": 0,
+      "mean": null
+    },
+    "sample_24": {
+      "completed": 0,
+      "mean": null
+    },
+    "sample_25": {
+      "completed": 0,
+      "mean": null
+    },
+    "sample_26": {
+      "completed": 0,
+      "mean": null
+    },
+    "sample_27": {
+      "completed": 0,
+      "mean": null
+    },
+    "sample_28": {
+      "completed": 0,
+      "mean": null
+    },
+    "sample_29": {
+      "completed": 0,
+      "mean": null
+    },
+    "sample_30": {
+      "completed": 0,
+      "mean": null
+    }
+  },
+  "video_human_DoD": "PENDING — 90 independent human scores required",
+  "instruction": "Each CSV must be completed by a different independent human rater."
+}

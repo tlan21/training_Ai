@@ -1,0 +1,17 @@
+# Use with docker-compose.yml on an NVIDIA host; CPU-only hosts must not use this override.
+services:
+  inference-service:
+    build:
+      args:
+        TORCH_INDEX_URL: https://download.pytorch.org/whl/cu126
+    environment:
+      INFER_DEVICE: cuda
+      INFERENCE_MEMORY_TRACE: "1"
+      NVIDIA_DRIVER_CAPABILITIES: compute,utility
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]

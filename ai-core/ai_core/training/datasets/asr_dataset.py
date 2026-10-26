@@ -20,7 +20,13 @@ class CharVocab:
         self.stoi = {c: i for i, c in enumerate(self.itos)}
 
     def encode(self, text: str) -> list[int]:
-        return [self.stoi[c] for c in text if c in self.stoi]
+        if not isinstance(text, str):
+            raise ValueError("ASR transcript must be a string")
+        unknown = sorted(set(text) - self.stoi.keys())
+        if unknown:
+            detail = ", ".join(f"{ascii(c)} (U+{ord(c):04X})" for c in unknown)
+            raise ValueError(f"ASR vocabulary cannot encode characters: {detail}")
+        return [self.stoi[c] for c in text]
 
     def decode(self, ids: list[int]) -> str:
         return "".join(self.itos[i] for i in ids if 0 < i < len(self.itos))
@@ -42,6 +48,8 @@ class ASRDataset(Dataset):
         self.vocab = vocab
         self.sr = sr
         self.n_mels = n_mels
+        if split == "train":
+            self.validate_targets()
         # SpecAugment chỉ bật cho split train (T1.4c). `SpecAugment.forward` thoát sớm khi
         # `self.training` False — mà Dataset không phải nn.Module nên không ai gọi .train() cho nó.
         # Khởi tạo rồi dùng thẳng là NO-OP ÂM THẦM: train vẫn chạy, không augment gì, không báo.
@@ -56,6 +64,16 @@ class ASRDataset(Dataset):
     def __len__(self) -> int:
         return len(self.items)
 
+    def validate_targets(self) -> None:
+        for item in self.items:
+            text = item.extra.get("transcript", "")
+            try:
+                if not isinstance(text, str) or not text.strip():
+                    raise ValueError("missing/empty ASR transcript")
+                self.vocab.encode(text)
+            except ValueError as error:
+                raise ValueError(f"ASR {item.split} sample {item.path!r}: {error}") from error
+
     def _load_audio(self, path: str) -> torch.Tensor:
         import soundfile as sf
         import numpy as np
@@ -67,13 +85,32 @@ class ASRDataset(Dataset):
             data = np.interp(np.linspace(0, len(data) - 1, n), np.arange(len(data)), data)
         return torch.from_numpy(data).float()
 
-    def __getitem__(self, idx: int):
+    def _load_features(self, idx: int):
         it = self.items[idx]
         mel = log_mel_spectrogram(self._load_audio(it.path), n_mels=self.n_mels, sr=self.sr)  # (n_mels, T)
         if self.spec_augment is not None:
             mel = self.spec_augment(mel)
+        return mel
+
+    def __getitem__(self, idx: int):
+        it = self.items[idx]
         target = torch.tensor(self.vocab.encode(it.extra.get("transcript", "")), dtype=torch.long)
-        return mel, target
+        return self._load_features(idx), target
+
+
+class ReferenceASRDataset(ASRDataset):
+    def __init__(self, manifest_path, split, vocab, sr=16000, n_mels=80, augment=False):
+        if split not in ("val", "test") or augment:
+            raise ValueError("ReferenceASRDataset requires held-out data without augmentation")
+        super().__init__(manifest_path, split, vocab, sr=sr, n_mels=n_mels, augment=False)
+
+    def __getitem__(self, idx: int):
+        # Evaluation scores raw text, including symbols absent from the training vocabulary.
+        return self._load_features(idx), torch.empty(0, dtype=torch.long), self.items[idx].extra["transcript"]
+
+
+def collate_references(batch):
+    return (*collate_ctc([(mel, target) for mel, target, _ in batch]), [text for _, _, text in batch])
 
 
 def collate_ctc(batch):

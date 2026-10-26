@@ -1,0 +1,124 @@
+{
+  "status": "PREPARED_HUMAN_ENGLISH_DATA_NOT_TRAINED",
+  "source_page": "https://www.openslr.org/31/",
+  "license": "CC-BY-4.0",
+  "provenance": "LibriVox human-read audiobooks, upstream segmented/aligned book text; no ASR-generated labels",
+  "normalization": "asr-label-v1-lossless: NFC uppercase whitespace collapse; preserve raw text",
+  "sources": {
+    "train-clean-5": {
+      "url": "https://openslr.elda.org/resources/31/train-clean-5.tar.gz",
+      "published_md5": "5df7d4e78065366204ca6845bb08f490",
+      "sha256": "47805806c8b15f7549f3c51bd6b7da72ec0128a34d32830c8014a88658c0292d",
+      "bytes": 332954390
+    },
+    "dev-clean-2": {
+      "url": "https://openslr.elda.org/resources/31/dev-clean-2.tar.gz",
+      "published_md5": "6d7ab67ac6a1d2c993d050e16d61080d",
+      "sha256": "176ec501490eced2d6c1f89f4f0ddc7dfe799e649e5322f8ba49fe3ff50c8012",
+      "bytes": 126046265
+    }
+  },
+  "statistics": {
+    "train": {
+      "examples": 1519,
+      "hours": 5.310743003472223,
+      "speakers": 28,
+      "ctc_infeasible": 0,
+      "oov_characters": []
+    },
+    "val": {
+      "examples": 580,
+      "hours": 0.9771110763888888,
+      "speakers": 13,
+      "ctc_infeasible": 0,
+      "oov_characters": []
+    },
+    "test": {
+      "examples": 509,
+      "hours": 1.058709826388889,
+      "speakers": 13,
+      "ctc_infeasible": 0,
+      "oov_characters": []
+    }
+  },
+  "candidate_checkpoint_sha256": "d03ef0a962220618e90e5ff478a2fbab5ff35dd68deb539a4933eb7c15a4f3de",
+  "heldout_partition": {
+    "seed": 1337,
+    "rule": "dev-clean-2 speakers shuffled once, floor(n/2) val, remainder test",
+    "speaker_mapping": {
+      "librispeech:2428": "val",
+      "librispeech:3752": "val",
+      "librispeech:5694": "val",
+      "librispeech:84": "val",
+      "librispeech:174": "val",
+      "librispeech:1993": "val",
+      "librispeech:1272": "val",
+      "librispeech:251": "val",
+      "librispeech:5338": "val",
+      "librispeech:1462": "val",
+      "librispeech:8842": "val",
+      "librispeech:777": "val",
+      "librispeech:1988": "val",
+      "librispeech:5895": "test",
+      "librispeech:2412": "test",
+      "librispeech:2803": "test",
+      "librispeech:8297": "test",
+      "librispeech:3576": "test",
+      "librispeech:3000": "test",
+      "librispeech:2035": "test",
+      "librispeech:7850": "test",
+      "librispeech:6295": "test",
+      "librispeech:3536": "test",
+      "librispeech:7976": "test",
+      "librispeech:6241": "test",
+      "librispeech:6319": "test"
+    }
+  },
+  "vocab_size": 133,
+  "old_ids_preserved": true,
+  "train_only_added_characters": [],
+  "exact_normalized_text_overlap": {
+    "train_val": 0,
+    "train_test": 0,
+    "val_test": 0
+  },
+  "old_vietnamese_replay": {
+    "examples": 790,
+    "tag_counts": {
+      "compound_keywords": 36,
+      "place_keywords": 44,
+      "legal_words": 11,
+      "numeric_written_form": 700
+    },
+    "new_data": false,
+    "keyword_matches_are_not_domain_verification": true
+  },
+  "protected_hashes": {
+    "D:\\data_training_ai\\minigpt_real_video_20261015\\sources.json": "5e3b8bbc7d92138458f485693409d4f588802d66a079ec46e68edb04f9dbc37a",
+    "D:\\data_training_ai\\minigpt_real_video_20261015\\evaluation\\samples.json": "cbd87b7406ad26fca111f9fe7a7ad0e53315cead018a64cb0dbfdea778399c27",
+    "D:\\data_training_ai\\minigpt_real_video_20261015\\asr_ground_truth_30\\references.csv": "a6ee473b2b1fe4a7106879cb011f131724c4b60297faec5c1ae682088934987f",
+    "D:\\data_training_ai\\minigpt_real_video_20261015\\evaluation\\ratings_rater_1.csv": "6b0e7741353624bc1d6b63966854ef244e6b7d5a17cbf2668aeb00446630f1fd",
+    "D:\\data_training_ai\\minigpt_real_video_20261015\\evaluation\\ratings_rater_2.csv": "9e2e7de45f577ecfd0f820b86670f12c20346b087f4796a00b0ed5fa6870c062",
+    "D:\\data_training_ai\\minigpt_real_video_20261015\\evaluation\\ratings_rater_3.csv": "9e2e7de45f577ecfd0f820b86670f12c20346b087f4796a00b0ed5fa6870c062",
+    "E:\\traning_ai\\ai-core\\checkpoints\\minigpt\\best.pt": "cf9cfa7141d40f9d40b0065ae68855ff39ffe750260ee7b42c7c0eac719330ac",
+    "E:\\traning_ai\\ai-core\\checkpoints\\asr_ctc\\best.pt": "8f87986781cfb3d4716691f2051e5798187693e2452f9f41b28ca4a753ea5531",
+    "D:\\data_training_ai\\asr_robust\\kaggle_dataset\\asr_robust_manifest.json": "e2dbb144b3ec78b265200ec05b490066ab9c04107943a833da891e1c64fb9ae3",
+    "D:\\data_training_ai\\asr_robust\\kaggle_dataset\\robust_vocab.json": "594d8ce0bd509cb6c21e6497b689cd237bafce6d89dfbce9a466f883df39bcf9",
+    "D:\\data_training_ai\\asr_robust\\outputs-v2\\asr_robust_run\\asr_ctc\\best.pt": "d03ef0a962220618e90e5ff478a2fbab5ff35dd68deb539a4933eb7c15a4f3de",
+    "D:\\data_training_ai\\minigpt_domain_v1_20261019\\whisper_review_v1\\received_860f8068d0bd\\reviewed_whisper_domain_v1.json": "860f8068d0bd16398bbf1d2fd99bc24e276e01c55ca6b5343c78df757ca9e5a4"
+  },
+  "limitations": [
+    "Read English is not Vietnamese-English code switching or legal/news audio.",
+    "No new Vietnamese numeric/legal/name gold labels; 40 Whisper reviews stay unapproved.",
+    "Speaker/chapter/audio-hash separation checked inside SLR31 only; semantic near-duplicates not certified.",
+    "English val/test are speaker partitions of upstream dev-clean-2; original Vietnamese tests remain frozen.",
+    "Existing two-source robust trainer needs a separate three-source recipe/staging task before training."
+  ],
+  "training_started": false,
+  "promoted": false,
+  "prepared_files": {
+    "english_manifest.json": "7def149baa4cab686e0c6b1542dd43953002beaa40f0c6824d1733839d679c08",
+    "english_vocab.json": "594d8ce0bd509cb6c21e6497b689cd237bafce6d89dfbce9a466f883df39bcf9",
+    "old_vi_replay_candidates.json": "c075426b1b681224ce190958a98bf646378776ff04ec2c7c67455a3e0e2a75f9"
+  }
+}

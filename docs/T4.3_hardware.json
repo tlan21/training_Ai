@@ -1,0 +1,18 @@
+{
+  "torch_runtime": {
+    "torch": "2.14.1+cpu",
+    "cuda_build": null,
+    "cuda_available": false
+  },
+  "vram_verdict": "NOT_MEASURED_NO_NVIDIA_ADAPTER",
+  "docker_gpu_probe_exit": 125,
+  "date": "2026-10-14",
+  "docker_gpu_probe_output": "docker: Error response from daemon: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: error running prestart hook #0: exit status 1, stdout: , stderr: Auto-detected mode as 'legacy'\r\nnvidia-container-cli: initialization error: WSL environment detected but no adapters were found: unknown\r\n\r\nRun 'docker run --help' for more information",
+  "adapters": [
+    {
+      "Name": "Intel(R) UHD Graphics 630",
+      "AdapterRAM": 1073741824,
+      "DriverVersion": "31.0.101.2125"
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "status": "TRAINED_CANDIDATE_VERIFIED_NOT_DEPLOYED",
+  "kernel": "traininghighlight/ai-core-minigpt-aligned-v2",
+  "kernel_version": 1,
+  "dataset": "traininghighlight/minigpt-aligned-summary-v2",
+  "seed": 1337,
+  "n_train": 956,
+  "n_val": 64,
+  "candidate": "D:\\data_training_ai\\minigpt_news\\aligned_output_v1\\aligned_run\\minigpt\\best.pt",
+  "candidate_sha256": "5cc63c26760fcc396a24a7eba4284df5f856611cafbbc9dc5ca7db65bbd9fa36",
+  "active_sha256": "cf9cfa7141d40f9d40b0065ae68855ff39ffe750260ee7b42c7c0eac719330ac",
+  "selected_stage": "clean",
+  "selected_step": 180,
+  "baseline_same_gpu_selection": 0.2323437855897334,
+  "candidate_selection": 0.31627459776395506,
+  "selection_delta": 0.08393081217422166,
+  "baseline_metrics": {
+    "sum_clean": {
+      "rouge_l": 0.2925105662135722,
+      "lead1_rouge_l": 0.41516787346514145,
+      "eos_stop": 0.921875,
+      "cap_hit": 0.078125,
+      "repeated_trigram_fraction": 0.10458845418416844
+    },
+    "sum_asr": {
+      "rouge_l": 0.17217700496589458,
+      "lead1_rouge_l": 0.11425226852134936,
+      "eos_stop": 0.828125,
+      "cap_hit": 0.171875,
+      "repeated_trigram_fraction": 0.17465290620500173
+    },
+    "title_clean": {
+      "rouge_l": 0.356232379351088,
+      "lead1_rouge_l": 0.20381395130536195,
+      "eos_stop": 0.984375,
+      "cap_hit": 0.015625,
+      "repeated_trigram_fraction": 0.0
+    },
+    "cap_clean": {
+      "rouge_l": 0.35167449017190894,
+      "lead1_rouge_l": 0.20381395130536195,
+      "eos_stop": 0.984375,
+      "cap_hit": 0.015625,
+      "repeated_trigram_fraction": 0.0
+    }
+  },
+  "candidate_metrics": {
+    "sum_clean": {
+      "rouge_l": 0.5179126079506995,
+      "lead1_rouge_l": 0.41516787346514145,
+      "eos_stop": 0.90625,
+      "cap_hit": 0.09375,
+      "repeated_trigram_fraction": 0.07182258635743755
+    },
+    "sum_asr": {
+      "rouge_l": 0.11463658757721062,
+      "lead1_rouge_l": 0.11425226852134936,
+      "eos_stop": 0.484375,
+      "cap_hit": 0.515625,
+      "repeated_trigram_fraction": 0.3280480553311971
+    },
+    "title_clean": {
+      "rouge_l": 0.38790232433353244,
+      "lead1_rouge_l": 0.20381395130536195,
+      "eos_stop": 1.0,
+      "cap_hit": 0.0,
+      "repeated_trigram_fraction": 0.005756578947368422
+    },
+    "cap_clean": {
+      "rouge_l": 0.3946810800074961,
+      "lead1_rouge_l": 0.20381395130536195,
+      "eos_stop": 1.0,
+      "cap_hit": 0.0,
+      "repeated_trigram_fraction": 0.00724467418546366
+    }
+  },
+  "runtime": {
+    "completed": true,
+    "gpu": "Tesla T4",
+    "torch": "2.11.0+cu128",
+    "seed": 1337,
+    "elapsed_seconds": 507.80807185173035,
+    "peak_allocated_gib": 1.05525541305542,
+    "peak_reserved_gib": 2.51953125,
+    "scope": "same-GPU baseline + candidate training/validation; not six-model inference",
+    "train_8gib_pass": true
+  },
+  "elapsed_hours": 0.12549612548616199,
+  "human_model_quality": "NOT RE-SCORED - label-support confirmation is not a model quality rating",
+  "frozen_test_evaluation_run": false,
+  "production_weights_changed": false,
+  "artifact_hashes": {
+    "training_result.json": "0bce48d73db019248ff5bf05f9b3bc3512d5513f74da19f158264437fdde2300",
+    "aligned_baseline.json": "8533936e5866a0d034ac5f60108068cc04cf64f28c49b28c37459782aa135845",
+    "aligned_runtime.json": "3af77fc4ab4492a39de8f746675565409b70af13f56d2e7cf85dbe0d16f10f3a",
+    "validation.jsonl": "8b050f02296e952e2f9f36211251e3c963433b1c5ba9357397c5c0d62766c684"
+  }
+}

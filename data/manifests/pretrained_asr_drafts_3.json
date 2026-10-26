@@ -1,0 +1,81 @@
+{
+  "status": "DRAFTS COMPLETE — HUMAN VERIFICATION PENDING",
+  "sample_ids": [
+    "sample_01",
+    "sample_10",
+    "sample_28"
+  ],
+  "authorization": "Explicit user exception: local pretrained ASR drafts only.",
+  "model": {
+    "model_repo": "Systran/faster-whisper-small",
+    "revision": "536b0662742c02347bc0e980a01041f333bce120",
+    "path": "D:\\data_training_ai\\tools\\models\\faster-whisper-small",
+    "source": "https://huggingface.co/Systran/faster-whisper-small",
+    "license": "MIT (model card)",
+    "files": [
+      {
+        "file": "config.json",
+        "bytes": 2370,
+        "sha256": "b55496ac7940a7ae47d2c01eab40edfd8701feec1229d9cce3b40014383fb828"
+      },
+      {
+        "file": "model.bin",
+        "bytes": 483546902,
+        "sha256": "3e305921506d8872816023e4c273e75d2419fb89b24da97b4fe7bce14170d671"
+      },
+      {
+        "file": "README.md",
+        "bytes": 1998,
+        "sha256": "329373481008c7c38654aff8ecdcf0163c211557cc7ba8e2ef6f2f84b4f75ec8"
+      },
+      {
+        "file": "tokenizer.json",
+        "bytes": 2203239,
+        "sha256": "fb7b63191e9bb045082c79fd742a3106a12c99513ab30df4a0d47fa6cb6fd0ab"
+      },
+      {
+        "file": "vocabulary.txt",
+        "bytes": 459861,
+        "sha256": "34ce3fe1c5041027b3f8d42912270993f986dbc4bb34cf27f951e34a1e453913"
+      }
+    ],
+    "purpose": "User-authorized local pretrained drafts only; NOT training, production model, or human ground truth.",
+    "resource_fallback": "Medium CPU int8 load failed with mkl_malloc memory allocation error; using multilingual small."
+  },
+  "versions": {
+    "faster-whisper": "1.2.1",
+    "ctranslate2": "4.8.3",
+    "av": "18.1.0"
+  },
+  "decoding_options": {
+    "language": "vi",
+    "task": "transcribe",
+    "beam_size": 5,
+    "temperature": 0,
+    "condition_on_previous_text": false,
+    "vad_filter": false
+  },
+  "device": "cpu",
+  "compute_type": "int8",
+  "packet": "D:\\data_training_ai\\minigpt_real_video_20261015\\pretrained_drafts_3",
+  "human_verified_samples": 0,
+  "official_video_wer": null,
+  "official_video_cer": null,
+  "samples_sha256": "cbd87b7406ad26fca111f9fe7a7ad0e53315cead018a64cb0dbfdea778399c27",
+  "human_references_sha256": "a6ee473b2b1fe4a7106879cb011f131724c4b60297faec5c1ae682088934987f",
+  "inference_seconds": 62.0619999999999,
+  "files": {
+    "drafts.csv": "bc63cecce0b75595d1def03cb5d86a483b44d5117d8bdac221d1870694227ed5",
+    "review.html": "33d4677ecb222fef0cc87d5d2559a1cba8e78f41c25751cb82355d238b48326f",
+    "sample_01.json": "5d1580508023f219294f548c6165dcc42b3de6616c6cfd23d31c948d9d3ee469",
+    "sample_01.srt": "b833d9d1df38552b4c4a8e71aae8f1768dcd7f248814e044017be4aa18a28910",
+    "sample_01.txt": "63b7a67b33aed03e5da71ed7eb1c15eb162798b1efffde8602526d1002928ff3",
+    "sample_10.json": "c0cc899e1e3bd737d5af7e3156e2572dec64f8c3ef040a7683aef1f17eaf295b",
+    "sample_10.srt": "3324772fe7b57eb76835cb29954d633c79a866e326da9775026f7a7b36bb1633",
+    "sample_10.txt": "5dc488e5d76035698777eb877a74e2979c10155482c03a9c1828621b2b71e3ee",
+    "sample_28.json": "81d946e4b0f2246d09d2ea57af749c3338c1b3588ca911d20a21a2f6896ff1fb",
+    "sample_28.srt": "c3af888baf8903c9e375ce61884e53db196ddef2c2891be94e951c3ca652f8db",
+    "sample_28.txt": "f5f245ea3180ad21751cc91f60a6808264099bffdfdc71823a8a2204046fd98d",
+    "README.md": "cef6df43e9feedbbfb2f242eec3ba4bf8cd9c6a81c03a5edc478e5f8d9073322"
+  }
+}

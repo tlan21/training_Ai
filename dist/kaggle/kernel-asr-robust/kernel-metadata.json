@@ -1,0 +1,16 @@
+{
+  "id": "traininghighlight/ai-core-asr-robust",
+  "title": "ai-core-asr-robust",
+  "code_file": "run_asr_robust.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": false,
+  "dataset_sources": [
+    "traininghighlight/asr-robust-human",
+    "traininghighlight/vivos-asr"
+  ],
+  "competition_sources": [],
+  "kernel_sources": []
+}

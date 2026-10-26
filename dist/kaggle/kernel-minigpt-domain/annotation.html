@@ -1,0 +1,47 @@
+<!doctype html><html lang="vi"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dữ liệu transcript → summary do người viết</title>
+<style>*{box-sizing:border-box}body{font:16px system-ui;max-width:1100px;margin:auto;padding:24px;background:#fafafa;color:#222}p{line-height:1.6;overflow-wrap:anywhere}article{background:white;border:1px solid #ccc;padding:20px;margin:24px 0}video{width:100%;max-height:360px}label{display:block;margin:14px 0}textarea,input:not([type=checkbox]){display:block;width:100%;font:inherit;padding:12px;margin-top:6px;border:1px solid #888;border-radius:4px}textarea{resize:vertical;min-height:100px}.confirm{display:flex;align-items:flex-start;gap:10px}.confirm input{flex:0 0 auto;margin-top:5px}button{padding:12px 18px;font:inherit;cursor:pointer}details{padding:12px 0}details p{white-space:pre-wrap}h2{overflow-wrap:anywhere}.warning{color:#9d2424}#status{min-height:2em}@media(max-width:720px){body{padding:12px}article{padding:14px}}</style>
+<h1>Chép lời và viết tóm tắt từ video mới</h1>
+<p>Nghe đúng đoạn video bên dưới. Tự chép đầy đủ lời nói; tự viết 1–2 câu tóm tắt khoảng 15–35 từ, chỉ nêu điều nghe được. Không đoán tên, ngày, số hoặc lời bị cắt. Nếu không nghe rõ, ghi lý do loại. Không chép tiêu đề video nguồn hoặc output máy thành nhãn. Transcript ASR ẩn bên dưới chỉ là đầu vào nhiễu của mô hình, không phải lời chuẩn.</p>
+<p>Chưa có nhãn người nào được điền sẵn. Ô xác nhận chỉ đánh dấu sau khi nghe, tự viết và kiểm chứng nội dung. Dữ liệu được lưu nháp trong trình duyệt này; xuất JSON để lưu ra file. Bộ này chưa đủ điều kiện training cho đến khi nhập nhãn qua gate.</p>
+<label>Người chép lời / viết nhãn<input id="annotator" autocomplete="name"></label>
+<button id="export">Xuất nhãn / bản nháp JSON</button><p id="status" role="status"></p><main id="cards"></main>
+<script>
+const packet=__PACKET__;
+const key=(packet.protocol==='whisper-review-v1'?'minigpt-whisper-review-'+packet.drafts_sha256:'minigpt-domain')+'-'+packet.packet_sha256;
+const assisted=packet.protocol==='whisper-review-v1';
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let state={annotator:'',rows:{}};
+try{const saved=JSON.parse(localStorage.getItem(key)||'null');if(saved)state=saved;}catch{document.querySelector('#status').textContent='Không đọc được bản nháp trình duyệt; dữ liệu gốc vẫn trống.';}
+document.querySelector('#cards').innerHTML=packet.samples.map(r=>`<article data-id="${esc(r.sample_id)}"><h2>${esc(r.sample_id)} · ${esc(r.split)}</h2><p>Tên video nguồn (không phải target cho đoạn này): <a href="${esc(r.source_url)}" target="_blank" rel="noopener">${esc(r.source_title)}</a> · ${r.start_seconds}–${r.start_seconds+r.duration_seconds}s</p><video controls preload="none" src="${esc(r.video)}"></video>${r.over_budget_inputs.length?'<p class="warning">Đầu vào vượt context: '+esc(r.over_budget_inputs.join(', '))+'. Cần chia lại clip trước khi dùng để train.</p>':''}<label>Lời chuẩn do bạn chép sau khi nghe<textarea class="transcript" rows="5"></textarea></label><label>Tóm tắt do bạn viết (1–2 câu, không thêm thông tin)<textarea class="summary" rows="3"></textarea></label><label>Mã người nói nếu xác định được (để trống khi chưa biết)<input class="speaker_id"></label><label>Lý do loại nếu âm thanh không rõ / không phải tiếng Việt / đoạn không đủ ngữ cảnh<input class="reject_reason"></label><label class="confirm"><input class="verified" type="checkbox">Tôi đã nghe đoạn tiếng Việt, tự chép/viết nhãn và kiểm tra mọi ý trong tóm tắt được lời nói hỗ trợ.</label><details><summary>ASR của dự án — chỉ là input nhiễu, không phải lời chuẩn</summary>${Object.entries(r.asr_inputs).map(([name,v])=>`<h3>${esc(name)}</h3><p>${esc(v.text)}</p>`).join('')}</details></article>`).join('');
+document.querySelector('#annotator').value=state.annotator||'';
+if(assisted){
+  document.title='Rà soát transcript Whisper và viết tóm tắt';
+  document.querySelector('h1').textContent='Nghe, sửa transcript Whisper và viết tóm tắt';
+  document.querySelector('h1+p').textContent='40 đoạn, 22 đoạn có cảnh báo được xếp trước. Transcript điền sẵn là bản máy, có thể sai cả khi không có cảnh báo. Nghe đủ đoạn, sửa mọi từ sai và tự viết summary 1–2 câu chỉ từ nội dung nghe được; không đoán lời bị cắt.';
+  document.querySelector('h1+p+p').textContent='Mốc thời gian đề xuất được giới hạn trong đoạn 30 giây hoặc suy từ mốc tiếp theo, chưa được xác minh bằng âm thanh. Bản Whisper gốc được giữ để đối chiếu. File xuất ghi rõ nguồn Whisper có người hiệu đính và cần được kiểm tra trước training.';
+  document.querySelector('#annotator').parentElement.firstChild.textContent='Người rà soát transcript / viết tóm tắt';
+}
+for(const [i,card] of [...document.querySelectorAll('article')].entries()){
+  const sample=packet.samples[i],row=state.rows[card.dataset.id]||{};
+  for(const name of ['transcript','summary','speaker_id','reject_reason'])card.querySelector('.'+name).value=row[name]??(name==='transcript'&&assisted?sample.review_draft:'')??'';
+  card.querySelector('.verified').checked=row.verified===true;
+  if(assisted){
+    card.querySelector('.transcript').parentElement.firstChild.textContent='Transcript Whisper — nghe và sửa nội dung';
+    card.querySelector('.confirm').lastChild.textContent='Tôi đã nghe hết đoạn, kiểm tra/sửa transcript và tự viết summary được lời nói hỗ trợ. Nguồn transcript vẫn là Whisper có người hiệu đính.';
+    const flagNames={UNKNOWN_END_TIME_SRT_EXPORT_USES_FALLBACK:'thiếu mốc kết thúc',REPEATED_8_WORD_SEQUENCE:'có cụm từ lặp',TIME_OUTSIDE_CLIP:'timestamp vượt thời lượng clip'};
+    const notes=document.createElement('p');notes.className='warning';notes.textContent=sample.review_flags.length?'Cần rà soát: '+sample.review_flags.map(f=>flagNames[f]||f).join('; '):sample.review_notes;card.querySelector('video').after(notes);
+    const details=document.createElement('details');const title=document.createElement('summary');title.textContent='Whisper gốc và thay đổi timestamp đề xuất';details.append(title);
+    const original=document.createElement('p');original.textContent=sample.review_draft;details.append(original);
+    const timing=document.createElement('p');timing.textContent=sample.timing_proposals.length?sample.timing_proposals.map(p=>`Đoạn ${p.segment+1}: mốc kết thúc ${p.original??'chưa có'} → ${p.proposed} giây (đề xuất, chưa xác minh).`).join('\n'):'Các mốc thời gian được giữ nguyên.';details.append(timing);card.append(details);
+  }
+}
+function collect(){return {...(assisted?{protocol:packet.protocol,drafts_sha256:packet.drafts_sha256,training_ready:false}:{}),packet_sha256:packet.packet_sha256,annotator:document.querySelector('#annotator').value.trim(),records:packet.samples.map(r=>{const c=document.querySelector(`article[data-id="${r.sample_id}"]`),v=c.querySelector('.verified').checked;return {sample_id:r.sample_id,audio_sha256:r.audio_sha256,video_sha256:r.video_sha256,transcript:c.querySelector('.transcript').value.trim(),summary:c.querySelector('.summary').value.trim(),speaker_id:c.querySelector('.speaker_id').value.trim(),reject_reason:c.querySelector('.reject_reason').value.trim(),verified:v,origin:assisted?(v?'human_reviewed_external_asr':'EXTERNAL_ASR_DRAFT_UNVERIFIED'):(v?'human_written_from_audio':null),...(assisted?{draft_origin:'EXTERNAL_ASR_DRAFT_UNVERIFIED',summary_origin:v?'human_written_from_audio':null,timing_verified:false}:{})};})};}
+document.addEventListener('input',event=>{
+  let warning='';
+  if(assisted){const card=event.target.closest('article');if(card&&event.target.type!=='checkbox')card.querySelector('.verified').checked=false;if(event.target.id==='annotator')document.querySelectorAll('.verified').forEach(el=>el.checked=false);
+    if(card&&event.target.type==='checkbox'&&event.target.checked&&(!document.querySelector('#annotator').value.trim()||card.querySelector('.transcript').value.trim().split(/\s+/).length<5||card.querySelector('.summary').value.trim().split(/\s+/).length<5||card.querySelector('.reject_reason').value.trim())){event.target.checked=false;warning='Chưa thể xác nhận: cần tên người rà soát, transcript và summary ít nhất 5 từ, không có lý do loại.';}}
+  const value=collect();state={annotator:value.annotator,rows:Object.fromEntries(value.records.map(r=>[r.sample_id,r]))};try{localStorage.setItem(key,JSON.stringify(state));document.querySelector('#status').textContent=warning||`Đã lưu nháp; ${value.records.filter(r=>r.verified).length}/${value.records.length} đoạn được đánh dấu. Chưa nhập nhãn hoặc chạy training.`;}catch{document.querySelector('#status').textContent='Không lưu được trong trình duyệt. Hãy xuất JSON để giữ bản nháp.';}
+});
+document.querySelector('#export').onclick=()=>{const payload=collect();const url=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/json;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download=assisted?'reviewed_whisper_domain_v1.json':'human_labels_domain_v1.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);document.querySelector('#status').textContent='Đã xuất bản nháp JSON. Nội dung và nguồn nhãn cần được kiểm tra trước khi nhập training.';};
+</script></html>

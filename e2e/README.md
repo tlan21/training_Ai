@@ -12,7 +12,7 @@ npm run test:e2e -- e2e/video_flow.spec.ts
 ./e2e/verify_persistence.ps1
 ```
 
-Compose starts PostgreSQL/MongoDB/Redis/MinIO/Kafka, initializes the five topics, and starts the inference service with all six mounted checkpoints. FORCE_STUB is 0; startup fails if a checkpoint is missing. Go Orchestrator/cutter consumers run in the gateway process with persistent adapters; Python ingest runs separately. The old standalone Go worker binaries are not part of this runtime. Milvus remains a T4.2 dependency; do not enable profile full to claim visual search is ready.
+Compose starts PostgreSQL/MongoDB/Redis/MinIO/Kafka, initializes the five topics, and starts the inference service with all six mounted checkpoints. FORCE_STUB is 0; startup fails if a checkpoint is missing. Go Orchestrator/cutter consumers run in the gateway process with persistent adapters; Python ingest runs separately. The old standalone Go worker binaries are not part of this runtime. T4.2 now starts etcd/Milvus by default; its real visual-search verification is documented below.
 
 Targets: gateway http://localhost:8000, CMS http://localhost:5173, Client http://localhost:3000. E2E_GATEWAY_URL, E2E_CMS_URL, E2E_CLIENT_URL can override these. E2E_PROCESS_TIMEOUT_MS defaults to 90000.
 
@@ -32,7 +32,7 @@ ffmpeg -f lavfi -i testsrc=size=160x90:rate=10 -f lavfi -i sine=frequency=440:sa
 
 Limits: upload file maximum is 2 GiB. Nginx allows 2049 MiB request bodies for multipart overhead; gateway enforces file size, keeps at most 8 MiB of multipart data in memory, and streams to MinIO. Processing still needs temporary disk space. The current machine runs CPU inference; this is not a CUDA/VRAM or full 2-GiB stress test.
 
-Only Vision/ASR/Highlight/Summary inference is wired for this task. Visual search and vector recommendation require a real Milvus index and currently return 503 rather than synthetic hits; gateway feed falls back to real published clips. Preferences/vector state, interactions and dev reset tokens still use memory adapters. Mini-GPT retains its documented T1.6c quality limitation.
+T4.1 originally wired Vision/ASR/Highlight/Summary only. T4.2 now wires real Siamese/Milvus visual search (see below). Vector recommendation still returns 503 rather than synthetic hits; gateway feed falls back to real published clips. Preferences/recommendation vectors, interactions and dev reset tokens still use memory adapters. Mini-GPT retains its documented T1.6c quality limitation.
 
 Polling follows Playwright [expect.poll](https://playwright.dev/docs/test-assertions#expectpoll).
 
@@ -46,3 +46,59 @@ npx playwright test e2e/client_design.spec.ts e2e/client_player.spec.ts e2e/vide
 ```
 
 Latest verification: 42 passed (1.7 minutes), full Client lint/tsc/Next build and Docker build passed. Real E2E checks feed playback, detail Range seek/playback and approved summary, in addition to upload/processing/privacy/publish. See `docs/T3.2_client_design_parity.md` for source/render screenshots and the remaining contract gaps. UI does not claim original-video playback, saved-list reading, fake counts or real visual-search results when their APIs are unavailable.
+
+## T4.2 — Real visual search
+
+Default Compose now starts etcd/Milvus; no `--profile full` is needed. Six mounted checkpoints and the same `AI_SERVICE_KEY` in gateway/inference are required. Inference loads the Siamese 128d HNSW COSINE index before becoming healthy. Ports 19530/9091 are bound to localhost. The Go gateway retains the existing public OpenAPI/ports.
+
+```powershell
+docker compose --env-file .env -f docker-compose.yml up -d --build gateway inference-service ingest-worker cms client
+npm run test:e2e:types
+npx playwright test e2e/visual_search.spec.ts e2e/video_flow.spec.ts --output=test-results/t42-final --reporter=list
+```
+
+`visual_search.spec.ts` uploads its own distinctive 8-second test video, waits for actual Vision/Siamese/ASR/Fusion/Mini-GPT processing, checks it is hidden before clip publication, publishes a real FFmpeg clip, and uploads an actual matching frame through the API/Client. It validates similarity, real MinIO thumbnail bytes, mobile/desktop results, reject/delete privacy, and 20 cache misses + 20 cache hits all under 2 seconds. Metrics and screenshots are written to the test output directory. It cleans up only its own test data. Fixtures `visual-video.mp4`/`visual-query.png` are a hue-shifted testsrc2 H.264/AAC video and its first PNG frame; they are test data, not model-generated evidence of semantic accuracy.
+
+New canonical ingest keyframes are indexed inside the existing Vision stage; index failure fails/retries that stage. For **explicit processed IDs obtained from CMS** already present before T4.2:
+
+```powershell
+docker compose --env-file .env -f docker-compose.yml exec inference-service python -m app.index_frames vid_...
+```
+
+The backfill tool reads MinIO originals if scratch frames were removed, reuses ingest sampling, replaces that video's vectors without changing its metadata/summary, and removes its own temporary files. Do not supply deleted/processing IDs. It does not publish content. Results require a processed video with at least one published clip; no such clip means no public search hit.
+
+Unit tests use stub/mocks separately from real E2E. Run the real, read-only HNSW sweep on the retained corpus:
+
+```powershell
+docker compose --env-file .env -f docker-compose.yml run --rm --no-deps -e T42_INTEGRATION=1 -v E:/traning_ai/inference-service/tests:/srv/inference-service/tests:ro inference-service sh -c 'pip install --quiet pytest httpx && python -m pytest tests/test_milvus_integration.py -q -s'
+```
+
+This flushes/loads the collection, compares HNSW with exact cosine on stored vectors, and checks real index progress. It does not insert/delete user data. See `docs/T4.2_bao_cao.md` for the measured corpus, consistency choice, cache policy and limits. Original-video/saved-list API gaps and T4.3 VRAM/load tests remain separate tasks.
+
+## T4.3 — Sequential inference memory
+
+`inference_memory.spec.ts` is opt-in (`E2E_MEMORY_RUN=1`), with two warmups and twenty sequential private uploads. It samples inference/gateway/ingest RSS and process high-water marks, verifies real completed jobs/analysis, and cleans only its own uploads/vectors. Container ID/start-time/restart-count must stay unchanged. `INFERENCE_MEMORY_TRACE=1` must be enabled before starting the inference container so per-stage peaks can be collected; no API schema extension is used.
+
+```powershell
+$env:INFERENCE_MEMORY_TRACE='1'
+docker compose --env-file .env -f docker-compose.yml up -d --build --wait --wait-timeout 60 inference-service ingest-worker
+$env:E2E_MEMORY_RUN='1'
+npx playwright test e2e/inference_memory.spec.ts --output=test-results/t43-memory --reporter=list
+Remove-Item Env:INFERENCE_MEMORY_TRACE
+docker compose --env-file .env -f docker-compose.yml up -d --no-deps --wait --wait-timeout 60 inference-service
+```
+
+`E2E_MEMORY_VIDEO` can supply a local real video instead of the second synthetic 8-second fixture. The recorded local run alternated an 8-second fixture and a private copy of the user's existing 10.08-second source. The original user upload is unchanged. Tests intentionally reuse fixed shapes, do not publish content, and leave soft-deleted DB/MinIO test objects according to the existing cleanup policy.
+
+Local result (2026-10-14): **CPU 20/20 PASS, VRAM NOT_MEASURED**; Intel UHD 630 only, Docker NVIDIA probe fails. Inference RSS first/last five median 569.26/569.87 MiB, OS peak 589.51 MiB; 27 Python tests PASS and real T4.1/T4.2 regressions 3 PASS. These finite short-video measurements do not establish GPU or long-video memory safety. See `docs/T4.3_bao_cao.md` and JSON metrics.
+
+On an NVIDIA host, use the validated `docker-compose.gpu.yml` override (CUDA image build/execution remains unverified on this CPU host):
+
+```powershell
+docker compose --env-file .env -f docker-compose.yml -f docker-compose.gpu.yml up -d --build --wait inference-service ingest-worker
+$env:E2E_MEMORY_RUN='1'
+$env:E2E_REQUIRE_CUDA='1'
+npx playwright test e2e/inference_memory.spec.ts --output=test-results/t43-cuda --reporter=list
+```
+
+The CUDA guard fails before uploads if health is CPU. Metrics keep allocated/reserved/peak CUDA memory separate and also sample NVIDIA card usage. Never treat CPU `gpu_vram_used=0` as a pass of the 4-GiB requirement. T4.3 remains PARTIAL until actual GPU evidence is available.

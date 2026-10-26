@@ -18,6 +18,7 @@ from ..training.datasets import (
     ASRDataset,
     BPRTripleDataset,
     CharVocab,
+    ReferenceASRDataset,
     HighlightWindowDataset,
     SiamesePairDataset,
     SummaryPairDataset,
@@ -25,6 +26,7 @@ from ..training.datasets import (
     TokenFileDataset,
     ViTKeyframeDataset,
     collate_ctc,
+    collate_references,
     vit_augment,
     load_movielens_ratings,
     time_split,
@@ -104,12 +106,11 @@ def _asr_metric(vocab):
 
     def metric(model, loader, device):
         values = []
-        for mel, mel_len, targets, target_len in loader:
+        for mel, mel_len, _, _, references in loader:
             log_probs, out_len = model(mel.to(device), mel_len.to(device))
             predicted = ctc_greedy_decode(log_probs.float().cpu(), out_len.cpu())
-            for index, ids in enumerate(predicted):
-                expected = targets[index, :target_len[index]].tolist()
-                values.append(wer(vocab.decode(expected), vocab.decode(ids)))
+            for reference, ids in zip(references, predicted):
+                values.append(wer(reference, vocab.decode(ids)))
         return sum(values) / max(1, len(values))
 
     return metric
@@ -180,9 +181,9 @@ def _build_loaders(model_name: str, model_cfg, train_cfg, args):
         # SpecAugment CHỈ cho train (T1.4c). Bật cho val thì số đo dao động theo may rủi từng lần
         # chạy và early-stop chọn checkpoint theo nhiễu.
         tr = ASRDataset(args.manifest, "train", vocab, n_mels=model_cfg.n_mels, augment=True)
-        va = ASRDataset(args.manifest, "val", vocab, n_mels=model_cfg.n_mels)
+        va = ReferenceASRDataset(args.manifest, "val", vocab, n_mels=model_cfg.n_mels)
         return (DataLoader(tr, batch_size=train_cfg.batch_size, shuffle=True, collate_fn=collate_ctc),
-                DataLoader(va, batch_size=train_cfg.batch_size, collate_fn=collate_ctc),
+                DataLoader(va, batch_size=train_cfg.batch_size, collate_fn=collate_references),
                 {"char_vocab": vocab.itos}, _asr_metric(vocab))
     if model_name == "highlight_fusion":
         if not args.features:

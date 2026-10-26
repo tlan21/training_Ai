@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-15",
+  "status": "PILOT READY — HUMAN RATINGS PENDING",
+  "seed": 1337,
+  "source": "D:\\data_training_ai\\data\\raw\\vivos\\vivos\\test",
+  "license": "CC BY-NC-SA 4.0 / AILAB VNUHCM University of Science",
+  "samples": 30,
+  "speakers": 15,
+  "duration_seconds": 109.99125000000001,
+  "checkpoint_sha256": "cf9cfa7141d40f9d40b0065ae68855ff39ffe750260ee7b42c7c0eac719330ac",
+  "asr_checkpoint_sha256": "8f87986781cfb3d4716691f2051e5798187693e2452f9f41b28ca4a753ea5531",
+  "format": "sum; actual uppercase CTC lowercased by service; EOS512/96; greedy",
+  "packet": "E:\\traning_ai\\data\\processed\\minigpt_human_pilot_20261015_v2",
+  "human_ratings": "UNMEASURED — blank sheets supplied; never automatically assigned",
+  "samples_sha256": "145b31052dcde617c5ad11027f417dd1099d3dd02a42dcbc45ee6158c082dc08",
+  "limitation": "Short read utterances, not real-world videos; cannot certify video human DoD",
+  "empty_asr": 0,
+  "empty_summary": 0,
+  "zip": "E:\\traning_ai\\data\\processed\\minigpt_human_pilot_20261015_v2.zip",
+  "zip_sha256": "08f5c7e04d4f245f9f6a1504a8e8bbb1841ede771ecd1e831ab1bcbdfedec11d",
+  "audio_checksums_verified": 30,
+  "blank_rating_cells_verified": 90
+}

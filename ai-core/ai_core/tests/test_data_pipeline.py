@@ -186,6 +186,32 @@ def test_normalize_to_asr_removes_punct():
     assert out == out.lower()
 
 
+def test_summary_long_source_keeps_target_and_generation_prefix():
+    from ai_core.tokenizer import BPETokenizer
+    from ai_core.training.datasets.summary_dataset import SummaryPairDataset, summary_prompt_ids
+
+    tok = BPETokenizer()
+    src, target = "long article " * 100, "news"
+    ds = SummaryPairDataset([(src, target)], tok, context_len=32, max_target_tokens=8)
+    x, y = ds[0]
+    prompt = summary_prompt_ids(src, tok, context_len=32, max_new_tokens=8)
+    assert x[:len(prompt)].tolist() == prompt
+    assert len(x) < 32
+    assert y[:len(prompt) - 1].eq(-100).all()
+    assert y[y != -100].tolist() == tok.encode(target) + [tok.special_tokens["<eos>"]]
+
+
+def test_summary_long_target_retains_eos():
+    from ai_core.tokenizer import BPETokenizer
+    from ai_core.training.datasets.summary_dataset import SummaryPairDataset
+
+    tok = BPETokenizer()
+    _, y = SummaryPairDataset([("source", "target " * 100)], tok,
+                              context_len=32, max_target_tokens=8)[0]
+    labels = y[y != -100].tolist()
+    assert len(labels) == 8 and labels[-1] == tok.special_tokens["<eos>"]
+
+
 # ---------- metrics ----------
 
 def test_wer_cer():

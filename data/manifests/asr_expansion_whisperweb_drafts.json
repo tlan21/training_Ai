@@ -1,0 +1,1875 @@
+{
+  "status": "DONE_DRAFTS_HUMAN_REVIEW_REQUIRED",
+  "packet_sha256": "5daba6dab9c2fa358e1a84fc13312907874784875dd3ba33c8bb51c35f046c22",
+  "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+  "settings": {
+    "model": "whisper-base (291MB)",
+    "multilingual": true,
+    "task": "Transcribe",
+    "quantized": false
+  },
+  "language_policy": "English for Pantado source; Vietnamese for other sources. Language is an input hint, not human-verified speech coverage.",
+  "engine": "WhisperWeb free local browser UI",
+  "model_revision_exposed": false,
+  "human_verified": false,
+  "training_ready": false,
+  "jobs": [
+    {
+      "sample_id": "ext2_uvs5djEOuH4_1",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "English"
+      },
+      "finished_at": "2026-10-22T06:45:34.990Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2_uvs5djEOuH4_1.txt",
+          "bytes": 150,
+          "sha256": "f32a1b5e92360c7da1c94ffb02825825bfb9dbed21271b6fd0c4206244eca8c0"
+        },
+        {
+          "file": "ext2_uvs5djEOuH4_1.json",
+          "bytes": 260,
+          "sha256": "0af47facff192029318cf18cc47d1dc5d96ef260ac90c8cd0f7e38ab9747c77a"
+        },
+        {
+          "file": "ext2_uvs5djEOuH4_1.srt",
+          "bytes": 216,
+          "sha256": "7982711825809ca06e43e8bfc1f70a8f38c36b8fcb0f61b056ec522525a5fbf0"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_uvs5djEOuH4_2",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "English"
+      },
+      "finished_at": "2026-10-22T06:47:39.941Z",
+      "review_flags": [
+        "TIME_OUTSIDE_CLIP"
+      ],
+      "outputs": [
+        {
+          "file": "ext2_uvs5djEOuH4_2.txt",
+          "bytes": 232,
+          "sha256": "c4cbd41e6005cfb76db1de6ed36194a37185a49804ef99743f446a9124fce222"
+        },
+        {
+          "file": "ext2_uvs5djEOuH4_2.json",
+          "bytes": 452,
+          "sha256": "e82e74ebf016d005d9e9820944184b7ac3ac97ed1bb6e5945cb426227070a1e4"
+        },
+        {
+          "file": "ext2_uvs5djEOuH4_2.srt",
+          "bytes": 364,
+          "sha256": "cefeed08723f13987ae9ddf68df80d83d961e7cbc8226051af2b643a529ecfe4"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_uvs5djEOuH4_3",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "English"
+      },
+      "finished_at": "2026-10-22T06:48:05.471Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2_uvs5djEOuH4_3.txt",
+          "bytes": 345,
+          "sha256": "13702f740880efb3140606330466a87b62a174085b3eeb7f43594253e2cadd9e"
+        },
+        {
+          "file": "ext2_uvs5djEOuH4_3.json",
+          "bytes": 559,
+          "sha256": "724264b25d2b22f4d73531ca9b5870f6af2869946754e818e53012e202dfae58"
+        },
+        {
+          "file": "ext2_uvs5djEOuH4_3.srt",
+          "bytes": 477,
+          "sha256": "ecb01cbb5e06155a60ec7aaf1529b201a8d8a278b732a441fdf08a803537d304"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_uvs5djEOuH4_4",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "English"
+      },
+      "finished_at": "2026-10-22T06:48:29.397Z",
+      "review_flags": [
+        "TIME_OUTSIDE_CLIP"
+      ],
+      "outputs": [
+        {
+          "file": "ext2_uvs5djEOuH4_4.txt",
+          "bytes": 372,
+          "sha256": "b1d12407b8bf4fc91e7a7dcaabe0b2f385e304613a622e52cee9a0b419b6925b"
+        },
+        {
+          "file": "ext2_uvs5djEOuH4_4.json",
+          "bytes": 591,
+          "sha256": "a01983d6a2511f9370354b6864d0dac5d066bc0a1a8cde3e327a5694f6dff12f"
+        },
+        {
+          "file": "ext2_uvs5djEOuH4_4.srt",
+          "bytes": 504,
+          "sha256": "2e12ae11805dd9c6fd9e68354c288c4fbcce704573ceb2b115341edf506ad37f"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_uvs5djEOuH4_5",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "English"
+      },
+      "finished_at": "2026-10-22T06:48:46.907Z",
+      "review_flags": [
+        "UNKNOWN_END_TIME_SRT_EXPORT_USES_FALLBACK"
+      ],
+      "outputs": [
+        {
+          "file": "ext2_uvs5djEOuH4_5.txt",
+          "bytes": 282,
+          "sha256": "740ba3ecdf8d94eb8de014cd22b73d2a1bff8398deab9a9569abaef12737a41b"
+        },
+        {
+          "file": "ext2_uvs5djEOuH4_5.json",
+          "bytes": 508,
+          "sha256": "133354a0b12f9855bc831b49527f79a920ff32666b860e2c80689f34b3a3c2fc"
+        },
+        {
+          "file": "ext2_uvs5djEOuH4_5.srt",
+          "bytes": 414,
+          "sha256": "898e9857607b68f18a05a6dbc2c57e02508af3a3bde655a98a568c1cf2889f39"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_uvs5djEOuH4_6",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "English"
+      },
+      "finished_at": "2026-10-22T06:49:22.671Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2_uvs5djEOuH4_6.txt",
+          "bytes": 397,
+          "sha256": "c6b59f42d99ebc33411cceaf08b6cee4a2904f58524626d046a186fe9d84d9af"
+        },
+        {
+          "file": "ext2_uvs5djEOuH4_6.json",
+          "bytes": 672,
+          "sha256": "0e3ee9ea7d55edf57a0c70bca8c7b0be0afb8639ffa53e97736b9ae6f5f3acf5"
+        },
+        {
+          "file": "ext2_uvs5djEOuH4_6.srt",
+          "bytes": 562,
+          "sha256": "fe6620237968c5b922a653d02f8eed2cbc296f3e6335a6da724165562acabece"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_DL_TeDUv_LI_1",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T06:49:44.630Z",
+      "review_flags": [
+        "TIME_OUTSIDE_CLIP"
+      ],
+      "outputs": [
+        {
+          "file": "ext2_DL_TeDUv_LI_1.txt",
+          "bytes": 591,
+          "sha256": "2e4d0605885dd164b176e8e12997200935426f10faa2f17ae562db624a750c9b"
+        },
+        {
+          "file": "ext2_DL_TeDUv_LI_1.json",
+          "bytes": 873,
+          "sha256": "7081a0c48dfff2d494ec1a44b5b0054fde32d723f5479cc3c59762bcd57535cd"
+        },
+        {
+          "file": "ext2_DL_TeDUv_LI_1.srt",
+          "bytes": 756,
+          "sha256": "d70a4d03ac1407a0e77dd4543f70db15480f90b108d2137ae9d82ece90cee76a"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_DL_TeDUv_LI_2",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T06:43:52.921Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2_DL_TeDUv_LI_2.txt",
+          "bytes": 460,
+          "sha256": "3645e9b748330195cbfa926e00aa2c2022c02ea161062c1e34727ec04f641d39"
+        },
+        {
+          "file": "ext2_DL_TeDUv_LI_2.json",
+          "bytes": 729,
+          "sha256": "a1b99b560ab69ada5418e533bf8672c93592be25e9c66275b626f9d206a9dcd9"
+        },
+        {
+          "file": "ext2_DL_TeDUv_LI_2.srt",
+          "bytes": 625,
+          "sha256": "dc6d40cdf1724844711eec1e5c143f8be440b621c9cf33242281203236debc6b"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_DL_TeDUv_LI_3",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T06:50:04.519Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2_DL_TeDUv_LI_3.txt",
+          "bytes": 145,
+          "sha256": "1dfd1c5167d6bc6b80cbe952065fbe9b400f2b151f0545810ed6c3938c0195c3"
+        },
+        {
+          "file": "ext2_DL_TeDUv_LI_3.json",
+          "bytes": 197,
+          "sha256": "6a7a3460ce81cb0eaff6dc8a8389e0dd64acaa9f00d6e873cbbced3e42837c1e"
+        },
+        {
+          "file": "ext2_DL_TeDUv_LI_3.srt",
+          "bytes": 178,
+          "sha256": "771c8aa7ad9f7076f9c3c0765a9abb7988da83e4254da17652f143792d976831"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_mHatGR-AoLY_1",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T06:50:25.522Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2_mHatGR-AoLY_1.txt",
+          "bytes": 428,
+          "sha256": "5fb3531f39a9d30cae0c863383c328150a876eef49d3932c2c1e9065452ef7b2"
+        },
+        {
+          "file": "ext2_mHatGR-AoLY_1.json",
+          "bytes": 871,
+          "sha256": "07521bcc8dca07b54e392e5d991c7cc03dad4ad541fc4361ad75cc6d23c85b54"
+        },
+        {
+          "file": "ext2_mHatGR-AoLY_1.srt",
+          "bytes": 692,
+          "sha256": "70a87f85d8c73a2c2789246c5deeeaecf6ea83c11af8e4f251d67467cf9d0d6d"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_mHatGR-AoLY_2",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T06:50:46.806Z",
+      "review_flags": [
+        "UNKNOWN_END_TIME_SRT_EXPORT_USES_FALLBACK",
+        "SHORT_TRANSCRIPT"
+      ],
+      "outputs": [
+        {
+          "file": "ext2_mHatGR-AoLY_2.txt",
+          "bytes": 29,
+          "sha256": "a007b1e4984361c549dba580b59d1f6dfbe3400aabc91f4748ed58db5e58dcaf"
+        },
+        {
+          "file": "ext2_mHatGR-AoLY_2.json",
+          "bytes": 135,
+          "sha256": "a49328e6b3f9a12ef71a2c28b84db4cb49f62fd719c7fba562e776cdb4640a5c"
+        },
+        {
+          "file": "ext2_mHatGR-AoLY_2.srt",
+          "bytes": 95,
+          "sha256": "39a7aa5183410f2ab010080ea66d5b7b1fc0828ef1baf672a6211ea1ace1c849"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_mHatGR-AoLY_3",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T06:51:08.397Z",
+      "review_flags": [
+        "TIME_OUTSIDE_CLIP"
+      ],
+      "outputs": [
+        {
+          "file": "ext2_mHatGR-AoLY_3.txt",
+          "bytes": 513,
+          "sha256": "b9567284b59a417bf3cd3266759031ba1e82ba07e40d662d8d68b88e19f46841"
+        },
+        {
+          "file": "ext2_mHatGR-AoLY_3.json",
+          "bytes": 958,
+          "sha256": "2241210b90fed0bce21f3e2e4e54d16a087d390a67ad2ae4e4d08ae6923780c0"
+        },
+        {
+          "file": "ext2_mHatGR-AoLY_3.srt",
+          "bytes": 777,
+          "sha256": "06ffd6bd5df350bb590134c08f75f8c2cf61f62d4ac0b75726fa40c900ec6159"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_mHatGR-AoLY_4",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T06:51:27.702Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2_mHatGR-AoLY_4.txt",
+          "bytes": 518,
+          "sha256": "e343fae7ad0e001bae6b31b574764c67088a2a2640046c40322cdd3e7e043519"
+        },
+        {
+          "file": "ext2_mHatGR-AoLY_4.json",
+          "bytes": 822,
+          "sha256": "f396810e04516493292c9d763b3db829efa57fc83ba665769bd61af7e0fea07e"
+        },
+        {
+          "file": "ext2_mHatGR-AoLY_4.srt",
+          "bytes": 716,
+          "sha256": "d515813f926a18d243d0398c625cdc1097df2997717241be251923f694e24d18"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_mHatGR-AoLY_5",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T06:51:59.560Z",
+      "review_flags": [
+        "TIME_OUTSIDE_CLIP",
+        "REPEATED_8_WORD_SEQUENCE"
+      ],
+      "outputs": [
+        {
+          "file": "ext2_mHatGR-AoLY_5.txt",
+          "bytes": 534,
+          "sha256": "9226ef55ad3b08b2227207098643ef4f5eb575191e837dddbe2a22df1c965d76"
+        },
+        {
+          "file": "ext2_mHatGR-AoLY_5.json",
+          "bytes": 871,
+          "sha256": "016f5b7c1d53bcad67d5bf7c25eec5beb59618a5b1008e964f7d37d2b74e6030"
+        },
+        {
+          "file": "ext2_mHatGR-AoLY_5.srt",
+          "bytes": 732,
+          "sha256": "7e8c180459548d5a8558b1aca38a59adfb0b29ce2a735a94eb72717429d0d44c"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_mHatGR-AoLY_6",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T06:52:40.047Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2_mHatGR-AoLY_6.txt",
+          "bytes": 437,
+          "sha256": "6e5817ccd4a005ffc45c2b1d6175b75820c7b9329f488397a1bbb8902188e059"
+        },
+        {
+          "file": "ext2_mHatGR-AoLY_6.json",
+          "bytes": 656,
+          "sha256": "88f13faed8f5d23ce3a44acc98507daff716f6bcef90c5f5b2a12d2355814f2a"
+        },
+        {
+          "file": "ext2_mHatGR-AoLY_6.srt",
+          "bytes": 569,
+          "sha256": "e05ad63e5d2f608f0d0aebcb64a057388ab11e305f7527515858f49cc1fc7085"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_mHatGR-AoLY_7",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T06:52:40.694Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2_mHatGR-AoLY_7.txt",
+          "bytes": 505,
+          "sha256": "12934781b65bf03a495992134f5cf0f472f27e3ba552c004c4fff69b5f3d5453"
+        },
+        {
+          "file": "ext2_mHatGR-AoLY_7.json",
+          "bytes": 779,
+          "sha256": "c58a59f99887deff4735bdb6ff6d3cce4c7b3cb96472298095419f2bfb96fdbb"
+        },
+        {
+          "file": "ext2_mHatGR-AoLY_7.srt",
+          "bytes": 670,
+          "sha256": "2eac84f68291b65d5feea3a7879573afe0745f370018df12a22f8fc58a38c2a7"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2__9FWeRZBOSQ_1",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T06:53:18.897Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2__9FWeRZBOSQ_1.txt",
+          "bytes": 258,
+          "sha256": "f92d63da997168690ce3773fe3ce85edce8017b158ac75ba2b84a2312c564c5c"
+        },
+        {
+          "file": "ext2__9FWeRZBOSQ_1.json",
+          "bytes": 359,
+          "sha256": "c2bd0d0a858c719fbed6b104a2c7d6edd42e80410e3a6e2e2d6197cd4322e3c9"
+        },
+        {
+          "file": "ext2__9FWeRZBOSQ_1.srt",
+          "bytes": 324,
+          "sha256": "adad9b4d496772ea23035ff29d9591abe33bc658637604af11973fa7ef42a6c2"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2__9FWeRZBOSQ_2",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T06:53:19.538Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2__9FWeRZBOSQ_2.txt",
+          "bytes": 192,
+          "sha256": "c67e773e1451d0d475fa7a51b2571458042c92724e1579be86c1a004149fca5c"
+        },
+        {
+          "file": "ext2__9FWeRZBOSQ_2.json",
+          "bytes": 298,
+          "sha256": "300a041f2fa7816025c2f2447902c8f1aa6cc5587700da28b29659e668909ced"
+        },
+        {
+          "file": "ext2__9FWeRZBOSQ_2.srt",
+          "bytes": 258,
+          "sha256": "24017050bc100db8a1a57f3007b1711374a0860b40869eadee7c006c83c38602"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2__9FWeRZBOSQ_3",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T06:53:56.674Z",
+      "review_flags": [
+        "UNKNOWN_END_TIME_SRT_EXPORT_USES_FALLBACK"
+      ],
+      "outputs": [
+        {
+          "file": "ext2__9FWeRZBOSQ_3.txt",
+          "bytes": 468,
+          "sha256": "710e5387e40661de9956366ea5348bd0d150d84f628712d9e960dcdb66137cbd"
+        },
+        {
+          "file": "ext2__9FWeRZBOSQ_3.json",
+          "bytes": 863,
+          "sha256": "477a3d29813021fa1835ed92c9f1f6dd02807dc04d9b1c23a7722ee06063adc2"
+        },
+        {
+          "file": "ext2__9FWeRZBOSQ_3.srt",
+          "bytes": 699,
+          "sha256": "f7221147ad96b9460d4eabb54f4ba8d75f0e6dc8f0c833e062513667779aff2f"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2__9FWeRZBOSQ_4",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T06:53:57.340Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2__9FWeRZBOSQ_4.txt",
+          "bytes": 352,
+          "sha256": "c8e770e0bb1cdd84ca044cbb271775e84eb6241a80ff0a6d4488cd15508f2320"
+        },
+        {
+          "file": "ext2__9FWeRZBOSQ_4.json",
+          "bytes": 456,
+          "sha256": "75809eed1de1379dc9152957b9939d19281f3ccfac56beb67217ff0cfe0bf1ec"
+        },
+        {
+          "file": "ext2__9FWeRZBOSQ_4.srt",
+          "bytes": 418,
+          "sha256": "95baa2c02b0b17da13bb89cf3181c73a72b162eba75cbfdc0173cc91ce9ffd64"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2__9FWeRZBOSQ_5",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T06:54:34.707Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2__9FWeRZBOSQ_5.txt",
+          "bytes": 228,
+          "sha256": "434b23986a8cd0638871f4d94d51b938650b75fec044a6f3ee8aeef0141ab2bd"
+        },
+        {
+          "file": "ext2__9FWeRZBOSQ_5.json",
+          "bytes": 391,
+          "sha256": "6943b7ef168f29c2a00619107fcb1db25b5f7793b0acac45ba8a5a6f26beb6ae"
+        },
+        {
+          "file": "ext2__9FWeRZBOSQ_5.srt",
+          "bytes": 327,
+          "sha256": "951ca12dbe774f172febd2f2a5bafd94b6d295bd0b7ef9305db106aa38cc3a1c"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2__9FWeRZBOSQ_6",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T06:54:35.347Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2__9FWeRZBOSQ_6.txt",
+          "bytes": 48,
+          "sha256": "48e8c05f2229547b4283573c70c56d1dba4de92531a7e425cc532bd1d69a982d"
+        },
+        {
+          "file": "ext2__9FWeRZBOSQ_6.json",
+          "bytes": 100,
+          "sha256": "a5be925cc4e6f6197908c9900cc38b03f226d2735cc64ea1003a3e23d7f400c8"
+        },
+        {
+          "file": "ext2__9FWeRZBOSQ_6.srt",
+          "bytes": 81,
+          "sha256": "b361e49874d3639d6916c1572811ede425b94a9a6d1902d0449afd3e39afe581"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_TeE0V-91_OU_1",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T06:55:11.735Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2_TeE0V-91_OU_1.txt",
+          "bytes": 48,
+          "sha256": "48e8c05f2229547b4283573c70c56d1dba4de92531a7e425cc532bd1d69a982d"
+        },
+        {
+          "file": "ext2_TeE0V-91_OU_1.json",
+          "bytes": 100,
+          "sha256": "a5be925cc4e6f6197908c9900cc38b03f226d2735cc64ea1003a3e23d7f400c8"
+        },
+        {
+          "file": "ext2_TeE0V-91_OU_1.srt",
+          "bytes": 81,
+          "sha256": "b361e49874d3639d6916c1572811ede425b94a9a6d1902d0449afd3e39afe581"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_TeE0V-91_OU_2",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T06:55:12.319Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2_TeE0V-91_OU_2.txt",
+          "bytes": 48,
+          "sha256": "48e8c05f2229547b4283573c70c56d1dba4de92531a7e425cc532bd1d69a982d"
+        },
+        {
+          "file": "ext2_TeE0V-91_OU_2.json",
+          "bytes": 100,
+          "sha256": "a5be925cc4e6f6197908c9900cc38b03f226d2735cc64ea1003a3e23d7f400c8"
+        },
+        {
+          "file": "ext2_TeE0V-91_OU_2.srt",
+          "bytes": 81,
+          "sha256": "b361e49874d3639d6916c1572811ede425b94a9a6d1902d0449afd3e39afe581"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_TeE0V-91_OU_3",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T06:55:46.477Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2_TeE0V-91_OU_3.txt",
+          "bytes": 48,
+          "sha256": "48e8c05f2229547b4283573c70c56d1dba4de92531a7e425cc532bd1d69a982d"
+        },
+        {
+          "file": "ext2_TeE0V-91_OU_3.json",
+          "bytes": 100,
+          "sha256": "a5be925cc4e6f6197908c9900cc38b03f226d2735cc64ea1003a3e23d7f400c8"
+        },
+        {
+          "file": "ext2_TeE0V-91_OU_3.srt",
+          "bytes": 81,
+          "sha256": "b361e49874d3639d6916c1572811ede425b94a9a6d1902d0449afd3e39afe581"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_TeE0V-91_OU_4",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T06:55:47.065Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2_TeE0V-91_OU_4.txt",
+          "bytes": 48,
+          "sha256": "48e8c05f2229547b4283573c70c56d1dba4de92531a7e425cc532bd1d69a982d"
+        },
+        {
+          "file": "ext2_TeE0V-91_OU_4.json",
+          "bytes": 100,
+          "sha256": "a5be925cc4e6f6197908c9900cc38b03f226d2735cc64ea1003a3e23d7f400c8"
+        },
+        {
+          "file": "ext2_TeE0V-91_OU_4.srt",
+          "bytes": 81,
+          "sha256": "b361e49874d3639d6916c1572811ede425b94a9a6d1902d0449afd3e39afe581"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_TeE0V-91_OU_5",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T06:56:23.509Z",
+      "review_flags": [
+        "SHORT_TRANSCRIPT"
+      ],
+      "outputs": [
+        {
+          "file": "ext2_TeE0V-91_OU_5.txt",
+          "bytes": 9,
+          "sha256": "c634c2dbdbc232457b038275e54c0def68dbfc65cc32f328f8e35cbe76b52b60"
+        },
+        {
+          "file": "ext2_TeE0V-91_OU_5.json",
+          "bytes": 61,
+          "sha256": "89a08ab908d6ca46f844b281c21690be28c126f79db365957d30d2b288128fc1"
+        },
+        {
+          "file": "ext2_TeE0V-91_OU_5.srt",
+          "bytes": 42,
+          "sha256": "a8b176f9c59fced93f3e19b8de59e7f9c9305c2a0a25fb7abfc9535a693015e2"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_TeE0V-91_OU_6",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T06:56:24.119Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2_TeE0V-91_OU_6.txt",
+          "bytes": 48,
+          "sha256": "48e8c05f2229547b4283573c70c56d1dba4de92531a7e425cc532bd1d69a982d"
+        },
+        {
+          "file": "ext2_TeE0V-91_OU_6.json",
+          "bytes": 100,
+          "sha256": "a5be925cc4e6f6197908c9900cc38b03f226d2735cc64ea1003a3e23d7f400c8"
+        },
+        {
+          "file": "ext2_TeE0V-91_OU_6.srt",
+          "bytes": 81,
+          "sha256": "b361e49874d3639d6916c1572811ede425b94a9a6d1902d0449afd3e39afe581"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_TeE0V-91_OU_7",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T06:56:57.004Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2_TeE0V-91_OU_7.txt",
+          "bytes": 48,
+          "sha256": "48e8c05f2229547b4283573c70c56d1dba4de92531a7e425cc532bd1d69a982d"
+        },
+        {
+          "file": "ext2_TeE0V-91_OU_7.json",
+          "bytes": 100,
+          "sha256": "a5be925cc4e6f6197908c9900cc38b03f226d2735cc64ea1003a3e23d7f400c8"
+        },
+        {
+          "file": "ext2_TeE0V-91_OU_7.srt",
+          "bytes": 81,
+          "sha256": "b361e49874d3639d6916c1572811ede425b94a9a6d1902d0449afd3e39afe581"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_TeE0V-91_OU_8",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T06:56:57.622Z",
+      "review_flags": [
+        "SHORT_TRANSCRIPT"
+      ],
+      "outputs": [
+        {
+          "file": "ext2_TeE0V-91_OU_8.txt",
+          "bytes": 9,
+          "sha256": "c634c2dbdbc232457b038275e54c0def68dbfc65cc32f328f8e35cbe76b52b60"
+        },
+        {
+          "file": "ext2_TeE0V-91_OU_8.json",
+          "bytes": 61,
+          "sha256": "89a08ab908d6ca46f844b281c21690be28c126f79db365957d30d2b288128fc1"
+        },
+        {
+          "file": "ext2_TeE0V-91_OU_8.srt",
+          "bytes": 42,
+          "sha256": "a8b176f9c59fced93f3e19b8de59e7f9c9305c2a0a25fb7abfc9535a693015e2"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_YNlLf8-cFao_1",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T06:57:38.040Z",
+      "review_flags": [
+        "TIME_OUTSIDE_CLIP"
+      ],
+      "outputs": [
+        {
+          "file": "ext2_YNlLf8-cFao_1.txt",
+          "bytes": 447,
+          "sha256": "15a68171c3a0bf04f3672abfbb52449c80e46f17e8d295a8114836b6cf337ba2"
+        },
+        {
+          "file": "ext2_YNlLf8-cFao_1.json",
+          "bytes": 727,
+          "sha256": "27d645d848666fb7062805bd02a3a1f775685aa264363153bb4fc856f9ef9ca4"
+        },
+        {
+          "file": "ext2_YNlLf8-cFao_1.srt",
+          "bytes": 612,
+          "sha256": "9f8c1846563bb68d00fa3c1376d1a294d1637807f7e40fbc3834e136bf060268"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_YNlLf8-cFao_2",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T06:57:38.689Z",
+      "review_flags": [
+        "TIME_OUTSIDE_CLIP"
+      ],
+      "outputs": [
+        {
+          "file": "ext2_YNlLf8-cFao_2.txt",
+          "bytes": 491,
+          "sha256": "e5f6914711c22eaf7559c2188ddd10815388437a63e635a90434cbb5295f48d2"
+        },
+        {
+          "file": "ext2_YNlLf8-cFao_2.json",
+          "bytes": 657,
+          "sha256": "60a9534fccf4a3def002edde17c38fedf226b6d147c8aaf5ca0ec5114204cdcf"
+        },
+        {
+          "file": "ext2_YNlLf8-cFao_2.srt",
+          "bytes": 590,
+          "sha256": "79ed0fa5789eef053811c90ca1863a812f5a4f118afa250be668f10b4ebaf588"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_YNlLf8-cFao_3",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T06:58:17.691Z",
+      "review_flags": [
+        "UNKNOWN_END_TIME_SRT_EXPORT_USES_FALLBACK"
+      ],
+      "outputs": [
+        {
+          "file": "ext2_YNlLf8-cFao_3.txt",
+          "bytes": 534,
+          "sha256": "fcf567c80a608d30816020609a5be751cc987fbc41a889c27baca34b42d20586"
+        },
+        {
+          "file": "ext2_YNlLf8-cFao_3.json",
+          "bytes": 809,
+          "sha256": "3eef4d36a98d84d190c88b13cdb8967894df8287e7e6512fcffd3eab79226f52"
+        },
+        {
+          "file": "ext2_YNlLf8-cFao_3.srt",
+          "bytes": 699,
+          "sha256": "abc4228c386f77e530db0d26fb6769cc82c240d854ea813ca8dc77170e862159"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_YNlLf8-cFao_4",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T06:58:18.356Z",
+      "review_flags": [
+        "TIME_OUTSIDE_CLIP"
+      ],
+      "outputs": [
+        {
+          "file": "ext2_YNlLf8-cFao_4.txt",
+          "bytes": 391,
+          "sha256": "599661b40df0547668b62b16539a92d8139bfb91866a0252678e14368fc1bb5d"
+        },
+        {
+          "file": "ext2_YNlLf8-cFao_4.json",
+          "bytes": 722,
+          "sha256": "02e7824713bd4c75c9ccc9141528caa4a866d2354970a2bb288b98ee925540e6"
+        },
+        {
+          "file": "ext2_YNlLf8-cFao_4.srt",
+          "bytes": 589,
+          "sha256": "342d117e63cc66c81cfe34073b1a4e972f4b06fd000c062fb9eff8bce58218a3"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_YNlLf8-cFao_5",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T06:58:59.070Z",
+      "review_flags": [
+        "UNKNOWN_END_TIME_SRT_EXPORT_USES_FALLBACK"
+      ],
+      "outputs": [
+        {
+          "file": "ext2_YNlLf8-cFao_5.txt",
+          "bytes": 421,
+          "sha256": "c1f59c8be5ea6ead3798c80a48bdbdfdc619f5c2b8e9b0fab01368a9808bc926"
+        },
+        {
+          "file": "ext2_YNlLf8-cFao_5.json",
+          "bytes": 755,
+          "sha256": "fad64285d12da838e7cf79e058bf7b15b05b63054e6ffca3dd87ca7b9b07628f"
+        },
+        {
+          "file": "ext2_YNlLf8-cFao_5.srt",
+          "bytes": 619,
+          "sha256": "a7201d09266ab689ff48e7fe171ddb7751e5c77238605b30d92ac948851893da"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_YNlLf8-cFao_6",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T06:58:59.707Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2_YNlLf8-cFao_6.txt",
+          "bytes": 319,
+          "sha256": "12ebb57960ca5f23f5140855c924cd5443887209815276c959019f3d580e7bc4"
+        },
+        {
+          "file": "ext2_YNlLf8-cFao_6.json",
+          "bytes": 484,
+          "sha256": "a15092e1f2df3a53ec0f41035848e181429ab1cfdf53b8484fc79e2dea8ba96e"
+        },
+        {
+          "file": "ext2_YNlLf8-cFao_6.srt",
+          "bytes": 418,
+          "sha256": "51dca46e49392fb47af617cfb40e6c3c63d5200fc0353c2de9912939b999a1e4"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_-wJIxQwbjOM_1",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T07:00:16.965Z",
+      "review_flags": [
+        "UNKNOWN_END_TIME_SRT_EXPORT_USES_FALLBACK"
+      ],
+      "outputs": [
+        {
+          "file": "ext2_-wJIxQwbjOM_1.txt",
+          "bytes": 743,
+          "sha256": "c10da7616a18124d761eba904d615e1de83139345f75baf664e2a04a63a260e2"
+        },
+        {
+          "file": "ext2_-wJIxQwbjOM_1.json",
+          "bytes": 967,
+          "sha256": "7a66c93008cde2488c4540b8fbd7cf4316920ace2107fdf3bdf2089de1db3f88"
+        },
+        {
+          "file": "ext2_-wJIxQwbjOM_1.srt",
+          "bytes": 875,
+          "sha256": "dfc6eba4a9737d6d4adaff243cc14dd4af55cf74c63b913bb015c463e0f21347"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_-wJIxQwbjOM_2",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T07:00:17.580Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2_-wJIxQwbjOM_2.txt",
+          "bytes": 169,
+          "sha256": "6f07ec3e4444390f33f2b48d8a493a0f6480c781d57eafe932ed013249b32ba8"
+        },
+        {
+          "file": "ext2_-wJIxQwbjOM_2.json",
+          "bytes": 221,
+          "sha256": "f0c49bc974bfc2bbf5e8ea7e199efe9f4a2615bf239d9662ba9a319bdeff11f6"
+        },
+        {
+          "file": "ext2_-wJIxQwbjOM_2.srt",
+          "bytes": 202,
+          "sha256": "24d90f9651a60230e4edc1d74137eba6aee1d4b82435d6a1be231ec238aba0de"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_-wJIxQwbjOM_3",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T07:00:58.584Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2_-wJIxQwbjOM_3.txt",
+          "bytes": 404,
+          "sha256": "633417c7274d992fe203cd858577585576536d5adae7616c8283261ef17be642"
+        },
+        {
+          "file": "ext2_-wJIxQwbjOM_3.json",
+          "bytes": 606,
+          "sha256": "00b9ab434d9e0bc6fc4154c56849994d0653c8eda6a89bd0962eeac17733f379"
+        },
+        {
+          "file": "ext2_-wJIxQwbjOM_3.srt",
+          "bytes": 536,
+          "sha256": "034034c39b00f8a49402b0c4599b13fffe90db03dc8353e5df94389cf46ac62c"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_-wJIxQwbjOM_4",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T07:00:59.255Z",
+      "review_flags": [
+        "TIME_OUTSIDE_CLIP"
+      ],
+      "outputs": [
+        {
+          "file": "ext2_-wJIxQwbjOM_4.txt",
+          "bytes": 367,
+          "sha256": "dc14899b287fcd08448550388d9284e00ab3f70de100bbaac1c258b666988e7f"
+        },
+        {
+          "file": "ext2_-wJIxQwbjOM_4.json",
+          "bytes": 474,
+          "sha256": "3f09b21e72338e2738685a4b5b83cdbf84fb506a087dea4d64e19a2b543038cc"
+        },
+        {
+          "file": "ext2_-wJIxQwbjOM_4.srt",
+          "bytes": 433,
+          "sha256": "c951e665bcdac030f4450aa3ededee1eeccf55a8255c7ba1080a06e9beaf6f62"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_-wJIxQwbjOM_5",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T07:01:36.090Z",
+      "review_flags": [
+        "UNKNOWN_END_TIME_SRT_EXPORT_USES_FALLBACK"
+      ],
+      "outputs": [
+        {
+          "file": "ext2_-wJIxQwbjOM_5.txt",
+          "bytes": 424,
+          "sha256": "90933459a85a97c557fb65233c98612442f9ec2949afe0eda7f92fe8249284be"
+        },
+        {
+          "file": "ext2_-wJIxQwbjOM_5.json",
+          "bytes": 703,
+          "sha256": "76dc7b6dd5fbfba93125f2a1d727086dad71fc17a8831aa6518720dbf4cc93ba"
+        },
+        {
+          "file": "ext2_-wJIxQwbjOM_5.srt",
+          "bytes": 589,
+          "sha256": "1afad4876200c961c85ad13887a483bb2ec2b34da301e872fe304b756d5d0b40"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_-wJIxQwbjOM_6",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T07:01:36.727Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2_-wJIxQwbjOM_6.txt",
+          "bytes": 127,
+          "sha256": "dd211a0137fe8535ddc23bbf05ffacb660914b23dda3eddc78a6b5e58c5d9c39"
+        },
+        {
+          "file": "ext2_-wJIxQwbjOM_6.json",
+          "bytes": 234,
+          "sha256": "2ae25863d0ae6d1cbe884a3519a578963f581186b336147395d26ff9a147dcd6"
+        },
+        {
+          "file": "ext2_-wJIxQwbjOM_6.srt",
+          "bytes": 193,
+          "sha256": "321e1209eda639ebab1d01b1980ca4ecfa5d541c35dc64de94a4044d21c9056d"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_Dh8IdZtdYfk_1",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T07:02:27.931Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2_Dh8IdZtdYfk_1.txt",
+          "bytes": 430,
+          "sha256": "75bd9924e1ebeca83629947902dcc0e8dbb3603be9d69e95b788156d6d3e653b"
+        },
+        {
+          "file": "ext2_Dh8IdZtdYfk_1.json",
+          "bytes": 652,
+          "sha256": "cca56e6f5fce39c6db38ca9ddf938f2b3f08b6d4b938d238de98356d2ae71025"
+        },
+        {
+          "file": "ext2_Dh8IdZtdYfk_1.srt",
+          "bytes": 562,
+          "sha256": "4363e0f7413c2047dea9945c5a808a3f8a9972ab3d46016bcac47d5f01c63f0d"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_Dh8IdZtdYfk_2",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T07:02:28.544Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2_Dh8IdZtdYfk_2.txt",
+          "bytes": 355,
+          "sha256": "0522077b606c3074dd46fe45876a18ca62fa8757f1ae27eb9954564ca45613e4"
+        },
+        {
+          "file": "ext2_Dh8IdZtdYfk_2.json",
+          "bytes": 461,
+          "sha256": "376875c0abfd0063cd678b540369b94a91216498af9d1ed20bb4fd82ba922057"
+        },
+        {
+          "file": "ext2_Dh8IdZtdYfk_2.srt",
+          "bytes": 421,
+          "sha256": "ed0cd303be4bc702ef8d49f5335c45bd162f05f284fb37838cf328de5404ffa7"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_Dh8IdZtdYfk_3",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T07:03:09.963Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2_Dh8IdZtdYfk_3.txt",
+          "bytes": 367,
+          "sha256": "204bc88aa922c2ae3f24f239ee8960a25811a170803776d72ac16d7634ee2984"
+        },
+        {
+          "file": "ext2_Dh8IdZtdYfk_3.json",
+          "bytes": 531,
+          "sha256": "d400df8db6cc1fdb62c5892c91d23ae0162c585549b70ab59ef4ad76acc8908d"
+        },
+        {
+          "file": "ext2_Dh8IdZtdYfk_3.srt",
+          "bytes": 466,
+          "sha256": "fd4b43fc009653e2145232e13394cff647b8061a6fad935f3f8228ae3089993a"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_Dh8IdZtdYfk_4",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T07:03:10.612Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2_Dh8IdZtdYfk_4.txt",
+          "bytes": 345,
+          "sha256": "c7ca9c4ccc29fe27c8bf39550b747c06f3bb149181f41f4ecce5926ecb12ace3"
+        },
+        {
+          "file": "ext2_Dh8IdZtdYfk_4.json",
+          "bytes": 598,
+          "sha256": "c1b040aa45c117ea066cea86cebb6e29edde819ed853fb6f2da1a5442f538846"
+        },
+        {
+          "file": "ext2_Dh8IdZtdYfk_4.srt",
+          "bytes": 510,
+          "sha256": "7d6168e07018f188534aa09a7b79edbc4b87a5a6bbc20d0223d88211ca655eaa"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_Dh8IdZtdYfk_5",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T07:03:55.674Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2_Dh8IdZtdYfk_5.txt",
+          "bytes": 283,
+          "sha256": "ba939c564a5c0b6e32fa294ff8a054fda075eaeb050ba3eaad5aa42e2cbaa25a"
+        },
+        {
+          "file": "ext2_Dh8IdZtdYfk_5.json",
+          "bytes": 487,
+          "sha256": "ac37d6c44732a8cc9883397cab3388775b90817dfbd3e35fb04b2fc5b6f643ef"
+        },
+        {
+          "file": "ext2_Dh8IdZtdYfk_5.srt",
+          "bytes": 415,
+          "sha256": "9185053bb03e21c92c151fceea9d7780af592b1366568103f375ab99e2e09adc"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_Dh8IdZtdYfk_6",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T07:03:56.291Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2_Dh8IdZtdYfk_6.txt",
+          "bytes": 355,
+          "sha256": "1319b0306b8b13e7bd5bc7edd75bc510118f558d9d7883b77939d44d28037b5d"
+        },
+        {
+          "file": "ext2_Dh8IdZtdYfk_6.json",
+          "bytes": 508,
+          "sha256": "cd15eee5184e82966be190cba9995e17077a56aef16f7b313c4c14eb5ab52e71"
+        },
+        {
+          "file": "ext2_Dh8IdZtdYfk_6.srt",
+          "bytes": 454,
+          "sha256": "ecef094b28e00dd06c7dbe897fa448e63f7e851598726268eb9330968b69a0a2"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_Dh8IdZtdYfk_7",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T07:04:36.326Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2_Dh8IdZtdYfk_7.txt",
+          "bytes": 389,
+          "sha256": "e049a754c553bbe1ce99be76168d5f297effbc22a8d7ade1f4ffbfe9016f4058"
+        },
+        {
+          "file": "ext2_Dh8IdZtdYfk_7.json",
+          "bytes": 555,
+          "sha256": "5af013a1de0512ab5e383f7c7dbb1fb36328483f0f03641a99b1535518fa57a8"
+        },
+        {
+          "file": "ext2_Dh8IdZtdYfk_7.srt",
+          "bytes": 488,
+          "sha256": "2670992f7b55f14101c3b4fe5266cad6dcecfca3d259e85c72c50c4dcff145ca"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_Dh8IdZtdYfk_8",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T07:04:36.984Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2_Dh8IdZtdYfk_8.txt",
+          "bytes": 421,
+          "sha256": "f63e1bc92d6f9947491e570ca733219ba191d7656b539449fc537b827a02274c"
+        },
+        {
+          "file": "ext2_Dh8IdZtdYfk_8.json",
+          "bytes": 627,
+          "sha256": "4224d1a2f0b96594cd68428157cfee3edd4757a842859d01361ed1220f407d6f"
+        },
+        {
+          "file": "ext2_Dh8IdZtdYfk_8.srt",
+          "bytes": 553,
+          "sha256": "678eba66e61ad7577cb61b1be64ccbd0939c917bf78ffc329b5bb4345daa4c73"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_qlt8lkh_G5k_1",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T07:05:22.170Z",
+      "review_flags": [
+        "TIME_OUTSIDE_CLIP"
+      ],
+      "outputs": [
+        {
+          "file": "ext2_qlt8lkh_G5k_1.txt",
+          "bytes": 401,
+          "sha256": "01abcc7f2323012da6d9955687ffbfe497dd9737d8a80c38015fac39d3e054e3"
+        },
+        {
+          "file": "ext2_qlt8lkh_G5k_1.json",
+          "bytes": 793,
+          "sha256": "f26dfb1fce5949e9398348cb6e23e07750500140130714246181a574f612f0da"
+        },
+        {
+          "file": "ext2_qlt8lkh_G5k_1.srt",
+          "bytes": 632,
+          "sha256": "b205e106d9e57ea62f141d57743007b280be3b0d3747c409d0a5664a4beecde8"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_qlt8lkh_G5k_2",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T07:05:59.667Z",
+      "review_flags": [
+        "UNKNOWN_END_TIME_SRT_EXPORT_USES_FALLBACK",
+        "REPEATED_8_WORD_SEQUENCE"
+      ],
+      "outputs": [
+        {
+          "file": "ext2_qlt8lkh_G5k_2.txt",
+          "bytes": 1122,
+          "sha256": "105cdcaaadb2f822fe209c5193110762e8584ab189ee0797283ff9eab2e2161f"
+        },
+        {
+          "file": "ext2_qlt8lkh_G5k_2.json",
+          "bytes": 1177,
+          "sha256": "49ddd24d5d44268b9e222a0b6a2b2f7d61ece4cc4ab449c0e48ef78a56164cb9"
+        },
+        {
+          "file": "ext2_qlt8lkh_G5k_2.srt",
+          "bytes": 1155,
+          "sha256": "5719ec9fc608e7b994e99ea29d6de5a70fd394c7f4c6035266699bb0c791bacc"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_qlt8lkh_G5k_3",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T07:06:00.325Z",
+      "review_flags": [
+        "TIME_OUTSIDE_CLIP"
+      ],
+      "outputs": [
+        {
+          "file": "ext2_qlt8lkh_G5k_3.txt",
+          "bytes": 393,
+          "sha256": "b7058786370d153aea4faf83b0e653f642b5f1c1d2fddf34aa786c9ee5d5dfc0"
+        },
+        {
+          "file": "ext2_qlt8lkh_G5k_3.json",
+          "bytes": 838,
+          "sha256": "8ea87627216bb60dcc132858185d01f7b5dcbcb103793b36437c24185a4b9350"
+        },
+        {
+          "file": "ext2_qlt8lkh_G5k_3.srt",
+          "bytes": 657,
+          "sha256": "05e654ddbf4da4e9aa3f4047269bb5ee9788af5dfb208f6998a47ee54bf4e50b"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_qlt8lkh_G5k_4",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T07:06:41.563Z",
+      "review_flags": [
+        "TIME_OUTSIDE_CLIP"
+      ],
+      "outputs": [
+        {
+          "file": "ext2_qlt8lkh_G5k_4.txt",
+          "bytes": 441,
+          "sha256": "eef2919e95ab27d6902c3ba28bbdf8c54b6218d140ed82bbcc2f14c64c2931ac"
+        },
+        {
+          "file": "ext2_qlt8lkh_G5k_4.json",
+          "bytes": 778,
+          "sha256": "4598d926dd19f55ddcee9d177cfd82214fc2b58b57e0f87c6ac0d220d3334b8b"
+        },
+        {
+          "file": "ext2_qlt8lkh_G5k_4.srt",
+          "bytes": 639,
+          "sha256": "237b28615c606338284511da31ad8477eb57cbfb3487ff16b37f2cc9e7739b81"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_qlt8lkh_G5k_5",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T07:06:42.206Z",
+      "review_flags": [
+        "REPEATED_8_WORD_SEQUENCE"
+      ],
+      "outputs": [
+        {
+          "file": "ext2_qlt8lkh_G5k_5.txt",
+          "bytes": 396,
+          "sha256": "6dd86194b9a9e9132849040492e59638494c89cef297d03005cff25c24b4b571"
+        },
+        {
+          "file": "ext2_qlt8lkh_G5k_5.json",
+          "bytes": 671,
+          "sha256": "8b5141673020db945fa107f970f50222fa208477f7f6a95679fcc40e615a3931"
+        },
+        {
+          "file": "ext2_qlt8lkh_G5k_5.srt",
+          "bytes": 561,
+          "sha256": "86295460d56436723ea9b9ab90c5ea995de899d5eed31aa2aa6e071cc301021c"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_qlt8lkh_G5k_6",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T07:07:21.805Z",
+      "review_flags": [
+        "TIME_OUTSIDE_CLIP"
+      ],
+      "outputs": [
+        {
+          "file": "ext2_qlt8lkh_G5k_6.txt",
+          "bytes": 345,
+          "sha256": "936f32946b37cd497939ddbf81a0b2c930208f715e318fc7091f8c567b632107"
+        },
+        {
+          "file": "ext2_qlt8lkh_G5k_6.json",
+          "bytes": 671,
+          "sha256": "21d6fc5e24a5486cd674e0557423d4c3ee017d39b39594d5780e405510701c65"
+        },
+        {
+          "file": "ext2_qlt8lkh_G5k_6.srt",
+          "bytes": 543,
+          "sha256": "32f8d68d840f47b7e7b6eda231e57d907690fb28695924b03eb77af266cf9339"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_qlt8lkh_G5k_7",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T07:07:22.452Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2_qlt8lkh_G5k_7.txt",
+          "bytes": 408,
+          "sha256": "247bbd01b82f4ba1e705ae46ac59bf43026841b1bd49cdd41f5761c8f464a07d"
+        },
+        {
+          "file": "ext2_qlt8lkh_G5k_7.json",
+          "bytes": 743,
+          "sha256": "407c8188d0d2acca51b22f2f986171f0f489a91fb912657782ad39816e30ce62"
+        },
+        {
+          "file": "ext2_qlt8lkh_G5k_7.srt",
+          "bytes": 606,
+          "sha256": "98dd91ae6b54d5c68cac570e6402e99e896aa561c3bf752862341524f2f5d57b"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_qlt8lkh_G5k_8",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T07:08:06.773Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2_qlt8lkh_G5k_8.txt",
+          "bytes": 361,
+          "sha256": "a9f64c89758b2acdf19c88e18dba121ba09d62713d6fa88f9c59be89e9401216"
+        },
+        {
+          "file": "ext2_qlt8lkh_G5k_8.json",
+          "bytes": 683,
+          "sha256": "cfe89bad1b3ce8663069b585533a42845e1e94646019581c8fe8fbc2cd29a867"
+        },
+        {
+          "file": "ext2_qlt8lkh_G5k_8.srt",
+          "bytes": 559,
+          "sha256": "4f0bf45fea25baf714060e63b0121498c4422fe38446b5282eb5ebbe63f1a94b"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_qlt8lkh_G5k_9",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T07:08:07.385Z",
+      "review_flags": [
+        "TIME_OUTSIDE_CLIP"
+      ],
+      "outputs": [
+        {
+          "file": "ext2_qlt8lkh_G5k_9.txt",
+          "bytes": 414,
+          "sha256": "3c097e1d91e1c656876dc23f6e668d426b07634e3600d43492c74bf8af4e4919"
+        },
+        {
+          "file": "ext2_qlt8lkh_G5k_9.json",
+          "bytes": 639,
+          "sha256": "79fe377cddef897baa00982c9a4389ae258b47dfd2b807ce1c17a3a8e8ce6627"
+        },
+        {
+          "file": "ext2_qlt8lkh_G5k_9.srt",
+          "bytes": 546,
+          "sha256": "116e6c7a6d8304576d03b85bcaec337b3cf3bd2139528963328abe4fd545f7c4"
+        }
+      ]
+    },
+    {
+      "sample_id": "ext2_qlt8lkh_G5k_10",
+      "status": "DRAFT_EXPORTED_REVIEW_REQUIRED",
+      "settings": {
+        "model": "whisper-base (291MB)",
+        "multilingual": true,
+        "task": "Transcribe",
+        "quantized": false,
+        "language": "Vietnamese"
+      },
+      "finished_at": "2026-10-22T07:08:37.647Z",
+      "review_flags": [],
+      "outputs": [
+        {
+          "file": "ext2_qlt8lkh_G5k_10.txt",
+          "bytes": 457,
+          "sha256": "393d872ee877427026640d198f7cd8c8699de014c26a4de10932b8433b7d99c7"
+        },
+        {
+          "file": "ext2_qlt8lkh_G5k_10.json",
+          "bytes": 954,
+          "sha256": "4e043608291f63aa36a2603e588893f6701d6b971e717bf2ee64ff15d6b4e992"
+        },
+        {
+          "file": "ext2_qlt8lkh_G5k_10.srt",
+          "bytes": 754,
+          "sha256": "6027c20f55a6c5e271bfc3c5484907111f3069a0b57e6b7044a021a2315f8254"
+        }
+      ]
+    }
+  ],
+  "drafts_sha256": "e3e62399672b78a10553f0678dcf4a6ddd242e7e060322551de0ccc0cf0ee5aa",
+  "transcripts_downloaded": 60,
+  "checked_at": "2026-10-22T07:08:38.224Z",
+  "directory": "D:\\data_training_ai\\asr_domain_expansion_v2_20261022\\whisperweb_drafts_v3"
+}

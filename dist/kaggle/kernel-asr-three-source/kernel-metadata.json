@@ -1,0 +1,17 @@
+{
+  "id": "traininghighlight/asr-three-source-guarded-v1",
+  "title": "ASR three-source guarded v1",
+  "code_file": "run_asr_three_source.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": false,
+  "dataset_sources": [
+    "traininghighlight/asr-three-source-v1",
+    "traininghighlight/asr-robust-human",
+    "traininghighlight/vivos-asr"
+  ],
+  "competition_sources": [],
+  "kernel_sources": []
+}

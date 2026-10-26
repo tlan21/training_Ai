@@ -1,0 +1,419 @@
+{
+  "status": "SUPERSEDED_BY_USER_WHISPERWEB",
+  "checked_at": "2026-10-19T08:49:00.740Z",
+  "provider_url": "https://clideo.com/vi/video-to-text",
+  "language": "vi",
+  "packet_sha256": "6e863b168541e155613fb27517d5a455dca931b193bf6b859ddc20ec77c6f4e0",
+  "data_root": "D:/data_training_ai/minigpt_domain_v1_20261019",
+  "origin": "EXTERNAL_ASR_DRAFT_UNVERIFIED",
+  "human_verified": false,
+  "training_ready": false,
+  "summary_targets_created": 0,
+  "transcripts_downloaded": 0,
+  "attempted_uploads": 1,
+  "evidence": "login_required.png",
+  "browser_profile": "D:/data_training_ai/tools/clideo-browser-profile",
+  "jobs": [
+    {
+      "sample_id": "dom_wzKzkenrYew_1",
+      "split": "val",
+      "source_url": "https://www.youtube.com/watch?v=wzKzkenrYew",
+      "video": "video/dom_wzKzkenrYew_1.mp4",
+      "video_sha256": "59a8b394f93858fd9d772f3e08470ccf332a9741d16542acea7d5f26d41d004e",
+      "duration_seconds": 30,
+      "status": "LOGIN_REQUIRED_BEFORE_TRANSCRIPTION",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_wzKzkenrYew_2",
+      "split": "val",
+      "source_url": "https://www.youtube.com/watch?v=wzKzkenrYew",
+      "video": "video/dom_wzKzkenrYew_2.mp4",
+      "video_sha256": "8b6b2173b2bdcdda8b1c41e87e88160d9f49fa27c4353073e22fca595b9d52d3",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_f7VbxhaVtfk_1",
+      "split": "val",
+      "source_url": "https://www.youtube.com/watch?v=f7VbxhaVtfk",
+      "video": "video/dom_f7VbxhaVtfk_1.mp4",
+      "video_sha256": "c3070b74e1881b26d8bf6314555fef3645094cea1848cd65d83cdaa45c4eb95e",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_f7VbxhaVtfk_2",
+      "split": "val",
+      "source_url": "https://www.youtube.com/watch?v=f7VbxhaVtfk",
+      "video": "video/dom_f7VbxhaVtfk_2.mp4",
+      "video_sha256": "ce4307ab82fc41f05a79d303f15859b076c3399a3bf30d22cacc755f9d436bc4",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_wYRFi4-KWek_1",
+      "split": "val",
+      "source_url": "https://www.youtube.com/watch?v=wYRFi4-KWek",
+      "video": "video/dom_wYRFi4-KWek_1.mp4",
+      "video_sha256": "925622cf4d1577767d9c784d8104eff76724c58b66ac41490c14ff83af4df227",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_wYRFi4-KWek_2",
+      "split": "val",
+      "source_url": "https://www.youtube.com/watch?v=wYRFi4-KWek",
+      "video": "video/dom_wYRFi4-KWek_2.mp4",
+      "video_sha256": "804c0aa1372ec83c2467f6d5a3e3118842405d704cb6099676f0af2e5d04395d",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_-1Is0o2ZWk0_1",
+      "split": "val",
+      "source_url": "https://www.youtube.com/watch?v=-1Is0o2ZWk0",
+      "video": "video/dom_-1Is0o2ZWk0_1.mp4",
+      "video_sha256": "fd6ef3ebe730136b0893fcdf1f16e9abb60694570ff2dbaa35d2bbe2dbbfc9c1",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_-1Is0o2ZWk0_2",
+      "split": "val",
+      "source_url": "https://www.youtube.com/watch?v=-1Is0o2ZWk0",
+      "video": "video/dom_-1Is0o2ZWk0_2.mp4",
+      "video_sha256": "ff555a081b483fc643ab0ccb00e4647ad10f1c300789469aed32a23b73741b4b",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_uY0zUhWOLJM_1",
+      "split": "val",
+      "source_url": "https://www.youtube.com/watch?v=uY0zUhWOLJM",
+      "video": "video/dom_uY0zUhWOLJM_1.mp4",
+      "video_sha256": "6ef3140ee85df763ff244fa50874d7a31924af91a7a1a4a5c3425e22f62db460",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_uY0zUhWOLJM_2",
+      "split": "val",
+      "source_url": "https://www.youtube.com/watch?v=uY0zUhWOLJM",
+      "video": "video/dom_uY0zUhWOLJM_2.mp4",
+      "video_sha256": "aa9f4b70b4af63b2e86206b54a184ef628e15d1392b643c42220b7e1b4168e16",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_vlSB_Kyx_kA_1",
+      "split": "train",
+      "source_url": "https://www.youtube.com/watch?v=vlSB_Kyx_kA",
+      "video": "video/dom_vlSB_Kyx_kA_1.mp4",
+      "video_sha256": "39863277b3d554ea436cf03be6e577fc6a567f18925cb6c05f7ab3c9f12060be",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_vlSB_Kyx_kA_2",
+      "split": "train",
+      "source_url": "https://www.youtube.com/watch?v=vlSB_Kyx_kA",
+      "video": "video/dom_vlSB_Kyx_kA_2.mp4",
+      "video_sha256": "58620ba1a46b792a6c6585a0f9af1edad58ab4ef387ffc8f1971f3cca457f6da",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_soszp1_iK0E_1",
+      "split": "train",
+      "source_url": "https://www.youtube.com/watch?v=soszp1_iK0E",
+      "video": "video/dom_soszp1_iK0E_1.mp4",
+      "video_sha256": "e5d0bc573c02d94bc97d892ebfce4ccf76882f934791d2be64d09f2533abb24d",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_soszp1_iK0E_2",
+      "split": "train",
+      "source_url": "https://www.youtube.com/watch?v=soszp1_iK0E",
+      "video": "video/dom_soszp1_iK0E_2.mp4",
+      "video_sha256": "5fe2fffaa934022380e6efe56a01b6d10622387c05efe9e0fc9c45dcbd4987ec",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_b3Y2ckFkva0_1",
+      "split": "train",
+      "source_url": "https://www.youtube.com/watch?v=b3Y2ckFkva0",
+      "video": "video/dom_b3Y2ckFkva0_1.mp4",
+      "video_sha256": "683d5aa30d98d85f20d05d393f21bea62290d9d69439fcf8ad9fb8f82d4e6def",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_b3Y2ckFkva0_2",
+      "split": "train",
+      "source_url": "https://www.youtube.com/watch?v=b3Y2ckFkva0",
+      "video": "video/dom_b3Y2ckFkva0_2.mp4",
+      "video_sha256": "ae79ca3ffaf82906783497d6a7b85fddb321478a5ae40e568e03e38dfcecc3b0",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_x1x03SI8jV0_1",
+      "split": "train",
+      "source_url": "https://www.youtube.com/watch?v=x1x03SI8jV0",
+      "video": "video/dom_x1x03SI8jV0_1.mp4",
+      "video_sha256": "b0ebdaa067077be841dff0664da05c7d5c1d5206b8f8b70953610518e5ec9864",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_x1x03SI8jV0_2",
+      "split": "train",
+      "source_url": "https://www.youtube.com/watch?v=x1x03SI8jV0",
+      "video": "video/dom_x1x03SI8jV0_2.mp4",
+      "video_sha256": "abd8647b6a0e88fb46bab210077e899672d60877563cd47b205f5329fe81fbdf",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_qoYByuKMIv4_1",
+      "split": "train",
+      "source_url": "https://www.youtube.com/watch?v=qoYByuKMIv4",
+      "video": "video/dom_qoYByuKMIv4_1.mp4",
+      "video_sha256": "4be4b693f8d4a481f91854d4c70067408c22e58f3cd2deea33297deda233f332",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_qoYByuKMIv4_2",
+      "split": "train",
+      "source_url": "https://www.youtube.com/watch?v=qoYByuKMIv4",
+      "video": "video/dom_qoYByuKMIv4_2.mp4",
+      "video_sha256": "544b150548c53eeda674210d16eb40d80c9891b0d3c5fa5ce96a1205582b6fe9",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_Q95eDJlAhyI_1",
+      "split": "train",
+      "source_url": "https://www.youtube.com/watch?v=Q95eDJlAhyI",
+      "video": "video/dom_Q95eDJlAhyI_1.mp4",
+      "video_sha256": "677d4fd2c8278bd5090f4d7f5ecc2e408cb232ecf4c77178fdf8a3e097bab0d9",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_Q95eDJlAhyI_2",
+      "split": "train",
+      "source_url": "https://www.youtube.com/watch?v=Q95eDJlAhyI",
+      "video": "video/dom_Q95eDJlAhyI_2.mp4",
+      "video_sha256": "1ec03cc9589488fd315083cbda77bd67c45cc2dd5bd9efe925987f980cf34f3a",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_any7NAvA7AY_1",
+      "split": "train",
+      "source_url": "https://www.youtube.com/watch?v=any7NAvA7AY",
+      "video": "video/dom_any7NAvA7AY_1.mp4",
+      "video_sha256": "9194016ed47321d731db01c0f6fe23589741420c556a4296c722564afd2bd0b6",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_any7NAvA7AY_2",
+      "split": "train",
+      "source_url": "https://www.youtube.com/watch?v=any7NAvA7AY",
+      "video": "video/dom_any7NAvA7AY_2.mp4",
+      "video_sha256": "294629fe02014ebde81b08f676013ad24931f9a5f8f782523d3e0c932ab6c30d",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_sTeS-7km_NM_1",
+      "split": "train",
+      "source_url": "https://www.youtube.com/watch?v=sTeS-7km_NM",
+      "video": "video/dom_sTeS-7km_NM_1.mp4",
+      "video_sha256": "54ad8d98b28d3fed247a51715cfe86ca2f66d4cce44e6e69e51abfd6abdf32b7",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_sTeS-7km_NM_2",
+      "split": "train",
+      "source_url": "https://www.youtube.com/watch?v=sTeS-7km_NM",
+      "video": "video/dom_sTeS-7km_NM_2.mp4",
+      "video_sha256": "f1aece84c7d203bfb4ef83134bfff17ffb29ef5eced73dc26b60dabfafe3b935",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_DNM7BTlJnxA_1",
+      "split": "train",
+      "source_url": "https://www.youtube.com/watch?v=DNM7BTlJnxA",
+      "video": "video/dom_DNM7BTlJnxA_1.mp4",
+      "video_sha256": "dfe426818d3138256dd90253a2f2cd1f9c3900fa226d70d47b33d3cee42e842a",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_DNM7BTlJnxA_2",
+      "split": "train",
+      "source_url": "https://www.youtube.com/watch?v=DNM7BTlJnxA",
+      "video": "video/dom_DNM7BTlJnxA_2.mp4",
+      "video_sha256": "ef65264c4df14289fd32a6872311902498cb8ca1a999275c02a7667d632955ec",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_cvZqE-2LEG8_1",
+      "split": "train",
+      "source_url": "https://www.youtube.com/watch?v=cvZqE-2LEG8",
+      "video": "video/dom_cvZqE-2LEG8_1.mp4",
+      "video_sha256": "c4eecd400b296d9244986bf4603837b3ed73a667466fa56955d7d16d23f5ed58",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_cvZqE-2LEG8_2",
+      "split": "train",
+      "source_url": "https://www.youtube.com/watch?v=cvZqE-2LEG8",
+      "video": "video/dom_cvZqE-2LEG8_2.mp4",
+      "video_sha256": "de4200c29391688e23511ae4dd34eb5df0195af96233c123c1d1994540d200fe",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_Hew7T-qHV-8_1",
+      "split": "train",
+      "source_url": "https://www.youtube.com/watch?v=Hew7T-qHV-8",
+      "video": "video/dom_Hew7T-qHV-8_1.mp4",
+      "video_sha256": "9fee86f5b724d3e67ed7de13e42063b2a14bfa04b83101075f18f5019d4bc5f3",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_Hew7T-qHV-8_2",
+      "split": "train",
+      "source_url": "https://www.youtube.com/watch?v=Hew7T-qHV-8",
+      "video": "video/dom_Hew7T-qHV-8_2.mp4",
+      "video_sha256": "099e06928b0c1e72c42691b9b7dc61609dfd1a263691837fa47a568793e9e390",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_6CDgfB3MhmA_1",
+      "split": "train",
+      "source_url": "https://www.youtube.com/watch?v=6CDgfB3MhmA",
+      "video": "video/dom_6CDgfB3MhmA_1.mp4",
+      "video_sha256": "c35e5344938cf3a2993865f525111c110c50042acaffb46c39da546ffce34f0b",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_6CDgfB3MhmA_2",
+      "split": "train",
+      "source_url": "https://www.youtube.com/watch?v=6CDgfB3MhmA",
+      "video": "video/dom_6CDgfB3MhmA_2.mp4",
+      "video_sha256": "9d67125875162d8f4dccf56c2d44a3d80103c1789bd226baa6a32a89dd528196",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_NNbXoXEWEfY_1",
+      "split": "train",
+      "source_url": "https://www.youtube.com/watch?v=NNbXoXEWEfY",
+      "video": "video/dom_NNbXoXEWEfY_1.mp4",
+      "video_sha256": "c14f6e1d64a746e00b8b0cac37e46eb6ed0d4661e144eb8a48ca575a1a2cc593",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_NNbXoXEWEfY_2",
+      "split": "train",
+      "source_url": "https://www.youtube.com/watch?v=NNbXoXEWEfY",
+      "video": "video/dom_NNbXoXEWEfY_2.mp4",
+      "video_sha256": "effc096a1a846698ad59b5d6d407301ba0d33ba4b80cbbae2112937f27769366",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_9BHoS_sDlUw_1",
+      "split": "train",
+      "source_url": "https://www.youtube.com/watch?v=9BHoS_sDlUw",
+      "video": "video/dom_9BHoS_sDlUw_1.mp4",
+      "video_sha256": "34dcee235e9a8d4c54f23e0f27e9d260d4d39e7abd96644433ee69fa3f16558a",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_9BHoS_sDlUw_2",
+      "split": "train",
+      "source_url": "https://www.youtube.com/watch?v=9BHoS_sDlUw",
+      "video": "video/dom_9BHoS_sDlUw_2.mp4",
+      "video_sha256": "0ea0e495a11e600648a3a3c5f8522de5f03df27e553ed3cb70c3435d7ef20b86",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_p7FlzMrLDSo_1",
+      "split": "train",
+      "source_url": "https://www.youtube.com/watch?v=p7FlzMrLDSo",
+      "video": "video/dom_p7FlzMrLDSo_1.mp4",
+      "video_sha256": "8f66a4f39f8dcaddbb2cc1bb025d243a4e707eeb38fc6449e69103e9bea8d8cc",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    },
+    {
+      "sample_id": "dom_p7FlzMrLDSo_2",
+      "split": "train",
+      "source_url": "https://www.youtube.com/watch?v=p7FlzMrLDSo",
+      "video": "video/dom_p7FlzMrLDSo_2.mp4",
+      "video_sha256": "955fac669e14085d82a84edf9b1dc2b35378ea0cb0ad9fe8500ca4160ed6c08e",
+      "duration_seconds": 30,
+      "status": "NOT_UPLOADED",
+      "outputs": []
+    }
+  ],
+  "superseded_at": "2026-10-19T09:40:34.694Z"
+}

@@ -1,11 +1,14 @@
 """Hàng đợi GPU tuần tự: asyncio queue + 1 worker (master plan §2.4).
 
 Mọi job GPU (vision/asr/highlight/completions) chạy lần lượt qua 1 worker để không
-tranh VRAM trên 1 card. Search/recommendation nhẹ nhưng vẫn xếp hàng để đo queue_depth.
+tranh VRAM trên 1 card. Search/recommendation nhẹ chạy ngoài queue theo backend plan §6.
 """
 
 import asyncio
-from typing import Awaitable, Callable, TypeVar
+import json
+import os
+import time
+from typing import Callable, TypeVar
 
 T = TypeVar("T")
 
@@ -36,18 +39,19 @@ class GPUQueue:
     def depth(self) -> int:
         return 0 if self._queue is None else self._queue.qsize()
 
-    async def submit(self, fn: Callable[[], T]) -> T:
+    async def submit(self, fn: Callable[[], T], stage: str = "job") -> T:
         """Đưa job (hàm sync, chạy trong thread để không chặn event loop) vào hàng đợi, chờ kết quả."""
         if self._queue is None:
             raise RuntimeError("GPUQueue chưa start()")
         loop = asyncio.get_running_loop()
         fut: asyncio.Future = loop.create_future()
-        await self._queue.put((fn, fut))
+        await self._queue.put((fn, fut, stage))
         return await fut
 
     async def _run(self) -> None:
         while True:
-            fn, fut = await self._queue.get()
+            fn, fut, stage = await self._queue.get()
+            result = None
             try:
                 # chạy job blocking trong thread pool → tuần tự vì 1 worker rút hàng đợi
                 result = await asyncio.to_thread(fn)
@@ -58,6 +62,12 @@ class GPUQueue:
                     fut.set_exception(e)
             finally:
                 self._queue.task_done()
+                # An idle worker must not retain the previous request/response or exception future.
+                fn = fut = result = None
+                if os.environ.get("INFERENCE_MEMORY_TRACE") == "1":
+                    from .registry import registry
+                    print("INFERENCE_MEMORY " + json.dumps({"time":time.time(),"stage":stage,
+                          **registry.memory_snapshot()}), flush=True)
 
 
 gpu_queue = GPUQueue()

@@ -1,0 +1,159 @@
+{
+  "task": "T1.6c-d",
+  "review_date": "2026-10-15",
+  "status": "TRAIN/EVAL AND LOCAL INFERENCE VERIFIED — HUMAN QUALITY PENDING",
+  "kernel": "traininghighlight/ai-core-minigpt-news",
+  "kernel_version": 2,
+  "seed": 1337,
+  "path": "D:\\data_training_ai\\minigpt_news\\output-v2\\news_run\\minigpt\\best.pt",
+  "sha1": "656acdd50eaeacbcf45a00b02edeb77ba69447b5",
+  "sha256": "cf9cfa7141d40f9d40b0065ae68855ff39ffe750260ee7b42c7c0eac719330ac",
+  "selected_stage": "asr",
+  "selected_step": 3000,
+  "model_config": {
+    "name": "minigpt",
+    "d_model": 384,
+    "n_layers": 6,
+    "n_heads": 6,
+    "dropout": 0.0,
+    "vocab_size": 8192,
+    "context_len": 1024,
+    "use_rope": false,
+    "causal": false,
+    "img_size": 224,
+    "patch_size": 16,
+    "in_chans": 3,
+    "n_classes": 10,
+    "proj_dim": 128,
+    "user_dim": 128,
+    "video_dim": 128,
+    "temperature": 1.0,
+    "n_chars": 95,
+    "n_mels": 80,
+    "vision_dim": 256,
+    "audio_dim": 64,
+    "window_seconds": 120,
+    "modality": "fusion",
+    "n_self": 2
+  },
+  "train_config": {
+    "model": "minigpt",
+    "lr": 0.0001,
+    "weight_decay": 0.1,
+    "betas": [
+      0.9,
+      0.95
+    ],
+    "batch_size": 8,
+    "grad_accum": 8,
+    "max_steps": 4000,
+    "warmup_ratio": 0.03,
+    "min_lr_ratio": 0.1,
+    "grad_clip": 1.0,
+    "precision": "fp16",
+    "seed": 1337,
+    "ckpt_dir": "/kaggle/working/news_run/asr",
+    "log_dir": "/kaggle/working/news_run/runs/asr",
+    "eval_every": 1000,
+    "metric_name": "rouge_l",
+    "loss": "",
+    "neg_alpha": 0.0
+  },
+  "metrics": {
+    "model": {
+      "rouge1": 0.21291103519844112,
+      "rouge2": 0.10895719448903182,
+      "rougeL": 0.20230786056078187
+    },
+    "lead1": {
+      "rouge1": 0.21242315328303252,
+      "rouge2": 0.11332544298663355,
+      "rougeL": 0.18710923963883994
+    }
+  },
+  "rouge_l_delta": 0.015198620921941934,
+  "ci95": [
+    0.003964594977625914,
+    0.026687251239920093
+  ],
+  "test_split_sha1": "4c4859d692f233a6b3d73db9a4df550e52081134",
+  "deployed": true,
+  "output_files": [
+    {
+      "path": "ai-core-minigpt-news.log",
+      "bytes": 27863,
+      "sha256": "b3121c79385e3d5b5deac894cade5356aa5ba75adf2ea8900cf852a04b532a79"
+    },
+    {
+      "path": "news_run/asr/minigpt/best.pt",
+      "bytes": 55197377,
+      "sha256": "cf9cfa7141d40f9d40b0065ae68855ff39ffe750260ee7b42c7c0eac719330ac"
+    },
+    {
+      "path": "news_run/asr/minigpt/last.pt",
+      "bytes": 55197377,
+      "sha256": "203bbd50ec07f03a6b97191b96ebbe0c944f8245bb8c9ad747edd2bf9b30be4f"
+    },
+    {
+      "path": "news_run/asr_config.yaml",
+      "bytes": 776,
+      "sha256": "5e8f5d215fa72e590fffc1d4c76dd94c48d5ed4e33de1040c3019cd88b296c05"
+    },
+    {
+      "path": "news_run/clean/minigpt/best.pt",
+      "bytes": 55197377,
+      "sha256": "bae1a39afc226cf6eeeaf77c696535411ae073e57d4e91cdb6238da40fa07f41"
+    },
+    {
+      "path": "news_run/clean/minigpt/last.pt",
+      "bytes": 55197377,
+      "sha256": "4be7753e28b1683c85d5c5a7c183106f4c1558141168dd08004590b0ee1054d2"
+    },
+    {
+      "path": "news_run/clean_config.yaml",
+      "bytes": 781,
+      "sha256": "3258ed9a4fa8a54c2334e33b0455a7cad9b06d3cd5411a0cb2159d9045690c5c"
+    },
+    {
+      "path": "news_run/minigpt/best.pt",
+      "bytes": 55197377,
+      "sha256": "cf9cfa7141d40f9d40b0065ae68855ff39ffe750260ee7b42c7c0eac719330ac"
+    },
+    {
+      "path": "news_run/minigpt/bpe_vocab.json",
+      "bytes": 95381,
+      "sha256": "649ffc66d05bdda9c4586fe5500284dc5feef90414a8762ef4d541331937d713"
+    },
+    {
+      "path": "news_run/news_eval.json",
+      "bytes": 2423,
+      "sha256": "c7a0af954cd6d1bcef3de760643bccdb5668d07b397e3783f31e695917733f62"
+    },
+    {
+      "path": "news_run/runs/asr/minigpt/events.out.tfevents.1791978267.f47042ae5778.7.1",
+      "bytes": 383828,
+      "sha256": "c44602aecda42a091e747b1dc3bf4e78e0ffba3ca3f796d3ff1450d1e39738a7"
+    },
+    {
+      "path": "news_run/runs/clean/minigpt/events.out.tfevents.1791969515.f47042ae5778.7.0",
+      "bytes": 1535828,
+      "sha256": "d9f385d47b1022bd1c217935565e7b60676bd65d398d39706195dcb427dc640a"
+    },
+    {
+      "path": "news_run/test_predictions.jsonl",
+      "bytes": 527209,
+      "sha256": "a69ac9e203d9f7de19b9eeaddc5f6a3f125f7d73060e4fc71141e54f9a6a4444"
+    },
+    {
+      "path": "news_run/validation.jsonl",
+      "bytes": 2547,
+      "sha256": "141616486115c053be27ca4f9198a5ffa5f1e7bed44f0eb277a124de8b4bcf7c"
+    }
+  ],
+  "deployment_scope": "LOCAL DOCKER STAGING ONLY",
+  "deployment_date": "2026-10-15",
+  "serving_path": "E:/traning_ai/ai-core/checkpoints/minigpt/best.pt",
+  "previous_checkpoint_backup": "E:/checkpointhighlight/minigpt_wiki_before_news_20261015",
+  "integration_report": "docs/T1.6e_bao_cao.md",
+  "integration_evidence": "docs/T1.6e_inference_metrics.json"
+}

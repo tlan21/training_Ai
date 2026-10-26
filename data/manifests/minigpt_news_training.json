@@ -1,0 +1,86 @@
+{
+  "task": "T1.6c",
+  "status": "TRAIN/EVAL AND LOCAL INFERENCE VERIFIED — HUMAN QUALITY PENDING",
+  "date": "2026-10-14",
+  "kernel": "https://www.kaggle.com/code/traininghighlight/ai-core-minigpt-news",
+  "kernel_version": 2,
+  "dataset": "traininghighlight/minigpt-news-research",
+  "seed": 1337,
+  "checkpoint_init": {
+    "path": "E:/checkpointhighlight/minigpt_pretrain/best.pt",
+    "sha256": "b64a36192a1b921037317e2b5631c66c0fb5196eee1ed96987545526452b642f",
+    "perplexity": 21.202459637952593
+  },
+  "training": {
+    "clean_steps": 16000,
+    "asr_steps": 4000,
+    "lr": 0.0001,
+    "weight_decay": 0.1,
+    "betas": [
+      0.9,
+      0.95
+    ],
+    "batch_size": 8,
+    "grad_accum": 8,
+    "warmup_ratio": 0.03,
+    "min_lr_ratio": 0.1,
+    "grad_clip": 1.0,
+    "precision": "bf16 if native GPU support else fp16 GradScaler",
+    "model": {
+      "d_model": 384,
+      "n_layers": 6,
+      "n_heads": 6,
+      "vocab_size": 8192,
+      "context_len": 1024
+    },
+    "sample_context_len": 512,
+    "output_budget": 96,
+    "formats": [
+      "title",
+      "sum",
+      "cap"
+    ],
+    "asr_cer": 0.1347,
+    "validation_selection": "Mean title ROUGE-L on 64 clean +64 ASR-noisy held-out samples; eval every1000 steps"
+  },
+  "package_sha256": "8d181f913164286a546f440d087024208d63410fd0d4e50e9af624e0e6740dcb",
+  "kernel_script_sha256": "f167bb5bd521da04d20dbec2b509603844eaf89d10ebc81bae7d728a4654b3b9",
+  "sanity": "Gradient<1e-4, AdamW<1e-6, overfit MiniGPT loss<.05, BPE roundtrip10000 PASS; combined regression56 PASS",
+  "deploy": "ACTIVE LOCAL DOCKER STAGING 2026-10-15; trained prompt/EOS512/96/CTC case normalization verified; old wiki backed up",
+  "full_DoD_remaining": "Human evaluation on30 real-ASR summaries by3 raters, mean>=3/5",
+  "observed_validation": {
+    "step": 1000,
+    "stage": "clean",
+    "loss": 2.6079,
+    "step_per_second": 2.2,
+    "clean_rouge_l": 0.16797032721902744,
+    "asr_rouge_l": 0.04015886363105965,
+    "lead1_clean": 0.1773448716769562,
+    "selection_metric": 0.10406459542504355,
+    "source": "Kaggle v2 live console; validation only, not test"
+  },
+  "collector": {
+    "status": "COLLECTED AND VERIFIED 2026-10-15",
+    "output": "D:\\data_training_ai\\minigpt_news\\output-v2",
+    "automatic_deployment": false
+  },
+  "review_date": "2026-10-15",
+  "kernel_status": "COMPLETE",
+  "result": {
+    "n_test": 1000,
+    "selected_stage": "asr",
+    "selected_step": 3000,
+    "elapsed_hours": 3.038259654773606,
+    "rouge_l": 0.20230786056078187,
+    "lead1_rouge_l": 0.18710923963883994,
+    "delta": 0.015198620921941934,
+    "delta_ci95": [
+      0.003964594977625914,
+      0.026687251239920093
+    ],
+    "checkpoint_manifest": "data/manifests/minigpt_news_checkpoint.json",
+    "audit": "docs/T1.6c_news_audit.json"
+  },
+  "human_pilot_manifest": "data/manifests/minigpt_human_pilot.json",
+  "human_progress": "0/90 ratings; VIVOS read-speech pilot only; real-video full DoD pending"
+}

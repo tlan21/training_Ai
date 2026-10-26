@@ -1,0 +1,295 @@
+{
+  "status": "USER_ATTESTED_REFERENCES_IMPORTED",
+  "source_labels_sha256": "a1ecca1bc0cd124946c641b5359db8cc96cea9c3c8356c524b1e832778b4a426",
+  "source_review_sha256": "860f8068d0bd16398bbf1d2fd99bc24e276e01c55ca6b5343c78df757ca9e5a4",
+  "counts": {
+    "train": 30,
+    "val": 10
+  },
+  "expected_counts": {
+    "train": 30,
+    "val": 10
+  },
+  "pending": {
+    "train": [],
+    "val": []
+  },
+  "train_unsupported_labels": [
+    {
+      "sample_id": "dom_qoYByuKMIv4_1",
+      "characters": [
+        "?"
+      ]
+    },
+    {
+      "sample_id": "dom_qoYByuKMIv4_2",
+      "characters": [
+        "?"
+      ]
+    }
+  ],
+  "training_ready": false,
+  "validation_scores": {
+    "active": {
+      "samples": 10,
+      "macro_wer": 0.9613331765156093,
+      "macro_cer": 0.5582950743449017,
+      "corpus_wer": 0.9555345316934721,
+      "corpus_cer": 0.556216659827657,
+      "word_errors": 1010,
+      "reference_words": 1057,
+      "char_errors": 2711,
+      "reference_chars": 4874,
+      "normalization": "NFC/uppercase/whitespace-collapse references; raw production uppercase CTC output, CER includes spaces",
+      "checkpoint_sha256": "8f87986781cfb3d4716691f2051e5798187693e2452f9f41b28ca4a753ea5531",
+      "predictions": [
+        {
+          "sample_id": "dom_wzKzkenrYew_1",
+          "reference": "KIM LOẠI SẢN XUẤT TRONG NƯỚC ĐÃ ĐÁP ỨNG ĐƯỢC KHOẢNG 85-90% NHU CẦU CHO SẢN XUẤT XE MÁY. KHOẢNG 20-40% NHU CẦU CHO SẢN XUẤT Ô TÔ. KHOẢNG 20% CHO SẢN XUẤT THIẾT BỊ ĐỒNG BỘ. KHOẢNG 40-60% CHO SẢN XUẤT CÓ LẠI MÁY NÔNG NGHIỆP, MÁY ĐỘNG LỰC VÀ CUNG ỨNG, KHOẢNG 10% NHU CẦU LINH KIỆN KIM LOẠI CHO CÁC NGÀNH CÔNG NGHIỆP CÔNG NGHỆ CAO. NHÌN NHẬN VỀ NGÀNH CƠ KHÍ, VIỆN NGHIÊN CỨU CƠ KHÍ CỦA CÔNG THƯƠNG CHO RẰNG NGÀNH CƠ KHÍ VIỆT NAM MẶC DÙ ĐI SAU NHƯNG ĐANG TRONG TIẾNG TRÌNH PHÁT TRIỂN VÀ LÀ NGÀNH CÔNG",
+          "asr": {
+            "full_transcript": "N I ẠN SH TSONG LƯỨC Đ C ẢN TNM NH M ỂM N LÀM  ẦY  ẢNH SEY MẢY MÀN AI QA NÊ UYN ÌNHTRĂM HN CẦU ẠNH CC UỘC  HOÀN HM VÌNH THĂM CHO SÀCH ẾT KIẾT V N HN HƯƠI I N Ố NH CH M SẤT I MẢY N M GHIỆP  MÃI D N LỰC  N HÀ GUY H RAM HU CẦU LIÊN DINH KIM LOẠI O CÁC ÀNH CUN NGHỆ  NG CC NHIÌỀM DẠNH VIỆC NAY GỸ VIỆN NHIÊN THỮ CƠ KH MỘT ÔNG GƯỜNG TRÒ N NÀN CỰ KHỸ RÌCH NAM MÀT SỰ L SAU NHƯÌNG ĐĂNG TRONG KỈNH TINH PHẮT TRIỆN VÀ LÀ NÀH NG"
+          }
+        },
+        {
+          "sample_id": "dom_wzKzkenrYew_2",
+          "reference": "SỬ DỤNG CÔNG NGHỆ CNC, CHẤN BẺ INAUGZ, KẾT HỢP LINH KIỆN NHẬP HẬU ĐỂ TỐI ƯU CHI PHÍ VÀ LINH HOẠT KÍCH THƯỚC. CÁC DOANH NHIỆP SẢN XUẤT CŨNG ĐẨY MẠNH KẾT NỐI, HỢP TÁC KĨ THUẬT, NĂNG CAO TIÊU CHUẨN SẢN XUẤT CƠ KHÍ TRONG NƯỚC THEO TIÊU CHUẨN QUỐC TẾ. \"NÓI NGÀNH THANG MÁY THÌ VIỆT NAM ĐANG RẤT LÀ NHU CẦU RẤT LÀ CAO. VỚI DUNG LƯỢNG THỊ TRƯỜNG RẤT LÀ LỚN, NHƯ LÀ CÁC DOANH NHIỆP VIỆT NAM MUỐN TẬP TRUNG SÂU VÀO ĐỂ MÌNH TRỰC TIẾP, LÀM SẢN PHẨM CHẤT LƯỢNG PHỤC VỤ NGƯỜI VIỆT VỚI NHỮNG SẢN PHẨM ĐẶC THÙ, NHƯ THANG MÁY,",
+          "asr": {
+            "full_transcript": "SỰ TNG ÔN GHỆ U EN XY CHỈNH BẠN NÓC KẾC HỢP LIÊN KỊM NHẬỆP KHẨU ĐIỆT UỔI UN Ì PÍA VÀ LINH HOẶC K THC CÁC OANH NGIỆP SN SUẤT CŨNG ĐỂ MẠN KẾT NŨI HỢP ĐẤT KỸ TUẬT NÂN CAO ĐÊU TRÌNH SẢN S ẤT CƠ KÝ TON LƯỚC LÀO TIỢC TỊNHQUC IỂN Ở   N   T  VA VỞ RẤT V  HỦ  H B TH N TẤC LÍNH A L ÂN NÙN NÀM UỐN  THUNG KHU VÀN T KÍC MẮM SÀ PHỌNG CÍCH LỢ GƯỜI DẠCH VỚI NHNG C MÁCT NAI N"
+          }
+        },
+        {
+          "sample_id": "dom_f7VbxhaVtfk_1",
+          "reference": "LỢI THẾ KHU VỰC NÔNG THÔN, GÓP PHẦN NÂNG CAO THU NHẬP CỦA NGƯỜI DÂN, CƠ CẤU LẠI NGÀNH NÔNG NGHIỆP GẮN VỚI PHÁT TRIỂN TIỂU THỦ CÔNG NGHIỆP, NGÀNH NGHỀ, DỊCH VỤ VÀ DU LỊCH NÔNG THÔN, THỜI GIAN QUA, CÔNG TÁC XUẤT TIẾN THƯƠNG MẠI ĐÃ ĐƯỢC ĐỒNG THÁP ĐẨY MẠNH THỰC HIỆN. TỪ ĐÓ, NHIỀU SẢN PHẨM ĐẶC TRƯNG, SẢN PHẨM OCOP CỦA TỈNH, VÀO ĐƯỢC HỆ THỐNG PHÂN PHỐI BÁN LẺ LỚN, NHƯ COOPMARK, BIGC, WINMARK, HÀNG TRĂM SẢN PHẨM CỦA DOANH NGHIỆP, HỢP TÁC XÃ, CƠ SỞ SẢN XUẤT, ĐÃ CÓ MẶT TRÊN CÁC TRANG THƯƠNG MẠI DIỆN TỬ, UY TÍN NHƯ VỎ SÒ, POSMARK, LAZADA, SHOPEE, SEN ĐỎ, NGOÀI RA,",
+          "asr": {
+            "full_transcript": "LƯC Y N ÔN M N NG QUẤC MÀNH ẾN CN UN ỊỆ D H  ƯÔN LẠ HÀN UNG GHIỆP ÃN VI CÁCH ST LUỢC Ộ UN GIỆP TGÀN NGHỀ  VỤ VÀ UL ỆC NUNG  THỜI TAN QUA ÔN TẤT S CỨ MAI Á ƯỢC NG TẤP ỢỆ BN   Đ NHIỀU SẢN RẦN ĐẶT TRHƯƠNG ÀN HN UỐ UỐC TR ÊN  VÀO L EN ỔNG H N I N I N NHƯ UC M  T NYÊN M C    TONG THÀN HÀN UÂ NIỆP  TẤT CÔ TỰ THẬT QUỐCH ĐÓ CÓ MCHCHN A CON C B BIN TƯỢNG UYT IỂN NH O SÒ Q MÁT  SO ĐA XUẤT RXEN ĐNGOÀI SO"
+          }
+        },
+        {
+          "sample_id": "dom_f7VbxhaVtfk_2",
+          "reference": "KHÔNG CHỈ CÓ SẢN THƯƠNG MẠI ĐIỆN TỪ, CÁC ĐIỂM BÁN HÀNG OCOP MÀ TẠI CÁC HỘI TRỢ THƯƠNG MẠI, HỘI TRỢ CHUYÊN NGÀNH, THÌ GIAN HÀNG QUẢNG BÁ SẢN PHẨM CỦA TỈNH ĐỒNG THÁP ĐƯỢC SỰ THAM GIA NHIỆT TÌNH CỦA CÁC DOANH NGHIỆP VỚI CÁC SẢN PHẨM TẬP TRUNG, ĐƯỢC CHẾ BIẾN TỪ SEN, XOÀI VÀ CÁC SẢN PHẨM TỪ XOÀI. TẤT CẢ CÁC SẢN PHẨM NÀY RẤT ĐƯỢC NGƯỜI TIÊU DÙNG ƯA THÍCH. TÔI CŨNG ĐÃ THAM GIA ĐƯỢC. LẦN NÀY LÀ LẦN THỨ 2 CỦA KỲ, HỘI CHỢ LÀ VIỆT NAM, APPLE ĐI RỒI. THÌ LẦN THỨ NHẤT CŨNG CŨNG CÓ 1 CÁI HIỆU QUẢ RỒI. Ừ, MÀ TRƯỚC ĐÂY TÔI ĐÃ...",
+          "asr": {
+            "full_transcript": "ÔNG CHA THỂA CÓ TOÀN THO IÊ TƯN RẤT ĐI M Ả HẬN UỐC MÀ T Á UC CỰA THƯN MẠ QU CH TRIN NẠI  TÁN À U UÁ ON QỦ TI N ĐUNG THẤP ĐƯỢC SỰN THNM O NHẬT TI N C TUÂN GHIPHỎI ÁM SẢT ẬN CHẤT RẬTRƯNG ĐƯỢC Đ Ể ÀI À CÓ SỘN RẬN TIU HOÀI TẤT Ạ CO SN R NÀY GẤT ĐƯỢC V I ƯN N Ế NA C N Á HA N GI A  LẦNG MÀY L LÒNG HAI CKỲ ỞA CHỎ LÀ VIỆT NMỜ T BỘ KÌ À LĂNG  NC VÃ VỐ Ộ CÁ YU QUẢ RỖCÓ MÀ NHỨC BẦY ỦA BÃ LỜ"
+          }
+        },
+        {
+          "sample_id": "dom_wYRFi4-KWek_1",
+          "reference": "THƯA QUÝ VỊ, THƯA CÁC BẠN, NHỮNG NĂM QUA, THƯƠNG HIỆU QUỐC GIA VIỆT NAM LIÊN TỤC GIA TĂNG VÌ GIÁ TRỊ VÀ THỨ HẠNG TRÊN THỊ TRƯỜNG QUỐC TẾ ĐƯỢC NHIỀU TỔ CHỨC UY TÍN TRÊN THẾ GIỚI KHI NHẬN. ĐỂ ĐẠT ĐƯỢC NHỮNG THÀNH CÔNG ĐÓ, NGOÀI YẾU TỐ KINH TẾ VĨ MÔ, CHÍNH TRỊ VĂN HÓA XÃ HỘI, CÒN CÓ VAI TRÒ VÀ SỰ ĐÓNG GÓP RẤT QUAN TRỌNG CỦA CỘNG ĐỒNG DOANH NGHIỆP. THƯƠNG HIỆU DOANH NGHIỆP ĐƯỢC BIẾT ĐẾN RỘNG RÃI TRONG VÀ NGOÀI NƯỚC, CHÍNH LÀ YẾU TỐ GHI THÊM ĐIỂM CỘNG CHO GIÁ TRỊ THƯƠNG HIỆU QUỐC GIA.",
+          "asr": {
+            "full_transcript": "UI H BẠN NHỮNG N M QU Ơ DIỂU Ố A VIỆT NAM LÊN TỤC GA TẦM VỆ GIẢ Ị VÀ TỬ HẲNG T N THƯƠN CỦA TỂ ĐƯỢ NHIỀU TƯỢC CHỚC U TIỂN RÌNH H  Ì N VIỆ B ĐƯỢC NHI MGTHÀNH NG ĐÓ ÀI YẾU TÚ KIN TỂ VỈ Ô V N HỌ  I CÒN VÀI TÒ V SỰ   M V ỐP SỨC QUÀN TRM CUAC CỘC ĐỘNG OÀNH NHIỆP THỪN DIỂU DIN GIỆP ĐƯỢC BI ĐỂN DỤNGIẢI TRON VÀ NGOỌI NƯỚC CÍN LÀ GHI TÊM ĐIM CỘNG CHA SÃ C TỢN YỂU CUỐC GI"
+          }
+        },
+        {
+          "sample_id": "dom_wYRFi4-KWek_2",
+          "reference": "TRONG NHIỀU NĂM QUA, LUÔN LUÔN TĂNG TRƯỞNG MỨC ĐỘ 2 CON SỐ TRONG NĂM NĂM TRỞ LẠI ĐÂY. TỪ THƯƠNG NGHIỆM QUỐC GIA CHO ĐẾN TỐT NĂM TRĂM CÁC DOANH NGHIỆP LỚN CỦA VIỆT NAM, TUY NHIÊN, TRONG NỀN KINH TẾ CỦA VIỆT NAM, THÌ CÒN RẤT NHIỀU NHỮNG CÁI THƯƠNG HIỆU CỦA CÁC DOANH NGHIỆP VỪA VÀ NHỎ. TRONG LĨNH VỰC CÔNG NGHỆ, TRONG LĨNH VỰC CƠ KHÍ TRONG LĨNH VỰC ĐỔI MỚI SÁNG TẠO, THÌ CŨNG ĐÃ TẠO RA ĐƯỢC MỘT CÁI TỐC ĐỘ TĂNG TRƯỞNG RẤT NHANH VÀ TRONG TỐC ĐỘ TĂNG TRƯỞNG NHANH ĐÓ THÌ ĐÓNG GÓP CỦA GIÁ TRỊ THƯƠNG HIỆU Ở NHỮNG CỰC KỲ QUAN TRỌNG.",
+          "asr": {
+            "full_transcript": "TẬC C TỘNG U Đ N MẠC Ở NU UÔN N NG RỢN  LUN L ẠI N TẠ LN A ĐÂY LƯ LỢI Ư NGHIP L IA C NƯẾA LÀ N NẦM TM LIỆ  LN  ÀM Ý NHÊN  SONG L N HÊN Ư ƯỘ N N N   Ô D NHIỆP LỪA M NỌ SONG LÍN CỰC CỤN N ỀY AN N N L N L LUN Đ N   IỆN ĐÃ ĐẠN LÀ LỢ  HC RẠI  N  VẠ ƯÔ LUẬT TẦN SƯỜNG ĐÍCH AN MSONG VỞI THÔC LUỘI ĂN RUYN DHÂN Đ HÌ ỘNG QU GÃ CÂY TRƯỢNG GHỤU LN UIỆ QUN T"
+          }
+        },
+        {
+          "sample_id": "dom_-1Is0o2ZWk0_1",
+          "reference": "MỘT NHÓM NĂNG ĐỘNG HÀNG ĐẦU TRONG NĂM QUA. TỔNG KÍN NGẠCH XUẤT NHẬT KHẨU CỦA VIỆT NAM LẦN ĐẦU TIÊN ĐẠT MỨC 930,5 TỶ ĐÔ LA MỸ(USD). ĐÂY LÀ MỨC CAO NHẤT TỪ TRƯỚC ĐẾN NAY, ĐÁNH GIẤU MỨC QUAN TRỌNG CỦA NỀN KINH TẾ TRONG TIẾNG TRÌNH HỘI NHẬP QUỐC TẾ. NĂM 2025, NỀN KINH TẾ THỂ HIỆN KHẢ NĂNG PHỤC HỒI KIÊN CƯỜNG LẠM PHÁT BÌNH QUÂN ĐƯỢC KIỂM SOÁT Ở 31,3% TỶ GIÁ VÀ LẠI SỐNG.",
+          "asr": {
+            "full_transcript": "NHỎM NHNG ĐỒNG THÀN ĐẦ  TNM I GNH SN N Ậ H U CVỆT AM LÌNH ĐIU KIN ĐẶC MÓC CIN M BA M Ì NĂM IỆU LÀ L Đ ƯỚC CN NHẤT C IỆM NÀY ĐẢNH G MẤT UANH CHN C NIỀN KIÊN TỶ CN KIỂM N N ỂN N   NG NG  NG RONG      NĂMG MAI NHIỆN HÔNG CH AI LÂM NÊN KIN KỂ T IỆC HOẠNHĐĂNG PHỤC QUYỆ KIÊM QUƯỢNG LP PHÁCH QIỆN HÔN ĐƯỢC HIỆC SUỐC HUỢN HỨC HO THÔ BO HẾT TỰA ROHA H Đ VÀ L CH"
+          }
+        },
+        {
+          "sample_id": "dom_-1Is0o2ZWk0_2",
+          "reference": "TOÀN BỘ NGUYÊN THU LIỆU BÂY GIỜ CŨNG ĐANG 75-85% NGUYÊN VẬT LIỆU TRONG NƯỚC ĐẢM BẢO CÁC YÊU CẦU VỀ NGUYÊN VẬT LIỆU , CÁC HIỆP ĐỊNH. VIỆT NAM LÀ 1 TRONG NHỮNG QUỐC GIA CÓ ĐỘ MỞ KINH TẾ LỚN NHẤT THẾ GIỚI VỚI MẠNG LƯỚI FTA RỘNG KHẮP. CÁC FTA THẾ HỆ MỚI VỚI TIÊU CHUẨN CAO NHƯ HIỆP ĐỊNH ĐỐI TÁC TOÀN DIỆN VÀ TIẾN BỘ, XUYÊN THÁI BÌNH DƯƠNG CPTTP HIỆP ĐINH THƯƠNG MẠI VIỆT NAM, LIÊN MINH CHÂU ÂU",
+          "asr": {
+            "full_transcript": "Đ ẠC  CẦN BỘT LU LỘT NG RỤNG TRÌNH MẠ MÀI LNM ÔN L RNG LỘG L TRONG LƯC AY LÀ LÀ Ạ L ÂY M N N LO  À ỰÀ BẠ Ở ÊU CÒNG C M  ĐVIỆN N  NM C U N CA MU Ư I U C IY  VỚI M N I T RA UN Ấ   CẤC ÍT T  MỤI VỚI CHÊ CRẬN CAU NH HẬ ĐIỂT BUICÁẤT TOÀN SIỆN VÀ KIỂM MUỘN SYN H HN HƯƠNGXEY RA T P RY ĐIẾH CƯỚC MẶI TIÊN SUA VIÍTH AMÊN MIÊN CHU ƯU"
+          }
+        },
+        {
+          "sample_id": "dom_uY0zUhWOLJM_1",
+          "reference": "VÙNG LÃNH THỔ TẬP TRUNG GIỚI THIỆU CÁC CÔNG NGHỆ, MÁY MÓC VÀ SẢN PHẨM TRONG NHIỀU LĨNH VỰC NHƯ CƠ KHÍ TRÁI TẠO, THIẾT BỊ CÔNG NGHIỆP, CÔNG NGHỆ HÀNG CẮT, RA CÔNG KIM LOẠI, GANG THÉP, TỰ ĐỘNG HÓA, ĐIỀU KHIỂN THÔNG MINH, THIẾT BỊ ĐIỆN CÔNG NGHIỆP VÀ CÔNG NGHỆ CÁCH NỐI DÂY CẮP. ĐẾN VỚI HỘI TRỞ NÀY, CHÚNG TÔI ĐEM ĐƯỢC RẤT LÀ NHIỀU GIẢI PHÁP ĐỂ GIỚI THIỆU CHO NGƯỜI DÙNG TRONG ĐÓ ĐẶC BIỆT LÀ CHÚNG TÔI CÓ NHIỀU GIẢI PHÁP SẴN SÀNG THAM GIA VÀO NHỮNG DỰ ÁN TRONG ĐIỂM QUỐC GIA NHƯ LÀ NHỮNG DỰA ÁN VỀ TÀU ĐIỆN CHÂU ÂU TRONG TƯƠNG LAI",
+          "asr": {
+            "full_transcript": "T VU NG C ĐẬ TRỜNG C ỆT MẤY MÁT VÀ SÀNH PHẦM TRON D N VỰC NHƯ CƯÔ KH SỰ TÀO CC B C N NGHỆP  N NG Ệ HẠNH C ĐH CON   ÀI  Ư ĐỘNG H U H C MÌNH CƯT ĐI ĐỊNH UN NGHỆP VÀ CỤN Ể C Ự CÁP TÔ T ĐÂY T O M I RA TLÀ NHÊ Ả GẢ PHÁ  HỚI        NG ĐÓ ĐẶNG  TTÔI ĐÓ N Ư I PH HẮNG SÀN TH GI N Ự  QUT L ĐNG   TẠO I A H C N AI"
+          }
+        },
+        {
+          "sample_id": "dom_uY0zUhWOLJM_2",
+          "reference": "MÔ HÌNH TRIỂN LÃM ĐA CHUYÊN ĐỀ, TẠO LÊN HỆ SINH THÁI KẾT NỐI TOÀN DIỆN CHO NGÀNH CÔNG NGHIỆP NHƯ MÁY MÓC THIẾT BỊ CÔNG NGHIỆP, TƯ ĐỘNG HÓA VÀ CÔNG NGHỆ, NGŨ KIM VÀ DÙNG CỤ CẦM TAY, ĐIỀU KHIỂN TỪ ĐỘNG HÓA, CÔNG NGHỆ HÀN CẮT VÀ GIA CÔNG KIM LOẠI, ĐIỆN MÁY VÒNG BI VÀ XỬ LÝ BỀ MẶT, ĐẦU NỐI VÀ DÂY CÁP ĐIỆN. THAM GIA, TỔ CHỨC MỘT CÁI TRÌNH LÃM CHUYÊN NGÀNH TRONG KHUÔN KHỔ, ĐÓ LÀ TRÌNH LÃM VỀ CÔNG NGHỆ TR CHƯƠNG ĐỘNG HOÁ, IT, SPO VÀ CÓ THỂ NÓI LÀ SAU 3 NĂM CÓ TRƯỚC, TÔI THẤY, NÓ CÓ TÁC DỤNG RẤT LÀ TỐT",
+          "asr": {
+            "full_transcript": "Ộ H N H ÃM N ĐƯIU TÀU NÊN HỆ SINH KHI C NUỔI TÒN SỰN COÀN NÀN CỤN GIỆP DMỌYI MT CỨC I NG GIP TƯ ĐNG HÁ VÀ CÔN HỆ MUỐI KỀM À S N CU CẦM TÀY ÊU I N CỰ ĐỘNG VẢ CÔNG H NH C VÀ A N OÀẠ ẾC M Y VON HÊ VÀ SỰ IỂ VỀ M CH ĐỒ MŨI VÀ SỰ C ĐIỆT NG    THONG SH ẠI  TRONG HANH HI  HÁCH ĐOÀN LỜ ẮM RỀ ÔN GAY ĐỒNG HỎA RIYỆN TY  VÀ CÔ THÀN ỜI Â AN AN N CHỨC N ƯI THẢI Ạ AN ÁN H N Đ LẠ ỐN MỨA"
+          }
+        }
+      ]
+    },
+    "parent": {
+      "samples": 10,
+      "macro_wer": 0.9160212124068892,
+      "macro_cer": 0.4747255540229016,
+      "corpus_wer": 0.9091769157994324,
+      "corpus_cer": 0.4700451374640952,
+      "word_errors": 961,
+      "reference_words": 1057,
+      "char_errors": 2291,
+      "reference_chars": 4874,
+      "normalization": "NFC/uppercase/whitespace-collapse references; raw production uppercase CTC output, CER includes spaces",
+      "checkpoint_sha256": "d03ef0a962220618e90e5ff478a2fbab5ff35dd68deb539a4933eb7c15a4f3de",
+      "predictions": [
+        {
+          "sample_id": "dom_wzKzkenrYew_1",
+          "reference": "KIM LOẠI SẢN XUẤT TRONG NƯỚC ĐÃ ĐÁP ỨNG ĐƯỢC KHOẢNG 85-90% NHU CẦU CHO SẢN XUẤT XE MÁY. KHOẢNG 20-40% NHU CẦU CHO SẢN XUẤT Ô TÔ. KHOẢNG 20% CHO SẢN XUẤT THIẾT BỊ ĐỒNG BỘ. KHOẢNG 40-60% CHO SẢN XUẤT CÓ LẠI MÁY NÔNG NGHIỆP, MÁY ĐỘNG LỰC VÀ CUNG ỨNG, KHOẢNG 10% NHU CẦU LINH KIỆN KIM LOẠI CHO CÁC NGÀNH CÔNG NGHIỆP CÔNG NGHỆ CAO. NHÌN NHẬN VỀ NGÀNH CƠ KHÍ, VIỆN NGHIÊN CỨU CƠ KHÍ CỦA CÔNG THƯƠNG CHO RẰNG NGÀNH CƠ KHÍ VIỆT NAM MẶC DÙ ĐI SAU NHƯNG ĐANG TRONG TIẾNG TRÌNH PHÁT TRIỂN VÀ LÀ NGÀNH CÔNG",
+          "asr": {
+            "full_transcript": "M LẠI ÀN SO SONG ĐƯỚC ĐÃ RÁC ỦẨNG ĐƯỢC HOÀNG TẠ  AM ĐỂM CỈ VÌNH AM NHIỀU CẦU THO SÀN IỨI XE M7Y VÀT A4ÌN  NUCẦU OSÀN UÚC QU T HOẶNG  CHO SÀN SUẤT THẾ BỊ ĐỒNG B PN VỤHƯƠI ĐIẾN SN Ớ TN  SOSÀNG SUẤ CÓ VẬI MÃY NÔN GHIỆP MÃI ĐỘNC LỰC VÀ CUNG ỨNG HOẶNG QUYỀ VẦN T5 NHU CẦU IN DỊNH KIÊM OẠI CHO CÁC NÀNH CU NGHIỆP CÂ  1 CÀO NHIÊN DẠNH VÌ NAY CƠ KHỶ VIĨN GIÊM THỨ CƠ KH BỘT CÔN THƯƠG TRO GIÒN NGÀY CÓ KHÍ RETH NAM MẶT DÙ VISAU NHƯNG ĐANG TRONG KIỂM TÌNH PHÁT TRÌN VÀ À NÀH CÔNG I"
+          }
+        },
+        {
+          "sample_id": "dom_wzKzkenrYew_2",
+          "reference": "SỬ DỤNG CÔNG NGHỆ CNC, CHẤN BẺ INAUGZ, KẾT HỢP LINH KIỆN NHẬP HẬU ĐỂ TỐI ƯU CHI PHÍ VÀ LINH HOẠT KÍCH THƯỚC. CÁC DOANH NHIỆP SẢN XUẤT CŨNG ĐẨY MẠNH KẾT NỐI, HỢP TÁC KĨ THUẬT, NĂNG CAO TIÊU CHUẨN SẢN XUẤT CƠ KHÍ TRONG NƯỚC THEO TIÊU CHUẨN QUỐC TẾ. \"NÓI NGÀNH THANG MÁY THÌ VIỆT NAM ĐANG RẤT LÀ NHU CẦU RẤT LÀ CAO. VỚI DUNG LƯỢNG THỊ TRƯỜNG RẤT LÀ LỚN, NHƯ LÀ CÁC DOANH NHIỆP VIỆT NAM MUỐN TẬP TRUNG SÂU VÀO ĐỂ MÌNH TRỰC TIẾP, LÀM SẢN PHẨM CHẤT LƯỢNG PHỤC VỤ NGƯỜI VIỆT VỚI NHỮNG SẢN PHẨM ĐẶC THÙ, NHƯ THANG MÁY,",
+          "asr": {
+            "full_transcript": "SỰ CỤNG CÔNG GHỆ GI AN CỈNH BÀ NỐC CCT HỢCP LIÊN KÌNH NHẬP KHẦU ĐIỆC UỔI UNG CHI PHỈA VÀ LINH HOẶC TIT THỚC CÁC GSA NHIỆP SÀNH XUẤT CŨNG ĐỀ MẠNG RẾT NÚŨI HỢP ĐẮC KỶ THUẬT NÊN CAO IÊU TRÌNH SÀN GỐẤ CƠU KHI TRONG NƯỚC HEOU TIỀU TRÌNH QUỐC ĐỂ ỞENẢI THÌ GỒA HƯỆ VẬ VAL GIỐT VÀ  VỤ I VCAU V Ý EM TẤT LỚN L TÂU NHỀ NA U4N TẬP CRUNG XU BAU ĐEIMINH TO GÚPN5M SA HỌC CHÍCH ĐỢP HLP VỚI NHẾNG SAO VỘNG ĐNNY N"
+          }
+        },
+        {
+          "sample_id": "dom_f7VbxhaVtfk_1",
+          "reference": "LỢI THẾ KHU VỰC NÔNG THÔN, GÓP PHẦN NÂNG CAO THU NHẬP CỦA NGƯỜI DÂN, CƠ CẤU LẠI NGÀNH NÔNG NGHIỆP GẮN VỚI PHÁT TRIỂN TIỂU THỦ CÔNG NGHIỆP, NGÀNH NGHỀ, DỊCH VỤ VÀ DU LỊCH NÔNG THÔN, THỜI GIAN QUA, CÔNG TÁC XUẤT TIẾN THƯƠNG MẠI ĐÃ ĐƯỢC ĐỒNG THÁP ĐẨY MẠNH THỰC HIỆN. TỪ ĐÓ, NHIỀU SẢN PHẨM ĐẶC TRƯNG, SẢN PHẨM OCOP CỦA TỈNH, VÀO ĐƯỢC HỆ THỐNG PHÂN PHỐI BÁN LẺ LỚN, NHƯ COOPMARK, BIGC, WINMARK, HÀNG TRĂM SẢN PHẨM CỦA DOANH NGHIỆP, HỢP TÁC XÃ, CƠ SỞ SẢN XUẤT, ĐÃ CÓ MẶT TRÊN CÁC TRANG THƯƠNG MẠI DIỆN TỬ, UY TÍN NHƯ VỎ SÒ, POSMARK, LAZADA, SHOPEE, SEN ĐỎ, NGOÀI RA,",
+          "asr": {
+            "full_transcript": "ƯI HẾ KỦ MỘC NÔNG TÔN HẤ VẦNH N CU TH NHẬP CỦA VỜỆ SÂN Ư CẤ LẠI ẰN NUÔNGNGHIỆP RÃNH VI TÁẤT IỆN TƯU HỤ CUNG GHIỆP NGÀY NGHỀ GỊC VỤ VÀ ULỊCH NONG TUNM THÌI SANQUA HÔNG TẤT HỨ MA ĐÃ ĐƯỢC ĐỒNGTẤP Ị BN THỊ IỆ TỪ ĐỔ NHIỀU SAN RHẦN ĐẬP CHƯƠNG SÀN THẦM UỐ CUỐC CỦA TÌN VÀO ĐU KHI THỔG PHÂN VỔI BÃN NÀY UN NHƯ CỐMA ISI YN MA TRONG THÀN THẬN Ủ Â NHỆ HPT TÁC GIÁ CÔ SỰ SẦN SUT ĐÃU M HIN C CRON THƯ BỆ ĐIỆ TƯỢNG UY TIỂN NHƯ VOS OMO RRODA SORIXENENGOÀI SOA"
+          }
+        },
+        {
+          "sample_id": "dom_f7VbxhaVtfk_2",
+          "reference": "KHÔNG CHỈ CÓ SẢN THƯƠNG MẠI ĐIỆN TỪ, CÁC ĐIỂM BÁN HÀNG OCOP MÀ TẠI CÁC HỘI TRỢ THƯƠNG MẠI, HỘI TRỢ CHUYÊN NGÀNH, THÌ GIAN HÀNG QUẢNG BÁ SẢN PHẨM CỦA TỈNH ĐỒNG THÁP ĐƯỢC SỰ THAM GIA NHIỆT TÌNH CỦA CÁC DOANH NGHIỆP VỚI CÁC SẢN PHẨM TẬP TRUNG, ĐƯỢC CHẾ BIẾN TỪ SEN, XOÀI VÀ CÁC SẢN PHẨM TỪ XOÀI. TẤT CẢ CÁC SẢN PHẨM NÀY RẤT ĐƯỢC NGƯỜI TIÊU DÙNG ƯA THÍCH. TÔI CŨNG ĐÃ THAM GIA ĐƯỢC. LẦN NÀY LÀ LẦN THỨ 2 CỦA KỲ, HỘI CHỢ LÀ VIỆT NAM, APPLE ĐI RỒI. THÌ LẦN THỨ NHẤT CŨNG CŨNG CÓ 1 CÁI HIỆU QUẢ RỒI. Ừ, MÀ TRƯỚC ĐÂY TÔI ĐÃ...",
+          "asr": {
+            "full_transcript": "N CIỰ CHẾN C ON THƯN IỆ THỜNG RẤT ĐIỀM VẢN HÀN U UỐC MÀ TÀ CÓ U C CHỰ THƠN MOẠI HU CHỰ THUƠNH NÀN HÌ HNM NÀ U Á ẦN PRN CỦA TỊ ĐÙNG THẤP ĐƯỢC S THNM AO NHINP TÌNH CỦC CÓ SINH NHIỆP VỖI ĐẤU SON VỘN GIẤT VẬT THƯƠNG ĐƯỢC CỊA BIỂN TỪC SEN SOÀI VÀ CÓ CẦN TRỘNG TIỀU HOÀI TẤT RAN RAT SN VỘN NÀY GIẤP ĐỤC UIC ĐU DỤNG GỦI TUIẾ A CỐNG ĐA Á THA ÁN A E LẦNG MÀY À LẦNG CÍNH AI CỦKỲ ỖA CHỌ LÀ VIỆC NA MU EBỘRO TE LAN HỨ NHỨC CỦAVÃ CÓ MỘC CÁH HIU QẢ RỖ LUẬT CÓ ỊT CHỨC BYBO ĐÃ L"
+          }
+        },
+        {
+          "sample_id": "dom_wYRFi4-KWek_1",
+          "reference": "THƯA QUÝ VỊ, THƯA CÁC BẠN, NHỮNG NĂM QUA, THƯƠNG HIỆU QUỐC GIA VIỆT NAM LIÊN TỤC GIA TĂNG VÌ GIÁ TRỊ VÀ THỨ HẠNG TRÊN THỊ TRƯỜNG QUỐC TẾ ĐƯỢC NHIỀU TỔ CHỨC UY TÍN TRÊN THẾ GIỚI KHI NHẬN. ĐỂ ĐẠT ĐƯỢC NHỮNG THÀNH CÔNG ĐÓ, NGOÀI YẾU TỐ KINH TẾ VĨ MÔ, CHÍNH TRỊ VĂN HÓA XÃ HỘI, CÒN CÓ VAI TRÒ VÀ SỰ ĐÓNG GÓP RẤT QUAN TRỌNG CỦA CỘNG ĐỒNG DOANH NGHIỆP. THƯƠNG HIỆU DOANH NGHIỆP ĐƯỢC BIẾT ĐẾN RỘNG RÃI TRONG VÀ NGOÀI NƯỚC, CHÍNH LÀ YẾU TỐ GHI THÊM ĐIỂM CỘNG CHO GIÁ TRỊ THƯƠNG HIỆU QUỐC GIA.",
+          "asr": {
+            "full_transcript": "THE UY I THOCBẠN NHỮNG NĂM QUA THƠ DỤ QUỐCGIA VIỆ NAM LIÊN TỤC GIA TÂM VÌ GIẢI CHỊ VÀ THỬ HẠNG TINH TRƯỜNG QỦA TỂ ĐƯỢC NHIỀU TỪ TCHỨC UY TIỄM TRÊN THÌ GIỠI HI NHAN VI ĐA ĐƯỚC NHỮNG THÀNG CÔNG ĐỎ MÀI YẾU TÚ KIN TẾ VY MO CINHG VĂN HỌA GÃ HỘI CÒN COVAITÒ VÀ SỰ  M0M GỐP GIẤT QUAN THỌNG CỦA CỘC ĐỒNG GIÀN NGIỆ THƯỜNG D DIAN GHIỆP ĐƯỢC B ĐỈNH DNGIẢI TRONG À NGOẠI NƯỚC CỈN LÀ GI THÊM DĐIỆM CỘNG CHO IẢ CHỊ THƯ HIỂU CUỐC GIA"
+          }
+        },
+        {
+          "sample_id": "dom_wYRFi4-KWek_2",
+          "reference": "TRONG NHIỀU NĂM QUA, LUÔN LUÔN TĂNG TRƯỞNG MỨC ĐỘ 2 CON SỐ TRONG NĂM NĂM TRỞ LẠI ĐÂY. TỪ THƯƠNG NGHIỆM QUỐC GIA CHO ĐẾN TỐT NĂM TRĂM CÁC DOANH NGHIỆP LỚN CỦA VIỆT NAM, TUY NHIÊN, TRONG NỀN KINH TẾ CỦA VIỆT NAM, THÌ CÒN RẤT NHIỀU NHỮNG CÁI THƯƠNG HIỆU CỦA CÁC DOANH NGHIỆP VỪA VÀ NHỎ. TRONG LĨNH VỰC CÔNG NGHỆ, TRONG LĨNH VỰC CƠ KHÍ TRONG LĨNH VỰC ĐỔI MỚI SÁNG TẠO, THÌ CŨNG ĐÃ TẠO RA ĐƯỢC MỘT CÁI TỐC ĐỘ TĂNG TRƯỞNG RẤT NHANH VÀ TRONG TỐC ĐỘ TĂNG TRƯỞNG NHANH ĐÓ THÌ ĐÓNG GÓP CỦA GIÁ TRỊ THƯƠNG HIỆU Ở NHỮNG CỰC KỲ QUAN TRỌNG.",
+          "asr": {
+            "full_transcript": "TỤC PHÁC S TỒNG DIỀU ĐÔNG QUẶC ỞLULO LĂN GỜNG Ở  ĐUỘ LÀ HAI QÔNG SỬ KHÔG   5M NĂM SA TẢĐÂ TỪ LỪN ƯN NGHIỆP QUỐGIA CÂU ĐỨ LÀ TỐT N  VY NIỆP ƯỚN A Ý NHIÊN HI E SONG NỀ NI Ư ÌN AN ĐỊ UÔN ẤT NHỀ N HƯƠNG NHIÊU  EO GIAY NHIỆP VỪA VÀ NH  SONG LÍN UỰC CUNG NGỀ SÔNG MN LỰC HỘN LÀ CƯ KH Ý S N VC ĐƯÙNG 1 SÂNG TA  I ĐÃ TAO GA ĐỢC HUẬC GẠI GỜ UÀ N TÚ ĐỘT TĂNG SƯỜNG CẤT NAN VÀ SONG VỚI THÚC LU Ộ ĂN GỜNG GIAN ĐỔ TH ĐỘNG QÓC HỘ GI S RƯNG NHIU CN IỆC BÀN IO"
+          }
+        },
+        {
+          "sample_id": "dom_-1Is0o2ZWk0_1",
+          "reference": "MỘT NHÓM NĂNG ĐỘNG HÀNG ĐẦU TRONG NĂM QUA. TỔNG KÍN NGẠCH XUẤT NHẬT KHẨU CỦA VIỆT NAM LẦN ĐẦU TIÊN ĐẠT MỨC 930,5 TỶ ĐÔ LA MỸ(USD). ĐÂY LÀ MỨC CAO NHẤT TỪ TRƯỚC ĐẾN NAY, ĐÁNH GIẤU MỨC QUAN TRỌNG CỦA NỀN KINH TẾ TRONG TIẾNG TRÌNH HỘI NHẬP QUỐC TẾ. NĂM 2025, NỀN KINH TẾ THỂ HIỆN KHẢ NĂNG PHỤC HỒI KIÊN CƯỜNG LẠM PHÁT BÌNH QUÂN ĐƯỢC KIỂM SOÁT Ở 31,3% TỶ GIÁ VÀ LẠI SỐNG.",
+          "asr": {
+            "full_transcript": "NHỎM NĂNG ĐẦNG THẦN ĐẦU THONG NẰM QUÀ TẦN KIẾ NGÀY SÁN NHẬT KẦUCỦA VIỆC NAM LÌNH ĐẦU TIÊN ĐẠC MỐ IN5M TIỆU LÀ MỸ  ĐIỀ MƯỚC CẦU HẤT TỪ THỨ TIỆM NÀY ĐỂNH GIỤ MỨC QUANH CHÀU CA NN KIÊN TỈ TRONG KIỂM THN KHỦA NHẬP QUỐ ĐỂ  N NĂM MAI E NÊN KIN IẾ VÌ IỆH HẠNH ĐĂNG PHỤC QUY KIN CƯỜNG RẶP PHÁTH BIỀ QUAN ĐƯỢC HIỆC SOT ƯỢC HỨC MOA TỀ BAO HỚT THỰNG RONHÌ GIÁ VÀ L S"
+          }
+        },
+        {
+          "sample_id": "dom_-1Is0o2ZWk0_2",
+          "reference": "TOÀN BỘ NGUYÊN THU LIỆU BÂY GIỜ CŨNG ĐANG 75-85% NGUYÊN VẬT LIỆU TRONG NƯỚC ĐẢM BẢO CÁC YÊU CẦU VỀ NGUYÊN VẬT LIỆU , CÁC HIỆP ĐỊNH. VIỆT NAM LÀ 1 TRONG NHỮNG QUỐC GIA CÓ ĐỘ MỞ KINH TẾ LỚN NHẤT THẾ GIỚI VỚI MẠNG LƯỚI FTA RỘNG KHẮP. CÁC FTA THẾ HỆ MỚI VỚI TIÊU CHUẨN CAO NHƯ HIỆP ĐỊNH ĐỐI TÁC TOÀN DIỆN VÀ TIẾN BỘ, XUYÊN THÁI BÌNH DƯƠNG CPTTP HIỆP ĐINH THƯƠNG MẠI VIỆT NAM, LIÊN MINH CHÂU ÂU",
+          "asr": {
+            "full_transcript": "Đ ĐỂ KỶ MẠNH PUẤT THẦU BUỘC N GÌ VCẦN ĐỘ QA LỘ A LỘT RANG VỤNG TRÌN MẶ 5M ĐN ÓG AO RONG MỘC LỘ TRONG LẤT Á Ở LÀ MỌ Ẽ RÃ ĐÂY NU CẦU N  LỘ VÁO IỮAG V E MÀ CÀ LIỆ SỰ LỤC Đ ĐỘN BO Ở A AU CẦU A CAÃ ĐỀU KHI TP NGƯI NẠI GẶ ĐIVI HƠM LÀ M HẾ UÂN GA CỦ UỘ ƯỪ HNH TI LUN NHẤC TH DUYI VỚI MỘ NGỜI ET TIA DUNG KHẤP CÁPPE TỞI VỚI TRƯƠU TRUN TCAO NH IỆ CỦI TRẤC TUẦN DIỆN VÀ TKIỂM BUỘ XIN THẢ MINH XƯƠNG SERTEERE HỊC IẾH CƯỚC MẠI TỪNH O VIỊTHNAM INMINDUOE"
+          }
+        },
+        {
+          "sample_id": "dom_uY0zUhWOLJM_1",
+          "reference": "VÙNG LÃNH THỔ TẬP TRUNG GIỚI THIỆU CÁC CÔNG NGHỆ, MÁY MÓC VÀ SẢN PHẨM TRONG NHIỀU LĨNH VỰC NHƯ CƠ KHÍ TRÁI TẠO, THIẾT BỊ CÔNG NGHIỆP, CÔNG NGHỆ HÀNG CẮT, RA CÔNG KIM LOẠI, GANG THÉP, TỰ ĐỘNG HÓA, ĐIỀU KHIỂN THÔNG MINH, THIẾT BỊ ĐIỆN CÔNG NGHIỆP VÀ CÔNG NGHỆ CÁCH NỐI DÂY CẮP. ĐẾN VỚI HỘI TRỞ NÀY, CHÚNG TÔI ĐEM ĐƯỢC RẤT LÀ NHIỀU GIẢI PHÁP ĐỂ GIỚI THIỆU CHO NGƯỜI DÙNG TRONG ĐÓ ĐẶC BIỆT LÀ CHÚNG TÔI CÓ NHIỀU GIẢI PHÁP SẴN SÀNG THAM GIA VÀO NHỮNG DỰ ÁN TRONG ĐIỂM QUỐC GIA NHƯ LÀ NHỮNG DỰA ÁN VỀ TÀU ĐIỆN CHÂU ÂU TRONG TƯƠNG LAI",
+          "asr": {
+            "full_transcript": "TÀA VU LÁNG TỒ TẬP TƯỜNG GIỬ THIỆU CÁ CỤ NHỆ MÁY MÓT VÀ SÀN PẦM TON DÙ LIỄNH VỰC NHƯ CƠ KHỶ SA TÀO CƯỚC B CÙNG NGHIỆP CÙNG NGHỜ HÀNH CÁC GA CON KIN LOÀI CÀNG KHỚP Ư ĐỘNG HÓÁA ĐU HỀNH THỤỦ MÌNH CẾT BỊ ĐỊNH CUNG NGHIỆP VÀO CÙNG NH CÁCT NI SỜ CẤP Ô THẾ THẾ HỔI CHỞ ĐÂY H EE HỜ THỚT TAI HIÊU THỂ GẢI PHÁP THỂ GIỚU THỂU CHÂDE E O ỌI TRÚNG ĐÓ ĐẰNG Đ LA TỦATÔI ĐÓ NIN Ã DỰ I PHÁT CHN SNG THẤP IAO GỒI HỮNG DỰ ÁN ỌNG KỂ QỐ GIA NHƯLÀ À ĐỮNG ĐI DỰ ÁN GỜ HÀU IÊN TRAO PHÓC TRỰN TRẦNH LAI N"
+          }
+        },
+        {
+          "sample_id": "dom_uY0zUhWOLJM_2",
+          "reference": "MÔ HÌNH TRIỂN LÃM ĐA CHUYÊN ĐỀ, TẠO LÊN HỆ SINH THÁI KẾT NỐI TOÀN DIỆN CHO NGÀNH CÔNG NGHIỆP NHƯ MÁY MÓC THIẾT BỊ CÔNG NGHIỆP, TƯ ĐỘNG HÓA VÀ CÔNG NGHỆ, NGŨ KIM VÀ DÙNG CỤ CẦM TAY, ĐIỀU KHIỂN TỪ ĐỘNG HÓA, CÔNG NGHỆ HÀN CẮT VÀ GIA CÔNG KIM LOẠI, ĐIỆN MÁY VÒNG BI VÀ XỬ LÝ BỀ MẶT, ĐẦU NỐI VÀ DÂY CÁP ĐIỆN. THAM GIA, TỔ CHỨC MỘT CÁI TRÌNH LÃM CHUYÊN NGÀNH TRONG KHUÔN KHỔ, ĐÓ LÀ TRÌNH LÃM VỀ CÔNG NGHỆ TR CHƯƠNG ĐỘNG HOÁ, IT, SPO VÀ CÓ THỂ NÓI LÀ SAU 3 NĂM CÓ TRƯỚC, TÔI THẤY, NÓ CÓ TÁC DỤNG RẤT LÀ TỐT",
+          "asr": {
+            "full_transcript": "1 HÌNH SỰC ÃM TÀ THỪI ĐỀ TAO NÊN HỜI IN THI KẾT NỔI TOÀN GIỰN CÒN NÀN CÙNG NGIỆP NƯ G MỌY MÓT CHỨC BỊ CÙNG GIỢP TỨ ĐÔNG HÓA VÀ CÔNG NGHỀ NGUỐI KIÌM VÀ SÙNG CỤ CẦM TÂAY DU KIỀN CỰ ĐỘNG HÁ CỐNG NGHỜI HÀNH CẤP VÀ IA CÙNG TỀM LOÀI GƯỚC MÁY VONG BI VÀ SỰ LIĨ VỀ MẶTH ĐẦ NŨI VÀ GIỰ CẤP ĐIỆT HÔMG VA Ở PHỨC MN HY SỬ ÁN EÀI TRONG HÂNH HỘI Đ Á TÀI ĐỜ SÀNH ĐÃMG VỀ CÔNG NGE ỢA ĐỒNG HA RIY TỶ SO VÀ Â THE NÓI LỜI SOA A ĂM CN CHỨC AN ƯỜ THỂ L ON CẢ ÁH XÚC ĐẤT ĐẬN GỐP BỨA"
+          }
+        }
+      ]
+    },
+    "three_source": {
+      "samples": 10,
+      "macro_wer": 0.9450825246012278,
+      "macro_cer": 0.49337946239371355,
+      "corpus_wer": 0.9375591296121097,
+      "corpus_cer": 0.4895363151415675,
+      "word_errors": 991,
+      "reference_words": 1057,
+      "char_errors": 2386,
+      "reference_chars": 4874,
+      "normalization": "NFC/uppercase/whitespace-collapse references; raw production uppercase CTC output, CER includes spaces",
+      "checkpoint_sha256": "05713a55380e60d88b7313fa442b583c2184655e0c7d441094a9eaa280d80493",
+      "predictions": [
+        {
+          "sample_id": "dom_wzKzkenrYew_1",
+          "reference": "KIM LOẠI SẢN XUẤT TRONG NƯỚC ĐÃ ĐÁP ỨNG ĐƯỢC KHOẢNG 85-90% NHU CẦU CHO SẢN XUẤT XE MÁY. KHOẢNG 20-40% NHU CẦU CHO SẢN XUẤT Ô TÔ. KHOẢNG 20% CHO SẢN XUẤT THIẾT BỊ ĐỒNG BỘ. KHOẢNG 40-60% CHO SẢN XUẤT CÓ LẠI MÁY NÔNG NGHIỆP, MÁY ĐỘNG LỰC VÀ CUNG ỨNG, KHOẢNG 10% NHU CẦU LINH KIỆN KIM LOẠI CHO CÁC NGÀNH CÔNG NGHIỆP CÔNG NGHỆ CAO. NHÌN NHẬN VỀ NGÀNH CƠ KHÍ, VIỆN NGHIÊN CỨU CƠ KHÍ CỦA CÔNG THƯƠNG CHO RẰNG NGÀNH CƠ KHÍ VIỆT NAM MẶC DÙ ĐI SAU NHƯNG ĐANG TRONG TIẾNG TRÌNH PHÁT TRIỂN VÀ LÀ NGÀNH CÔNG",
+          "asr": {
+            "full_transcript": "M LI N S ONG ĐHỚ ĐÃ HEI LN THỢC HON TẠO  ĐIỂN CTHE OM YHOU CẦU TOSAN SI THEM M7 VOÀ IN DVOEN NO GOL TOSANSOT WL TO HOẶNG 2ENM CHO SAN SUT THẾ BỊ ĐỒN BL PÀN BỤ HI IN SANG LH THNH GM SHO SN UT CÓ LẬY MÁY N NHIỆP MÃY ĐUC LỰC VÀ QUNG ỨNG HOÀNG WUY EN EM NHU CẦU LIÊNG DRINH KÊM LẠI HO CÁT ÀNG CU NGHIỆP CL  CAU NHIÊN DẠNH VÌ NAY GO KHỶ VIỆC GHIÊM THỮ CƠ KH BỘT CÔN THƯƠNG THO GIÒN NGÀN CÂ KHÍ VE NAM MẬC Ù ĐISAU NHƯNG ĐAN TONG KIỂN TIN PRT TRIN VÀO LÀ NÀNG CONG"
+          }
+        },
+        {
+          "sample_id": "dom_wzKzkenrYew_2",
+          "reference": "SỬ DỤNG CÔNG NGHỆ CNC, CHẤN BẺ INAUGZ, KẾT HỢP LINH KIỆN NHẬP HẬU ĐỂ TỐI ƯU CHI PHÍ VÀ LINH HOẠT KÍCH THƯỚC. CÁC DOANH NHIỆP SẢN XUẤT CŨNG ĐẨY MẠNH KẾT NỐI, HỢP TÁC KĨ THUẬT, NĂNG CAO TIÊU CHUẨN SẢN XUẤT CƠ KHÍ TRONG NƯỚC THEO TIÊU CHUẨN QUỐC TẾ. \"NÓI NGÀNH THANG MÁY THÌ VIỆT NAM ĐANG RẤT LÀ NHU CẦU RẤT LÀ CAO. VỚI DUNG LƯỢNG THỊ TRƯỜNG RẤT LÀ LỚN, NHƯ LÀ CÁC DOANH NHIỆP VIỆT NAM MUỐN TẬP TRUNG SÂU VÀO ĐỂ MÌNH TRỰC TIẾP, LÀM SẢN PHẨM CHẤT LƯỢNG PHỤC VỤ NGƯỜI VIỆT VỚI NHỮNG SẢN PHẨM ĐẶC THÙ, NHƯ THANG MÁY,",
+          "asr": {
+            "full_transcript": "SỰA TDNG CÔNG GHAỆ SE ANSE ÁNH BAY ENOC KẾT HỢP LIÊNG KNH NHẬP CHẦU ĐIỆC TỔI UNG CHI PHA VÀ LINH HOẶC TI THƯỚC CÁC SIAN NGHIỆP XAN GUT CŨNG ĐẦY MẠNG TRET NÚI HỢP ĐẮC KỶ THUAT NNM CAU TIÊU TRÌNH SAN GIẤT CO KHI TONG NƯỚC HEO TIU TRÌNH QUỐC Ý Ở ANAN THN IN TI GLO HI VHT VI HAM M BANLO GIOF NO VL G AE CAU VÀ LÝ HITELO  THE LI NELA TEU NHE VIE NA WUN TẬP TUNG SU WA ĐE MINH SO GÚP NAM SA HỌC CHÍCH ĐOF P TH T DA VỚI ĐING SA VO ĐATEMI MI NHA"
+          }
+        },
+        {
+          "sample_id": "dom_f7VbxhaVtfk_1",
+          "reference": "LỢI THẾ KHU VỰC NÔNG THÔN, GÓP PHẦN NÂNG CAO THU NHẬP CỦA NGƯỜI DÂN, CƠ CẤU LẠI NGÀNH NÔNG NGHIỆP GẮN VỚI PHÁT TRIỂN TIỂU THỦ CÔNG NGHIỆP, NGÀNH NGHỀ, DỊCH VỤ VÀ DU LỊCH NÔNG THÔN, THỜI GIAN QUA, CÔNG TÁC XUẤT TIẾN THƯƠNG MẠI ĐÃ ĐƯỢC ĐỒNG THÁP ĐẨY MẠNH THỰC HIỆN. TỪ ĐÓ, NHIỀU SẢN PHẨM ĐẶC TRƯNG, SẢN PHẨM OCOP CỦA TỈNH, VÀO ĐƯỢC HỆ THỐNG PHÂN PHỐI BÁN LẺ LỚN, NHƯ COOPMARK, BIGC, WINMARK, HÀNG TRĂM SẢN PHẨM CỦA DOANH NGHIỆP, HỢP TÁC XÃ, CƠ SỞ SẢN XUẤT, ĐÃ CÓ MẶT TRÊN CÁC TRANG THƯƠNG MẠI DIỆN TỬ, UY TÍN NHƯ VỎ SÒ, POSMARK, LAZADA, SHOPEE, SEN ĐỎ, NGOÀI RA,",
+          "asr": {
+            "full_transcript": "LIS DA KỦU VUC NONM P HO VN NÊN CU TU NHẬP ỦL LISON CO COULI THÀN NUNG NHIỆP RAN VI PHTH IN DIU TÙ CUNG GIỆP NGÀNG NGHÀY GEC VU VÀ SU LICH ON TOM THÌ SAN QA ÔNG TC TỨ MIG Ã OC NG THP LY MAN T IN TỪ Đ NHIỀU SOM VOM BẬP THƯƠNG SAN PHEM LO CUỐP WL TIN VAO DU KHI TỞN HEN VUI BÁN NÀY ON NHƯU CO MO ISSE YN MOT N ON OM OM ON NHU HO TES SA GOSS AS FEONSUT ĐU O M T CING CT ON TH BY I T RUY IN NH VO SA POSMOT RASEDA SOV SINBO NGI SA"
+          }
+        },
+        {
+          "sample_id": "dom_f7VbxhaVtfk_2",
+          "reference": "KHÔNG CHỈ CÓ SẢN THƯƠNG MẠI ĐIỆN TỪ, CÁC ĐIỂM BÁN HÀNG OCOP MÀ TẠI CÁC HỘI TRỢ THƯƠNG MẠI, HỘI TRỢ CHUYÊN NGÀNH, THÌ GIAN HÀNG QUẢNG BÁ SẢN PHẨM CỦA TỈNH ĐỒNG THÁP ĐƯỢC SỰ THAM GIA NHIỆT TÌNH CỦA CÁC DOANH NGHIỆP VỚI CÁC SẢN PHẨM TẬP TRUNG, ĐƯỢC CHẾ BIẾN TỪ SEN, XOÀI VÀ CÁC SẢN PHẨM TỪ XOÀI. TẤT CẢ CÁC SẢN PHẨM NÀY RẤT ĐƯỢC NGƯỜI TIÊU DÙNG ƯA THÍCH. TÔI CŨNG ĐÃ THAM GIA ĐƯỢC. LẦN NÀY LÀ LẦN THỨ 2 CỦA KỲ, HỘI CHỢ LÀ VIỆT NAM, APPLE ĐI RỒI. THÌ LẦN THỨ NHẤT CŨNG CŨNG CÓ 1 CÁI HIỆU QUẢ RỒI. Ừ, MÀ TRƯỚC ĐÂY TÔI ĐÃ...",
+          "asr": {
+            "full_transcript": "ÔNG CO CON COS OM THƯ A I TON CẤT ĐIỀM VUN HAM OO MÀ THA TAO WL CHO THN MOIG WU TOU TIN NING THE HM N WON BTS ONM POM ỦA TỊ ON HOP ĐƯỢC SO THM SON NIẬT TIN CỦA COU IN GHIP VRI COS OF VOM IT RT THƯƠNG ĐƯỢC TA BIN THỪ SIN SIY VA CRSON PO THI SI TUT TRAR RUSOF POE NÀY GIUO ĐƯỢC QUYC DO UNG WO T A ENG NA A HAAN AADAI LẰNG MÀY VÀ LẦNG CỨN TI KỲ ỞA CHỌ LÀ VIỆT NA MUR EBỘEROR T LANG HỨI NHỨC CỦAVÃ CÓ ỘC CÁC HIỂU QUẢ RỐ DOUT Ở MẶT CHỨCBYTO ĐÃE"
+          }
+        },
+        {
+          "sample_id": "dom_wYRFi4-KWek_1",
+          "reference": "THƯA QUÝ VỊ, THƯA CÁC BẠN, NHỮNG NĂM QUA, THƯƠNG HIỆU QUỐC GIA VIỆT NAM LIÊN TỤC GIA TĂNG VÌ GIÁ TRỊ VÀ THỨ HẠNG TRÊN THỊ TRƯỜNG QUỐC TẾ ĐƯỢC NHIỀU TỔ CHỨC UY TÍN TRÊN THẾ GIỚI KHI NHẬN. ĐỂ ĐẠT ĐƯỢC NHỮNG THÀNH CÔNG ĐÓ, NGOÀI YẾU TỐ KINH TẾ VĨ MÔ, CHÍNH TRỊ VĂN HÓA XÃ HỘI, CÒN CÓ VAI TRÒ VÀ SỰ ĐÓNG GÓP RẤT QUAN TRỌNG CỦA CỘNG ĐỒNG DOANH NGHIỆP. THƯƠNG HIỆU DOANH NGHIỆP ĐƯỢC BIẾT ĐẾN RỘNG RÃI TRONG VÀ NGOÀI NƯỚC, CHÍNH LÀ YẾU TỐ GHI THÊM ĐIỂM CỘNG CHO GIÁ TRỊ THƯƠNG HIỆU QUỐC GIA.",
+          "asr": {
+            "full_transcript": "THO QWE VE T THO A BON NHỮNG NĂM QA THEO HIỂU QUỐC GIAV VIỆT NAM LIÊN TỤC GIATÂM VÌ GIACE VÀ THỬ HẠNG SIN THƯỜNG QUỐA TỂ ĐƯỢC NHIỀU TỪ THỨC UY BIỂN TDÊN THIS Y GE NHAN BI AT ĐƯỢC NHỮNG THÀNG CÔNG ĐÓ GOÀI YẾU TỐ KIN TẾ VYMO INGHE VĂN HỌ Ã HỘI CON COVAIJA VÀ SO D  TAM GO GIẤT QUAN THỘNG CỦAC UỘC ĐỒNG GIANG GIỆP THỪ DU SAN GHỆP ĐƯỢCBÊNĐN DỌNG GIẢI TRONG VÀO NGẠI NƯỚC ẾNG LÀ GHI THÊM ĐỆM CỘNG CHOA SIÃ CHỊ THỪ HIỂU UỐC GIA"
+          }
+        },
+        {
+          "sample_id": "dom_wYRFi4-KWek_2",
+          "reference": "TRONG NHIỀU NĂM QUA, LUÔN LUÔN TĂNG TRƯỞNG MỨC ĐỘ 2 CON SỐ TRONG NĂM NĂM TRỞ LẠI ĐÂY. TỪ THƯƠNG NGHIỆM QUỐC GIA CHO ĐẾN TỐT NĂM TRĂM CÁC DOANH NGHIỆP LỚN CỦA VIỆT NAM, TUY NHIÊN, TRONG NỀN KINH TẾ CỦA VIỆT NAM, THÌ CÒN RẤT NHIỀU NHỮNG CÁI THƯƠNG HIỆU CỦA CÁC DOANH NGHIỆP VỪA VÀ NHỎ. TRONG LĨNH VỰC CÔNG NGHỆ, TRONG LĨNH VỰC CƠ KHÍ TRONG LĨNH VỰC ĐỔI MỚI SÁNG TẠO, THÌ CŨNG ĐÃ TẠO RA ĐƯỢC MỘT CÁI TỐC ĐỘ TĂNG TRƯỞNG RẤT NHANH VÀ TRONG TỐC ĐỘ TĂNG TRƯỞNG NHANH ĐÓ THÌ ĐÓNG GÓP CỦA GIÁ TRỊ THƯƠNG HIỆU Ở NHỮNG CỰC KỲ QUAN TRỌNG.",
+          "asr": {
+            "full_transcript": "THỤC PUCSIE TNG IỀU ON QUAC ANULO TÂN TO   ĐỘC LÀ HAI QON SL CON HMOR CO Ạ 5M NĂM O HA ĐÂY TỪ LỪI THN NHIU QUR GIA HO ĐIN À TLT N5MO A LIN DIỆP NỚN  LE NA TRÝ NIN HE SEMN TRONG THN THI TI H AM CON TẤ I ANG A THNG NHIÊU V HOM HAN NHIP RUA VÀ NHAU  SONG LIN BỰC CÔNG NGA NG MINH LỰC HUN LÀ CO CKE SENN TH ĐNG BI AN TAT T TE ĐÃ TAU GLA HE HỘC GÀI H UO LÀ TỐ ĐỘT TĂN SÙNG TẤC NGAN VÀ HẠN SONG THI THC LN TĂNG NG GIN Đ H ĐỘNG GOC LA GI H RN NHIU CN BỊỆ QON O"
+          }
+        },
+        {
+          "sample_id": "dom_-1Is0o2ZWk0_1",
+          "reference": "MỘT NHÓM NĂNG ĐỘNG HÀNG ĐẦU TRONG NĂM QUA. TỔNG KÍN NGẠCH XUẤT NHẬT KHẨU CỦA VIỆT NAM LẦN ĐẦU TIÊN ĐẠT MỨC 930,5 TỶ ĐÔ LA MỸ(USD). ĐÂY LÀ MỨC CAO NHẤT TỪ TRƯỚC ĐẾN NAY, ĐÁNH GIẤU MỨC QUAN TRỌNG CỦA NỀN KINH TẾ TRONG TIẾNG TRÌNH HỘI NHẬP QUỐC TẾ. NĂM 2025, NỀN KINH TẾ THỂ HIỆN KHẢ NĂNG PHỤC HỒI KIÊN CƯỜNG LẠM PHÁT BÌNH QUÂN ĐƯỢC KIỂM SOÁT Ở 31,3% TỶ GIÁ VÀ LẠI SỐNG.",
+          "asr": {
+            "full_transcript": "NHÓM NNG ĐỒNG THÀN ĐẦU CHON NẰM QUA TỒN KIN NGÀYH SNT NHẬ KCẦU CỦ VIỆC NAM LÌNH ĐẦ TIAN ĐẠT MOC CINM 3 NĂM TIỆU LÀ MỸ VỀ ƯỢ ƯỨC CẦU NHẤT TỪ THỨ TIỆ NÀY BẢNH GIỤ MUC QUAN CHAU CN TINGKIÊN TỈ TRON TIỂM TING KHỦA NHẬP QUỐC TIỂ I ĂM M2 KUHHYOM NÊN KINH TẾ HÀ DINH CON NĂNG THỤC WUY KIM GN LP PHÁT BI WUON ĐHỢ HIEC SOT HU HỨC MOFY VBO HEI THA OM HY GIÁVÀ LAS"
+          }
+        },
+        {
+          "sample_id": "dom_-1Is0o2ZWk0_2",
+          "reference": "TOÀN BỘ NGUYÊN THU LIỆU BÂY GIỜ CŨNG ĐANG 75-85% NGUYÊN VẬT LIỆU TRONG NƯỚC ĐẢM BẢO CÁC YÊU CẦU VỀ NGUYÊN VẬT LIỆU , CÁC HIỆP ĐỊNH. VIỆT NAM LÀ 1 TRONG NHỮNG QUỐC GIA CÓ ĐỘ MỞ KINH TẾ LỚN NHẤT THẾ GIỚI VỚI MẠNG LƯỚI FTA RỘNG KHẮP. CÁC FTA THẾ HỆ MỚI VỚI TIÊU CHUẨN CAO NHƯ HIỆP ĐỊNH ĐỐI TÁC TOÀN DIỆN VÀ TIẾN BỘ, XUYÊN THÁI BÌNH DƯƠNG CPTTP HIỆP ĐINH THƯƠNG MẠI VIỆT NAM, LIÊN MINH CHÂU ÂU",
+          "asr": {
+            "full_transcript": "B AY K MẠTH PUT OL BU NING TON BỘU WLAT L WI OP RONG DUNG TREN MẶ5 EN N MO RNG VỘT LỘO TRNG OT A AÃ ĐA MO A AY OU COWIN TH LOP FU SỬ MH THI N MÀ VA LEU AS LC N ĐÂ BO AT A YEU CẦU ACA ĐIM CEP LI ANA G Đ VI THOM LO M H QU GARCỦA TU MƯ N TY LN HT THI RY VỚI MÀP NGƯI ET THIAS UNG KHOUP CÁT ATBETHT UI VỚI THÊ TON CAU NHE HEP BIT QUI TOT ON ING VÀ TIỂN BLS SIN TH MIN UƠNG SEPRE THETERRA THEC BINH CHỨC MẠI TN O VHET OM NIN MINTDOO A"
+          }
+        },
+        {
+          "sample_id": "dom_uY0zUhWOLJM_1",
+          "reference": "VÙNG LÃNH THỔ TẬP TRUNG GIỚI THIỆU CÁC CÔNG NGHỆ, MÁY MÓC VÀ SẢN PHẨM TRONG NHIỀU LĨNH VỰC NHƯ CƠ KHÍ TRÁI TẠO, THIẾT BỊ CÔNG NGHIỆP, CÔNG NGHỆ HÀNG CẮT, RA CÔNG KIM LOẠI, GANG THÉP, TỰ ĐỘNG HÓA, ĐIỀU KHIỂN THÔNG MINH, THIẾT BỊ ĐIỆN CÔNG NGHIỆP VÀ CÔNG NGHỆ CÁCH NỐI DÂY CẮP. ĐẾN VỚI HỘI TRỞ NÀY, CHÚNG TÔI ĐEM ĐƯỢC RẤT LÀ NHIỀU GIẢI PHÁP ĐỂ GIỚI THIỆU CHO NGƯỜI DÙNG TRONG ĐÓ ĐẶC BIỆT LÀ CHÚNG TÔI CÓ NHIỀU GIẢI PHÁP SẴN SÀNG THAM GIA VÀO NHỮNG DỰ ÁN TRONG ĐIỂM QUỐC GIA NHƯ LÀ NHỮNG DỰA ÁN VỀ TÀU ĐIỆN CHÂU ÂU TRONG TƯƠNG LAI",
+          "asr": {
+            "full_transcript": "TA VU LÃNG TO TẬP TRƯỜNG GIỬI TIEU CÓC CU NHỆT MÁY MOT VA XEM PÒM TRON DIL LỄN VƯC NHƯ CƠ KHỶ A TÀO TIT BỊ CÙNG NGHIỆP CÙNG NGHỜ HÀNH CÁC SA CON KI RI CÀNG KHEP TƯ ĐỘNG HÓA D O HN THỦ MIN TIT BE ĐỊNH CUNG NGIỆP VÀO CÙNG NHỆ CÁC NỤI SI CAP A THẾT THE LU CHU ĐAY HA L AM THE HU THA HEO LHI GI PHÁP HẾ GOI THI C TO HE H  GÀI CHÚNG ĐÓ ĐN ĐIP LOÀ CH TÔI ĐÓ NHỮ Ã DỰN GI PHÁP SẢNH SÀNG THẤP GDO GÀI HỮN DỰ BÁN CỌNG KHỂ QỐC GIA NHƯ LÀ ĐỨNG VI DỰ ÁN LỜI HẦU IÊN TOG PHÓC RỰN TỪNH LOI"
+          }
+        },
+        {
+          "sample_id": "dom_uY0zUhWOLJM_2",
+          "reference": "MÔ HÌNH TRIỂN LÃM ĐA CHUYÊN ĐỀ, TẠO LÊN HỆ SINH THÁI KẾT NỐI TOÀN DIỆN CHO NGÀNH CÔNG NGHIỆP NHƯ MÁY MÓC THIẾT BỊ CÔNG NGHIỆP, TƯ ĐỘNG HÓA VÀ CÔNG NGHỆ, NGŨ KIM VÀ DÙNG CỤ CẦM TAY, ĐIỀU KHIỂN TỪ ĐỘNG HÓA, CÔNG NGHỆ HÀN CẮT VÀ GIA CÔNG KIM LOẠI, ĐIỆN MÁY VÒNG BI VÀ XỬ LÝ BỀ MẶT, ĐẦU NỐI VÀ DÂY CÁP ĐIỆN. THAM GIA, TỔ CHỨC MỘT CÁI TRÌNH LÃM CHUYÊN NGÀNH TRONG KHUÔN KHỔ, ĐÓ LÀ TRÌNH LÃM VỀ CÔNG NGHỆ TR CHƯƠNG ĐỘNG HOÁ, IT, SPO VÀ CÓ THỂ NÓI LÀ SAU 3 NĂM CÓ TRƯỚC, TÔI THẤY, NÓ CÓ TÁC DỤNG RẤT LÀ TỐT",
+          "asr": {
+            "full_transcript": "MN HIN TỰN 8M TA TO ĐH TAU LNÊN HƠT SINH THI KẾT NỔI OÀN SIAN ON NÀN CNG NGHIỆP NHƯ MÁY MÓC THẾC BỊ CÙNG GHẬP TƯI ĐỘNG HA VA CÔNG NGHỀ U KIM VÀ SÙN CÙ CẦM TAY YOU KHIỀN TỪ ĐỘNG ROA CÔNG LỜI HAN CẤP VÀ SAS CÙNG KEM LOÀIT GIẾT MÁY VÒN BI VÀ SỬ DĨ BÊ MẠ ĐẦ NŨI VÀ SÂY CẤP ĐIỆT HAM TA HO THC MN A HƠ AN TINANSONG PHOM PHỒ   Á TO TỜ A MANVỀ CÔNG ME Ệ ĐỘNG HA RHA THYSOL VÀ TA THE NI LỜ SAA A5M TỘN CHỨC HINLI TL H ON CÀ ÁC UÚC GI TẬC ỐP BỨA"
+          }
+        }
+      ]
+    }
+  },
+  "training_started": false,
+  "checkpoint_deployed": false,
+  "label_attestation": "User-supplied word-level/audio attestation; not an independent semantic/audio audit",
+  "validation_scope": "Fixed10 previously inspected domain validation clips, not an independent final test",
+  "summary_labels_imported": false,
+  "directory": "D:\\data_training_ai\\minigpt_domain_v1_20261019\\asr_verbatim_v1\\accepted_asr_a1ecca1bc0cd"
+}

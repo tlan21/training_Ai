@@ -1,0 +1,44 @@
+<!doctype html><html lang="vi"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chốt lời chuẩn ASR</title>
+<style>
+:root{color-scheme:light;--bg:#f1f5f9;--card:#fff;--text:#0f172a;--muted:#475569;--line:#64748b;--accent:#461599;--warn:#9a3412}*{box-sizing:border-box}body{margin:0 auto;max-width:960px;padding:24px;font:16px/1.6 system-ui,sans-serif;color:var(--text);background:var(--bg)}h1,h2{line-height:1.3}a{color:var(--accent);overflow-wrap:anywhere}article{background:var(--card);padding:24px;border:1px solid var(--line);border-radius:12px;margin:24px 0;overflow-wrap:anywhere}label{display:block;margin:16px 0}input:not([type=checkbox]),textarea{display:block;width:100%;padding:12px;font:inherit;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--text)}textarea{resize:vertical;min-height:180px}video{width:100%;max-height:360px;background:#000}button{min-height:48px;padding:10px 20px;font:inherit;border:0;border-radius:6px;color:#fff;background:var(--accent);cursor:pointer}button:active{opacity:.8}.confirm{display:flex;align-items:flex-start;gap:12px;min-height:48px;padding:12px;border:1px solid var(--line);border-radius:6px}.confirm input{flex:0 0 24px;width:24px;height:24px;margin:3px 0}summary{cursor:pointer;min-height:44px;padding:8px 0}.note{white-space:pre-wrap;color:var(--muted)}.error{color:var(--warn)}:focus-visible{outline:3px solid var(--accent);outline-offset:3px}#status{font-weight:600}@media(max-width:600px){body{padding:16px}article{padding:16px}h1{font-size:26px}}
+</style>
+<h1>Chốt lời chuẩn ASR</h1><p>Giữ nguyên transcript bạn đã sửa. 10 clip validation ở trước, tiếp theo là 30 clip train. Chỉ sửa lời nói trong audio; không dịch, không đoán tên, số liệu hoặc mã văn bản khi nghe chưa rõ.</p>
+<p>Chỉ xác nhận transcript ở bước này; không cần viết summary. Nguồn nháp Whisper và ghi chú cũ được giữ lại. Nếu chưa nghe rõ, bỏ xác nhận và ghi lý do. File xuất vẫn cần nhập kiểm tra trước khi chấm điểm hoặc training.</p>
+<label>Người chốt lời chép<input id="annotator" autocomplete="name"></label>
+<button id="export" type="button">Xuất lời chép / bản nháp ASR JSON</button>
+<p id="status" role="status" aria-live="polite"></p><main id="cards"></main>
+<script>
+const packet=__PACKET__;
+const key='asr-verbatim-v1-'+packet.packet_sha256+'-'+packet.source_review_sha256;
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let state={annotator:packet.annotator,rows:{}};
+try{const saved=JSON.parse(localStorage.getItem(key)||'null');if(saved)state=saved;}catch{}
+document.querySelector('#annotator').value=state.annotator??packet.annotator;
+document.querySelector('#cards').innerHTML=packet.samples.map((r,i)=>`<article data-id="${esc(r.sample_id)}"><h2>${esc(r.sample_id)} · ${esc(r.split==='val'?'Validation':'Train')}</h2><p><a href="${esc(r.source_url)}" target="_blank" rel="noopener">${esc(r.source_title)}</a> · ${r.start_seconds}–${r.start_seconds+r.duration_seconds}s</p><video controls preload="none" src="${esc(r.video_src)}"></video><p class="note">Ghi chú bạn đã gửi: ${esc(r.prior_feedback||'Không có ghi chú.')}</p><label>Lời chép cần chốt<textarea class="transcript" aria-describedby="error-${i}"></textarea></label><label>Mã người nói nếu biết<input class="speaker_id"></label><label>Lý do chưa thể chốt / âm thanh không rõ<input class="exclude_reason" aria-describedby="error-${i}"></label><label class="confirm"><input type="checkbox" class="transcript_verified" aria-describedby="error-${i}">Tôi đã nghe toàn bộ đoạn và kiểm tra, sửa transcript đúng từng từ, gồm từ tiếng Anh, tên riêng, số và mã văn bản. Không có phần phải đoán.</label><p class="error" id="error-${i}" role="alert"></p><details><summary>Bản transcript bạn gửi trước đó</summary><p class="note">${esc(r.initial_transcript)}</p></details></article>`).join('');
+for(const [i,card] of [...document.querySelectorAll('article')].entries()){
+  const row=state.rows[card.dataset.id]||{},sample=packet.samples[i];
+  card.querySelector('.transcript').value=row.transcript??sample.initial_transcript;
+  card.querySelector('.speaker_id').value=row.speaker_id??sample.speaker_id??'';
+  card.querySelector('.exclude_reason').value=row.exclude_reason??'';
+  card.querySelector('.transcript_verified').checked=row.transcript_verified===true;
+}
+function collect(){return {protocol:packet.protocol,packet_sha256:packet.packet_sha256,source_review_sha256:packet.source_review_sha256,training_ready:false,annotator:document.querySelector('#annotator').value.trim(),records:packet.samples.map(r=>{const c=document.querySelector(`article[data-id="${r.sample_id}"]`),verified=c.querySelector('.transcript_verified').checked;return {sample_id:r.sample_id,audio_sha256:r.audio_sha256,video_sha256:r.video_sha256,transcript:c.querySelector('.transcript').value,speaker_id:c.querySelector('.speaker_id').value.trim(),exclude_reason:c.querySelector('.exclude_reason').value.trim(),transcript_verified:verified,origin:verified?'human_reviewed_external_asr':'EXTERNAL_ASR_DRAFT_UNVERIFIED',draft_origin:'EXTERNAL_ASR_DRAFT_UNVERIFIED',prior_feedback:r.prior_feedback};})};}
+function counts(value){return ['val','train'].map(split=>{const ids=new Set(packet.samples.filter(r=>r.split===split).map(r=>r.sample_id));return `${split==='val'?'Validation':'Train'}: ${value.records.filter(r=>ids.has(r.sample_id)&&r.transcript_verified).length}/${ids.size}`;}).join(' · ');}
+document.querySelector('#status').textContent=counts(collect());
+document.addEventListener('input',event=>{
+ event.target.removeAttribute('aria-invalid');
+ const card=event.target.closest('article');
+ if(card){const check=card.querySelector('.transcript_verified'),error=card.querySelector('.error');error.textContent='';if(event.target.type!=='checkbox')check.checked=false;
+  if(check.checked){const annotator=document.querySelector('#annotator'),transcript=card.querySelector('.transcript'),reason=card.querySelector('.exclude_reason');let invalid;
+   if(!annotator.value.trim())invalid=[annotator,'Hãy điền tên ở ô “Người chốt lời chép” trước khi xác nhận.'];
+   else if(!transcript.value.trim())invalid=[transcript,'Ô “Lời chép cần chốt” đang trống. Hãy nghe và điền lời chép đầy đủ.'];
+   else if(/\[(không rõ|inaudible|unclear)\]/iu.test(transcript.value))invalid=[transcript,'Lời chép còn đánh dấu phần không rõ. Hãy nghe và sửa đúng phần đó trước khi xác nhận; nếu chưa nghe rõ thì giữ trạng thái chưa chốt.'];
+   else if(reason.value.trim())invalid=[reason,'Ô “Lý do chưa thể chốt / âm thanh không rõ” vẫn có nội dung. Nếu đã nghe và sửa xong, hãy xóa nội dung ô này rồi bấm xác nhận lại. Ghi chú bạn đã gửi ở trên được giữ nguyên.'];
+   if(invalid){check.checked=false;error.textContent=invalid[1];invalid[0].setAttribute('aria-invalid','true');invalid[0].setAttribute('aria-describedby',error.id);invalid[0].focus();}}}
+ if(event.target.id==='annotator')document.querySelectorAll('.transcript_verified').forEach(c=>c.checked=false);
+ const value=collect();state={annotator:value.annotator,rows:Object.fromEntries(value.records.map(r=>[r.sample_id,r]))};
+ try{localStorage.setItem(key,JSON.stringify(state));document.querySelector('#status').textContent=counts(value)+' · Đã lưu nháp; chưa nhập nhãn hoặc chạy training.';}catch{document.querySelector('#status').textContent='Không lưu được bản nháp. Hãy xuất JSON để giữ nội dung.';}
+});
+document.querySelector('#export').onclick=()=>{const value=collect(),url=URL.createObjectURL(new Blob([JSON.stringify(value,null,2)],{type:'application/json;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='asr_verbatim_domain_v1.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);document.querySelector('#status').textContent=counts(value)+' · Đã xuất JSON; chưa tự coi bản nháp là lời chuẩn.';};
+</script></html>

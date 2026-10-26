@@ -1,0 +1,678 @@
+{
+  "status": "DONE_STRICT_ASR_LABEL_ENCODING_AND_PREFLIGHT",
+  "checked_at": "2026-10-20T09:26:42.497029+00:00",
+  "label_convention": "asr-label-v1-lossless",
+  "manifest_sha256": "e2dbb144b3ec78b265200ec05b490066ab9c04107943a833da891e1c64fb9ae3",
+  "vocab_sha256": "594d8ce0bd509cb6c21e6497b689cd237bafce6d89dfbce9a466f883df39bcf9",
+  "candidate_vocab_size": 133,
+  "old_ids_preserved": true,
+  "training_label_roundtrip": {
+    "all_training_rows": 13561,
+    "passed": 13561,
+    "ctc_feasible_retained": 13557,
+    "existing_ctc_exclusions_preserved": 4
+  },
+  "strict_label_coverage_by_split": {
+    "train": {
+      "items": 13561,
+      "unsupported_labels": 0,
+      "examples": []
+    },
+    "val": {
+      "items": 1454,
+      "unsupported_labels": 3,
+      "examples": [
+        {
+          "path": "fleurs_audio/val/00051.flac",
+          "unsupported_characters": [
+            "Ñ"
+          ],
+          "error": "ASR vocabulary cannot encode characters: '\\xd1' (U+00D1)"
+        },
+        {
+          "path": "fleurs_audio/val/00142.flac",
+          "unsupported_characters": [
+            "Ñ"
+          ],
+          "error": "ASR vocabulary cannot encode characters: '\\xd1' (U+00D1)"
+        },
+        {
+          "path": "fleurs_audio/val/00143.flac",
+          "unsupported_characters": [
+            "Ñ"
+          ],
+          "error": "ASR vocabulary cannot encode characters: '\\xd1' (U+00D1)"
+        }
+      ]
+    },
+    "test": {
+      "items": 1617,
+      "unsupported_labels": 7,
+      "examples": [
+        {
+          "path": "fleurs_audio/test/00456.flac",
+          "unsupported_characters": [
+            "½",
+            "¾"
+          ],
+          "error": "ASR vocabulary cannot encode characters: '\\xbd' (U+00BD), '\\xbe' (U+00BE)"
+        },
+        {
+          "path": "fleurs_audio/test/00459.flac",
+          "unsupported_characters": [
+            "Ğ"
+          ],
+          "error": "ASR vocabulary cannot encode characters: '\\u011e' (U+011E)"
+        },
+        {
+          "path": "fleurs_audio/test/00482.flac",
+          "unsupported_characters": [
+            "Ğ"
+          ],
+          "error": "ASR vocabulary cannot encode characters: '\\u011e' (U+011E)"
+        },
+        {
+          "path": "fleurs_audio/test/00508.flac",
+          "unsupported_characters": [
+            "Ş"
+          ],
+          "error": "ASR vocabulary cannot encode characters: '\\u015e' (U+015E)"
+        },
+        {
+          "path": "fleurs_audio/test/00554.flac",
+          "unsupported_characters": [
+            "~"
+          ],
+          "error": "ASR vocabulary cannot encode characters: '~' (U+007E)"
+        },
+        {
+          "path": "fleurs_audio/test/00595.flac",
+          "unsupported_characters": [
+            "Ğ"
+          ],
+          "error": "ASR vocabulary cannot encode characters: '\\u011e' (U+011E)"
+        },
+        {
+          "path": "fleurs_audio/test/00824.flac",
+          "unsupported_characters": [
+            "Ş"
+          ],
+          "error": "ASR vocabulary cannot encode characters: '\\u015e' (U+015E)"
+        }
+      ]
+    }
+  },
+  "active_legacy_vivos_training_rows": 10567,
+  "active_mixed_domain_training_preflight": {
+    "status": "REJECTED_BEFORE_AUDIO_EXPECTED",
+    "error": "ASR train sample 'fleurs_audio/train/00000.flac': ASR vocabulary cannot encode characters: '-' (U+002D), '0' (U+0030), '1' (U+0031), '2' (U+0032), '3' (U+0033), '5' (U+0035), '6' (U+0036), 'J' (U+004A)"
+  },
+  "regression_examples": {
+    "FTA": {
+      "active": "REJECTED_NO_TEXT_DELETION",
+      "error": "ASR vocabulary cannot encode characters: 'F' (U+0046)"
+    },
+    "WTO": {
+      "active": "REJECTED_NO_TEXT_DELETION",
+      "error": "ASR vocabulary cannot encode characters: 'W' (U+0057)"
+    },
+    "2020": {
+      "active": "REJECTED_NO_TEXT_DELETION",
+      "error": "ASR vocabulary cannot encode characters: '0' (U+0030), '2' (U+0032)"
+    },
+    "9.4%": {
+      "active": "REJECTED_NO_TEXT_DELETION",
+      "error": "ASR vocabulary cannot encode characters: '%' (U+0025), '.' (U+002E), '9' (U+0039)"
+    },
+    "08-NQ/TW": {
+      "active": "REJECTED_NO_TEXT_DELETION",
+      "error": "ASR vocabulary cannot encode characters: '-' (U+002D), '/' (U+002F), '0' (U+0030), '8' (U+0038), 'W' (U+0057)"
+    }
+  },
+  "review_diagnostic_coverage": {
+    "active": {
+      "rows": 40,
+      "rejected": 40,
+      "details": [
+        {
+          "sample_id": "dom_wzKzkenrYew_1",
+          "unsupported_characters": [
+            "%",
+            ",",
+            "-",
+            ".",
+            "0",
+            "1",
+            "2",
+            "5",
+            "6",
+            "8",
+            "9"
+          ],
+          "error": "ASR vocabulary cannot encode characters: '%' (U+0025), ',' (U+002C), '-' (U+002D), '.' (U+002E), '0' (U+0030), '1' (U+0031), '2' (U+0032), '5' (U+0035), '6' (U+0036), '8' (U+0038), '9' (U+0039)"
+        },
+        {
+          "sample_id": "dom_f7VbxhaVtfk_1",
+          "unsupported_characters": [
+            ",",
+            ".",
+            "W",
+            "Z"
+          ],
+          "error": "ASR vocabulary cannot encode characters: ',' (U+002C), '.' (U+002E), 'W' (U+0057), 'Z' (U+005A)"
+        },
+        {
+          "sample_id": "dom_wYRFi4-KWek_2",
+          "unsupported_characters": [
+            ",",
+            ".",
+            "2"
+          ],
+          "error": "ASR vocabulary cannot encode characters: ',' (U+002C), '.' (U+002E), '2' (U+0032)"
+        },
+        {
+          "sample_id": "dom_vlSB_Kyx_kA_1",
+          "unsupported_characters": [
+            "\"",
+            ",",
+            ".",
+            "0",
+            "2",
+            "3",
+            "5"
+          ],
+          "error": "ASR vocabulary cannot encode characters: '\"' (U+0022), ',' (U+002C), '.' (U+002E), '0' (U+0030), '2' (U+0032), '3' (U+0033), '5' (U+0035)"
+        },
+        {
+          "sample_id": "dom_vlSB_Kyx_kA_2",
+          "unsupported_characters": [
+            ",",
+            ".",
+            "0",
+            "1",
+            "2",
+            "3",
+            "8"
+          ],
+          "error": "ASR vocabulary cannot encode characters: ',' (U+002C), '.' (U+002E), '0' (U+0030), '1' (U+0031), '2' (U+0032), '3' (U+0033), '8' (U+0038)"
+        },
+        {
+          "sample_id": "dom_soszp1_iK0E_1",
+          "unsupported_characters": [
+            ",",
+            ".",
+            "0",
+            "2",
+            "3",
+            "7",
+            "8"
+          ],
+          "error": "ASR vocabulary cannot encode characters: ',' (U+002C), '.' (U+002E), '0' (U+0030), '2' (U+0032), '3' (U+0033), '7' (U+0037), '8' (U+0038)"
+        },
+        {
+          "sample_id": "dom_b3Y2ckFkva0_2",
+          "unsupported_characters": [
+            "\"",
+            ",",
+            "-",
+            ".",
+            "0",
+            "8",
+            "W"
+          ],
+          "error": "ASR vocabulary cannot encode characters: '\"' (U+0022), ',' (U+002C), '-' (U+002D), '.' (U+002E), '0' (U+0030), '8' (U+0038), 'W' (U+0057)"
+        },
+        {
+          "sample_id": "dom_x1x03SI8jV0_1",
+          "unsupported_characters": [
+            ",",
+            ".",
+            "1",
+            "2",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9"
+          ],
+          "error": "ASR vocabulary cannot encode characters: ',' (U+002C), '.' (U+002E), '1' (U+0031), '2' (U+0032), '5' (U+0035), '6' (U+0036), '7' (U+0037), '8' (U+0038), '9' (U+0039)"
+        },
+        {
+          "sample_id": "dom_x1x03SI8jV0_2",
+          "unsupported_characters": [
+            ",",
+            "-",
+            ".",
+            "/",
+            "0",
+            "1",
+            "2",
+            "3",
+            "5",
+            "6",
+            "7"
+          ],
+          "error": "ASR vocabulary cannot encode characters: ',' (U+002C), '-' (U+002D), '.' (U+002E), '/' (U+002F), '0' (U+0030), '1' (U+0031), '2' (U+0032), '3' (U+0033), '5' (U+0035), '6' (U+0036), '7' (U+0037)"
+        },
+        {
+          "sample_id": "dom_Q95eDJlAhyI_1",
+          "unsupported_characters": [
+            ",",
+            "-",
+            ".",
+            "0",
+            "1",
+            "6"
+          ],
+          "error": "ASR vocabulary cannot encode characters: ',' (U+002C), '-' (U+002D), '.' (U+002E), '0' (U+0030), '1' (U+0031), '6' (U+0036)"
+        },
+        {
+          "sample_id": "dom_any7NAvA7AY_1",
+          "unsupported_characters": [
+            "\"",
+            ",",
+            ".",
+            "0",
+            "2",
+            "5"
+          ],
+          "error": "ASR vocabulary cannot encode characters: '\"' (U+0022), ',' (U+002C), '.' (U+002E), '0' (U+0030), '2' (U+0032), '5' (U+0035)"
+        },
+        {
+          "sample_id": "dom_any7NAvA7AY_2",
+          "unsupported_characters": [
+            ",",
+            "."
+          ],
+          "error": "ASR vocabulary cannot encode characters: ',' (U+002C), '.' (U+002E)"
+        },
+        {
+          "sample_id": "dom_DNM7BTlJnxA_2",
+          "unsupported_characters": [
+            "\"",
+            ",",
+            ".",
+            "1",
+            "3",
+            "5",
+            "7",
+            "8"
+          ],
+          "error": "ASR vocabulary cannot encode characters: '\"' (U+0022), ',' (U+002C), '.' (U+002E), '1' (U+0031), '3' (U+0033), '5' (U+0035), '7' (U+0037), '8' (U+0038)"
+        },
+        {
+          "sample_id": "dom_cvZqE-2LEG8_1",
+          "unsupported_characters": [
+            "\"",
+            ",",
+            ".",
+            "0",
+            "6"
+          ],
+          "error": "ASR vocabulary cannot encode characters: '\"' (U+0022), ',' (U+002C), '.' (U+002E), '0' (U+0030), '6' (U+0036)"
+        },
+        {
+          "sample_id": "dom_Hew7T-qHV-8_1",
+          "unsupported_characters": [
+            ",",
+            ".",
+            "1",
+            "8"
+          ],
+          "error": "ASR vocabulary cannot encode characters: ',' (U+002C), '.' (U+002E), '1' (U+0031), '8' (U+0038)"
+        },
+        {
+          "sample_id": "dom_6CDgfB3MhmA_1",
+          "unsupported_characters": [
+            ",",
+            ".",
+            "/",
+            "1",
+            "8",
+            "9"
+          ],
+          "error": "ASR vocabulary cannot encode characters: ',' (U+002C), '.' (U+002E), '/' (U+002F), '1' (U+0031), '8' (U+0038), '9' (U+0039)"
+        },
+        {
+          "sample_id": "dom_6CDgfB3MhmA_2",
+          "unsupported_characters": [
+            "%",
+            ",",
+            "-",
+            ".",
+            "2",
+            "5",
+            "7",
+            "9"
+          ],
+          "error": "ASR vocabulary cannot encode characters: '%' (U+0025), ',' (U+002C), '-' (U+002D), '.' (U+002E), '2' (U+0032), '5' (U+0035), '7' (U+0037), '9' (U+0039)"
+        },
+        {
+          "sample_id": "dom_NNbXoXEWEfY_1",
+          "unsupported_characters": [
+            ",",
+            ".",
+            "0",
+            "1",
+            "7"
+          ],
+          "error": "ASR vocabulary cannot encode characters: ',' (U+002C), '.' (U+002E), '0' (U+0030), '1' (U+0031), '7' (U+0037)"
+        },
+        {
+          "sample_id": "dom_NNbXoXEWEfY_2",
+          "unsupported_characters": [
+            "%",
+            ",",
+            ".",
+            "0",
+            "1",
+            "2",
+            "3",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9"
+          ],
+          "error": "ASR vocabulary cannot encode characters: '%' (U+0025), ',' (U+002C), '.' (U+002E), '0' (U+0030), '1' (U+0031), '2' (U+0032), '3' (U+0033), '5' (U+0035), '6' (U+0036), '7' (U+0037), '8' (U+0038), '9' (U+0039)"
+        },
+        {
+          "sample_id": "dom_9BHoS_sDlUw_1",
+          "unsupported_characters": [
+            ",",
+            ".",
+            "1",
+            "8"
+          ],
+          "error": "ASR vocabulary cannot encode characters: ',' (U+002C), '.' (U+002E), '1' (U+0031), '8' (U+0038)"
+        },
+        {
+          "sample_id": "dom_p7FlzMrLDSo_1",
+          "unsupported_characters": [
+            ",",
+            ".",
+            "1",
+            "8"
+          ],
+          "error": "ASR vocabulary cannot encode characters: ',' (U+002C), '.' (U+002E), '1' (U+0031), '8' (U+0038)"
+        },
+        {
+          "sample_id": "dom_p7FlzMrLDSo_2",
+          "unsupported_characters": [
+            "%",
+            ",",
+            ".",
+            "/",
+            "0",
+            "1",
+            "2",
+            "3"
+          ],
+          "error": "ASR vocabulary cannot encode characters: '%' (U+0025), ',' (U+002C), '.' (U+002E), '/' (U+002F), '0' (U+0030), '1' (U+0031), '2' (U+0032), '3' (U+0033)"
+        },
+        {
+          "sample_id": "dom_wzKzkenrYew_2",
+          "unsupported_characters": [
+            "\"",
+            ",",
+            ".",
+            "Z"
+          ],
+          "error": "ASR vocabulary cannot encode characters: '\"' (U+0022), ',' (U+002C), '.' (U+002E), 'Z' (U+005A)"
+        },
+        {
+          "sample_id": "dom_f7VbxhaVtfk_2",
+          "unsupported_characters": [
+            ",",
+            ".",
+            "1",
+            "2"
+          ],
+          "error": "ASR vocabulary cannot encode characters: ',' (U+002C), '.' (U+002E), '1' (U+0031), '2' (U+0032)"
+        },
+        {
+          "sample_id": "dom_wYRFi4-KWek_1",
+          "unsupported_characters": [
+            ",",
+            "."
+          ],
+          "error": "ASR vocabulary cannot encode characters: ',' (U+002C), '.' (U+002E)"
+        },
+        {
+          "sample_id": "dom_-1Is0o2ZWk0_1",
+          "unsupported_characters": [
+            "%",
+            "(",
+            ")",
+            ",",
+            ".",
+            "0",
+            "1",
+            "2",
+            "3",
+            "5",
+            "9"
+          ],
+          "error": "ASR vocabulary cannot encode characters: '%' (U+0025), '(' (U+0028), ')' (U+0029), ',' (U+002C), '.' (U+002E), '0' (U+0030), '1' (U+0031), '2' (U+0032), '3' (U+0033), '5' (U+0035), '9' (U+0039)"
+        },
+        {
+          "sample_id": "dom_-1Is0o2ZWk0_2",
+          "unsupported_characters": [
+            "%",
+            ",",
+            "-",
+            ".",
+            "1",
+            "5",
+            "7",
+            "8",
+            "F"
+          ],
+          "error": "ASR vocabulary cannot encode characters: '%' (U+0025), ',' (U+002C), '-' (U+002D), '.' (U+002E), '1' (U+0031), '5' (U+0035), '7' (U+0037), '8' (U+0038), 'F' (U+0046)"
+        },
+        {
+          "sample_id": "dom_uY0zUhWOLJM_1",
+          "unsupported_characters": [
+            ",",
+            "."
+          ],
+          "error": "ASR vocabulary cannot encode characters: ',' (U+002C), '.' (U+002E)"
+        },
+        {
+          "sample_id": "dom_uY0zUhWOLJM_2",
+          "unsupported_characters": [
+            ",",
+            ".",
+            "3"
+          ],
+          "error": "ASR vocabulary cannot encode characters: ',' (U+002C), '.' (U+002E), '3' (U+0033)"
+        },
+        {
+          "sample_id": "dom_soszp1_iK0E_2",
+          "unsupported_characters": [
+            ",",
+            ".",
+            "0",
+            "1",
+            "5",
+            "8",
+            "9"
+          ],
+          "error": "ASR vocabulary cannot encode characters: ',' (U+002C), '.' (U+002E), '0' (U+0030), '1' (U+0031), '5' (U+0035), '8' (U+0038), '9' (U+0039)"
+        },
+        {
+          "sample_id": "dom_b3Y2ckFkva0_1",
+          "unsupported_characters": [
+            ",",
+            "."
+          ],
+          "error": "ASR vocabulary cannot encode characters: ',' (U+002C), '.' (U+002E)"
+        },
+        {
+          "sample_id": "dom_qoYByuKMIv4_1",
+          "unsupported_characters": [
+            ",",
+            ".",
+            "?"
+          ],
+          "error": "ASR vocabulary cannot encode characters: ',' (U+002C), '.' (U+002E), '?' (U+003F)"
+        },
+        {
+          "sample_id": "dom_qoYByuKMIv4_2",
+          "unsupported_characters": [
+            ",",
+            "?"
+          ],
+          "error": "ASR vocabulary cannot encode characters: ',' (U+002C), '?' (U+003F)"
+        },
+        {
+          "sample_id": "dom_Q95eDJlAhyI_2",
+          "unsupported_characters": [
+            ",",
+            ".",
+            "0",
+            "1",
+            "2",
+            "6"
+          ],
+          "error": "ASR vocabulary cannot encode characters: ',' (U+002C), '.' (U+002E), '0' (U+0030), '1' (U+0031), '2' (U+0032), '6' (U+0036)"
+        },
+        {
+          "sample_id": "dom_sTeS-7km_NM_1",
+          "unsupported_characters": [
+            ",",
+            "."
+          ],
+          "error": "ASR vocabulary cannot encode characters: ',' (U+002C), '.' (U+002E)"
+        },
+        {
+          "sample_id": "dom_sTeS-7km_NM_2",
+          "unsupported_characters": [
+            ",",
+            ".",
+            "W"
+          ],
+          "error": "ASR vocabulary cannot encode characters: ',' (U+002C), '.' (U+002E), 'W' (U+0057)"
+        },
+        {
+          "sample_id": "dom_DNM7BTlJnxA_1",
+          "unsupported_characters": [
+            ",",
+            ".",
+            "1"
+          ],
+          "error": "ASR vocabulary cannot encode characters: ',' (U+002C), '.' (U+002E), '1' (U+0031)"
+        },
+        {
+          "sample_id": "dom_cvZqE-2LEG8_2",
+          "unsupported_characters": [
+            ",",
+            "."
+          ],
+          "error": "ASR vocabulary cannot encode characters: ',' (U+002C), '.' (U+002E)"
+        },
+        {
+          "sample_id": "dom_Hew7T-qHV-8_2",
+          "unsupported_characters": [
+            ",",
+            ".",
+            "0",
+            "3",
+            "5",
+            "7"
+          ],
+          "error": "ASR vocabulary cannot encode characters: ',' (U+002C), '.' (U+002E), '0' (U+0030), '3' (U+0033), '5' (U+0035), '7' (U+0037)"
+        },
+        {
+          "sample_id": "dom_9BHoS_sDlUw_2",
+          "unsupported_characters": [
+            "%",
+            ",",
+            ".",
+            "0",
+            "1",
+            "2",
+            "3",
+            "5",
+            "7",
+            "9"
+          ],
+          "error": "ASR vocabulary cannot encode characters: '%' (U+0025), ',' (U+002C), '.' (U+002E), '0' (U+0030), '1' (U+0031), '2' (U+0032), '3' (U+0033), '5' (U+0035), '7' (U+0037), '9' (U+0039)"
+        }
+      ],
+      "usage": "DIAGNOSTIC_ONLY_UNAPPROVED_REVIEW_NOT_TRAINING"
+    },
+    "candidate": {
+      "rows": 40,
+      "rejected": 3,
+      "details": [
+        {
+          "sample_id": "dom_-1Is0o2ZWk0_1",
+          "unsupported_characters": [
+            "(",
+            ")"
+          ],
+          "error": "ASR vocabulary cannot encode characters: '(' (U+0028), ')' (U+0029)"
+        },
+        {
+          "sample_id": "dom_qoYByuKMIv4_1",
+          "unsupported_characters": [
+            "?"
+          ],
+          "error": "ASR vocabulary cannot encode characters: '?' (U+003F)"
+        },
+        {
+          "sample_id": "dom_qoYByuKMIv4_2",
+          "unsupported_characters": [
+            "?"
+          ],
+          "error": "ASR vocabulary cannot encode characters: '?' (U+003F)"
+        }
+      ],
+      "usage": "DIAGNOSTIC_ONLY_UNAPPROVED_REVIEW_NOT_TRAINING"
+    }
+  },
+  "protected_hashes": "PASS_8",
+  "review_snapshot_unchanged": true,
+  "checkpoint_dimensions_unchanged": {
+    "active": {
+      "sha256": "8f87986781cfb3d4716691f2051e5798187693e2452f9f41b28ca4a753ea5531",
+      "n_chars": 93
+    },
+    "candidate": {
+      "sha256": "d03ef0a962220618e90e5ff478a2fbab5ff35dd68deb539a4933eb7c15a4f3de",
+      "n_chars": 133
+    }
+  },
+  "training_run": false,
+  "deployed": false,
+  "vocabulary_or_test_labels_modified": false,
+  "semantic_accuracy_improvement_claimed": false,
+  "new_wer_cer": null,
+  "source_hashes": {
+    "ai-core/ai_core/training/datasets/asr_dataset.py": "dfed469eef0cdbab16e2de62e59cdcb29bf547e2575b681baee27905b19de1dd",
+    "ai-core/ai_core/training/datasets/__init__.py": "3c45df12ce61986fe70bcbe834a213aa1fc4f7c4d7d3cc33147d55580a7ac99d",
+    "ai-core/ai_core/scripts/train.py": "7011b52cf2c9771a0a570c88c69d6259778987b0243250e9e45ad5fc1145a572",
+    "ai-core/ai_core/scripts/finetune_asr_robust.py": "3cb6c626b3c095db2450d48d9ed823a43af723848be8d7a07a6eee8c7998141c",
+    "ai-core/ai_core/tests/test_asr_labels.py": "0e40f4ffb661bc3f3aab885667b8a6aca6996ced5d4ac7f7e65eea8d9e65e034"
+  },
+  "completed_at": "2026-10-20T09:30:32.632259+00:00",
+  "report": "docs/T1.4_asr_label_contract.md",
+  "verification": {
+    "python_tests_passed": 80,
+    "python_suites": [
+      "test_asr_labels",
+      "test_asr_robust",
+      "test_audio",
+      "test_ctc_parity",
+      "test_data_pipeline"
+    ],
+    "go_vet_test_build": "PASS",
+    "cms_tsc_vite": "PASS",
+    "client_tsc_next": "PASS",
+    "api_contract_changed": false,
+    "live_http_gpu_evaluation": "NOT_PERFORMED_DOCKER_ENGINE_UNAVAILABLE",
+    "new_training": "NOT_STARTED",
+    "new_accuracy_metric": null
+  }
+}

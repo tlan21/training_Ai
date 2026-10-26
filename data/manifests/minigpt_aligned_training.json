@@ -1,0 +1,134 @@
+{
+  "status": "TRAINED_CANDIDATE_VERIFIED_NOT_DEPLOYED",
+  "dataset_directory": "D:\\data_training_ai\\minigpt_news\\aligned_summary_v2_20261019",
+  "dataset_sha256": "2a09566df8887680697ac763f823bedf9596b2f3de53964ebe9cac00b8169582",
+  "human_audit_sha256": "7c44b8573f8d34fe9078d2206a39628c0f3089664dfc59a1463bc1e2457b86fb",
+  "user_confirmation_sha256": "128b6155ec1641e230d99d0c9f014531350ac3015bb93acba4ba0493e5369047",
+  "n_train": 956,
+  "n_val": 64,
+  "seed": 1337,
+  "stages": {
+    "clean": 240,
+    "asr": 60
+  },
+  "eval_every": 60,
+  "init_sha256": "cf9cfa7141d40f9d40b0065ae68855ff39ffe750260ee7b42c7c0eac719330ac",
+  "baseline_cpu_selection_score": 0.2340102040106699,
+  "production_weights_changed": false,
+  "frozen_test_evaluation_run": false,
+  "kernel": "traininghighlight/ai-core-minigpt-aligned-v2",
+  "kernel_version": 1,
+  "dataset": "traininghighlight/minigpt-aligned-summary-v2",
+  "dataset_status": "ready_private",
+  "checked_at_unix": 1792384392.9377782,
+  "script_sha256": "d6d122d4d2978564a5a5298cc584afb4cf7fd6a60eb88e0c14cbae8776db9db3",
+  "collector_sha256": "8d05730d66e16a501cd77d60f9ec36ed5e9084cfb65a4ae4cd5aa22fa699cf53",
+  "local_python_tests_passed": 50,
+  "local_python_subtests_passed": 4,
+  "go_vet_test_build": "PASS",
+  "cms_tsc_vite": "PASS",
+  "client_tsc_next_build_no_lint": "PASS",
+  "report": "docs/T1.6_aligned_training.md",
+  "candidate": "D:\\data_training_ai\\minigpt_news\\aligned_output_v1\\aligned_run\\minigpt\\best.pt",
+  "candidate_sha256": "5cc63c26760fcc396a24a7eba4284df5f856611cafbbc9dc5ca7db65bbd9fa36",
+  "active_sha256": "cf9cfa7141d40f9d40b0065ae68855ff39ffe750260ee7b42c7c0eac719330ac",
+  "selected_stage": "clean",
+  "selected_step": 180,
+  "baseline_same_gpu_selection": 0.2323437855897334,
+  "candidate_selection": 0.31627459776395506,
+  "selection_delta": 0.08393081217422166,
+  "baseline_metrics": {
+    "sum_clean": {
+      "rouge_l": 0.2925105662135722,
+      "lead1_rouge_l": 0.41516787346514145,
+      "eos_stop": 0.921875,
+      "cap_hit": 0.078125,
+      "repeated_trigram_fraction": 0.10458845418416844
+    },
+    "sum_asr": {
+      "rouge_l": 0.17217700496589458,
+      "lead1_rouge_l": 0.11425226852134936,
+      "eos_stop": 0.828125,
+      "cap_hit": 0.171875,
+      "repeated_trigram_fraction": 0.17465290620500173
+    },
+    "title_clean": {
+      "rouge_l": 0.356232379351088,
+      "lead1_rouge_l": 0.20381395130536195,
+      "eos_stop": 0.984375,
+      "cap_hit": 0.015625,
+      "repeated_trigram_fraction": 0.0
+    },
+    "cap_clean": {
+      "rouge_l": 0.35167449017190894,
+      "lead1_rouge_l": 0.20381395130536195,
+      "eos_stop": 0.984375,
+      "cap_hit": 0.015625,
+      "repeated_trigram_fraction": 0.0
+    }
+  },
+  "candidate_metrics": {
+    "sum_clean": {
+      "rouge_l": 0.5179126079506995,
+      "lead1_rouge_l": 0.41516787346514145,
+      "eos_stop": 0.90625,
+      "cap_hit": 0.09375,
+      "repeated_trigram_fraction": 0.07182258635743755
+    },
+    "sum_asr": {
+      "rouge_l": 0.11463658757721062,
+      "lead1_rouge_l": 0.11425226852134936,
+      "eos_stop": 0.484375,
+      "cap_hit": 0.515625,
+      "repeated_trigram_fraction": 0.3280480553311971
+    },
+    "title_clean": {
+      "rouge_l": 0.38790232433353244,
+      "lead1_rouge_l": 0.20381395130536195,
+      "eos_stop": 1.0,
+      "cap_hit": 0.0,
+      "repeated_trigram_fraction": 0.005756578947368422
+    },
+    "cap_clean": {
+      "rouge_l": 0.3946810800074961,
+      "lead1_rouge_l": 0.20381395130536195,
+      "eos_stop": 1.0,
+      "cap_hit": 0.0,
+      "repeated_trigram_fraction": 0.00724467418546366
+    }
+  },
+  "runtime": {
+    "completed": true,
+    "gpu": "Tesla T4",
+    "torch": "2.11.0+cu128",
+    "seed": 1337,
+    "elapsed_seconds": 507.80807185173035,
+    "peak_allocated_gib": 1.05525541305542,
+    "peak_reserved_gib": 2.51953125,
+    "scope": "same-GPU baseline + candidate training/validation; not six-model inference",
+    "train_8gib_pass": true
+  },
+  "elapsed_hours": 0.12549612548616199,
+  "human_model_quality": "NOT RE-SCORED - label-support confirmation is not a model quality rating",
+  "artifact_hashes": {
+    "training_result.json": "0bce48d73db019248ff5bf05f9b3bc3512d5513f74da19f158264437fdde2300",
+    "aligned_baseline.json": "8533936e5866a0d034ac5f60108068cc04cf64f28c49b28c37459782aa135845",
+    "aligned_runtime.json": "3af77fc4ab4492a39de8f746675565409b70af13f56d2e7cf85dbe0d16f10f3a",
+    "validation.jsonl": "8b050f02296e952e2f9f36211251e3c963433b1c5ba9357397c5c0d62766c684"
+  },
+  "kernel_status": "COMPLETE",
+  "candidate_quality_status": "ASR_REGRESSION_NOT_APPROVED",
+  "full_t1_6_human_gate": "NOT_MET",
+  "historical_shared_human_mean": 1.6,
+  "remote_sanity_checks_passed": 4,
+  "video_control_manifest": "data/manifests/minigpt_aligned_video_control.json",
+  "next_safe_task": "Mixed clean/ASR replay within batches plus per-condition non-regression validation guard; retain confirmed pair hashes, no test tuning or deployment",
+  "report_artifact_hashes": {
+    "docs/T1.6_aligned_training.md": "6e38e0b29ca69432b78a59c4c8f9a016c76fcb25c19d8d4b7c8a9aa8133a5fae",
+    "docs/T1.6_aligned_training_metrics.json": "a3cd901926198d2b11477d9c94d9b3abcd1f2efdafe4d149c530ec27df9a53d7",
+    "docs/T1.6_aligned_training_curves.png": "5981b61df24fd1637010024166f44141180bc6ae65faaa87878e33124de079ad",
+    "docs/T1.6_aligned_training_curves.svg": "b437a864de12f4322329e940952ac5bf3650ac622e952bc56fab8c7952514287",
+    "docs/T1.6_aligned_training_curve_data.json": "95aa0df4c44ef986d72c6d8a55c82aca986b3f4fcf4174fd757863b77799b8de",
+    "data/manifests/minigpt_aligned_video_control.json": "19f02db93f8cb7251458164b533ce412bc1f6272223e689e062f7fd660421a48"
+  }
+}

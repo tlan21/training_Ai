@@ -1,0 +1,27 @@
+{
+  "status": "AWAITING_COMPLETED_LABEL_EXPORT",
+  "checked_at": "2026-10-19T07:44:40.614160+00:00",
+  "user_messages": [
+    "đã kiểm chứng tiếp theo làm gì",
+    "tiếp tục bước tiếp theo"
+  ],
+  "interpretation": "User reports review complete; no exported transcript/summary content located. No row-level labels or reviewer identity inferred.",
+  "expected_path": "D:\\data_training_ai\\minigpt_domain_v1_20261019\\human_labels_domain_v1.json",
+  "completed_export_found": false,
+  "searched": [
+    "data directory",
+    "D:/data_training_ai",
+    "E:/traning_ai",
+    "C:/Users/PC/Downloads (Windows known folder)",
+    "C:/Users/PC/Desktop",
+    "C:/Users/PC/Documents",
+    "C:/Users/PC/OneDrive"
+  ],
+  "browser_draft_status": "UNREADABLE_TOOL_ENVIRONMENT_ERROR_NOT_ASSUMED_EMPTY",
+  "browser_tool_error": "failed to write kernel assets: The system cannot find the path specified. (os error3)",
+  "blank_gate_result": "REJECTED: human annotator is missing; labels pending",
+  "training_started": false,
+  "production_weights_changed": false,
+  "frozen_files_unchanged": true,
+  "next_required_input": "Path to exported JSON containing actual human transcript/summary rows; or export existing browser draft"
+}

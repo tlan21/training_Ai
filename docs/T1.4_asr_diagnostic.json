@@ -1,0 +1,73 @@
+{
+  "date": "2026-10-15",
+  "status": "PARTIAL — VIDEO HUMAN REFERENCES UNAVAILABLE",
+  "vivos_pilot_metrics": {
+    "samples": 30,
+    "macro_wer": 0.3536465386465386,
+    "macro_cer": 0.13960191381735695,
+    "corpus_wer": 0.3786407766990291,
+    "corpus_cer": 0.1551987767584098,
+    "word_errors": 117,
+    "reference_words": 309,
+    "char_errors": 203,
+    "reference_chars": 1308,
+    "normalization": "Native uppercase VIVOS references and raw CTC outputs; CER includes spaces."
+  },
+  "runtime_parity": {
+    "device": "cpu",
+    "checkpoint_sha256": "8f87986781cfb3d4716691f2051e5798187693e2452f9f41b28ca4a753ea5531",
+    "vivos_comparisons": [
+      {
+        "sample_id": "sample_01",
+        "audio_equal": true,
+        "mel_equal": true,
+        "direct_service_text_equal": true,
+        "transcript": "VÀ MỘT ĐIỀU SAU XA LÀ MÌNH ĐÃ THỰC TỰ YÊU BẠN"
+      },
+      {
+        "sample_id": "sample_02",
+        "audio_equal": true,
+        "mel_equal": true,
+        "direct_service_text_equal": true,
+        "transcript": "ĐIỀU NHAU KHOẢNG VÀI THÁNG THÌ CHÚNG TÔI ĐÃ C QUAN HỆ"
+      },
+      {
+        "sample_id": "sample_03",
+        "audio_equal": true,
+        "mel_equal": true,
+        "direct_service_text_equal": true,
+        "transcript": "GIỎI THÌ BẮT MÌNH ĐỈ RA KHÔNG NUÔI THÌ AI NUÔI"
+      }
+    ],
+    "three_60s_audio_streams_equal": true
+  },
+  "clean_reference_summary_diagnostic": [
+    {
+      "sample_id": "sample_01",
+      "human_reference": "VÀ MỘT ĐIỀU SÂU XA LÀ MÌNH ĐÃ THẬT SỰ YÊU BẠN",
+      "asr_transcript": "VÀ MỘT ĐIỀU SAU XA LÀ MÌNH ĐÃ THỰC TỰ YÊU BẠN",
+      "summary_from_asr": "(PL)- Ngày 2-8, ông Nguyễn Văn Tiến, Chủ tịch UBND xã Phú Phú, huyện Phú Lộc, tỉnh Phú Thọ cho biết, đơn vị vừa có công văn gửi UBND xã Phú Phú về việc thực hiện thành lập tổ hợp xã Phú Phú, huyện Phú Lộc.",
+      "summary_from_human_reference": "(NLĐ) - Một người đàn ông ở Trung Quốc đã phải nhập viện cấp cứu khi một người đàn ông ở Trung Quốc đã bị thương nặng sau khi một người đàn ông ở Trung Quốc bị thương nặng sau khi một người đàn ông ở Trung Quốc bị thương nặng sau khi một người đàn ông ở Trung Quốc bị thương nặng sau khi một người đàn ông ở Trung Quốc bị thương nặng sau khi một người đàn ông ở Trung Quốc bị thương nặng sau khi một người đàn"
+    },
+    {
+      "sample_id": "sample_02",
+      "human_reference": "YÊU NHAU KHOẢNG VÀI THÁNG THÌ CHÚNG TÔI ĐÃ CÓ QUAN HỆ TÌNH DỤC",
+      "asr_transcript": "ĐIỀU NHAU KHOẢNG VÀI THÁNG THÌ CHÚNG TÔI ĐÃ C QUAN HỆ",
+      "summary_from_asr": "(PL Việt Nam) - Một quan chức Trung Quốc đã cho biết đã có một quan chức Trung Quốc đã có quan hệ với một quan chức Trung Quốc để có quan hệ với một quan chức Trung Quốc.",
+      "summary_from_human_reference": "(SGGP- Việt Nam) - Một người đàn ông ở Trung Quốc đã bị tình dục và dùng dao đâm chết khi đang mang thai."
+    },
+    {
+      "sample_id": "sample_03",
+      "human_reference": "GIỎI GÌ BÁC MÌNH ĐẺ RA KHÔNG NUÔI THÌ AI NUÔI",
+      "asr_transcript": "GIỎI THÌ BẮT MÌNH ĐỈ RA KHÔNG NUÔI THÌ AI NUÔI",
+      "summary_from_asr": "(Dân Việt Nam là con ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông là ông ông ông ông ông ông ông ông ông là ông ông ông ông ông ông ông ông là ông ông ông là ông ông ông ông là ông ông ông là ông ông là ông ông ông là ông ông ông là ông ông ông",
+      "summary_from_human_reference": "(Dân Việt Nam là con ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông ông là ông ông ông ông ông ông ông ông ông ông là ông ông ông ông ông ông ông ông là ông ông ông là ông ông ông là ông ông ông là ông ông là ông ông ông là ông ông ông là ông ông ông"
+    }
+  ],
+  "video_references_complete": 0,
+  "video_wer": null,
+  "video_cer": null,
+  "limitation": "No direct audio-listening tool available to agent; no claimed manual transcription. VIVOS30 pilot cannot measure YouTube WER/CER.",
+  "checkpoint_sha256": "cf9cfa7141d40f9d40b0065ae68855ff39ffe750260ee7b42c7c0eac719330ac",
+  "human_reference_file": "D:\\data_training_ai\\minigpt_real_video_20261015\\asr_ground_truth_30\\references.csv"
+}

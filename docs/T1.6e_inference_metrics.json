@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-15",
+  "status": "PASS — LOCAL CPU",
+  "checkpoint_sha256": "cf9cfa7141d40f9d40b0065ae68855ff39ffe750260ee7b42c7c0eac719330ac",
+  "profile": {
+    "context": 512,
+    "reserve": 96,
+    "format": "<format> source <eos>; no BOS"
+  },
+  "short_formats": [
+    {
+      "format": "sum",
+      "http_direct_parity": true,
+      "text": "Đội bóng Thành phố tổ chức một buổi tập chuẩn bị cho trận đấu với Hà Nội vào tối nay (22/9) tại sân Thống Nhất.",
+      "seconds": 0.32799999999997453
+    },
+    {
+      "format": "title",
+      "http_direct_parity": true,
+      "text": "HLV Lê Minh Hải tập luyện",
+      "seconds": 0.45299999999997453
+    },
+    {
+      "format": "cap",
+      "http_direct_parity": true,
+      "text": "HLV Lê Minh Hải tập cho đội bóng",
+      "seconds": 1.1720000000000255
+    }
+  ],
+  "raw_defaults_to_sum": true,
+  "uppercase_ctc_normalized": true,
+  "long_input_tokens": 1120,
+  "long_result": "Đội bóng và đội bóng của các cầu thủ tập chuyền bóng và đội bóng của các cầu thủ tập chuyền bóng và đội bóng của các cầu thủ tập chuyền bóng và đội bóng của các cầu thủ tập chuyền bóng và đội bóng của các cầu thủ tập chuyền bóng và đội bóng của các cầu thủ tập chuyền bóng và đội bóng của các cầu thủ tập chuyền bóng và đội bóng của các cầu thủ tập chuyền bóng và đội bóng của các cầu thủ tập chuyền bóng và đội bóng của",
+  "long_elapsed_seconds": 1.8119999999998981,
+  "silence_no_hallucination": true,
+  "missing_auth_401": true,
+  "invalid_budget_422": true,
+  "health": {
+    "status": "ok",
+    "gpu_vram_used": 0.0,
+    "gpu_util": 0.0,
+    "models_loaded": [
+      "asr_ctc",
+      "highlight_fusion",
+      "minigpt",
+      "siamese",
+      "two_tower",
+      "vit"
+    ],
+    "degraded": [],
+    "queue_depth": 0,
+    "device": "cpu",
+    "stub_mode": false,
+    "load_error": null
+  },
+  "limitation": "Structural integration test with repeated synthetic text; not a quality evaluation"
+}

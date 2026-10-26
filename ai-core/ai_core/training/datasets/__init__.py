@@ -1,6 +1,6 @@
 """Dataset loaders 6 model — khớp dataset_spec §3."""
 
-from .asr_dataset import ASRDataset, CharVocab, collate_ctc
+from .asr_dataset import ASRDataset, CharVocab, ReferenceASRDataset, collate_ctc, collate_references
 from .highlight_dataset import HighlightWindowDataset, load_highlight_labels, masked_bce_loss
 from .movielens_dataset import (BPRTripleDataset, build_features, leave_last_k_split,
                                  load_movielens_ratings, time_split)
@@ -11,6 +11,7 @@ from .vit_dataset import ViTKeyframeDataset, vit_augment
 
 __all__ = [
     "ASRDataset", "CharVocab", "collate_ctc",
+    "ReferenceASRDataset", "collate_references",
     "HighlightWindowDataset", "load_highlight_labels", "masked_bce_loss",
     "BPRTripleDataset", "build_features", "leave_last_k_split", "load_movielens_ratings", "time_split",
     "SiamesePairDataset",

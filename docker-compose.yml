@@ -141,6 +141,7 @@ services:
       AI_SERVICE_KEY: ${AI_SERVICE_KEY:-sk-local-dev-key-change-me}
       CHECKPOINT_DIR: /srv/ai-core/checkpoints
       INFER_DEVICE: ${INFER_DEVICE:-cpu}
+      INFERENCE_MEMORY_TRACE: ${INFERENCE_MEMORY_TRACE:-0}
       FORCE_STUB: "0"
       OMP_NUM_THREADS: "2"
       MKL_NUM_THREADS: "2"

@@ -1,0 +1,19 @@
+{
+  "status": "POST_SELECTION_CONTROL_COMPLETE_NOT_HUMAN_SCORED",
+  "candidate_sha256": "5cc63c26760fcc396a24a7eba4284df5f856611cafbbc9dc5ca7db65bbd9fa36",
+  "active_sha256": "cf9cfa7141d40f9d40b0065ae68855ff39ffe750260ee7b42c7c0eac719330ac",
+  "input_hashes": {
+    "D:\\data_training_ai\\minigpt_real_video_20261015\\asr_candidate_comparison_3_20261019\\confirmed_draft_minigpt.json": "e6bdac5c502f1f5d69909c7d4c019d1f61a1e9fb3f3a17a513a2850becaa213a",
+    "D:\\data_training_ai\\minigpt_real_video_20261015\\asr_candidate_comparison_3_20261019\\comparison.json": "7ad2134b9c5ff4dcf5ec08576d18bd9f97ef384dd0db5838a398ee60f5425bca",
+    "E:\\traning_ai\\ai-core\\checkpoints\\minigpt\\best.pt": "cf9cfa7141d40f9d40b0065ae68855ff39ffe750260ee7b42c7c0eac719330ac"
+  },
+  "services_sha256": "a1dfbee9e7ff009b50f4500bc950b5c462a9407743c36ea45d87376d6cc7e209",
+  "device": "cpu",
+  "dtype": "float32",
+  "torch": "2.13.0+cpu",
+  "temperature": 0,
+  "max_tokens": 96,
+  "policy": "Exact existing3 input texts, no new ASR run/external model call, no tuning/selection on these clips",
+  "directory": "D:\\data_training_ai\\minigpt_news\\aligned_candidate_video_control_3_v1",
+  "nonempty_outputs": 6
+}

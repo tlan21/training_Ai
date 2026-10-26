@@ -60,34 +60,55 @@ def run_completion(req: schemas.CompletionRequest) -> schemas.CompletionResponse
     )
 
 
-_SUM_CHUNK = 900   # ~900 token/đoạn (dưới context 1024 Mini-GPT)
-
-
 def _real_summarize(req: schemas.CompletionRequest) -> str:
-    """Map-reduce cho transcript >1024 token (master plan §2.4 / architecture §2.1):
-    chia đoạn ~900 token → tóm tắt từng đoạn → nối → tóm tắt lần cuối."""
+    """Use the trained EOS-delimited formats; recursively reduce all long-input chunks."""
     import torch
+    from ai_core.training.datasets.summary_dataset import CONTROL_TOKENS
+
     model = registry.models["minigpt"]
     tok = registry.tokenizer
     if tok is None:
         raise RuntimeError("minigpt checkpoint thiếu BPE vocabulary")
-    eos = tok.special_tokens.get("<eos>")
+    eos = tok.special_tokens["<eos>"]
+    context = int(registry.minigpt_metadata.get("summary_context_len", 512))
+    reserve = int(registry.minigpt_metadata.get("max_target_tokens", 96))
+    if not 1 < reserve < context <= model.cfg.context_len:
+        raise RuntimeError("invalid MiniGPT summary context/output metadata")
+    source, fmt = req.prompt.strip(), "sum"
+    for name, marker in CONTROL_TOKENS.items():
+        if source == marker or source.startswith(marker + " ") or source.startswith(marker + "\n"):
+            fmt, source = name, source[len(marker):].strip()
+            break
+    if not source:
+        return ""  # Silent audio has no transcript to summarize.
+    if source.isupper():
+        source = source.lower()  # Our CTC vocabulary is uppercase; ASR fine-tuning used lowercase.
+    prefixes = {name: tok.encode(marker) for name, marker in CONTROL_TOKENS.items()}
+    capacities = {name: context - reserve - 1 - len(prefix) for name, prefix in prefixes.items()}
+    if min(capacities.values()) < 1:
+        raise RuntimeError("MiniGPT context leaves no source capacity")
 
-    def _gen(prompt_ids: list[int]) -> str:
-        prompt_ids = prompt_ids[-_SUM_CHUNK:]
+    def _gen(content: list[int], output_format: str, budget: int) -> str:
+        prompt_ids = prefixes[output_format] + content + [eos]
         out = model.generate(
             torch.tensor([prompt_ids], device=registry.device),
-            max_new_tokens=req.max_tokens, temperature=req.temperature, eos_id=eos,
+            max_new_tokens=budget, temperature=req.temperature, eos_id=eos,
         )
         return tok.decode(out[0, len(prompt_ids):].tolist()).strip()
 
-    ids = tok.encode(req.prompt, add_bos=True)
-    if len(ids) <= _SUM_CHUNK:
-        return _gen(ids)
-    # map: tóm tắt từng đoạn ~900 token
-    partials = [_gen(ids[i:i + _SUM_CHUNK]) for i in range(0, len(ids), _SUM_CHUNK)]
-    # reduce: tóm tắt bản nối các tóm tắt đoạn
-    return _gen(tok.encode(" ".join(partials), add_bos=True))
+    # The leading space attaches to the first word in our byte BPE, exactly as in training.
+    ids = tok.encode(" " + source)
+    while len(ids) > capacities[fmt]:
+        chunk = capacities["sum"]
+        partials = [_gen(ids[i:i + chunk], "sum", reserve) for i in range(0, len(ids), chunk)]
+        merged = " ".join(partials).strip()
+        if not merged:
+            return ""
+        reduced = tok.encode(" " + merged)
+        if len(reduced) >= len(ids):
+            raise RuntimeError("MiniGPT map-reduce did not shrink the input")
+        ids = reduced
+    return _gen(ids, fmt, min(req.max_tokens, reserve))
 
 
 # ---------------- Visual Search /v1/search/completions ----------------

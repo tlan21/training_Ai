@@ -1,0 +1,15 @@
+{
+  "id": "traininghighlight/ai-core-minigpt-news",
+  "title": "ai-core-minigpt-news",
+  "code_file": "run_news.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": false,
+  "dataset_sources": [
+    "traininghighlight/minigpt-news-research"
+  ],
+  "competition_sources": [],
+  "kernel_sources": []
+}

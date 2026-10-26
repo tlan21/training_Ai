@@ -1,0 +1,13 @@
+{
+  "id": "traininghighlight/ai-core-minigpt-aligned-v2",
+  "title": "ai-core-minigpt-aligned-v2",
+  "code_file": "run_aligned.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": false,
+  "dataset_sources": ["traininghighlight/minigpt-aligned-summary-v2"],
+  "competition_sources": [],
+  "kernel_sources": []
+}

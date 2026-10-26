@@ -24,6 +24,7 @@ class ModelRegistry:
         self.device = resolve_device(settings.device)
         self.models: dict[str, object] = {}      # name → model đã .eval() (chỉ khi real)
         self.tokenizer = None                     # BPE cho minigpt (real)
+        self.minigpt_metadata: dict = {}
         self.asr_vocab: list[str] | None = None   # char vocab cho ASR (index 0 = blank)
         self.vit_classes: list[str] | None = None # tên danh mục ViT (theo class index)
         self.loaded: list[str] = []               # tên model nạp THẬT
@@ -61,6 +62,8 @@ class ModelRegistry:
         self.loaded.clear()
         self.degraded.clear()
         self.load_error = None
+        self.tokenizer = None
+        self.minigpt_metadata = {}
         if settings.force_stub or not self._ensure_ai_core_on_path():
             self.stub_mode = True
             self.load_error = "stub forced or ai-core unavailable"
@@ -94,6 +97,8 @@ class ModelRegistry:
                 self.models[name] = model
                 self.loaded.append(name)
                 metadata = ckpt.get("metadata") or {}
+                if name == "minigpt":
+                    self.minigpt_metadata = metadata
                 if name == "minigpt" and (ckpt.get("bpe_vocab") or metadata.get("bpe_vocab")):
                     self.tokenizer = self._rebuild_tokenizer(ckpt.get("bpe_vocab") or metadata["bpe_vocab"])
                 if name == "asr_ctc":
@@ -149,6 +154,26 @@ class ModelRegistry:
             return vram, util
         except Exception:
             return 0.0, 0.0
+
+    def memory_snapshot(self) -> dict:
+        """Internal benchmark logs, not API fields. CPU VRAM is unmeasured rather than a pass."""
+        status = {}
+        with open("/proc/self/status", encoding="utf-8") as source:
+            for line in source:
+                key, _, value = line.partition(":")
+                if key in ("VmRSS", "VmHWM"):
+                    status[key] = int(value.split()[0])*1024
+        snapshot = {"pid":os.getpid(), "device":self.device, "rss_bytes":status["VmRSS"],
+                    "rss_peak_bytes":status["VmHWM"], "cuda_allocated_bytes":None,
+                    "cuda_reserved_bytes":None, "cuda_peak_allocated_bytes":None,
+                    "cuda_peak_reserved_bytes":None}
+        if self.device == "cuda":
+            import torch
+            snapshot.update(cuda_allocated_bytes=torch.cuda.memory_allocated(),
+                            cuda_reserved_bytes=torch.cuda.memory_reserved(),
+                            cuda_peak_allocated_bytes=torch.cuda.max_memory_allocated(),
+                            cuda_peak_reserved_bytes=torch.cuda.max_memory_reserved())
+        return snapshot
 
 
 registry = ModelRegistry()

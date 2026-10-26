@@ -1,0 +1,98 @@
+{
+  "status": "USER_CONTENT_FEEDBACK_RECORDED_AND_DIRECT_DRAFT_CONTROL_COMPLETE",
+  "sample_ids": [
+    "sample_01",
+    "sample_10",
+    "sample_28"
+  ],
+  "checkpoints": {
+    "baseline": "8f87986781cfb3d4716691f2051e5798187693e2452f9f41b28ca4a753ea5531",
+    "candidate": "d03ef0a962220618e90e5ff478a2fbab5ff35dd68deb539a4933eb7c15a4f3de",
+    "minigpt": "cf9cfa7141d40f9d40b0065ae68855ff39ffe750260ee7b42c7c0eac719330ac"
+  },
+  "device": "cpu",
+  "dtype": "float32",
+  "torch": "2.13.0+cpu",
+  "temperature": 0,
+  "max_tokens": 96,
+  "asr_window_seconds": 20,
+  "services_sha256": "a1dfbee9e7ff009b50f4500bc950b5c462a9407743c36ea45d87376d6cc7e209",
+  "samples_sha256": "cbd87b7406ad26fca111f9fe7a7ad0e53315cead018a64cb0dbfdea778399c27",
+  "references_sha256": "a6ee473b2b1fe4a7106879cb011f131724c4b60297faec5c1ae682088934987f",
+  "metrics": {
+    "verified_count": 0,
+    "missing_ids": [
+      "sample_01",
+      "sample_10",
+      "sample_28"
+    ],
+    "baseline": null,
+    "candidate": null,
+    "status": "PENDING_HUMAN_REFERENCES"
+  },
+  "historical_baseline_exact_text_matches": {
+    "sample_01": true,
+    "sample_10": true,
+    "sample_28": true
+  },
+  "limitation": "3unlabeled clips are a diagnostic, not a quality benchmark. Drafts are not references. Timing is unbalanced CPU diagnostic only.",
+  "packet": "D:\\data_training_ai\\minigpt_real_video_20261015\\asr_candidate_comparison_3_20261019",
+  "verified_at": "2026-10-19T09:15:33.914875+07:00",
+  "checkpoint_deployed": false,
+  "human_summary_score": null,
+  "review_export_browser_check": "PASS -3cards/video decode/export gate/CSV roundtrip/desktop1440+mobile390",
+  "unit_tests": "3 PASS",
+  "protected_inputs_unchanged": true,
+  "report": "docs/T1.4_asr_candidate_video_pilot.md",
+  "files": {
+    "comparison.json": "7ad2134b9c5ff4dcf5ec08576d18bd9f97ef384dd0db5838a398ee60f5425bca",
+    "confirmed_draft_minigpt.json": "e6bdac5c502f1f5d69909c7d4c019d1f61a1e9fb3f3a17a513a2850becaa213a",
+    "confirmed_draft_review.html": "9d332d3ed6a3e585da421d1ab77bebc6e3d059054d370158e583afa6fca9983d",
+    "README.md": "0515fd20d798da00f081d91c42b5d60fec008944fff8f8bcf6eacdf6f6f5d010",
+    "review.html": "e713021406332932f7c9bdcb1454c6adae47c8067551bdfc4640c8bcf616e354",
+    "sample_01.json": "6b2278468029df3401d7e3c4f6907ad42f3022cd95ba7c5a0f37b4bf01d30109",
+    "sample_10.json": "4a5d6f25c8d3ae88597f00ec3558dfdd492a0d32b6b24d6ee629827f6a700a9a",
+    "sample_28.json": "a69c131dcd8fe870e1a4ec4e89e83153499051d64ba3cbaf29cead52d3b45c6a",
+    "user_feedback_20261019.json": "44c8c87537bbdfef45b485a9708c0c0d606d99a1167bf463a5b69a95df85d70c"
+  },
+  "checks": {
+    "metric_gate_render_tests": "3 PASS",
+    "go_vet_test_build": "PASS",
+    "cms_tsc_vite": "PASS",
+    "client_tsc_next_build": "PASS",
+    "browser_review_export": "PASS",
+    "video_human_metrics": "PENDING -0/3references",
+    "deployed": false
+  },
+  "comparison_script_sha256": "9649bb96ca83d8c3f3fe8a2076e87abc0f42d3cf42b8bd8483bac9d95f0dc026",
+  "updated_at": "2026-10-19T09:25:25.267181+07:00",
+  "user_content_confirmed_samples": 3,
+  "independently_word_verified_reference_samples": 0,
+  "user_feedback": {
+    "received_at": "2026-10-19T09:23:26.784704+07:00",
+    "source": "user statement in this conversation",
+    "verbatim": "bản nháp 1 và 3 chính xác nhưng mini GPT lại không chuẩn bản 2 nội dung nháp và minitGPT transcript mới đã chính xác",
+    "card_order": [
+      "sample_01",
+      "sample_10",
+      "sample_28"
+    ],
+    "draft_content_confirmed": [
+      "sample_01",
+      "sample_10",
+      "sample_28"
+    ],
+    "candidate_summary_judgments": {
+      "sample_01": "incorrect",
+      "sample_10": "correct",
+      "sample_28": "incorrect"
+    },
+    "candidate_asr_word_level_accuracy_confirmed": false,
+    "reference_confirmation_scope": "content correctness of existing draft text; no independent word-level transcription audit",
+    "numeric_human_score": null,
+    "independent_video_wer_cer": null
+  },
+  "confirmed_draft_diagnostic": "confirmed_draft_minigpt.json",
+  "confirmed_draft_review": "confirmed_draft_review.html",
+  "confirmed_draft_diagnostic_report": "docs/T1.6_confirmed_draft_diagnostic.md"
+}

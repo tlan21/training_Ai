@@ -1,0 +1,24 @@
+{
+  "status": "PENDING — NO HUMAN MEAN ASSIGNED",
+  "completed": 0,
+  "required": 90,
+  "missing": 90,
+  "mean": null,
+  "pilot_threshold_pass": null,
+  "raters": {
+    "rater_1": {
+      "completed": 0,
+      "mean": null
+    },
+    "rater_2": {
+      "completed": 0,
+      "mean": null
+    },
+    "rater_3": {
+      "completed": 0,
+      "mean": null
+    }
+  },
+  "video_human_DoD": "NOT EVALUATED — VIVOS read-speech pilot is not video",
+  "instruction": "Each CSV must be completed by a different independent human rater."
+}

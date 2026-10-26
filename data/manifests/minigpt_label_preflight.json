@@ -1,0 +1,82 @@
+{
+  "status": "MECHANICAL_AUDIT_DONE_V1_TRAINING_REFUSED_HUMAN_AUDIT_PENDING",
+  "base": "D:\\data_training_ai\\minigpt_news\\aligned_summary_v1_reserve_20261019",
+  "base_manifest_sha256": "abd665ce3bf64670a8cd6f505321ec39279611d9a969671e5218c4630d053ee9",
+  "human_audit_sha256": "705ecc7e436c9b423dbd3e22ab512891da0a9ccf2f3cb3fcfad1422f03c2f942",
+  "human_annotations_filled": 0,
+  "duplicates": {
+    "body": {
+      "within_train": 0,
+      "within_val": 0,
+      "shared_train_val": 0
+    },
+    "summary": {
+      "within_train": 0,
+      "within_val": 0,
+      "shared_train_val": 0
+    },
+    "title": {
+      "within_train": 0,
+      "within_val": 0,
+      "shared_train_val": 0
+    }
+  },
+  "invalid_counts": {
+    "train": 50,
+    "val": 3
+  },
+  "old_packet_gate": "53 summaries have invalid sentence endings; prepare a new dataset version",
+  "sanity_checks": [
+    "SANITY gradient <1e-4 PASS",
+    "SANITY AdamW parity <1e-6 PASS",
+    "SANITY BPE10000/10000 PASS",
+    "SANITY MiniGPT toy1batch loss<0.05/generate PASS"
+  ],
+  "sanity_log_sha256": "d62858fa88d6bd294d9ed1dd228f953671a5d934aaa4005142b90a16af4d7314",
+  "script_sha256": "276baefc287e4dbc98eefaefa47f47e149f2e92886b5958678cab6318b2db03f",
+  "current_directory": "D:\\data_training_ai\\minigpt_news\\aligned_summary_v2_20261019",
+  "current_manifest_sha256": "e708d3f08d7851afa2c31b031bb8b1b0b8cf49d0544574339bd436b3059a31d8",
+  "current_train": 956,
+  "current_val": 64,
+  "all53old_defects_excluded": true,
+  "current_duplicates": {
+    "body": {
+      "within_train": 0,
+      "within_val": 0,
+      "shared_train_val": 0
+    },
+    "summary": {
+      "within_train": 0,
+      "within_val": 0,
+      "shared_train_val": 0
+    },
+    "title": {
+      "within_train": 0,
+      "within_val": 0,
+      "shared_train_val": 0
+    }
+  },
+  "encoded_pair_checks": 8160,
+  "production_parity_cases": 4,
+  "weights_changed": false,
+  "current_training_ready": true,
+  "current_bundle_sha256": "c359c54afa8bc156bf2cb0a827a70496b386a455388327f8b7b03a63b407e42f",
+  "report": "docs/T1.6_label_preflight.md",
+  "verification": {
+    "python_tests": 41,
+    "subtests": 4,
+    "cpu_sanity_items": 4,
+    "go_vet_test_build": "PASS",
+    "cms_tsc_vite": "PASS",
+    "client_tsc_next_build_no_lint": "PASS",
+    "gpu_training": "NOT RUN",
+    "live_http_e2e": "NOT RUN - Docker engine unavailable"
+  },
+  "current_human_audit_status": "USER_CONFIRMED48_VIA_CHAT",
+  "user_confirmation_record": "data/manifests/minigpt_aligned_user_confirmation.json",
+  "current_training_job": "traininghighlight/ai-core-minigpt-replay-v1",
+  "current_training_status": "COMPLETE_OUTPUT_VERIFIED_NOT_DEPLOYED",
+  "current_candidate_quality_status": "SUMMARY_PROXY_GUARD_PASS_REAL_VIDEO_DIAGNOSTIC_ERRORS_NOT_RECOMMENDED",
+  "current_training_report": "docs/T1.6_mixed_replay.md",
+  "current_video_pilot_report": "docs/T1.6_mixed_video_pilot.md"
+}

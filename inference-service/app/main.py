@@ -54,22 +54,22 @@ async def validation_handler(request: Request, exc: RequestValidationError):
 
 @app.post("/v1/completions", response_model=schemas.CompletionResponse, dependencies=[Depends(require_bearer)])
 async def completions(req: schemas.CompletionRequest):
-    return await gpu_queue.submit(lambda: services.run_completion(req))
+    return await gpu_queue.submit(lambda: services.run_completion(req), "summary")
 
 
 @app.post("/v1/asr/completions", response_model=schemas.ASRResponse, dependencies=[Depends(require_bearer)])
 async def asr(req: schemas.ASRRequest):
-    return await gpu_queue.submit(lambda: services.run_asr(req))
+    return await gpu_queue.submit(lambda: services.run_asr(req), "asr")
 
 
 @app.post("/v1/highlight/completions", response_model=schemas.HighlightResponse, dependencies=[Depends(require_bearer)])
 async def highlight(req: schemas.HighlightRequest):
-    return await gpu_queue.submit(lambda: services.run_highlight(req))
+    return await gpu_queue.submit(lambda: services.run_highlight(req), "highlight")
 
 
 @app.post("/v1/vision/completions", response_model=schemas.VisionResponse, dependencies=[Depends(require_bearer)])
 async def vision(req: schemas.VisionRequest):
-    return await gpu_queue.submit(lambda: services.run_vision(req))
+    return await gpu_queue.submit(lambda: services.run_vision(req), "vision/siamese")
 
 
 # ---- nhẹ (encode + Milvus) — không chiếm GPU lâu ----

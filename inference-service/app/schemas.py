@@ -7,8 +7,8 @@ from pydantic import BaseModel, Field
 class CompletionRequest(BaseModel):
     model: str = "primitive-gpt-summarizer"
     prompt: str
-    max_tokens: int = 150
-    temperature: float = 0.7
+    max_tokens: int = Field(150, ge=1)
+    temperature: float = Field(0.7, ge=0, le=2)
     top_p: float = 0.9
     frequency_penalty: float = 0.0
     presence_penalty: float = 0.0
