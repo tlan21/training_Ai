@@ -14,7 +14,7 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | AI-07 | T1.8 | Vận hành runtime :8001 thật cho Codex gọi HTTP (+ sửa UTF-8 Windows) | DONE (2026-10-26; :8001 UP; ingest path ⇐ HC-05) | AI-10; Milvus stack Codex (UP) |
 | AI-11 | T1.8 / T4.2 | HO-01: `video_id` tùy chọn cho Vision + index frame từ data URI 1 fps (contract minor) | DONE (2026-10-26) | HO-01 (Codex chọn HTTP media) |
 | AI-13 | T1.7 / T1.8 | D18: recommendation inference không trả metadata giả + `recommendation_mode` | DONE (2026-10-26; lên master ở release kế) | D18 |
-| AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | TODO (roadmap) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
+| AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | IN_PROGRESS (2026-10-26; 12a/12c) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | DONE (2026-10-26; sandbox + artifact; product → AI-12 theo D18) | HC-04 (sandbox READY) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a TODO · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
 | AI-03 | T1.6 | Mini-GPT: 03a Claude soạn summary 40 clip · 03b người duyệt · 03c train/eval | 03a TODO · 03b BLOCKED · 03c BLOCKED | 03b ⇐ user; 03c ⇐ 03b |
@@ -183,7 +183,7 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   ```
 
 ### AI-12 — Two-Tower v2 cho sản phẩm (D18 phương án B, roadmap)
-- T gốc: T1.7 | Owner: claude | Status: TODO (roadmap; không chặn task tích hợp nào)
+- T gốc: T1.7 | Owner: claude | Status: IN_PROGRESS (2026-10-26; 12a/12c data contract + loader; không chặn task tích hợp nào)
 - Depends on: dữ liệu tương tác hợp lệ của sản phẩm (Codex ghi `user_interactions`, đề xuất INT-13) | Blocks: recommendation `personalized` trên sản phẩm
 - Giữ nguyên: Two-Tower v1 (`two_tower-ml100k-v1`, SHA `f28c3794…`) làm baseline nghiên cứu trong sandbox; không xóa model/checkpoint/dữ liệu.
 - Bước (mỗi bước có test/bằng chứng riêng; chỉ AI-12f mới chạm sản phẩm):
@@ -197,9 +197,13 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
     baseline bắt buộc: popularity (chính là mode MVP); metric Recall@10, NDCG@10, coverage, CI95 bootstrap.
   - **12e Train/test/export:** train T4/RTX 3060 (VRAM ≤ 8 GB), unit test toán học, export vector vào **sandbox trước**, manifest version + SHA.
   - **12f Phát hành:** contract minor (personalized cho product), smoke :8001, handoff Codex; nạp collection sản phẩm chỉ khi quality gate đạt + user duyệt.
-- **Quality gate (đề xuất, user duyệt trước khi train):** (1) đủ dữ liệu: ≥ 200 user và ≥ 5 000 tương tác hợp lệ sau lọc, ≥ 5 positive/user cho user eval;
-  (2) Recall@10 và NDCG@10 vượt popularity với CI95 không chứa 0 trên split thời gian; (3) coverage ≥ 20% catalogue; (4) không rò rỉ test;
-  (5) inference ≤ 50 ms/user CPU. Chưa đạt → giữ popularity, không đánh personalized.
+- **Quality gate (user duyệt D19, 3 giai đoạn):**
+  - `TRAIN_EXPERIMENTAL`: train thử với dữ liệu hợp lệ hiện có; artifact chỉ sandbox.
+  - `EVAL_READY`: ≥ 200 user, ≥ 5 000 tương tác hợp lệ, ≥ 5 positive/user trong tập eval. Chưa đạt → vẫn thử nghiệm, không tuyên bố kết quả đủ tin cậy.
+  - `PRODUCTION_READY`: Recall@10 và NDCG@10 > Popularity trên cùng tập; CI95 (bootstrap) của chênh lệch có cận dưới > 0; coverage ≥ 20%;
+    p95 CPU inference ≤ 50 ms/user trên cấu hình benchmark ghi rõ. Lên production chỉ khi user duyệt.
+  - Bắt buộc: split theo thời gian, chống leakage/trùng/tương tác không hợp lệ; báo cáo kích thước mẫu, tập candidate, phương pháp CI, benchmark, cold-start.
+    Không pseudo-label từ model ngoài. Ngưỡng xem lại nếu quy mô/phân phối thực tế không phù hợp (ghi lý do, user duyệt).
 - Evidence: — | Commits: — | Checkpoint: —
 
 ### AI-09 — Two-Tower recommendation phía AI (D14)
