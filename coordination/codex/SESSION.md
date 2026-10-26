@@ -55,3 +55,8 @@ Changed: CMS auth+login parity; real gates/progress; own ingest package+compose/
 Verified:41CMS E2E+2live auth; Go vet/test/build; mock pipeline/restart persistence; source image14.31kB+3DSP tests; compose/type/diff checks
 Contract touched: no public or AI schema change; AI-API v1.2 consumed from Release#2
 Next safe task: INT-11 after HO-03; INT-13 after capacity recovery
+
+## INT-15 contract checkpoint
+- Public0.3.1 existing POST /api/interactions now documents roleclient403, existing hidden media404, duration0..int32 and one watch_time/session/no seek.
+- Regenerated Go/CMS/Client from OpenAPI; Go generated-package compile +CMS/Client tsc PASS. Runtime enforcement is next; not yet DONE.
+- INT-16 implementation c30c664,52browser tests PASS. Next provenance/read-only export consumes HC-09 ttv2-data-v1.1.

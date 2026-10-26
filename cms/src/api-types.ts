@@ -839,7 +839,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Ghi tương tác (tín hiệu Two-Tower) */
+        /**
+         * Ghi tương tác (tín hiệu Two-Tower)
+         * @description Chỉ role client. Một watch_time cho mỗi phiên xem, không heartbeat hoặc thời gian tua; các loại khác có duration_watched bằng 0.
+         */
         post: {
             parameters: {
                 query?: never;
@@ -867,6 +870,8 @@ export interface paths {
                     content?: never;
                 };
                 401: components["responses"]["Unauthorized"];
+                403: components["responses"]["Forbidden"];
+                404: components["responses"]["NotFound"];
                 422: components["responses"]["ValidationError"];
             };
         };

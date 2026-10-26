@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Video AI Platform — Public + CMS API
-  version: 0.3.0
+  version: 0.3.1
   description: >
     Contract-first (master plan §2). Nguồn sự thật cho gateway Go (oapi-codegen)
     và FE types (openapi-typescript). Điểm highlight thang 0–100; similarity/score 0–1.
@@ -399,6 +399,7 @@ paths:
     post:
       tags: [interactions]
       summary: Ghi tương tác (tín hiệu Two-Tower)
+      description: Chỉ role client. Một watch_time cho mỗi phiên xem, không heartbeat hoặc thời gian tua; các loại khác có duration_watched bằng 0.
       requestBody:
         required: true
         content:
@@ -412,10 +413,12 @@ paths:
                 interaction_type:
                   type: string
                   enum: [click, watch_time, like, share, skip, save]
-                duration_watched: { type: integer, nullable: true }
+                duration_watched: { type: integer, nullable: true, minimum: 0, maximum: 2147483647 }
       responses:
         "201": { description: Đã ghi }
         "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
         "422": { $ref: "#/components/responses/ValidationError" }
 
   # ---------------- 2.3 CMS videos ----------------
