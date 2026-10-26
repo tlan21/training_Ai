@@ -173,7 +173,7 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - Evidence (VERIFIED-NOW 2026-10-26, `coordination/claude/evidence/AI-13_2026-10-26/`): test_api RED 2 → GREEN; suite 53 passed / 7 skipped;
   sandbox :8011 200 personalized + metadata null; :8001 restart (PID 16808) 503 product + smoke 6/6; OpenAPI title/thumbnail nullable + recommendation_mode.
   Contract v1.3-rc1 DRAFT + REL trong HANDOFF_OUT.
-- Commits: cafd788 (task), (commit AI-13) | Checkpoint:
+- Commits: cafd788 (task), 26d1e48 (code + docs) | Checkpoint:
   ```
   Lane: claude
   Changed: inference-service/app/{schemas,services}.py, tests/test_api.py, coordination/claude/api/{AI_API_CONTRACT.md,inference_openapi.json,TWO_TOWER_ARTIFACT.md,examples/recommendation.sandbox_response.json}, HANDOFF_OUT, evidence
