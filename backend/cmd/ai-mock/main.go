@@ -1,4 +1,4 @@
-// ai-mock serves deterministic AI-API v0.1 fixtures; it never loads checkpoints.
+// ai-mock serves deterministic AI-API fixtures; it never loads checkpoints.
 package main
 
 import (

@@ -23,8 +23,9 @@ func TestClient_DecodesRealSchemasAndBearer(t *testing.T) {
 		case "/v1/vision/completions":
 			var body struct {
 				Keyframes []string `json:"keyframes"`
+				VideoID   string   `json:"video_id"`
 			}
-			if err := json.NewDecoder(r.Body).Decode(&body); err != nil || len(body.Keyframes) != 1 || body.Keyframes[0] != "data:text/plain; charset=utf-8;base64,"+base64.StdEncoding.EncodeToString([]byte("frame fixture")) {
+			if err := json.NewDecoder(r.Body).Decode(&body); err != nil || len(body.Keyframes) != 1 || body.VideoID != "vid_test" || body.Keyframes[0] != "data:text/plain; charset=utf-8;base64,"+base64.StdEncoding.EncodeToString([]byte("frame fixture")) {
 				t.Errorf("vision must send file bytes, not a Docker path: %+v %v", body, err)
 			}
 			_, _ = w.Write([]byte(`{"category_suggestion":"bong_da","embeddings_256":[[0.1,0.2]]}`))
@@ -41,11 +42,15 @@ func TestClient_DecodesRealSchemasAndBearer(t *testing.T) {
 	defer server.Close()
 	client := New(server.URL, "sk-local-test")
 	ctx := context.Background()
-	frame := filepath.Join(t.TempDir(), "00000000.jpg")
+	directory := filepath.Join(t.TempDir(), "vid_test")
+	if err := os.Mkdir(directory, 0700); err != nil {
+		t.Fatal(err)
+	}
+	frame := filepath.Join(directory, "00000000.jpg")
 	if err := os.WriteFile(frame, []byte("frame fixture"), 0600); err != nil {
 		t.Fatal(err)
 	}
-	vision, err := client.Vision(ctx, []string{frame})
+	vision, err := client.Vision(ctx, []string{directory})
 	if err != nil || vision.CategorySuggestion != "bong_da" || len(vision.Embeddings256) != 1 {
 		t.Fatalf("vision: %+v, %v", vision, err)
 	}

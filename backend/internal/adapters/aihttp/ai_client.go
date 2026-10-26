@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 	"traning_ai/backend/internal/domain"
 )
@@ -77,7 +78,14 @@ func (c *Client) Vision(ctx context.Context, paths []string) (*domain.VisionResu
 		}
 		keyframes[i] = "data:" + http.DetectContentType(data) + ";base64," + base64.StdEncoding.EncodeToString(data)
 	}
-	err := c.request(ctx, "/v1/vision/completions", map[string]any{"keyframes": keyframes}, &result)
+	input := map[string]any{"keyframes": keyframes}
+	if len(paths) > 0 {
+		videoID := filepath.Base(filepath.Dir(paths[0]))
+		if strings.HasPrefix(videoID, "vid_") {
+			input["video_id"] = videoID
+		}
+	}
+	err := c.request(ctx, "/v1/vision/completions", input, &result)
 	return &result, err
 }
 func (c *Client) ASR(ctx context.Context, audioURL, language string) (*domain.ASRResult, error) {

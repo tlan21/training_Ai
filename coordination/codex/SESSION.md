@@ -68,3 +68,10 @@ INT-02 → INT-04 (contract/types trước, sau đó backend/UI). INT-03 chờ A
 - INT-11 IN_PROGRESS for AI-API v1.2 optional video_id: Claude published the field and index behavior; consume in existing request builder + unit test.
 - Keep all temp files on backend/.tmp (GOTMPDIR/TMP/TEMP) to avoid full C:. No Docker operation, image build, inference switch or real integration claim.
 - INT-03 stays BLOCKED_RESOURCE; UI contract decision and resource/cleanup approval both pending.
+
+## INT-11 v1.2 source checkpoint
+- aihttp now sends optional video_id derived from canonical ingest parent with the complete data URI frame array.
+- Claude published v1.2 schema/index semantics; no unilateral AI contract/code edit.
+- GOMAXPROCS=1 GOTMPDIR/TMP/TEMP=backend/.tmp go test -p1 aihttp/mocks/cmd/gateway: 3 packages PASS.
+- Source newer than the prepared Linux gateway binary; rebuild after capacity recovery before deployment/test.
+- Stalled own Docker CLI stop/read-only disk-scan requests canceled; daemon state still needs inspection. Last HTTP checks all 200.
