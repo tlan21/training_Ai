@@ -12,7 +12,20 @@ from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-EXPORT_VERSION = "ttv2-data-v1"
+# v1.1: manifest.provenance required + per-field schema check (HC-09). No bundle in v1 was ever produced.
+EXPORT_VERSION = "ttv2-data-v1.1"
+REJECT_REASONS = ("bad_id_format", "unknown_user", "unknown_video", "bad_type", "bad_timestamp", "after_snapshot",
+                  "before_user_created", "video_not_visible", "clip_video_mismatch", "bad_duration")
+_STR, _NUM, _OPT = (str,), (int, float), (str, type(None))
+SCHEMA = {
+    "users.jsonl": {"user_id": _STR, "created_at": _STR, "preferred_category_ids": (list,)},
+    "categories.jsonl": {"category_id": _STR, "name": _STR},
+    "videos.jsonl": {"video_id": _STR, "category_id": _OPT, "duration_seconds": _NUM, "visible_to_client": (bool,), "created_at": _STR},
+    "clips.jsonl": {"clip_id": _STR, "video_id": _STR, "start_time": _NUM, "end_time": _NUM, "status": _STR},
+    "interactions.jsonl": {"interaction_id": (int,), "user_id": _STR, "video_id": _STR, "clip_id": _OPT,
+                           "interaction_type": _STR, "duration_watched": (int,), "created_at": _STR},
+}
+PROVENANCE_KEYS = ("source", "exporter", "environment")
 # v2: watch rules made mutually exclusive — v1 called ≥30 s positive even when it was <10% of a long video.
 LABEL_VERSION = "ttv2-labels-v2"
 FILES = ("users.jsonl", "categories.jsonl", "videos.jsonl", "clips.jsonl", "interactions.jsonl")
@@ -38,14 +51,29 @@ class Export:
     clips: dict
     interactions: list
     snapshot_at: datetime
+    provenance: dict | None = None
+
+
+def _check_schema(name: str, rows: list) -> None:
+    """Shape errors mean a broken exporter, not bad user behaviour → fail the whole bundle instead of dropping rows."""
+    for n, row in enumerate(rows, 1):
+        for key, types in SCHEMA[name].items():
+            if key not in row:
+                raise ValueError(f"{name} line {n}: missing field {key}")
+            value = row[key]
+            if not isinstance(value, types) or (isinstance(value, bool) and bool not in types):
+                raise ValueError(f"{name} line {n}: field {key} has type {type(value).__name__}")
 
 
 def load_export(directory) -> Export:
-    """Read one export bundle; every file must match the manifest row count and sha256."""
+    """Read one export bundle: version, provenance, row count + sha256 per file, then per-field schema."""
     root = Path(directory)
     manifest = json.loads((root / "manifest.json").read_text(encoding="utf-8"))
     if manifest.get("export_version") != EXPORT_VERSION:
         raise ValueError(f"export_version {manifest.get('export_version')!r} != {EXPORT_VERSION}")
+    prov = manifest.get("provenance")
+    if not isinstance(prov, dict) or not all(isinstance(prov.get(k), str) and prov[k] for k in PROVENANCE_KEYS):
+        raise ValueError(f"manifest.provenance must have non-empty {PROVENANCE_KEYS}")
     rows = {}
     for name in FILES:
         data = (root / name).read_bytes()
@@ -55,6 +83,7 @@ def load_export(directory) -> Export:
         rows[name] = [json.loads(line) for line in data.decode("utf-8").splitlines() if line.strip()]
         if len(rows[name]) != meta["rows"]:
             raise ValueError(f"{name}: {len(rows[name])} rows, manifest says {meta['rows']}")
+        _check_schema(name, rows[name])
     return Export(
         users={u["user_id"]: u for u in rows["users.jsonl"]},
         categories=rows["categories.jsonl"],
@@ -62,6 +91,7 @@ def load_export(directory) -> Export:
         clips={c["clip_id"]: c for c in rows["clips.jsonl"]},
         interactions=rows["interactions.jsonl"],
         snapshot_at=parse_ts(manifest["snapshot_at"]),
+        provenance=prov,
     )
 
 

@@ -23,7 +23,8 @@ def _write_export(tmp_path, interactions, users=None, videos=None, clips=None, s
         "clips.jsonl": clips or [{"clip_id": "clp_1", "video_id": "vid_1", "start_time": 0.0, "end_time": 20.0, "status": "published"}],
         "interactions.jsonl": interactions,
     }
-    manifest = {"export_version": pi.EXPORT_VERSION, "generated_at": snapshot, "snapshot_at": snapshot, "files": {}}
+    manifest = {"export_version": pi.EXPORT_VERSION, "generated_at": snapshot, "snapshot_at": snapshot, "files": {},
+                "provenance": {"source": "product_postgres", "exporter": "test-fixture@0000000", "environment": "test"}}
     for name, rows in files.items():
         data = "".join(json.dumps(r) + "\n" for r in rows).encode()
         (tmp_path / name).write_bytes(data)
@@ -42,6 +43,37 @@ def _ev(i, user, video, kind, minute, watched=0, clip=None):
 def test_manifest_checksum_is_enforced(tmp_path):
     with pytest.raises(ValueError, match="sha256"):
         pi.load_export(_write_export(tmp_path, [], tamper=True))
+
+
+def test_provenance_is_required_and_recorded(tmp_path):
+    root = _write_export(tmp_path, [])
+    assert pi.load_export(root).provenance["source"] == "product_postgres"
+    man = json.loads((root / "manifest.json").read_text())
+    del man["provenance"]
+    (root / "manifest.json").write_text(json.dumps(man))
+    with pytest.raises(ValueError, match="provenance"):
+        pi.load_export(root)
+
+
+@pytest.mark.parametrize("field,value,match", [("video_id", None, "video_id"), ("duration_watched", "10", "duration_watched"),
+                                               ("interaction_id", None, "interaction_id")])
+def test_schema_violations_are_rejected_before_cleaning(tmp_path, field, value, match):
+    row = _ev(1, "usr_a", "vid_1", "like", 10)
+    if value is None:
+        del row[field]
+    else:
+        row[field] = value
+    with pytest.raises(ValueError, match=match):
+        pi.load_export(_write_export(tmp_path, [row]))
+
+
+def test_verify_report_lists_every_reject_reason(tmp_path):
+    from ai_core.scripts.verify_ttv2_bundle import verify
+    rep = verify(_write_export(tmp_path, [_ev(1, "usr_a", "vid_1", "like", 10), _ev(2, "usr_zzz", "vid_1", "like", 11)]))
+    assert set(rep["dropped"]) == set(pi.REJECT_REASONS) | {"duplicate"}
+    assert rep["dropped"]["unknown_user"] == 1 and rep["rows"]["interactions.jsonl"] == 2 and rep["valid_interactions"] == 1
+    assert rep["provenance"]["exporter"] == "test-fixture@0000000" and rep["stage"] == "TRAIN_EXPERIMENTAL"
+    assert rep["export_version"] == pi.EXPORT_VERSION and rep["label_version"] == pi.LABEL_VERSION
 
 
 def test_invalid_rows_are_dropped_with_reasons(tmp_path):

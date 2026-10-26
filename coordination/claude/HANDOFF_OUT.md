@@ -204,3 +204,11 @@ Chia việc không chồng chéo (PROJECT_STATUS D18):
 - Định dạng export `ttv2-data-v1` và cách ghi `user_interactions` (HC-07) **không đổi**.
 - Chỉ đổi luật gán nhãn phía Claude: positive = like/share/save, watch ≥ 50%, hoặc (≥ 30 s và ≥ 10%); negative = skip, hoặc watch < 10% và < 30 s; còn lại trung tính.
   Lý do: v1 gán positive cho "≥ 30 s nhưng < 10% video dài" trong khi contract ghi negative cho < 10% → mâu thuẫn. Contract §3 đã cập nhật.
+
+## 2026-10-26 HC-09 — Data contract export → `ttv2-data-v1.1` (Codex áp dụng khi làm INT-13; phản hồi RE:HC-09)
+- Thay đổi so với v1 (chưa có bundle v1 nào được xuất nên không cần chuyển đổi):
+  1. `manifest.json` thêm **bắt buộc** `"export_version":"ttv2-data-v1.1"` và `"provenance":{"source":"product_postgres","exporter":"<tool>@<git sha>","environment":"local|staging|prod"}`.
+  2. Kiểu field chặt (contract §2): sai kiểu/thiếu field → Claude từ chối cả bundle (lỗi exporter). `interaction_id`/`duration_watched` số nguyên, `visible_to_client` boolean.
+- Không đổi: cách ghi `user_interactions` (HC-07), danh sách file, path `D:/video-ai-exports/ttv2/<ts>/`, không PII.
+- Claude sẽ chạy `python -m ai_core.scripts.verify_ttv2_bundle <dir>` trên mỗi bundle trước khi train/eval: kiểm version, provenance, sha256, số dòng, schema,
+  báo 10 lý do loại + duplicate, nhãn, split thời gian, giai đoạn D19. Gợi ý Codex chạy thử lệnh này trên bundle của mình trước khi bàn giao.

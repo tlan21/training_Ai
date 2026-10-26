@@ -3,7 +3,8 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
-- Task: AI-12 IN_PROGRESS — 12a/12c DONE (b261600); chờ bundle INT-13 cho 12b/12d. Release #3 (v1.3) lên master theo D20. Runtime :8001 UP PID 16808 (restart AI-13).
+- Task: AI-12 IN_PROGRESS — phần độc lập xong (12a/12c/12b/12d code + verify bundle `ttv2-data-v1.1`); chờ bundle thật INT-13 (HC-07/08/09).
+  Kế (D: user mục 3): AI-04 / AI-03a / AI-02a theo dependency. Runtime :8001 UP PID 16808 (restart AI-13).
 - Release #2 đã lên `master` 70bf011 (user duyệt 2026-10-26). AI-API v1.2: 6 endpoint API_READY, recommendation DRAFT.
 - Kế an toàn: AI-09 (đặc tả embedding/schema/version; chờ Codex báo sandbox UP), AI-04 (VRAM T4 sơ bộ), AI-03a, AI-02a.
 - **Runtime :8001: UP từ 2026-10-26 (restart cho AI-11), PID 21520** (`inference-service/run_local_8001.cmd`, log `D:/tmp/ai07_runtime/inference_8001.log`).

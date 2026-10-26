@@ -183,7 +183,8 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   ```
 
 ### AI-12 — Two-Tower v2 cho sản phẩm (D18 phương án B, roadmap)
-- T gốc: T1.7 | Owner: claude | Status: IN_PROGRESS (2026-10-26) — 12a/12c DONE (data contract + loader); 12b–12f chờ bundle thật (INT-13); không chặn task tích hợp
+- T gốc: T1.7 | Owner: claude | Status: IN_PROGRESS (2026-10-26) — phần độc lập dữ liệu thật xong: 12a/12c (contract `ttv2-data-v1.1` + nhãn `ttv2-labels-v2`),
+  12b/12d (feature inductive, train loop, harness, gate D19, verify bundle). Còn: chạy trên bundle thật INT-13 (12d thật, 12e, 12f) — chưa đạt acceptance, không DONE
 - Depends on: dữ liệu tương tác hợp lệ của sản phẩm (Codex ghi `user_interactions`, đề xuất INT-13) | Blocks: recommendation `personalized` trên sản phẩm
 - Giữ nguyên: Two-Tower v1 (`two_tower-ml100k-v1`, SHA `f28c3794…`) làm baseline nghiên cứu trong sandbox; không xóa model/checkpoint/dữ liệu.
 - Bước (mỗi bước có test/bằng chứng riêng; chỉ AI-12f mới chạm sản phẩm):
@@ -205,9 +206,12 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   - Bắt buộc: split theo thời gian, chống leakage/trùng/tương tác không hợp lệ; báo cáo kích thước mẫu, tập candidate, phương pháp CI, benchmark, cold-start.
     Không pseudo-label từ model ngoài. Ngưỡng xem lại nếu quy mô/phân phối thực tế không phù hợp (ghi lý do, user duyệt).
 - Evidence 12a/12c (VERIFIED-NOW 2026-10-26, `coordination/claude/evidence/AI-12_2026-10-26/`): data contract `coordination/claude/api/TWO_TOWER_V2_DATA_CONTRACT.md`
-  (`ttv2-data-v1`); `ai_core/training/datasets/product_interactions.py` — test RED (module thiếu) → 8/8 PASS (checksum, 9 lý do loại, dedup 30 s, nhãn,
+  (`ttv2-data-v1`); `ai_core/training/datasets/product_interactions.py` — test RED (module thiếu) → 8/8 PASS (checksum, lý do loại [đính chính: 10 lý do + duplicate, không phải 9], dedup 30 s, nhãn,
   split thời gian không leakage + cold-start, vocabulary versioned, gate D19); ai-core 297 passed; `dataset_spec.md` §3.6 cập nhật; HC-07 cho Codex.
-- Commits: 7dc80ac (D19–D21, task), b261600 (12a/12c) | Kế: 12b (encoder inductive) + 12d (eval harness, baseline Popularity) trên bundle thật khi INT-13 có dữ liệu;
+- Evidence 12b/12d + labels v2 + verify (VERIFIED-NOW 2026-10-26, `evidence/AI-12_2026-10-26/README_12bd.md`, SYNTHETIC = chỉ kiểm logic):
+  nhãn v2 RED→GREEN, lưới 7 980 cặp 0 xung đột; `two_tower_v2.py` 8 test (feature chỉ từ train, oracle, loại item đã xem, popularity train-only, bootstrap,
+  gate từng điều kiện, synthetic không qua production, train > untrained +0.2); `verify_ttv2_bundle.py` + schema/provenance 5 test; ai-core 311 passed.
+- Commits: 7dc80ac (D19–D21, task), b261600 (12a/12c), e65bb74 (labels v2, HC-08), 920bf9d (12b/12d), (commit v1.1 verify) | Kế: 12b (encoder inductive) + 12d (eval harness, baseline Popularity) trên bundle thật khi INT-13 có dữ liệu;
   có thể chuẩn bị harness với dữ liệu tổng hợp (không dùng làm kết quả).
 
 ### AI-09 — Two-Tower recommendation phía AI (D14)
