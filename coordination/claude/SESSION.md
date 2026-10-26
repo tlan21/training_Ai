@@ -3,7 +3,9 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
-- Task: AI-07 (IN_PROGRESS 2026-10-26) — AI-10 DONE (0e5a3da). Bước: sửa UTF-8 Windows (test tái hiện) → chạy :8001 độc lập (Start-Process) → smoke từng model → contract 1c UP
+- Task: — (AI-10, AI-07 DONE). Kế: chuẩn bị release #2 (gate test), dừng chờ user duyệt push.
+- **Runtime :8001: UP từ 2026-10-26 14:47, PID 26396** (`inference-service/run_local_8001.cmd`, log `D:/tmp/ai07_runtime/inference_8001.log`).
+  Dừng: `taskkill //PID <pid> //F` (pid từ `netstat -ano | grep :8001`). Khởi lại: contract §1c.
 - Bước đã xong: —
 - Bước kế: —
 - File đang sửa: —

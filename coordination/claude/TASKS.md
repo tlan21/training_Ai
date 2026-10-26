@@ -11,7 +11,7 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | AI-06 | T1.8 | **Ưu tiên 1** — Xác minh nguồn checkpoint + thang sẵn sàng 6 model | DONE (2026-10-26) | — |
 | AI-01 | T1.8 | Phát hành AI API Contract v1 (API_READY) | REVIEW (v1.0-rc1 DRAFT; API_READY ⇐ AI-07 + release, D16) | AI-06 |
 | AI-10 | T1.8 | Health/degraded đúng ngữ nghĩa + dependency status + tự phục hồi (D15) | DONE (2026-10-26) | — |
-| AI-07 | T1.8 | Vận hành runtime :8001 thật cho Codex gọi HTTP (+ sửa UTF-8 Windows) | IN_PROGRESS (2026-10-26) | AI-10; Milvus stack Codex (UP) |
+| AI-07 | T1.8 | Vận hành runtime :8001 thật cho Codex gọi HTTP (+ sửa UTF-8 Windows) | DONE (2026-10-26; :8001 UP; ingest path ⇐ HC-05) | AI-10; Milvus stack Codex (UP) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | TODO | HC-04 (Codex: mapping ID + collection) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a TODO · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
 | AI-03 | T1.6 | Mini-GPT: 03a Claude soạn summary 40 clip · 03b người duyệt · 03c train/eval | 03a TODO · 03b BLOCKED · 03c BLOCKED | 03b ⇐ user; 03c ⇐ 03b |
@@ -151,7 +151,7 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - Evidence: — | Commits: — | Checkpoint: —
 
 ### AI-07 — Vận hành runtime :8001 thật cho Codex
-- T gốc: T1.8 | Owner: claude | Status: IN_PROGRESS (2026-10-26)
+- T gốc: T1.8 | Owner: claude | Status: DONE (2026-10-26)
 - Lý do: quyết định user 2026-10-26 — Codex không sao chép/quản lý checkpoint; tích hợp AI chỉ qua HTTP :8001.
   → Claude sở hữu tiến trình inference-service chạy checkpoint thật.
 - Depends on: AI-06 (DONE), AI-10; Milvus từ stack Codex lắng nghe `localhost:19530` (UP theo RE:HC-03). | Blocks: INT-01 (phần E2E thật), INT-03, công bố API_READY (D16).
@@ -161,7 +161,22 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - D16: kiểm model loading, endpoint, health, readiness, request/response, error handling; ghi kết quả từng model, không READY model chưa chạy.
 - Thêm phạm vi (user duyệt 2026-10-26 sau AI-06): sửa trong code lỗi Windows stdout cp1252 (`services._warn` print tiếng Việt →
   `UnicodeEncodeError` → 500 plain-text thay vì 503 envelope); có test tái hiện. Tới lúc đó chạy service với `PYTHONUTF8=1`.
-- Evidence: — | Commits: — | Checkpoint: —
+- Evidence (VERIFIED-NOW 2026-10-26, `coordination/claude/evidence/AI-07_2026-10-26/README.md`):
+  - UTF-8: `tests/test_stdout_encoding.py` RED (`UnicodeEncodeError … 'ỗ'`) → `app/__init__.py` → GREEN; suite 47 passed / 7 skipped không có PYTHONUTF8.
+  - Runtime :8001 qua `run_local_8001.cmd` + Start-Process (PID 26396), startup production, Milvus thật; contract §1c ghi lệnh/log/trạng thái.
+  - Smoke :8001 media thật 6/6 (examples sinh lại từ :8001) + synthetic 6/6; `/health` stub_mode=false, 6 model, degraded=[],
+    dependencies {recommendation_index: missing_collection, visual_index: ok}; log 0 UnicodeEncodeError.
+  - Docker → `host.docker.internal:8001/health` 200 (từ `video-ai-gateway-1`, chỉ đọc).
+  - Từng model: vit/asr_ctc/highlight_fusion/minigpt/siamese chạy; two_tower nạp nhưng recommendation 503 (collection chưa có, D14) → không READY.
+  - Giới hạn: VRAM ≤4 GB chưa đo (CPU-only, AI-04); ingest `/srv/work` path ⇐ HC-05 (Codex chọn phương án).
+- Commits: cdb022f (nhận task), a970368 (UTF-8 fix + runtime + evidence + HC-05) | Checkpoint:
+  ```
+  Lane: claude
+  Changed: inference-service/app/__init__.py, inference-service/run_local_8001.cmd, inference-service/tests/test_stdout_encoding.py, coordination/claude/{api/**,evidence/AI-07_2026-10-26/**,HANDOFF_OUT.md,TASKS.md,SESSION.md}
+  Verified: encoding test RED→GREEN; suite 47 passed 7 skipped; :8001 smoke real 6/6 + synthetic 6/6; Docker→:8001 health 200
+  Contract touched: yes (v1.1-rc1 DRAFT §1b/§1c runtime; schema không đổi)
+  Next safe task: release (user duyệt) → công bố API_READY; song song AI-09 phần đặc tả
+  ```
 
 ### AI-05 — Số liệu evaluation luận án (T5.3 phần AI)
 - T gốc: T5.3 | Owner: claude | Status: TODO
