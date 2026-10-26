@@ -1,0 +1,15 @@
+{
+  "id": "traininghighlight/ai-vram-t4-v1",
+  "title": "ai-vram-t4-v1",
+  "code_file": "run_vram_t4.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "dataset_sources": [
+    "traininghighlight/ai-vram-t4-v1"
+  ],
+  "competition_sources": [],
+  "kernel_sources": []
+}
