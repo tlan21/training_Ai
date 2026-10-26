@@ -80,12 +80,18 @@ def main():
     if cuda and not torch.cuda.is_available():
         raise SystemExit("CUDA not available")
 
+    def smi_used():
+        """Whole-GPU used MiB as nvidia-smi sees it — includes the CUDA context the PyTorch allocator does not count."""
+        out = subprocess.run(["nvidia-smi", "--query-gpu=memory.used", "--format=csv,noheader,nounits"], capture_output=True, text=True).stdout
+        return float(out.split()[0]) if out.strip() else None
+
     def mem():
         if not cuda:
             return {}
         torch.cuda.synchronize()
         return {"allocated_mib": torch.cuda.memory_allocated() / 2**20, "reserved_mib": torch.cuda.memory_reserved() / 2**20,
-                "peak_allocated_mib": torch.cuda.max_memory_allocated() / 2**20, "peak_reserved_mib": torch.cuda.max_memory_reserved() / 2**20}
+                "peak_allocated_mib": torch.cuda.max_memory_allocated() / 2**20, "peak_reserved_mib": torch.cuda.max_memory_reserved() / 2**20,
+                "smi_used_mib": smi_used()}
 
     env = {"python": platform.python_version(), "torch": torch.__version__, "device": args.device, "platform": platform.platform()}
     if cuda:
@@ -94,6 +100,7 @@ def main():
                 "driver": subprocess.run(["nvidia-smi", "--query-gpu=driver_version", "--format=csv,noheader"],
                                          capture_output=True, text=True).stdout.strip()}
         torch.cuda.reset_peak_memory_stats()
+        env["smi_used_context_only_mib"] = smi_used()             # CUDA context initialised, no model yet
 
     from app.registry import registry
     from app import schemas, services, visual_index
@@ -144,7 +151,8 @@ def main():
                           "peak_reserved_mib_any_request": peak,
                           "peak_allocated_mib_any_request": max((q.get("peak_allocated_mib", 0) for q in requests), default=0),
                           "tail_allocated_mib": requests[-1].get("allocated_mib"),
-                          "under_4gib": peak <= 4096 if cuda else None}}
+                          "peak_smi_used_mib": max((q.get("smi_used_mib") or 0 for q in [load, *requests]), default=0),
+                          "under_4gib": max(peak, max((q.get("smi_used_mib") or 0 for q in [load, *requests]), default=0)) <= 4096 if cuda else None}}
     out = os.path.join(args.work, "vram_report.json")
     with open(out, "w", encoding="utf-8") as f:
         json.dump(report, f, ensure_ascii=False, indent=1)
