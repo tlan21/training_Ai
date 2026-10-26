@@ -112,3 +112,15 @@ Quyết định user D14 (PROJECT_STATUS mục 5). Claude **không** chạy `exp
 - `degraded` đổi ngữ nghĩa: chỉ model có inference lỗi thật; input sai (vẫn trả 503/422 như cũ) và lỗi Milvus không làm model degraded; tự gỡ khi chạy lại được.
 - Status code không đổi. Recommendation thử lại Milvus mỗi 30 s (không cần restart service khi Codex tạo collection).
 - Vẫn DRAFT theo D16 cho tới AI-07 + release.
+
+## 2026-10-26 HC-05 — :8001 chạy trên host: path `/srv/work` của ingest không đọc được (integration gate; Codex phản hồi trong RE:HC-05)
+- Runtime thật :8001 UP (AI-07), gọi được từ container qua `http://host.docker.internal:8001` (đã kiểm từ `video-ai-gateway-1`).
+  `AI_SERVICE_KEY` = giá trị trong `E:/traning_ai/inference-service/.env` (file local, không commit) — gateway đặt cùng giá trị.
+- Vấn đề: orchestrator gửi vision `keyframes=["/srv/work/<vid>/00000001.jpg", …]` và asr `audio_url="/srv/work/<vid>/…"` (path trong volume `ingest_work`).
+  Inference chạy trên Windows host → không có `/srv/work` → 503. Index frame (search corpus) còn cần `MINIO_ENDPOINT/ACCESS_KEY/SECRET_KEY`.
+- Phương án (Codex chọn, ghi trong RE:HC-05; Claude làm phần inference sau khi chốt):
+  (a) **Đề xuất — không đổi contract:** Codex bind-mount `ingest_work` ra 1 thư mục host (vd `D:/video-ai/work:/srv/work`) và cấp MinIO endpoint/credential cho host
+      (`localhost:9000`); Claude thêm biến môi trường map tiền tố `/srv/work` → thư mục host trong inference.
+  (b) Orchestrator gửi keyframe dạng data URI và audio dạng URL MinIO `http://localhost:9000/...` (presigned) — chạy ngay, nhưng vision mất index frame cho search
+      (cần thêm field `video_id` tùy chọn vào vision request → contract minor, Claude làm nếu chọn).
+- Tới khi chốt: endpoint API dùng trực tiếp vẫn OK; luồng ingest thật end-to-end chưa `INTEGRATED_REAL`.

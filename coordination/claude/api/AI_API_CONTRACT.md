@@ -65,8 +65,10 @@ Mức: `DECLARED` → `CKPT_PRESENT` → `LOADED` → `ENDPOINT_OK` (HTTP thật
 - `ENDPOINT_OK`: HTTP thật qua uvicorn, Bearer, response validate bằng `app.schemas`; thiếu Bearer → 401.
 - `API_READY`: ví dụ thật trong `examples/` + `tests/test_live_smoke.py` PASS.
 
-**AI-01, VERIFIED-NOW 2026-10-26**: startup **production** (`uvicorn app.main:app`, `FORCE_STUB=0`, Milvus thật của stack Codex `127.0.0.1:19530`),
-CPU (`device=cpu`), port tạm 8011. Bằng chứng: `coordination/claude/evidence/AI-01_2026-10-26/`; AI-06 (launcher không Milvus): `evidence/AI-06_2026-10-26/`.
+**AI-07, VERIFIED-NOW 2026-10-26**: runtime thật **:8001** (startup production, `FORCE_STUB=0`, Milvus thật của stack Codex `127.0.0.1:19530`,
+không `PYTHONUTF8`), CPU (`device=cpu`, máy không có GPU chạy torch → VRAM ≤4 GB **chưa** kiểm được, AI-04/RTX 3060). `tests/test_live_smoke.py`
+media thật 6/6 + synthetic 6/6; `/health` → `stub_mode=false`, 6 model, `degraded=[]`. Bằng chứng: `coordination/claude/evidence/AI-07_2026-10-26/`
+(trước đó: AI-01 :8011 `evidence/AI-01_2026-10-26/`, AI-06 launcher không Milvus `evidence/AI-06_2026-10-26/`).
 
 | Model | DECLARED | CKPT_PRESENT | LOADED | ENDPOINT_OK | API_READY | Ghi chú |
 |---|---|---|---|---|---|---|
@@ -74,7 +76,7 @@ CPU (`device=cpu`), port tạm 8011. Bằng chứng: `coordination/claude/eviden
 | asr_ctc | ✓ | ✓ `8f879867…` | ✓ | ✓ | ứng viên | chất lượng video thật kém (transcript nhiễu, AI-02) |
 | highlight_fusion | ✓ | ✓ `becbd378…` | ✓ | ✓ | ứng viên | |
 | minigpt | ✓ | ✓ `cf9cfa71…` | ✓ | ✓ | ứng viên | chất lượng human 1.6/5 (AI-03), chỉ dùng làm draft cho admin |
-| siamese | ✓ | ✓ `b4ded465…` | ✓ | ✓ | ứng viên | Milvus `video_frame_embeddings` 280 vector, HNSW/COSINE/M16/efC200 |
+| siamese | ✓ | ✓ `b4ded465…` | ✓ | ✓ | ứng viên | Milvus `video_frame_embeddings` 280 vector, HNSW/COSINE/M16/efC200; index frame từ ingest chờ HC-05 |
 | two_tower | ✓ | ✓ `f28c3794…` | ✓ | ✗ | ✗ | collection `user_recommendation_embeddings` chưa có → 503 |
 
 ## 1c. Runtime :8001 (quyết định user 2026-10-26)
@@ -82,13 +84,15 @@ CPU (`device=cpu`), port tạm 8011. Bằng chứng: `coordination/claude/eviden
 - Claude sở hữu tiến trình inference-service chạy checkpoint thật (task AI-07). Codex **không** sao chép, mount hay quản lý checkpoint;
   chỉ gọi HTTP `:8001` với Bearer key.
 - Khi :8001 chưa sẵn sàng (DOWN hoặc endpoint chưa `API_READY`), Codex phát triển bằng mock đúng contract này. Mock không bao giờ được tính là tích hợp thật.
-- Lệnh chạy chuẩn (Windows host, worktree Claude):
-  ```bash
-  cd E:/traning_ai/inference-service
-  PYTHONUTF8=1 PYTHONPATH=../ai-core ../.venv/Scripts/python -m uvicorn app.main:app --host 127.0.0.1 --port 8001
-  ```
-  `PYTHONUTF8=1` bắt buộc trên Windows tới khi AI-07 sửa trong code (thiếu → lỗi 503 có thể thành 500 plain-text). Trạng thái UP/DOWN ghi tại đây trong AI-07.
-  **Hiện tại: DOWN.**
+- Lệnh chạy chuẩn (Windows host, worktree Claude, tiến trình độc lập): `inference-service/run_local_8001.cmd`
+  (`powershell Start-Process cmd.exe -ArgumentList '/c','E:\traning_ai\inference-service\run_local_8001.cmd' -WindowStyle Hidden`),
+  tương đương `cd inference-service && PYTHONPATH=../ai-core ../.venv/Scripts/python -m uvicorn app.main:app --host 127.0.0.1 --port 8001`.
+  Log: `D:/tmp/ai07_runtime/inference_8001.log`. Checkpoint canonical, `AI_SERVICE_KEY` trong `inference-service/.env` (không commit; gateway phải dùng cùng giá trị).
+  UTF-8 Windows đã sửa trong code (`app/__init__.py`), không cần `PYTHONUTF8`.
+- Từ container Docker: `http://host.docker.internal:8001` — đã kiểm `docker exec video-ai-gateway-1 wget host.docker.internal:8001/health` → 200.
+- **Trạng thái: UP từ 2026-10-26 14:47 (PID 26396)**. Máy khởi động lại / tiến trình chết → DOWN; Claude ghi UP/DOWN mới trong `coordination/claude/SESSION.md`.
+- **Giới hạn đã biết (HC-05):** inference chạy trên host không đọc được path trong container (`/srv/work/...`) mà orchestrator gửi cho vision/asr,
+  và index frame cần `MINIO_*`. Gọi bằng base64/data URI (vision, search) và `http(s)://` (asr) chạy bình thường. Luồng ingest thật ⇐ HC-05.
 
 ## 2. Endpoints
 
@@ -153,6 +157,7 @@ Resp: `{"status":"ok","gpu_vram_used": MB,"gpu_util": %,"models_loaded":[...],"d
 - **v0.2 (2026-10-26)** — DRAFT, chỉ tài liệu (AI-06): nguồn checkpoint canonical, thang sẵn sàng có bằng chứng HTTP thật (1b); ghi rõ startup thật cần Milvus và `PYTHONUTF8=1` trên Windows. Schema không đổi.
 - **v1.1-rc1 (2026-10-26)** — AI-10 (D15). Tương thích ngược: chỉ thêm `/health.dependencies` (default `{}`); status code không đổi.
   Đổi ngữ nghĩa `degraded` (chỉ lỗi inference thật, tự phục hồi); recommendation thử lại Milvus mỗi 30 s thay vì cache thất bại tới restart.
+  AI-07 (cùng rc): sửa UTF-8 stdout trên Windows trong code; runtime :8001 UP; examples sinh lại từ :8001.
 - **v1.0-rc1 (2026-10-26)** — AI-01 (ban đầu ghi "v1.0, 6 endpoint API_READY"; đính chính theo D16 → mọi endpoint DRAFT, 6 ứng viên). Schema request/response **không đổi** so với v0.x.
   Thêm `inference_openapi.json`, `examples/`, `tests/test_live_smoke.py`. Sửa hành vi: startup chạy 1 search warmup Milvus (trước đây search đầu tiên
   sau startup có thể 503 `DEADLINE_EXCEEDED` vì vượt timeout 1 s). Sửa tài liệu cho khớp code: cold-start recommendation trả 503 (không phải 200),

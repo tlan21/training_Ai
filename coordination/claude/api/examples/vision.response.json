@@ -1,9 +1,9 @@
 {
  "http_status": 200,
  "body": {
-  "id": "vis-primitive-a7c1d3d91624",
+  "id": "vis-primitive-0a88b354708b",
   "object": "vision_completion",
-  "created": 1793000527,
+  "created": 1793000879,
   "model": "primitive-vit-classifier",
   "category_suggestion": "tin_tuc",
   "embeddings_256": [

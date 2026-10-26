@@ -1,9 +1,9 @@
 {
  "http_status": 200,
  "body": {
-  "id": "vsearch-primitive-4c757a135354",
+  "id": "vsearch-primitive-ffbe02c5a9a2",
   "object": "search_completion",
-  "created": 1793000531,
+  "created": 1793000885,
   "model": "primitive-siamese-vit",
   "results": [
    {
@@ -38,7 +38,7 @@
    }
   ],
   "query_metadata": {
-   "execution_time_ms": 34.05
+   "execution_time_ms": 52.68
   }
  }
 }
