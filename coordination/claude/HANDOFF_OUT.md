@@ -212,3 +212,9 @@ Chia việc không chồng chéo (PROJECT_STATUS D18):
 - Không đổi: cách ghi `user_interactions` (HC-07), danh sách file, path `D:/video-ai-exports/ttv2/<ts>/`, không PII.
 - Claude sẽ chạy `python -m ai_core.scripts.verify_ttv2_bundle <dir>` trên mỗi bundle trước khi train/eval: kiểm version, provenance, sha256, số dòng, schema,
   báo 10 lý do loại + duplicate, nhãn, split thời gian, giai đoạn D19. Gợi ý Codex chạy thử lệnh này trên bundle của mình trước khi bàn giao.
+
+## 2026-10-26 HC-10 — AI-04 PRELIMINARY_T4: VRAM inference (tham chiếu cho INT-07, không phải nghiệm thu)
+- Kaggle T4, fp16, 6 checkpoint active, 20 request tuần tự input xấu nhất: `nvidia-smi` sau nạp 305 MiB, peak **347 MiB** (≈ 8.5% của 4 GiB); 20/20 OK; không rò rỉ.
+  Chi tiết `docs/T4.3_bao_cao.md` mục AI-04.
+- INT-07 (T5.1 load 50 video, GPU) vẫn BLOCKED cho nghiệm thu cuối: cần RTX 3060 (hoặc user duyệt riêng dùng T4). Bản CPU của INT-07 chạy trước được như cũ.
+- Runtime :8001 hiện chạy CPU (máy không có GPU torch) — số trên không áp dụng cho :8001 hiện tại.

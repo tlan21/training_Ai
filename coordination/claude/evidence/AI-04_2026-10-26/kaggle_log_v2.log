@@ -1,0 +1,31 @@
+[{"stream_name":"stderr","time":13.872539277,"data":"/kaggle/input/datasets/traininghighlight/ai-vram-t4-v1/inference_service/inference-service/app/services.py:528: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at /pytorch/torch/csrc/utils/tensor_numpy.cpp:213.)\n"}
+,{"stream_name":"stderr","time":13.872578249,"data":"  return torch.from_numpy(np.asarray(img)).float().div(255.0).permute(2, 0, 1)\n"}
+,{"stream_name":"stdout","time":17.902160269,"data":"{\"n_requests\": 20, \"n_ok\": 20, \"peak_reserved_mib_any_request\": 210.0, \"peak_allocated_mib_any_request\": 133.166015625, \"tail_allocated_mib\": 81.9775390625, \"under_4gib\": true}\n"}
+,{"stream_name":"stdout","time":17.902196149,"data":"load {\"seconds\": 1.224661669999989, \"dtype\": \"torch.float16\", \"models\": [\"asr_ctc\", \"highlight_fusion\", \"minigpt\", \"siamese\", \"two_tower\", \"vit\"], \"allocated_mib\": 72.8525390625, \"reserved_mib\": 184.0, \"peak_allocated_mib\": 159.7294921875, \"peak_reserved_mib\": 184.0}\n"}
+,{"stream_name":"stdout","time":17.902204521,"data":"0 vision True 50 {'allocated_mib': 82.0, 'reserved_mib': 184.0, 'peak_allocated_mib': 106.4, 'peak_reserved_mib': 184.0} \n"}
+,{"stream_name":"stdout","time":17.902209602,"data":"0 asr True 314 {'allocated_mib': 82.0, 'reserved_mib': 210.0, 'peak_allocated_mib': 133.2, 'peak_reserved_mib': 210.0} \n"}
+,{"stream_name":"stdout","time":17.902213906,"data":"0 highlight_120s True 52 {'allocated_mib': 82.0, 'reserved_mib': 210.0, 'peak_allocated_mib': 82.8, 'peak_reserved_mib': 210.0} \n"}
+,{"stream_name":"stdout","time":17.90222197,"data":"0 completions_long True 737 {'allocated_mib': 82.0, 'reserved_mib': 210.0, 'peak_allocated_mib': 89.5, 'peak_reserved_mib': 210.0} \n"}
+,{"stream_name":"stdout","time":17.902226077,"data":"0 siamese_encode True 105 {'allocated_mib': 82.0, 'reserved_mib': 210.0, 'peak_allocated_mib': 126.3, 'peak_reserved_mib': 210.0} \n"}
+,{"stream_name":"stdout","time":17.902318258,"data":"1 vision True 60 {'allocated_mib': 82.0, 'reserved_mib': 210.0, 'peak_allocated_mib': 106.4, 'peak_reserved_mib': 210.0} \n"}
+,{"stream_name":"stdout","time":17.902375143,"data":"1 asr True 31 {'allocated_mib': 82.0, 'reserved_mib': 210.0, 'peak_allocated_mib': 133.2, 'peak_reserved_mib': 210.0} \n"}
+,{"stream_name":"stdout","time":17.902382436,"data":"1 highlight_120s True 10 {'allocated_mib': 82.0, 'reserved_mib': 210.0, 'peak_allocated_mib': 82.8, 'peak_reserved_mib': 210.0} \n"}
+,{"stream_name":"stdout","time":17.902405761,"data":"1 completions_long True 455 {'allocated_mib': 82.0, 'reserved_mib': 210.0, 'peak_allocated_mib': 89.5, 'peak_reserved_mib': 210.0} \n"}
+,{"stream_name":"stdout","time":17.902449914,"data":"1 siamese_encode True 55 {'allocated_mib': 82.0, 'reserved_mib': 210.0, 'peak_allocated_mib': 126.3, 'peak_reserved_mib': 210.0} \n"}
+,{"stream_name":"stdout","time":17.902497244,"data":"2 vision True 49 {'allocated_mib': 82.0, 'reserved_mib': 210.0, 'peak_allocated_mib': 106.4, 'peak_reserved_mib': 210.0} \n"}
+,{"stream_name":"stdout","time":17.902532174,"data":"2 asr True 32 {'allocated_mib': 82.0, 'reserved_mib': 210.0, 'peak_allocated_mib': 133.2, 'peak_reserved_mib': 210.0} \n"}
+,{"stream_name":"stdout","time":17.902602004,"data":"2 highlight_120s True 11 {'allocated_mib': 82.0, 'reserved_mib': 210.0, 'peak_allocated_mib': 82.8, 'peak_reserved_mib': 210.0} \n"}
+,{"stream_name":"stdout","time":17.902616582,"data":"2 completions_long True 452 {'allocated_mib': 82.0, 'reserved_mib': 210.0, 'peak_allocated_mib': 89.5, 'peak_reserved_mib': 210.0} \n"}
+,{"stream_name":"stdout","time":17.902677808,"data":"2 siamese_encode True 47 {'allocated_mib': 82.0, 'reserved_mib': 210.0, 'peak_allocated_mib': 126.3, 'peak_reserved_mib': 210.0} \n"}
+,{"stream_name":"stdout","time":17.902772672,"data":"3 vision True 48 {'allocated_mib': 82.0, 'reserved_mib': 210.0, 'peak_allocated_mib': 106.4, 'peak_reserved_mib': 210.0} \n"}
+,{"stream_name":"stdout","time":17.902780084,"data":"3 asr True 31 {'allocated_mib': 82.0, 'reserved_mib': 210.0, 'peak_allocated_mib': 133.2, 'peak_reserved_mib': 210.0} \n"}
+,{"stream_name":"stdout","time":17.902784916,"data":"3 highlight_120s True 10 {'allocated_mib': 82.0, 'reserved_mib': 210.0, 'peak_allocated_mib': 82.8, 'peak_reserved_mib': 210.0} \n"}
+,{"stream_name":"stdout","time":17.902858244,"data":"3 completions_long True 476 {'allocated_mib': 82.0, 'reserved_mib': 210.0, 'peak_allocated_mib': 89.5, 'peak_reserved_mib': 210.0} \n"}
+,{"stream_name":"stdout","time":17.902863389,"data":"3 siamese_encode True 50 {'allocated_mib': 82.0, 'reserved_mib': 210.0, 'peak_allocated_mib': 126.3, 'peak_reserved_mib': 210.0} \n"}
+,{"stream_name":"stderr","time":22.260184893,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":22.260205375,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":22.505557747,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":22.505579579,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":23.239414264,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":24.125328242,"data":"[NbConvertApp] Writing 321578 bytes to __results__.html\n"}
+]

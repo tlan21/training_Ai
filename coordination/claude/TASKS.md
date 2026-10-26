@@ -18,7 +18,7 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | DONE (2026-10-26; sandbox + artifact; product → AI-12 theo D18) | HC-04 (sandbox READY) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a TODO · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
 | AI-03 | T1.6 | Mini-GPT: 03a Claude soạn summary 40 clip · 03b người duyệt · 03c train/eval | 03a TODO · 03b BLOCKED · 03c BLOCKED | 03b ⇐ user; 03c ⇐ 03b |
-| AI-04 | T1.8 / T4.3 | Đo VRAM sơ bộ Kaggle T4 (PRELIMINARY) | IN_PROGRESS (2026-10-26) | AI-06 (DONE) |
+| AI-04 | T1.8 / T4.3 | Đo VRAM sơ bộ Kaggle T4 (PRELIMINARY) | DONE — PRELIMINARY_T4 (2026-10-26; nghiệm thu 3060 vẫn mở) | AI-06 (DONE) |
 | AI-05 | T5.3 | Số liệu evaluation cho luận án | TODO | AI-02, AI-03, AI-04 |
 | AI-08 | — | Dọn dẹp dữ liệu/artefact làn AI an toàn (lặp lại sau mỗi đợt train) | TODO (đợt #1 DONE 2026-10-26) | không job/server nào đang dùng; user duyệt danh sách |
 
@@ -111,7 +111,7 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - Checkpoint: Next safe task = AI-03a.
 
 ### AI-04 — Đo VRAM sơ bộ trên Kaggle T4 (AI-GATE điều kiện 4, T4.3 phần GPU)
-- T gốc: T1.8, T4.3 | Owner: claude | Status: IN_PROGRESS (2026-10-26; sơ bộ được user cho phép D4)
+- T gốc: T1.8, T4.3 | Owner: claude | Status: DONE — mức PRELIMINARY_T4 (2026-10-26). AI-GATE đk 4 / T4.3 GPU vẫn PARTIAL (cần RTX 3060).
 - Depends on: AI-06 (đúng 6 checkpoint active + SHA). Máy local chỉ Intel UHD 630.
 - Cách đo: notebook Kaggle private, GPU T4; nạp đúng 6 checkpoint active (SHA khớp contract) + 20 request tuần tự đủ 6 loại,
   đo `torch.cuda.max_memory_allocated/reserved` sau nạp và sau mỗi request; tải output về trước khi push version kế
@@ -121,8 +121,18 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - **Không thay nghiệm thu:** AI-GATE điều kiện 4 và T4.3 vẫn `PARTIAL` cho tới khi đo trên RTX 3060 (hoặc user duyệt riêng kết quả T4
   thay thế). T4 không chứng minh hành vi trên 3060 12 GB.
 - Blocks: INT-07 (T5.1 GPU) chỉ ở mức nghiệm thu cuối; Codex có thể chạy bản CPU trước.
-- Evidence: HIST CPU RSS 20 video PASS (`docs/T4.3_bao_cao.md`); GPU chưa đo.
-- Commits: — | Checkpoint: —
+- Evidence (VERIFIED-NOW 2026-10-26, `docs/T4.3_bao_cao.md` mục AI-04, `coordination/claude/evidence/AI-04_2026-10-26/`):
+  Kaggle private kernel `traininghighlight/ai-vram-t4-run-v1` v3, 2×T4 (đo GPU 0), driver 580.178.04, CUDA 12.8, torch 2.11.0+cu128, fp16; 6 ckpt SHA khớp contract;
+  20 request tuần tự (vision 32 frame, ASR 25 s, highlight 120 s, completions map-reduce, Siamese 32) 20/20 OK. Sau nạp: nvidia-smi 305 MiB; peak 347 MiB
+  (PyTorch reserved 210, allocated 133); tail allocated 82 MiB ổn định. Dry-run CPU cục bộ trước khi push. v1 (input nhỏ) → v2 (input xấu nhất) → v3 (+nvidia-smi).
+- Commits: 06dcb0e (nhận task), 3a380dc (kernel+builder), 4b47b5a (v2), c5d0e60 (v3), (commit báo cáo) | Checkpoint:
+  ```
+  Lane: claude
+  Changed: dist/kaggle/kernel-vram-t4/{build_dataset.py,run_vram_t4.py,kernel-metadata.json}, docs/T4.3_bao_cao.md, coordination/claude/{TASKS,SESSION,HANDOFF_OUT}.md, evidence/AI-04_2026-10-26/**
+  Verified: Kaggle T4 v3 20/20 OK, peak nvidia-smi 347 MiB ≤ 4096; SHA 6 ckpt khớp; CPU dry-run 5/5
+  Contract touched: no
+  Next safe task: AI-03a (Claude soạn 40 summary, CLAUDE_PROPOSED) / AI-02a
+  ```
 
 ### AI-10 — Health/degraded đúng ngữ nghĩa (D15)
 - T gốc: T1.8 | Owner: claude | Status: DONE (2026-10-26)
