@@ -1,5 +1,20 @@
 # SESSION — current resume
 
+- INT-12 REVIEW: CMS JWT/user only RAM; HttpOnly bootstrap, single-flight retry, role guard, logout/cache clear and race/failure handling.
+- VERIFIED-NOW: CMS build + E2E types +41 browser tests PASS (50s), including2 live gateway cookie rotation/reload/logout cases.
+  Login parity at390×844/1440×900 checked; screenshots/report verification/INT-12.md. Other CMS parity remains INT-05.
+- Branch codex/integration. Master changed during task: Release#2 70bf011 now available; no Codex merge/push yet.
+  Read Release#2 handoff/contract: AI-API v1.2,6 endpoints API_READY; recommendation DRAFT. Next: git merge master per README§8.
+- Docker diagnosis: Windows CLI named-pipe requests hang, but direct daemon Unix socket /proc/195/root/run/docker.raw.sock
+  GET /_ping via ignored Linux Go probe returns200 OK. No global restart/cleanup done. Investigate CLI transport next in INT-11.
+- Resource last: C:2.90GiB E:1.49GiB; no large image/dependency downloads, no checkpoint/mount, no deletion.
+- Next safe task INT-11: record IN_PROGRESS, synchronize Release#2, restore stack control using existing daemon without global restart,
+  rebuild gateway binary then real API integration/persistence. Never mark INTEGRATED_REAL from health alone.
+
+## Prior checkpoint (historical; newer facts above take precedence)
+
+# SESSION — current resume
+
 - Active: INT-12 IN_PROGRESS. Branch codex/integration, clean at start, master still 96ebc24/no new commits.
 - C: recovered to 2.93 GiB, E:1.50 GiB; RAM free ~496 MiB. No cleanup approved/performed.
 - Docker Desktop CLI still stalls; all app HTTP endpoints 200. Investigating direct WSL daemon access read-only;

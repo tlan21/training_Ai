@@ -15,7 +15,6 @@ const videos: components['schemas']['Video'][] = [
 
 // Isolated UI fixtures exercise visual states. video_flow.spec.ts uses real APIs/AI only.
 async function setupUI(page: Page, role: 'admin' | 'editor' = 'admin') {
-  await page.addInitScript((role) => localStorage.setItem('cms-auth', JSON.stringify({ state: { accessToken: 'ui-fixture', user: { id: 'usr_design_admin', username: 'Admin CMS', email: 'admin@example.test', role } }, version: 0 })), role);
   const analysis: components['schemas']['CmsAnalysis'] = {
     category_suggestion: 'bong_da', summary: 'Man City và Arsenal tạo ra nhiều tình huống nguy hiểm.', suggested_title: 'Các khoảnh khắc nổi bật', summary_status: 'draft', hashtags: ['BongDa', 'Highlight'],
     timeline_scores: Array.from({ length: 5400 }, (_, second) => ({ second, score: second > 2400 && second < 2580 ? 95 : 40 + Math.round(Math.sin(second / 200) * 35) })),
@@ -46,6 +45,8 @@ async function setupUI(page: Page, role: 'admin' | 'editor' = 'admin') {
     const url = new URL(request.url());
     const pathname = url.pathname;
     const method = request.method();
+    if (pathname === '/api/auth/refresh') return route.fulfill({ json: { access_token: 'ui-fixture' } });
+    if (pathname === '/api/users/me') return route.fulfill({ json: { id: 'usr_design_admin', username: 'Admin CMS', email: 'admin@example.test', role, preferences: [] } });
     if (pathname === '/api/cms/system/health') return route.fulfill({ json: { gpu_vram_used: 0, gpu_util: 0, models_loaded: ['asr_ctc', 'highlight_fusion', 'minigpt', 'siamese', 'two_tower', 'vit'], queue_depth: 2 } });
     if (pathname === '/api/cms/videos') return route.fulfill({ json: { items: videos.filter((video) => !url.searchParams.get('status') || video.status === url.searchParams.get('status')), total: videos.length, page: 1 } });
     if (pathname === `/api/cms/videos/${videoId}`) return route.fulfill({ json: videos[0] });
@@ -210,32 +211,43 @@ test('T3.1 real settings limitation is shown when PUT does not persist', async (
   await expect(page.getByText('Đã lưu cài đặt', { exact: true })).toHaveCount(0);
 });
 
-for (const remember of [true, false]) {
-  test(`T3.1 login remembers=${remember}, SVG padding and reload`, async ({ page }, info) => {
+for (const width of [390, 1440]) for (const remember of [true, false]) {
+  test(`T3.1 ${width} login remembers=${remember}, SVG padding and reload`, async ({ page }, info) => {
+    await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
+    let loggedIn = false;
+    const user: components['schemas']['User'] = { id: 'usr_test', username: 'Admin CMS', email: 'admin@local', role: 'admin' };
     await page.route('**/api/**', async (route) => {
       const pathname = new URL(route.request().url()).pathname;
-      if (pathname === '/api/auth/login') return route.fulfill({ json: { access_token: 'test-token', user: { id: 'usr_test', username: 'Admin CMS', email: 'admin@local', role: 'admin' } } });
+      if (pathname === '/api/auth/login') { loggedIn = true; return route.fulfill({ json: { access_token: 'test-token', user } }); }
+      if (pathname === '/api/auth/refresh') return loggedIn ? route.fulfill({ json: { access_token: 'test-token' } }) : route.fulfill({ status: 401, json: { error: { code: 'UNAUTHORIZED', message: 'No session' } } });
+      if (pathname === '/api/users/me') return route.fulfill({ json: { ...user, preferences: [] } });
       if (pathname === '/api/cms/system/health') return route.fulfill({ json: { models_loaded: [], queue_depth: 0, gpu_vram_used: 0, gpu_util: 0 } });
       return route.fulfill({ json: pathname.includes('videos') ? { items: [], total: 0, page: 1 } : [] });
     });
     await page.goto(`${cms}/login`);
     const password = page.getByLabel('Mật khẩu', { exact: true });
-    expect(await password.evaluate((element) => getComputedStyle(element).paddingLeft)).toBe('44px');
-    expect(await password.evaluate((element) => getComputedStyle(element).paddingRight)).toBe('44px');
+    await expect(page.getByLabel('Duy trì đăng nhập trên thiết bị này')).not.toBeChecked();
+    expect((await page.locator('.auth-card').boundingBox())?.height).toBe(width === 390 ? 588 : 572);
+    expect(await password.evaluate((element) => getComputedStyle(element).fontSize)).toBe('14px');
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(width);
+    expect(await password.evaluate((element) => getComputedStyle(element).paddingLeft)).toBe('40px');
+    expect(await password.evaluate((element) => getComputedStyle(element).paddingRight)).toBe('40px');
     await page.getByRole('button', { name: 'Hiện mật khẩu' }).click();
     await expect(password).toHaveAttribute('type', 'text');
     await page.getByLabel('Duy trì đăng nhập trên thiết bị này').setChecked(remember);
     await page.screenshot({ path: info.outputPath(`login-${remember}.png`), animations: 'disabled' });
     await password.press('Enter');
     await expect(page).toHaveURL(`${cms}/dashboard`);
-    expect(await page.evaluate(() => localStorage.getItem('cms-auth') !== null)).toBe(remember);
-    expect(await page.evaluate(() => sessionStorage.getItem('cms-auth') !== null)).toBe(!remember);
+    expect(await page.evaluate(() => [localStorage.getItem('cms-auth'), sessionStorage.getItem('cms-auth')])).toEqual([null, null]);
+    expect(await page.evaluate(() => localStorage.getItem('cms-remember'))).toBe(String(remember));
+    expect(await page.evaluate(() => JSON.stringify([Object.entries(localStorage), Object.entries(sessionStorage)]))).not.toContain('test-token');
     await page.reload();
     await expect(page).toHaveURL(`${cms}/dashboard`);
   });
 }
 
 test('T3.1 wrong password stays on form with API error', async ({ page }) => {
+  await page.route('**/api/auth/refresh', (route) => route.fulfill({ status: 401, json: {} }));
   await page.route('**/api/auth/login', (route) => route.fulfill({ status: 401, json: { error: { code: 'UNAUTHORIZED', message: 'Email hoặc mật khẩu không chính xác' } } }));
   await page.goto(`${cms}/login`);
   await page.getByRole('button', { name: 'Đăng nhập', exact: true }).click();
@@ -244,6 +256,7 @@ test('T3.1 wrong password stays on form with API error', async ({ page }) => {
 });
 
 test('T3.1 forgot/reset uses the development token and real contract fields', async ({ page }) => {
+  await page.route('**/api/auth/refresh', (route) => route.fulfill({ status: 401, json: {} }));
   await page.route('**/api/auth/forgot-password', (route) => route.fulfill({ json: { message: 'Yêu cầu đã được tiếp nhận.', reset_token: 'development-test-token' } }));
   await page.route('**/api/auth/reset-password', (route) => route.fulfill({ json: { message: 'Đã đặt lại mật khẩu' } }));
   await page.goto(`${cms}/forgot-password`);

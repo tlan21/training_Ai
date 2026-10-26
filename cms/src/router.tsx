@@ -17,8 +17,8 @@ import { useState } from "react";
 
 function Guard({ allow, children }: { allow?: string[]; children: React.ReactNode }) {
   const { accessToken, user } = useAuthStore();
-  if (!accessToken) return <Navigate to="/login" replace />;
-  if (allow && user && !allow.includes(user.role)) return <Navigate to="/dashboard" replace />;
+  if (!accessToken || !user || !["admin", "editor"].includes(user.role ?? "")) return <Navigate to="/login" replace />;
+  if (allow && !allow.includes(user.role ?? "")) return <Navigate to="/dashboard" replace />;
   return <>{children}</>;
 }
 function Shell() {

@@ -167,6 +167,33 @@ body:has(.dialog-root[open]) { overflow: hidden; }
 .quick-logins { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .quick-logins button { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 36px; padding: 8px 12px; background: #4615990d; border: 1px solid #4615991a; border-radius: 8px; color: var(--primary); font-size: 12px; }
 .quick-logins button:last-child { background: #d7e4ec33; color: var(--on-secondary-container); border-color: #d7e4ec33; }
+.cms-login { color: black; font-size: 16px; line-height: 24px; }
+.cms-login .auth-logo h1 { line-height: 32px; letter-spacing: -.6px; }
+.cms-login .auth-brand-mark { box-shadow: 0 4px 6px -1px #46159933, 0 2px 4px -2px #46159933; }
+.cms-login .auth-logo p { line-height: 16px; letter-spacing: 1.2px; color: #494453cc; }
+.cms-login .field > label, .cms-login .login-label-row label { line-height: 16px; letter-spacing: .6px; }
+.cms-login .login-label-row a { line-height: 16px; }
+.cms-login .input { color: black; font-size: 14px; padding-left: 40px !important; padding-right: 16px; }
+.cms-login .input--with-right-icon { padding-right: 40px !important; }
+.cms-login .input:focus { outline: none; box-shadow: 0 0 0 3px #5e35b126; border-color: var(--primary-container); }
+.cms-login .input-icon--action { padding: 0; }
+.cms-login .input-icon--action:hover { color: var(--primary); }
+.cms-login .remember-label { line-height: 20px; }
+.cms-login .remember-label input { appearance: none; margin: 0; border: 1px solid var(--outline-variant); border-radius: 4px; background: white; }
+.cms-login .remember-label input:checked { background: var(--primary); border-color: var(--primary); }
+.cms-login .remember-label input:checked::before { content: ""; display: block; width: 5px; height: 9px; border: solid white; border-width: 0 2px 2px 0; transform: translate(4px, 1px) rotate(45deg); }
+.cms-login .auth-fields .btn-primary { border: 0; padding: 12px 0; font-size: 16px; line-height: 24px; box-shadow: 0 4px 6px -1px #4615991a; }
+.cms-login .btn-primary:hover { background: var(--primary-container); opacity: 1; }
+.cms-login .btn-primary:active { transform: scale(.98); }
+.cms-login .login-label-row a:hover { text-decoration: underline; }
+.cms-login .login-divider { gap: 0; justify-content: space-between; line-height: 16px; letter-spacing: .6px; }
+.cms-login .login-divider::before, .cms-login .login-divider::after { flex: none; width: 30%; }
+.cms-login .quick-logins button { min-height: 38px; line-height: 16px; font-weight: 500; }
+.cms-login .quick-logins button:active { transform: scale(.95); }
+.cms-login .quick-logins button:first-child:hover { background: #4615991a; color: var(--primary-container); }
+.cms-login .quick-logins button:last-child { background: transparent; color: black; border-color: #e5e7eb; }
+.cms-login .auth-footer { margin-top: 32px; line-height: 16px; color: #49445399; }
+.cms-login .auth-error { font-size: 14px; line-height: 20px; }
 .settings-page { max-width: 960px; margin: 0 auto; }
 .cms-workspace:has(.settings-page) .cms-topbar { display: none; }
 .cms-workspace:has(.settings-page) .cms-main { padding: 20px 160px; }

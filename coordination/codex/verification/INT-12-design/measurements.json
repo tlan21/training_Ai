@@ -1,0 +1,318 @@
+[
+  {
+    "name": "stitch",
+    "width": 390,
+    "values": {
+      "bodyWidth": 390,
+      "card": {
+        "x": 16,
+        "y": 104,
+        "width": 358,
+        "height": 588,
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "color": "rgb(0, 0, 0)",
+        "spacing": "normal",
+        "padding": "32px",
+        "radius": "16px"
+      },
+      "heading": {
+        "x": 118.390625,
+        "y": 197,
+        "width": 153.21875,
+        "height": 32,
+        "fontSize": "24px",
+        "lineHeight": "32px",
+        "color": "rgb(70, 21, 153)",
+        "spacing": "-0.6px",
+        "padding": "0px",
+        "radius": "0px"
+      },
+      "subtitle": {
+        "x": 60.765625,
+        "y": 233,
+        "width": 268.453125,
+        "height": 16,
+        "fontSize": "12px",
+        "lineHeight": "16px",
+        "color": "rgba(73, 68, 83, 0.8)",
+        "spacing": "1.2px",
+        "padding": "0px",
+        "radius": "0px"
+      },
+      "password": {
+        "x": 49,
+        "y": 391,
+        "width": 292,
+        "height": 42,
+        "fontSize": "14px",
+        "lineHeight": "20px",
+        "color": "rgb(0, 0, 0)",
+        "spacing": "normal",
+        "padding": "10px 40px",
+        "radius": "8px"
+      },
+      "submit": {
+        "x": 49,
+        "y": 493,
+        "width": 292,
+        "height": 48,
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "color": "rgb(255, 255, 255)",
+        "spacing": "normal",
+        "padding": "12px 0px",
+        "radius": "8px"
+      },
+      "footer": {
+        "x": 51.1875,
+        "y": 724,
+        "width": 287.609375,
+        "height": 16,
+        "fontSize": "12px",
+        "lineHeight": "16px",
+        "color": "rgba(73, 68, 83, 0.6)",
+        "spacing": "normal",
+        "padding": "0px",
+        "radius": "0px"
+      }
+    }
+  },
+  {
+    "name": "cms",
+    "width": 390,
+    "values": {
+      "bodyWidth": 390,
+      "card": {
+        "x": 16,
+        "y": 104,
+        "width": 358,
+        "height": 588,
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "color": "rgb(0, 0, 0)",
+        "spacing": "normal",
+        "padding": "32px",
+        "radius": "16px"
+      },
+      "heading": {
+        "x": 118.390625,
+        "y": 197,
+        "width": 153.21875,
+        "height": 32,
+        "fontSize": "24px",
+        "lineHeight": "32px",
+        "color": "rgb(70, 21, 153)",
+        "spacing": "-0.6px",
+        "padding": "0px",
+        "radius": "0px"
+      },
+      "subtitle": {
+        "x": 61.40625,
+        "y": 233,
+        "width": 267.1875,
+        "height": 16,
+        "fontSize": "12px",
+        "lineHeight": "16px",
+        "color": "rgba(73, 68, 83, 0.8)",
+        "spacing": "1.2px",
+        "padding": "0px",
+        "radius": "0px"
+      },
+      "password": {
+        "x": 49,
+        "y": 391,
+        "width": 292,
+        "height": 42,
+        "fontSize": "14px",
+        "lineHeight": "20px",
+        "color": "rgb(0, 0, 0)",
+        "spacing": "normal",
+        "padding": "10px 40px",
+        "radius": "8px"
+      },
+      "submit": {
+        "x": 49,
+        "y": 493,
+        "width": 292,
+        "height": 48,
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "color": "rgb(255, 255, 255)",
+        "spacing": "normal",
+        "padding": "12px 0px",
+        "radius": "8px"
+      },
+      "footer": {
+        "x": 51.828125,
+        "y": 724,
+        "width": 286.328125,
+        "height": 16,
+        "fontSize": "12px",
+        "lineHeight": "16px",
+        "color": "rgba(73, 68, 83, 0.6)",
+        "spacing": "normal",
+        "padding": "0px",
+        "radius": "0px"
+      }
+    }
+  },
+  {
+    "name": "stitch",
+    "width": 1440,
+    "values": {
+      "bodyWidth": 1440,
+      "card": {
+        "x": 490,
+        "y": 140,
+        "width": 460,
+        "height": 572,
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "color": "rgb(0, 0, 0)",
+        "spacing": "normal",
+        "padding": "32px",
+        "radius": "16px"
+      },
+      "heading": {
+        "x": 643.390625,
+        "y": 233,
+        "width": 153.21875,
+        "height": 32,
+        "fontSize": "24px",
+        "lineHeight": "32px",
+        "color": "rgb(70, 21, 153)",
+        "spacing": "-0.6px",
+        "padding": "0px",
+        "radius": "0px"
+      },
+      "subtitle": {
+        "x": 585.765625,
+        "y": 269,
+        "width": 268.453125,
+        "height": 16,
+        "fontSize": "12px",
+        "lineHeight": "16px",
+        "color": "rgba(73, 68, 83, 0.8)",
+        "spacing": "1.2px",
+        "padding": "0px",
+        "radius": "0px"
+      },
+      "password": {
+        "x": 523,
+        "y": 427,
+        "width": 394,
+        "height": 42,
+        "fontSize": "14px",
+        "lineHeight": "20px",
+        "color": "rgb(0, 0, 0)",
+        "spacing": "normal",
+        "padding": "10px 40px",
+        "radius": "8px"
+      },
+      "submit": {
+        "x": 523,
+        "y": 529,
+        "width": 394,
+        "height": 48,
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "color": "rgb(255, 255, 255)",
+        "spacing": "normal",
+        "padding": "12px 0px",
+        "radius": "8px"
+      },
+      "footer": {
+        "x": 576.1875,
+        "y": 744,
+        "width": 287.609375,
+        "height": 16,
+        "fontSize": "12px",
+        "lineHeight": "16px",
+        "color": "rgba(73, 68, 83, 0.6)",
+        "spacing": "normal",
+        "padding": "0px",
+        "radius": "0px"
+      }
+    }
+  },
+  {
+    "name": "cms",
+    "width": 1440,
+    "values": {
+      "bodyWidth": 1440,
+      "card": {
+        "x": 490,
+        "y": 140,
+        "width": 460,
+        "height": 572,
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "color": "rgb(0, 0, 0)",
+        "spacing": "normal",
+        "padding": "32px",
+        "radius": "16px"
+      },
+      "heading": {
+        "x": 643.390625,
+        "y": 233,
+        "width": 153.21875,
+        "height": 32,
+        "fontSize": "24px",
+        "lineHeight": "32px",
+        "color": "rgb(70, 21, 153)",
+        "spacing": "-0.6px",
+        "padding": "0px",
+        "radius": "0px"
+      },
+      "subtitle": {
+        "x": 586.40625,
+        "y": 269,
+        "width": 267.1875,
+        "height": 16,
+        "fontSize": "12px",
+        "lineHeight": "16px",
+        "color": "rgba(73, 68, 83, 0.8)",
+        "spacing": "1.2px",
+        "padding": "0px",
+        "radius": "0px"
+      },
+      "password": {
+        "x": 523,
+        "y": 427,
+        "width": 394,
+        "height": 42,
+        "fontSize": "14px",
+        "lineHeight": "20px",
+        "color": "rgb(0, 0, 0)",
+        "spacing": "normal",
+        "padding": "10px 40px",
+        "radius": "8px"
+      },
+      "submit": {
+        "x": 523,
+        "y": 529,
+        "width": 394,
+        "height": 48,
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "color": "rgb(255, 255, 255)",
+        "spacing": "normal",
+        "padding": "12px 0px",
+        "radius": "8px"
+      },
+      "footer": {
+        "x": 576.828125,
+        "y": 744,
+        "width": 286.328125,
+        "height": 16,
+        "fontSize": "12px",
+        "lineHeight": "16px",
+        "color": "rgba(73, 68, 83, 0.6)",
+        "spacing": "normal",
+        "padding": "0px",
+        "radius": "0px"
+      }
+    }
+  }
+]

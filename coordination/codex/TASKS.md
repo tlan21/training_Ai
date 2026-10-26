@@ -20,7 +20,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-09 | T5.3 | Docs bàn giao hệ thống | TODO | INT-05..08 |
 | INT-10 | — | Forgot-password giữ nguyên, ngoài release hiện tại | DEFERRED / OUT_OF_SCOPE | D1, HC-02 |
 | INT-11 | INT-01 | HTTP media giữa gateway Docker và inference host | PARTIAL | RESOURCE; AI v1.2 master + real tests |
-| INT-12 | T2.2/T3.1 | CMS access JWT chỉ ở RAM, refresh khi reload | IN_PROGRESS | C: recovered; no Docker mutation required |
+| INT-12 | T2.2/T3.1 | CMS access JWT chỉ ở RAM, refresh khi reload | REVIEW | 41 E2E PASS; live gateway cookie rotation |
 | INT-13 | INT-00 | Image ingest riêng + kiểm clean build | BLOCKED | RESOURCE Docker disk |
 
 Hoàn thành trước tách làn (bằng chứng INVENTORY mục 5): T0.1–T0.4, T2.1–T2.4, T4.1, T4.2 = DONE (VERIFIED-HIST, build VERIFIED-NOW);
@@ -153,13 +153,19 @@ T2.5, T3.1, T3.2 = PARTIAL.
 
 
 ### INT-12 — CMS access JWT chỉ ở RAM
-- T gốc: T2.2/T3.1 | Owner: CODEX | Status: IN_PROGRESS (resume 2026-10-26)
-- Depends on: C: capacity/Docker ổn định | Blocks: release security convention
-- Source audit: cms/src/stores/authStore.ts persist partialize chứa accessToken vào local/sessionStorage, trái AGENTS §8.
-- Acceptance: token không ở storage; reload khôi phục HttpOnly refresh; single-flight/role/logout/401 đúng; update fixtures, type/build/E2E PASS;
-  không đổi layout/forgot-password deferred scope.
-- Changed: chưa triển khai. | Evidence: source audit, chưa test fix | Commits: —
-- Next action: sửa store/session bootstrap + fixtures sau resource recovery. | Checkpoint: chưa code/DONE.
+- T gốc: T2.2/T3.1 | Owner: CODEX | Status: REVIEW (2026-10-26)
+- Depends on: T2.2/T3.1 existing auth contract; running CMS/gateway | Blocks: release security convention
+- Acceptance: token không ở storage; reload khôi phục HttpOnly refresh; single-flight/role/logout/401 đúng; generated types/build/E2E PASS.
+  Login theo Stitch ở390×844/1440×900; không phát triển forgot-password deferred scope.
+- Changed: cms/src/{stores/authStore.ts,lib/apiClient.ts,App.tsx,router.tsx,hooks/useAuth.ts,components/common/Sidebar.tsx,pages/LoginPage.tsx,styles/global.css};
+  e2e/{cms_auth.spec.ts,cms_auth_live.spec.ts,cms_design.spec.ts}; coordination/codex evidence/SESSION/TASKS.
+- Evidence: VERIFIED-NOW verification/INT-12.md + INT-12-playwright.log: CMS tsc/build, E2E types, 41 browser tests PASS (50s),
+  gồm 2 case gateway/Postgres thật login200/refresh200/cookie rotation/logout204. JWT/user chỉ RAM, legacy storage removed;
+  cookie HttpOnly; remember false giữ reload cùng session; logout/refresh race và logout503/reload PASS.
+  10-item login parity report +4 screenshots/measurements; full CMS parity vẫn thuộc INT-05.
+- Commits: implementation checkpoint int(auth): keep CMS tokens in memory and restore cookie sessions (SHA recorded next checkpoint).
+- Next action: chờ release Codex được user yêu cầu; tiếp INT-11 với Release#2. Không push/master update trong task này.
+- Checkpoint: Lane codex; Changed auth+fixtures+login parity; Verified 41 E2E + types/build PASS; Contract touched no; Next safe task INT-11.
 
 ### INT-13 — Ingest image riêng, clean build
 - T gốc: INT-00 | Owner: CODEX | Status: BLOCKED (RESOURCE Docker disk)
