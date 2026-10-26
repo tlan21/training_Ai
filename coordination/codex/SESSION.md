@@ -4,9 +4,9 @@
 - INT-14 contract checkpoint: public OpenAPI0.3.0 FeedPage with required recommendation_mode enum, existing ClipPage reused.
   Go types/spec generated with oapi-codegen2.8.0; CMS+Client types generated openapi-typescript7.13.0.
   gen Go compile +CMS/Client tsc PASS. Runtime behavior now implemented and verified; see verification/INT-14.md. Historical contract-only checkpoint retained.
-- Active INT-15 IN_PROGRESS: HC-07/09 interactions +readonly export ttv2-data-v1.1. Inspect role/session/provenance; no training/AI file writes.
+- Latest INT-15 PARTIAL: source/DB/browser/export verified; final bundle20261026T113856Z ready for Claude verifier. No task IN_PROGRESS. Gateway STOPPED; user recovery needed after automatic start rejection.
 - INT-14 PARTIAL: primary PG popularity +honest3modes/realmetadata implemented; Go+5PG+46UI+8modes+live primary persistence PASS.
-  Full-screen design gaps remainINT-06; liveClient transport/session/feed verifiedINT-16. INT-15 IN_PROGRESS (HC-07 interactions/export). Historical INT-12/13 IDs kept; mapping committed to handoff.
+  Full-screen design gaps remainINT-06; liveClient transport/session/feed verifiedINT-16. INT-15 PARTIAL (HC-07/09, clean bundle delivered). Historical INT-12/13 IDs kept; mapping committed to handoff.
 - Release#3 masterfee83b2 received; read v1.3 +ttv2-data-v1/D18–D21. Next contract-first FeedPage0.3 then backend/Client; HO-03 still open.
 - Branch codex/integration; Release#1 received, Release#2 master70bf011 merged5691526 without conflict.
   No Codex push/release/master update. Shared/Claude files only received via merge; no manual edits.
@@ -77,3 +77,23 @@ Next safe task: INT-11 after HO-03; INT-13 after capacity recovery
 - Corrected t.Cleanup DB close ordering/errors. Exact fixture cleanup completed; corrected real DB test2PASS/exit0;
   independent SQL confirms0 export fixtures,0 eligible productusers/videos. Existing user data unchanged.
 - Next compile exporter after this fix commit and export a new empty/honest product bundle; do not consume quarantined artifact.
+
+## Final checkpoint — authoritative resume state
+- Latest source18d1a3b +cleanup fix33495fb; INT-16 c30c664 REVIEW. INT-15 PARTIAL, no IN_PROGRESS task.
+- Clean artifact E:/traning_ai-codex/backend/.tmp/ttv2/20261026T113856Z, ttv2-data-v1.1, exporter33495fba40f2a3ffd79c1dbb50471585180ae3d7.
+  CLI exit0; files/count/SHA independently verified; users/videos/clips/interactions0, categories10. Await Claude verifier through handoff.
+- Never consume quarantined20261026T113611Z (retained fixture bundle); corrected tests cleaned all exact fixture IDs and independent counts0.
+- Current runtime: gateway STOPPED, policy auto-review blocked targeted start (“blocked by policy”). User async question pending to start only gateway.
+  Compose services/volumes preserved; no global Docker/WSL restart or faktory change. Client host server exec71967; API unavailable until gateway restored.
+  Current Docker gateway name restored video-ai-gateway-1, latest binary/data config already deployed before stop. Migration applied/repeated.
+- Live business restart attempt NOT_PASS. Fixture threshold restored75 under expected76 guard; exact vid_dmeqh2hrogtb softdeleted/test.
+- Valid checks: Go vet/test/build; CMS tsc/build; Client tsc/lint/build14routes; E2E types;55Client browser (2live); intended Compose PG8checks/no skips;
+  final corrected productexport2tests and cleanup0; final readonly CLI/count/hash. No new real AI/clean image/full parity claim.
+- Resume: user gateway start ->check health+Client auth, then HO-03 transport after authorized Desktop intervention; Claude final-bundle verifier response.
+  INT-13 full runtime image needs capacity; INT-05/06 full parity and contract scope still open; INT-03 personalized depends AI-12 production gate.
+
+Lane: codex
+Changed: Client same-origin/auth; client-only interaction sessions; source provenance migration/config; readonly export CLI+tests/evidence
+Verified: Go/CMS/Client checks;55browser;8intendedDB; corrected cleanup0; actual empty-product bundle version/hash/count
+Contract touched: public0.3.1 (generated3types); AI-APIv1.3 unchanged; HC-09 ttv2-data-v1.1 consumed
+Next safe task: user runtime recovery +Claude bundle verifier; no ready independent TODO without remaining scope/resource gates

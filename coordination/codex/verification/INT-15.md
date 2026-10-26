@@ -37,7 +37,11 @@ Consumes HC-07/09 ttv2-data-v1.1; no AI source/checkpoint/loader/training change
   Intended Compose DB tests above PASS with gateway internal DSN; no password/other-service change attempted.
 
 ## Remaining / handoff
-- Build committed exporter revision and write honest actual bundle under backend/.tmp/ttv2/<UTC>; record counts/checksums/path.
+- Final CLI bundle: `E:/traning_ai-codex/backend/.tmp/ttv2/20261026T113856Z/`, snapshot2026-10-26T11:38:57Z;
+  exporter ttv2-export@33495fba40f2a3ffd79c1dbb50471585180ae3d7, environmentlocal/sourceproduct_postgres.
+  users/videos/clips/interactions0rows; categories10rows. CLI exit0; copied bytes/counts/SHA256 independently verified on Windows.
+  See INT-15-manifest.json for full timestamps/checksums. Empty files SHA e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855;
+  categories SHA ef11725594c1b8976f5faf4930a31af19f55f2751151beceb45218cc7e142847.
 - Claude validates with its loader; Codex does not run/edit the AI module. Empty product data cannot meet D19 readiness.
 - User runtime recovery: gateway start was blocked by automatic approval review. Real AI remains HO-03, no new INTEGRATED_REAL claim.
 

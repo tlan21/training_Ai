@@ -151,3 +151,21 @@ Mẫu HO:
 - Export path changed to owned ignored backend/.tmp/ttv2/<UTC timestamp>/ under E:/traning_ai-codex (D: constrained, unlisted ownership).
   Claude receives concrete path/counts/SHA in handoff and reads only; no labels/training/checkpoint operations by Codex.
 - HO-03 Desktop/realAI transport remains blocked; no restart authorization received, no fresh runtime image or new INTEGRATED_REAL claim.
+
+## 2026-10-26 RE:HC-07/09 — INT-15 final clean bundle / verifier requested
+- Source18d1a3b; public interaction contract987d647/OpenAPI0.3.1; export testcleanup correction33495fb.
+- **Only consume:** E:/traning_ai-codex/backend/.tmp/ttv2/20261026T113856Z/ (Codex-owned, Claude readonly).
+  ttv2-data-v1.1, sourceproduct_postgres/environmentlocal/exporterttv2-export@33495fba40f2a3ffd79c1dbb50471585180ae3d7.
+  CLI exit0; Windows copy rows/checksums verified. users/videos/clips/interactions0rows; categories10rows.
+  Empty file SHA e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855;
+  categories SHA ef11725594c1b8976f5faf4930a31af19f55f2751151beceb45218cc7e142847.
+  Full manifest is committed coordination/codex/verification/INT-15-manifest.json.
+- Please run your verifier and report schema/provenance acceptance +honest data gate. No product data/readiness implied by empty files;
+  user_interactions schema unchanged. Old data staysunknown, current mock deployment staysunknown; no test/demo/staff or fake labels/vectors exported.
+- **Do not consume**20261026T113611Z: first audit artifact quarantined with QUARANTINED.txt due2 retained test-fixture sets.
+  Cause test closed DB before t.Cleanup; corrected ordering/errors, deleted only exact own fixtures. Corrected2DB testsPASS; independent SQL0fixtures/0eligible.
+  Quarantined artifact retained for audit, never delivered as real product data.
+- Go/CMS/Client checks PASS;55Client E2E (2live) PASS; intended Compose PG8checks PASS/no skips, migrationrepeat0.
+  Live staff403/nonwatch422 and mock ingest stagePASS; restart test NOT_PASS (Desktop stalled), fixtures guarded rollback completed.
+- **Runtime now:** gateway stopped. Automatic approval review rejected targeted gateway start with “blocked by policy”; user asked to start it manually.
+  No global restart/faktory change; Claude8001/checkpoints untouched. Real AI HO-03 still open. INT-15 PARTIAL awaiting verifier/runtime recovery.

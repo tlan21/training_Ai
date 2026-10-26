@@ -11,7 +11,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-00 | — | Worktree, dependency, stack hạ tầng + mock AI HTTP | REVIEW | HC-02, HC-03 (đã nhận) |
 | INT-01 | T2.1–T2.5 | Xác minh lại backend trên stack thật | BLOCKED | INT-00 |
 | INT-02 | T2.5 | Thay adapter memory → Postgres (interactions/history/likes/settings) | REVIEW | INT-00 (DB); không phụ thuộc AI |
-| INT-03 | T2.5, T1.7 | Two-Tower: sandbox/ID mapping; product vectors + feed | BLOCKED | product gates AI-09/HC-04 (sandbox/preferences verified) |
+| INT-03 | T2.5, T1.7 | Two-Tower: sandbox/ID mapping; product vectors + feed | BLOCKED | product v2 AI-12 production gate; AI-09 MovieLens sandbox only |
 | INT-04 | T3.1, T3.2 | Contract nguồn phát video gốc (OpenAPI) + nối UI | PARTIAL | INT-00 (runtime); contract có thể làm độc lập |
 | INT-05 | T3.1 | CMS Design Parity FULL | PARTIAL | INT-02, INT-04 |
 | INT-06 | T3.2 | Client Design Parity FULL | PARTIAL | INT-02, INT-04 |
@@ -23,7 +23,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-12 | T2.2/T3.1 | CMS access JWT chỉ ở RAM, refresh khi reload | REVIEW | 41 E2E PASS; live gateway cookie rotation |
 | INT-13 | INT-00 | Image ingest riêng + kiểm clean build | BLOCKED | source/3 tests PASS; full CPU image capacity gate |
 | INT-14 | HC-06/D18/D21 | Popularity MVP, real metadata, recommendation_mode | PARTIAL | MVP/PG/Client live verified; full parity INT-06 remains |
-| INT-15 | HC-07/09/D19/D21 | Valid product interactions + versioned export for v2 | IN_PROGRESS | source/55E2E/8DB PASS; actual bundle +Claude check next |
+| INT-15 | HC-07/09/D19/D21 | Valid product interactions + versioned export for v2 | PARTIAL | clean actual bundle delivered; Claude verifier +runtime recovery pending |
 | INT-16 | INT-14 | Client same-origin API transport | REVIEW | c30c664;52E2E+live sessions PASS; fresh Docker gate |
 
 Hoàn thành trước tách làn (bằng chứng INVENTORY mục 5): T0.1–T0.4, T2.1–T2.4, T4.1, T4.2 = DONE (VERIFIED-HIST, build VERIFIED-NOW);
@@ -199,14 +199,18 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Checkpoint: Lane codex / Changed MVP mode+metadata / Verified Go+PG+FE/mode+business checks / Contract public0.3 / Next INT-16.
 
 ### INT-15 — Product interactions + read-only v2 export (HC-07 scope)
-- T gốc: D19/D21, HC-07/09 (proposed ID INT-13 collides existing image task) | Owner: CODEX | Status: IN_PROGRESS (2026-10-26)
+- T gốc: D19/D21, HC-07/09 (proposed ID INT-13 collides existing image task) | Owner: CODEX | Status: PARTIAL (source/export verified2026-10-26; Claude verifier/runtime gate)
 - Depends on: ttv2-data-v1.1 read, INT-02 persistence; no AI training dependency | Blocks: AI-12 real product dataset
 - Acceptance: roleclient interactions only, one watch_time/session excluding seek, skip1–<3s, valid product IDs/media visibility;
   no test/demo events in training export; consistent readonly snapshot JSONL+manifest rows/sha256/version, no PII, deterministic ordering.
   Public/OpenAPI changes only in separate contract step if needed; no impressions phase2 unless requested. Verify DB/export/UI +Claude loader via handoff.
-- Changed planned: PG/migration if needed, interaction handler andClient tracker, readonly export CLI/tests, Codex tracker/handoff.
-- Commits: initial task checkpoint | Evidence: HC-09 contract read; current heartbeat/role gaps inspected | Next action: contract-first role/duration validation, provenance exclusion and readonly export.
-- Checkpoint: Lane codex / IN_PROGRESS / Contract ttv2-data-v1.1 consumed read-only / No training or product embeddings.
+- Changed: handler/PG role+validation, private source migration/config, Client watch/track, readonly CLI/tests; public0.3.1/generatedtypes; Codex handoff/evidence.
+- Commits:987d647 contract;18d1a3b implementation;33495fb export-test cleanup correction.
+- Evidence: verification/INT-15.md: Go checks, CMS/Client checks,55browser PASS; intended PG8tests PASS/no skips; migrationrepeat0;
+  corrected testcleanup +0fixture SQL; final actual CLI snapshot20261026T113856Z exit0/hash/count PASS (0product rows,10categories).
+  Initial2fixture artifact quarantined/not handed off. Live staff403/nonwatch422/mock pipeline passed; restart attempt NOT_PASS (Desktop stalled).
+- Next action: Claude verify only final bundle/readiness; user restore gateway (automatic review blocked targeted start). No AI training or fabricated data.
+- Checkpoint: Lane codex / PARTIAL until external verifier/runtime / Contract public0.3.1 +ttv2-data-v1.1 / No product vectors/training.
 
 ### INT-16 — Client same-origin API transport
 - T gốc: INT-14 live auth defect | Owner: CODEX | Status: REVIEW (host verified2026-10-26; fresh Docker capacity gate remains)
