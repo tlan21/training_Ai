@@ -1,0 +1,9 @@
+ai_core/tests/test_product_interactions.py::test_manifest_checksum_is_enforced PASSED [ 12%]
+ai_core/tests/test_product_interactions.py::test_invalid_rows_are_dropped_with_reasons PASSED [ 25%]
+ai_core/tests/test_product_interactions.py::test_duplicates_within_window_collapse PASSED [ 37%]
+ai_core/tests/test_product_interactions.py::test_labels_follow_data_contract PASSED [ 50%]
+ai_core/tests/test_product_interactions.py::test_positive_wins_and_keeps_first_positive_time PASSED [ 62%]
+ai_core/tests/test_product_interactions.py::test_time_split_has_no_leakage_and_reports_cold_start PASSED [ 75%]
+ai_core/tests/test_product_interactions.py::test_category_vocabulary_is_sorted_and_versioned PASSED [ 87%]
+ai_core/tests/test_product_interactions.py::test_gate_stage_follows_d19 PASSED [100%]
+============================== 8 passed in 3.91s ==============================

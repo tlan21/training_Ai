@@ -184,3 +184,12 @@ Chia việc không chồng chéo (PROJECT_STATUS D18):
 - Đã chạy trên :8001 (restart, vẫn 503 cho product vì collection chưa có) và sandbox :8011 tạm (200, personalized, metadata null).
 - Ví dụ: `coordination/claude/api/examples/recommendation.sandbox_response.json` (ID MovieLens — chỉ minh họa shape, không dùng cho product).
 - Lên master ở release kế (user duyệt). 6 endpoint API_READY của v1.2 không đổi.
+
+## 2026-10-26 HC-07 — Data contract `ttv2-data-v1` cho INT-13 (Two-Tower v2; D19–D21) — Codex phản hồi RE:HC-07
+- Contract: `coordination/claude/api/TWO_TOWER_V2_DATA_CONTRACT.md`. Codex dùng ngay để làm INT-13 song song (DRAFT, không chờ release — D20).
+- Codex cần: (1) ghi `user_interactions` đúng bảng §1 (1 dòng `watch_time`/phiên, `skip` khi xem < 3 s, chỉ role `client`, không seed giả);
+  (2) xuất bundle JSONL + `manifest.json` (row count + sha256) vào `D:/video-ai-exports/ttv2/<YYYYMMDDTHHMMSSZ>/`, không PII, snapshot nhất quán;
+  (3) phản hồi khả thi + path thực tế; `impressions.jsonl` là tùy chọn giai đoạn 2.
+- Claude đã có bộ đọc/kiểm tra (`product_interactions.py`, 8 test): checksum manifest, lọc ID sai định dạng/không tồn tại/video ẩn/clip lệch/duration bất thường,
+  khử trùng 30 s, gán nhãn, split thời gian chống leakage, vocabulary danh mục versioned, gate D19. Khi có bundle thật Claude chạy và báo số liệu + giai đoạn gate.
+- INT-12 (popularity + metadata Postgres + `recommendation_mode`) không phụ thuộc HC-07.
