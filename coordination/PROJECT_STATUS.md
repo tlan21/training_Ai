@@ -3,7 +3,7 @@
 **Chỉ sửa trong release commit theo `coordination/README.md` mục 6** (user ra lệnh release cho đúng 1 làn) **hoặc khi user yêu cầu trực tiếp**.
 Ngoài ra: đọc trạng thái sống ở `coordination/claude/TASKS.md` và `coordination/codex/TASKS.md` (qua `git show`).
 
-Cập nhật lần cuối: 2026-10-26 · **release #2 (làn Claude)** — commit này lên `master` khi user duyệt push.
+Cập nhật lần cuối: 2026-10-26 · **release #2 (làn Claude, user duyệt)** — `master` = commit release này.
 
 ## 1. Cổng nghiệm thu AI (AI-GATE — master plan §0)
 
@@ -97,4 +97,4 @@ khi người duyệt từng mục (`HUMAN_VERIFIED`) và provenance ghi rõ ngu�
 | 2 | 2026-10-26 | claude — **release #1** | `39ff344 → 96ebc24` (ff-only) | không đổi trạng thái task; D9–D12 ghi sau release | mở HC-03 | inference 37 PASS/1 skip; 6 ckpt `stub_mode=false`; 0 file code đổi; Codex worktree ff → 96ebc24 sạch |
 | 3 | 2026-10-26 | claude (user yêu cầu, không release) | không đổi (`96ebc24`) | thêm AI-08 (TODO), D13 | — | chỉ tài liệu |
 | 4 | 2026-10-26 | claude (user yêu cầu, không release) | không đổi (`96ebc24`) | AI-06 DONE; AI-01 REVIEW (v1.0-rc1 DRAFT); thêm AI-09, AI-10; D14–D17 | mở HC-04; đính chính REL v1.0 → rc1 DRAFT | AI-06/AI-01 evidence: HTTP ladder 9/9, live smoke 6/6, inference 37 PASS/7 skip |
-| 5 | 2026-10-26 | claude — **release #2** | `96ebc24 → <commit này>` (ff-only, chờ user duyệt) | AI-01, AI-06, AI-07, AI-10, AI-11 DONE; AI-API v1.2 (6 API_READY, reco DRAFT); :8001 UP | đóng HC-05 (RE:HC-05 phương án b), HO-01 (RE:HO-01); mở HC-04 chờ RE sandbox | ai-core 285 PASS; inference 51 PASS/7 skip; smoke :8001 6/6 (media thật + synthetic) + 401; 6 ckpt `stub_mode=false` |
+| 5 | 2026-10-26 | claude — **release #2** | `96ebc24 →` commit release này (ff-only, user duyệt 2026-10-26; xem `git log -1 master`) | AI-01, AI-06, AI-07, AI-10, AI-11 DONE; AI-API v1.2 (6 API_READY, reco DRAFT); :8001 UP | đóng HC-05 (RE:HC-05 phương án b), HO-01 (RE:HO-01); mở HC-04 chờ RE sandbox | ai-core 285 PASS; inference 51 PASS/7 skip (chạy lại lúc release); smoke :8001 6/6 (media thật) + 401; 6 ckpt `stub_mode=false`, degraded [] |
