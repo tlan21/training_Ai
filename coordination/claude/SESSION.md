@@ -15,6 +15,8 @@ Khi chờ (Kaggle/người duyệt): AI-03a (soạn 40 summary), AI-02a (đề x
 AI-02b/AI-03b chờ user duyệt. Runtime :8001: DOWN (chưa chạy).
 
 ## Phiên trước
+- 2026-10-26 — Release #1: master ff 39ff344 → 96ebc24 (user duyệt), Codex worktree ff sạch; ghi D9–D12, HC-03 (Milvus, dung lượng C:/E:).
+  Task kế: AI-06 (chưa bắt đầu).
 - 2026-10-26 — Ghi quyết định user D1–D8 (PROJECT_STATUS mục 5): tách AI-02a/b/c, AI-03a/b/c; thêm AI-07; AI-04 TODO (sơ bộ T4);
   contract v0.1 (thang sẵn sàng, runtime :8001 thuộc Claude); rút HC-01, mở HC-02 cho Codex. Chỉ tài liệu.
 - 2026-10-26 — AI-00 tách làn + kiểm kê.

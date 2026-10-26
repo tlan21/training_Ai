@@ -3,7 +3,7 @@
 **Chỉ sửa trong release commit theo `coordination/README.md` mục 6** (user ra lệnh release cho đúng 1 làn) **hoặc khi user yêu cầu trực tiếp**.
 Ngoài ra: đọc trạng thái sống ở `coordination/claude/TASKS.md` và `coordination/codex/TASKS.md` (qua `git show`).
 
-Cập nhật lần cuối: 2026-10-26 · cập nhật #1 theo quyết định user (không phải release; `master` vẫn ở baseline tách làn `39ff344`).
+Cập nhật lần cuối: 2026-10-26 · sau release #1 (`master` = `96ebc24`). File này trên branch Claude có thêm D9–D12 + sync #2; sẽ lên `master` ở release kế.
 
 ## 1. Cổng nghiệm thu AI (AI-GATE — master plan §0)
 
@@ -49,7 +49,7 @@ Theo quyết định user mục 5; Codex tự cập nhật `coordination/codex/T
 
 ## 4. AI API
 
-Version trên branch Claude: **AI-API v0.1 DRAFT** (master: v0). Chưa endpoint nào `API_READY`.
+Version: **AI-API v0.1 DRAFT** (trên `master` từ release #1). Chưa endpoint nào `API_READY`.
 Matrix: 6/7 dòng `INTEGRATED_REAL (HIST)`, recommendation `REAL_PENDING`.
 
 ## 5. Quyết định user (binding — README mục 9)
@@ -64,6 +64,10 @@ Matrix: 6/7 dòng `INTEGRATED_REAL (HIST)`, recommendation `REAL_PENDING`.
 | D6 | 2026-10-26 | INT-00: Codex không sao chép/quản lý checkpoint; tích hợp qua HTTP :8001; trong lúc chưa sẵn sàng dùng mock đúng contract. |
 | D7 | 2026-10-26 | Ranh giới giữ nguyên: Codex chỉ sửa tầng dự án của mình, Claude chỉ tầng AI. |
 | D8 | 2026-10-26 | Tiếp tục cập nhật tracker/dependency/handoff/tiến độ thật; không tạo lại task đã xong; không DONE khi thiếu bằng chứng. |
+| D9 | 2026-10-26 | Milvus: Codex quản lý hạ tầng; Claude quản lý logic AI liên quan; thay đổi giao diện giữa hai phần phải ghi handoff (HC-03). |
+| D10 | 2026-10-26 | Kiểm dung lượng E: (và ổ chứa Docker) trước `npm ci`/tải-build image; thiếu → `BLOCKED_RESOURCE` + phương án không mất dữ liệu. |
+| D11 | 2026-10-26 | Codex không chờ training: làm phần không phụ thuộc AI, dùng mock tới khi API thật đạt nghiệm thu. |
+| D12 | 2026-10-26 | Release #1 duyệt (ff master → 96ebc24). Summary do Claude soạn: ghi provenance, duyệt từng mục, chỉ dùng train/eval theo chính sách dữ liệu đã duyệt; không tự HUMAN_VERIFIED; T1.6 do người chấm ≥3/5. |
 
 Lưu ý từ Claude cho D3: `instructions.md` §1 cấm "pseudo-label từ model ngoài" → summary Claude soạn chỉ được làm target train/eval sau
 khi người duyệt từng mục (`HUMAN_VERIFIED`) và provenance ghi rõ nguồn Claude; cổng chất lượng T1.6 vẫn do người chấm.
@@ -74,3 +78,4 @@ khi người duyệt từng mục (`HUMAN_VERIFIED`) và provenance ghi rõ ngu�
 |---|---|---|---|---|---|---|
 | 0 | 2026-10-26 | claude | baseline tách làn `39ff344` | AI-00 DONE; khởi tạo backlog AI-01..06, INT-00..10 | mở HC-01 | ai-core 285 PASS; inference 37 PASS/1 skip; 6 ckpt thật; Go/CMS/Client build PASS |
 | 1 | 2026-10-26 | claude (user yêu cầu, không release) | không đổi | quyết định D1–D8; thêm AI-07; tách AI-02a/b/c, AI-03a/b/c; AI-04 BLOCKED→TODO (sơ bộ); INT-10 → DEFERRED | rút HC-01; mở HC-02 | chỉ tài liệu, không đổi code |
+| 2 | 2026-10-26 | claude — **release #1** | `39ff344 → 96ebc24` (ff-only) | không đổi trạng thái task; D9–D12 ghi sau release | mở HC-03 | inference 37 PASS/1 skip; 6 ckpt `stub_mode=false`; 0 file code đổi; Codex worktree ff → 96ebc24 sạch |

@@ -45,3 +45,25 @@ Claude không sửa `AGENTS.md` / `coordination/codex/**` (giữ ranh giới, qu
    ngay sau INT-00. INT-01 tách: phần backend/integration DB làm được với mock; phần E2E AI thật ⇐ AI-07 (:8001 UP).
    INT-03 ⇐ AI-01 + AI-07.
 5. Ghi `RE:HC-02` vào `coordination/codex/HANDOFF_OUT.md` khi đã áp dụng.
+
+## 2026-10-26 REL #1 — master fast-forward 39ff344 → 96ebc24 (user duyệt)
+- Nội dung: chỉ tài liệu điều phối (D1–D8, contract v0.1 DRAFT, HC-02). 0 file code đổi.
+- Gate: inference-service pytest 37 passed/1 skipped; 6 checkpoint nạp `stub_mode=false`, degraded []. ai-core pytest không chạy lại
+  (0 file `.py` đổi kể từ 39ff344 đã 285 PASS; ổ C: còn 3.5 GB, test ghi ~0.75 GB tmp).
+- Worktree Codex đã `git merge --ff-only master` → `96ebc24`, tree sạch, Codex chưa có commit riêng.
+
+## 2026-10-26 HC-03 — Ràng buộc user D9–D12 + cảnh báo dung lượng (Codex áp dụng ở INT-00)
+1. **Milvus (D9):** Codex quản lý hạ tầng Milvus (container, volume, port `19530`, vận hành). Claude quản lý logic AI dùng Milvus
+   (collection frame/user-vector, encode, index, truy vấn trong inference-service). Mọi thay đổi giao diện giữa hai phần
+   (tên collection, dim, metric, index params, host/port, schema field) phải ghi handoff trước khi đổi.
+2. **Dung lượng (D10), đo 2026-10-26 sau release:** E: còn **2.2 GB**; C: còn **3.5 GB**; Docker Desktop lưu image trong
+   `C:/Users/PC/AppData/Local/Docker/wsl/disk/docker_data.vhdx` (40.6 GB, nằm trên C:). Worktree Codex chưa có `node_modules`.
+   - Trước `npm ci` (≈420 MB trên E:): đo lại E:, cần còn ≥1.5 GB sau cài, nếu không → `BLOCKED_RESOURCE`.
+   - Trước build/pull Docker image: đo lại C:. Worktree mới có tên project compose khác (`traning_ai-codex`) → có thể build lại
+     toàn bộ image và tạo volume mới, tốn nhiều GB trên C:. Thiếu chỗ → `BLOCKED_RESOURCE`, không xóa gì khi chưa có user duyệt.
+   - Phương án không mất dữ liệu để Codex đề xuất cho user: (a) dùng lại image/volume cũ bằng `COMPOSE_PROJECT_NAME=traning_ai`
+     (cùng dữ liệu stack T4.x); (b) user dọn file tạm/cache ngoài dự án; (c) `docker builder prune` chỉ xóa build cache (không volume)
+     — cần user duyệt; (d) chuyển Docker disk image sang ổ khác còn trống — cần user duyệt. Không `docker volume rm`/`system prune -a`.
+   - Chỉ cần mock + `go test`/build FE thì không cần Docker → phần không phụ thuộc Docker vẫn làm được.
+3. **Không chờ training (D11):** làm phần không phụ thuộc AI, dùng mock tới khi endpoint `API_READY` + integration test thật PASS.
+4. **PROJECT_STATUS (D12):** mỗi làn chỉ ghi tracker của mình; PROJECT_STATUS chung chỉ đổi trong release theo README mục 6.
