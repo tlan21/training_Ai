@@ -76,6 +76,20 @@ func TestVisionMissingFileDoesNotSendRequest(t *testing.T) {
 	}
 }
 
+func TestRecommendationV13ModeAndNullableMetadata(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Header.Get("Authorization") != "Bearer sk-local-test" || r.URL.Path != "/v1/recommendation/completions" {
+			t.Error("bad recommendation transport")
+		}
+		_, _ = w.Write([]byte(`{"recommendation_mode":"personalized","recommendations":[{"video_id":"vid_real","score":0.9,"title":null,"thumbnail_url":null}]}`))
+	}))
+	defer server.Close()
+	result, err := New(server.URL, "sk-local-test").Recommendation(context.Background(), "usr_real", 10, nil)
+	if err != nil || result.RecommendationMode != "personalized" || len(result.Hits) != 1 || result.Hits[0].VideoID != "vid_real" || result.Hits[0].Score != 0.9 {
+		t.Fatalf("v1.3 decode: %+v %v", result, err)
+	}
+}
+
 func TestClient_RejectsStubHealthAndPreservesHTTPError(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path == "/health" {

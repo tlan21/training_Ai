@@ -113,6 +113,17 @@ func TestInteractionRepository_RealPersistencePaginationAndPrivacy(t *testing.T)
 	if !found {
 		t.Fatal("recent interactions missing from popularity")
 	}
+	exec(`UPDATE clips SET status='rejected' WHERE video_id=$1`, video)
+	ids, err = repo.PopularityTop(ctx, 100)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, id := range ids {
+		if id == video {
+			t.Fatal("video without published clips included in popularity")
+		}
+	}
+	exec(`UPDATE clips SET status='published' WHERE id=ANY($1::text[])`, []string{clip1, clip2})
 	exec(`UPDATE user_interactions SET created_at=now()-interval '8 days' WHERE video_id=$1`, video)
 	ids, err = repo.PopularityTop(ctx, 100)
 	if err != nil {

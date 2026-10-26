@@ -2,6 +2,10 @@ import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import type { components, paths } from "@/api-types";
 import { apiClient } from "@/lib/apiClient";
 import { useAuthStore } from "@/stores/authStore";
+export type RecommendationMode = components["schemas"]["FeedPage"]["recommendation_mode"];
+export function recommendationLabel(mode?: RecommendationMode) {
+    return mode === "personalized" ? "Dành cho bạn" : mode === "popularity" ? "Phổ biến" : mode === "fallback" ? "Phổ biến (dự phòng)" : "Đề xuất";
+}
 export type Clip = components["schemas"]["Clip"];
 export type Video = components["schemas"]["Video"];
 export type HistoryPage = paths["/api/users/me/history"]["get"]["responses"][200]["content"]["application/json"];
@@ -14,7 +18,7 @@ export function useCategories() {
 export function useClipPage(endpoint: "/api/feed" | "/api/users/me/likes") {
     const ready = useAuthStore(s => s.ready);
     return useInfiniteQuery({ queryKey: [endpoint], enabled: ready, initialPageParam: null as string | null,
-        queryFn: async ({ pageParam }) => (await apiClient.get<components["schemas"]["ClipPage"]>(endpoint, { params: { cursor: pageParam || undefined, limit: 10 } })).data,
+        queryFn: async ({ pageParam }) => (await apiClient.get<components["schemas"]["ClipPage"] & Partial<components["schemas"]["FeedPage"]>>(endpoint, { params: { cursor: pageParam || undefined, limit: 10 } })).data,
         getNextPageParam: page => page.next_cursor || undefined });
 }
 export function useHistory() {

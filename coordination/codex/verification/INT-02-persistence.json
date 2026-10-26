@@ -1,7 +1,7 @@
 {
   "mode": "MOCK_ONLY",
-  "user_id": "usr_1c69f9f0a380793d",
-  "clip_id": "clp_dmenunijdz62",
+  "user_id": "usr_544e840fe6ad60bf",
+  "clip_id": "clp_dmep6a54hsdn",
   "restart_verified": true,
   "history_count": 1,
   "duration_watched": 2,
@@ -11,7 +11,9 @@
   "playback_range_status": 206,
   "unpublished_interaction_status": 404,
   "deleted_content_hidden": true,
-  "recommendation_fallback": true,
+  "recommendation_fallback": false,
+  "primary_popularity": true,
+  "recommendation_mode": "popularity",
   "preferences_persisted": true,
   "login_preferences_retained": true
 }

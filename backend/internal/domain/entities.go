@@ -206,7 +206,8 @@ type SearchResult struct {
 }
 
 type RecResult struct {
-	Hits []VideoHit `json:"hits" bson:"hits"`
+	Hits               []VideoHit `json:"hits" bson:"hits"`
+	RecommendationMode string     `json:"recommendation_mode" bson:"recommendation_mode"`
 }
 
 type SummaryResult struct {

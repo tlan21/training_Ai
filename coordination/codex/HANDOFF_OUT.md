@@ -133,3 +133,12 @@ Mẫu HO:
 - INT-15 TODO: contract feasible with current PG tables, but current runtime includes prior E2E/demo records; provenance exclusion and roleclient/session
   semantics must be verified before export. No fake training events or imputed product vectors. Export artifact path confirmed before writing bundle.
 - HO-03 transport/Desktop restart decision still open; parallel MVP work does not wait on training/model v2.
+
+## 2026-10-26 RE:HC-06 — INT-14 MVP checkpoint
+- Public OpenAPI0.3 FeedPage mode enum committed0a86a14; generated Go/CMS/Client. D18 primary PG popularity wired for MVP;
+  product metadata hydrated on every request, no AI fake metadata. Optional recommender consumesv1.3 mode and validates product/public IDs;
+  stub/legacy/unknown/errors → fallback. No personalized production/vector sync enabled before AI-12 gate.
+- Go checks+5realPG PASS;46ClientUI+8mode browser cases PASS; primary modepopularity +actual DB/restart/media/privacy pipeline PASS (AI stepsmock).
+- Full Client design parity stillPARTIAL/INT-06; live browser directlocalhost8000 auth times out while127001/CMSproxy work.
+  INT-16 now fixes same-origin Client API transport using existing Next rewrites pattern. HO-03 realAI container→host still open/user restartpending.
+- HC-07 INT-15 remainsnext data task; no test/demo bundle exported and no synthetic product vectors written.

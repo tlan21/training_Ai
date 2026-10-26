@@ -3,8 +3,10 @@
 ## Current state
 - INT-14 contract checkpoint: public OpenAPI0.3.0 FeedPage with required recommendation_mode enum, existing ClipPage reused.
   Go types/spec generated with oapi-codegen2.8.0; CMS+Client types generated openapi-typescript7.13.0.
-  gen Go compile +CMS/Client tsc PASS. No runtime behavior changed yet; next backend mode/cache/PG metadata, then Client labels/tests.
-- Active INT-14 IN_PROGRESS (HC-06 popularity/mode); INT-15 TODO (HC-07 interactions/export). Historical INT-12/13 IDs kept; mapping committed to handoff.
+  gen Go compile +CMS/Client tsc PASS. Runtime behavior now implemented and verified; see verification/INT-14.md. Historical contract-only checkpoint retained.
+- Active INT-16 IN_PROGRESS: Client same-origin API proxy (live browser localhost8000 auth abort8s, IPv4/CMS proxy healthy).
+- INT-14 PARTIAL: primary PG popularity +honest3modes/realmetadata implemented; Go+5PG+46UI+8modes+live primary persistence PASS.
+  Full-screen design gaps remainINT-06; liveClient transport needsINT-16. INT-15 TODO (HC-07 interactions/export). Historical INT-12/13 IDs kept; mapping committed to handoff.
 - Release#3 masterfee83b2 received; read v1.3 +ttv2-data-v1/D18–D21. Next contract-first FeedPage0.3 then backend/Client; HO-03 still open.
 - Branch codex/integration; Release#1 received, Release#2 master70bf011 merged5691526 without conflict.
   No Codex push/release/master update. Shared/Claude files only received via merge; no manual edits.

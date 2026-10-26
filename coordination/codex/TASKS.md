@@ -22,8 +22,9 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-11 | INT-01 | HTTP media giữa gateway Docker và inference host | BLOCKED | HO-03 Docker Desktop host transport; restart decision pending |
 | INT-12 | T2.2/T3.1 | CMS access JWT chỉ ở RAM, refresh khi reload | REVIEW | 41 E2E PASS; live gateway cookie rotation |
 | INT-13 | INT-00 | Image ingest riêng + kiểm clean build | BLOCKED | source/3 tests PASS; full CPU image capacity gate |
-| INT-14 | HC-06/D18/D21 | Popularity MVP, real metadata, recommendation_mode | IN_PROGRESS | v1.3 release received; no training dependency |
+| INT-14 | HC-06/D18/D21 | Popularity MVP, real metadata, recommendation_mode | PARTIAL | MVP/PG/46UI tests PASS; liveClient INT-16 +parity INT-06 |
 | INT-15 | HC-07/D19/D21 | Valid product interactions + versioned export for v2 | TODO | ttv2-data-v1; test/demo provenance required |
+| INT-16 | INT-14 | Client same-origin API transport | IN_PROGRESS | gatewayIPv4 healthy; browser localhost auth blocked |
 
 Hoàn thành trước tách làn (bằng chứng INVENTORY mục 5): T0.1–T0.4, T2.1–T2.4, T4.1, T4.2 = DONE (VERIFIED-HIST, build VERIFIED-NOW);
 T2.5, T3.1, T3.2 = PARTIAL.
@@ -184,14 +185,18 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Checkpoint: Lane codex / Changed own ingest package+compose+tests / Verified source build+3 tests/config PASS / Contract no / Next capacity+HO-03 recovery.
 
 ### INT-14 — Popularity recommendation + truthful mode (HC-06 scope)
-- T gốc: D18/D20/D21, HC-06 (proposed ID INT-12 collides existing auth task) | Owner: CODEX | Status: IN_PROGRESS (2026-10-26)
-- Depends on: existing PG data/INT-02, AI-API v1.3 received; no Two-Tower train dependency | Blocks: MVP honest recommendation mode
-- Acceptance: contract-first GET /api/feed adds recommendation_mode popularity|personalized|fallback; regenerate Go/CMS/Client types before code;
-  rank published product metadata from PG, unknown/private AI IDs omitted, no fake title/thumbnail, no personalized label for fallback.
-  Preserve cursor/limit/cache/publication privacy; Go +PG/API/FE E2E/build evidence; real personalized only after actual product model gate.
-- Changed planned: infra/openapi.yaml+generated3types, content/aihttp/domain/tests, Client feed/discovery/hook/fixtures, Codex evidence.
-- Commits: pending | Evidence: not implemented | Next action: OpenAPI0.3.0 FeedPage schema +generation first; backend/mock/PG before real gate.
-- Checkpoint: Lane codex / IN_PROGRESS before implementation / Contract proposed public mode per D18 / Next contract commit.
+- T gốc: D18/D20/D21, HC-06 (ID INT-12 collided historical auth task) | Owner: CODEX | Status: PARTIAL (MVP functional verified2026-10-26)
+- Depends on: INT-02/PG, AI-API v1.3 received; no training/v2 dependency forMVP | Blocks: honest recommendation presentation
+- Acceptance: public contract-first feed mode enum +generated3types, primary PG product ranking/metadata, valid/public AI IDs only;
+  fallback never personalized, limit/cache visibility correct; Go/PG/API/FE build/E2E and design parity evidence.
+- Changed: infra/openapi+generated types, gateway wiring/handler, AI adapter/domain, PG popularity/tests; Client feed/discovery/content/nextconfig;
+  E2E client/mode/business scripts; Codex verification/trackers.
+- Evidence: verification/INT-14.md: Go vet/test/build PASS,5realPG PASS/no skips, Client tsc/lint/build PASS;46UI E2E+8focusedmode PASS;
+  live optional fallback then final primary popularity +restart/persistence/media/privacy PASS. Full-screen parity NOT_PASS (INT-06);
+  live browser localhost8000 auth times out, IPv4/CMS proxy good (INT-16). No real personalized or AI pipeline claim.
+- Commits:0a86a14 contract; implementation checkpoint int(content): expose truthful recommendation modes and primary popularity (SHA next checkpoint).
+- Next action: INT-16 Client same-origin proxy, then liveClient mode/session verification; full parityINT-06. Existing single-page feed pagination remains unfinished.
+- Checkpoint: Lane codex / Changed MVP mode+metadata / Verified Go+PG+FE/mode+business checks / Contract public0.3 / Next INT-16.
 
 ### INT-15 — Product interactions + read-only v2 export (HC-07 scope)
 - T gốc: D19/D21, HC-07 (proposed ID INT-13 collides existing image task) | Owner: CODEX | Status: TODO
@@ -202,3 +207,13 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Changed planned: PG/migration if needed, interaction handler andClient tracker, readonly export CLI/tests, Codex tracker/handoff.
 - Commits: — | Evidence: contract read only | Next action: finishINT-14 then inspect actual test/demo provenance; agree export artifact path in handoff.
 - Checkpoint: Lane codex / TODO / Contract ttv2-data-v1 consumed read-only / No training or product embeddings.
+
+### INT-16 — Client same-origin API transport
+- T gốc: INT-14 live auth defect | Owner: CODEX | Status: IN_PROGRESS (2026-10-26)
+- Depends on: current gateway IPv4 healthy; existing Next stack | Blocks: liveClient auth/mode/E2E
+- Acceptance: Client relative /api through existing Next proxy to gatewayIPv4 (host) or gatewayDNS (Docker), HttpOnly refresh/cookies preserved,
+  optional explicit public base still supported; build/config correct, live login/reload/logout/feed request PASS; no new API endpoint/schema/library.
+- Changed planned: client apiClient/nextconfig/Dockerfile, compose/env example/docs, E2E fixtures/livechecks, Codex trackers.
+- Evidence: defect reproduced: live browser localhost8000 login abort8s;127001gateway health200/CMS proxy401expected.
+- Commits: pending | Next action: inspect existing base URL/build args, use built-in Next rewrites (same pattern as CMS proxy).
+- Checkpoint: Lane codex / IN_PROGRESS before implementation / Contract unchanged, existing /api routes proxied / Next implement+liveverify.

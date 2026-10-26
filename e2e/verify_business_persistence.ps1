@@ -1,7 +1,8 @@
 # INT-02: real storage/ingest/cutter, HTTP mock AI. Never evidence of real AI quality.
 $ErrorActionPreference = 'Stop'
+$PSDefaultParameterValues = @{'Invoke-RestMethod:TimeoutSec'=15; 'Invoke-WebRequest:TimeoutSec'=15}
 Set-Location (Split-Path $PSScriptRoot -Parent)
-$base = 'http://localhost:8000'
+$base = if ($env:E2E_GATEWAY_URL) { $env:E2E_GATEWAY_URL.TrimEnd('/') } else { 'http://127.0.0.1:8000' }
 $mock = Invoke-RestMethod 'http://localhost:18001/health'
 if (-not $mock.stub_mode) { throw 'This script requires the explicit mock stack' }
 $admin = Invoke-RestMethod -Method Post "$base/api/auth/login" -ContentType 'application/json' -Body '{"email":"admin@local","password":"admin123"}'
@@ -65,7 +66,8 @@ try {
     if ($likes.items.Count -ne 1 -or $likes.items[0].id -ne $clip.id) { throw 'Likes lost after restart' }
     if ($after.highlight_threshold -ne $threshold -or $after.ai_service_api_key -ne 'sk-local-••••') { throw 'Settings lost or key exposed' }
     $feed = Invoke-RestMethod "$base/api/feed" -Headers $viewerHeaders
-    if ($clip.id -notin $feed.items.id) { throw 'Popularity fallback failed with recommendation 503' }
+    if ($clip.id -notin $feed.items.id) { throw 'Product popularity did not include the watched published clip' }
+    if ($feed.recommendation_mode -ne 'popularity') { throw 'MVP feed misreported primary popularity mode' }
     foreach ($url in @($history.items[0].clip.playback_url, $likes.items[0].playback_url)) {
         if (-not $url) { throw 'Playback URL missing' }
         $media = Invoke-WebRequest $url -Headers @{Range='bytes=0-1023'} -SkipHttpErrorCheck
@@ -76,7 +78,7 @@ try {
     $hiddenHistory = Invoke-RestMethod "$base/api/users/me/history" -Headers $viewerHeaders
     $hiddenLikes = Invoke-RestMethod "$base/api/users/me/likes" -Headers $viewerHeaders
     if ($hiddenHistory.items.Count -ne 0 -or $hiddenLikes.items.Count -ne 0) { throw 'Deleted content leaked through history/likes' }
-    $evidence = [ordered]@{mode='MOCK_ONLY';user_id=$viewer.user.id;clip_id=$clip.id;restart_verified=$true;history_count=$history.items.Count;duration_watched=$history.items[0].duration_watched;likes_count=$likes.items.Count;settings_persisted=$true;key_masked=$true;playback_range_status=206;unpublished_interaction_status=$private.StatusCode;deleted_content_hidden=$true;recommendation_fallback=$true;preferences_persisted=$true;login_preferences_retained=$true}
+    $evidence = [ordered]@{mode='MOCK_ONLY';user_id=$viewer.user.id;clip_id=$clip.id;restart_verified=$true;history_count=$history.items.Count;duration_watched=$history.items[0].duration_watched;likes_count=$likes.items.Count;settings_persisted=$true;key_masked=$true;playback_range_status=206;unpublished_interaction_status=$private.StatusCode;deleted_content_hidden=$true;recommendation_fallback=($feed.recommendation_mode -eq 'fallback');primary_popularity=($feed.recommendation_mode -eq 'popularity');recommendation_mode=$feed.recommendation_mode;preferences_persisted=$true;login_preferences_retained=$true}
     $evidence | ConvertTo-Json | Set-Content -Encoding utf8 coordination/codex/verification/INT-02-persistence.json
     $evidence | ConvertTo-Json
 } finally {

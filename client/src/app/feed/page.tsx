@@ -7,11 +7,12 @@ import { AppNav } from "@/components/AppNav";
 import { BottomNav } from "@/components/BottomNav";
 import { Icon } from "@/components/Icon";
 import { PageState, Thumbnail } from "@/components/Media";
-import { useClipPage, formatTime, track, shareVideo, type Clip } from "@/lib/content";
+import { useClipPage, formatTime, track, shareVideo, recommendationLabel, type RecommendationMode, type Clip } from "@/lib/content";
 import { apiClient, errorMessage } from "@/lib/apiClient";
 import { useWatchTime } from "@/lib/useWatchTime";
-function FeedClip({ clip, active, onMessage }: {
+function FeedClip({ clip, active, mode, onMessage }: {
     clip: Clip;
+    mode?: RecommendationMode;
     active: boolean;
     onMessage: (s: string) => void;
 }) {
@@ -59,7 +60,7 @@ function FeedClip({ clip, active, onMessage }: {
     } };
     return <article className="feed-clip" data-clip-id={clip.id}>
   <video ref={ref} src={clip.playback_url || undefined} poster={clip.thumbnail_url || undefined} preload={active ? "metadata" : "none"} playsInline muted={muted} loop onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} onTimeUpdate={e => setTime(e.currentTarget.currentTime)} onLoadedMetadata={e => setDuration(e.currentTarget.duration)} onError={() => setMediaError(true)}/>
-  <div className="feed-mobile-top"><Link href="/discover" className="icon-button" aria-label="Quay lại Khám phá"><Icon name="arrow_back" size={28}/></Link><span>Dành cho bạn</span><Link href="/search" className="icon-button" aria-label="Tìm kiếm"><Icon name="search" size={28}/></Link></div>
+  <div className="feed-mobile-top"><Link href="/discover" className="icon-button" aria-label="Quay lại Khám phá"><Icon name="arrow_back" size={28}/></Link><span data-recommendation-mode={mode ?? "unknown"}>{recommendationLabel(mode)}</span><Link href="/search" className="icon-button" aria-label="Tìm kiếm"><Icon name="search" size={28}/></Link></div>
   {(!clip.playback_url || mediaError) && <div className="player-unavailable" role="alert">Không thể phát clip này.<button className="btn-outline" onClick={() => { setMediaError(false); ref.current?.load(); }}>Thử lại</button></div>}
   <button className="feed-player-button" aria-label={playing ? "Tạm dừng" : "Phát video"} onClick={() => { const el = ref.current; if (el) {
         if (el.paused)
@@ -107,7 +108,7 @@ export default function FeedPage() {
     return <div className="feed-page"><AppNav active="home"/><main className="feed-layout">
   <aside className="feed-trending-nav"><Link href="/discover"><span className="icon-button"><Icon name="trending_up"/></span>Xu hướng</Link></aside>
   {feed.isPending || feed.error || !clips.length ? <div className="feed-empty"><PageState loading={feed.isPending} error={feed.error} empty="Chưa có clip được xuất bản." retry={() => feed.refetch()}/>{!feed.isPending && !feed.error && <Link href="/onboarding" className="btn-primary">Chọn chủ đề yêu thích</Link>}</div> : <div className="feed-scroll" ref={root} aria-label="Video feed">
-   {clips.map((clip, i) => <div key={clip.id} data-index={i} style={{ height: "100%" }}><FeedClip clip={clip} active={active === i} onMessage={setMessage}/></div>)}
+   {clips.map((clip, i) => <div key={clip.id} data-index={i} style={{ height: "100%" }}><FeedClip clip={clip} active={active === i} mode={feed.data?.pages[0]?.recommendation_mode} onMessage={setMessage}/></div>)}
    {feed.hasNextPage && <div className="page-state"><button className="btn-primary" disabled={feed.isFetchingNextPage} onClick={() => feed.fetchNextPage()}>Tải thêm</button></div>}
   </div>}
   <section className="feed-upnext"><div className="section-heading"><h2>Sắp phát tiếp</h2><Link href="/discover" className="link">Tất cả</Link></div><div className="feed-upnext-list">{next.map(clip => <Link className="upnext-card" href={`/videos/${clip.video_id}?clip=${clip.id}`} key={clip.id}><div className="media-frame"><Thumbnail src={clip.thumbnail_url}/><time className="time-badge">{formatTime((clip.end_time || 0) - (clip.start_time || 0))}</time></div><div><h3 className="line-clamp-2">{clip.title}</h3><small>VidsAI · {formatTime((clip.end_time || 0) - (clip.start_time || 0))}</small><span className="ai-badge"><Icon name="bolt" size={16}/>AI Highlight</span></div></Link>)}{!next.length && <PageState empty="Chưa có clip tiếp theo"/>}</div><div className="feed-promo"><small>GỢI Ý</small><h3>Tạo Highlight Video của riêng bạn chỉ trong vài giây.</h3><button className="btn-primary" disabled title="Tạo highlight được thực hiện trong CMS">Thử ngay miễn phí</button></div></section>

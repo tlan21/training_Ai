@@ -17,6 +17,25 @@ const videos:components['schemas']['VideoDetail'][]=Array.from({length:8},(_,i)=
 const analysis:components['schemas']['PublicAnalysis']={summary:'Video này khám phá cách các thuật toán AI đang cách mạng hóa kiến trúc bằng cách tối ưu hóa mức tiêu thụ năng lượng và đề xuất các vật liệu xây dựng sinh học mới.',hashtags:['AI','KienTruc'],key_moments:[{timestamp:24,text:'Vật liệu sinh học'},{timestamp:26,text:'Tương lai bền vững'}],timeline_scores:Array.from({length:120},(_,second)=>({second,score:second>=24&&second<26?94:second%13<4?65:20}))};
 const subtitles:components['schemas']['Subtitles']={segments:[{segment_index:0,start_time:20,end_time:24,text:'Chào mừng các bạn đến với VidsAI.',confidence:.98},{segment_index:1,start_time:24,end_time:28,text:'Đây là khoảnh khắc quan trọng của video.',confidence:.62,warning:'low_confidence'}]};
 type Interaction=paths['/api/interactions']['post']['requestBody']['content']['application/json'];
+for (const width of [390, 1440]) for (const [mode, label] of [
+ ['popularity', 'Phổ biến'], ['personalized', 'Dành cho bạn'], ['fallback', 'Phổ biến (dự phòng)'], [undefined, 'Đề xuất'],
+] as const) {
+ test(`INT-14 ${width} truthful recommendation label ${mode ?? 'legacy'}`, async ({page}, info) => {
+  await page.setViewportSize({width,height:width===390?844:900});
+  await setup(page);
+  await page.route('**/api/feed**', route=>route.fulfill({json:{items:clips,next_cursor:null,...(mode?{recommendation_mode:mode}:{})}}));
+  for (const screen of ['feed','discover']) {
+   await page.goto(`${client}/${screen}`);
+   const labels=page.locator('[data-recommendation-mode]');
+   await expect(labels.first()).toHaveAttribute('data-recommendation-mode',mode??'unknown');
+   const copy=screen==='discover'&&mode==='personalized'&&width===390?'Gợi ý cho bạn':label;
+   if(screen==='discover') { await expect(labels.filter({visible:true})).toHaveText(copy); await labels.filter({visible:true}).scrollIntoViewIfNeeded(); }
+   else await expect(labels.first()).toHaveText(copy);
+   expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+   await page.screenshot({path:info.outputPath(`${screen}-${mode??'legacy'}-${width}.png`),animations:'disabled'});
+  }
+ });
+}
 async function setup(page:Page,{empty=false,fail='',prefs=user.preferences}: {empty?:boolean;fail?:string;prefs?:string[]}={}){
  const interactions:Interaction[]=[];const requests:string[]=[];
  await page.route('**/ui-fixture.mp4',route=>{
@@ -34,7 +53,8 @@ async function setup(page:Page,{empty=false,fail='',prefs=user.preferences}: {em
   if(pathname==='/api/users/me'){if(req.method()==='PUT'){user.username=req.postDataJSON().username;}return route.fulfill({json:{...user,preferences:prefs}});}
   if(pathname==='/api/users/me/preferences')return route.fulfill({json:{}});
   if(pathname==='/api/categories')return route.fulfill({json:categories});
-  if(pathname==='/api/feed'||pathname==='/api/users/me/likes')return route.fulfill({json:{items:empty?[]:clips,next_cursor:null}});
+  if(pathname==='/api/feed')return route.fulfill({json:{items:empty?[]:clips,next_cursor:null,recommendation_mode:'popularity'} satisfies components['schemas']['FeedPage']});
+  if(pathname==='/api/users/me/likes')return route.fulfill({json:{items:empty?[]:clips,next_cursor:null}});
   if(pathname==='/api/users/me/history')return route.fulfill({json:{items:empty?[]:[{clip:clips[0],watched_at:'2026-10-14T02:00:00Z',duration_watched:3}],next_cursor:null}});
   if(pathname==='/api/videos')return route.fulfill({json:{items:empty?[]:videos.filter(v=>!url.searchParams.get('category_id')||v.category?.id===url.searchParams.get('category_id')),next_cursor:null}});
   if(pathname.endsWith('/analysis'))return route.fulfill({json:analysis});

@@ -88,6 +88,7 @@ func (r *InteractionRepo) list(ctx context.Context, userID string, cursor *strin
 func (r *InteractionRepo) PopularityTop(ctx context.Context, limit int) ([]string, error) {
 	rows, err := r.DB.Query(ctx, `SELECT i.video_id FROM user_interactions i JOIN videos v ON v.id=i.video_id
 		WHERE i.created_at>=now()-interval '7 days' AND v.status='processed'
+		AND EXISTS(SELECT 1 FROM clips c WHERE c.video_id=v.id AND c.status='published')
 		GROUP BY i.video_id ORDER BY count(*) DESC,i.video_id LIMIT $1`, limit)
 	if err != nil {
 		return nil, err

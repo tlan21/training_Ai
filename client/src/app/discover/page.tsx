@@ -8,7 +8,7 @@ import { AppNav, MobileHeader } from "@/components/AppNav";
 import { BottomNav } from "@/components/BottomNav";
 import { Icon } from "@/components/Icon";
 import { Thumbnail, PageState } from "@/components/Media";
-import { useCategories, useVideos, useClipPage, useHistory, formatTime, formatDate, type Video, type Clip } from "@/lib/content";
+import { recommendationLabel, useCategories, useVideos, useClipPage, useHistory, formatTime, formatDate, type Video, type Clip } from "@/lib/content";
 import { apiClient } from "@/lib/apiClient";
 function VideoCard({ video, published }: {
     video: Video;
@@ -29,6 +29,7 @@ export default function DiscoverPage() {
     const trending = useVideos(category, "trending");
     const feed = useClipPage("/api/feed");
     const history = useHistory();
+    const mode = feed.data?.pages[0]?.recommendation_mode;
     const router = useRouter();
     const trendRef = useRef<HTMLDivElement>(null);
     const newItems = newest.data?.pages.flatMap(p => p.items || []) || [];
@@ -50,7 +51,7 @@ export default function DiscoverPage() {
   <section className="discovery-section"><div className="section-heading"><h2>Tiếp tục xem</h2><Link href="/profile?view=library&tab=history" className="link">Xem tất cả</Link></div>
    {history.isPending || history.error || !viewed.length ? <PageState loading={history.isPending} error={history.error} empty="Chưa có lịch sử xem." retry={() => history.refetch()}/> : <div className="continue-row hide-scrollbar">{viewed.map((item, i) => item.clip && <Link className="continue-card" href={`/videos/${item.clip.video_id}?clip=${item.clip.id}`} key={item.clip.id || i}><div className="media-frame"><Thumbnail src={item.clip.thumbnail_url}/><time className="time-badge">{formatTime((item.clip.end_time || 0) - (item.clip.start_time || 0))}</time></div><h3 className="line-clamp-2">{item.clip.title}</h3><small>VidsAI · {formatDate(item.watched_at)}</small></Link>)}</div>}
   </section>
-  <section className="discovery-section"><div className="section-heading"><h2>Gợi ý cho bạn</h2></div>
+  <section className="discovery-section"><div className="section-heading"><h2 data-recommendation-mode={mode ?? "unknown"}>{mode === "personalized" ? "Gợi ý cho bạn" : recommendationLabel(mode)}</h2></div>
    {recommendation ? <PageState loading={feed.isPending} error={feed.error} empty="Chưa có clip phù hợp." retry={() => feed.refetch()}/> : <div className="bento-grid">{filteredClips.slice(0, 3).map((clip, i) => <Link key={clip.id} className="bento-card" href={`/videos/${clip.video_id}?clip=${clip.id}`}><div className="media-frame"><Thumbnail src={clip.thumbnail_url}/>{i === 0 ? <div className="bento-overlay"><span className="ai-badge" style={{ alignSelf: "flex-start" }}>NỔI BẬT</span><h3 className="line-clamp-2">{clip.title}</h3><small>VidsAI</small></div> : <span className="card-badge ai-badge"><Icon name={i === 1 ? "play_circle" : "bolt"} size={16}/></span>}</div>{i > 0 && <h3 className="line-clamp-2">{clip.title}</h3>}</Link>)}</div>}
    {hero && <Link className="newest-callout" href={`/videos/${hero.id}`}><div className="media-frame"><Thumbnail src={hero.thumbnail_url}/></div><div><small>MỚI NHẤT</small><h3 className="line-clamp-2">{hero.title}</h3><p className="line-clamp-2">{hero.description || hero.category?.name}</p><span className="link">Xem ngay →</span></div></Link>}
   </section>
@@ -69,7 +70,7 @@ export default function DiscoverPage() {
   <section className="discovery-section"><div className="section-heading"><h2>Đang thịnh hành</h2><div><button className="icon-button" aria-label="Video trước" onClick={() => trendRef.current?.scrollBy({ left: -350, behavior: "smooth" })}><Icon name="chevron_left"/></button><button className="icon-button" aria-label="Video tiếp theo" onClick={() => trendRef.current?.scrollBy({ left: 350, behavior: "smooth" })}><Icon name="chevron_right"/></button></div></div>
    {trending.isPending || trending.error || !trendItems.length ? <PageState loading={trending.isPending} error={trending.error} empty="Chưa có video." retry={() => trending.refetch()}/> : <div className="trending-desktop-row hide-scrollbar" ref={trendRef}>{trendItems.map(v => <VideoCard key={v.id} video={v} published={published.has(v.id)}/>)}</div>}
   </section>
-  <section className="discovery-section"><div className="section-heading"><h2>Dành cho bạn</h2></div>{recommendation ? <PageState loading={feed.isPending} error={feed.error} empty="Chưa có clip phù hợp." retry={() => feed.refetch()}/> : <div className="video-grid">{filteredClips.map(c => <ClipCard key={c.id} clip={c}/>)}</div>}{feed.hasNextPage && <div className="load-more"><button className="btn-outline" disabled={feed.isFetchingNextPage} onClick={() => feed.fetchNextPage()}>Tải thêm</button></div>}</section>
+  <section className="discovery-section"><div className="section-heading"><h2 data-recommendation-mode={mode ?? "unknown"}>{recommendationLabel(mode)}</h2></div>{recommendation ? <PageState loading={feed.isPending} error={feed.error} empty="Chưa có clip phù hợp." retry={() => feed.refetch()}/> : <div className="video-grid">{filteredClips.map(c => <ClipCard key={c.id} clip={c}/>)}</div>}{feed.hasNextPage && <div className="load-more"><button className="btn-outline" disabled={feed.isFetchingNextPage} onClick={() => feed.fetchNextPage()}>Tải thêm</button></div>}</section>
  </div>
  </main><BottomNav active="discover"/></div>;
 }

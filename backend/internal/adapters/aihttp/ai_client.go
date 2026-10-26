@@ -138,10 +138,11 @@ func (c *Client) Recommendation(ctx context.Context, userID string, limit int, m
 	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel()
 	var result struct {
-		Hits []domain.VideoHit `json:"recommendations"`
+		Hits               []domain.VideoHit `json:"recommendations"`
+		RecommendationMode string            `json:"recommendation_mode"`
 	}
 	err := c.request(ctx, "/v1/recommendation/completions", map[string]any{"user_id": userID, "limit": limit, "context": meta}, &result)
-	return &domain.RecResult{Hits: result.Hits}, err
+	return &domain.RecResult{Hits: result.Hits, RecommendationMode: result.RecommendationMode}, err
 }
 func (c *Client) Summarize(ctx context.Context, prompt string, maxTokens int) (*domain.SummaryResult, error) {
 	var result struct {

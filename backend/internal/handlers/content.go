@@ -3,12 +3,15 @@ package handlers
 import (
 	"context"
 	"encoding/json"
+	"errors"
+	"log"
 	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
 
 	"traning_ai/backend/internal/domain"
+	"traning_ai/backend/internal/gen"
 	"traning_ai/backend/internal/ports"
 )
 
@@ -43,85 +46,108 @@ func NewContentHandlers(
 	}
 }
 
-// GET /api/feed?cursor&limit=10 — cache 60s, AI Recommendation fallback PopularityTop
+// GET /api/feed — cache AI candidates, hydrate current published metadata on every request.
 func (h *ContentHandlers) Feed(c *gin.Context) {
+	ctx := c.Request.Context()
 	uid := c.GetString("user_id")
-	cursor := c.Query("cursor")
 	limit := parseLimit(c.Query("limit"), 10)
-	revision := ""
-	if h.cache != nil {
-		revision, _, _ = h.cache.Get(c.Request.Context(), "feed:revision")
+	items := []gin.H{}
+	seen := map[string]bool{}
+	appendVideo := func(id string) error {
+		if seen[id] || len(items) >= limit {
+			return nil
+		}
+		seen[id] = true
+		if _, err := h.videos.GetProcessed(ctx, id); err != nil {
+			if errors.Is(err, domain.ErrVideoNotFound) {
+				return nil
+			}
+			return err
+		}
+		clips, err := h.clips.ListPublishedByVideo(ctx, id)
+		if err != nil {
+			return err
+		}
+		for i := range clips {
+			if len(items) >= limit {
+				break
+			}
+			items = append(items, toClipH(&clips[i], h.storage))
+		}
+		return nil
 	}
-	cacheKey := "feed:" + revision + ":" + uid + ":" + cursor + ":" + c.DefaultQuery("limit", "10")
-	if h.cache != nil {
-		if v, ok, _ := h.cache.Get(c.Request.Context(), cacheKey); ok {
-			var cached gin.H
-			if json.Unmarshal([]byte(v), &cached) == nil {
-				c.JSON(http.StatusOK, cached)
+	fail := func() { ErrorEnvelope(c, 500, "INTERNAL", "Unable to load feed") }
+	mode := gen.Popularity
+	if h.ai != nil {
+		mode = gen.Fallback
+		revision := ""
+		if h.cache != nil {
+			revision, _, _ = h.cache.Get(ctx, "feed:revision")
+		}
+		key := "feed:ai:v1:" + revision + ":" + uid + ":" + c.Query("cursor") + ":" + c.DefaultQuery("limit", "10")
+		var rec domain.RecResult
+		hit := false
+		if h.cache != nil {
+			if value, ok, _ := h.cache.Get(ctx, key); ok {
+				hit = json.Unmarshal([]byte(value), &rec) == nil
+			}
+		}
+		if !hit {
+			result, err := h.ai.Recommendation(ctx, uid, limit, nil)
+			if err != nil {
+				log.Printf("recommendation unavailable: %v", err)
+			} else if result != nil {
+				rec = *result
+			}
+			if h.cache != nil {
+				if value, err := json.Marshal(rec); err == nil {
+					_ = h.cache.Set(ctx, key, string(value), 60*time.Second)
+				}
+			}
+		}
+		if rec.RecommendationMode == "personalized" {
+			for _, candidate := range rec.Hits {
+				if err := appendVideo(candidate.VideoID); err != nil {
+					fail()
+					return
+				}
+			}
+			if len(items) > 0 {
+				mode = gen.Personalized
+			}
+		}
+	}
+	if len(items) == 0 {
+		if h.interactions != nil {
+			ids, err := h.interactions.PopularityTop(ctx, limit)
+			if err != nil {
+				fail()
 				return
 			}
+			for _, id := range ids {
+				if err := appendVideo(id); err != nil {
+					fail()
+					return
+				}
+			}
 		}
-	}
-	var clipItems []gin.H
-	// try AI
-	if h.ai != nil {
-		if rec, err := h.ai.Recommendation(c.Request.Context(), uid, limit, nil); err == nil && len(rec.Hits) > 0 {
-			for _, hit := range rec.Hits {
-				if hit.VideoID == "" {
-					continue
-				}
-				cls, _ := h.clips.ListPublishedByVideo(c.Request.Context(), hit.VideoID)
-				for _, cl := range cls {
-					clipItems = append(clipItems, toClipH(&cl, h.storage))
-					if len(clipItems) >= limit {
-						break
-					}
-				}
-				if len(clipItems) >= limit {
-					break
+		if len(items) == 0 {
+			// shortcut: cold start scans published clips; add a limited query when the catalog grows.
+			clips, err := h.clips.List(ctx, nil, strPtr(string(domain.ClipPublished)))
+			if err != nil {
+				fail()
+				return
+			}
+			for _, clip := range clips {
+				if err := appendVideo(clip.VideoID); err != nil {
+					fail()
+					return
 				}
 			}
 		}
 	}
-	// fallback popularity or direct clip scan
-	if len(clipItems) == 0 {
-		// try popularity
-		var ids []string
-		if h.interactions != nil {
-			ids, _ = h.interactions.PopularityTop(c.Request.Context(), limit)
-		}
-		if len(ids) > 0 {
-			for _, vid := range ids {
-				cls, _ := h.clips.ListPublishedByVideo(c.Request.Context(), vid)
-				for _, cl := range cls {
-					clipItems = append(clipItems, toClipH(&cl, h.storage))
-					if len(clipItems) >= limit {
-						break
-					}
-				}
-			}
-		}
-		// still empty → just list published clips (mem fallback)
-		if len(clipItems) == 0 && h.clips != nil {
-			all, _ := h.clips.List(c.Request.Context(), nil, strPtr(string(domain.ClipPublished)))
-			for i, cl := range all {
-				if i >= limit {
-					break
-				}
-				clipItems = append(clipItems, toClipH(&cl, h.storage))
-			}
-		}
-	}
-	if clipItems == nil {
-		clipItems = []gin.H{}
-	}
-	resp := gin.H{"items": clipItems, "next_cursor": nil}
-	if h.cache != nil {
-		if b, err := json.Marshal(resp); err == nil {
-			_ = h.cache.Set(c.Request.Context(), cacheKey, string(b), 60*time.Second)
-		}
-	}
-	c.JSON(http.StatusOK, resp)
+	// shortcut: preserve the existing single-page feed; implement cursor ranking in its own pagination task.
+	c.JSON(http.StatusOK, gin.H{"items": items, "next_cursor": nil, "recommendation_mode": mode})
 }
 
 // GET /api/videos?category_id&sort&cursor&limit — cursor as offset string, trending via PopularityTop
