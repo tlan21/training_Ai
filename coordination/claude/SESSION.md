@@ -3,7 +3,7 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
-- Task: — AI-04 DONE (PRELIMINARY_T4: peak nvidia-smi 347 MiB, 20/20). Kế: AI-03a / AI-02a.
+- Task: — AI-04 DONE (PRELIMINARY_T4), AI-03a DONE (40 summary CLAUDE_PROPOSED, chờ user duyệt = AI-03b). Kế: AI-02a.
   AI-12 BLOCKED ⇐ bundle INT-13 (phần độc lập xong). Runtime :8001 UP PID 16808 (restart AI-13).
 - Release #2 đã lên `master` 70bf011 (user duyệt 2026-10-26). AI-API v1.2: 6 endpoint API_READY, recommendation DRAFT.
 - Kế an toàn: AI-09 (đặc tả embedding/schema/version; chờ Codex báo sandbox UP), AI-04 (VRAM T4 sơ bộ), AI-03a, AI-02a.

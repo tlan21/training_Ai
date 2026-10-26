@@ -17,7 +17,7 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | BLOCKED ⇐ bundle INT-13 (phần độc lập xong 2026-10-26) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | DONE (2026-10-26; sandbox + artifact; product → AI-12 theo D18) | HC-04 (sandbox READY) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a TODO · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
-| AI-03 | T1.6 | Mini-GPT: 03a Claude soạn summary 40 clip · 03b người duyệt · 03c train/eval | 03a TODO · 03b BLOCKED · 03c BLOCKED | 03b ⇐ user; 03c ⇐ 03b |
+| AI-03 | T1.6 | Mini-GPT: 03a Claude soạn summary 40 clip · 03b người duyệt · 03c train/eval | 03a DONE (2026-10-26) · 03b BLOCKED ⇐ user · 03c BLOCKED | 03b ⇐ user; 03c ⇐ 03b |
 | AI-04 | T1.8 / T4.3 | Đo VRAM sơ bộ Kaggle T4 (PRELIMINARY) | DONE — PRELIMINARY_T4 (2026-10-26; nghiệm thu 3060 vẫn mở) | AI-06 (DONE) |
 | AI-05 | T5.3 | Số liệu evaluation cho luận án | TODO | AI-02, AI-03, AI-04 |
 | AI-08 | — | Dọn dẹp dữ liệu/artefact làn AI an toàn (lặp lại sau mỗi đợt train) | TODO (đợt #1 DONE 2026-10-26) | không job/server nào đang dùng; user duyệt danh sách |
@@ -92,13 +92,17 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - Checkpoint: Next safe task = AI-02a (không phụ thuộc user); 02b chờ user.
 
 ### AI-03 — Mini-GPT human quality gate (T1.6)
-- T gốc: T1.6 | Owner: claude | Status: 03a TODO · 03b BLOCKED · 03c BLOCKED
+- T gốc: T1.6 | Owner: claude | Status: 03a DONE (2026-10-26) · 03b BLOCKED ⇐ user duyệt · 03c BLOCKED
 - Nguồn 40 clip real-domain (30 train / 10 val, ngoài frozen30): `data/manifests/minigpt_real_domain.json`; transcript user đã rà
   (export SHA `860f8068d0bd…`, 40 transcript/39 sửa) — `docs/T1.6_whisper_review_intake.md`.
 - **AI-03a — Claude soạn summary 40 clip (TODO, theo quyết định user 2026-10-26):** soạn từ transcript user đã rà; mỗi mục lưu
   clip ID, hash media + hash transcript nguồn, văn bản summary, số BPE token (≤95), người/công cụ tạo = Claude + ngày,
   nhãn `CLAUDE_PROPOSED`. Lưu file riêng trên D: + manifest `data/manifests/` + báo cáo `docs/T1.6_*`; không ghi đè dữ liệu cũ.
   Acceptance: đủ 40 mục, hash khớp nguồn, strict intake từ chối dùng làm target khi chưa `HUMAN_VERIFIED`.
+  Evidence 03a (VERIFIED-NOW 2026-10-26, `docs/T1.6_claude_summaries.md`, `data/manifests/minigpt_claude_summaries_v1.json`): 40/40 mục, hash audio/video
+  từ export `860f8068…` + hash transcript nguồn, BPE mean 46.2 / max 58 (tokenizer active), 40/40 câu kết thúc, `verified=false`, `CLAUDE_PROPOSED`;
+  file D: SHA `978a32e0…` (không ghi đè); intake `test_gate_refuses_claude_proposed_summaries` (2 case, kể cả verified=true giả) → 22 passed.
+  Lưu ý cho người duyệt: 2 mục trùng lời chào kênh, 2 mục transcript rất nhiễu (doc). Script: `dist/kaggle/kernel-minigpt-domain/build_claude_summaries.py`.
 - **AI-03b — người duyệt (BLOCKED ⇐ user):** user duyệt/sửa/loại từng summary → `HUMAN_VERIFIED`.
   ⚠ Ràng buộc dự án (`my-agent/agent/instructions.md` §1: "không pseudo-label từ model ngoài"): summary do Claude soạn là
   output của model ngoài → chỉ được làm target train/eval sau khi người duyệt từng mục **và** provenance ghi rõ

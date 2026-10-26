@@ -54,6 +54,18 @@ def test_gate_refuses_pending_forged_incomplete_or_truncated_labels(changes):
         validate(payload,samples,'packet',BPETokenizer())
 
 
+@pytest.mark.parametrize('changes', [
+    {'verified':False,'origin':'claude_drafted_unverified','label':'CLAUDE_PROPOSED'},
+    {'verified':True,'origin':'claude_drafted_unverified','label':'CLAUDE_PROPOSED'},   # a flipped flag is not a human review
+])
+def test_gate_refuses_claude_proposed_summaries(changes):
+    """AI-03a: Claude-drafted summaries are never targets until a human verifies them (instructions §1, D12)."""
+    samples,payload = fixture()
+    payload['records'][0].update(changes)
+    with pytest.raises(ValueError, match='attestation'):
+        validate(payload,samples,'packet',BPETokenizer())
+
+
 def test_gate_refuses_wrong_packet_missing_duplicate_ids_and_missing_annotator():
     samples,payload = fixture()
     variants = [dict(payload,packet_sha256='old'),dict(payload,annotator=''),
