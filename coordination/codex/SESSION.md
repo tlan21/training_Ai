@@ -1,7 +1,7 @@
 # SESSION — làn Codex
 
 ## Phiên đang chạy
-- Task: INT-03 sandbox/ID mapping IN_PROGRESS (HC-04); INT-11 mock transport PASS/PARTIAL chờ HO-01; INT-04 PARTIAL, INT-02 REVIEW.
+- Task: INT-03 BLOCKED_RESOURCE (C: full); INT-11 mock transport PASS/PARTIAL, INT-04 PARTIAL, INT-02 REVIEW.
 - Bước đã xong: INT-00 REVIEW, xem verification/INT-00.md + INT-00-smoke.json (Go/CMS/Client/build/DB/mock runtime PASS).
   INT-01 DB/backend verified, phần real E2E BLOCKED AI-01/AI-07. INT-10 DEFERRED theo D1.
 - Bước đã hoàn tất INT-02: PG adapters+wiring, history/likes signed playback, settings atomic/masked; Go test/vet/build PASS,
@@ -50,3 +50,16 @@ INT-02 → INT-04 (contract/types trước, sau đó backend/UI). INT-03 chờ A
 - RE:HC-04 READY_SANDBOX đã gửi. Mapping spec TWO_TOWER_PRODUCT_MAPPING.md yêu cầu usr_*/vid_* nguyên gốc + AI-09 encoder/version trước product vectors.
 - Đang sửa preference persistence: user_preferences PG repo/port, GetMe/UpdateMe/Login đọc thật, PUT distinct category IDs, bỏ vector0 memory write.
   Go tests đang chạy; cần PG real test + restart persistence script bổ sung preferences. Không nạp vector khi chưa có encoder/model contract.
+
+## RESOURCE CHECKPOINT — RESUME HERE
+- C: ~0 GB, E: ~1.50 GiB. No prune/deletion. User asked capacity/cleanup choice; no approval received yet.
+- Windows Go build first failed at linker (C: full); GOTMPDIR=E:/traning_ai-codex/backend/.tmp + GOMAXPROCS=1 retry PASS.
+- 5 real PG tests including new preferences PASS. Linux gateway binary prepared successfully; pending docker stop gateway command did not confirm completion.
+- Read-only gateway/CMS/Client HTTP all 200 at last check, possibly preceding gateway binary. Reinspect state when Docker recovers before starting anything.
+- New preference checks in e2e/verify_business_persistence.ps1 NOT RUN; do not claim preference runtime persistence yet. Evidence verification/INT-03.md.
+- Scope question INT-05/06 still pending: CONTRACT_DECISIONS.md; no additional endpoints added.
+- AI latest: v1.2 release #2 candidate includes optional video_id (HO-01 addressed by Claude), but `git log HEAD..master` still empty at last check.
+  Next safe source change: send canonical ingest video_id with data URI in aihttp, test; do not switch real until master/API_READY gate and capacity.
+- CMS token persistence audit note: stores/authStore.ts currently persists accessToken; violates RAM-only convention. Plan separate fix + reload/refresh/storage E2E
+  after resources recover, without touching forgot-password deferred scope.
+- Portable clean-machine ingest image remains to validate: current runtime intentionally uses cached video-ai-inference preprocessing image, no checkpoint process/mount.

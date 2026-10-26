@@ -12,8 +12,8 @@ source product ID remains the database identity. Encoder vocabulary/category map
 normalization and model/export version are required from AI-09 before implementing the product sync.
 
 Observed existing bug during mapping audit: PUT preferences wrote an all-zero vector to a memory adapter,
-while GET /users/me always returned empty preferences. Codex will persist preferences in the existing Postgres table
-and remove the fake vector write; this independent business path does not wait for model training.
+while GET /users/me always returned empty preferences. Source now persists preferences in the existing Postgres table
+and removes the fake vector write (unit/real-PG verified, runtime restart pending C: resource recovery); this independent business path does not wait for model training.
 
 Sandbox proposed in RE:HC-04: `sandbox_two_tower_ai09_20261026`, localhost:19530 / Docker milvus:19530.
 Fields: id VARCHAR(50) primary non-auto; vector FLOAT_VECTOR(128); type VARCHAR(10).

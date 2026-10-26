@@ -66,7 +66,7 @@ func main() {
 
 	resetRepo := mocks.NewPasswordResetRepoMem()
 	authSvc := auth.NewWithResets(userRepo, sessionRepo, resetRepo, jwtSvc)
-	authH := handlers.NewAuthHandlers(authSvc, userRepo, vectorStore, categoryRepo, interactionRepo, objectStorage)
+	authH := handlers.NewAuthHandlers(authSvc, userRepo, &pg.PreferenceRepo{DB: db}, categoryRepo, interactionRepo, objectStorage)
 	contentH := handlers.NewContentHandlers(videoRepo, clipRepo, categoryRepo, interactionRepo, analysisStore, subtitleStore, cache, aiClient, objectStorage)
 	searchH := handlers.NewSearchHandlers(videoRepo, subtitleStore, cache, aiClient, clipRepo, objectStorage)
 	interH := handlers.NewInteractionHandlers(interactionRepo)

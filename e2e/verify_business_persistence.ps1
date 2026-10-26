@@ -13,6 +13,10 @@ $settingsChanged = $false
 $name = 'int02-mock-' + [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
 $viewer = Invoke-RestMethod -Method Post "$base/api/auth/register" -ContentType 'application/json' -Body (@{username=$name;email="$name@example.test";password='E2e-test-123!'} | ConvertTo-Json)
 $viewerHeaders = @{ Authorization = "Bearer $($viewer.access_token)" }
+$categories = Invoke-RestMethod "$base/api/categories" -Headers $viewerHeaders
+$preferenceIds = @($categories | Select-Object -First 3 | ForEach-Object id)
+if ($preferenceIds.Count -ne 3) { throw 'Need three categories for preference persistence' }
+Invoke-RestMethod -Method Put "$base/api/users/me/preferences" -Headers $viewerHeaders -ContentType 'application/json' -Body (@{category_ids=$preferenceIds} | ConvertTo-Json) | Out-Null
 
 try {
     $upload = Invoke-RestMethod -Method Post "$base/api/cms/videos" -Headers $headers -Form @{file=Get-Item (Join-Path $PSScriptRoot 'fixtures/video.mp4');title="INT-02-MOCK_ONLY-$name"}
@@ -53,6 +57,10 @@ try {
     $history = Invoke-RestMethod "$base/api/users/me/history" -Headers $viewerHeaders
     $likes = Invoke-RestMethod "$base/api/users/me/likes" -Headers $viewerHeaders
     $after = Invoke-RestMethod "$base/api/cms/settings" -Headers $headers
+    $profile = Invoke-RestMethod "$base/api/users/me" -Headers $viewerHeaders
+    if (@(Compare-Object $preferenceIds $profile.preferences).Count -ne 0) { throw 'Preferences lost after restart' }
+    $relogin = Invoke-RestMethod -Method Post "$base/api/auth/login" -ContentType 'application/json' -Body (@{email="$name@example.test";password='E2e-test-123!'} | ConvertTo-Json)
+    if (@(Compare-Object $preferenceIds $relogin.user.preferences).Count -ne 0) { throw 'Login dropped stored preferences' }
     if ($history.items.Count -ne 1 -or $history.items[0].clip.id -ne $clip.id -or $history.items[0].duration_watched -ne 2) { throw 'Watch history lost after restart' }
     if ($likes.items.Count -ne 1 -or $likes.items[0].id -ne $clip.id) { throw 'Likes lost after restart' }
     if ($after.highlight_threshold -ne $threshold -or $after.ai_service_api_key -ne 'sk-local-••••') { throw 'Settings lost or key exposed' }
@@ -68,7 +76,7 @@ try {
     $hiddenHistory = Invoke-RestMethod "$base/api/users/me/history" -Headers $viewerHeaders
     $hiddenLikes = Invoke-RestMethod "$base/api/users/me/likes" -Headers $viewerHeaders
     if ($hiddenHistory.items.Count -ne 0 -or $hiddenLikes.items.Count -ne 0) { throw 'Deleted content leaked through history/likes' }
-    $evidence = [ordered]@{mode='MOCK_ONLY';user_id=$viewer.user.id;clip_id=$clip.id;restart_verified=$true;history_count=$history.items.Count;duration_watched=$history.items[0].duration_watched;likes_count=$likes.items.Count;settings_persisted=$true;key_masked=$true;playback_range_status=206;unpublished_interaction_status=$private.StatusCode;deleted_content_hidden=$true;recommendation_fallback=$true}
+    $evidence = [ordered]@{mode='MOCK_ONLY';user_id=$viewer.user.id;clip_id=$clip.id;restart_verified=$true;history_count=$history.items.Count;duration_watched=$history.items[0].duration_watched;likes_count=$likes.items.Count;settings_persisted=$true;key_masked=$true;playback_range_status=206;unpublished_interaction_status=$private.StatusCode;deleted_content_hidden=$true;recommendation_fallback=$true;preferences_persisted=$true;login_preferences_retained=$true}
     $evidence | ConvertTo-Json | Set-Content -Encoding utf8 coordination/codex/verification/INT-02-persistence.json
     $evidence | ConvertTo-Json
 } finally {

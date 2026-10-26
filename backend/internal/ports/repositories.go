@@ -78,6 +78,11 @@ type SettingsRepository interface {
 	Update(ctx context.Context, values map[string]string) error
 }
 
+type PreferenceRepository interface {
+	Get(ctx context.Context, userID string) ([]string, error)
+	Replace(ctx context.Context, userID string, categoryIDs []string) error
+}
+
 type CategoryRepository interface {
 	List(ctx context.Context) ([]domain.Category, error)
 	Create(ctx context.Context, name string) (*domain.Category, error)

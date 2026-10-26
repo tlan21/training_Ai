@@ -11,7 +11,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-00 | — | Worktree, dependency, stack hạ tầng + mock AI HTTP | REVIEW | HC-02, HC-03 (đã nhận) |
 | INT-01 | T2.1–T2.5 | Xác minh lại backend trên stack thật | BLOCKED | INT-00 |
 | INT-02 | T2.5 | Thay adapter memory → Postgres (interactions/history/likes/settings) | REVIEW | INT-00 (DB); không phụ thuộc AI |
-| INT-03 | T2.5, T1.7 | Two-Tower: sandbox/ID mapping; product vectors + feed | IN_PROGRESS | INT-02; product gates AI-09/AI-01/AI-07 |
+| INT-03 | T2.5, T1.7 | Two-Tower: sandbox/ID mapping; product vectors + feed | BLOCKED | RESOURCE C: full; product gates AI-09/AI-01/AI-07 |
 | INT-04 | T3.1, T3.2 | Contract nguồn phát video gốc (OpenAPI) + nối UI | PARTIAL | INT-00 (runtime); contract có thể làm độc lập |
 | INT-05 | T3.1 | CMS Design Parity FULL | PARTIAL | INT-02, INT-04 |
 | INT-06 | T3.2 | Client Design Parity FULL | PARTIAL | INT-02, INT-04 |
@@ -71,12 +71,18 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Checkpoint: Lane codex / Changed PG adapters+handlers+wiring+tests+script / Verified xem evidence / Contract no / Next INT-04.
 
 ### INT-03 — Two-Tower user vector thật
-- T gốc: T2.5, T1.7 | Owner: CODEX | Status: IN_PROGRESS (sandbox/ID mapping theo HC-04, 2026-10-26)
+- T gốc: T2.5, T1.7 | Owner: CODEX | Status: BLOCKED (RESOURCE C: full; personalized chờ AI-09/gates)
 - Depends on: sandbox/ID mapping ⇐ INT-02 + HC-04/D14 (đã nhận); product integration ⇐ AI-09 + AI-01 recommendation API_READY/master + AI-07 | Blocks: AI-09 sandbox
 - Phạm vi: `milvus.NewFrames(..., mocks.NewVectorStoreMem())` → user vector ghi Milvus `user_recommendation_embeddings` khi
   `PUT /api/users/me/preferences`; feed gọi `/v1/recommendation/completions` thật, fallback popularity khi 503.
 - Acceptance: integration test thật: preferences → recommendation trả video khớp; Milvus restart vẫn còn vector; matrix `INTEGRATED_REAL`.
-- Evidence: — | Commits: — | Checkpoint: —
+- Changed: sandbox initializer + schema §4.3 + product-ID spec; preference PG repository/port, auth handlers/wiring/tests, persistence script.
+- Evidence: VERIFIED-NOW verification/INT-03.md + INT-03-sandbox.json: sandbox 2× PASS/entities=0; Go checks and 5 real PG tests PASS.
+  Preferences source/build verified; runtime preference restart pending because Docker stalled on full C:. No personalized result claimed.
+- Commits: `5615055` sandbox/mapping; preference implementation commit follows.
+- Next action: free C: capacity with user decision, inspect pending gateway stop/state; restart new binary and run extended persistence script;
+  then AI-09 encoder/version/schema/mapping handshake. No training IDs or zero vectors to product Milvus.
+- Checkpoint: Lane codex / Changed sandbox+preferences / Verified unit/PG/sandbox PASS; runtime pending / Contract no / Next resource recovery.
 
 ### INT-04 — Nguồn phát video gốc
 - T gốc: T3.1, T3.2 | Owner: CODEX | Status: PARTIAL (functional PASS; full parity pending)
