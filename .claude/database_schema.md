@@ -299,3 +299,13 @@ Milvus đóng vai trò then chốt cho tính năng **Tìm kiếm bằng Hình �
 }
 ```
 * **Thuật toán Index khuyến nghị:** `IVF_FLAT` để tối ưu bộ nhớ RAM với thời gian tìm kiếm thời gian thực.
+
+### 4.3. Sandbox Two-Tower tách khỏi sản phẩm (D14 / HC-04, 2026-10-26)
+
+- Collection: `sandbox_two_tower_ai09_20261026` trên Milvus Codex `127.0.0.1:19530` (Docker: `milvus:19530`).
+- Schema sandbox theo giao diện hiện có của export/reader: `id VARCHAR(50)` primary, non-auto;
+  `vector FLOAT_VECTOR(128)`; `type VARCHAR(10)` (`user` hoặc `video`, field top-level).
+- Index `vector`: `IVF_FLAT`, `IP`, `nlist=1024`; vector phải L2-normalized theo AI-09, không đổi dimension/metric/index sản phẩm.
+- Codex tạo sandbox rỗng, xác minh schema/index; Claude chỉ nạp dữ liệu thử sau xác nhận handoff. Không nạp dataset train vào collection sản phẩm.
+- Backend sản phẩm không đọc sandbox. Product mapping/encoder/version/tiêu chí dữ liệu phải được hai làn xác minh trước nạp product vectors.
+- Init idempotent: `infra/milvus/init_recommendation_sandbox.py`; không drop/reset collection hoặc đụng dữ liệu hiện hữu.

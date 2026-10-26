@@ -1,0 +1,1 @@
+{"collection": "sandbox_two_tower_ai09_20261026", "host": "milvus", "port": "19530", "dimension": 128, "index": {"index_type": "IVF_FLAT", "metric_type": "IP", "params": {"nlist": 1024}}, "entities": 0, "schema_verified": true}

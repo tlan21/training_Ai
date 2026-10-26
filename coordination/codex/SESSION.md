@@ -43,3 +43,10 @@ INT-02 → INT-04 (contract/types trước, sau đó backend/UI). INT-03 chờ A
 - Latest Claude f68a6d7: HC-04 ownership D14, D15 health dependencies/degraded, D16 all APIs DRAFT until master+runtime/smoke, :8001 UP theo HC-05.
 - Next: sandbox_two_tower_ai09_20261026 (empty, 128/IP/IVF_FLAT nlist1024) + ID mapping doc. Không nạp product data/training vectors.
 - Resource C: ~0.76 GiB/E:1.56 GiB; không Docker build/pull. Static reference server :8765 đã stop; CMS/current Client vẫn chạy.
+
+## INT-03 checkpoint sandbox
+- init_recommendation_sandbox.py chạy thật 2 lần idempotent PASS; schema 128/IP/IVF_FLAT nlist1024, entities=0.
+  Spec cập nhật database_schema §4.3 trước code. Không thay product/frame collection hoặc import model/train data.
+- RE:HC-04 READY_SANDBOX đã gửi. Mapping spec TWO_TOWER_PRODUCT_MAPPING.md yêu cầu usr_*/vid_* nguyên gốc + AI-09 encoder/version trước product vectors.
+- Đang sửa preference persistence: user_preferences PG repo/port, GetMe/UpdateMe/Login đọc thật, PUT distinct category IDs, bỏ vector0 memory write.
+  Go tests đang chạy; cần PG real test + restart persistence script bổ sung preferences. Không nạp vector khi chưa có encoder/model contract.

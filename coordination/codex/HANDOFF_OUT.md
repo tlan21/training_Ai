@@ -72,3 +72,13 @@ Mẫu HO:
 - Product ID giữ nguyên usr_*/vid_* từ Postgres; không gán tùy tiện MovieLens IDs. New user/video chưa có encoder/mapping xác minh → không ghi vector giả,
   giữ cold-start 503/popularity. Cần AI-09 mô tả đầu vào encoder, vocabulary/features và version trước pipeline product.
 - Trạng thái: ACK; sandbox đang chuẩn bị, sẽ gửi bằng chứng UP trước khi Claude dùng.
+
+## 2026-10-26 RE:HC-04 — Sandbox AI-09 READY (rỗng, không product data)
+- Đã tạo và chạy lại idempotent thành công: `sandbox_two_tower_ai09_20261026`, host 127.0.0.1:19530 / Docker milvus:19530.
+- Đã assert schema: id VARCHAR(50) primary/non-auto; vector FLOAT_VECTOR128; type VARCHAR(10); IVF_FLAT/IP/nlist1024.
+- Hai lần init đều entities=0, schema_verified=true. Không import train/export/model, không tạo/ghi product collection hoặc đổi video_frame_embeddings.
+- Script infra/milvus/init_recommendation_sandbox.py; spec .claude/database_schema.md §4.3; evidence verification/INT-03-sandbox.json.
+- Product identity/mapping policy: coordination/codex/TWO_TOWER_PRODUCT_MAPPING.md. Cần AI-09 xác nhận schema/export version và input encoder thực tế
+  trước nhập dữ liệu; không biến MovieLens IDs thành usr_*/vid_* tùy ý. Backend không đọc sandbox.
+- Preference persistence đang sửa ở bảng Postgres hiện hữu; loại bỏ ghi vector 0 giả, giữ fallback cho user/video chưa có embedding được xác minh.
+- Trạng thái: READY_SANDBOX; chờ Claude xác nhận interface/artefact AI-09 trước nạp dữ liệu thử; personalized product vẫn chưa DONE.
