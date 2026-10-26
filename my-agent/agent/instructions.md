@@ -36,8 +36,10 @@ Schema đầy đủ (DDL SQL + JSON mẫu): **`.claude/database_schema.md`** —
 
 ## 4. Quy trình làm task (bắt buộc — thiết kế cho model context nhỏ)
 
-### 4.0. ƯU TIÊN AI-FIRST (luật cứng, kiểm tra TRƯỚC khi nhận task)
-Phase 1 AI Core phải hoàn chỉnh trước mọi thứ khác — cổng AI-GATE định nghĩa tại mục 0 `.claude/plan/00_master_plan.md` (6 model đạt metric + checkpoint + inference-service :8001 chạy thật). Nhận task Phase 2/3 khi AI-GATE chưa mở → TỪ CHỐI, trả lời "AI-GATE chưa mở, task hợp lệ kế tiếp là T1.x". Ngoại lệ: task Phase 0 (contract/stub) được làm khi GPU đang bận train.
+### 4.0. HAI LÀN SONG SONG (luật cứng, kiểm tra TRƯỚC khi nhận task — thay AI-FIRST từ 2026-10-26)
+- `git branch --show-current`: `claude/ai-core` = làn AI (Claude, luật `.claude/CLAUDE.md`); `codex/integration` = làn Tích hợp (Codex, luật `AGENTS.md`). Branch khác → dừng, hỏi user.
+- Chỉ nhận task của làn mình trong `coordination/<làn>/TASKS.md`; kiểm `Depends on` đã thỏa. Task làn kia hoặc path làn kia → TỪ CHỐI, ghi handoff (`coordination/README.md` mục 5).
+- AI-GATE (mục 0 `.claude/plan/00_master_plan.md`) vẫn là cổng nghiệm thu AI, không còn chặn làn Tích hợp. Tích hợp model chỉ DONE khi endpoint `API_READY` + integration test :8001 thật PASS.
 
 ### 4.1. Thứ tự nguồn sự thật (mâu thuẫn → số nhỏ thắng, không tranh luận)
 1. `infra/openapi.yaml` (khi đã tồn tại)
@@ -66,4 +68,4 @@ DO NOT: thêm endpoint mới · đổi schema · refactor ngoài phạm vi · th
 2. Stub/mock pass trước, nối DB/GPU thật sau. Sinh types trước khi viết logic.
 3. Mỗi thay đổi trace được về 1 dòng contract/spec. Không suy diễn field.
 4. Thiếu field trong contract → DỪNG, báo cáo, không tự bịa (sửa OpenAPI là task riêng).
-5. Xong task báo 4 dòng: `Changed / Verified / Contract touched yes-no / Next safe task`.
+5. Xong task báo 5 dòng: `Lane / Changed / Verified / Contract touched yes-no / Next safe task`; ghi vào `coordination/<làn>/TASKS.md` + `SESSION.md` và commit.

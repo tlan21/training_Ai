@@ -21,13 +21,30 @@ For this project, do not infer contracts from prose specs when codegen files exi
 - Gán `bong_da` cho mọi video bóng đá; `the_thao` chỉ gồm môn thể thao khác. Không thêm lớp ViT trong MVP.
 - PostgreSQL vẫn có 10 danh mục sản phẩm; 6 danh mục còn lại chưa có gợi ý tự động từ ViT.
 
+## Làn Claude — vai trò (từ 2026-10-26 dự án chạy 2 làn song song)
+
+Claude = **làn AI**. Codex = **làn Tích hợp** (luật của Codex: `AGENTS.md`). Luật chung: `coordination/README.md`.
+
+- Claude sở hữu: training/eval 6 model, checkpoint, `ai-core/**`, `inference-service/**` (model loading, FastAPI endpoints, GPU queue, test AI), `data/**`, `dist/kaggle/**`, `.claude/plan/01_ai_core_plan.md`, `.claude/{model_spec,dataset_spec,evaluation_plan}.md`, `docs/T1.*`, `docs/T4.3*`, `coordination/claude/**`, file này.
+- Claude **phải** công bố và giữ đúng AI API Contract: `coordination/claude/api/AI_API_CONTRACT.md` (+ `inference_openapi.json`, `examples/`): schema, ví dụ thật, error codes, model + SHA256, `/health`, trạng thái `DRAFT|API_READY|DEPRECATED`, changelog. Đổi API → bump version + append `REL` vào `coordination/claude/HANDOFF_OUT.md`.
+- Claude **không** sửa: `backend/**`, `cms/**`, `client/**`, `e2e/**`, `infra/**` (gồm `openapi.yaml`), `docker-compose*.yml`, `AGENTS.md`, `coordination/codex/**`, plan 02/03/04. Cần thay đổi phía tích hợp → append `HC-xx` vào `coordination/claude/HANDOFF_OUT.md`.
+- File chung (`coordination/README.md`, `coordination/PROJECT_STATUS.md`, `.claude/plan/00_master_plan.md`, `my-agent/agent/**`): chỉ sửa trong release commit (README mục 6) hoặc khi user yêu cầu.
+- Không chạy `docker compose up` (Codex sở hữu stack); test inference bằng pytest / `app.services` / uvicorn port riêng.
+
+## Git (luật cứng)
+
+- Worktree `E:\traning_ai`, branch `claude/ai-core`. Đầu phiên `git branch --show-current`; sai → dừng.
+- Chỉ `git add <path làn Claude>`. Cấm: `git add -A`/`.`, `reset --hard`, `branch -f`, `push --force`, `clean`, `checkout --`/`restore` file không phải mình vừa sửa, `stash`, xóa branch/worktree, merge vào `master` khi user chưa ra lệnh, push remote khi user chưa yêu cầu.
+- Commit prefix `ai(<area>): ...` / `chore(claude-progress): ...`. Cập nhật TASKS/SESSION/HANDOFF commit ngay để Codex đọc được qua `git show claude/ai-core:<path>`.
+
 ## Session Startup (bắt buộc mỗi phiên)
 
-- **AI-FIRST (luật cứng):** Phase 1 AI Core phải hoàn chỉnh trước tiên (AI-GATE mục 0 `.claude/plan/00_master_plan.md`). CẤM làm task Phase 2/3 khi AI-GATE chưa mở; Phase 0 chỉ chen lúc GPU bận train.
-- Mở phiên: đọc `my-agent/agent/instructions.md` TRƯỚC khi làm bất kỳ việc gì — đó là system prompt tổng của dự án.
-- Nhận task: chọn đúng 1 skill trong `my-agent/agent/skills/` khớp loại task (AI/backend/CMS/client/DB) — skill giới hạn sẵn 2–4 file phải đọc, không đọc cả 14 file spec.
-- Tiến độ: xem mục 3 `.claude/plan/00_master_plan.md`, làm task chưa tick `- [ ]` đầu tiên; xong task tick checkbox + báo checkpoint 4 dòng (Changed / Verified / Contract touched / Next safe task).
-- **Task UI (T3.x):** kết thúc BẮT BUỘC bằng Design Parity Check — đối chiếu màn đã dựng với `stitch_ai_video_cms/` / `stitch_ai_video_platform_vietnamese/` theo checklist 10 mục `my-agent/agent/skills/ui_design_review.md`; sai lệch ngoài CẮT-list hoặc "làm đẹp thêm" khác thiết kế = task chưa xong.
+1. `git branch --show-current` = `claude/ai-core`; `git log HEAD..master --oneline` có commit → `git merge master` (conflict ở path Codex → dừng, báo user).
+2. Đọc `my-agent/agent/instructions.md` → `coordination/README.md` → `coordination/claude/SESSION.md` → `coordination/claude/TASKS.md`.
+3. Đọc yêu cầu Codex: `git show codex/integration:coordination/codex/HANDOFF_OUT.md` (HO-xx mới → tạo AI-xx, phản hồi trong `coordination/claude/HANDOFF_OUT.md`).
+4. Nhận task: SESSION có task dở → tiếp; không thì AI-xx `TODO` đầu tiên có dependency đã thỏa; đổi `IN_PROGRESS` (tối đa 1) + commit. Skill: `my-agent/agent/skills/ai_training_task.md`.
+5. Cổng chất lượng AI (AI-GATE mục 0 master plan) vẫn giữ nguyên: thứ tự dependency T1.x, ngưỡng metric, checkpoint, inference thật, VRAM ≤4 GB. Không hạ ngưỡng âm thầm, không DONE khi thiếu bằng chứng kiểm thử (`VERIFIED-NOW`/`VERIFIED-HIST`, README mục 4).
+6. Mỗi bước xong cập nhật SESSION.md + commit. Xong task: điền Evidence/Commits/Checkpoint trong TASKS.md, báo checkpoint 5 dòng (Lane / Changed / Verified / Contract touched / Next safe task). Tick master plan §3 chỉ khi release.
 
 ## 1. Think Before Coding
 

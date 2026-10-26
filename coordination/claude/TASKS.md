@@ -1,0 +1,118 @@
+# TASKS — làn Claude (AI) · branch `claude/ai-core`
+
+Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordination/claude/TASKS.md`).
+Định dạng + 6 trạng thái: `coordination/README.md` mục 4. Kiểm kê gốc: `coordination/INVENTORY_2026-10-26.md`.
+
+## Tổng quan
+
+| ID | T gốc | Tên | Status | Depends on |
+|---|---|---|---|---|
+| AI-00 | — | Thiết lập tách làn + kiểm kê | DONE | — |
+| AI-01 | T1.8 | Phát hành AI API Contract v1 (API_READY) | TODO | AI-06 |
+| AI-02 | T1.4 | ASR domain adaptation | BLOCKED | user nghe duyệt 60 clip |
+| AI-03 | T1.6 | Mini-GPT human quality gate | BLOCKED | summary người viết |
+| AI-04 | T1.8 / T4.3 | Đo VRAM inference ≤4 GB trên GPU | BLOCKED | phần cứng NVIDIA (hoặc Kaggle T4) |
+| AI-05 | T5.3 | Số liệu evaluation cho luận án | TODO | AI-02, AI-03, AI-04 |
+| AI-06 | T1.8 | Sửa cấu hình checkpoint local `inference-service/.env` | TODO | — |
+
+Hoàn thành trước tách làn (bằng chứng ở INVENTORY mục 3, 5): T1.1, T1.2, T1.3, T1.4 (DoD metric), T1.5, T1.7 = DONE;
+T1.6, T1.8, T4.3 = PARTIAL.
+
+---
+
+### AI-00 — Thiết lập tách làn + kiểm kê
+- T gốc: — | Owner: claude | Status: DONE
+- Depends on: — | Blocks: mọi task AI-xx, INT-xx
+- Acceptance: `coordination/**`, `AGENTS.md`, `.claude/CLAUDE.md`, master plan §0/§3 đồng bộ; 2 worktree/branch; kiểm kê có bằng chứng.
+- Evidence: VERIFIED-NOW 2026-10-26 — ai-core 285 passed, inference 37 passed/1 skipped, 6 ckpt nạp thật, Go/CMS/Client build PASS (INVENTORY §1).
+- Commits: commit baseline tách làn (`git log --grep "split lanes"`)
+- Checkpoint: xem SESSION.md
+
+### AI-01 — Phát hành AI API Contract v1
+- T gốc: T1.8 | Owner: claude | Status: TODO
+- Depends on: AI-06 | Blocks: INT-03 (DONE), mọi dòng `INTEGRATED_REAL` mới trong matrix Codex
+- Acceptance:
+  1. `coordination/claude/api/inference_openapi.json` export từ `app.main:app.openapi()` (không sửa tay).
+  2. `coordination/claude/api/examples/<endpoint>.{request,response,error}.json` sinh từ chạy thật checkpoint thật cho 6 endpoint + `/health` (search/recommendation cần Milvus — chạy khi Codex bật stack, hoặc ghi rõ chưa có).
+  3. `AI_API_CONTRACT.md` → v1.0: mọi endpoint có schema, ràng buộc chiều (vision 256-d, audio 64-d…), error codes, model + SHA256, `API_READY` cho endpoint đã có ví dụ thật.
+  4. Smoke checkpoint thật đưa vào `inference-service/tests` (opt-in theo env) để release gate chạy lại được.
+  5. Append bàn giao vào `coordination/claude/HANDOFF_OUT.md`.
+- Evidence: — | Commits: — | Checkpoint: —
+
+### AI-02 — ASR domain adaptation (T1.4 follow-up)
+- T gốc: T1.4 | Owner: claude | Status: BLOCKED
+- Depends on: user nghe/sửa/xác nhận 60 clip tại `http://127.0.0.1:8891/asr_review_v2/index.html` rồi xuất JSON thật (`.claude/TodoWrite.md` mục 2026-10-22). Hiện 7/60.
+- Blocks: AI-05; chất lượng phụ đề video thật phía Codex (không chặn tích hợp kỹ thuật).
+- Acceptance: strict intake giữ machine-assisted provenance/coverage/train-only vocab/CTC/split guard; 1 thí nghiệm bounded; chỉ promote khi guard VIVOS/FLEURS/domain không hồi quy; không chọn theo test.
+- Evidence: lịch sử bên dưới + `docs/T1.4_*.md`. Checkpoint active `8f87986781cf…` giữ nguyên (HOLD PROMOTION).
+- Commits: `15976b3` (trước tách làn)
+- Checkpoint: Next safe task = chờ JSON review của user.
+
+### AI-03 — Mini-GPT human quality gate (T1.6)
+- T gốc: T1.6 | Owner: claude | Status: BLOCKED
+- Depends on: summary người viết đã duyệt cho 40 clip real-domain (`data/manifests/minigpt_real_domain.json`, `docs/T1.6_whisper_review_intake.md`).
+- Blocks: AI-05; chất lượng summary phía Codex (không chặn tích hợp kỹ thuật).
+- Acceptance: human mean ≥3/5 trên tập video thật mới (ngoài frozen30), không tune trên frozen test; candidate chỉ promote khi guard clean+ASR không hồi quy. Không hạ ngưỡng âm thầm.
+- Evidence: ROUGE-L News PASS (0.2023 vs 0.1871), shared human 1.6/5 FAIL. Candidate mixed300 `70ec4790…` giữ riêng; active `cf9cfa71…`.
+- Commits: `15976b3`
+- Checkpoint: Next safe task = chờ summary người.
+
+### AI-04 — Đo VRAM inference ≤4 GB (AI-GATE điều kiện 4, T4.3 phần GPU)
+- T gốc: T1.8, T4.3 | Owner: claude | Status: BLOCKED
+- Depends on: máy NVIDIA/CUDA (máy hiện chỉ Intel UHD 630). Phương án: notebook Kaggle T4 nạp 6 checkpoint + 20 request tuần tự, đo `torch.cuda.max_memory_allocated/reserved`.
+- Blocks: INT-07 (T5.1 load test GPU), INT-08.
+- Acceptance: peak VRAM 6 model nạp + chạy đủ 6 endpoint ≤4 GiB; 20 request liên tiếp không tăng VRAM; số đo ghi `docs/T4.3_bao_cao.md`.
+- Evidence: HIST CPU RSS 20 video PASS (`docs/T4.3_bao_cao.md`); GPU chưa đo.
+- Commits: — | Checkpoint: —
+
+### AI-05 — Số liệu evaluation luận án (T5.3 phần AI)
+- T gốc: T5.3 | Owner: claude | Status: TODO
+- Depends on: AI-02, AI-03, AI-04 (hoặc dùng số thật hiện có nếu user chốt dừng thí nghiệm)
+- Acceptance: bảng metric 6 model vs baseline, CI, limitation thật, khớp `.claude/evaluation_plan.md`.
+- Evidence: — | Commits: — | Checkpoint: —
+
+### AI-06 — Sửa cấu hình checkpoint local
+- T gốc: T1.8 | Owner: claude | Status: TODO
+- Depends on: — | Blocks: AI-01
+- Vấn đề: `inference-service/.env` (local, không commit) trỏ `CHECKPOINT_DIR=D:/data_training_ai/checkpoints` chỉ có 4/6 model → uvicorn local fail khởi động.
+- Acceptance: một nguồn checkpoint duy nhất (khuyến nghị `E:/traning_ai/ai-core/checkpoints`) cho local + compose; ghi rõ trong `inference-service/README.md`; smoke `registry.load_all()` → `stub_mode=false`. Không xóa dữ liệu trên D:.
+- Evidence: — | Commits: — | Checkpoint: —
+
+---
+
+## Lịch sử (chuyển nguyên văn từ `.claude/plan/00_master_plan.md` ngày 2026-10-26)
+
+Follow-up T1.4/T1.6 trước tách làn. Log chi tiết hơn: `.claude/TodoWrite.md` (đóng băng).
+
+### Từ master §3, các dòng thụt lề dưới T1.4
+
+  ASR robustness follow-up **TRAIN/EVAL DONE — VIDEO VALIDATION PENDING (xác nhận2026-10-19)**: Kaggle ai-core-asr-robust v2 COMPLETE, TeslaT4/FP16/seed1337/4000steps, best3500 theo validation; output đã tải trênD:/data_training_ai/asr_robust/outputs-v2. Paired test VIVOS760: WER36.0519→32.9727%/CER13.5446→12.4467% (PASS20/45); FLEURS857: WER76.7465→53.6727%/CER50.5133→23.9063%, vẫn lỗi cao. VIVOS+human FLEURS train≈22.0073h/13557mẫu sau4CTC exclusions, không dùngYouTube30/Whisper drafts; head93→133 giữ prefix, encoder/loss không đổi. Full logs4sanity+step1→4000, checkpoint/config/metric arithmetic/hashes verified; trainVRAM allocated1.203/reserved3.039GiB≤8, chưa chứng nhận inference4GiB. Candidate SHA d03ef0a962220618e90e5ff478a2fbab5ff35dd68deb539a4933eb7c15a4f3de, chưa deploy; activeASR/MiniGPT giữ nguyên. Chỉ1seed, human video refs0/30; fullT1.6 human quality chưa đánh giá lại. @docs/T1.4_asr_robust_training.md; @data/manifests/asr_robust_training.json.
+  Real-video paired pilot **DONE TECHNICAL / HUMAN REFERENCES PENDING (2026-10-19)**: sample_01/10/28×ASR cũ/candidate→cùngMiniGPT,6ASR+6summary nonempty, oldASR text3/3 khớp frozen; production helpers/20s/CPUFP32/Torch2.13/temp0/max96, không deploy. Packet D:/data_training_ai/minigpt_real_video_20261015/asr_candidate_comparison_3_20261019/review.html có video/side-by-side/form lời chuẩn+exportCSV riêng; model/media/ref/ratings SHA giữ nguyên. 3tests+browser playback/exportCSV Unicode/desktop+mobile/QC+Go/CMS/Client FULL PASS. Candidate còn transcript nhiễu; MiniGPT vẫn lặp/thêm chi tiết ngoài transcript. Humanrefs0/3 và0/30, CER/WER/điểm human mới null; sharedmean1.6/5/fullT1.6 chưa đổi. @docs/T1.4_asr_candidate_video_pilot.md.
+  User feedback + direct-draft control (2026-10-19): user xác nhận đúng nội dung3draft; candidate-ASR MiniGPT card1/3sai,card2đúng. Chạy trực tiếp chính3draft→cùngMiniGPT/temp0/max96 vẫn lỗi: sample10lặp an ninh, sample28lệch tiểu sửNewton;3outputs tái lập cached summaries. Giữ rawfeedback+scopedjudgments, không suy thành điểm1–5/rawASRaccuracy/CER-WERđộc lập; không train/deploy hoặc sửa original refs/weights. @docs/T1.6_confirmed_draft_diagnostic.md.
+  MiniGPT pipeline diagnostic **DONE (2026-10-19)**:3draft222/250/271BPEtokens<411, lỗi xảy ra single-pass. Real BPE prefix253train+8val/mask-EOS8val/cachefullforward8steps PASS; audit256train/253sum:144source và11target bị cắt. Train75581sum/303581instances nhưng checkpoint selection chỉ titleROUGE; fixedval129–136sumRL0.174967 vsLead0.209702 (8mẫu chẩn đoán, không globalmetric),3longinputs rawtoken coverage PASS nhưng1reduce lặp94.68%trigram; short inputs vẫn sai ngày/số/entity. No test tuning/weight/production/contract change;16Python tests+4subtests, Go/CMS/Client PASS; Docker engine off. Next: grounded human target dataset/complete labels +sum-based selection +separate long-input quality, chưa tự train/deploy; fullT1.6 vẫn FAIL. @docs/T1.6_pipeline_diagnostic.md; @data/manifests/minigpt_pipeline_diagnostic.json.
+  Summary data/recipe **PREPARATION DONE — LABEL AUDIT PENDING (2026-10-19)**: strictscreen76k/4k→391/24; pinnedrawprefix197135rows adds593/40, final984train/64val, preserve originalsplits/reservehash95/5/exclude1000frozenIDs fromIDindex only. Editorialbody/sapo +syntheticASR, no generated/video-test labels/source-target truncation. New opt-in sum-aligned-v1 chooses pairedclean/noisy sumRL, title/cap regression;4clean+1noisypasses=248/62steps/eval62, legacyprofile unchanged. Existingcheckpoint baseline64cases cleanRL0.290132 vsLead0.407114, noisy0.175906 vs0.115482, mean0.233019 (developmentonly/noimprovementclaim). 8384itemchecks/4productionparity/31tests+4subtests/Go/CMS/Client PASS. 48blankauditrows gate training; privatebundle/codezip/owninitcopy verified, noKagglejob/deploy/model/APIchange. Next: human label audit +resolve/reversion/provenance, then smallcandidate train; realtranscriptdomaintransfer unproven/fullT1.6 stillFAIL. @docs/T1.6_aligned_summary_preparation.md; @data/manifests/minigpt_aligned_summary.json.
+  Label preflight follow-up **V2 DATA DONE / HUMAN AUDIT PENDING (2026-10-19)**: previous ending check admitted terminal ../.../Unicode ellipsis; corrected shared filter/trainer gate rejects50train+3val. V2=956train/64val, all53 excluded, retained IDs keep split/61val retained+3new, original files/hashes preserved. 4CPU sanity items+41tests/4subtests+8160encodedchecks/4productionparity+Go/CMS/Client PASS. Unchanged checkpoint baseline cleanSumRL0.294504 vsLead0.415168/noisy0.173516 vs0.114252; no trained improvement claim. Budget240/60/eval60. Mechanical evidence48 stored separately, no human verdicts filled;48blankannotations still gate candidate training. No job/deploy/model/API/frozen-eval change; fullT1.6 stillFAIL. @docs/T1.6_label_preflight.md; @data/manifests/minigpt_label_preflight.json.
+
+### Từ master cuối file (sau §5.4)
+
+Follow-up 2026-10-19 — **ALIGNED CANDIDATE TRAIN/EVAL DONE; ASR REGRESSION / NOT DEPLOYED**. User confirmed48v2 pairs via chat with exact ID/hash provenance;956train/64val, seed1337,240clean+60ASR,5validation rounds; private Kaggle ai-core-minigpt-aligned-v2 version1 COMPLETE, output downloaded/verified. Predeclared paired-mean selection chose clean180: clean ROUGE-L0.292511→0.517913, synthetic-ASR0.172177→0.114637; noisy repetition/cap hits increased. No quality PASS from mean improvement; fullT1.6 human gate unmet, shared1.6/5 unchanged. T4 allocated1.055/reserved2.520GiB,507.8s baseline+train/validation,4remote sanity+50local tests/4subtests+Go/CMS/Client PASS. Six post-selection video-control outputs still show ASR failure; no new human score. Candidate5cc63c... retained separately, activecf9cfa... unchanged. Report @docs/T1.6_aligned_training.md, curves/metrics/manifests updated. Next: mixed clean+ASR replay and per-condition non-regression guard; reuse unchanged48pair confirmation, no repeated audit. No new experiment launched; Docker engine unavailable/no liveE2E/six-model4GiB proof.
+
+Follow-up 2026-10-19 — **MIXED REPLAY TRAIN/EVAL DONE; SUMMARY GUARD PASS / NOT DEPLOYED**. Same confirmed956/64 and48pair hashes; seed1337, microbatch4clean+4noisy/effective64,300updates/eval60. Private ai-core-minigpt-replay-v1 version1 COMPLETE;4remote sanity+62local Python tests+Go/CMS/Client PASS. Output/rawprediction means/IDs/checkpoint/config/guard/hashes verified. Only mixed300 eligible: clean ROUGE-L0.292511→0.475816, synthetic-ASR0.172177→0.186158, ASR repetition0.174653→0.162928, cap/EOS equal init. Higher-mean240 rejected for ASR repetition. Auxiliary titleRL0.356232→0.343602 regresses, outside summary guard. T4 runtime446.03s, peak allocated1.056/reserved1.805GiB≤8; not inference4GiB proof. Candidate70ec4790... retained separately, activecf9cfa... unchanged; fullT1.6 human gate unmet/shared1.6/5 unchanged. Report @docs/T1.6_mixed_replay.md, metrics/curves/manifest updated. Next: isolated real-ASR paired evaluation then fresh human ratings before promotion; no frozen-test tuning/repeated48pair audit. Docker engine off/no liveHTTP/E2E; no new real-video generation this task.
+
+Follow-up 2026-10-19 — **MIXED CANDIDATE REAL-VIDEO PILOT DONE / ERRORS OBSERVED / NOT DEPLOYED**. User authorized continuation after training. Mixed300 SHA70ec4790... vs activecf9cfa...,3previously inspected clips×3exact inputs (confirmed draft/activeASR/candidateASR)×2models =18fresh nonempty summaries via production helper, CPUFP32/temp0/max96/18.734s. Active cache parity9/9, prior source/service/weights/frozen media/refs/ratings hashes unchanged; no newASR/train/tuning/human score. Still off-topic/repetitive on actualASR; confirmed Newton draft also fails. Summary proxy guard PASS does not establish real-video quality; do not promote, fullT1.6 human gate/shared1.6/5 unchanged. Reviewpacket onD:/data_training_ai/minigpt_news/mixed_replay_video_pilot_3_v1, escaping test+Playwright desktop/mobile3video playback/9pairs/no overflow+visualQC+Go/CMS/Client PASS. @docs/T1.6_mixed_video_pilot.md; @data/manifests/minigpt_mixed_video_pilot.json. Next: separate real-domain human-authored train/validation on new videos outside frozen30/3diagnostics; keep current48News confirmation, no pseudo-labeling of test clips or relaxed guard.
+
+Follow-up 2026-10-19 — **REAL-DOMAIN DATA PREPARATION DONE / HUMAN LABELS0/40 / TRAIN GATE CLOSED**. User requested proposed new data. Downloaded20newCC videos/4new channels outside all10frozen source videos/6test channels, originals499544485bytes retained onD:/data_training_ai/minigpt_domain_v1_20261019. SeededID/channel grouping:15train videos/3channels→30clips;5val videos/1channel→10clips;40×30s=20min.40WAV/MP4 +80own-ASR inputs(active/candidate),0empty/0overbudget/max229prompt tokens, no human/generated-summary targets. Blank authoring page at localhost8890 withJSONexport/autosave, strictID/mediaSHA/attestation/complete-label/budget/disjoint gate; actualblank import rejected/noacceptedexport.20unit tests+Playwright desktop/mobile40cards/4representative playback/UTF8export/autosave/nooverflow+visualQC+Go/CMS/Client PASS. Frozen source/ref/ratings/production weight hashes unchanged; no train/deploy/externalmodel/Kaggleupload; prior48News confirmation retained. Next: humans write these new transcript-summary labels, import/review before bounded training; source-channel split is not verified speaker identity, smallmostly-news domain/near-dups not certified. @docs/T1.6_real_domain_preparation.md; @data/manifests/minigpt_real_domain.json. FullT1.6 human gate/shared1.6/5 unchanged.
+
+
+- [x] Follow-up 2026-10-19 — **WHISPERWEB CONVERSION DONE, 40/40 DRAFTS; TRAINING NOT STARTED**. User replaced Clideo with WhisperWeb. Public free local browser workflow, whisper-base multilingual/Vietnamese, fixed configuration: 120 TXT/JSON/SRT exports for 40 new 30s clips (30train/10val), kept separately onD:/data_training_ai/minigpt_domain_v1_20261019/whisperweb_drafts_v1. All IDs/output hashes/TXT-JSON agreement,80clip hashes,7prep packet hashes and8frozen/active-weight hashes PASS; collector self-check +Go/CMS/Client checks PASS. 22clips have mechanical review flags (6unknown end,5repeated8word,14outside clip; overlap). External automatic drafts remain unverified, not human labels or summary targets; no gate bypass, train, deploy or weight/test changes. FullT1.6 quality gate/shared1.6/5 unchanged. Next: listen/correct with machine-assisted provenance and author summaries before separate label intake. Report @docs/T1.6_whisperweb_drafts.md; manifests @data/manifests/minigpt_whisperweb_drafts.json and minigpt_whisperweb_verification.json.
+
+- [x] Follow-up 2026-10-20 — WHISPER REVIEW PREPROCESSING DONE. Prepared40editable Whisper transcripts/40blank summaries,22flagged-first, separate browser drafts and assisted-origin export at localhost8890/whisper_review_v1/index.html.21timing proposals across20clips/40derived SRTs; text/raw120exports/original packet/frozen data/weights unchanged.27unit tests, desktop/mobile browser and Go/CMS/Client builds PASS. No API change. Report @docs/T1.6_whisper_review.md; manifest @data/manifests/minigpt_whisper_review.json.
+- [ ] Actual listening/corrections and human summaries remain pending: no direct audio-listening tool in this agent session, no invented semantic verification. Await reviewed_whisper_domain_v1.json, then separate intake preserving external-ASR provenance. No training/deploy or T1.6 quality-gate change.
+
+
+- [x] Follow-up 2026-10-20 — REVIEW JSON RECEIVED AND ERROR AUDIT DONE. Exact73967-byte export SHA860f8068d0bd... saved in whisper_review_v1/received_860f8068d0bd;40IDs/source/media/copy/protected hashes PASS.40transcripts/39edits/37summaries/33feedback/0exported confirmations;31summary copies/25over95BPE/3blank. User error-review pass is received; no invented approval or WER/CER. Separate vocabulary audit: active93 lacksF/J/W/Z,9digits and punctuation; CharVocab silently drops unknown symbols. Candidate133 covers example identifiers but is not promoted. Reviewed page is Whisper-base Transcribe, not a paired project-ASR score or translation test. No code/API/weights/test/train change. Report @docs/T1.6_whisper_review_intake.md; manifest @data/manifests/minigpt_whisper_review_intake.json.
+- [ ] Next: fix ASR label unknown-character handling and define English/number/identifier conventions before targeted supervised data and paired ASR evaluation; concise approved summaries are still required for MiniGPT domain training.
+
+
+- [x] Follow-up 2026-10-20 — T1.4 STRICT LABEL ENCODING/PREFLIGHT DONE. SharedCharVocab rejects unsupported symbols instead of deleting them; alltrain labels validated before audio/model training. SharedReferenceASRDataset/raw-text metrics cover general/robust evaluation without dropping held-out symbols or growing vocabulary. Actual133symbol train13561/13561roundtrip;13557CTCfeasible/4existing exclusions retained;10567legacyVIVOS labels valid.3val/7testOOVlabels preserved; active93mixed training rejected before audio.80Python tests+Go/CMS/Client builds PASS; checkpoints/IDs/head/datasets/frozen tests/review hashes unchanged. Lossless label convention documented in dataset_spec3.3 and @docs/T1.4_asr_label_contract.md; proof @data/manifests/asr_label_preflight.json. No training, promotion, API change or acoustic quality claim.
+- [ ] Next safe task: audio-backed supervised domain examples for English/code switching, numeric/legal identifiers, proper names and compounds; approved references and coverage/head checks before a new bounded ASR experiment. Previous40Whisper reviews remain diagnostic/unapproved, not autoaccepted targets.
