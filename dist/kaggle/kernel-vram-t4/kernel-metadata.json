@@ -1,6 +1,6 @@
 {
-  "id": "traininghighlight/ai-vram-t4-v1",
-  "title": "ai-vram-t4-v1",
+  "id": "traininghighlight/ai-vram-t4-run-v1",
+  "title": "ai-vram-t4-run-v1",
   "code_file": "run_vram_t4.py",
   "language": "python",
   "kernel_type": "script",
