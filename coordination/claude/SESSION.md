@@ -3,10 +3,10 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
-- Task: — (không có task IN_PROGRESS; chờ user trước khi sang AI-01)
-- Bước đã xong: —
-- Bước kế: —
-- File đang sửa: —
+- Task: AI-01 (IN_PROGRESS 2026-10-26, user duyệt "làm theo đề xuất")
+- Bước đã xong: startup; Codex RE:HC-03 báo Milvus UP 127.0.0.1:19530 (không có HO mới)
+- Bước kế: (1) export inference_openapi.json; (2) uvicorn thật (startup production, Milvus thật) :8011 → examples/ 6 endpoint + health; (3) smoke test opt-in; (4) contract v1.0 + REL
+- File đang sửa: coordination/claude/{TASKS,SESSION}.md
 - Lệnh verify dở: —
 
 ## Task kế an toàn

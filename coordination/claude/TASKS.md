@@ -9,7 +9,7 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 |---|---|---|---|---|
 | AI-00 | — | Thiết lập tách làn + kiểm kê | DONE | — |
 | AI-06 | T1.8 | **Ưu tiên 1** — Xác minh nguồn checkpoint + thang sẵn sàng 6 model | DONE (2026-10-26) | — |
-| AI-01 | T1.8 | Phát hành AI API Contract v1 (API_READY) | TODO | AI-06 |
+| AI-01 | T1.8 | Phát hành AI API Contract v1 (API_READY) | IN_PROGRESS (2026-10-26) | AI-06 |
 | AI-07 | T1.8 | Vận hành runtime :8001 thật cho Codex gọi HTTP | TODO | AI-06; Milvus từ stack Codex (HC-02) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a TODO · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
 | AI-03 | T1.6 | Mini-GPT: 03a Claude soạn summary 40 clip · 03b người duyệt · 03c train/eval | 03a TODO · 03b BLOCKED · 03c BLOCKED | 03b ⇐ user; 03c ⇐ 03b |
@@ -38,7 +38,7 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - Checkpoint: xem SESSION.md
 
 ### AI-01 — Phát hành AI API Contract v1
-- T gốc: T1.8 | Owner: claude | Status: TODO
+- T gốc: T1.8 | Owner: claude | Status: IN_PROGRESS (2026-10-26)
 - Depends on: AI-06 | Blocks: INT-03 (DONE), mọi dòng `INTEGRATED_REAL` mới trong matrix Codex
 - Acceptance:
   1. `coordination/claude/api/inference_openapi.json` export từ `app.main:app.openapi()` (không sửa tay).
@@ -108,6 +108,8 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - Acceptance: lệnh chạy chuẩn (uvicorn từ worktree Claude, `CHECKPOINT_DIR` canonical, `MILVUS_HOST` của stack Codex, port 8001,
   `AI_SERVICE_KEY` dùng chung với gateway) ghi trong contract mục Runtime; `GET :8001/health` → `stub_mode=false`, 6 model;
   trạng thái runtime (UP/DOWN + thời điểm) ghi `SESSION.md`. Khi :8001 DOWN, Codex dùng mock — không chặn nhau.
+- Thêm phạm vi (user duyệt 2026-10-26 sau AI-06): sửa trong code lỗi Windows stdout cp1252 (`services._warn` print tiếng Việt →
+  `UnicodeEncodeError` → 500 plain-text thay vì 503 envelope); có test tái hiện. Tới lúc đó chạy service với `PYTHONUTF8=1`.
 - Evidence: — | Commits: — | Checkpoint: —
 
 ### AI-05 — Số liệu evaluation luận án (T5.3 phần AI)
