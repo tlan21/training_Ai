@@ -3,18 +3,20 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
-- Task: AI-01 (IN_PROGRESS 2026-10-26, user duyệt "làm theo đề xuất")
-- Bước đã xong: startup; Codex RE:HC-03 báo Milvus UP 127.0.0.1:19530 (không có HO mới)
-- Bước kế: (1) export inference_openapi.json; (2) uvicorn thật (startup production, Milvus thật) :8011 → examples/ 6 endpoint + health; (3) smoke test opt-in; (4) contract v1.0 + REL
-- File đang sửa: coordination/claude/{TASKS,SESSION}.md
+- Task: — (không có task IN_PROGRESS; chờ user trước khi sang AI-07)
+- Bước đã xong: —
+- Bước kế: —
+- File đang sửa: —
 - Lệnh verify dở: —
 
 ## Task kế an toàn
-AI-01 (phát hành contract v1; AI-06 DONE) → AI-07 (runtime :8001, cần Milvus của Codex — startup thật fail khi Milvus tắt).
+AI-07 (runtime :8001; Milvus Codex đã UP; gồm sửa UTF-8 Windows). Release AI-API v1.0 lên master chỉ khi user ra lệnh.
 Khi chờ (Kaggle/người duyệt): AI-03a (soạn 40 summary), AI-02a (đề xuất 53 clip ASR), AI-04 (VRAM sơ bộ T4).
 AI-02b/AI-03b chờ user duyệt. Runtime :8001: DOWN (chưa chạy).
 
 ## Phiên trước
+- 2026-10-26 — AI-01 DONE: AI-API v1.0, 6 endpoint API_READY, recommendation DRAFT (Milvus thiếu collection reco); openapi + 23 examples thật;
+  live smoke 6/6 (real + synthetic); sửa warmup search Milvus. Commits 3fd0259, 2d34c24. Runtime :8001 DOWN. File tạm `D:/tmp/ai01_20261026/`.
 - 2026-10-26 — AI-06 DONE: canonical `E:/traning_ai/ai-core/checkpoints` (vit chỉ ở E:, gốc Kaggle vit_s1338; minigpt gốc D: news_run);
   thang §1b: 4 model ENDPOINT_OK* (launcher bỏ Milvus preflight), siamese/two_tower LOADED (Milvus tắt); HTTP 9/9 PASS; inference 37 PASS/1 skip;
   contract v0.2 DRAFT. Phát hiện: Windows cần `PYTHONUTF8=1`; startup thật cần Milvus. Commits 91b0242, 8d1f053. File tạm `D:/tmp/ai06_20261026/`.

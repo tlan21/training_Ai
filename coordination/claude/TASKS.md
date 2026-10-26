@@ -9,7 +9,7 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 |---|---|---|---|---|
 | AI-00 | — | Thiết lập tách làn + kiểm kê | DONE | — |
 | AI-06 | T1.8 | **Ưu tiên 1** — Xác minh nguồn checkpoint + thang sẵn sàng 6 model | DONE (2026-10-26) | — |
-| AI-01 | T1.8 | Phát hành AI API Contract v1 (API_READY) | IN_PROGRESS (2026-10-26) | AI-06 |
+| AI-01 | T1.8 | Phát hành AI API Contract v1 (API_READY) | DONE (2026-10-26; recommendation DRAFT) | AI-06 |
 | AI-07 | T1.8 | Vận hành runtime :8001 thật cho Codex gọi HTTP | TODO | AI-06; Milvus từ stack Codex (HC-02) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a TODO · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
 | AI-03 | T1.6 | Mini-GPT: 03a Claude soạn summary 40 clip · 03b người duyệt · 03c train/eval | 03a TODO · 03b BLOCKED · 03c BLOCKED | 03b ⇐ user; 03c ⇐ 03b |
@@ -38,7 +38,7 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - Checkpoint: xem SESSION.md
 
 ### AI-01 — Phát hành AI API Contract v1
-- T gốc: T1.8 | Owner: claude | Status: IN_PROGRESS (2026-10-26)
+- T gốc: T1.8 | Owner: claude | Status: DONE (2026-10-26) — 6/7 endpoint API_READY; recommendation DRAFT (acceptance 2 cho phép ghi rõ chưa có)
 - Depends on: AI-06 | Blocks: INT-03 (DONE), mọi dòng `INTEGRATED_REAL` mới trong matrix Codex
 - Acceptance:
   1. `coordination/claude/api/inference_openapi.json` export từ `app.main:app.openapi()` (không sửa tay).
@@ -46,7 +46,25 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   3. `AI_API_CONTRACT.md` → v1.0: mọi endpoint có schema, ràng buộc chiều (vision 256-d, audio 64-d…), error codes, model + SHA256, `API_READY` cho endpoint đã có ví dụ thật.
   4. Smoke checkpoint thật đưa vào `inference-service/tests` (opt-in theo env) để release gate chạy lại được.
   5. Append bàn giao vào `coordination/claude/HANDOFF_OUT.md`.
-- Evidence: — | Commits: — | Checkpoint: —
+- Evidence (VERIFIED-NOW 2026-10-26, chi tiết `coordination/claude/evidence/AI-01_2026-10-26/README.md`):
+  1. `inference_openapi.json` export `app.main:app.openapi()`; export lại sau sửa code → `cmp` giống hệt.
+  2. `examples/` 23 file sinh bởi `tests/test_live_smoke.py` (`INFERENCE_EXAMPLES_DIR`) trên uvicorn startup production, Milvus thật, media thật → 6/6 PASS.
+     Recommendation: ví dụ 503 thật (collection `user_recommendation_embeddings` không tồn tại) → `DRAFT`.
+  3. Contract v1.0: `API_READY` health/vision/asr/highlight/completions/search; recommendation `DRAFT`; sửa tài liệu cho khớp code
+     (reco cold-start 503, vision ảnh hỏng 503 vs search 422, `thumbnail_url` tương đối, `degraded` dính).
+  4. `tests/test_live_smoke.py` opt-in `INFERENCE_LIVE_URL`: real media 6/6 PASS, synthetic 6/6 PASS; suite mặc định 37 passed / 7 skipped.
+  5. REL v1.0 trong HANDOFF_OUT.
+  - Bug sửa: search đầu tiên sau startup 503 `DEADLINE_EXCEEDED` (timeout 1 s, query đầu sau load 474 ms → >1 s khi Milvus lạnh) → warmup trong lifespan.
+- Follow-up (chưa làm, cần user): tạo/nạp `user_recommendation_embeddings` (`ai_core/scripts/export_two_tower_milvus.py` ghi vào Milvus stack Codex, ID từ dataset train);
+  ngữ nghĩa `degraded` dính; cache `_milvus_collection` giữ cả None tới restart.
+- Commits: 3fd0259 (nhận task), 2d34c24 (code + contract v1.0 + examples + REL) | Checkpoint:
+  ```
+  Lane: claude
+  Changed: inference-service/app/{main.py,visual_index.py}, inference-service/tests/test_live_smoke.py, coordination/claude/api/{AI_API_CONTRACT.md,inference_openapi.json,examples/**}, coordination/claude/{HANDOFF_OUT.md,TASKS.md,SESSION.md,evidence/AI-01_2026-10-26/**}
+  Verified: live smoke real media 6/6 + synthetic 6/6 PASS (startup production, Milvus thật); pytest tests/ 37 passed 7 skipped; openapi cmp unchanged
+  Contract touched: yes (AI-API v1.0; schema không đổi)
+  Next safe task: AI-07
+  ```
 
 ### AI-02 — ASR domain adaptation (T1.4 follow-up)
 - T gốc: T1.4 | Owner: claude | Status: 02a TODO · 02b BLOCKED · 02c BLOCKED
