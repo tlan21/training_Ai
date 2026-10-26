@@ -100,6 +100,11 @@ Vấn đề: chấm điểm kịch tính từng giây cần nhãn từng giây �
 - **Sau 2–4 tuần vận hành:** train BPR trên `user_interactions` (positive = watch_time > 50% thời lượng; negative = skip / impression không click).
 - **Chuyển giao cold-start → tower (quy tắc không gian vector):** vector cold-start (trung bình video) và vector output tower KHÔNG cùng không gian. Sau lần train tower đầu tiên: **recompute toàn bộ user embedding qua tower, xóa hết vector cold-start khỏi Milvus** trong cùng 1 lần migrate. User mới sau đó: nếu tower đã train → qua tower (feature onboarding); chưa đủ interaction → fallback popularity, không nạp vector lẫn không gian (khớp @model_spec.md §2).
 - **Đánh giá luận án:** không đủ user thật → dùng MovieLens-100k chứng minh thuật toán Two-Tower tự code hội tụ và đạt metric, đồng thời demo pipeline end-to-end trên nhóm user thử nghiệm nhỏ. Ghi rõ cách làm này trong luận án.
+- **Two-Tower v2 (D18/D19, 2026-10-26) — thay thế dòng "positive = watch_time > 50%" ở trên cho dữ liệu sản phẩm:** dữ liệu theo data contract
+  `coordination/claude/api/TWO_TOWER_V2_DATA_CONTRACT.md` (`ttv2-data-v1`), đọc/kiểm tra bằng `ai_core/training/datasets/product_interactions.py`.
+  Positive = like/share/save hoặc watch_time ≥ 50% độ dài (clip nếu có, không thì video) hoặc ≥ 30 s; negative tường minh = skip hoặc watch_time < 10%;
+  click không phải nhãn; "impression không click" chỉ dùng khi Codex bổ sung `impressions.jsonl` (tùy chọn giai đoạn 2). Split theo mốc thời gian toàn cục,
+  cold-start báo cáo riêng. Two-Tower v1 (MovieLens, transductive) giữ làm baseline sandbox, không dùng cho sản phẩm.
 
 ---
 

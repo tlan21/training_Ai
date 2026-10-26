@@ -134,8 +134,9 @@ class RecommendationRequest(BaseModel):
 class Recommendation(BaseModel):
     video_id: str
     score: float                      # 0–1 (inner product)
-    title: str
-    thumbnail_url: str
+    # AI-API v1.3 (D18): inference không có metadata sản phẩm → luôn null; gateway lấy title/thumbnail theo video_id từ Postgres.
+    title: str | None = None
+    thumbnail_url: str | None = None
 
 
 class RecommendationResponse(BaseModel):
@@ -143,6 +144,7 @@ class RecommendationResponse(BaseModel):
     object: str = "recommendation_completion"
     created: int
     model: str
+    recommendation_mode: str          # "personalized" (vector thật) | "stub" (FORCE_STUB) — popularity/fallback là việc của gateway
     recommendations: list[Recommendation]
 
 

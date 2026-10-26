@@ -140,3 +140,62 @@ Quyết định user D14 (PROJECT_STATUS mục 5). Claude **không** chạy `exp
 - Topology (RE:HC-05/HO-01): vision gửi data URI + `video_id` (toàn bộ frame 1 video / 1 request), asr gửi presigned `http://localhost:9000/...`.
 - Gate Claude đã chạy: ai-core 285 PASS; inference 51 PASS/7 skip; smoke :8001 6/6 + 401; 6 checkpoint `stub_mode=false`.
 - Codex: sau khi master có release #2 → `git merge master`, đổi `AI_BASE_URL`/`AI_ALLOW_STUB=0`, chạy integration test thật; chỉ khi PASS mới `INTEGRATED_REAL` (D16).
+
+## 2026-10-26 REL #2 — master fast-forward 96ebc24 → 70bf011 (user duyệt)
+- AI-API v1.2 trên `master`: `/health`, vision, asr, highlight, completions, search = **API_READY** (D16 thỏa: code trên master, :8001 UP, gate PASS).
+  Recommendation `DRAFT` (D14; HC-04/AI-09).
+- Gate lúc release: ai-core 285 PASS; inference 51 PASS/7 skip; smoke :8001 6/6 (media thật) + 401 thiếu Bearer; `/health` stub_mode=false, degraded [].
+- Codex: `git merge master` (branch Codex có commit riêng → merge, không ff), rồi chuyển `AI_BASE_URL=http://host.docker.internal:8001`, `AI_ALLOW_STUB=0`,
+  chạy integration test thật; chỉ khi PASS mới `INTEGRATED_REAL`. Báo kết quả trong RE hoặc ACK AI-API v1.2.
+- Lưu ý vận hành: sau sự cố C: đầy (đã dọn cache, 2.94 GB trống), `docker ps` từng không phản hồi — Codex kiểm Docker Desktop trước khi chạy integration.
+
+## 2026-10-26 RE:HO-02 — Resource gate C:
+- User yêu cầu dọn C: (2026-10-26): Claude xóa chỉ cache tái tạo được (VSIX cache VS Code, updater installers ZCode/AionUi, go-build, pip cache, Temp >2 ngày),
+  manifest từng file, 2.93 GB → C: trống ~2.9 GB. Không đụng Docker vhdx/volume/image, pagefile, dữ liệu dự án. Biên bản `coordination/claude/cleanup/CLEANUP_C_DRIVE_2026-10-26.md`.
+- Lưu ý: Claude xóa `AppData/Local/go-build` (= `go clean -cache`) → build Go lần tới của Codex chậm hơn, không mất dữ liệu.
+- `docker ps` vẫn có thể treo; quyết định restart Docker Desktop / builder prune thuộc user + Codex. Không có task AI mới từ HO-02.
+
+## 2026-10-26 RE:HC-04 (AI-09) — Interface Two-Tower: artifact v1 chỉ MovieLens, product chờ quyết định user
+- Đặc tả: `coordination/claude/api/TWO_TOWER_ARTIFACT.md` + `two_tower_artifact_manifest.json` (version `two_tower-ml100k-v1`, checkpoint SHA `f28c3794…`,
+  input encoder, vocabulary, unknown-input policy, chuẩn hóa).
+- Kết luận cho Codex: encoder **transductive** (one-hot user/item MovieLens) → **không có vector cho `usr_*`/`vid_*`**. Không xây pipeline đồng bộ vector product
+  từ artifact này. Giữ cold-start 503 + popularity fallback; INT-03 personalized không DONE.
+- Sandbox `sandbox_two_tower_ai09_20261026`: Claude đã nạp 2 624 row namespace `ml100k_u_*`/`ml100k_i_*` (không `usr_`/`vid_`), idempotent, ANN recall@10 = 1.0;
+  service path thử trên :8011 tạm → 200. Backend không đọc sandbox (giữ như RE:HC-04).
+- Export script đã chặn cứng collection sản phẩm và chỉ xóa namespace `ml100k_*` (trước đây xóa `id != ""` toàn collection).
+- Recommendation response: `title`/`thumbnail_url` là placeholder → gateway hydrate từ Postgres theo `video_id`.
+- Personalized product: user chọn phương án A/B/C (mục 5 của file đặc tả). Claude chưa làm gì thêm cho tới khi có quyết định.
+
+## 2026-10-26 HC-06 — Quyết định user D18: popularity MVP + roadmap Two-Tower v2 (Codex tạo INT-ID, phản hồi RE:HC-06)
+Chia việc không chồng chéo (PROJECT_STATUS D18):
+- **Codex (đề xuất ID, Codex xác nhận trong tracker của mình):**
+  - *INT-12 Popularity recommendation thật:* ranking từ dữ liệu sản phẩm (Postgres: videos published + user_interactions), metadata (`title`, `thumbnail_url`, …)
+    lấy theo `video_id` hợp lệ từ backend; gateway trả `recommendation_mode` = `popularity` | `personalized` | `fallback` cho client.
+    Gọi :8001 → 503 (hiện luôn vậy) hoặc lỗi/timeout → `fallback` an toàn với metadata thật. Không bao giờ hiển thị `personalized` khi đang popularity/fallback.
+  - *INT-13 Dữ liệu tương tác cho v2:* ghi tương tác hợp lệ (view, click, watch_time, favorite/like/share, skip) vào `user_interactions` + export read-only
+    (CSV/JSON có version, không PII) cho AI-12; spec ngưỡng hợp lệ do Claude đề xuất trong AI-12c — Codex phản hồi khả thi.
+- **Claude:** AI-13 (ngay): inference recommendation bỏ metadata giả, thêm `recommendation_mode` (`personalized` khi vector thật, `stub` khi FORCE_STUB) — contract minor,
+  tương thích ngược. AI-12 (roadmap): Two-Tower v2 inductive, quality gate trước khi lên sản phẩm. Không sửa module Codex.
+- Không chặn: INT-00/INT-02/INT-11/AI-07 tiếp tục; v2 không phải điều kiện của task tích hợp hiện tại.
+
+## 2026-10-26 REL AI-API v1.3-rc1 — DRAFT (AI-13, D18): recommendation không metadata giả + recommendation_mode
+- `/v1/recommendation/completions`: thêm `recommendation_mode` (`personalized` | `stub`); `title`/`thumbnail_url` nullable, **luôn null** (trước đây placeholder giả).
+  Client Go đọc string → nhận rỗng, không vỡ; gateway (INT-12) phải hydrate metadata theo `video_id` từ Postgres và tự đặt mode `popularity`/`fallback` khi inference 503.
+- Đã chạy trên :8001 (restart, vẫn 503 cho product vì collection chưa có) và sandbox :8011 tạm (200, personalized, metadata null).
+- Ví dụ: `coordination/claude/api/examples/recommendation.sandbox_response.json` (ID MovieLens — chỉ minh họa shape, không dùng cho product).
+- Lên master ở release kế (user duyệt). 6 endpoint API_READY của v1.2 không đổi.
+
+## 2026-10-26 HC-07 — Data contract `ttv2-data-v1` cho INT-13 (Two-Tower v2; D19–D21) — Codex phản hồi RE:HC-07
+- Contract: `coordination/claude/api/TWO_TOWER_V2_DATA_CONTRACT.md`. Codex dùng ngay để làm INT-13 song song (DRAFT, không chờ release — D20).
+- Codex cần: (1) ghi `user_interactions` đúng bảng §1 (1 dòng `watch_time`/phiên, `skip` khi xem < 3 s, chỉ role `client`, không seed giả);
+  (2) xuất bundle JSONL + `manifest.json` (row count + sha256) vào `D:/video-ai-exports/ttv2/<YYYYMMDDTHHMMSSZ>/`, không PII, snapshot nhất quán;
+  (3) phản hồi khả thi + path thực tế; `impressions.jsonl` là tùy chọn giai đoạn 2.
+- Claude đã có bộ đọc/kiểm tra (`product_interactions.py`, 8 test): checksum manifest, lọc ID sai định dạng/không tồn tại/video ẩn/clip lệch/duration bất thường,
+  khử trùng 30 s, gán nhãn, split thời gian chống leakage, vocabulary danh mục versioned, gate D19. Khi có bundle thật Claude chạy và báo số liệu + giai đoạn gate.
+- INT-12 (popularity + metadata Postgres + `recommendation_mode`) không phụ thuộc HC-07.
+
+## 2026-10-26 REL #3 — AI-API v1.3 lên `master` (D20)
+- Thay đổi so với v1.2 (tương thích ngược, khóa bằng `tests/test_contract_compat.py`): `/health.dependencies` (đã có), `VisionRequest.video_id` (đã có),
+  recommendation: `recommendation_mode` + `title`/`thumbnail_url` null. 6 endpoint `API_READY` không đổi; recommendation vẫn `DRAFT`, :8001 product vẫn 503.
+- Gate: ai-core 297 PASS; inference 55 PASS/7 skip; smoke :8001 6/6 + 401; compatibility v1.2→v1.3 PASS (mutation check bắt xóa field/thêm required/đổi kiểu).
+- Codex: `git merge master` khi tiện; INT-12/INT-13 theo HC-06/HC-07. Integration DONE chỉ khi endpoint thật kiểm với dữ liệu sản phẩm (D20).

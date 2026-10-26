@@ -173,3 +173,21 @@ def test_reco_uses_nprobe_large_enough_for_nlist_1024(monkeypatch):
     services = _patch(monkeypatch, col)
     services._reco_from_milvus("usr_1", 1)
     assert col.nprobe >= 64
+
+
+def test_reco_never_invents_metadata_and_reports_mode(monkeypatch):
+    """D18: title/thumbnail come from the product backend by video_id; inference only knows id + score."""
+    from app import schemas
+    services = _patch(monkeypatch, _FakeCollection([_FakeHit("vid_56", 0.2)]))
+    monkeypatch.setattr(services.settings, "force_stub", False)
+    out = services.run_recommendation(schemas.RecommendationRequest(user_id="usr_1", limit=1))
+    assert out.recommendation_mode == "personalized"
+    assert out.recommendations[0].video_id == "vid_56"
+    assert out.recommendations[0].title is None and out.recommendations[0].thumbnail_url is None
+
+
+def test_stub_recommendation_is_labelled_and_has_no_fake_metadata():
+    with _client() as c:
+        body = c.post("/v1/recommendation/completions", json={"user_id": "usr_888", "limit": 2}, headers=AUTH).json()
+    assert body["recommendation_mode"] == "stub"
+    assert all(x["title"] is None and x["thumbnail_url"] is None for x in body["recommendations"])

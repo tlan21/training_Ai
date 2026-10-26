@@ -459,8 +459,6 @@ def _reco_from_milvus(user_id: str, limit: int) -> list[schemas.Recommendation] 
             video_id=h.entity.get("id"),
             # IP trên vector đã L2-norm = cosine ∈ [-1,1]; schema quy ước 0–1 nên ánh xạ tuyến tính.
             score=round((float(h.score) + 1) / 2, 4),
-            title=f"Video {h.entity.get('id')}",
-            thumbnail_url=f"https://storage.local/thumbnails/{h.entity.get('id')}.jpg",
         )
         for h in hits
     ]
@@ -479,16 +477,14 @@ def run_recommendation(req: schemas.RecommendationRequest) -> schemas.Recommenda
             raise HTTPException(503, detail={"code": "AI_UNAVAILABLE", "message": "Recommendation index unavailable; gateway uses popularity fallback"})
         rng = _seed_from(req.user_id)
         recs = [
-            schemas.Recommendation(
-                video_id=f"vid_{(rng + i * 7) % 1000:03d}",
-                score=round(0.99 - i * 0.03, 3),
-                title=f"Video gợi ý #{i + 1}",
-                thumbnail_url=f"https://storage.local/thumbnails/vid_{(rng + i * 7) % 1000:03d}.jpg",
-            )
+            schemas.Recommendation(video_id=f"vid_{(rng + i * 7) % 1000:03d}", score=round(0.99 - i * 0.03, 3))
             for i in range(req.limit)
         ]
+        mode = "stub"
+    else:
+        mode = "personalized"
     return schemas.RecommendationResponse(
-        id=_rid("rec-primitive"), created=_now(), model=req.model, recommendations=recs,
+        id=_rid("rec-primitive"), created=_now(), model=req.model, recommendation_mode=mode, recommendations=recs,
     )
 
 
