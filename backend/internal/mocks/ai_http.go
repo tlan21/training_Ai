@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// NewAIHTTP implements AI-API v0.1 DRAFT without reading files, loading models or querying vectors.
+// NewAIHTTP implements AI-API v1.0 schemas without reading files, loading models or querying vectors.
 // shortcut: media references are fixture strings, use real inference for decoding and semantic checks.
 func NewAIHTTP(key string) http.Handler {
 	r := gin.New()
@@ -110,7 +110,7 @@ func NewAIHTTP(key string) http.Handler {
 			return
 		}
 		res := response("search_completion", "primitive-siamese-vit")
-		res["results"], res["query_metadata"] = []gin.H{}, gin.H{}
+		res["results"], res["query_metadata"] = []gin.H{}, gin.H{"execution_time_ms": 0}
 		c.JSON(200, res)
 	})
 	v1.POST("/recommendation/completions", func(c *gin.Context) {
@@ -122,9 +122,7 @@ func NewAIHTTP(key string) http.Handler {
 		if !bind(c, &req) {
 			return
 		}
-		res := response("recommendation_completion", "primitive-two-tower-recommender")
-		res["recommendations"] = []gin.H{}
-		c.JSON(200, res)
+		fail(c, 503, "AI_UNAVAILABLE", "MOCK_ONLY cold-start; use popularity fallback")
 	})
 	v1.POST("/completions", func(c *gin.Context) {
 		req := struct {

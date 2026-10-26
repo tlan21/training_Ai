@@ -6,10 +6,13 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 
 	"traning_ai/backend/internal/adapters/aihttp"
+	"traning_ai/backend/internal/domain"
 	"traning_ai/backend/internal/mocks"
 )
 
@@ -26,7 +29,11 @@ func TestAIHTTPClientRoundTrip(t *testing.T) {
 	if err != nil || !health.StubMode || len(health.ModelsLoaded) != 0 {
 		t.Fatalf("mock health: %+v %v", health, err)
 	}
-	vision, err := client.Vision(ctx, []string{"one.jpg", "two.jpg"})
+	frame := filepath.Join(t.TempDir(), "frame.jpg")
+	if err := os.WriteFile(frame, []byte("mock frame fixture"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	vision, err := client.Vision(ctx, []string{frame, frame})
 	if err != nil || vision.CategorySuggestion != "bong_da" || len(vision.Embeddings256) != 2 || len(vision.Embeddings256[0]) != 256 {
 		t.Fatalf("vision: %+v %v", vision, err)
 	}
@@ -43,7 +50,7 @@ func TestAIHTTPClientRoundTrip(t *testing.T) {
 		t.Fatalf("search: %+v %v", search, err)
 	}
 	recommendation, err := client.Recommendation(ctx, "usr_test", 10, nil)
-	if err != nil || len(recommendation.Hits) != 0 {
+	if err == nil || err.(*domain.DomainError).Status != 503 || len(recommendation.Hits) != 0 {
 		t.Fatalf("recommendation: %+v %v", recommendation, err)
 	}
 	summary, err := client.Summarize(ctx, "transcript", 150)

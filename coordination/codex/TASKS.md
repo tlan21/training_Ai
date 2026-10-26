@@ -11,7 +11,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-00 | — | Worktree, dependency, stack hạ tầng + mock AI HTTP | REVIEW | HC-02, HC-03 (đã nhận) |
 | INT-01 | T2.1–T2.5 | Xác minh lại backend trên stack thật | BLOCKED | INT-00 |
 | INT-02 | T2.5 | Thay adapter memory → Postgres (interactions/history/likes/settings) | REVIEW | INT-00 (DB); không phụ thuộc AI |
-| INT-03 | T2.5, T1.7 | Two-Tower: user vector Milvus thật + feed | TODO | INT-02, AI-01 |
+| INT-03 | T2.5, T1.7 | Two-Tower: sandbox/ID mapping; product vectors + feed | IN_PROGRESS | INT-02; product gates AI-09/AI-01/AI-07 |
 | INT-04 | T3.1, T3.2 | Contract nguồn phát video gốc (OpenAPI) + nối UI | PARTIAL | INT-00 (runtime); contract có thể làm độc lập |
 | INT-05 | T3.1 | CMS Design Parity FULL | PARTIAL | INT-02, INT-04 |
 | INT-06 | T3.2 | Client Design Parity FULL | PARTIAL | INT-02, INT-04 |
@@ -19,7 +19,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-08 | T5.2 | Soak test 48 h | BLOCKED | INT-07 |
 | INT-09 | T5.3 | Docs bàn giao hệ thống | TODO | INT-05..08 |
 | INT-10 | — | Forgot-password giữ nguyên, ngoài release hiện tại | DEFERRED / OUT_OF_SCOPE | D1, HC-02 |
-| INT-11 | INT-01 | HTTP media giữa gateway Docker và inference host | IN_PROGRESS | INT-00; real vision/index chờ HO-01 |
+| INT-11 | INT-01 | HTTP media giữa gateway Docker và inference host | PARTIAL | INT-00; real vision/index chờ HO-01 |
 
 Hoàn thành trước tách làn (bằng chứng INVENTORY mục 5): T0.1–T0.4, T2.1–T2.4, T4.1, T4.2 = DONE (VERIFIED-HIST, build VERIFIED-NOW);
 T2.5, T3.1, T3.2 = PARTIAL.
@@ -71,8 +71,8 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Checkpoint: Lane codex / Changed PG adapters+handlers+wiring+tests+script / Verified xem evidence / Contract no / Next INT-04.
 
 ### INT-03 — Two-Tower user vector thật
-- T gốc: T2.5, T1.7 | Owner: codex | Status: TODO
-- Depends on: INT-02, AI-01 (recommendation `API_READY`), AI-07 (runtime thật) | Blocks: —
+- T gốc: T2.5, T1.7 | Owner: CODEX | Status: IN_PROGRESS (sandbox/ID mapping theo HC-04, 2026-10-26)
+- Depends on: sandbox/ID mapping ⇐ INT-02 + HC-04/D14 (đã nhận); product integration ⇐ AI-09 + AI-01 recommendation API_READY/master + AI-07 | Blocks: AI-09 sandbox
 - Phạm vi: `milvus.NewFrames(..., mocks.NewVectorStoreMem())` → user vector ghi Milvus `user_recommendation_embeddings` khi
   `PUT /api/users/me/preferences`; feed gọi `/v1/recommendation/completions` thật, fallback popularity khi 503.
 - Acceptance: integration test thật: preferences → recommendation trả video khớp; Milvus restart vẫn còn vector; matrix `INTEGRATED_REAL`.
@@ -130,10 +130,12 @@ T2.5, T3.1, T3.2 = PARTIAL.
 
 
 ### INT-11 — Portable media transport cho AI host
-- T gốc: INT-01 | Owner: CODEX | Status: IN_PROGRESS (2026-10-26)
+- T gốc: INT-01 | Owner: CODEX | Status: PARTIAL (HTTP media/mock PASS; real indexing waits HO-01)
 - Depends on: INT-00; full real upload/search chờ HO-01 + AI-01 release trên master + AI-07 UP.
 - Acceptance: Vision gửi ảnh base64 (contract có sẵn), ASR nhận WAV qua URL MinIO presigned; không gửi path Docker cho host,
   không shared mount/checkpoint; staging WAV cleanup/error handling; unit + mock pipeline tests PASS. Indexing media mới thật chờ contract Claude.
 - Changed dự kiến: aihttp + tests, gateway preprocessing/audio staging + tests; tracker/handoff.
-- Next action: triển khai transport đã có trong contract v1.0; không tự thêm video_id field khi Claude chưa công bố.
-- Evidence: HO-01 tại `1e72069`; contract v1.0 trên Claude `56c06a6`, master chưa có version này. | Commits: — | Checkpoint: —
+- Next action: Claude bổ sung video_id optional + index base64 theo RE:HC-05, rồi Codex consume minor contract; chưa gửi field tự ý.
+- Evidence: VERIFIED-NOW verification/INT-11.md; Go checks/Linux builds và script persistence/fallback sau đổi transport PASS.
+  HO-01 `1e72069`; HC-05 báo :8001 UP nhưng contract v1.1-rc1 DRAFT chưa master. | Commits: implementation commit theo sau.
+- Checkpoint: Lane codex / Changed HTTP client+pipeline+tests / Verified mock transport/fallback PASS / Contract no / Next INT-03 sandbox.

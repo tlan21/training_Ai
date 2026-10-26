@@ -38,8 +38,10 @@ func wirePipeline(videos ports.VideoRepository, jobs ports.JobRepository, clips 
 	consume("video.uploaded", "gateway-uploaded", runner.HandleUploaded)
 	consume("video.preprocessed", "gateway-preprocessed", func(ctx context.Context, payload []byte) error {
 		var prep struct {
-			VideoID       string `json:"video_id"`
-			KeyframesPath string `json:"keyframes_path"`
+			VideoID       string  `json:"video_id"`
+			KeyframesPath string  `json:"keyframes_path"`
+			AudioPath     string  `json:"audio_path"`
+			Duration      float64 `json:"duration"`
 		}
 		if err := json.Unmarshal(payload, &prep); err != nil {
 			return err
@@ -50,7 +52,24 @@ func wirePipeline(videos ports.VideoRepository, jobs ports.JobRepository, clips 
 			return domain.ErrValidation
 		}
 		defer os.RemoveAll(expected)
-		err := runner.HandlePreprocessed(ctx, payload)
+		var err error
+		if prep.Duration > 0 {
+			key := "audio/" + prep.VideoID + ".wav"
+			defer func() {
+				cleanup, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+				defer cancel()
+				if err := storage.Delete(cleanup, "raw-videos", key); err != nil {
+					log.Printf("audio cleanup %s: %v", prep.VideoID, err)
+				}
+			}()
+			prep.AudioPath, err = uploadAIAudio(ctx, storage, filepath.Join(expected, "audio.wav"), key)
+			if err == nil {
+				payload, err = json.Marshal(prep)
+			}
+		}
+		if err == nil {
+			err = runner.HandlePreprocessed(ctx, payload)
+		}
 		if err != nil {
 			if job, getErr := jobs.GetByVideo(ctx, prep.VideoID); getErr == nil {
 				if job.ErrorLog == nil || *job.ErrorLog != "canceled_by_user" {

@@ -56,6 +56,8 @@ try {
     if ($history.items.Count -ne 1 -or $history.items[0].clip.id -ne $clip.id -or $history.items[0].duration_watched -ne 2) { throw 'Watch history lost after restart' }
     if ($likes.items.Count -ne 1 -or $likes.items[0].id -ne $clip.id) { throw 'Likes lost after restart' }
     if ($after.highlight_threshold -ne $threshold -or $after.ai_service_api_key -ne 'sk-local-••••') { throw 'Settings lost or key exposed' }
+    $feed = Invoke-RestMethod "$base/api/feed" -Headers $viewerHeaders
+    if ($clip.id -notin $feed.items.id) { throw 'Popularity fallback failed with recommendation 503' }
     foreach ($url in @($history.items[0].clip.playback_url, $likes.items[0].playback_url)) {
         if (-not $url) { throw 'Playback URL missing' }
         $media = Invoke-WebRequest $url -Headers @{Range='bytes=0-1023'} -SkipHttpErrorCheck
@@ -66,7 +68,7 @@ try {
     $hiddenHistory = Invoke-RestMethod "$base/api/users/me/history" -Headers $viewerHeaders
     $hiddenLikes = Invoke-RestMethod "$base/api/users/me/likes" -Headers $viewerHeaders
     if ($hiddenHistory.items.Count -ne 0 -or $hiddenLikes.items.Count -ne 0) { throw 'Deleted content leaked through history/likes' }
-    $evidence = [ordered]@{mode='MOCK_ONLY';user_id=$viewer.user.id;clip_id=$clip.id;restart_verified=$true;history_count=$history.items.Count;duration_watched=$history.items[0].duration_watched;likes_count=$likes.items.Count;settings_persisted=$true;key_masked=$true;playback_range_status=206;unpublished_interaction_status=$private.StatusCode;deleted_content_hidden=$true}
+    $evidence = [ordered]@{mode='MOCK_ONLY';user_id=$viewer.user.id;clip_id=$clip.id;restart_verified=$true;history_count=$history.items.Count;duration_watched=$history.items[0].duration_watched;likes_count=$likes.items.Count;settings_persisted=$true;key_masked=$true;playback_range_status=206;unpublished_interaction_status=$private.StatusCode;deleted_content_hidden=$true;recommendation_fallback=$true}
     $evidence | ConvertTo-Json | Set-Content -Encoding utf8 coordination/codex/verification/INT-02-persistence.json
     $evidence | ConvertTo-Json
 } finally {

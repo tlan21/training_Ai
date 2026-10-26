@@ -3,10 +3,12 @@ package aihttp
 import (
 	"bytes"
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
+	"os"
 	"path/filepath"
 	"time"
 	"traning_ai/backend/internal/domain"
@@ -67,7 +69,15 @@ func (c *Client) Vision(ctx context.Context, paths []string) (*domain.VisionResu
 		}
 	}
 	var result domain.VisionResult
-	err := c.request(ctx, "/v1/vision/completions", map[string]any{"keyframes": paths}, &result)
+	keyframes := make([]string, len(paths))
+	for i, path := range paths {
+		data, err := os.ReadFile(path)
+		if err != nil {
+			return nil, fmt.Errorf("read vision frame: %w", err)
+		}
+		keyframes[i] = "data:" + http.DetectContentType(data) + ";base64," + base64.StdEncoding.EncodeToString(data)
+	}
+	err := c.request(ctx, "/v1/vision/completions", map[string]any{"keyframes": keyframes}, &result)
 	return &result, err
 }
 func (c *Client) ASR(ctx context.Context, audioURL, language string) (*domain.ASRResult, error) {
