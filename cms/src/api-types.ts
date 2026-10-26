@@ -1943,6 +1943,8 @@ export interface components {
             created_at?: string;
         };
         VideoDetail: components["schemas"]["Video"] & {
+            /** @description URL MinIO presigned cho video gốc, hết hạn sau 1 giờ. Chỉ cấp trong GET detail: public chỉ video processed; CMS yêu cầu admin/editor và không cấp cho video deleted. Null khi chưa có file gốc. Không trả đường dẫn raw_file_path trong API. */
+            playback_url?: string | null;
             clips?: components["schemas"]["Clip"][];
         };
         Clip: {

@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Video AI Platform — Public + CMS API
-  version: 0.1.0
+  version: 0.2.0
   description: >
     Contract-first (master plan §2). Nguồn sự thật cho gateway Go (oapi-codegen)
     và FE types (openapi-typescript). Điểm highlight thang 0–100; similarity/score 0–1.
@@ -947,6 +947,13 @@ components:
         - $ref: "#/components/schemas/Video"
         - type: object
           properties:
+            playback_url:
+              type: string
+              nullable: true
+              description: >
+                URL MinIO presigned cho video gốc, hết hạn sau 1 giờ. Chỉ cấp trong GET detail:
+                public chỉ video processed; CMS yêu cầu admin/editor và không cấp cho video deleted.
+                Null khi chưa có file gốc. Không trả đường dẫn raw_file_path trong API.
             clips:
               type: array
               items: { $ref: "#/components/schemas/Clip" }

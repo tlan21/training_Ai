@@ -8,7 +8,11 @@
   4 PG real tests PASS trong Docker network, verify_business_persistence.ps1 PASS (restart, HTTP206, privacy, settings restore).
 - Bước kế: INT-04 sửa OpenAPI VideoDetail.playback_url/regen types trong commit riêng trước backend/UI; kiểm real MinIO playback với mock AI.
   Dùng skill backend_endpoint.md (không đổi schema DB).
-- File đang sửa: backend PG/settings/auth/gateway + tests; e2e/verify_business_persistence.ps1; verification/INT-02.md + JSON, SESSION.
+- INT-04 bước contract: OpenAPI v0.2.0 thêm VideoDetail.playback_url nullable/signed TTL 1h ở GET detail public/CMS;
+  không thêm endpoint hoặc raw_file_path. Regen oapi-codegen v2.8.0 + openapi-typescript 7.13.0; Go handler tests/CMS tsc PASS.
+- File đang sửa: infra/openapi.yaml, generated Go/CMS/Client types; SESSION.
+- Bước sau contract commit: detail handlers cấp presigned URL sau status/auth gate; CMS players src, Client source+seek;
+  tests privacy/MinIO Range/browser play-seek và checklist parity 10 mục trên các player đổi.
 - Lệnh verify dở: —.
 - Runtime: stack project video-ai, mock host :18001, gateway :8000, CMS :5173, Client :3000, Milvus :19530 healthy;
   ingest dùng cached image, source mới bind :ro. Inference container cũ dừng, không xóa. Claude sở hữu :8001 thật.
