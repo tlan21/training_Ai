@@ -20,7 +20,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-09 | T5.3 | Docs bàn giao hệ thống | TODO | INT-05..08 |
 | INT-10 | — | Forgot-password giữ nguyên, ngoài release hiện tại | DEFERRED / OUT_OF_SCOPE | D1, HC-02 |
 | INT-11 | INT-01 | HTTP media giữa gateway Docker và inference host | PARTIAL | RESOURCE; AI v1.2 master + real tests |
-| INT-12 | T2.2/T3.1 | CMS access JWT chỉ ở RAM, refresh khi reload | BLOCKED | RESOURCE browser/build gate |
+| INT-12 | T2.2/T3.1 | CMS access JWT chỉ ở RAM, refresh khi reload | IN_PROGRESS | C: recovered; no Docker mutation required |
 | INT-13 | INT-00 | Image ingest riêng + kiểm clean build | BLOCKED | RESOURCE Docker disk |
 
 Hoàn thành trước tách làn (bằng chứng INVENTORY mục 5): T0.1–T0.4, T2.1–T2.4, T4.1, T4.2 = DONE (VERIFIED-HIST, build VERIFIED-NOW);
@@ -153,7 +153,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 
 
 ### INT-12 — CMS access JWT chỉ ở RAM
-- T gốc: T2.2/T3.1 | Owner: CODEX | Status: BLOCKED (RESOURCE cho browser/build)
+- T gốc: T2.2/T3.1 | Owner: CODEX | Status: IN_PROGRESS (resume 2026-10-26)
 - Depends on: C: capacity/Docker ổn định | Blocks: release security convention
 - Source audit: cms/src/stores/authStore.ts persist partialize chứa accessToken vào local/sessionStorage, trái AGENTS §8.
 - Acceptance: token không ở storage; reload khôi phục HttpOnly refresh; single-flight/role/logout/401 đúng; update fixtures, type/build/E2E PASS;

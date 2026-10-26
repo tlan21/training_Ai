@@ -1,3 +1,17 @@
+# SESSION — current resume
+
+- Active: INT-12 IN_PROGRESS. Branch codex/integration, clean at start, master still 96ebc24/no new commits.
+- C: recovered to 2.93 GiB, E:1.50 GiB; RAM free ~496 MiB. No cleanup approved/performed.
+- Docker Desktop CLI still stalls; all app HTTP endpoints 200. Investigating direct WSL daemon access read-only;
+  no global Docker/WSL restart (unrelated faktory container exists).
+- INT-03 preference restart still blocked by Docker control. Continue independent INT-12 CMS JWT RAM/session restore first.
+- Project skill: cms_screen.md, required parity checklist ui_design_review.md. Scope: store, API refresh/401, app bootstrap/guard,
+  login/logout hooks and callers, existing CMS fixtures + auth security E2E; no endpoint/layout/forgot-password changes.
+- Latest AI v1.2 from Claude read; release #2 still absent master, stay MOCK_ONLY.
+- Previous detailed verified work: verification/INT-00.md, INT-02.md, INT-03.md, INT-04.md, INT-11.md.
+- Resume after INT-12: fix Docker control if safe, latest Linux gateway binary + persistence test; real AI gate only after master release.
+
+## Previous checkpoint
 # SESSION — Codex integration (resume here)
 
 ## Current gate
