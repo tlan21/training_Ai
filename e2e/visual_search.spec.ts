@@ -11,6 +11,12 @@ const image = readFileSync(path.join(__dirname, 'fixtures/visual-query.png'));
 
 test('T4.2 real Siamese search, publish privacy, cache, latency and Client', async ({ request, page }, info) => {
   test.setTimeout(180_000);
+  const aiHealth = await request.get(`${process.env.E2E_AI_URL ?? 'http://localhost:8001'}/health`);
+  expect(aiHealth.status()).toBe(200);
+  const realHealth = await aiHealth.json();
+  expect(realHealth.stub_mode).toBe(false);
+  expect(realHealth.models_loaded).toHaveLength(6);
+  await info.attach('real-ai-health', { body: JSON.stringify(realHealth), contentType: 'application/json' });
   const login = await request.post(`${gateway}/api/auth/login`, { data: { email: 'admin@local', password: 'admin123' } });
   expect(login.status()).toBe(200);
   const headers = { Authorization: `Bearer ${(await login.json()).access_token}` };

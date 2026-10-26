@@ -19,9 +19,9 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-08 | T5.2 | Soak test 48 h | BLOCKED | INT-07 |
 | INT-09 | T5.3 | Docs bàn giao hệ thống | TODO | INT-05..08 |
 | INT-10 | — | Forgot-password giữ nguyên, ngoài release hiện tại | DEFERRED / OUT_OF_SCOPE | D1, HC-02 |
-| INT-11 | INT-01 | HTTP media giữa gateway Docker và inference host | IN_PROGRESS | Release#2 received; direct daemon transport works |
+| INT-11 | INT-01 | HTTP media giữa gateway Docker và inference host | BLOCKED | HO-03 Docker Desktop host transport; restart decision pending |
 | INT-12 | T2.2/T3.1 | CMS access JWT chỉ ở RAM, refresh khi reload | REVIEW | 41 E2E PASS; live gateway cookie rotation |
-| INT-13 | INT-00 | Image ingest riêng + kiểm clean build | BLOCKED | RESOURCE Docker disk |
+| INT-13 | INT-00 | Image ingest riêng + kiểm clean build | IN_PROGRESS | author package/tests; clean build capacity gate remains |
 
 Hoàn thành trước tách làn (bằng chứng INVENTORY mục 5): T0.1–T0.4, T2.1–T2.4, T4.1, T4.2 = DONE (VERIFIED-HIST, build VERIFIED-NOW);
 T2.5, T3.1, T3.2 = PARTIAL.
@@ -73,17 +73,16 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Checkpoint: Lane codex / Changed PG adapters+handlers+wiring+tests+script / Verified xem evidence / Contract no / Next INT-04.
 
 ### INT-03 — Two-Tower user vector thật
-- T gốc: T2.5, T1.7 | Owner: CODEX | Status: BLOCKED (RESOURCE C: full; personalized chờ AI-09/gates)
+- T gốc: T2.5, T1.7 | Owner: CODEX | Status: BLOCKED (personalized AI-09/HC-04; preferences verified)
 - Depends on: sandbox/ID mapping ⇐ INT-02 + HC-04/D14 (đã nhận); product integration ⇐ AI-09 + AI-01 recommendation API_READY/master + AI-07 | Blocks: AI-09 sandbox
 - Phạm vi: `milvus.NewFrames(..., mocks.NewVectorStoreMem())` → user vector ghi Milvus `user_recommendation_embeddings` khi
   `PUT /api/users/me/preferences`; feed gọi `/v1/recommendation/completions` thật, fallback popularity khi 503.
 - Acceptance: integration test thật: preferences → recommendation trả video khớp; Milvus restart vẫn còn vector; matrix `INTEGRATED_REAL`.
 - Changed: sandbox initializer + schema §4.3 + product-ID spec; preference PG repository/port, auth handlers/wiring/tests, persistence script.
 - Evidence: VERIFIED-NOW verification/INT-03.md + INT-03-sandbox.json: sandbox 2× PASS/entities=0; Go checks and 5 real PG tests PASS.
-  Preferences source/build verified; runtime preference restart pending because Docker stalled on full C:. No personalized result claimed.
-- Commits: `5615055` sandbox/mapping; `9eded76` preference source/tests (runtime pending).
-- Next action: free C: capacity with user decision, inspect pending gateway stop/state; restart new binary and run extended persistence script;
-  then AI-09 encoder/version/schema/mapping handshake. No training IDs or zero vectors to product Milvus.
+  Preferences source/build + runtime restart/login persistence PASS at6d860ee. No personalized result claimed.
+- Commits: `5615055` sandbox/mapping; `9eded76` preference source/tests; `6d860ee` runtime restart persistence.
+- Next action: AI-09 encoder/version/schema/mapping handshake. No training IDs or zero vectors to product Milvus.
 - Checkpoint: Lane codex / Changed sandbox+preferences / Verified unit/PG/sandbox PASS; runtime pending / Contract no / Next resource recovery.
 
 ### INT-04 — Nguồn phát video gốc
@@ -141,7 +140,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 
 
 ### INT-11 — Portable media transport cho AI host
-- T gốc: INT-01 | Owner: CODEX | Status: IN_PROGRESS (2026-10-26, Release#2 received)
+- T gốc: INT-01 | Owner: CODEX | Status: BLOCKED (HO-03; host transport timeout, 2026-10-26)
 - Depends on: INT-00; full real upload/search chờ HO-01 + AI-01 release trên master + AI-07 UP.
 - Acceptance: Vision gửi ảnh base64 (contract có sẵn), ASR nhận WAV qua URL MinIO presigned; không gửi path Docker cho host,
   không shared mount/checkpoint; staging WAV cleanup/error handling; unit + mock pipeline tests PASS. Indexing media mới thật chờ contract Claude.
@@ -168,7 +167,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Checkpoint: Lane codex; Changed auth+fixtures+login parity; Verified 41 E2E + types/build PASS; Contract touched no; Next safe task INT-11.
 
 ### INT-13 — Ingest image riêng, clean build
-- T gốc: INT-00 | Owner: CODEX | Status: BLOCKED (RESOURCE Docker disk)
+- T gốc: INT-00 | Owner: CODEX | Status: IN_PROGRESS (2026-10-26; independent source/package/tests)
 - Depends on: đủ disk Docker theo HC-03/D10 | Blocks: clean-machine deployment
 - Source audit: runtime hiện dùng cached video-ai-inference làm preprocessing (không checkpoint/process inference);
   compose chưa có build riêng cho ingest trên máy không cache.

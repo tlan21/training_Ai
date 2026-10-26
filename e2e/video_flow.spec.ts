@@ -9,6 +9,12 @@ const cms = process.env.E2E_CMS_URL ?? 'http://localhost:5173';
 const client = process.env.E2E_CLIENT_URL ?? 'http://localhost:3000';
 
 test('T4.1 upload → processed → approve → publish → client feed', async ({ page, browser, request }, info) => {
+  const aiHealth = await request.get(`${process.env.E2E_AI_URL ?? 'http://localhost:8001'}/health`);
+  expect(aiHealth.status()).toBe(200);
+  const realHealth = await aiHealth.json();
+  expect(realHealth.stub_mode).toBe(false);
+  expect(realHealth.models_loaded).toHaveLength(6);
+  await info.attach('real-ai-health', { body: JSON.stringify(realHealth), contentType: 'application/json' });
   const name = `e2e-${Date.now()}`;
   const email = `${name}@example.test`;
   const password = 'E2e-test-123!';

@@ -1,6 +1,7 @@
 # SESSION — current resume
 
-- Active INT-11 IN_PROGRESS: real API integration after Release#2. Project skill backend_endpoint.md.
+- Active INT-13 IN_PROGRESS: standalone ingest packaging/tests, project skill backend_endpoint.md.
+- INT-11 BLOCKED HO-03: Docker→host AI TCP timeout; gateway rolled back mock; real E2E NOT_RUN. User restart decision pending.
 - INT-12 REVIEW (d607226): CMS JWT/user only RAM; HttpOnly bootstrap, single-flight retry, role guard, logout/cache clear and race/failure handling.
 - VERIFIED-NOW: CMS build + E2E types +41 browser tests PASS (50s), including2 live gateway cookie rotation/reload/logout cases.
   Login parity at390×844/1440×900 checked; screenshots/report verification/INT-12.md. Other CMS parity remains INT-05.
@@ -20,6 +21,14 @@
   publication/deletion privacy, playback206, recommendation503 fallback. Updated verification/INT-02-persistence.json.
 - Next: AI_SERVICE_KEY from Claude-local .env passed in environment only; compose root+direct gateway with realhost8001/stub0,
   then health6models and existing real video_flow/visual_search E2E. No new real matrix claim until complete tests.
+
+## Real gate blocker / next independent work
+- Actual attempt real gateway startup failed canonical host.docker.internal:8001/health deadline. Direct host health6real models/401 PASS;
+  ingest urllib sameTCP timeout; WindowsDesktop named pipes both hang. Gateway mock restored health200; no INTEGRATED_REAL claim.
+- Source/test checkpoint INT-11 transport code remains valid. See HO-03 and verification/INT-11-real-blocker.json.
+- INT-13 first: minimal own Dockerfile/locked runtime deps, reuse unchanged2DSP helpers from master audio/features.py+mel.py read-only.
+  Do not port/change feature algorithm or AI code. Package only those helpers, no model/inference/checkpoint/data. Test preprocess in cached runtime.
+- Latest C:1.95GiB/E:1.53GiB: no large Torch/image downloads; clean image build remains capacity/network gated.
 
 ## Prior checkpoint (historical; newer facts above take precedence)
 

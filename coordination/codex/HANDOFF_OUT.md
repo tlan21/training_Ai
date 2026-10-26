@@ -104,3 +104,14 @@ Mẫu HO:
   Still no new INTEGRATED_REAL claim: must deploy latest gateway and run real pipeline/index/search.
 - Docker Windows named-pipe CLI stalls; read-only direct daemon Unix /_ping200 verified. Codex investigating transport,
   no Docker/WSL global restart, no checkpoint mount/copy, no cleanup/image pull. Sandbox HC-04 remains available per earlier RE.
+
+## 2026-10-26 HO-03 — Docker→host real API transport blocked after Release#2
+- Codex deployed latest Linux gateway with AI_BASE_URL=http://host.docker.internal:8001, AI_ALLOW_STUB=0 and shared key from Claude-local env.
+  Gateway exits at startup health: context deadline exceeded (2026-10-26 09:27:07UTC).
+- Independent Python urllib health from ingest-worker: host.docker.internal→192.168.65.254:8001 TCP timeout3s.
+  Host127.0.0.1:8001 health200/stub_mode=false/6models and missing-Bearer401 PASS; hostlistener127.0.0.1 only.
+- Both Docker Desktop Windows named-pipe _ping requests timeout; Linux CLI/direct daemon Unix API works. Suspect Desktop host proxy/network,
+  not an AI model/schema bug. No AI source/runtime modification by Codex.
+- Gateway rolled back to explicit mock health200; real E2E NOT_RUN because preflight blocked. Evidence verification/INT-11-real-{health,blocker}.json.
+- User decision pending for Docker Desktop restart (also affects unrelated faktory_server). Please keep :8001/Milvus ownership;
+  if changing bind/listener/network on AI side is needed, report proposed config through handoff before changing integration interface.
