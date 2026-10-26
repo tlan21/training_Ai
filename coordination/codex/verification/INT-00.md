@@ -1,4 +1,4 @@
-# INT-00 — verification 2026-10-26 (đang chạy)
+# INT-00 — verification 2026-10-26 (runtime mock verified)
 
 Owner: CODEX. Baseline Release #1 `96ebc24`; HC-02/HC-03 đọc từ Claude `91b0242`.
 Skill dự án: `my-agent/agent/skills/backend_endpoint.md`.
@@ -69,7 +69,32 @@ Khi còn đủ RAM/disk, dùng 3 file compose trên cùng project `video-ai`, `-
 Không dùng `--remove-orphans`, không start inference container cũ. Bản build chuẩn Dockerfile đã thêm binary ai-mock,
 nhưng chưa build image mới trong phiên thiếu dung lượng này.
 
+## VERIFIED-NOW bổ sung
+
+- Client `npx tsc --noEmit; npm run lint; npm run build`: PASS, ESLint 0 warnings/errors, 14 routes generated.
+- Linux gateway/ai-mock + pg.test/mongo.test cross-compile: PASS; không Docker build/pull.
+- `go test -p 1 ./internal/mocks ./internal/config ./internal/adapters/aihttp`; `go vet -p 1 ./...`: PASS sau test opt-in bổ sung.
+- `docker compose ... ps`: Postgres/Mongo/Redis/MinIO/etcd/Kafka/Milvus/gateway/ai-mock healthy; ingest/CMS/Client Up.
+- Authenticated admin HTTP smoke: `/healthz` OK, `/api/cms/system/health` 200, fields khớp mock, CMS/Client HTTP 200.
+  Payload không token: `INT-00-smoke.json`. Mock port host 18001, không chiếm :8001 của Claude.
+- Trước bật consumers: jobs completed=40/failed=17, không pending/running; 3 nhóm Kafka gateway lag=0.
+- DB tests: cả `TestJobRepository_RealTransitions` và `TestStores_RealVietnameseRoundTrip` PASS trong network `video-ai_default`.
+  Lệnh: cross-compile test binaries rồi `docker run --rm --network video-ai_default --mount type=bind,source=E:/traning_ai-codex/backend/bin/pg.test,target=/tmp/pg.test,readonly -e TEST_POSTGRES_DSN=postgres://app:123456@postgres:5432/video_ai?sslmode=disable video-ai-gateway /tmp/pg.test '-test.v=true'`;
+  tương tự mongo.test với `TEST_MONGO_URI=mongodb://app:123456@mongo:27017`.
+- Test Windows qua localhost/127.0.0.1 có auth FAIL: `Get-NetTCPConnection` xác nhận **Postgres native PID 5932 chiếm :5432**,
+  Mongo native PID 4760 chiếm 127.0.0.1:27017. Không đổi/xóa/dừng các DB native; dùng network Docker để đúng DB của stack.
+- E: sau binaries/build 1.61 GiB, C: 2.14 GiB. Cần chạy build/test tuần tự; không pull/build image lớn.
+
 ## Pending
 
-Client build; Linux binary build; stack healthy + gateway mock health; DB integration; checkpoint cuối task.
+Docker image build mới chưa chạy (dùng cached image + binary mới :ro).
 E2E AI thật không thuộc nghiệm thu mock, còn chờ AI-01/AI-07 và không được ghi INTEGRATED_REAL.
+
+
+## Checkpoint
+
+Lane: codex
+Changed: backend mock/config/HTTP client + Dockerfile, compose/env, docs/tracker
+Verified: Go tests/vet/build, CMS/Client checks, compose config, stack healthy, gateway→mock HTTP, PG/Mongo integration PASS
+Contract touched: no (public OpenAPI unchanged; AI-API v0.1 DRAFT consumed)
+Next safe task: INT-02 (Postgres); INT-01 real E2E waits AI-01/AI-07

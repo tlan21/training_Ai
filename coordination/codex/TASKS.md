@@ -8,9 +8,9 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 
 | ID | T gốc | Tên | Status | Depends on |
 |---|---|---|---|---|
-| INT-00 | — | Worktree, dependency, stack hạ tầng + mock AI HTTP | IN_PROGRESS | HC-02, HC-03 (đã nhận) |
-| INT-01 | T2.1–T2.5 | Xác minh lại backend trên stack thật | TODO | INT-00 |
-| INT-02 | T2.5 | Thay adapter memory → Postgres (interactions/history/likes/settings) | TODO | INT-00 (DB); không phụ thuộc AI |
+| INT-00 | — | Worktree, dependency, stack hạ tầng + mock AI HTTP | REVIEW | HC-02, HC-03 (đã nhận) |
+| INT-01 | T2.1–T2.5 | Xác minh lại backend trên stack thật | BLOCKED | INT-00 |
+| INT-02 | T2.5 | Thay adapter memory → Postgres (interactions/history/likes/settings) | IN_PROGRESS | INT-00 (DB); không phụ thuộc AI |
 | INT-03 | T2.5, T1.7 | Two-Tower: user vector Milvus thật + feed | TODO | INT-02, AI-01 |
 | INT-04 | T3.1, T3.2 | Contract nguồn phát video gốc (OpenAPI) + nối UI | TODO | INT-00 (runtime); contract có thể làm độc lập |
 | INT-05 | T3.1 | CMS Design Parity FULL | PARTIAL | INT-02, INT-04 |
@@ -26,7 +26,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 ---
 
 ### INT-00 — Chuẩn bị worktree Codex
-- T gốc: — | Owner: CODEX | Status: IN_PROGRESS (2026-10-26)
+- T gốc: — | Owner: CODEX | Status: REVIEW (2026-10-26)
 - Depends on: HC-02/HC-03 đã đọc từ `claude/ai-core` tại `91b0242`; HC-01 đã rút lại. Release #1 nhận đủ: HEAD/master `96ebc24`.
 - Blocks: mọi INT-xx cần stack; không chặn công việc contract/test độc lập.
 - Acceptance: không copy/mount checkpoint; `npm ci` CMS+Client, E: còn ≥1.5 GB sau cài; kiểm C: trước Docker build/pull;
@@ -35,24 +35,35 @@ T2.5, T3.1, T3.2 = PARTIAL.
   gateway `/api/cms/system/health` dùng mock đúng schema. Đổi `AI_BASE_URL` sang host :8001 do Claude chạy không cần sửa code.
   Test/build PASS; matrix ghi MOCK_ONLY cho kiểm thử mới, không coi mock là bằng chứng AI thật.
 - Changed: AGENTS.md; coordination/codex/{TASKS,SESSION,HANDOFF_OUT}.md (đang cập nhật).
-- Next action: kiểm image/volume và tài nguyên; cài dependency nếu đủ; triển khai mock + cấu hình không checkpoint.
-- Evidence: — | Commits: — | Checkpoint: —
+- Next action: chờ release user duyệt; phát triển INT-02. Không cần mount/copy checkpoint.
+- Evidence: VERIFIED-NOW `verification/INT-00.md`, `verification/INT-00-smoke.json`: npm ci, Go test/vet/build,
+  CMS/Client tsc/lint/build, compose config, stack healthy + authenticated gateway→mock + PG/Mongo integration PASS.
+  Image mới chưa build (cached image + cross-compiled binary :ro); AI chỉ MOCK_ONLY, không INTEGRATED_REAL mới.
+- Commits: `a96b883`, `122ee33` (implementation); checkpoint verification commit theo sau.
+- Checkpoint: Lane codex / Changed backend+compose+docs / Verified xem evidence / Contract no (AI-API v0.1 DRAFT) / Next INT-02.
 
 ### INT-01 — Xác minh lại backend trên stack thật
-- T gốc: T2.1–T2.5 | Owner: codex | Status: TODO
+- T gốc: T2.1–T2.5 | Owner: CODEX | Status: BLOCKED (2026-10-26; phần AI thật)
 - Depends on: INT-00 (DB/mock); phần E2E AI thật còn chờ AI-01 API_READY + AI-07 | Blocks: nghiệm thu integration thật
 - Acceptance: chạy lại Go integration (Postgres/Mongo) với mock trước; E2E Playwright T4.1/T4.2 thật khi AI-01/AI-07 sẵn sàng;
   ghi riêng bằng chứng mock/thật, không DONE trước khi E2E thật PASS.
 - Evidence: HIST `docs/T4.1_bao_cao.md`, `docs/T4.2_bao_cao.md`; NOW 2026-10-26 go vet/test/build PASS (cache).
 - Commits: trước tách làn `0206912`, `2bc9a6c`, `a75ea5c`, `74cd75f`, `495d26b`, `ab299e0`
-- Checkpoint: —
+- Changed: chỉ evidence/tracker (không sửa source backend DONE).
+- Evidence bổ sung: VERIFIED-NOW INT-00 Go vet/test/build + PG/Mongo network integration PASS, authenticated health mock PASS.
+- Next action: AI-01 API_READY trên master + AI-07 runtime HTTP thật rồi chạy E2E T4.1/T4.2; không nới health assert 6 model của real E2E.
+- Checkpoint: Lane codex / Changed verification INT-00 / Verified DB PASS / Contract no / Next INT-02.
 
 ### INT-02 — Adapter memory → Postgres
-- T gốc: T2.5 | Owner: codex | Status: TODO
+- T gốc: T2.5 | Owner: CODEX | Status: IN_PROGRESS (2026-10-26)
 - Depends on: INT-00 (Postgres), không phụ thuộc AI/INT-01 E2E thật | Blocks: INT-03, INT-05, INT-06
 - Phạm vi (`backend/cmd/gateway/main.go`): `mocks.NewInteractionRepoMem()` (interactions, history, likes);
   `GET/PUT /api/cms/settings` (`handlers/cms/system.go` hard-code, PUT không lưu) → bảng `system_settings`.
-- Acceptance: dữ liệu còn sau restart gateway (script persistence giống `verify_persistence.ps1`); unit test repo; OpenAPI không đổi.
+- Acceptance: dữ liệu còn sau restart gateway (script persistence giống `verify_persistence.ps1`); repo/handler tests;
+  lịch sử/likes đúng user, pagination, ẩn clip chưa published/video chưa processed; settings patch atomic + key masked; OpenAPI không đổi.
+- Changed dự kiến: PG interaction/settings adapters + tests, port/domain settings, gateway wiring, CMS system handler + tests,
+  auth history/likes serialization dùng helper playback sẵn có, script persistence E2E + tracker.
+- Next action: dùng bảng user_interactions/system_settings đã có schema+seed; không cần migration schema hoặc Milvus change.
 - Evidence: — | Commits: — | Checkpoint: —
 
 ### INT-03 — Two-Tower user vector thật

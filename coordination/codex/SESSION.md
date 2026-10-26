@@ -1,27 +1,22 @@
-# SESSION — làn Codex (điểm resume)
-
-Cập nhật + commit sau mỗi bước (`chore(codex-progress): ...`). Phiên mới đọc file này trước TASKS.md.
+# SESSION — làn Codex
 
 ## Phiên đang chạy
-- Task: INT-00 (IN_PROGRESS 2026-10-26)
-- Bước đã xong: branch codex/integration đúng; tree sạch; HEAD/master = 96ebc24 (Release #1).
-  Đọc README/PROJECT_STATUS/master plan/inventory, HC-02/HC-03 và AI-API v0.1 DRAFT từ Claude 91b0242.
-  Áp dụng ownership runtime/checkpoint, INT-10 deferred và dependency không chặn AI.
-  Docker 28.4.0 đang chạy; stack video-ai cũ dừng, image/volume video-ai_* còn đủ; không tạo project mới.
-  E: 2.19 GiB, C: 3.48 GiB, D: 6.08 GiB; RAM free ~446 MiB lúc đo. Chưa build/pull.
-- Bước kế: hoàn tất cross-compile Linux đang chạy; bật stack hiện hữu tuần tự với image cũ + binary mới bind :ro;
-  kiểm health gateway/mock, DB integration. Client tsc/lint/build đã PASS; CMS tsc/build PASS; Go vet/build/test -p1 PASS.
-- File đang sửa: backend mock/config/client HTTP + Dockerfile; compose default/mock/GPU; .env.example/.gitignore;
-  e2e/README.md; coordination/codex/{TASKS,SESSION,INTEGRATION_MATRIX,verification/INT-00}.md
-- Lệnh verify dở: Linux `CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -p 1 ...` (gateway + ai-mock).
-- Dependency đã cài: npm ci CMS 100 packages, Client 395 packages, E: sau cài 1.79 GiB.
-- Giới hạn thực tế: lượt Go/CMS đầu thiếu RAM khi bật infra; đã stop 6 container vừa bật, chạy lại PASS.
-  C: sau tăng bộ nhớ hệ thống ~1.92 GiB; không build/pull image mới. Dữ liệu/volume giữ nguyên.
-- Evidence: coordination/codex/verification/INT-00.md (đang bổ sung), matrix MOCK_ONLY hiện tại; HIST giữ nguyên.
+- Task: INT-02 IN_PROGRESS (2026-10-26).
+- Bước đã xong: INT-00 REVIEW, xem verification/INT-00.md + INT-00-smoke.json (Go/CMS/Client/build/DB/mock runtime PASS).
+  INT-01 DB/backend verified, phần real E2E BLOCKED AI-01/AI-07. INT-10 DEFERRED theo D1.
+- Bước kế: PG InteractionRepo + SettingsRepo trên bảng hiện hữu; tests privacy/cursor/atomic patches; wiring handler/gateway;
+  restart persistence smoke. Dùng skill backend_endpoint.md (không đổi schema).
+- File đang sửa: coordination/codex/{TASKS,SESSION,verification/INT-00,INTEGRATION_MATRIX,HANDOFF_OUT}.md.
+- Lệnh verify dở: —.
+- Runtime: stack project video-ai, mock host :18001, gateway :8000, CMS :5173, Client :3000, Milvus :19530 healthy;
+  ingest dùng cached image, source mới bind :ro. Inference container cũ dừng, không xóa. Claude sở hữu :8001 thật.
+- Resource: E: 1.61 GiB, C: 2.14 GiB; không build/pull image mới; tests -p1/GOMAXPROCS=2, FE build trước khi bật stack.
+- DB host ports trùng native Postgres/Mongo: không dừng/sửa DB native, chạy integration bằng Linux test binary trong video-ai_default.
+- Local ignored: backend/bin/* cross-compiled; docker-compose.local.yml mount binary + ingest source. Tái lập xem verification/INT-00.md.
 
 ## Task kế an toàn
-INT-00 (dependency + stack hiện hữu + mock HTTP, không checkpoint) → INT-01 DB/mock → INT-02.
-Việc không cần Docker có thể làm trước: INT-04 bước sửa OpenAPI + regen types (vẫn phải test lại khi stack chạy).
+INT-02 → INT-04 (contract/types trước, sau đó backend/UI). INT-03 chờ AI-01/AI-07; INT-05/06 chờ INT-02/04 và contract gaps.
 
-## Phiên trước
-- 2026-10-26 — Claude khởi tạo file này trong AI-00 (tách làn). Codex chưa chạy phiên nào.
+## Checkpoint trước
+- Release #1 96ebc24 xác nhận; master không có commit mới đầu phiên. HC-02/HC-03 đã ACK; không sửa file Claude/shared.
+- Commits: a96b883 nhận INT-00; 122ee33 mock HTTP + tách runtime.

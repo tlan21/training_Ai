@@ -1,0 +1,25 @@
+{
+  "mode": "MOCK_ONLY",
+  "mock_health": {
+    "degraded": [],
+    "device": "cpu",
+    "gpu_util": 0,
+    "gpu_vram_used": 0,
+    "load_error": null,
+    "models_loaded": [],
+    "queue_depth": 0,
+    "status": "ok",
+    "stub_mode": true
+  },
+  "cms_health": {
+    "gpu_util": 0,
+    "gpu_vram_used": 0,
+    "models_loaded": [],
+    "queue_depth": 0
+  },
+  "gateway": {
+    "status": "ok"
+  },
+  "cms_http": 200,
+  "client_http": 200
+}
