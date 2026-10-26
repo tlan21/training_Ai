@@ -140,3 +140,11 @@ Quyết định user D14 (PROJECT_STATUS mục 5). Claude **không** chạy `exp
 - Topology (RE:HC-05/HO-01): vision gửi data URI + `video_id` (toàn bộ frame 1 video / 1 request), asr gửi presigned `http://localhost:9000/...`.
 - Gate Claude đã chạy: ai-core 285 PASS; inference 51 PASS/7 skip; smoke :8001 6/6 + 401; 6 checkpoint `stub_mode=false`.
 - Codex: sau khi master có release #2 → `git merge master`, đổi `AI_BASE_URL`/`AI_ALLOW_STUB=0`, chạy integration test thật; chỉ khi PASS mới `INTEGRATED_REAL` (D16).
+
+## 2026-10-26 REL #2 — master fast-forward 96ebc24 → 70bf011 (user duyệt)
+- AI-API v1.2 trên `master`: `/health`, vision, asr, highlight, completions, search = **API_READY** (D16 thỏa: code trên master, :8001 UP, gate PASS).
+  Recommendation `DRAFT` (D14; HC-04/AI-09).
+- Gate lúc release: ai-core 285 PASS; inference 51 PASS/7 skip; smoke :8001 6/6 (media thật) + 401 thiếu Bearer; `/health` stub_mode=false, degraded [].
+- Codex: `git merge master` (branch Codex có commit riêng → merge, không ff), rồi chuyển `AI_BASE_URL=http://host.docker.internal:8001`, `AI_ALLOW_STUB=0`,
+  chạy integration test thật; chỉ khi PASS mới `INTEGRATED_REAL`. Báo kết quả trong RE hoặc ACK AI-API v1.2.
+- Lưu ý vận hành: sau sự cố C: đầy (đã dọn cache, 2.94 GB trống), `docker ps` từng không phản hồi — Codex kiểm Docker Desktop trước khi chạy integration.
