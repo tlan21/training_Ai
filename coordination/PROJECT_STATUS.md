@@ -3,7 +3,7 @@
 **Chỉ sửa trong release commit theo `coordination/README.md` mục 6** (user ra lệnh release cho đúng 1 làn) **hoặc khi user yêu cầu trực tiếp**.
 Ngoài ra: đọc trạng thái sống ở `coordination/claude/TASKS.md` và `coordination/codex/TASKS.md` (qua `git show`).
 
-Cập nhật lần cuối: 2026-10-26 · **release #2 (làn Claude, user duyệt)** — `master` = commit release này.
+Cập nhật lần cuối: 2026-10-26 · **release #3 (làn Claude, D20)** — `master` = commit release này.
 
 ## 1. Cổng nghiệm thu AI (AI-GATE — master plan §0)
 
@@ -26,6 +26,9 @@ AI-GATE **không chặn** làn Codex (master §0); chỉ chặn nghiệm thu cu�
 | AI-10 | health/degraded đúng ngữ nghĩa | DONE — `/health.dependencies`, degraded chỉ lỗi inference thật, tự phục hồi |
 | AI-07 | runtime :8001 thật + UTF-8 Windows | DONE — :8001 UP (`run_local_8001.cmd`), UTF-8 sửa trong code |
 | AI-11 | HO-01: vision `video_id` + index data URI | DONE — RE:HO-01 |
+| AI-13 | recommendation không metadata giả + `recommendation_mode` | DONE — release #3 |
+| AI-12 | Two-Tower v2 (D18-B, gate D19) | IN_PROGRESS — 12a/12c DONE (data contract `ttv2-data-v1` + loader); chờ dữ liệu INT-13 |
+| AI-09 | Two-Tower v1 sandbox/artifact | DONE — baseline sandbox, không dùng cho product |
 | AI-09 | Two-Tower phía AI: embedding/schema/export/version, sandbox | TODO (⇐ HC-04 Codex: mapping ID + collection) — D14 |
 | AI-02 | T1.4 ASR domain | 02a TODO (Claude đề xuất) · 02b BLOCKED (user duyệt: 7/60, còn 53) · 02c BLOCKED |
 | AI-03 | T1.6 Mini-GPT | 03a TODO (Claude soạn 40 summary) · 03b BLOCKED (user duyệt) · 03c BLOCKED |
@@ -54,7 +57,7 @@ Chép từ `git show codex/integration:coordination/codex/TASKS.md` lúc sync #4
 
 ## 4. AI API
 
-**AI-API v1.2** (release #2): `/health`, vision, asr, highlight, completions, search = `API_READY`; recommendation `DRAFT` (D14).
+**AI-API v1.3** (release #3): `/health`, vision, asr, highlight, completions, search = `API_READY` (không đổi từ v1.2); recommendation `DRAFT` (v1.3: metadata null + `recommendation_mode`; product 503 → gateway popularity/fallback, D18).
 Tương thích ngược v0.x: chỉ thêm `/health.dependencies` (v1.1) và `VisionRequest.video_id` (v1.2). Runtime :8001 UP (Claude), gọi từ Docker qua `host.docker.internal:8001`.
 Matrix Codex: search/recommendation `MOCK_ONLY (NOW)`; recommendation personalized `REAL_PENDING` tới khi đủ điều kiện D14.
 
@@ -102,3 +105,4 @@ khi người duyệt từng mục (`HUMAN_VERIFIED`) và provenance ghi rõ ngu�
 | 3 | 2026-10-26 | claude (user yêu cầu, không release) | không đổi (`96ebc24`) | thêm AI-08 (TODO), D13 | — | chỉ tài liệu |
 | 4 | 2026-10-26 | claude (user yêu cầu, không release) | không đổi (`96ebc24`) | AI-06 DONE; AI-01 REVIEW (v1.0-rc1 DRAFT); thêm AI-09, AI-10; D14–D17 | mở HC-04; đính chính REL v1.0 → rc1 DRAFT | AI-06/AI-01 evidence: HTTP ladder 9/9, live smoke 6/6, inference 37 PASS/7 skip |
 | 5 | 2026-10-26 | claude — **release #2** | `96ebc24 →` commit release này (ff-only, user duyệt 2026-10-26; xem `git log -1 master`) | AI-01, AI-06, AI-07, AI-10, AI-11 DONE; AI-API v1.2 (6 API_READY, reco DRAFT); :8001 UP | đóng HC-05 (RE:HC-05 phương án b), HO-01 (RE:HO-01); mở HC-04 chờ RE sandbox | ai-core 285 PASS; inference 51 PASS/7 skip (chạy lại lúc release); smoke :8001 6/6 (media thật) + 401; 6 ckpt `stub_mode=false`, degraded [] |
+| 6 | 2026-10-26 | claude — **release #3** (D20) | `70bf011 →` commit release này (ff-only) | AI-09, AI-13 DONE; AI-12 IN_PROGRESS (12a/12c); D18–D21 | mở HC-06, HC-07 (Codex: INT-12, INT-13); RE:HO-02 | ai-core 297 PASS; inference 55 PASS/7 skip (gồm compatibility v1.2→v1.3); smoke :8001 6/6 + 401; health stub_mode=false, degraded [] |

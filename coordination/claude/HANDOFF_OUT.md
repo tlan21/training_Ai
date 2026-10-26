@@ -193,3 +193,9 @@ Chia việc không chồng chéo (PROJECT_STATUS D18):
 - Claude đã có bộ đọc/kiểm tra (`product_interactions.py`, 8 test): checksum manifest, lọc ID sai định dạng/không tồn tại/video ẩn/clip lệch/duration bất thường,
   khử trùng 30 s, gán nhãn, split thời gian chống leakage, vocabulary danh mục versioned, gate D19. Khi có bundle thật Claude chạy và báo số liệu + giai đoạn gate.
 - INT-12 (popularity + metadata Postgres + `recommendation_mode`) không phụ thuộc HC-07.
+
+## 2026-10-26 REL #3 — AI-API v1.3 lên `master` (D20)
+- Thay đổi so với v1.2 (tương thích ngược, khóa bằng `tests/test_contract_compat.py`): `/health.dependencies` (đã có), `VisionRequest.video_id` (đã có),
+  recommendation: `recommendation_mode` + `title`/`thumbnail_url` null. 6 endpoint `API_READY` không đổi; recommendation vẫn `DRAFT`, :8001 product vẫn 503.
+- Gate: ai-core 297 PASS; inference 55 PASS/7 skip; smoke :8001 6/6 + 401; compatibility v1.2→v1.3 PASS (mutation check bắt xóa field/thêm required/đổi kiểu).
+- Codex: `git merge master` khi tiện; INT-12/INT-13 theo HC-06/HC-07. Integration DONE chỉ khi endpoint thật kiểm với dữ liệu sản phẩm (D20).

@@ -1,6 +1,6 @@
 # AI API Contract — inference-service :8001
 
-**Version: AI-API v1.3-rc1 — DRAFT trên `claude/ai-core` (2026-10-26); `master` = v1.2 (release #2).** v1.3 chỉ đổi recommendation (vẫn DRAFT); 6 endpoint `API_READY` của v1.2 không đổi. Owner: Claude. Codex chỉ đọc
+**Version: AI-API v1.3 (2026-10-26) — release #3.** v1.3 chỉ đổi recommendation (vẫn `DRAFT`, D18/D20); 6 endpoint `API_READY` của v1.2 không đổi. Tương thích ngược được khóa bằng `inference-service/tests/test_contract_compat.py` (so với snapshot `inference_openapi_v1.2.json`). Owner: Claude. Codex chỉ đọc
 (`git show claude/ai-core:coordination/claude/api/AI_API_CONTRACT.md`, hoặc bản trên `master` sau release).
 Nguồn code: `inference-service/app/schemas.py`, `app/main.py`, `app/services.py`, `app/visual_index.py` trên `claude/ai-core` (AI-01).
 Đi kèm: `inference_openapi.json` (export `app.main:app.openapi()`, không sửa tay) và `examples/` (request/response/error sinh từ chạy thật, mục 4).
@@ -167,6 +167,7 @@ Resp: `{"status":"ok","gpu_vram_used": MB,"gpu_util": %,"models_loaded":[...],"d
 - **v0 (2026-10-26)** — DRAFT, ghi lại API hiện có tại baseline `15976b3`. Không đổi code.
 - **v0.1 (2026-10-26)** — DRAFT, chỉ tài liệu: thêm thang sẵn sàng (1b) và quyền runtime :8001 thuộc Claude, Codex chỉ HTTP/mock (1c). Schema không đổi.
 - **v0.2 (2026-10-26)** — DRAFT, chỉ tài liệu (AI-06): nguồn checkpoint canonical, thang sẵn sàng có bằng chứng HTTP thật (1b); ghi rõ startup thật cần Milvus và `PYTHONUTF8=1` trên Windows. Schema không đổi.
+- **v1.3 (2026-10-26)** — release #3 (D20): regression + compatibility test đạt; recommendation vẫn DRAFT, :8001 product vẫn 503 → gateway popularity/fallback.
 - **v1.3-rc1 (2026-10-26)** — AI-13 (D18). Recommendation: thêm `recommendation_mode`; `title`/`thumbnail_url` nullable và luôn `null` (trước đây placeholder giả).
   Tương thích ngược cho client đọc string (null → rỗng); gateway phải hydrate metadata từ Postgres.
 - **v1.2 (2026-10-26)** — release #2: 6 endpoint `API_READY` (hiệu lực trên `master`), recommendation `DRAFT` (D14). Gồm rc1 bên dưới.
