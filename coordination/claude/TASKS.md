@@ -12,6 +12,7 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | AI-01 | T1.8 | Phát hành AI API Contract v1 (API_READY) | REVIEW (v1.0-rc1 DRAFT; API_READY ⇐ AI-07 + release, D16) | AI-06 |
 | AI-10 | T1.8 | Health/degraded đúng ngữ nghĩa + dependency status + tự phục hồi (D15) | DONE (2026-10-26) | — |
 | AI-07 | T1.8 | Vận hành runtime :8001 thật cho Codex gọi HTTP (+ sửa UTF-8 Windows) | DONE (2026-10-26; :8001 UP; ingest path ⇐ HC-05) | AI-10; Milvus stack Codex (UP) |
+| AI-11 | T1.8 / T4.2 | HO-01: `video_id` tùy chọn cho Vision + index frame từ data URI 1 fps (contract minor) | IN_PROGRESS (2026-10-26) | HO-01 (Codex chọn HTTP media) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | TODO | HC-04 (Codex: mapping ID + collection) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a TODO · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
 | AI-03 | T1.6 | Mini-GPT: 03a Claude soạn summary 40 clip · 03b người duyệt · 03c train/eval | 03a TODO · 03b BLOCKED · 03c BLOCKED | 03b ⇐ user; 03c ⇐ 03b |
@@ -140,6 +141,16 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   Contract touched: yes (AI-API v1.1-rc1 DRAFT, chỉ thêm field /health.dependencies)
   Next safe task: AI-07
   ```
+
+### AI-11 — HO-01: Vision `video_id` + index frame từ data URI (Codex RE:HC-05 chọn phương án b)
+- T gốc: T1.8 / T4.2 | Owner: claude | Status: IN_PROGRESS (2026-10-26)
+- Depends on: HO-01 | Blocks: INT-11 (real upload → vision/index/search trên topology host/Docker), release #2
+- Việc: field optional `video_id` trên VisionRequest; có `video_id` + data URI/base64 → index Siamese frame theo thứ tự request = giây 0,1,2…,
+  thumbnail MinIO `thumbnails/<video_id>/<8 số>.jpg`, payload/collection/metric/index giữ nguyên; nhánh ingest path cũ giữ nguyên. Xác nhận ASR đọc WAV
+  qua MinIO presigned `http://localhost:9000/...`. Contract minor (chỉ thêm field) + RE:HO-01.
+- Acceptance: unit test index data URI (thứ tự/timestamp/key/payload, thiếu video_id → không index, video_id sai → 422/503 không degraded);
+  live :8001: vision có video_id → frame vào Milvus, search thấy video đó; ASR presigned URL 200.
+- Evidence: — | Commits: — | Checkpoint: —
 
 ### AI-09 — Two-Tower recommendation phía AI (D14)
 - T gốc: T1.7 | Owner: claude | Status: TODO

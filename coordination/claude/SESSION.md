@@ -3,7 +3,7 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
-- Task: — (AI-10, AI-07 DONE). Kế: chuẩn bị release #2 (gate test), dừng chờ user duyệt push.
+- Task: AI-11 (IN_PROGRESS 2026-10-26, HO-01 Codex) — làm trước release #2. ai-core gate 285 PASS đã chạy (D:/tmp/release2_20261026).
 - **Runtime :8001: UP từ 2026-10-26 14:47, PID 26396** (`inference-service/run_local_8001.cmd`, log `D:/tmp/ai07_runtime/inference_8001.log`).
   Dừng: `taskkill //PID <pid> //F` (pid từ `netstat -ano | grep :8001`). Khởi lại: contract §1c.
 - Bước đã xong: —
