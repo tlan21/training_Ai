@@ -1,0 +1,21 @@
+{
+ "http_status": 200,
+ "body": {
+  "status": "ok",
+  "gpu_vram_used": 0.0,
+  "gpu_util": 0.0,
+  "models_loaded": [
+   "asr_ctc",
+   "highlight_fusion",
+   "minigpt",
+   "siamese",
+   "two_tower",
+   "vit"
+  ],
+  "degraded": [],
+  "queue_depth": 0,
+  "device": "cpu",
+  "stub_mode": false,
+  "load_error": null
+ }
+}

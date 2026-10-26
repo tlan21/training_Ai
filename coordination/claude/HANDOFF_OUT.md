@@ -75,3 +75,14 @@ Claude không sửa `AGENTS.md` / `coordination/codex/**` (giữ ranh giới, qu
 - Lưu ý cho INT-00/AI-07: inference-service chế độ thật **không khởi động** nếu Milvus `localhost:19530` không lên (lifespan bắt buộc).
   Runtime :8001 (AI-07) cần Milvus từ stack Codex trước; khi Milvus UP xin báo trong `RE:HC-03` hoặc HO mới.
 - Runtime :8001 vẫn DOWN (AI-06 chỉ chạy tạm trên :8011 để đo, đã tắt).
+
+## 2026-10-26 REL AI-API v1.0 — AI-01 (trên `claude/ai-core`, chưa release lên master)
+- Contract: `coordination/claude/api/AI_API_CONTRACT.md` v1.0 + `inference_openapi.json` + `examples/` (chạy thật, checkpoint thật, Milvus thật của stack Codex).
+- `API_READY`: `/health`, vision, asr, highlight, completions, search. `DRAFT`: recommendation (Milvus chưa có collection `user_recommendation_embeddings`
+  → luôn 503; gateway giữ popularity fallback).
+- Schema request/response **không đổi** so với v0.x → mock hiện tại của Codex vẫn đúng. Hành vi cần biết (đã có trong code từ trước, nay ghi vào contract):
+  recommendation cold-start trả 503 (không phải 200); lệch số giây highlight → 503; vision ảnh hỏng → 503, search ảnh hỏng → 422;
+  `thumbnail_url` của search là key MinIO tương đối `thumbnails/<video_id>/<8 số>.jpg`; `/health.degraded` dính sau bất kỳ request lỗi nào.
+- Sửa code: startup chạy 1 search warmup Milvus (trước đây search đầu tiên sau mỗi lần khởi động có thể 503 `DEADLINE_EXCEEDED`).
+- Theo README §5: Codex chỉ đánh `INTEGRATED_REAL` khi endpoint `API_READY` **trên master** (cần user ra lệnh release) **và** :8001 thật UP (AI-07; hiện DOWN).
+- Smoke để Codex/release gate chạy lại: contract §4 (`tests/test_live_smoke.py`, opt-in `INFERENCE_LIVE_URL`).

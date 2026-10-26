@@ -94,11 +94,11 @@ def index_frames(paths, video_id=None):
     return len(frames)
 
 
-def search(vector, top_k, threshold, ef=64):
+def search(vector, top_k, threshold, ef=64, timeout=1):
     # Same client indexes new uploads; Session reads its writes without the Strong time-tick wait.
     # Gateway rechecks publication/deletion in PostgreSQL even when a remote delete is not visible yet.
     hits = collection().search([vector], "vector",
         {"metric_type": "COSINE", "params": {"ef": max(ef, top_k)}},
-        limit=top_k, output_fields=["payload"], consistency_level="Session", timeout=1)[0]
+        limit=top_k, output_fields=["payload"], consistency_level="Session", timeout=timeout)[0]
     return [{**hit.entity.get("payload"), "similarity_score": min(1.0, max(0.0, float(hit.distance)))}
             for hit in hits if hit.distance >= threshold]

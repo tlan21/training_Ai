@@ -1,0 +1,9 @@
+{
+ "http_status": 401,
+ "body": {
+  "error": {
+   "code": "UNAUTHORIZED",
+   "message": "Invalid or missing AI service key"
+  }
+ }
+}

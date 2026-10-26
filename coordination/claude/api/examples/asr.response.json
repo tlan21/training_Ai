@@ -1,0 +1,52 @@
+{
+ "http_status": 200,
+ "body": {
+  "id": "asr-primitive-193ebaa08ebf",
+  "object": "asr_completion",
+  "created": 1792998867,
+  "model": "primitive-asr-transformer",
+  "full_transcript": "SUẤT TƯỢ U TI ĐẦU ĐÀ CHO SỰC SUCH CẤN HỒN ĐƯỢC YƯÊ CÓO RIYỆ SÙG PHÀI CHÚNG CRỐ N YN THI IÊN TA DIÊN SU RIỀU TUÔN XUỨC HU SUY DN VÀI TCẤT ĐỢC QUA CỐC CUT SỐT LUỒN NÂ",
+  "segments": [
+   {
+    "id": 0,
+    "start_time": 0.0,
+    "end_time": 0.838,
+    "text": "SUẤT TƯỢ U TI",
+    "confidence": 0.622,
+    "warning": null
+   },
+   {
+    "id": 1,
+    "start_time": 1.078,
+    "end_time": 2.156,
+    "text": "ĐẦU ĐÀ CHO SỰC SUCH",
+    "confidence": 0.622,
+    "warning": null
+   },
+   {
+    "id": 2,
+    "start_time": 2.355,
+    "end_time": 3.832,
+    "text": "CẤN HỒN ĐƯỢC YƯÊ CÓO RIYỆ",
+    "confidence": 0.622,
+    "warning": null
+   },
+   {
+    "id": 3,
+    "start_time": 4.112,
+    "end_time": 6.946,
+    "text": "SÙG PHÀI CHÚNG CRỐ N YN THI IÊN TA DIÊN SU RIỀU TUÔN",
+    "confidence": 0.622,
+    "warning": null
+   },
+   {
+    "id": 4,
+    "start_time": 7.226,
+    "end_time": 9.9,
+    "text": "XUỨC HU SUY DN VÀI TCẤT ĐỢC QUA CỐC CUT SỐT LUỒN NÂ",
+    "confidence": 0.622,
+    "warning": null
+   }
+  ]
+ }
+}

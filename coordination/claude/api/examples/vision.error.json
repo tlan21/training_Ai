@@ -1,0 +1,9 @@
+{
+ "http_status": 422,
+ "body": {
+  "error": {
+   "code": "VALIDATION_ERROR",
+   "message": "[{'type': 'missing', 'loc': ('body', 'keyframes'), 'msg': 'Field required', 'input': {}}]"
+  }
+ }
+}

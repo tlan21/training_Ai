@@ -23,7 +23,9 @@ async def lifespan(app: FastAPI):
         import torch
         from . import visual_index
         visual_index.collection()
-        visual_index.encode([torch.zeros(3, 224, 224)])
+        vector = visual_index.encode([torch.zeros(3, 224, 224)])[0]
+        # First query after load exceeds the 1 s request budget (DEADLINE_EXCEEDED → 503); warm it here.
+        visual_index.search(vector, 1, 0.0, timeout=60)
     gpu_queue.start()
     yield
     await gpu_queue.stop()

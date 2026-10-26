@@ -1,0 +1,1101 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "AI Inference Service",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/v1/completions": {
+      "post": {
+        "summary": "Completions",
+        "operationId": "completions_v1_completions_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompletionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompletionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/asr/completions": {
+      "post": {
+        "summary": "Asr",
+        "operationId": "asr_v1_asr_completions_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ASRRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ASRResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/highlight/completions": {
+      "post": {
+        "summary": "Highlight",
+        "operationId": "highlight_v1_highlight_completions_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HighlightRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HighlightResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/vision/completions": {
+      "post": {
+        "summary": "Vision",
+        "operationId": "vision_v1_vision_completions_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VisionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VisionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/search/completions": {
+      "post": {
+        "summary": "Search",
+        "operationId": "search_v1_search_completions_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/recommendation/completions": {
+      "post": {
+        "summary": "Recommendation",
+        "operationId": "recommendation_v1_recommendation_completions_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecommendationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecommendationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ASRRequest": {
+        "properties": {
+          "model": {
+            "type": "string",
+            "title": "Model",
+            "default": "primitive-asr-transformer"
+          },
+          "audio_url": {
+            "type": "string",
+            "title": "Audio Url"
+          },
+          "language": {
+            "type": "string",
+            "title": "Language",
+            "default": "vi"
+          }
+        },
+        "type": "object",
+        "required": [
+          "audio_url"
+        ],
+        "title": "ASRRequest"
+      },
+      "ASRResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "object": {
+            "type": "string",
+            "title": "Object",
+            "default": "asr_completion"
+          },
+          "created": {
+            "type": "integer",
+            "title": "Created"
+          },
+          "model": {
+            "type": "string",
+            "title": "Model"
+          },
+          "full_transcript": {
+            "type": "string",
+            "title": "Full Transcript"
+          },
+          "segments": {
+            "items": {
+              "$ref": "#/components/schemas/ASRSegment"
+            },
+            "type": "array",
+            "title": "Segments"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "created",
+          "model",
+          "full_transcript",
+          "segments"
+        ],
+        "title": "ASRResponse"
+      },
+      "ASRSegment": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "start_time": {
+            "type": "number",
+            "title": "Start Time"
+          },
+          "end_time": {
+            "type": "number",
+            "title": "End Time"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "confidence": {
+            "type": "number",
+            "title": "Confidence",
+            "default": 1.0
+          },
+          "warning": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warning"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "start_time",
+          "end_time",
+          "text"
+        ],
+        "title": "ASRSegment"
+      },
+      "CompletionChoice": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "index": {
+            "type": "integer",
+            "title": "Index",
+            "default": 0
+          },
+          "logprobs": {
+            "type": "null",
+            "title": "Logprobs"
+          },
+          "finish_reason": {
+            "type": "string",
+            "title": "Finish Reason",
+            "default": "stop"
+          }
+        },
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "title": "CompletionChoice"
+      },
+      "CompletionRequest": {
+        "properties": {
+          "model": {
+            "type": "string",
+            "title": "Model",
+            "default": "primitive-gpt-summarizer"
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt"
+          },
+          "max_tokens": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Max Tokens",
+            "default": 150
+          },
+          "temperature": {
+            "type": "number",
+            "maximum": 2.0,
+            "minimum": 0.0,
+            "title": "Temperature",
+            "default": 0.7
+          },
+          "top_p": {
+            "type": "number",
+            "title": "Top P",
+            "default": 0.9
+          },
+          "frequency_penalty": {
+            "type": "number",
+            "title": "Frequency Penalty",
+            "default": 0.0
+          },
+          "presence_penalty": {
+            "type": "number",
+            "title": "Presence Penalty",
+            "default": 0.0
+          }
+        },
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "title": "CompletionRequest"
+      },
+      "CompletionResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "object": {
+            "type": "string",
+            "title": "Object",
+            "default": "text_completion"
+          },
+          "created": {
+            "type": "integer",
+            "title": "Created"
+          },
+          "model": {
+            "type": "string",
+            "title": "Model"
+          },
+          "choices": {
+            "items": {
+              "$ref": "#/components/schemas/CompletionChoice"
+            },
+            "type": "array",
+            "title": "Choices"
+          },
+          "usage": {
+            "$ref": "#/components/schemas/Usage"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "created",
+          "model",
+          "choices",
+          "usage"
+        ],
+        "title": "CompletionResponse"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HealthResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "gpu_vram_used": {
+            "type": "number",
+            "title": "Gpu Vram Used"
+          },
+          "gpu_util": {
+            "type": "number",
+            "title": "Gpu Util"
+          },
+          "models_loaded": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Models Loaded"
+          },
+          "degraded": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Degraded"
+          },
+          "queue_depth": {
+            "type": "integer",
+            "title": "Queue Depth"
+          },
+          "device": {
+            "type": "string",
+            "title": "Device"
+          },
+          "stub_mode": {
+            "type": "boolean",
+            "title": "Stub Mode"
+          },
+          "load_error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Load Error"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "gpu_vram_used",
+          "gpu_util",
+          "models_loaded",
+          "degraded",
+          "queue_depth",
+          "device",
+          "stub_mode"
+        ],
+        "title": "HealthResponse"
+      },
+      "HighlightFeatures": {
+        "properties": {
+          "vision_embeddings": {
+            "items": {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            "type": "array",
+            "title": "Vision Embeddings"
+          },
+          "audio_spectrogram_features": {
+            "items": {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            "type": "array",
+            "title": "Audio Spectrogram Features"
+          }
+        },
+        "type": "object",
+        "required": [
+          "vision_embeddings",
+          "audio_spectrogram_features"
+        ],
+        "title": "HighlightFeatures"
+      },
+      "HighlightRequest": {
+        "properties": {
+          "model": {
+            "type": "string",
+            "title": "Model",
+            "default": "primitive-seq2seq-highlighter"
+          },
+          "video_id": {
+            "type": "string",
+            "title": "Video Id"
+          },
+          "features": {
+            "$ref": "#/components/schemas/HighlightFeatures"
+          }
+        },
+        "type": "object",
+        "required": [
+          "video_id",
+          "features"
+        ],
+        "title": "HighlightRequest"
+      },
+      "HighlightResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "object": {
+            "type": "string",
+            "title": "Object",
+            "default": "highlight_completion"
+          },
+          "created": {
+            "type": "integer",
+            "title": "Created"
+          },
+          "model": {
+            "type": "string",
+            "title": "Model"
+          },
+          "video_id": {
+            "type": "string",
+            "title": "Video Id"
+          },
+          "timeline_scores": {
+            "items": {
+              "$ref": "#/components/schemas/TimelineScore"
+            },
+            "type": "array",
+            "title": "Timeline Scores"
+          },
+          "recommended_clips": {
+            "items": {
+              "$ref": "#/components/schemas/RecommendedClip"
+            },
+            "type": "array",
+            "title": "Recommended Clips"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "created",
+          "model",
+          "video_id",
+          "timeline_scores",
+          "recommended_clips"
+        ],
+        "title": "HighlightResponse"
+      },
+      "Recommendation": {
+        "properties": {
+          "video_id": {
+            "type": "string",
+            "title": "Video Id"
+          },
+          "score": {
+            "type": "number",
+            "title": "Score"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "thumbnail_url": {
+            "type": "string",
+            "title": "Thumbnail Url"
+          }
+        },
+        "type": "object",
+        "required": [
+          "video_id",
+          "score",
+          "title",
+          "thumbnail_url"
+        ],
+        "title": "Recommendation"
+      },
+      "RecommendationRequest": {
+        "properties": {
+          "model": {
+            "type": "string",
+            "title": "Model",
+            "default": "primitive-two-tower-recommender"
+          },
+          "user_id": {
+            "type": "string",
+            "title": "User Id"
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit",
+            "default": 10
+          },
+          "context": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id"
+        ],
+        "title": "RecommendationRequest"
+      },
+      "RecommendationResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "object": {
+            "type": "string",
+            "title": "Object",
+            "default": "recommendation_completion"
+          },
+          "created": {
+            "type": "integer",
+            "title": "Created"
+          },
+          "model": {
+            "type": "string",
+            "title": "Model"
+          },
+          "recommendations": {
+            "items": {
+              "$ref": "#/components/schemas/Recommendation"
+            },
+            "type": "array",
+            "title": "Recommendations"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "created",
+          "model",
+          "recommendations"
+        ],
+        "title": "RecommendationResponse"
+      },
+      "RecommendedClip": {
+        "properties": {
+          "clip_id": {
+            "type": "string",
+            "title": "Clip Id"
+          },
+          "start_time": {
+            "type": "number",
+            "title": "Start Time"
+          },
+          "end_time": {
+            "type": "number",
+            "title": "End Time"
+          },
+          "average_score": {
+            "type": "number",
+            "title": "Average Score"
+          }
+        },
+        "type": "object",
+        "required": [
+          "clip_id",
+          "start_time",
+          "end_time",
+          "average_score"
+        ],
+        "title": "RecommendedClip"
+      },
+      "SearchRequest": {
+        "properties": {
+          "model": {
+            "type": "string",
+            "title": "Model",
+            "default": "primitive-siamese-vit"
+          },
+          "image": {
+            "type": "string",
+            "title": "Image",
+            "description": "data URI base64 hoặc path"
+          },
+          "top_k": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 1.0,
+            "title": "Top K",
+            "default": 5
+          },
+          "threshold": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Threshold",
+            "default": 0.75
+          }
+        },
+        "type": "object",
+        "required": [
+          "image"
+        ],
+        "title": "SearchRequest"
+      },
+      "SearchResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "object": {
+            "type": "string",
+            "title": "Object",
+            "default": "search_completion"
+          },
+          "created": {
+            "type": "integer",
+            "title": "Created"
+          },
+          "model": {
+            "type": "string",
+            "title": "Model"
+          },
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/SearchResult"
+            },
+            "type": "array",
+            "title": "Results"
+          },
+          "query_metadata": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Query Metadata"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "created",
+          "model",
+          "results",
+          "query_metadata"
+        ],
+        "title": "SearchResponse"
+      },
+      "SearchResult": {
+        "properties": {
+          "video_id": {
+            "type": "string",
+            "title": "Video Id"
+          },
+          "timestamp": {
+            "type": "number",
+            "title": "Timestamp"
+          },
+          "similarity_score": {
+            "type": "number",
+            "title": "Similarity Score"
+          },
+          "thumbnail_url": {
+            "type": "string",
+            "title": "Thumbnail Url"
+          }
+        },
+        "type": "object",
+        "required": [
+          "video_id",
+          "timestamp",
+          "similarity_score",
+          "thumbnail_url"
+        ],
+        "title": "SearchResult"
+      },
+      "TimelineScore": {
+        "properties": {
+          "second": {
+            "type": "integer",
+            "title": "Second"
+          },
+          "score": {
+            "type": "number",
+            "title": "Score"
+          }
+        },
+        "type": "object",
+        "required": [
+          "second",
+          "score"
+        ],
+        "title": "TimelineScore"
+      },
+      "Usage": {
+        "properties": {
+          "prompt_tokens": {
+            "type": "integer",
+            "title": "Prompt Tokens"
+          },
+          "completion_tokens": {
+            "type": "integer",
+            "title": "Completion Tokens"
+          },
+          "total_tokens": {
+            "type": "integer",
+            "title": "Total Tokens"
+          }
+        },
+        "type": "object",
+        "required": [
+          "prompt_tokens",
+          "completion_tokens",
+          "total_tokens"
+        ],
+        "title": "Usage"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "VisionRequest": {
+        "properties": {
+          "model": {
+            "type": "string",
+            "title": "Model",
+            "default": "primitive-vit-classifier"
+          },
+          "keyframes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Keyframes",
+            "description": "paths hoặc base64 keyframe"
+          }
+        },
+        "type": "object",
+        "required": [
+          "keyframes"
+        ],
+        "title": "VisionRequest"
+      },
+      "VisionResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "object": {
+            "type": "string",
+            "title": "Object",
+            "default": "vision_completion"
+          },
+          "created": {
+            "type": "integer",
+            "title": "Created"
+          },
+          "model": {
+            "type": "string",
+            "title": "Model"
+          },
+          "category_suggestion": {
+            "type": "string",
+            "title": "Category Suggestion"
+          },
+          "embeddings_256": {
+            "items": {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            "type": "array",
+            "title": "Embeddings 256"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "created",
+          "model",
+          "category_suggestion",
+          "embeddings_256"
+        ],
+        "title": "VisionResponse"
+      }
+    }
+  }
+}
