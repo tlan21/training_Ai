@@ -115,3 +115,11 @@ Mẫu HO:
 - Gateway rolled back to explicit mock health200; real E2E NOT_RUN because preflight blocked. Evidence verification/INT-11-real-{health,blocker}.json.
 - User decision pending for Docker Desktop restart (also affects unrelated faktory_server). Please keep :8001/Milvus ownership;
   if changing bind/listener/network on AI side is needed, report proposed config through handoff before changing integration interface.
+
+## 2026-10-26 HO-03 checkpoint / independent INT-13
+- While awaiting Desktop intervention, Codex committed048fb6a: own CPU ingest image definition, context allowlist, pinned existing deps,
+  source target14.31kB build PASS and3 preprocess tests PASS using extracted read-only DSP helpers +cachedCPU deps/networknone.
+- AI feature algorithm and AI files unchanged; own image copies only2existingDSP helpers. Full new runtime build not executed at C:1.98GiB;
+  current worker still uses prior cached runtime preprocessing-only. No checkpoint/model copy/mount.
+- Runtime stack restored mock and healthy; :8001 host realhealth/401 PASS but container canonical hosttransport still HO-03.
+  No global restart, cache prune, data deletion or new real integration claim. See Codex SESSION for safe restoration/build order.

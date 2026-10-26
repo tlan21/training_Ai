@@ -147,7 +147,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Changed dự kiến: aihttp + tests, gateway preprocessing/audio staging + tests; tracker/handoff.
 - Next action: resolve HO-03 Desktop host proxy/transport (user restart decision pending). Then real gateway/stub0 + pipeline/index/search. Mock restored; no image pull.
 - Evidence: VERIFIED-NOW verification/INT-11.md; Go checks/Linux builds và script persistence/fallback sau đổi transport PASS.
-  v1.2 metadata unit 3 package PASS, Linux/runtime metadata chưa deploy; master pending tại checkpoint. | Commits: 7af1b1d, fae980c.
+  Latest v1.2 Linux runtime deployedmock + restart preferences PASS; real attempt blocked HO-03 before E2E. Release#2 consumed. | Commits: 7af1b1d, fae980c, fc5a3c7,6d860ee.
 - Checkpoint: Lane codex / Changed HTTP client+pipeline+tests / Verified mock transport/fallback PASS / Contract no / Next capacity + real gate.
 
 
@@ -176,7 +176,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Evidence: VERIFIED-NOW verification/INT-13.md + INT-13-unit.log: source image target build PASS/context14.31kB, only worker+2DSP helper files;
   extracted helper namespace + cached CPU dependencies with network disabled:3 preprocess tests PASS (0.147s). Real/mock compose config PASS,
   E2E types PASS, diff check PASS. Full runtime image NOT_BUILT; running worker remains legacy cached runtime, no pipeline claim for new image.
-- Commits: implementation checkpoint int(ingest): package standalone CPU preprocessing worker (SHA recorded next checkpoint).
+- Commits: 048fb6a (own package/source build/3 tests); final checkpoint records current gate.
 - Next action: sufficient C: capacity then full CPU dependency/image build, run tests in new image, worker deploy + pipeline regression.
   Do not use compose up --build during resource recovery; reuse existing containers until image verified. No large download attempted at C:1.98GiB.
 - Checkpoint: Lane codex / Changed own ingest package+compose+tests / Verified source build+3 tests/config PASS / Contract no / Next capacity+HO-03 recovery.

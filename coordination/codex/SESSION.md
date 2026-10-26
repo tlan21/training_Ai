@@ -13,7 +13,7 @@
   independent container→host.docker.internal:8001 TCP timeout3s. Host127001:8001 health200/stubfalse/6models/401missingBearer PASS.
   Real video_flow/visual_search E2E NOT_RUN because preflight blocked; added real-health assertions and E2E types PASS.
   Gateway rolled back explicitmock health200. No new INTEGRATED_REAL claim.
-- INT-13 BLOCKED capacity/full runtime build. Own image Dockerfile/allowlist/locked deps +compose now prepared; source target build14.31kB PASS.
+- INT-13 BLOCKED capacity/full runtime build (048fb6a). Own image Dockerfile/allowlist/locked deps +compose now prepared; source target build14.31kB PASS.
   3 preprocess tests using extracted2unchangedDSP helpers +cachedCPU dependencies PASS0.147s; valid/silent2.5s/invalidmedia, no model import/load.
   Full new image NOT_BUILT, current ingest container remains cached video-ai-inference preprocessing-only. See verification/INT-13.md.
 - INT-00/02 REVIEW; INT-04/05/06 PARTIAL. INT-10 DEFERRED untouched. INT-07/08 need AI/GPU gates, INT-09 depends on them.
