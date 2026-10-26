@@ -3,7 +3,7 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
-- Task: — (sắp nhận AI-10 → AI-07 theo D15/D16)
+- Task: AI-10 (IN_PROGRESS 2026-10-26) — sửa degraded/dependency/recovery + test; sau đó AI-07
 - Bước đã xong: —
 - Bước kế: —
 - File đang sửa: —
