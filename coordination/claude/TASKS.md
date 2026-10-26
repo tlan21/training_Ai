@@ -13,7 +13,7 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | AI-10 | T1.8 | Health/degraded đúng ngữ nghĩa + dependency status + tự phục hồi (D15) | DONE (2026-10-26) | — |
 | AI-07 | T1.8 | Vận hành runtime :8001 thật cho Codex gọi HTTP (+ sửa UTF-8 Windows) | DONE (2026-10-26; :8001 UP; ingest path ⇐ HC-05) | AI-10; Milvus stack Codex (UP) |
 | AI-11 | T1.8 / T4.2 | HO-01: `video_id` tùy chọn cho Vision + index frame từ data URI 1 fps (contract minor) | DONE (2026-10-26) | HO-01 (Codex chọn HTTP media) |
-| AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | IN_PROGRESS (2026-10-26) | HC-04 (Codex: sandbox READY) |
+| AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | PARTIAL (sandbox + artifact DONE; product BLOCKED ⇐ user chọn A/B/C) | HC-04 (sandbox READY) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a TODO · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
 | AI-03 | T1.6 | Mini-GPT: 03a Claude soạn summary 40 clip · 03b người duyệt · 03c train/eval | 03a TODO · 03b BLOCKED · 03c BLOCKED | 03b ⇐ user; 03c ⇐ 03b |
 | AI-04 | T1.8 / T4.3 | Đo VRAM sơ bộ Kaggle T4 (PRELIMINARY) | TODO | AI-06 |
@@ -163,13 +163,28 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   ```
 
 ### AI-09 — Two-Tower recommendation phía AI (D14)
-- T gốc: T1.7 | Owner: claude | Status: IN_PROGRESS (2026-10-26)
+- T gốc: T1.7 | Owner: claude | Status: PARTIAL (2026-10-26) — product BLOCKED: artifact v1 transductive, chờ user chọn phương án A/B/C
 - Depends on: HC-04 (Codex: mapping ID sản phẩm user_id/video_id, collection Milvus, pipeline đồng bộ, nối backend) | Blocks: INT-03 phần personalized thật
 - Việc (Claude): đặc tả embedding (dim, chuẩn hóa, metric), schema export + version model, script export có kiểm thử dữ liệu AI; chỉ thử với dataset train
   trong collection/môi trường **sandbox** tách biệt (Codex cấp theo HC-04). KHÔNG chạy `export_two_tower_milvus.py` vào collection sản phẩm khi mapping ID chưa xác minh.
 - Acceptance: schema/dim/metric/ID mapping/tiêu chí nghiệm thu được hai làn xác minh trong handoff; test export; nạp thật chỉ sau đó. Tới lúc đó giữ popularity
   fallback, personalized recommendation không DONE.
-- Evidence: — | Commits: — | Checkpoint: —
+- Evidence (VERIFIED-NOW 2026-10-26, `coordination/claude/evidence/AI-09_2026-10-26/`; đặc tả `coordination/claude/api/TWO_TOWER_ARTIFACT.md`):
+  - Checkpoint `f28c3794…`: user_dim 942 (one-hot user MovieLens), video_dim 1702 (19 genre + pop + one-hot 1682 item), không lưu vocabulary → transductive,
+    **không encode được product** (`product_ids_supported=false`).
+  - `tests/test_export_two_tower.py` RED 4 → GREEN 4; ai-core suite 289 passed.
+  - Export sandbox: 2624 row `ml100k_*`, re-export idempotent (2624 sống, 0 ngoài namespace), ANN recall@10 = 1.0 vs brute-force (53 user);
+    service :8011 tạm trỏ sandbox: `ml100k_u_1` 200 (5 gợi ý), user lạ 503, dependency ok. :8001 product không đổi.
+  - Export chặn cứng collection sản phẩm; chỉ xóa namespace `ml100k_*`. RE:HC-04 trong HANDOFF_OUT.
+- Còn lại (BLOCKED ⇐ user): chọn A (popularity MVP, personalized DEFERRED) / B (Two-Tower v2 inductive, cần dữ liệu tương tác thật) / C (content-based, đổi phạm vi).
+- Commits: 54fed30 (nhận task), 34ef443 (code + docs) | Checkpoint:
+  ```
+  Lane: claude
+  Changed: ai-core/ai_core/scripts/export_two_tower_milvus.py, ai-core/ai_core/tests/test_export_two_tower.py, coordination/claude/api/{TWO_TOWER_ARTIFACT.md,two_tower_artifact_manifest.json,AI_API_CONTRACT.md}, coordination/claude/{HANDOFF_OUT.md,evidence/AI-09_2026-10-26/**}
+  Verified: export tests 4/4; ai-core 289 passed; sandbox 2624 row idempotent, ANN recall 1.0; service sandbox 200/503
+  Contract touched: yes (chỉ ghi chú §2.5, schema không đổi)
+  Next safe task: chờ user quyết A/B/C; song song AI-04 / AI-03a / AI-02a
+  ```
 
 ### AI-07 — Vận hành runtime :8001 thật cho Codex
 - T gốc: T1.8 | Owner: claude | Status: DONE (2026-10-26)
