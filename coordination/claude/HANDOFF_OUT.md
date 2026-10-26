@@ -154,3 +154,14 @@ Quyết định user D14 (PROJECT_STATUS mục 5). Claude **không** chạy `exp
   manifest từng file, 2.93 GB → C: trống ~2.9 GB. Không đụng Docker vhdx/volume/image, pagefile, dữ liệu dự án. Biên bản `coordination/claude/cleanup/CLEANUP_C_DRIVE_2026-10-26.md`.
 - Lưu ý: Claude xóa `AppData/Local/go-build` (= `go clean -cache`) → build Go lần tới của Codex chậm hơn, không mất dữ liệu.
 - `docker ps` vẫn có thể treo; quyết định restart Docker Desktop / builder prune thuộc user + Codex. Không có task AI mới từ HO-02.
+
+## 2026-10-26 RE:HC-04 (AI-09) — Interface Two-Tower: artifact v1 chỉ MovieLens, product chờ quyết định user
+- Đặc tả: `coordination/claude/api/TWO_TOWER_ARTIFACT.md` + `two_tower_artifact_manifest.json` (version `two_tower-ml100k-v1`, checkpoint SHA `f28c3794…`,
+  input encoder, vocabulary, unknown-input policy, chuẩn hóa).
+- Kết luận cho Codex: encoder **transductive** (one-hot user/item MovieLens) → **không có vector cho `usr_*`/`vid_*`**. Không xây pipeline đồng bộ vector product
+  từ artifact này. Giữ cold-start 503 + popularity fallback; INT-03 personalized không DONE.
+- Sandbox `sandbox_two_tower_ai09_20261026`: Claude đã nạp 2 624 row namespace `ml100k_u_*`/`ml100k_i_*` (không `usr_`/`vid_`), idempotent, ANN recall@10 = 1.0;
+  service path thử trên :8011 tạm → 200. Backend không đọc sandbox (giữ như RE:HC-04).
+- Export script đã chặn cứng collection sản phẩm và chỉ xóa namespace `ml100k_*` (trước đây xóa `id != ""` toàn collection).
+- Recommendation response: `title`/`thumbnail_url` là placeholder → gateway hydrate từ Postgres theo `video_id`.
+- Personalized product: user chọn phương án A/B/C (mục 5 của file đặc tả). Claude chưa làm gì thêm cho tới khi có quyết định.

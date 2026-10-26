@@ -1,0 +1,34 @@
+{
+ "artifact_version": "two_tower-ml100k-v1",
+ "checkpoint_sha256": "f28c37943ec499d168f43b5281879273af326a97ee47e571100c93dee0c91695",
+ "ratings_sha256": "06416e597f82b7342361e41163890c81036900f418ad91315590814211dca490",
+ "items_sha256": "553841ebc7de3a0fd0d6b62a204ea30c1e651aacfb2814c7a6584ac52f2c5701",
+ "metrics": {
+  "ndcg_at_10": 0.12248949214864532,
+  "step": 2000,
+  "seed": 1337
+ },
+ "dim": 128,
+ "metric": "IP",
+ "normalization": "L2 (IP == cosine); service score = (IP+1)/2",
+ "id_namespace": {
+  "user": "ml100k_u_<movielens user id>",
+  "video": "ml100k_i_<movielens item id>"
+ },
+ "counts": {
+  "user": 942,
+  "video": 1682
+ },
+ "encoder_input": {
+  "user": {
+   "dim": 942,
+   "features": "one-hot MovieLens user index (users of fit split, rating>=4, leave-last-10 twice)"
+  },
+  "video": {
+   "dim": 1702,
+   "features": "19 MovieLens genres + log1p(popularity)/max + one-hot MovieLens item index"
+  }
+ },
+ "unknown_input_policy": "no vector: IDs outside the training vocabulary cannot be encoded (transductive one-hot)",
+ "product_ids_supported": false
+}

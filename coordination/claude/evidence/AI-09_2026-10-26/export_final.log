@@ -1,0 +1,8 @@
+checkpoint: {'ndcg_at_10': 0.12248949214864532, 'step': 2000, 'seed': 1337}
+vector: 2624 (942 user + 1682 video), 128-d, ‖v‖=1
+đã nạp 2624 bản ghi; 2624 row sống trong namespace ml100k_* của sandbox_two_tower_ai09_20261026
+
+truy vấn ml100k_u_1 → top-10 video trong 6 ms:
+
+T1.7d: recommendation query OK (6 ms)
+ANN recall@10 vs brute-force trên 53 user: 1.0000

@@ -138,7 +138,9 @@ Req: `{"model"?: str, "user_id": str, "limit": int (mặc định 10), "context"
 Resp: `{"id","object":"recommendation_completion","created","model","recommendations":[{"video_id","score":0–1,"title","thumbnail_url"}]}`
 - Hành vi thật (sửa so với v0.x): trả **503 `AI_UNAVAILABLE`** khi Milvus không kết nối, khi chưa có collection `user_recommendation_embeddings`,
   **và khi user chưa có vector (cold-start)** hoặc ANN trả 0 video. Gateway dùng popularity fallback cho mọi 503.
-- Hiện tại collection chưa tồn tại trong Milvus của stack → luôn 503 (`examples/recommendation.*`). Chưa có ví dụ 200 thật → giữ `DRAFT`.
+- Hiện tại collection chưa tồn tại trong Milvus của stack → luôn 503 (`examples/recommendation.*`). Chưa có ví dụ 200 thật trên product → giữ `DRAFT`.
+- AI-09: artifact `two_tower-ml100k-v1` **không encode được user/video sản phẩm** (transductive, MovieLens) — `TWO_TOWER_ARTIFACT.md`.
+  Đường service đã chạy thật với sandbox (200 + 503 cold-start). `title`/`thumbnail_url` là placeholder — gateway lấy metadata từ Postgres.
 - Nối Milvus thất bại / thiếu collection: thử lại tối đa mỗi 30 s (request hoặc `/health`), không cần restart. Trạng thái ở `/health.dependencies.recommendation_index`.
 
 ### 2.6 `POST /v1/completions` — Mini-GPT (OpenAI-style) — API_READY

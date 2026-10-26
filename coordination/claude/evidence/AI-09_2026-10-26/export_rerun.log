@@ -1,0 +1,4 @@
+đã nạp 5248 bản ghi vào sandbox_two_tower_ai09_20261026
+ANN recall@10 vs brute-force trên 53 user: 1.0000
+live rows {'count(*)': 2624}
+non-namespace rows {'count(*)': 0}
