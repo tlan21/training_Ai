@@ -13,7 +13,9 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | AI-10 | T1.8 | Health/degraded đúng ngữ nghĩa + dependency status + tự phục hồi (D15) | DONE (2026-10-26) | — |
 | AI-07 | T1.8 | Vận hành runtime :8001 thật cho Codex gọi HTTP (+ sửa UTF-8 Windows) | DONE (2026-10-26; :8001 UP; ingest path ⇐ HC-05) | AI-10; Milvus stack Codex (UP) |
 | AI-11 | T1.8 / T4.2 | HO-01: `video_id` tùy chọn cho Vision + index frame từ data URI 1 fps (contract minor) | DONE (2026-10-26) | HO-01 (Codex chọn HTTP media) |
-| AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | PARTIAL (sandbox + artifact DONE; product BLOCKED ⇐ user chọn A/B/C) | HC-04 (sandbox READY) |
+| AI-13 | T1.7 / T1.8 | D18: recommendation inference không trả metadata giả + `recommendation_mode` | IN_PROGRESS (2026-10-26) | D18 |
+| AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | TODO (roadmap) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
+| AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | DONE (2026-10-26; sandbox + artifact; product → AI-12 theo D18) | HC-04 (sandbox READY) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a TODO · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
 | AI-03 | T1.6 | Mini-GPT: 03a Claude soạn summary 40 clip · 03b người duyệt · 03c train/eval | 03a TODO · 03b BLOCKED · 03c BLOCKED | 03b ⇐ user; 03c ⇐ 03b |
 | AI-04 | T1.8 / T4.3 | Đo VRAM sơ bộ Kaggle T4 (PRELIMINARY) | TODO | AI-06 |
@@ -162,8 +164,36 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   Next safe task: release #2 (user duyệt push)
   ```
 
+### AI-13 — Recommendation inference: không metadata giả + recommendation_mode (D18 mục 6–7)
+- T gốc: T1.7 / T1.8 | Owner: claude | Status: IN_PROGRESS (2026-10-26)
+- Depends on: D18 | Blocks: Codex hydrate metadata thật (đề xuất INT-12)
+- Việc: `/v1/recommendation/completions` chỉ trả `video_id` + `score` thật; `title`/`thumbnail_url` → `null` (không dựng `Video <id>` / `https://storage.local/...`),
+  kể cả stub; thêm `recommendation_mode` ("personalized" khi vector thật, "stub" khi FORCE_STUB) để gateway không nhầm. Tương thích ngược: field cũ còn, nullable.
+- Acceptance: unit test không còn metadata giả + mode đúng; suite inference PASS; smoke :8001 PASS; contract minor + openapi + REL/HC-06.
+- Evidence: — | Commits: — | Checkpoint: —
+
+### AI-12 — Two-Tower v2 cho sản phẩm (D18 phương án B, roadmap)
+- T gốc: T1.7 | Owner: claude | Status: TODO (roadmap; không chặn task tích hợp nào)
+- Depends on: dữ liệu tương tác hợp lệ của sản phẩm (Codex ghi `user_interactions`, đề xuất INT-13) | Blocks: recommendation `personalized` trên sản phẩm
+- Giữ nguyên: Two-Tower v1 (`two_tower-ml100k-v1`, SHA `f28c3794…`) làm baseline nghiên cứu trong sandbox; không xóa model/checkpoint/dữ liệu.
+- Bước (mỗi bước có test/bằng chứng riêng; chỉ AI-12f mới chạm sản phẩm):
+  - **12a Chuẩn hóa dữ liệu:** spec đầu vào từ Postgres (users, user_preferences→10 danh mục, videos+category, user_interactions) qua export read-only của Codex;
+    ID sản phẩm (`usr_*`/`vid_*`) giữ nguyên làm khóa, không hash/modulo; loại video chưa `published`.
+  - **12b Mapping/vocabulary:** encoder **inductive**: user = sở thích danh mục (10) + tổng hợp embedding video đã tương tác; video = danh mục (10) + ViT 256-d
+    + popularity; vocabulary danh mục versioned; user/video mới có vector từ feature (hết cold-start do one-hot).
+  - **12c Tương tác hợp lệ:** positive = favorite/like/share, watch_time ≥ ngưỡng (vd ≥ 50% hoặc ≥ 30 s), click có xem; skip = negative tường minh; lọc bot/trùng;
+    spec ngưỡng ghi trong `dataset_spec.md` trước khi thu dữ liệu.
+  - **12d Dataset + negative sampling + offline eval:** split theo thời gian (leave-last-k/user), negatives = in-batch + sampled theo popularity (logQ đúng),
+    baseline bắt buộc: popularity (chính là mode MVP); metric Recall@10, NDCG@10, coverage, CI95 bootstrap.
+  - **12e Train/test/export:** train T4/RTX 3060 (VRAM ≤ 8 GB), unit test toán học, export vector vào **sandbox trước**, manifest version + SHA.
+  - **12f Phát hành:** contract minor (personalized cho product), smoke :8001, handoff Codex; nạp collection sản phẩm chỉ khi quality gate đạt + user duyệt.
+- **Quality gate (đề xuất, user duyệt trước khi train):** (1) đủ dữ liệu: ≥ 200 user và ≥ 5 000 tương tác hợp lệ sau lọc, ≥ 5 positive/user cho user eval;
+  (2) Recall@10 và NDCG@10 vượt popularity với CI95 không chứa 0 trên split thời gian; (3) coverage ≥ 20% catalogue; (4) không rò rỉ test;
+  (5) inference ≤ 50 ms/user CPU. Chưa đạt → giữ popularity, không đánh personalized.
+- Evidence: — | Commits: — | Checkpoint: —
+
 ### AI-09 — Two-Tower recommendation phía AI (D14)
-- T gốc: T1.7 | Owner: claude | Status: PARTIAL (2026-10-26) — product BLOCKED: artifact v1 transductive, chờ user chọn phương án A/B/C
+- T gốc: T1.7 | Owner: claude | Status: DONE (2026-10-26) — phạm vi sandbox/artifact/interface; personalized product chuyển AI-12 (D18)
 - Depends on: HC-04 (Codex: mapping ID sản phẩm user_id/video_id, collection Milvus, pipeline đồng bộ, nối backend) | Blocks: INT-03 phần personalized thật
 - Việc (Claude): đặc tả embedding (dim, chuẩn hóa, metric), schema export + version model, script export có kiểm thử dữ liệu AI; chỉ thử với dataset train
   trong collection/môi trường **sandbox** tách biệt (Codex cấp theo HC-04). KHÔNG chạy `export_two_tower_milvus.py` vào collection sản phẩm khi mapping ID chưa xác minh.
@@ -176,7 +206,7 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   - Export sandbox: 2624 row `ml100k_*`, re-export idempotent (2624 sống, 0 ngoài namespace), ANN recall@10 = 1.0 vs brute-force (53 user);
     service :8011 tạm trỏ sandbox: `ml100k_u_1` 200 (5 gợi ý), user lạ 503, dependency ok. :8001 product không đổi.
   - Export chặn cứng collection sản phẩm; chỉ xóa namespace `ml100k_*`. RE:HC-04 trong HANDOFF_OUT.
-- Còn lại (BLOCKED ⇐ user): chọn A (popularity MVP, personalized DEFERRED) / B (Two-Tower v2 inductive, cần dữ liệu tương tác thật) / C (content-based, đổi phạm vi).
+- User chọn (D18): A cho MVP + roadmap B → AI-12 (v2), AI-13 (bỏ metadata giả). AI-09 đóng phần sandbox/artifact; v1 giữ làm baseline sandbox.
 - Commits: 54fed30 (nhận task), 34ef443 (code + docs) | Checkpoint:
   ```
   Lane: claude

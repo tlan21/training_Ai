@@ -165,3 +165,15 @@ Quyết định user D14 (PROJECT_STATUS mục 5). Claude **không** chạy `exp
 - Export script đã chặn cứng collection sản phẩm và chỉ xóa namespace `ml100k_*` (trước đây xóa `id != ""` toàn collection).
 - Recommendation response: `title`/`thumbnail_url` là placeholder → gateway hydrate từ Postgres theo `video_id`.
 - Personalized product: user chọn phương án A/B/C (mục 5 của file đặc tả). Claude chưa làm gì thêm cho tới khi có quyết định.
+
+## 2026-10-26 HC-06 — Quyết định user D18: popularity MVP + roadmap Two-Tower v2 (Codex tạo INT-ID, phản hồi RE:HC-06)
+Chia việc không chồng chéo (PROJECT_STATUS D18):
+- **Codex (đề xuất ID, Codex xác nhận trong tracker của mình):**
+  - *INT-12 Popularity recommendation thật:* ranking từ dữ liệu sản phẩm (Postgres: videos published + user_interactions), metadata (`title`, `thumbnail_url`, …)
+    lấy theo `video_id` hợp lệ từ backend; gateway trả `recommendation_mode` = `popularity` | `personalized` | `fallback` cho client.
+    Gọi :8001 → 503 (hiện luôn vậy) hoặc lỗi/timeout → `fallback` an toàn với metadata thật. Không bao giờ hiển thị `personalized` khi đang popularity/fallback.
+  - *INT-13 Dữ liệu tương tác cho v2:* ghi tương tác hợp lệ (view, click, watch_time, favorite/like/share, skip) vào `user_interactions` + export read-only
+    (CSV/JSON có version, không PII) cho AI-12; spec ngưỡng hợp lệ do Claude đề xuất trong AI-12c — Codex phản hồi khả thi.
+- **Claude:** AI-13 (ngay): inference recommendation bỏ metadata giả, thêm `recommendation_mode` (`personalized` khi vector thật, `stub` khi FORCE_STUB) — contract minor,
+  tương thích ngược. AI-12 (roadmap): Two-Tower v2 inductive, quality gate trước khi lên sản phẩm. Không sửa module Codex.
+- Không chặn: INT-00/INT-02/INT-11/AI-07 tiếp tục; v2 không phải điều kiện của task tích hợp hiện tại.
