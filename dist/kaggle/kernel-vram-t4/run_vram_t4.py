@@ -35,6 +35,9 @@ def main():
     ap.add_argument("--work", default="/kaggle/working")
     ap.add_argument("--device", default="cuda")
     ap.add_argument("--rounds", type=int, default=4)        # 4 rounds × 5 request kinds = 20 sequential requests
+    ap.add_argument("--scratch", default="/tmp/vram")
+    ap.add_argument("--frames", type=int, default=32)
+    ap.add_argument("--audio-seconds", type=float, default=25.0)
     args = ap.parse_args()
     root = args.input or os.path.dirname(glob.glob("/kaggle/input/**/manifest.json", recursive=True)[0])
     manifest = json.load(open(os.path.join(root, "manifest.json")))
@@ -44,7 +47,9 @@ def main():
     if bad:
         raise SystemExit(f"sha256 mismatch: {bad}")
 
-    src = os.path.join(args.work, "src")
+    scratch = args.scratch                                     # code/checkpoints/temp audio: never in the Kaggle output
+    os.makedirs(scratch, exist_ok=True)
+    src = os.path.join(scratch, "src")
     for z in ("ai_core.zip", "inference_service.zip"):
         if z not in missing_zip:
             zipfile.ZipFile(os.path.join(root, z)).extractall(src)
@@ -53,7 +58,7 @@ def main():
                 for p in glob.glob(f"{d}/**/ai_core/__init__.py", recursive=True) if os.path.isdir(os.path.join(os.path.dirname(p), "training")))
     service = next(os.path.dirname(os.path.dirname(p)) for d in search
                    for p in glob.glob(f"{d}/**/app/registry.py", recursive=True))
-    ckpt = os.path.join(args.work, "checkpoints")
+    ckpt = os.path.join(scratch, "checkpoints")
     for name in ("vit", "siamese", "asr_ctc", "highlight_fusion", "minigpt", "two_tower"):
         os.makedirs(os.path.join(ckpt, name), exist_ok=True)
         shutil.copy2(os.path.join(root, f"ckpt_{name}.pt"), os.path.join(ckpt, name, "best.pt"))
@@ -98,12 +103,15 @@ def main():
         raise SystemExit(f"checkpoints not loaded: {registry.load_error}")
     load = {"seconds": time.perf_counter() - t, "dtype": str(registry.model_dtype), "models": sorted(registry.loaded), **mem()}
 
-    frames = ["data:image/jpeg;base64," + base64.b64encode(open(p, "rb").read()).decode() for p in sorted(glob.glob(f"{root}/media_*.jpg"))]
-    wav = os.path.join(root, "media_clip.wav")
+    real = ["data:image/jpeg;base64," + base64.b64encode(open(p, "rb").read()).decode() for p in sorted(glob.glob(f"{root}/media_*.jpg"))]
+    frames = [real[i % len(real)] for i in range(args.frames)]     # ≥ 2 full ViT/Siamese batches of 16
     import soundfile as sf
     from ai_core.audio.features import audio_features_per_second
-    signal, sr = sf.read(wav, dtype="float32")
-    audio = audio_features_per_second(torch.from_numpy(signal), sr).tolist()
+    clip, sr = sf.read(os.path.join(root, "media_clip.wav"), dtype="float32")
+    signal = torch.from_numpy(clip).repeat(int(args.audio_seconds * sr // len(clip)) + 1)[: int(args.audio_seconds * sr)].numpy()
+    wav = os.path.join(scratch, "asr_input.wav")                  # ≥ one full 20 s ASR window
+    sf.write(wav, signal, sr)
+    audio = audio_features_per_second(torch.from_numpy(clip), sr).tolist()
     vis = services.run_vision(schemas.VisionRequest(keyframes=frames)).embeddings_256
     n = 120                                                       # one full Fusion window (worst case per call)
     feats = schemas.HighlightFeatures(vision_embeddings=[vis[i % len(vis)] for i in range(n)],
@@ -129,7 +137,9 @@ def main():
                 ok, err = False, f"{type(e).__name__}: {e}"
             requests.append({"round": r, "kind": name, "ok": ok, "error": err, "ms": (time.perf_counter() - t) * 1000, **mem()})
     peak = max((q.get("peak_reserved_mib", 0) for q in requests), default=0)
-    report = {"label": "PRELIMINARY_T4", "env": env, "manifest_sha256": manifest["sha256"], "load": load, "requests": requests,
+    inputs = {"vision_frames": len(frames), "asr_seconds": args.audio_seconds, "highlight_seconds": n,
+              "completion_prompt_chars": len(prompt), "completion_max_tokens": 96}
+    report = {"label": "PRELIMINARY_T4", "env": env, "inputs": inputs, "manifest_sha256": manifest["sha256"], "load": load, "requests": requests,
               "summary": {"n_requests": len(requests), "n_ok": sum(q["ok"] for q in requests),
                           "peak_reserved_mib_any_request": peak,
                           "peak_allocated_mib_any_request": max((q.get("peak_allocated_mib", 0) for q in requests), default=0),
