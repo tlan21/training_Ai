@@ -21,7 +21,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-10 | — | Forgot-password giữ nguyên, ngoài release hiện tại | DEFERRED / OUT_OF_SCOPE | D1, HC-02 |
 | INT-11 | INT-01 | HTTP media giữa gateway Docker và inference host | BLOCKED | HO-03 Docker Desktop host transport; restart decision pending |
 | INT-12 | T2.2/T3.1 | CMS access JWT chỉ ở RAM, refresh khi reload | REVIEW | 41 E2E PASS; live gateway cookie rotation |
-| INT-13 | INT-00 | Image ingest riêng + kiểm clean build | IN_PROGRESS | author package/tests; clean build capacity gate remains |
+| INT-13 | INT-00 | Image ingest riêng + kiểm clean build | BLOCKED | source/3 tests PASS; full CPU image capacity gate |
 
 Hoàn thành trước tách làn (bằng chứng INVENTORY mục 5): T0.1–T0.4, T2.1–T2.4, T4.1, T4.2 = DONE (VERIFIED-HIST, build VERIFIED-NOW);
 T2.5, T3.1, T3.2 = PARTIAL.
@@ -83,7 +83,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
   Preferences source/build + runtime restart/login persistence PASS at6d860ee. No personalized result claimed.
 - Commits: `5615055` sandbox/mapping; `9eded76` preference source/tests; `6d860ee` runtime restart persistence.
 - Next action: AI-09 encoder/version/schema/mapping handshake. No training IDs or zero vectors to product Milvus.
-- Checkpoint: Lane codex / Changed sandbox+preferences / Verified unit/PG/sandbox PASS; runtime pending / Contract no / Next resource recovery.
+- Checkpoint: Lane codex / Changed sandbox+preferences / Verified unit/PG/sandbox + runtime restart PASS / Contract no / Next AI-09 handshake.
 
 ### INT-04 — Nguồn phát video gốc
 - T gốc: T3.1/T3.2 | Owner: CODEX | Status: PARTIAL (functional PASS; full parity pending)
@@ -145,7 +145,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Acceptance: Vision gửi ảnh base64 (contract có sẵn), ASR nhận WAV qua URL MinIO presigned; không gửi path Docker cho host,
   không shared mount/checkpoint; staging WAV cleanup/error handling; unit + mock pipeline tests PASS. Indexing media mới thật chờ contract Claude.
 - Changed dự kiến: aihttp + tests, gateway preprocessing/audio staging + tests; tracker/handoff.
-- Next action: Release#2 master70bf011 merged5691526; v1.2 API_READY. Restore Docker CLI transport, latest Linux gateway, real pipeline/index/search; no image pull.
+- Next action: resolve HO-03 Desktop host proxy/transport (user restart decision pending). Then real gateway/stub0 + pipeline/index/search. Mock restored; no image pull.
 - Evidence: VERIFIED-NOW verification/INT-11.md; Go checks/Linux builds và script persistence/fallback sau đổi transport PASS.
   v1.2 metadata unit 3 package PASS, Linux/runtime metadata chưa deploy; master pending tại checkpoint. | Commits: 7af1b1d, fae980c.
 - Checkpoint: Lane codex / Changed HTTP client+pipeline+tests / Verified mock transport/fallback PASS / Contract no / Next capacity + real gate.
@@ -167,11 +167,16 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Checkpoint: Lane codex; Changed auth+fixtures+login parity; Verified 41 E2E + types/build PASS; Contract touched no; Next safe task INT-11.
 
 ### INT-13 — Ingest image riêng, clean build
-- T gốc: INT-00 | Owner: CODEX | Status: IN_PROGRESS (2026-10-26; independent source/package/tests)
-- Depends on: đủ disk Docker theo HC-03/D10 | Blocks: clean-machine deployment
-- Source audit: runtime hiện dùng cached video-ai-inference làm preprocessing (không checkpoint/process inference);
-  compose chưa có build riêng cho ingest trên máy không cache.
-- Acceptance: worker image build từ source thuộc backend/ingest-worker, DSP/PyAV, không model/checkpoint; clean compose build + pipeline PASS;
-  reuse deps đã chốt, không sửa source Claude.
-- Changed: chưa triển khai. | Evidence: compose/cache audit | Commits: —
-- Next action: capacity preflight rồi worker Dockerfile/deps; không tải/build image lớn khi C: full. | Checkpoint: chưa DONE.
+- T gốc: INT-00 | Owner: CODEX | Status: BLOCKED (full runtime build capacity/network; source complete2026-10-26)
+- Depends on: enough Docker disk working room (D10/HC-03); transport recovery HO-03 for real integration | Blocks: clean-machine deployment
+- Acceptance: own worker image builds from source, CPU DSP/PyAV only, no model/checkpoint/inference process; no AI code edits;
+  tests in fresh image + compose worker/pipeline PASS. Existing helper feature algorithm/event schema unchanged.
+- Changed: backend/ingest-worker/{Dockerfile,Dockerfile.dockerignore,requirements.txt,test_preprocess.py,README.md}; docker-compose.yml;
+  coordination/codex evidence/SESSION/TASKS/MATRIX.
+- Evidence: VERIFIED-NOW verification/INT-13.md + INT-13-unit.log: source image target build PASS/context14.31kB, only worker+2DSP helper files;
+  extracted helper namespace + cached CPU dependencies with network disabled:3 preprocess tests PASS (0.147s). Real/mock compose config PASS,
+  E2E types PASS, diff check PASS. Full runtime image NOT_BUILT; running worker remains legacy cached runtime, no pipeline claim for new image.
+- Commits: implementation checkpoint int(ingest): package standalone CPU preprocessing worker (SHA recorded next checkpoint).
+- Next action: sufficient C: capacity then full CPU dependency/image build, run tests in new image, worker deploy + pipeline regression.
+  Do not use compose up --build during resource recovery; reuse existing containers until image verified. No large download attempted at C:1.98GiB.
+- Checkpoint: Lane codex / Changed own ingest package+compose+tests / Verified source build+3 tests/config PASS / Contract no / Next capacity+HO-03 recovery.

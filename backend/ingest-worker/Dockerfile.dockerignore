@@ -1,0 +1,15 @@
+**
+!backend/
+backend/**
+!backend/ingest-worker/
+backend/ingest-worker/**
+!backend/ingest-worker/main.py
+!backend/ingest-worker/requirements.txt
+!ai-core/
+ai-core/**
+!ai-core/ai_core/
+ai-core/ai_core/**
+!ai-core/ai_core/audio/
+ai-core/ai_core/audio/**
+!ai-core/ai_core/audio/features.py
+!ai-core/ai_core/audio/mel.py

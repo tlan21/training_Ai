@@ -142,8 +142,8 @@ services:
     depends_on:
       kafka: { condition: service_healthy }
   ingest-worker:
-    # Reuse the existing preprocessing runtime; no inference process or checkpoint mount.
-    image: video-ai-inference
+    build: { context: ., dockerfile: backend/ingest-worker/Dockerfile }
+    image: video-ai-ingest-worker
     command: ["python", "/srv/ingest-worker/main.py"]
     environment:
       KAFKA_BROKERS: kafka:9092

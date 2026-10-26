@@ -1,98 +1,48 @@
-# SESSION — current resume
+# SESSION — resume here (2026-10-26)
 
-- Active INT-13 IN_PROGRESS: standalone ingest packaging/tests, project skill backend_endpoint.md.
-- INT-11 BLOCKED HO-03: Docker→host AI TCP timeout; gateway rolled back mock; real E2E NOT_RUN. User restart decision pending.
-- INT-12 REVIEW (d607226): CMS JWT/user only RAM; HttpOnly bootstrap, single-flight retry, role guard, logout/cache clear and race/failure handling.
-- VERIFIED-NOW: CMS build + E2E types +41 browser tests PASS (50s), including2 live gateway cookie rotation/reload/logout cases.
-  Login parity at390×844/1440×900 checked; screenshots/report verification/INT-12.md. Other CMS parity remains INT-05.
-- Branch codex/integration. Release#2 master70bf011 received via merge5691526, no conflicts, no push/master change by Codex.
-  Read Release#2 handoff/contract: AI-API v1.2,6 endpoints API_READY; recommendation DRAFT. AI schema unchanged by Codex.
-- Docker diagnosis: Windows CLI named-pipe requests hang, but direct daemon Unix socket /proc/195/root/run/docker.raw.sock
-  GET /_ping via ignored Linux Go probe returns200 OK. No global restart/cleanup done. Investigate CLI transport next in INT-11.
-- Resource last: C:2.90GiB E:1.49GiB; no large image/dependency downloads, no checkpoint/mount, no deletion.
-- INT-11 next: restore stack control using existing daemon without global restart,
-  rebuild gateway binary then real API integration/persistence. Never mark INTEGRATED_REAL from health alone.
+## Current state
+- Branch codex/integration; Release#1 received, Release#2 master70bf011 merged5691526 without conflict.
+  No Codex push/release/master update. Shared/Claude files only received via merge; no manual edits.
+- INT-12 REVIEW d607226: CMS JWT/user RAM only, HttpOnly refresh bootstrap, single-flight401, role guard, logout race/cache clear,
+  signed-out marker prevents restore after failed logout. CMS build/E2E types +41 browser tests PASS (50s), including2 live gateway auth cases.
+  Login parity at390×844/1440×900 checked/fixed; verification/INT-12.md +screenshots/log. Full CMS parity remains INT-05.
+- INT-03 personalized BLOCKED AI-09; sandbox+ID spec ready5615055, preference source9eded76 and runtime restart6d860ee verified.
+  verify_business_persistence.ps1 PASS: preferences+login preferences/history/likes/settings/playback206/privacy/recommendation503 fallback.
+- INT-11 BLOCKED HO-03 (fc5a3c7): real API transport. AI-API v1.2 six API_READY on master; recommendation DRAFT.
+  Latest Linux gateway built (Go vet/test/build PASS), deployedmock and persistence PASS. Actual real deploy startup health timed out;
+  independent container→host.docker.internal:8001 TCP timeout3s. Host127001:8001 health200/stubfalse/6models/401missingBearer PASS.
+  Real video_flow/visual_search E2E NOT_RUN because preflight blocked; added real-health assertions and E2E types PASS.
+  Gateway rolled back explicitmock health200. No new INTEGRATED_REAL claim.
+- INT-13 BLOCKED capacity/full runtime build. Own image Dockerfile/allowlist/locked deps +compose now prepared; source target build14.31kB PASS.
+  3 preprocess tests using extracted2unchangedDSP helpers +cachedCPU dependencies PASS0.147s; valid/silent2.5s/invalidmedia, no model import/load.
+  Full new image NOT_BUILT, current ingest container remains cached video-ai-inference preprocessing-only. See verification/INT-13.md.
+- INT-00/02 REVIEW; INT-04/05/06 PARTIAL. INT-10 DEFERRED untouched. INT-07/08 need AI/GPU gates, INT-09 depends on them.
+- User scope question INT-05/06 remains pending (CONTRACT_DECISIONS.md); no extra public endpoint added.
 
-## INT-11 runtime checkpoint
-- Existing Linux Docker CLI+Compose found under /mnt/host/wsl/docker-desktop/cli-tools; use DOCKER_HOST=unix:///proc/195/root/run/docker.raw.sock.
-  Windows named pipes _ping both timeout; no global restart needed. Ignored backend/.tmp/docker-direct.yml binds gateway using daemon host path.
-- Go vet/test/build ./... PASS (GOMAXPROCS1, TMP/GOTMPDIR onE); latest Linux gateway binary rebuilt and deployed cached image, --no-deps --no-build --pull never.
-- MOCK_ONLY verify_business_persistence.ps1 PASS after latest binary: preferences+login preferences, likes/history/settings survive gateway restart;
-  publication/deletion privacy, playback206, recommendation503 fallback. Updated verification/INT-02-persistence.json.
-- Next: AI_SERVICE_KEY from Claude-local .env passed in environment only; compose root+direct gateway with realhost8001/stub0,
-  then health6models and existing real video_flow/visual_search E2E. No new real matrix claim until complete tests.
+## Runtime / resource
+- Existing project video-ai preserved; gateway/mock/PG/Mongo/Redis/MinIO/Kafka/Milvus healthy, CMS5173/Client host127001:3000.
+  Claude owns real :8001. Unrelated faktory_server still running. No Docker/WSL global restart, no volume/data deletion or prune.
+- Windows Docker named-pipe _ping both time out. Existing Linux CLI works:
+  wsl -d docker-desktop -- /mnt/host/wsl/docker-desktop/cli-tools/usr/bin/docker -H unix:///proc/195/root/run/docker.raw.sock ps
+  PID195 is current dockerd; recheck after daemon restart. Compose/buildx binaries under same cli-tools/usr/local/lib/docker/cli-plugins/.
+- Ignored backend/.tmp/docker-direct.yml maps gateway binary to daemon path /run/desktop/mnt/host/e/traning_ai-codex/backend/bin/gateway.
+  Linux Compose root+mock+direct --no-deps --no-build --pull never gateway deployed latest mock binary.
+  Dockerfile/compose new ingest image is not built: don't accidentally run up --build while restoring runtime.
+- Shared AI key read from Claude-local .env per HC-05; passed only through process env/WSLENV, not persisted/logged.
+- Last free C:1.98GiB E:1.53GiB. No large CPU Torch/base image download. Go TMP/TEMP/GOTMPDIR on E:/traning_ai-codex/backend/.tmp; GOMAXPROCS1.
+- Current open user decision: Desktop restart affects unrelated faktory_server. Async question offered user restart / authorize Codex restart+restore / staymock.
+  No answer/approval received; do not infer approval from elapsed time. Handoff HO-03 committed.
 
-## Real gate blocker / next independent work
-- Actual attempt real gateway startup failed canonical host.docker.internal:8001/health deadline. Direct host health6real models/401 PASS;
-  ingest urllib sameTCP timeout; WindowsDesktop named pipes both hang. Gateway mock restored health200; no INTEGRATED_REAL claim.
-- Source/test checkpoint INT-11 transport code remains valid. See HO-03 and verification/INT-11-real-blocker.json.
-- INT-13 first: minimal own Dockerfile/locked runtime deps, reuse unchanged2DSP helpers from master audio/features.py+mel.py read-only.
-  Do not port/change feature algorithm or AI code. Package only those helpers, no model/inference/checkpoint/data. Test preprocess in cached runtime.
-- Latest C:1.95GiB/E:1.53GiB: no large Torch/image downloads; clean image build remains capacity/network gated.
+## Next safe actions
+1. After user reports recovery or authorizes restart: recheck desktop transport, host AI health and container→host health; preserve/recover prior containers,
+   not a new stack. Do not touch Claude runtime/checkpoints or other service configuration.
+2. Set INT-11 IN_PROGRESS, commit. Use real AI key env, root+direct gateway host.docker.internal:8001/stub0, verify gateway6models, then
+   npx playwright test e2e/video_flow.spec.ts e2e/visual_search.spec.ts --reporter=list. Only mark matrix real when all relevant tests PASS.
+3. After sufficient disk: full ingest image build, tests inside new image (README command), deploy worker and pipeline regression. Until then INT-13 BLOCKED.
+4. AI-09 handshake remains required for product vector collection/sync; no dataset IDs or fabricated zero vectors in product index.
 
-## Prior checkpoint (historical; newer facts above take precedence)
-
-# SESSION — current resume
-
-- Active: INT-12 IN_PROGRESS. Branch codex/integration, clean at start, master still 96ebc24/no new commits.
-- C: recovered to 2.93 GiB, E:1.50 GiB; RAM free ~496 MiB. No cleanup approved/performed.
-- Docker Desktop CLI still stalls; all app HTTP endpoints 200. Investigating direct WSL daemon access read-only;
-  no global Docker/WSL restart (unrelated faktory container exists).
-- INT-03 preference restart still blocked by Docker control. Continue independent INT-12 CMS JWT RAM/session restore first.
-- Project skill: cms_screen.md, required parity checklist ui_design_review.md. Scope: store, API refresh/401, app bootstrap/guard,
-  login/logout hooks and callers, existing CMS fixtures + auth security E2E; no endpoint/layout/forgot-password changes.
-- Latest AI v1.2 from Claude read; release #2 still absent master, stay MOCK_ONLY.
-- Previous detailed verified work: verification/INT-00.md, INT-02.md, INT-03.md, INT-04.md, INT-11.md.
-- Resume after INT-12: fix Docker control if safe, latest Linux gateway binary + persistence test; real AI gate only after master release.
-
-## Previous checkpoint
-# SESSION — Codex integration (resume here)
-
-## Current gate
-- Branch codex/integration; Release #1 96ebc24 received. No merge/push/release by Codex.
-- BLOCKED_RESOURCE: C: ~0 GB, E: ~1.50 GiB. No cleanup/prune/delete performed; user capacity/cleanup decision pending.
-- Docker stop/disk-scan CLI stalled; canceled only task-owned CLI requests. Reinspect daemon/container state after disk recovery.
-  Last readonly HTTP gateway/CMS/Client all 200; do not assume latest binary deployed.
-- User scope question INT-05/06 pending: CONTRACT_DECISIONS.md. No additional library endpoint added.
-
-## Evidence / state
-- INT-00 REVIEW: a96b883 / 122ee33 / b952675. npm ci CMS/Client; Go/CMS/Client checks; cached stack healthy,
-  authenticated mock HTTP + real PG/Mongo tests PASS. Fresh Docker image rebuild not run.
-- INT-02 REVIEW: 7efe2c9. PG interactions/history/likes/settings; real PG tests, restart persistence, MinIO206/privacy PASS.
-- INT-04 PARTIAL: 8733f97 OpenAPI v0.2.0; 39e7af6 mapping/E2E. CMS/Client original playback + mobile click fix;
-  Go/FE checks, 2 original browser cases + 2 player logic PASS. 10-item parity has gaps, no full parity claim.
-- INT-11 PARTIAL: 7af1b1d portable Vision data URI/WAV HTTP + 503 fallback, unit/mock pipeline PASS;
-  fae980c v1.2 video_id metadata (3 package unit PASS), not yet rebuilt/deployed to Linux runtime.
-- INT-03 BLOCKED: 5615055 empty sandbox/identity policy; 9eded76 preference persistence source.
-  Sandbox 2x idempotent PASS/entities0; 5 real PG tests PASS; Go tests/vet/build PASS with Go temp redirected to E:.
-  New preference restart/login script checks NOT RUN; runtime update blocked.
-- INT-12/13 BLOCKED_RESOURCE: CMS JWT currently persisted in browser storage; clean ingest build currently relies on cached legacy image.
-  No implementation/test evidence for these fixes yet. INT-10 DEFERRED untouched.
-
-## Runtime / local artifacts
-- Existing project video-ai and volumes preserved. Milvus :19530; mock :18001, gateway :8000, CMS :5173.
-- Claude owns real :8001; last health observation: stub_mode=false, 6 models; no real business integration claimed.
-- CMS serves current dist bind :ro. Old Client container stopped; current production build on host :3000:
-  npm run start -- --hostname 127.0.0.1 --port 3000. Reference capture server :8765 stopped.
-- Ignored backend/bin/: Linux gateway/ai-mock/pg.test/mongo.test. Gateway binary prepared for preference commit 9eded76,
-  older than fae980c metadata. Ignored docker-compose.local.yml mounts binary, ingest source and CMS dist.
-- Temp workaround: GOTMPDIR/TMP/TEMP=E:/traning_ai-codex/backend/.tmp; GOMAXPROCS=1. Do not fill C: with linker/test temp.
-
-## Next steps when unblocked
-1. Check C:/E:, Docker and actual process/container states; no cache/data deletion without explicit user decision.
-2. Read AGENTS/README, branch + git log HEAD..master. If approved Release #2 reached master, follow lane sync; never force/reset.
-3. Rebuild latest Linux gateway with temp on E:, restart only owned runtime; ./e2e/verify_business_persistence.ps1 on mock.
-   Must prove preferences after restart and at login, plus existing history/likes/settings/fallback checks.
-4. Read latest Claude contract/handoff. v1.2 adds optional video_id + whole-video data URI indexing, consumed in source already.
-   Release #2 was not on master at last check. Only switch real after master/API_READY and capacity, match key without logging it.
-5. Real T4.1/T4.2 + index/search then matrix INTEGRATED_REAL where valid. Recommendation remains fallback until AI-09 encoder/schema/version/mapping verified.
-6. INT-12 token/RAM and INT-13 own ingest image; continue parity after user scope decision. Do not mark unrun gates DONE.
-
-## Handoffs
-- HC-02/03 ACK; HC-04 READY_SANDBOX: sandbox_two_tower_ai09_20261026, 128/IP/IVF_FLAT/nlist1024, 0 rows at verification.
-- HC-05 chose HTTP media option b; HO-01 addressed by Claude v1.2, source/unit consumed fae980c, runtime gate pending.
-- HO-02 shared C:/Docker resource gate, user capacity/cleanup approval pending. No checkpoint copy/mount or Claude file writes.
-
-## Evidence
-verification/INT-00.md + smoke JSON; INT-02.md + persistence JSON (last run predates preference extension);
-INT-03.md + sandbox JSON; INT-04.md + INT-04-design/; INT-11.md; TWO_TOWER_PRODUCT_MAPPING.md.
+Lane: codex
+Changed: CMS auth+login parity; real gates/progress; own ingest package+compose/tests; preference runtime evidence
+Verified:41CMS E2E+2live auth; Go vet/test/build; mock pipeline/restart persistence; source image14.31kB+3DSP tests; compose/type/diff checks
+Contract touched: no public or AI schema change; AI-API v1.2 consumed from Release#2
+Next safe task: INT-11 after HO-03; INT-13 after capacity recovery
