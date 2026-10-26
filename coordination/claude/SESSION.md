@@ -3,10 +3,10 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
-- Task: AI-08 đợt #1 (dọn D:, user uỷ quyền tự quyết 2026-10-26) — IN_PROGRESS
-- Bước đã xong: 1 điều kiện trước · 2 khảo sát · 3 manifest `coordination/claude/cleanup/CLEANUP_2026-10-26.md`
-- Bước kế: 5 xóa đúng 6 path trong manifest mục 1 → 6 kiểm sau dọn → 7 ghi kết quả
-- File đang sửa: manifest trên
+- Task: — (không có task IN_PROGRESS)
+- Bước đã xong: —
+- Bước kế: —
+- File đang sửa: —
 - Lệnh verify dở: —
 
 ## Task kế an toàn
@@ -15,6 +15,8 @@ Khi chờ (Kaggle/người duyệt): AI-03a (soạn 40 summary), AI-02a (đề x
 AI-02b/AI-03b chờ user duyệt. Runtime :8001: DOWN (chưa chạy).
 
 ## Phiên trước
+- 2026-10-26 — AI-08 đợt #1 DONE: xóa 6 mục REGENERABLE trên D: (manifest `coordination/claude/cleanup/CLEANUP_2026-10-26.md`),
+  D: 1.22 → 6.75 GB; ai-core 285 PASS, inference 37 PASS/1 skip, SHA checkpoint không đổi. Task kế: AI-06.
 - 2026-10-26 — Release #1: master ff 39ff344 → 96ebc24 (user duyệt), Codex worktree ff sạch; ghi D9–D12, HC-03 (Milvus, dung lượng C:/E:).
   Task kế: AI-06 (chưa bắt đầu).
 - 2026-10-26 — Ghi quyết định user D1–D8 (PROJECT_STATUS mục 5): tách AI-02a/b/c, AI-03a/b/c; thêm AI-07; AI-04 TODO (sơ bộ T4);

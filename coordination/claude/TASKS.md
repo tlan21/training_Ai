@@ -15,7 +15,7 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | AI-03 | T1.6 | Mini-GPT: 03a Claude soạn summary 40 clip · 03b người duyệt · 03c train/eval | 03a TODO · 03b BLOCKED · 03c BLOCKED | 03b ⇐ user; 03c ⇐ 03b |
 | AI-04 | T1.8 / T4.3 | Đo VRAM sơ bộ Kaggle T4 (PRELIMINARY) | TODO | AI-06 |
 | AI-05 | T5.3 | Số liệu evaluation cho luận án | TODO | AI-02, AI-03, AI-04 |
-| AI-08 | — | Dọn dẹp dữ liệu/artefact làn AI an toàn (lặp lại sau mỗi đợt train) | TODO | không job/server nào đang dùng; user duyệt danh sách |
+| AI-08 | — | Dọn dẹp dữ liệu/artefact làn AI an toàn (lặp lại sau mỗi đợt train) | TODO (đợt #1 DONE 2026-10-26) | không job/server nào đang dùng; user duyệt danh sách |
 
 Thứ tự đề xuất (tối đa 1 IN_PROGRESS): AI-06 → AI-01 → AI-07; khi chờ GPU/Kaggle/người duyệt thì xen AI-03a, AI-02a, AI-04.
 AI-08 (dọn dẹp) chạy sau mỗi đợt train xong hoặc khi một ổ chạm `BLOCKED_RESOURCE`; luôn qua manifest + user duyệt.
@@ -157,7 +157,10 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - Acceptance mỗi đợt: manifest đã duyệt, dung lượng giải phóng đo được, bước 6 PASS, 0 mục `KEEP`/`UNKNOWN` bị đụng.
 - Không bao giờ: xóa để "cho chắc"; xóa thứ duy nhất chứng minh một con số trong báo cáo/luận án; xóa nhãn người; xóa mà không có
   manifest + duyệt; rewrite lịch sử git để giảm `.git`.
-- Evidence: — | Commits: — | Checkpoint: —
+- Đợt #1 (2026-10-26, user uỷ quyền tự quyết): **DONE** — xóa 6 mục REGENERABLE trên D:, giải phóng 5,530,226,688 byte
+  (D: 1.22 → 6.75 GB); ai-core 285 PASS, inference 37 PASS/1 skip, SHA 6 checkpoint không đổi, server :8891 HTTP 200.
+  Manifest + kết quả: `coordination/claude/cleanup/CLEANUP_2026-10-26.md`. Task vẫn TODO cho các đợt sau.
+- Evidence: VERIFIED-NOW 2026-10-26 (đợt #1, xem manifest) | Commits: `a5f340f` (manifest trước khi xóa) + commit kết quả | Checkpoint: SESSION.md
 
 ### AI-06 — Xác minh nguồn checkpoint + thang sẵn sàng 6 model (ƯU TIÊN 1)
 - T gốc: T1.8 | Owner: claude | Status: TODO
