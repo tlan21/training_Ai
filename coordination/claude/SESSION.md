@@ -3,10 +3,10 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
-- Task: — (không có task IN_PROGRESS)
-- Bước đã xong: —
-- Bước kế: —
-- File đang sửa: —
+- Task: AI-06 (IN_PROGRESS 2026-10-26)
+- Bước đã xong: startup (branch đúng, master không mới, Codex chưa có HO), nhận task
+- Bước kế: (1) tìm mọi bản vit/minigpt trên D:/E: + so SHA; (2) so SHA 4 model D: vs E:; (3) chốt nguồn canonical, sửa .env local, README; (4) uvicorn + HTTP Bearer từng endpoint → contract 1b
+- File đang sửa: coordination/claude/TASKS.md, SESSION.md
 - Lệnh verify dở: —
 
 ## Task kế an toàn
