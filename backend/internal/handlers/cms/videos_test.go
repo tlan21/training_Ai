@@ -48,3 +48,25 @@ func TestUpload_RejectsOversizedDeclaredBodyBeforeReading(t *testing.T) {
 		t.Fatalf("unexpected response: %d %s", recorder.Code, recorder.Body.String())
 	}
 }
+
+func TestCMSOriginalPlaybackExcludesDeletedVideo(t *testing.T) {
+	for _, status := range []domain.VideoStatus{domain.VideoUploaded, domain.VideoProcessed, domain.VideoDeleted} {
+		videos := mocks.NewVideoRepoMem()
+		_ = videos.Create(context.Background(), &domain.Video{ID: "vid_original", Status: status, RawFilePath: "raw-videos/original.mp4"})
+		h := NewVideoHandlers(videos, nil, nil, nil, nil, nil, nil, mocks.NewObjectStorageMem(), nil, nil)
+		r := gin.New()
+		r.GET("/videos/:id", h.Get)
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, httptest.NewRequest("GET", "/videos/vid_original", nil))
+		if w.Code != 200 || strings.Contains(w.Body.String(), "raw_file_path") {
+			t.Fatalf("bad CMS detail: %d %s", w.Code, w.Body)
+		}
+		if status == domain.VideoDeleted {
+			if !strings.Contains(w.Body.String(), `"playback_url":null`) {
+				t.Fatalf("deleted source issued: %s", w.Body)
+			}
+		} else if !strings.Contains(w.Body.String(), `"playback_url":"https://storage.local/`) {
+			t.Fatalf("CMS source missing: %s", w.Body)
+		}
+	}
+}

@@ -22,13 +22,13 @@ function VideoDetail() {
     const video = useQuery({ queryKey: ["video", id], enabled: ready, queryFn: async () => (await apiClient.get<components["schemas"]["VideoDetail"]>(`/api/videos/${id}`)).data });
     const analysis = useQuery({ queryKey: ["analysis", id], enabled: ready, queryFn: async () => (await apiClient.get<components["schemas"]["PublicAnalysis"]>(`/api/videos/${id}/analysis`)).data });
     const subs = useQuery({ queryKey: ["subtitles", id], enabled: ready, queryFn: async () => (await apiClient.get<components["schemas"]["Subtitles"]>(`/api/videos/${id}/subtitles`)).data });
-    // shortcut: VideoDetail has no original playback URL; use published clips until the contract supplies it.
     const clips = video.data?.clips?.filter(c => c.status === "published") || [];
     const requested = Number(search.get("t") || 0);
     const validTime = Number.isFinite(requested) && requested >= 0 ? requested : 0;
     const initialClip = clips.find(c => c.id === search.get("clip")) || clips.find(c => validTime >= (c.start_time || 0) && validTime < (c.end_time || 0)) || clips[0];
     const [selected, setSelected] = useState<string | null>(null);
-    const selectedClip = clips.find(c => c.id === selected) || initialClip;
+    const original = selected === null && !search.get("clip") ? video.data?.playback_url : null;
+    const selectedClip = original ? undefined : clips.find(c => c.id === selected) || initialClip;
     const clip = useQuery({ queryKey: ["clip", selectedClip?.id], enabled: !!selectedClip?.id, queryFn: async () => (await apiClient.get<components["schemas"]["Clip"]>(`/api/clips/${selectedClip?.id}`)).data });
     const ref = useRef<HTMLVideoElement | null>(null);
     const dialog = useRef<HTMLDialogElement>(null);
@@ -42,8 +42,8 @@ function VideoDetail() {
     const [summaryOpen, setSummaryOpen] = useState(true);
     const [rate,setRate]=useState(1);
     const offset = selectedClip?.start_time || 0;
-    const end = selectedClip?.end_time || 0;
-    const source = clip.data?.playback_url;
+    const end = original ? video.data?.duration_seconds || 0 : selectedClip?.end_time || 0;
+    const source = original || clip.data?.playback_url;
     const register = useCallback((el: HTMLVideoElement | null) => { ref.current = el; usePlayerStore.getState().register(el, offset); }, [offset]);
     useEffect(() => { setSelected(null); pendingSeek.current = validTime; setMediaError(false); }, [id, validTime]);
     useEffect(() => { if (ready)
@@ -57,6 +57,7 @@ function VideoDetail() {
         dialog.current.close(); }, [sheet]);
     useWatchTime(ref, id, selectedClip?.id, true, source);
     const seek = (time: number) => {
+        if (original) { store.seekTo(time); return; }
         const target = clips.find(c => time >= (c.start_time || 0) && time < (c.end_time || 0));
         if (!target) {
             setMessage("Khoảnh khắc này chưa có clip được xuất bản. Nguồn phát video gốc chưa khả dụng.");
@@ -111,10 +112,10 @@ function VideoDetail() {
     return <div className="content-page"><AppNav active="discover"/><MobileHeader center back><button className="icon-button" onClick={share} aria-label="Chia sẻ video"><Icon name="share" size={22}/></button></MobileHeader>
  <main className="detail-main"><div className="detail-left">
  <section className="detail-player">
-  <video key={selectedClip?.id} ref={register} src={source || undefined} poster={selectedClip?.thumbnail_url || data?.thumbnail_url || undefined} playsInline preload="metadata" onTimeUpdate={e => onTime(e.currentTarget)} onPlay={() => store.setPlaying(true)} onPause={() => store.setPlaying(false)} onError={() => setMediaError(true)} onLoadedMetadata={e => { e.currentTarget.playbackRate=rate;store.setDuration(data?.duration_seconds || end); const time = pendingSeek.current ?? validTime; if (time >= offset && time < end)
+  <video key={selectedClip?.id || id} ref={register} src={source || undefined} poster={selectedClip?.thumbnail_url || data?.thumbnail_url || undefined} playsInline preload="metadata" onTimeUpdate={e => onTime(e.currentTarget)} onPlay={() => store.setPlaying(true)} onPause={() => store.setPlaying(false)} onError={() => setMediaError(true)} onLoadedMetadata={e => { e.currentTarget.playbackRate=rate;store.setDuration(data?.duration_seconds || end); const time = pendingSeek.current ?? validTime; if (time >= offset && time < end)
         e.currentTarget.currentTime = time - offset; pendingSeek.current = null; }}/>
   <span className="player-tag mobile-only">AI Augmented</span>
-  {(clip.isPending && selectedClip || clip.error || !source || mediaError) && <div className="player-unavailable" role={clip.error || mediaError ? "alert" : "status"}><Icon name="smart_display" size={36}/>{clip.isPending && selectedClip ? "Đang tải clip…" : clip.error ? errorMessage(clip.error) : !selectedClip ? "Video chưa có clip được xuất bản." : "Không thể phát clip."}{clip.error && <button className="btn-outline" onClick={() => clip.refetch()}>Thử lại</button>}</div>}
+  {(clip.isPending && selectedClip || clip.error || !source || mediaError) && <div className="player-unavailable" role={clip.error || mediaError ? "alert" : "status"}><Icon name="smart_display" size={36}/>{clip.isPending && selectedClip ? "Đang tải clip…" : clip.error ? errorMessage(clip.error) : !selectedClip ? "Nguồn phát video chưa khả dụng." : "Không thể phát clip."}{clip.error && <button className="btn-outline" onClick={() => clip.refetch()}>Thử lại</button>}</div>}
   {source && !mediaError && <><div className="detail-center-controls"><button aria-label="Lùi 10 giây" onClick={() => store.seekTo(Math.max(offset, store.currentTime - 10))}><Icon name="replay_10" size={32}/></button><button aria-label={store.isPlaying ? "Tạm dừng" : "Phát video"} onClick={store.togglePlay}><Icon name={store.isPlaying ? "pause" : "play_arrow"} size={36}/></button><button aria-label="Toàn màn hình" onClick={() => void ref.current?.requestFullscreen()}><Icon name="fullscreen" size={28}/></button></div>
    {currentSegment?.text && <div className="subtitle-overlay">{currentSegment.text}</div>}
   </>}
@@ -124,7 +125,7 @@ function VideoDetail() {
    <div className="player-toolbar"><div className="desktop-player-controls"><button className="icon-button" aria-label="Lùi 10 giây" onClick={() => store.seekTo(Math.max(offset, store.currentTime - 10))}><Icon name="skip_previous" size={20}/></button><button className="icon-button" aria-label={store.isPlaying ? "Tạm dừng" : "Phát video"} onClick={store.togglePlay}><Icon name={store.isPlaying ? "pause" : "play_arrow"} size={20}/></button><button className="icon-button" aria-label="Tiến 10 giây" onClick={() => store.seekTo(Math.min(end, store.currentTime + 10))}><Icon name="skip_next" size={20}/></button></div><time>{formatTime(store.currentTime)}<span className="desktop-only"> / {formatTime(data?.duration_seconds)}</span></time><time className="player-end-time">{formatTime(data?.duration_seconds)}</time><button className="auto-highlight desktop-only" aria-pressed={store.autoHighlight} onClick={auto} disabled={!source || !ranges.length}><Icon name="auto_awesome" size={16}/>Tự động phát Highlight</button><details className="player-settings desktop-only"><summary className="icon-button" aria-label="Cài đặt trình phát"><Icon name="settings"/></summary><div><label htmlFor="playback-rate">Tốc độ phát</label><select id="playback-rate" value={rate} onChange={e=>{const value=Number(e.target.value);setRate(value);if(ref.current)ref.current.playbackRate=value;}}>{[.5,.75,1,1.25,1.5,2].map(value=><option key={value} value={value}>{value}×</option>)}</select></div></details><button className="icon-button desktop-only" onClick={() => void ref.current?.requestFullscreen()} aria-label="Toàn màn hình"><Icon name="fullscreen"/></button></div>
   </div>
  </section>
- <div className="notice detail-error">Đang xem clip đã xuất bản{selectedClip ? ` (${formatTime(offset)}–${formatTime(end)})` : ""}. Video gốc chưa có nguồn phát.</div>
+ {!original && <div className="notice detail-error">Đang xem clip đã xuất bản{selectedClip ? ` (${formatTime(offset)}–${formatTime(end)})` : ""}. Video gốc chưa có nguồn phát.</div>}
  <div className="auto-highlight-mobile"><button className="auto-highlight" aria-pressed={store.autoHighlight} onClick={auto} disabled={!source || !ranges.length}><Icon name="auto_awesome" size={16}/>Tự động phát Highlight</button></div>
  <section className="detail-metadata"><h1>{data?.title}</h1><div className="video-metadata-line"><span>{formatDate(data?.created_at)}</span><span>{formatTime(data?.duration_seconds)}</span>{data?.category?.name && <span className="category">#{data.category.name}</span>}</div>
  <div className="detail-channel"><span className="avatar"><Icon name="movie_filter" size={22}/></span><div><p>VidsAI</p><small>Video đã xử lý</small></div></div>

@@ -138,7 +138,17 @@ func (h *VideoHandlers) Get(c *gin.Context) {
 		handlers.ErrorEnvelope(c, http.StatusNotFound, "VIDEO_NOT_FOUND", "Video not found")
 		return
 	}
-	c.JSON(http.StatusOK, toVideoCMS(v))
+	result := toVideoCMS(v)
+	result["playback_url"] = nil
+	if v.Status != domain.VideoDeleted && v.RawFilePath != "" {
+		url, err := h.storage.GetPresigned(c.Request.Context(), "raw-videos", v.RawFilePath, time.Hour)
+		if err != nil {
+			handlers.ErrorEnvelope(c, 503, "STORAGE_UNAVAILABLE", "Original video unavailable")
+			return
+		}
+		result["playback_url"] = url
+	}
+	c.JSON(http.StatusOK, result)
 }
 
 func (h *VideoHandlers) Delete(c *gin.Context) {

@@ -182,6 +182,15 @@ func (h *ContentHandlers) GetVideo(c *gin.Context) {
 		clipHs = append(clipHs, toClipH(&cls[i], h.storage))
 	}
 	vh := toVideoH(v, h.categories)
+	vh["playback_url"] = nil
+	if v.RawFilePath != "" {
+		url, err := h.storage.GetPresigned(c.Request.Context(), "raw-videos", v.RawFilePath, time.Hour)
+		if err != nil {
+			ErrorEnvelope(c, 503, "STORAGE_UNAVAILABLE", "Original video unavailable")
+			return
+		}
+		vh["playback_url"] = url
+	}
 	vh["clips"] = clipHs
 	c.JSON(http.StatusOK, vh)
 }

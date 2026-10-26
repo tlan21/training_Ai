@@ -1812,6 +1812,7 @@ input[type=checkbox] {
   height: 48px;
 }
 .player-bottom {
+  pointer-events: none;
   position: absolute;
   bottom: 0;
   left: 0;
@@ -1819,6 +1820,9 @@ input[type=checkbox] {
   padding: 40px 16px 16px;
   background: linear-gradient(transparent,#000c);
   color: white;
+}
+.player-bottom button, .player-bottom input, .player-bottom details {
+  pointer-events: auto;
 }
 .heatmap {
   height: 32px;

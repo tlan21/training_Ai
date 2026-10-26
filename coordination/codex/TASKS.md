@@ -12,13 +12,14 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-01 | T2.1–T2.5 | Xác minh lại backend trên stack thật | BLOCKED | INT-00 |
 | INT-02 | T2.5 | Thay adapter memory → Postgres (interactions/history/likes/settings) | REVIEW | INT-00 (DB); không phụ thuộc AI |
 | INT-03 | T2.5, T1.7 | Two-Tower: user vector Milvus thật + feed | TODO | INT-02, AI-01 |
-| INT-04 | T3.1, T3.2 | Contract nguồn phát video gốc (OpenAPI) + nối UI | IN_PROGRESS | INT-00 (runtime); contract có thể làm độc lập |
+| INT-04 | T3.1, T3.2 | Contract nguồn phát video gốc (OpenAPI) + nối UI | PARTIAL | INT-00 (runtime); contract có thể làm độc lập |
 | INT-05 | T3.1 | CMS Design Parity FULL | PARTIAL | INT-02, INT-04 |
 | INT-06 | T3.2 | Client Design Parity FULL | PARTIAL | INT-02, INT-04 |
 | INT-07 | T5.1 | Load test 50 video dồn hàng đợi | BLOCKED | AI-04 (GPU); bản CPU chạy trước được |
 | INT-08 | T5.2 | Soak test 48 h | BLOCKED | INT-07 |
 | INT-09 | T5.3 | Docs bàn giao hệ thống | TODO | INT-05..08 |
 | INT-10 | — | Forgot-password giữ nguyên, ngoài release hiện tại | DEFERRED / OUT_OF_SCOPE | D1, HC-02 |
+| INT-11 | INT-01 | HTTP media giữa gateway Docker và inference host | IN_PROGRESS | INT-00; real vision/index chờ HO-01 |
 
 Hoàn thành trước tách làn (bằng chứng INVENTORY mục 5): T0.1–T0.4, T2.1–T2.4, T4.1, T4.2 = DONE (VERIFIED-HIST, build VERIFIED-NOW);
 T2.5, T3.1, T3.2 = PARTIAL.
@@ -78,7 +79,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Evidence: — | Commits: — | Checkpoint: —
 
 ### INT-04 — Nguồn phát video gốc
-- T gốc: T3.1, T3.2 | Owner: CODEX | Status: IN_PROGRESS (2026-10-26)
+- T gốc: T3.1, T3.2 | Owner: CODEX | Status: PARTIAL (functional PASS; full parity pending)
 - Depends on: INT-00 cho runtime; sửa contract/regen types độc lập, không phụ thuộc AI | Blocks: INT-05, INT-06
 - Acceptance: task riêng sửa `infra/openapi.yaml` (thêm field URL phát video gốc đã ký, chỉ video `processed`/quyền CMS) → regen
   `api-types.ts` CMS/Client → gateway trả URL MinIO presigned → VideoDetail/CMS player phát được; test Playwright play/seek.
@@ -126,3 +127,13 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Depends on: user duyệt lại phạm vi release. Giữ nguyên code và commit `6528c62`; không xóa/revert/phát triển thêm.
 - Acceptance: không tính vào release hiện tại cho đến khi user duyệt lại.
 - Evidence: PROJECT_STATUS §5 D1; HC-02 mục 3. | Commits: `6528c62` (HIST) | Checkpoint: giữ nguyên.
+
+
+### INT-11 — Portable media transport cho AI host
+- T gốc: INT-01 | Owner: CODEX | Status: IN_PROGRESS (2026-10-26)
+- Depends on: INT-00; full real upload/search chờ HO-01 + AI-01 release trên master + AI-07 UP.
+- Acceptance: Vision gửi ảnh base64 (contract có sẵn), ASR nhận WAV qua URL MinIO presigned; không gửi path Docker cho host,
+  không shared mount/checkpoint; staging WAV cleanup/error handling; unit + mock pipeline tests PASS. Indexing media mới thật chờ contract Claude.
+- Changed dự kiến: aihttp + tests, gateway preprocessing/audio staging + tests; tracker/handoff.
+- Next action: triển khai transport đã có trong contract v1.0; không tự thêm video_id field khi Claude chưa công bố.
+- Evidence: HO-01 tại `1e72069`; contract v1.0 trên Claude `56c06a6`, master chưa có version này. | Commits: — | Checkpoint: —
