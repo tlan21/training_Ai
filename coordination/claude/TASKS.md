@@ -14,11 +14,11 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | AI-07 | T1.8 | Vận hành runtime :8001 thật cho Codex gọi HTTP (+ sửa UTF-8 Windows) | DONE (2026-10-26; :8001 UP; ingest path ⇐ HC-05) | AI-10; Milvus stack Codex (UP) |
 | AI-11 | T1.8 / T4.2 | HO-01: `video_id` tùy chọn cho Vision + index frame từ data URI 1 fps (contract minor) | DONE (2026-10-26) | HO-01 (Codex chọn HTTP media) |
 | AI-13 | T1.7 / T1.8 | D18: recommendation inference không trả metadata giả + `recommendation_mode` | DONE (2026-10-26; release #3) | D18 |
-| AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | IN_PROGRESS (2026-10-26; 12a/12c) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
+| AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | BLOCKED ⇐ bundle INT-13 (phần độc lập xong 2026-10-26) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | DONE (2026-10-26; sandbox + artifact; product → AI-12 theo D18) | HC-04 (sandbox READY) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a TODO · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
 | AI-03 | T1.6 | Mini-GPT: 03a Claude soạn summary 40 clip · 03b người duyệt · 03c train/eval | 03a TODO · 03b BLOCKED · 03c BLOCKED | 03b ⇐ user; 03c ⇐ 03b |
-| AI-04 | T1.8 / T4.3 | Đo VRAM sơ bộ Kaggle T4 (PRELIMINARY) | TODO | AI-06 |
+| AI-04 | T1.8 / T4.3 | Đo VRAM sơ bộ Kaggle T4 (PRELIMINARY) | IN_PROGRESS (2026-10-26) | AI-06 (DONE) |
 | AI-05 | T5.3 | Số liệu evaluation cho luận án | TODO | AI-02, AI-03, AI-04 |
 | AI-08 | — | Dọn dẹp dữ liệu/artefact làn AI an toàn (lặp lại sau mỗi đợt train) | TODO (đợt #1 DONE 2026-10-26) | không job/server nào đang dùng; user duyệt danh sách |
 
@@ -111,7 +111,7 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - Checkpoint: Next safe task = AI-03a.
 
 ### AI-04 — Đo VRAM sơ bộ trên Kaggle T4 (AI-GATE điều kiện 4, T4.3 phần GPU)
-- T gốc: T1.8, T4.3 | Owner: claude | Status: TODO (sơ bộ được user cho phép 2026-10-26)
+- T gốc: T1.8, T4.3 | Owner: claude | Status: IN_PROGRESS (2026-10-26; sơ bộ được user cho phép D4)
 - Depends on: AI-06 (đúng 6 checkpoint active + SHA). Máy local chỉ Intel UHD 630.
 - Cách đo: notebook Kaggle private, GPU T4; nạp đúng 6 checkpoint active (SHA khớp contract) + 20 request tuần tự đủ 6 loại,
   đo `torch.cuda.max_memory_allocated/reserved` sau nạp và sau mỗi request; tải output về trước khi push version kế
@@ -183,7 +183,7 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   ```
 
 ### AI-12 — Two-Tower v2 cho sản phẩm (D18 phương án B, roadmap)
-- T gốc: T1.7 | Owner: claude | Status: IN_PROGRESS (2026-10-26) — phần độc lập dữ liệu thật xong: 12a/12c (contract `ttv2-data-v1.1` + nhãn `ttv2-labels-v2`),
+- T gốc: T1.7 | Owner: claude | Status: BLOCKED ⇐ bundle thật INT-13 (2026-10-26) — phần độc lập dữ liệu thật xong: 12a/12c (contract `ttv2-data-v1.1` + nhãn `ttv2-labels-v2`),
   12b/12d (feature inductive, train loop, harness, gate D19, verify bundle). Còn: chạy trên bundle thật INT-13 (12d thật, 12e, 12f) — chưa đạt acceptance, không DONE
 - Depends on: dữ liệu tương tác hợp lệ của sản phẩm (Codex ghi `user_interactions`, đề xuất INT-13) | Blocks: recommendation `personalized` trên sản phẩm
 - Giữ nguyên: Two-Tower v1 (`two_tower-ml100k-v1`, SHA `f28c3794…`) làm baseline nghiên cứu trong sandbox; không xóa model/checkpoint/dữ liệu.
