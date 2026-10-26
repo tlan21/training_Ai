@@ -19,7 +19,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-08 | T5.2 | Soak test 48 h | BLOCKED | INT-07 |
 | INT-09 | T5.3 | Docs bàn giao hệ thống | TODO | INT-05..08 |
 | INT-10 | — | Forgot-password giữ nguyên, ngoài release hiện tại | DEFERRED / OUT_OF_SCOPE | D1, HC-02 |
-| INT-11 | INT-01 | HTTP media giữa gateway Docker và inference host | PARTIAL | INT-00; real vision/index chờ HO-01 |
+| INT-11 | INT-01 | HTTP media giữa gateway Docker và inference host | IN_PROGRESS | INT-00; real vision/index chờ HO-01 |
 
 Hoàn thành trước tách làn (bằng chứng INVENTORY mục 5): T0.1–T0.4, T2.1–T2.4, T4.1, T4.2 = DONE (VERIFIED-HIST, build VERIFIED-NOW);
 T2.5, T3.1, T3.2 = PARTIAL.
@@ -136,7 +136,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 
 
 ### INT-11 — Portable media transport cho AI host
-- T gốc: INT-01 | Owner: CODEX | Status: PARTIAL (HTTP media/mock PASS; real indexing waits HO-01)
+- T gốc: INT-01 | Owner: CODEX | Status: IN_PROGRESS (v1.2 source/unit follow-up only; runtime RESOURCE blocked)
 - Depends on: INT-00; full real upload/search chờ HO-01 + AI-01 release trên master + AI-07 UP.
 - Acceptance: Vision gửi ảnh base64 (contract có sẵn), ASR nhận WAV qua URL MinIO presigned; không gửi path Docker cho host,
   không shared mount/checkpoint; staging WAV cleanup/error handling; unit + mock pipeline tests PASS. Indexing media mới thật chờ contract Claude.

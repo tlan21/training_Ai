@@ -63,3 +63,8 @@ INT-02 → INT-04 (contract/types trước, sau đó backend/UI). INT-03 chờ A
 - CMS token persistence audit note: stores/authStore.ts currently persists accessToken; violates RAM-only convention. Plan separate fix + reload/refresh/storage E2E
   after resources recover, without touching forgot-password deferred scope.
 - Portable clean-machine ingest image remains to validate: current runtime intentionally uses cached video-ai-inference preprocessing image, no checkpoint process/mount.
+
+## Safe source-only follow-up while Docker is blocked
+- INT-11 IN_PROGRESS for AI-API v1.2 optional video_id: Claude published the field and index behavior; consume in existing request builder + unit test.
+- Keep all temp files on backend/.tmp (GOTMPDIR/TMP/TEMP) to avoid full C:. No Docker operation, image build, inference switch or real integration claim.
+- INT-03 stays BLOCKED_RESOURCE; UI contract decision and resource/cleanup approval both pending.
