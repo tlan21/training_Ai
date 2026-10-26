@@ -14,6 +14,12 @@ $settingsChanged = $false
 $name = 'int02-mock-' + [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
 $viewer = Invoke-RestMethod -Method Post "$base/api/auth/register" -ContentType 'application/json' -Body (@{username=$name;email="$name@example.test";password='E2e-test-123!'} | ConvertTo-Json)
 $viewerHeaders = @{ Authorization = "Bearer $($viewer.access_token)" }
+$probe = @{video_id='vid_int15_missing';interaction_type='click'} | ConvertTo-Json
+$staff = Invoke-WebRequest -Method Post "$base/api/interactions" -Headers $headers -ContentType 'application/json' -Body $probe -SkipHttpErrorCheck
+if ($staff.StatusCode -ne 403 -or ($staff.Content | ConvertFrom-Json).error.code -ne 'FORBIDDEN') { throw 'Staff interactions were not rejected' }
+$invalidDuration = Invoke-WebRequest -Method Post "$base/api/interactions" -Headers $viewerHeaders -ContentType 'application/json' -Body '{"video_id":"vid_int15_missing","interaction_type":"like","duration_watched":1}' -SkipHttpErrorCheck
+if ($invalidDuration.StatusCode -ne 422) { throw 'Non-watch duration was accepted' }
+Write-Host 'INT-15 live client role/duration boundary PASS'
 $categories = Invoke-RestMethod "$base/api/categories" -Headers $viewerHeaders
 $preferenceIds = @($categories | Select-Object -First 3 | ForEach-Object id)
 if ($preferenceIds.Count -ne 3) { throw 'Need three categories for preference persistence' }

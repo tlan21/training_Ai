@@ -1,0 +1,48 @@
+# INT-15 — Product interactions/export (2026-10-26)
+
+Owner CODEX. Source functional; task PARTIAL until actual bundle/Claude verifier and runtime recovery gates are recorded.
+Contract: POST /api/interactions {video_id,clip_id?,interaction_type,duration_watched?} →201/401/403/404/422.
+Separate public0.3.1 contract checkpoint987d647 preceded runtime enforcement; Go/CMS/Client types regenerated.
+Consumes HC-07/09 ttv2-data-v1.1; no AI source/checkpoint/loader/training changes.
+
+## Implementation
+- Client roleclient only; one watch_time/session at exit/pagehide, no heartbeat; media progress excludes seek and hidden time,
+  caps repeats at item length. Skip only feed, visible≥1s and watched<3s. Duplicate pagehide/unmount does not double-submit.
+  Events capture the current Bearer; expired/network-failed events may be lost, never replayed under another identity.
+- Handler rejects staff, invalid type/ID prefix, non-integer/negative/out-of-range durations and non-watch durations other than0.
+  PG verifies actual client role, processed/nondeleted video and published clip belonging to it. No user_interactions schema change.
+- Repeatable additive migration adds private training_origin on users/videos, defaultunknown. No destructive/backfill operation.
+  Gateway defaults PRODUCT_DATA_ORIGIN=unknown; reserved test/demo/E2E names/emails alwaystest, immutable after rename.
+  Product deployment opt-in is explicit; this mock stack remainsunknown. Export excludes unknown/test/staff.
+- Streaming Go CLI outputs5JSONL +manifest using repeatable-read/read-only transaction, UTC timestamps, deterministic ID ordering,
+  version/provenance/rows/SHA256; no PII. New directory/O_EXCL files, manifestlast; existing bundle cannot be overwritten.
+  Only real product IDs/history, no imputation/MovieLens or labels. See backend/cmd/ttv2-export/README.md.
+
+## Verified now
+- Go vet/test/build ./... PASS; handlers include12 role/validation boundary cases and provenance/type checks.
+- Intended Compose Postgres: productexport2 tests PASS; PG6tests PASS, no skips, exit0 (INT-15-productexport.log/INT-15-pg.log).
+  Snapshot fixture verifies origin/role/future exclusion, JSON/PII, checksums/counts, repeat deterministic hashes, overwrite rejection;
+  fixtures deleted by exact IDs after tests. Staff/deleted media cannot write. Migration applied and repeated: exit0, existing columns skipped.
+- CMS tsc/build PASS; Client tsc/lint/build14routes PASS; root E2E types PASS.
+- Playwright Client suite **55 PASS (1.1m)** including2 actual gateway auth sessions and3 new interaction cases:
+  no heartbeat/seek/hidden/duplicate exit, feed skip threshold, staff suppression. Existing UI390/1440 behavior preserved;
+  full-screen parity remains INT-06, no layout redesign in this task.
+- Live business attempt: staff403/envelope +non-watch422 PASS; real storage/ingest/cut +HTTP mock AI stage PASS.
+  Full attempt **NOT_PASS**: Docker restart command stalled after stage completion, so restart persistence was NOT verified anew.
+  Older INT-02/14 restart evidence remains historical. Gateway stopped for recovery; auto-review rejected targeted start (“blocked by policy”).
+  User asked to start only gateway. No Docker/WSL global restart, unrelated faktory unchanged.
+  Fixture settings restored76→75 only with expected-value guard; only exact fixture vid_dmeqh2hrogtb/title softdeleted (INT-15-cleanup.log).
+  Synthetic media objects retained; no physical data deletion.
+- Host loopback PG attempt FAILED authentication (INT-15-host-pg.log): another Windows Postgres listens5432.
+  Intended Compose DB tests above PASS with gateway internal DSN; no password/other-service change attempted.
+
+## Remaining / handoff
+- Build committed exporter revision and write honest actual bundle under backend/.tmp/ttv2/<UTC>; record counts/checksums/path.
+- Claude validates with its loader; Codex does not run/edit the AI module. Empty product data cannot meet D19 readiness.
+- User runtime recovery: gateway start was blocked by automatic approval review. Real AI remains HO-03, no new INTEGRATED_REAL claim.
+
+Lane: codex
+Changed: existing interaction contract/types, handlers/PG/config/provenance migration, Client tracker, readonly exporter/tests, Codex evidence
+Verified: Go/CMS/Client checks;8 intended-DB tests/no skips;55browser; migrationrepeat; partial live API/pipeline (restart NOT_PASS)
+Contract touched: public0.3.1; ttv2-data-v1.1 consumed, AI contract unchanged
+Next safe task: actual bundle/handoff; runtime recovery via user

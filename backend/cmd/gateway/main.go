@@ -44,12 +44,12 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	userRepo := &pg.UserRepo{DB: db}
+	userRepo := &pg.UserRepo{DB: db, DataOrigin: cfg.ProductDataOrigin}
 	sessionRepo := &pg.SessionRepo{DB: db}
 	vectorStore := milvus.NewFrames("http://"+cfg.MilvusHost+":"+cfg.MilvusPort, mocks.NewVectorStoreMem())
 	categoryRepo := &pg.CategoryRepo{DB: db}
 	interactionRepo := &pg.InteractionRepo{DB: db}
-	videoRepo := &pg.VideoRepo{DB: db}
+	videoRepo := &pg.VideoRepo{DB: db, DataOrigin: cfg.ProductDataOrigin}
 	clipRepo := &pg.ClipRepo{DB: db}
 	jobRepo := &pg.JobRepo{DB: db}
 	analysisStore := &mongo.AnalysisStore{Collection: documents.Collection("video_analyses")}

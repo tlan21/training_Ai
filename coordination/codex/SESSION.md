@@ -60,3 +60,14 @@ Next safe task: INT-11 after HO-03; INT-13 after capacity recovery
 - Public0.3.1 existing POST /api/interactions now documents roleclient403, existing hidden media404, duration0..int32 and one watch_time/session/no seek.
 - Regenerated Go/CMS/Client from OpenAPI; Go generated-package compile +CMS/Client tsc PASS. Runtime enforcement is next; not yet DONE.
 - INT-16 implementation c30c664,52browser tests PASS. Next provenance/read-only export consumes HC-09 ttv2-data-v1.1.
+
+## INT-15 implementation checkpoint (latest)
+- Source interactions/export complete; Go vet/test/build, CMS tsc/build, Client tsc/lint/build14routes, E2E types PASS.
+- 55Client E2E PASS incl2live and3interaction cases. Intended Compose PG8tests PASS/no skips/exit0; migration applied/repeated0.
+- Private training_origin defaultsunknown; no historical product promotion. Test/demo/staff excluded; current mock stack remainsunknown.
+- Runtime current: gateway STOPPED after Docker restart verification stalled. Auto-review rejected targeted start with “blocked by policy”.
+  User asked to start only video-ai-gateway-1; no global restart or faktory changes. Do not claim current gateway healthy.
+- Live role403/duration422 and mock pipeline stage passed; full business/restart NOT_PASS. Guarded fixture rollback restored75, exact fixture softdeleted.
+- Host PG5432 auth failure is separate Windows instance; use internal gateway DSN inside existing PG container for exporter.
+- Next: commit exporter, compile with actual revision, execute readonly CLI inside running Postgres container (no gateway start needed),
+  copy artifact to backend/.tmp/ttv2/<UTC>, handoff counts/SHA to Claude. No model/loader code execution by Codex.

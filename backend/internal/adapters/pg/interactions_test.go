@@ -102,6 +102,15 @@ func TestInteractionRepository_RealPersistencePaginationAndPrivacy(t *testing.T)
 	if err := db.QueryRow(ctx, `SELECT count(*) FROM user_interactions WHERE user_id=$1`, user).Scan(&count); err != nil || count != 7 {
 		t.Fatalf("events not persisted: %d %v", count, err)
 	}
+	exec(`UPDATE users SET role='admin' WHERE id=$1`, other)
+	if err := repo.Add(ctx, &domain.Interaction{UserID: other, VideoID: video, InteractionType: domain.InteractClick}); !errors.Is(err, domain.ErrVideoNotFound) {
+		t.Fatalf("non-client event accepted: %v", err)
+	}
+	exec(`UPDATE videos SET deleted_at=now() WHERE id=$1`, video)
+	if err := repo.Add(ctx, &domain.Interaction{UserID: user, VideoID: video, InteractionType: domain.InteractClick}); !errors.Is(err, domain.ErrVideoNotFound) {
+		t.Fatalf("deleted event accepted: %v", err)
+	}
+	exec(`UPDATE videos SET deleted_at=NULL WHERE id=$1`, video)
 	ids, err := repo.PopularityTop(ctx, 100)
 	if err != nil {
 		t.Fatal(err)

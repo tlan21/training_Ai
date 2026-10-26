@@ -36,7 +36,7 @@ for (const width of [390, 1440]) for (const [mode, label] of [
   }
  });
 }
-async function setup(page:Page,{empty=false,fail='',prefs=user.preferences}: {empty?:boolean;fail?:string;prefs?:string[]}={}){
+async function setup(page:Page,{empty=false,fail='',prefs=user.preferences,role=user.role}: {empty?:boolean;fail?:string;prefs?:string[];role?:components['schemas']['UserMe']['role']}={}){
  const interactions:Interaction[]=[];const requests:string[]=[];
  await page.route('**/ui-fixture.mp4',route=>{
   const body=readFileSync(path.join(__dirname,'fixtures/video.mp4'));
@@ -50,7 +50,7 @@ async function setup(page:Page,{empty=false,fail='',prefs=user.preferences}: {em
   if(pathname==='/api/auth/refresh')return route.fulfill({json:{access_token:'ui-fixture'}});
   if(pathname==='/api/auth/login'||pathname==='/api/auth/register')return route.fulfill({json:{access_token:'ui-fixture',user},status:pathname.endsWith('register')?201:200});
   if(pathname==='/api/auth/logout')return route.fulfill({status:204});
-  if(pathname==='/api/users/me'){if(req.method()==='PUT'){user.username=req.postDataJSON().username;}return route.fulfill({json:{...user,preferences:prefs}});}
+  if(pathname==='/api/users/me'){if(req.method()==='PUT'){user.username=req.postDataJSON().username;}return route.fulfill({json:{...user,preferences:prefs,role}});}
   if(pathname==='/api/users/me/preferences')return route.fulfill({json:{}});
   if(pathname==='/api/categories')return route.fulfill({json:categories});
   if(pathname==='/api/feed')return route.fulfill({json:{items:empty?[]:clips,next_cursor:null,recommendation_mode:'popularity'} satisfies components['schemas']['FeedPage']});
@@ -151,6 +151,58 @@ async function noOverflow(page:Page){
  expect(await page.locator('.material-symbols-outlined').count()).toBe(0);
  expect(await page.locator('svg[data-icon]').evaluateAll(elements=>elements.length>0&&elements.every(el=>el.getAttribute('data-fallback')==='false'))).toBe(true);
 }
+test('INT-15 one watch row on session end, no heartbeat, seek or duplicate exit',async({page})=>{
+ const {interactions}=await setup(page);await page.goto(client+'/feed');
+ const video=page.locator('.feed-clip').first().locator('video');
+ await expect.poll(()=>video.evaluate((el:HTMLVideoElement)=>el.currentTime)).toBeGreaterThan(.2);
+ await video.evaluate((el:HTMLVideoElement)=>el.pause());
+ await page.clock.install();
+ await video.evaluate((el:HTMLVideoElement)=>{
+  const sample={time:0,seeking:false};
+  Object.defineProperty(el,'currentTime',{get:()=>sample.time,configurable:true});
+  Object.defineProperty(el,'duration',{get:()=>120,configurable:true});
+  Object.defineProperty(el,'seeking',{get:()=>sample.seeking,configurable:true});
+  Object.assign(window,{watchSample:sample});el.dispatchEvent(new Event('playing'));
+ });
+ await page.clock.fastForward(12000);
+ await video.evaluate(el=>{(window as unknown as {watchSample:{time:number}}).watchSample.time=12;el.dispatchEvent(new Event('timeupdate'));});
+ expect(interactions.filter(x=>x.interaction_type==='watch_time')).toHaveLength(0);
+ await video.evaluate(el=>{
+  const sample=(window as unknown as {watchSample:{time:number;seeking:boolean}}).watchSample;
+  sample.seeking=true;sample.time=80;el.dispatchEvent(new Event('seeking'));sample.seeking=false;el.dispatchEvent(new Event('seeked'));
+ });
+ await page.clock.fastForward(1000);
+ await video.evaluate(el=>{(window as unknown as {watchSample:{time:number}}).watchSample.time=81;el.dispatchEvent(new Event('timeupdate'));});
+ await page.evaluate(()=>{Object.defineProperty(document,'hidden',{value:true,configurable:true});document.dispatchEvent(new Event('visibilitychange'));});
+ await page.clock.fastForward(5000);
+ await video.evaluate(el=>{(window as unknown as {watchSample:{time:number}}).watchSample.time=86;el.dispatchEvent(new Event('timeupdate'));});
+ await page.evaluate(()=>{Object.defineProperty(document,'hidden',{value:false,configurable:true});document.dispatchEvent(new Event('visibilitychange'));});
+ await page.evaluate(()=>window.dispatchEvent(new PageTransitionEvent('pagehide')));
+ await expect.poll(()=>interactions.filter(x=>x.interaction_type==='watch_time').length).toBe(1);
+ expect(interactions.find(x=>x.interaction_type==='watch_time')?.duration_watched).toBeGreaterThanOrEqual(12);
+ expect(interactions.find(x=>x.interaction_type==='watch_time')?.duration_watched).toBeLessThanOrEqual(13);
+ await page.getByRole('link',{name:'Khám phá',exact:true}).click();
+ expect(interactions.filter(x=>x.interaction_type==='watch_time')).toHaveLength(1);
+ expect(interactions.filter(x=>x.interaction_type==='skip')).toHaveLength(0);
+});
+
+test('INT-15 skip requires visible second and less than three watched seconds',async({page})=>{
+ const {interactions}=await setup(page);await page.setViewportSize({width:390,height:844});await page.goto(client+'/feed');
+ await expect.poll(()=>page.locator('.feed-clip').first().locator('video').evaluate((el:HTMLVideoElement)=>el.currentTime)).toBeGreaterThan(1.2);
+ await page.locator('.feed-scroll').evaluate(el=>el.scrollTo({top:el.clientHeight,behavior:'instant'}));
+ await expect.poll(()=>interactions.filter(x=>x.interaction_type==='skip').length).toBe(1);
+ expect(interactions.find(x=>x.interaction_type==='skip')?.clip_id).toBe('clp_ui1');
+ expect(interactions.filter(x=>x.clip_id==='clp_ui2'&&x.interaction_type==='skip')).toHaveLength(0);
+});
+
+test('INT-15 staff sessions do not emit product interactions',async({page})=>{
+ const {interactions}=await setup(page,{role:'admin'});await page.goto(client+'/feed');
+ const first=page.locator('.feed-clip').first();await expect.poll(()=>first.locator('video').evaluate((el:HTMLVideoElement)=>el.currentTime)).toBeGreaterThan(1.2);
+ await first.getByRole('button',{name:'Thích',exact:true}).click();
+ await page.evaluate(()=>window.dispatchEvent(new PageTransitionEvent('pagehide')));
+ await page.getByRole('link',{name:'Khám phá',exact:true}).click();
+ expect(interactions).toEqual([]);
+});
 const screens=[
 ['login','VidsAI'],['register','Tham gia VidsAI'],['forgot-password','Quên mật khẩu?'],['reset-password?token=dev-reset-fixture','Đặt lại mật khẩu'],
 ['onboarding',''],['feed',''],['discover',''],['search?q=kiến%20trúc',''],['profile?view=library','Video đã thích'],['videos/vid_ui1?t=22',''],

@@ -12,6 +12,7 @@ CREATE TABLE users (
     avatar_url VARCHAR(512),
     password_hash VARCHAR(255) NOT NULL,
     role VARCHAR(20) NOT NULL DEFAULT 'client' CHECK (role IN ('admin', 'editor', 'client')),
+    training_origin TEXT NOT NULL DEFAULT 'unknown' CHECK (training_origin IN ('unknown', 'product', 'test')),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
@@ -27,6 +28,7 @@ CREATE TABLE videos (
     status VARCHAR(20) NOT NULL DEFAULT 'uploaded'
         CHECK (status IN ('uploaded', 'processing', 'processed', 'failed', 'deleted')),
     uploaded_by VARCHAR(50) REFERENCES users(id) ON DELETE SET NULL,
+    training_origin TEXT NOT NULL DEFAULT 'unknown' CHECK (training_origin IN ('unknown', 'product', 'test')),
     deleted_at TIMESTAMP WITH TIME ZONE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP

@@ -22,9 +22,9 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-11 | INT-01 | HTTP media giữa gateway Docker và inference host | BLOCKED | HO-03 Docker Desktop host transport; restart decision pending |
 | INT-12 | T2.2/T3.1 | CMS access JWT chỉ ở RAM, refresh khi reload | REVIEW | 41 E2E PASS; live gateway cookie rotation |
 | INT-13 | INT-00 | Image ingest riêng + kiểm clean build | BLOCKED | source/3 tests PASS; full CPU image capacity gate |
-| INT-14 | HC-06/D18/D21 | Popularity MVP, real metadata, recommendation_mode | PARTIAL | MVP/PG/46UI tests PASS; liveClient INT-16 +parity INT-06 |
-| INT-15 | HC-07/D19/D21 | Valid product interactions + versioned export for v2 | TODO | ttv2-data-v1; test/demo provenance required |
-| INT-16 | INT-14 | Client same-origin API transport | IN_PROGRESS | gatewayIPv4 healthy; browser localhost auth blocked |
+| INT-14 | HC-06/D18/D21 | Popularity MVP, real metadata, recommendation_mode | PARTIAL | MVP/PG/Client live verified; full parity INT-06 remains |
+| INT-15 | HC-07/09/D19/D21 | Valid product interactions + versioned export for v2 | IN_PROGRESS | source/55E2E/8DB PASS; actual bundle +Claude check next |
+| INT-16 | INT-14 | Client same-origin API transport | REVIEW | c30c664;52E2E+live sessions PASS; fresh Docker gate |
 
 Hoàn thành trước tách làn (bằng chứng INVENTORY mục 5): T0.1–T0.4, T2.1–T2.4, T4.1, T4.2 = DONE (VERIFIED-HIST, build VERIFIED-NOW);
 T2.5, T3.1, T3.2 = PARTIAL.

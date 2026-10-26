@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 
@@ -19,6 +20,10 @@ func NewInteractionHandlers(interactions ports.InteractionRepository) *Interacti
 
 // POST /api/interactions — {video_id, clip_id?, interaction_type, duration_watched?}
 func (h *InteractionHandlers) Create(c *gin.Context) {
+	if c.GetString("user_role") != string(domain.RoleClient) {
+		ErrorEnvelope(c, http.StatusForbidden, "FORBIDDEN", "Only client accounts can record interactions")
+		return
+	}
 	var req struct {
 		VideoID         string  `json:"video_id" binding:"required"`
 		ClipID          *string `json:"clip_id"`
@@ -42,6 +47,10 @@ func (h *InteractionHandlers) Create(c *gin.Context) {
 	dw := 0
 	if req.DurationWatched != nil {
 		dw = *req.DurationWatched
+	}
+	if !strings.HasPrefix(req.VideoID, "vid_") || (req.ClipID != nil && !strings.HasPrefix(*req.ClipID, "clp_")) || (req.InteractionType != "watch_time" && dw != 0) {
+		ErrorEnvelope(c, http.StatusUnprocessableEntity, "VALIDATION_ERROR", "invalid product ID or non-watch duration")
+		return
 	}
 	it := &domain.Interaction{
 		UserID: uid, VideoID: req.VideoID, ClipID: req.ClipID,

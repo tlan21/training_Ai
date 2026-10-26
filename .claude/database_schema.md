@@ -32,6 +32,14 @@ PostgreSQL đóng vai trò là "Nguồn sự thật" (Source of Truth) cho các 
 
 ### 2.1. Sơ đồ các Bảng (DDL SQL)
 
+Codex INT-15: users và videos có `training_origin TEXT NOT NULL DEFAULT 'unknown'`
+CHECK IN ('unknown','product','test'), private metadata, không trả qua API.
+Migration lặp an toàn: `infra/postgres/migrations/003_training_origin.sql`; init schema cũng có cột.
+Không backfill lịch sử thành product. Gateway mặc định PRODUCT_DATA_ORIGIN=unknown;
+deployment thu thập thật mới đặt product. Prefix test/demo/E2E và email example.test/example.com luôn test,
+giữ nguyên sau đổi tên. Export chỉ users roleclient/product và videos/product; unknown/test bị loại.
+Không đổi schema user_interactions; không xóa hay thay đổi dữ liệu lịch sử.
+
 ```sql
 -- Kích hoạt extension để sinh UUID tự động nếu cần
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";

@@ -12,10 +12,16 @@ import (
 	"traning_ai/backend/internal/domain"
 )
 
-type VideoRepo struct{ DB *pgxpool.Pool }
+type VideoRepo struct {
+	DB         *pgxpool.Pool
+	DataOrigin string
+}
 type ClipRepo struct{ DB *pgxpool.Pool }
 type JobRepo struct{ DB *pgxpool.Pool }
-type UserRepo struct{ DB *pgxpool.Pool }
+type UserRepo struct {
+	DB         *pgxpool.Pool
+	DataOrigin string
+}
 type SessionRepo struct{ DB *pgxpool.Pool }
 type CategoryRepo struct{ DB *pgxpool.Pool }
 
@@ -44,7 +50,7 @@ func scanVideo(row pgx.Row) (*domain.Video, error) {
 	return &v, notFound(err, domain.ErrVideoNotFound)
 }
 func (r *VideoRepo) Create(ctx context.Context, v *domain.Video) error {
-	_, err := r.DB.Exec(ctx, `INSERT INTO videos(id,title,description,raw_file_path,duration_seconds,status,uploaded_by) VALUES($1,$2,$3,$4,$5,$6,$7)`, v.ID, v.Title, v.Description, v.RawFilePath, v.DurationSeconds, v.Status, v.UploadedBy)
+	_, err := r.DB.Exec(ctx, `INSERT INTO videos(id,title,description,raw_file_path,duration_seconds,status,uploaded_by,training_origin) VALUES($1,$2,$3,$4,$5,$6,$7,$8)`, v.ID, v.Title, v.Description, v.RawFilePath, v.DurationSeconds, v.Status, v.UploadedBy, trainingOrigin(r.DataOrigin, v.Title))
 	return err
 }
 func (r *VideoRepo) Get(ctx context.Context, id string) (*domain.Video, error) {
@@ -187,7 +193,7 @@ func scanUser(row pgx.Row) (*domain.User, error) {
 	return &u, notFound(err, domain.ErrUserNotFound)
 }
 func (r *UserRepo) Create(ctx context.Context, u *domain.User) error {
-	_, err := r.DB.Exec(ctx, `INSERT INTO users(id,username,email,password_hash,role) VALUES($1,$2,$3,$4,$5)`, u.ID, u.Username, u.Email, u.PasswordHash, u.Role)
+	_, err := r.DB.Exec(ctx, `INSERT INTO users(id,username,email,password_hash,role,training_origin) VALUES($1,$2,$3,$4,$5,$6)`, u.ID, u.Username, u.Email, u.PasswordHash, u.Role, trainingOrigin(r.DataOrigin, u.Username, u.Email))
 	var pgerr *pgconn.PgError
 	if errors.As(err, &pgerr) && pgerr.Code == "23505" {
 		if strings.Contains(pgerr.ConstraintName, "email") {

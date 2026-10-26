@@ -1,0 +1,26 @@
+=== RUN   TestExportFieldTypes
+--- PASS: TestExportFieldTypes (0.00s)
+=== RUN   TestRealSnapshotProvenanceAndChecksums
+    integration_test.go:45: failed to connect to `user=app database=video_ai`: 127.0.0.1:5432 (127.0.0.1): failed SASL auth: FATAL: password authentication failed for user "app" (SQLSTATE 28P01)
+--- FAIL: TestRealSnapshotProvenanceAndChecksums (0.07s)
+FAIL
+FAIL	traning_ai/backend/internal/productexport	1.208s
+=== RUN   TestInteractionRepository_RealPersistencePaginationAndPrivacy
+    interactions_test.go:51: failed to connect to `user=app database=video_ai`: 127.0.0.1:5432 (127.0.0.1): failed SASL auth: FATAL: password authentication failed for user "app" (SQLSTATE 28P01)
+--- FAIL: TestInteractionRepository_RealPersistencePaginationAndPrivacy (0.13s)
+=== RUN   TestInteractionRepository_RejectsInvalidInputs
+--- PASS: TestInteractionRepository_RejectsInvalidInputs (0.00s)
+=== RUN   TestPreferenceRepository_RealReplaceRollbackAndIsolation
+    preferences_test.go:17: failed to connect to `user=app database=video_ai`: 127.0.0.1:5432 (127.0.0.1): failed SASL auth: FATAL: password authentication failed for user "app" (SQLSTATE 28P01)
+--- FAIL: TestPreferenceRepository_RealReplaceRollbackAndIsolation (0.06s)
+=== RUN   TestJobRepository_RealTransitions
+    repositories_test.go:20: failed to connect to `user=app database=video_ai`: 127.0.0.1:5432 (127.0.0.1): failed SASL auth: FATAL: password authentication failed for user "app" (SQLSTATE 28P01)
+--- FAIL: TestJobRepository_RealTransitions (0.10s)
+=== RUN   TestSettingsRepository_RealAtomicPatch
+    settings_test.go:16: failed to connect to `user=app database=video_ai`: 127.0.0.1:5432 (127.0.0.1): failed SASL auth: FATAL: password authentication failed for user "app" (SQLSTATE 28P01)
+--- FAIL: TestSettingsRepository_RealAtomicPatch (0.15s)
+=== RUN   TestTrainingOrigin
+--- PASS: TestTrainingOrigin (0.00s)
+FAIL
+FAIL	traning_ai/backend/internal/adapters/pg	1.596s
+FAIL

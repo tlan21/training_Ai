@@ -22,6 +22,7 @@ type Config struct {
 	MinioBucket         string
 	RedisAddr           string
 	JWTSecret           string
+	ProductDataOrigin   string
 }
 
 func Load() Config {
@@ -43,6 +44,7 @@ func Load() Config {
 		MinioBucket:         env("MINIO_BUCKET", "raw-videos"),
 		RedisAddr:           env("REDIS_ADDR", "localhost:6379"),
 		JWTSecret:           env("JWT_SECRET", "dev-jwt-secret-change-me"),
+		ProductDataOrigin:   env("PRODUCT_DATA_ORIGIN", "unknown"),
 	}
 }
 

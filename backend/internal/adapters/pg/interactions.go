@@ -13,11 +13,12 @@ import (
 type InteractionRepo struct{ DB *pgxpool.Pool }
 
 func (r *InteractionRepo) Add(ctx context.Context, i *domain.Interaction) error {
-	if i.DurationWatched < 0 || int64(i.DurationWatched) > 2147483647 {
+	if i.DurationWatched < 0 || int64(i.DurationWatched) > 2147483647 || (i.InteractionType != domain.InteractWatchTime && i.DurationWatched != 0) {
 		return domain.ErrValidation
 	}
 	err := r.DB.QueryRow(ctx, `INSERT INTO user_interactions(user_id,video_id,clip_id,interaction_type,duration_watched)
 		SELECT $1::varchar,$2::varchar,$3::varchar,$4::varchar,$5::int FROM videos v WHERE v.id=$2 AND v.status='processed'
+		AND v.deleted_at IS NULL AND EXISTS(SELECT 1 FROM users u WHERE u.id=$1 AND u.role='client')
 		AND ($3::varchar IS NULL OR EXISTS(SELECT 1 FROM clips c WHERE c.id=$3 AND c.video_id=v.id AND c.status='published'))
 		RETURNING id,created_at`, i.UserID, i.VideoID, i.ClipID, i.InteractionType, i.DurationWatched).Scan(&i.ID, &i.CreatedAt)
 	var pgerr *pgconn.PgError

@@ -42,7 +42,7 @@ function FeedClip({ clip, active, mode, onMessage }: {
     }, [active, clip.playback_url]);
     useEffect(() => { if (active && clip.video_id)
         track({ video_id: clip.video_id, clip_id: clip.id, interaction_type: "click" }); }, [active, clip.video_id, clip.id]);
-    useWatchTime(ref, clip.video_id, clip.id, active, clip.playback_url);
+    useWatchTime(ref, clip.video_id, clip.id, active, clip.playback_url, true);
     const action = (type: "like" | "save") => { if (type === "like")
         setLiked(v => !v);
     else

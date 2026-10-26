@@ -41,7 +41,13 @@ export function formatDate(date?: string) {
     return date ? new Date(date).toLocaleDateString("vi-VN") : "—";
 }
 export type Interaction = paths["/api/interactions"]["post"]["requestBody"]["content"]["application/json"];
-export function track(body: Interaction) { void apiClient.post("/api/interactions", body).catch(() => { }); }
+export function track(body: Interaction, keepalive = false) {
+    const { user, accessToken } = useAuthStore.getState();
+    if (user?.role !== "client" || !accessToken) return;
+    // Capture this session's Bearer; a queued event must never acquire another user's token.
+    void fetch(`${apiClient.defaults.baseURL}/api/interactions`, { method: "POST", credentials: "include", keepalive,
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` }, body: JSON.stringify(body) }).catch(() => {});
+}
 export async function shareVideo(videoId: string, clipId?: string) {
     const url = `${window.location.origin}/videos/${videoId}${clipId ? `?clip=${clipId}` : ""}`;
     if (navigator.share)

@@ -1,0 +1,7 @@
+BEGIN
+psql:/tmp/codex-int15-origin.sql:4: NOTICE:  column "training_origin" of relation "users" already exists, skipping
+ALTER TABLE
+psql:/tmp/codex-int15-origin.sql:6: NOTICE:  column "training_origin" of relation "videos" already exists, skipping
+ALTER TABLE
+COMMIT
+0

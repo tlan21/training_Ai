@@ -178,6 +178,7 @@ services:
       AI_SERVICE_KEY: ${AI_SERVICE_KEY:-sk-local-dev-key-change-me}
       AI_BASE_URL: ${AI_BASE_URL:-http://host.docker.internal:8001}
       AI_ALLOW_STUB: ${AI_ALLOW_STUB:-0}
+      PRODUCT_DATA_ORIGIN: ${PRODUCT_DATA_ORIGIN:-unknown}
     depends_on:
       postgres: { condition: service_healthy }
       mongo: { condition: service_healthy }
