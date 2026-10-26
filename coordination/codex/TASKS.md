@@ -10,9 +10,9 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 |---|---|---|---|---|
 | INT-00 | — | Worktree, dependency, stack hạ tầng + mock AI HTTP | REVIEW | HC-02, HC-03 (đã nhận) |
 | INT-01 | T2.1–T2.5 | Xác minh lại backend trên stack thật | BLOCKED | INT-00 |
-| INT-02 | T2.5 | Thay adapter memory → Postgres (interactions/history/likes/settings) | IN_PROGRESS | INT-00 (DB); không phụ thuộc AI |
+| INT-02 | T2.5 | Thay adapter memory → Postgres (interactions/history/likes/settings) | REVIEW | INT-00 (DB); không phụ thuộc AI |
 | INT-03 | T2.5, T1.7 | Two-Tower: user vector Milvus thật + feed | TODO | INT-02, AI-01 |
-| INT-04 | T3.1, T3.2 | Contract nguồn phát video gốc (OpenAPI) + nối UI | TODO | INT-00 (runtime); contract có thể làm độc lập |
+| INT-04 | T3.1, T3.2 | Contract nguồn phát video gốc (OpenAPI) + nối UI | IN_PROGRESS | INT-00 (runtime); contract có thể làm độc lập |
 | INT-05 | T3.1 | CMS Design Parity FULL | PARTIAL | INT-02, INT-04 |
 | INT-06 | T3.2 | Client Design Parity FULL | PARTIAL | INT-02, INT-04 |
 | INT-07 | T5.1 | Load test 50 video dồn hàng đợi | BLOCKED | AI-04 (GPU); bản CPU chạy trước được |
@@ -55,7 +55,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Checkpoint: Lane codex / Changed verification INT-00 / Verified DB PASS / Contract no / Next INT-02.
 
 ### INT-02 — Adapter memory → Postgres
-- T gốc: T2.5 | Owner: CODEX | Status: IN_PROGRESS (2026-10-26)
+- T gốc: T2.5 | Owner: CODEX | Status: REVIEW (2026-10-26)
 - Depends on: INT-00 (Postgres), không phụ thuộc AI/INT-01 E2E thật | Blocks: INT-03, INT-05, INT-06
 - Phạm vi (`backend/cmd/gateway/main.go`): `mocks.NewInteractionRepoMem()` (interactions, history, likes);
   `GET/PUT /api/cms/settings` (`handlers/cms/system.go` hard-code, PUT không lưu) → bảng `system_settings`.
@@ -63,8 +63,11 @@ T2.5, T3.1, T3.2 = PARTIAL.
   lịch sử/likes đúng user, pagination, ẩn clip chưa published/video chưa processed; settings patch atomic + key masked; OpenAPI không đổi.
 - Changed dự kiến: PG interaction/settings adapters + tests, port/domain settings, gateway wiring, CMS system handler + tests,
   auth history/likes serialization dùng helper playback sẵn có, script persistence E2E + tracker.
-- Next action: dùng bảng user_interactions/system_settings đã có schema+seed; không cần migration schema hoặc Milvus change.
-- Evidence: — | Commits: — | Checkpoint: —
+- Next action: chờ release user duyệt; INT-04 độc lập với AI.
+- Evidence: VERIFIED-NOW verification/INT-02.md + INT-02-persistence.json; Go test/vet/build PASS, 4 PG tests PASS,
+  script ./e2e/verify_business_persistence.ps1 PASS (real ingest/cut/storage + mock HTTP AI; không phải AI thật).
+- Commits: `7efe2c9`.
+- Checkpoint: Lane codex / Changed PG adapters+handlers+wiring+tests+script / Verified xem evidence / Contract no / Next INT-04.
 
 ### INT-03 — Two-Tower user vector thật
 - T gốc: T2.5, T1.7 | Owner: codex | Status: TODO
@@ -75,10 +78,14 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Evidence: — | Commits: — | Checkpoint: —
 
 ### INT-04 — Nguồn phát video gốc
-- T gốc: T3.1, T3.2 | Owner: codex | Status: TODO
+- T gốc: T3.1, T3.2 | Owner: CODEX | Status: IN_PROGRESS (2026-10-26)
 - Depends on: INT-00 cho runtime; sửa contract/regen types độc lập, không phụ thuộc AI | Blocks: INT-05, INT-06
 - Acceptance: task riêng sửa `infra/openapi.yaml` (thêm field URL phát video gốc đã ký, chỉ video `processed`/quyền CMS) → regen
   `api-types.ts` CMS/Client → gateway trả URL MinIO presigned → VideoDetail/CMS player phát được; test Playwright play/seek.
+- Changed dự kiến: infra/openapi.yaml + generated Go/CMS/Client types (commit contract riêng); detail handlers + tests,
+  CMS Highlight/Subtitles players + Client video page; E2E playback + Design Parity Check 10 mục.
+- Next action: thêm VideoDetail.playback_url nullable signed URL trong existing GET public/CMS detail; không thêm endpoint,
+  không xuất raw_file_path, list không cấp URL; public chỉ processed, CMS admin/editor trừ deleted. Sinh types trước code.
 - Evidence: — | Commits: — | Checkpoint: —
 
 ### INT-05 — CMS Design Parity FULL

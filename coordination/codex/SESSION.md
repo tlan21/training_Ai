@@ -1,12 +1,12 @@
 # SESSION — làn Codex
 
 ## Phiên đang chạy
-- Task: INT-02 IN_PROGRESS (2026-10-26).
+- Task: INT-04 IN_PROGRESS (2026-10-26); INT-02 REVIEW tại 7efe2c9.
 - Bước đã xong: INT-00 REVIEW, xem verification/INT-00.md + INT-00-smoke.json (Go/CMS/Client/build/DB/mock runtime PASS).
   INT-01 DB/backend verified, phần real E2E BLOCKED AI-01/AI-07. INT-10 DEFERRED theo D1.
 - Bước đã hoàn tất INT-02: PG adapters+wiring, history/likes signed playback, settings atomic/masked; Go test/vet/build PASS,
   4 PG real tests PASS trong Docker network, verify_business_persistence.ps1 PASS (restart, HTTP206, privacy, settings restore).
-- Bước kế: chốt INT-02 REVIEW và nhận INT-04; sửa OpenAPI/regen types trong commit riêng trước backend/UI.
+- Bước kế: INT-04 sửa OpenAPI VideoDetail.playback_url/regen types trong commit riêng trước backend/UI; kiểm real MinIO playback với mock AI.
   Dùng skill backend_endpoint.md (không đổi schema DB).
 - File đang sửa: backend PG/settings/auth/gateway + tests; e2e/verify_business_persistence.ps1; verification/INT-02.md + JSON, SESSION.
 - Lệnh verify dở: —.
