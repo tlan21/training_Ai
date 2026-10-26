@@ -10,8 +10,8 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | AI-00 | — | Thiết lập tách làn + kiểm kê | DONE | — |
 | AI-06 | T1.8 | **Ưu tiên 1** — Xác minh nguồn checkpoint + thang sẵn sàng 6 model | DONE (2026-10-26) | — |
 | AI-01 | T1.8 | Phát hành AI API Contract v1 (API_READY) | REVIEW (v1.0-rc1 DRAFT; API_READY ⇐ AI-07 + release, D16) | AI-06 |
-| AI-10 | T1.8 | Health/degraded đúng ngữ nghĩa + dependency status + tự phục hồi (D15) | IN_PROGRESS (2026-10-26) | — |
-| AI-07 | T1.8 | Vận hành runtime :8001 thật cho Codex gọi HTTP (+ sửa UTF-8 Windows) | TODO — **ưu tiên** | AI-10; Milvus stack Codex (UP) |
+| AI-10 | T1.8 | Health/degraded đúng ngữ nghĩa + dependency status + tự phục hồi (D15) | DONE (2026-10-26) | — |
+| AI-07 | T1.8 | Vận hành runtime :8001 thật cho Codex gọi HTTP (+ sửa UTF-8 Windows) | IN_PROGRESS (2026-10-26) | AI-10; Milvus stack Codex (UP) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | TODO | HC-04 (Codex: mapping ID + collection) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a TODO · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
 | AI-03 | T1.6 | Mini-GPT: 03a Claude soạn summary 40 clip · 03b người duyệt · 03c train/eval | 03a TODO · 03b BLOCKED · 03c BLOCKED | 03b ⇐ user; 03c ⇐ 03b |
@@ -122,13 +122,24 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - Commits: — | Checkpoint: —
 
 ### AI-10 — Health/degraded đúng ngữ nghĩa (D15)
-- T gốc: T1.8 | Owner: claude | Status: IN_PROGRESS (2026-10-26)
+- T gốc: T1.8 | Owner: claude | Status: DONE (2026-10-26)
 - Depends on: — | Blocks: AI-07 (kiểm health/readiness)
 - Việc: input không hợp lệ (400/422, ảnh/audio không đọc được, lệch chiều highlight) không đánh dấu model degraded; chỉ lỗi inference thật/timeout mới đánh dấu;
   dependency (Milvus visual/recommendation: unavailable/missing_collection) có trạng thái riêng; degraded + dependency tự phục hồi khi gọi thành công / Milvus
   sửa xong (không cache thất bại vĩnh viễn). Giữ tương thích: status code hiện có giữ nguyên; field mới trong `/health` chỉ thêm (minor version) + REL cho Codex.
 - Acceptance: test cho validation error, model failure, dependency unavailable, recovery; suite inference PASS; live smoke PASS; contract + openapi cập nhật.
-- Evidence: — | Commits: — | Checkpoint: —
+- Evidence (VERIFIED-NOW 2026-10-26, `coordination/claude/evidence/AI-10_2026-10-26/README.md`): `tests/test_health_status.py` RED 9 ERROR → GREEN 9/9;
+  `pytest tests/` 46 passed / 7 skipped; live smoke startup production :8011 + Milvus thật 2 lượt liên tiếp 6/6 PASS, `/health` sau đó
+  `degraded=[]`, `dependencies={recommendation_index: missing_collection, visual_index: ok}`; OpenAPI diff chỉ thêm `HealthResponse.dependencies` (default `{}`).
+  Contract v1.1-rc1 DRAFT + REL trong HANDOFF_OUT.
+- Commits: 379c2f0 (nhận task), 0e5a3da (code + test + contract) | Checkpoint:
+  ```
+  Lane: claude
+  Changed: inference-service/app/{main,registry,schemas,services}.py, tests/{test_health_status,test_live_smoke}.py, coordination/claude/{api/**,evidence/AI-10_2026-10-26/**,HANDOFF_OUT.md,TASKS.md,SESSION.md}
+  Verified: health tests 9/9; suite 46 passed 7 skipped; live smoke 2×6/6 PASS
+  Contract touched: yes (AI-API v1.1-rc1 DRAFT, chỉ thêm field /health.dependencies)
+  Next safe task: AI-07
+  ```
 
 ### AI-09 — Two-Tower recommendation phía AI (D14)
 - T gốc: T1.7 | Owner: claude | Status: TODO
@@ -140,7 +151,7 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - Evidence: — | Commits: — | Checkpoint: —
 
 ### AI-07 — Vận hành runtime :8001 thật cho Codex
-- T gốc: T1.8 | Owner: claude | Status: TODO
+- T gốc: T1.8 | Owner: claude | Status: IN_PROGRESS (2026-10-26)
 - Lý do: quyết định user 2026-10-26 — Codex không sao chép/quản lý checkpoint; tích hợp AI chỉ qua HTTP :8001.
   → Claude sở hữu tiến trình inference-service chạy checkpoint thật.
 - Depends on: AI-06 (DONE), AI-10; Milvus từ stack Codex lắng nghe `localhost:19530` (UP theo RE:HC-03). | Blocks: INT-01 (phần E2E thật), INT-03, công bố API_READY (D16).

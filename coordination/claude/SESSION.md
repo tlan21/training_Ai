@@ -3,7 +3,7 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
-- Task: AI-10 (IN_PROGRESS 2026-10-26) — sửa degraded/dependency/recovery + test; sau đó AI-07
+- Task: AI-07 (IN_PROGRESS 2026-10-26) — AI-10 DONE (0e5a3da). Bước: sửa UTF-8 Windows (test tái hiện) → chạy :8001 độc lập (Start-Process) → smoke từng model → contract 1c UP
 - Bước đã xong: —
 - Bước kế: —
 - File đang sửa: —
