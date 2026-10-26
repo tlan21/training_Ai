@@ -1,6 +1,6 @@
 # AI API Contract — inference-service :8001
 
-**Version: AI-API v0.1 — DRAFT (2026-10-26).** Owner: Claude. Codex chỉ đọc
+**Version: AI-API v0.2 — DRAFT (2026-10-26).** Owner: Claude. Codex chỉ đọc
 (`git show claude/ai-core:coordination/claude/api/AI_API_CONTRACT.md`, hoặc bản trên `master` sau release).
 Nguồn code: `inference-service/app/schemas.py`, `app/main.py`, `app/services.py` tại baseline `15976b3`.
 v1.0 (`API_READY`) phát hành ở task AI-01 kèm `inference_openapi.json` + `examples/` sinh từ chạy thật.
@@ -38,16 +38,28 @@ v1.0 (`API_READY`) phát hành ở task AI-01 kèm `inference_openapi.json` + `e
 ## 1b. Thang sẵn sàng từng model (cập nhật trong AI-06/AI-01)
 
 Mức: `DECLARED` → `CKPT_PRESENT` → `LOADED` → `ENDPOINT_OK` (HTTP thật) → `API_READY`. Chỉ ghi mức có bằng chứng.
-Bằng chứng hiện có: AI-00, 2026-10-26, nguồn `E:/traning_ai/ai-core/checkpoints`, gọi `app.services` trực tiếp (**chưa qua HTTP**).
+**AI-06, VERIFIED-NOW 2026-10-26**, CPU (`device=cpu`), bằng chứng đầy đủ: `coordination/claude/evidence/AI-06_2026-10-26/README.md`.
 
-| Model | DECLARED | CKPT_PRESENT | LOADED | ENDPOINT_OK | API_READY | Ghi chú |
+- **Nguồn canonical:** `E:/traning_ai/ai-core/checkpoints` (= default `CHECKPOINT_DIR=../ai-core/checkpoints`), duy nhất đủ 6 `best.pt` + `minigpt/bpe_vocab.json`.
+  `D:/data_training_ai/checkpoints` = mirror 4/6 (thiếu vit, minigpt), không dùng cho runtime.
+- `DECLARED`: key có trong `inference-service/app/registry.py` `_MODEL_FILES`.
+- `CKPT_PRESENT`: `sha256sum` file ở nguồn canonical = SHA mục 1.
+- `LOADED`: uvicorn startup complete + `GET /health` → `stub_mode=false`, `models_loaded` đủ 6, `degraded=[]`.
+- `ENDPOINT_OK*`: HTTP thật `127.0.0.1:8011`, Bearer từ `.env`, response validate bằng `app.schemas`; thiếu/sai Bearer → 401 `UNAUTHORIZED`.
+  `*` = server chạy bằng launcher chỉ bỏ **Milvus preflight lúc startup** (Milvus thuộc stack Codex, đang tắt). Startup production
+  (`uvicorn app.main:app`, `FORCE_STUB=0`) khi Milvus tắt **fail** (`MilvusException ... localhost:19530`) → đường startup đầy đủ xác minh ở AI-07.
+
+| Model | DECLARED | CKPT_PRESENT (SHA canonical) | LOADED | ENDPOINT_OK | API_READY | Bằng chứng HTTP / ghi chú |
 |---|---|---|---|---|---|---|
-| vit | ✓ | ✓ (E:) · ✗ (D:) | ✓ | — (service call OK) | ✗ | thiếu ở `D:/data_training_ai/checkpoints` → AI-06 |
-| minigpt | ✓ | ✓ (E:) · ✗ (D:) | ✓ | — (service call OK) | ✗ | thiếu ở D: → AI-06 |
-| siamese | ✓ | ✓ (E:, D: chưa so SHA) | ✓ | — (503 khi Milvus tắt) | ✗ | cần Milvus |
-| asr_ctc | ✓ | ✓ (E:, D: chưa so SHA) | ✓ | — (service call OK) | ✗ | |
-| highlight_fusion | ✓ | ✓ (E:, D: chưa so SHA) | ✓ | — (service call OK, 256-d) | ✗ | |
-| two_tower | ✓ | ✓ (E:, D: chưa so SHA) | ✓ | — (503 khi Milvus tắt) | ✗ | cần Milvus |
+| vit | ✓ | ✓ `192d90e4…` (gốc Kaggle `vit_s1338`; không có trên D:) | ✓ | ✓* | ✗ (AI-01) | `/v1/vision/completions` 10 frame → 200, `tin_tuc`, 10×256, 538–1483 ms |
+| asr_ctc | ✓ | ✓ `8f879867…` (D: ≡ E:) | ✓ | ✓* | ✗ (AI-01) | `/v1/asr/completions` WAV 10 s → 200, 5 segment, 188–891 ms; chất lượng video thật kém (AI-02) |
+| highlight_fusion | ✓ | ✓ `becbd378…` (D: ≡ E:) | ✓ | ✓* | ✗ (AI-01) | `/v1/highlight/completions` 10 s (ViT 256-d + audio 64-d) → 200, 10 điểm 0–100 |
+| minigpt | ✓ | ✓ `cf9cfa71…` (gốc D: `minigpt_news/output-v2/news_run`; vocab `649ffc66…`) | ✓ | ✓* | ✗ (AI-01) | `/v1/completions` → 200, 42+28 token; chất lượng human 1.6/5 (AI-03) |
+| siamese | ✓ | ✓ `b4ded465…` (D: ≡ E:) | ✓ | ✗ — cần Milvus | ✗ | `/v1/search/completions` → 503 `AI_UNAVAILABLE` (Milvus tắt), đúng envelope. Encode 128-d chạy trong startup. |
+| two_tower | ✓ | ✓ `f28c3794…` (D: ≡ E:) | ✓ | ✗ — cần Milvus | ✗ | `/v1/recommendation/completions` → 503 `AI_UNAVAILABLE` (Milvus tắt), gateway dùng popularity fallback |
+
+Vận hành Windows: chạy service với `PYTHONUTF8=1`; thiếu → lỗi real-path (vd Milvus tắt) trả 500 plain-text thay vì 503 envelope
+(`services._warn` print tiếng Việt ra stdout cp1252). Docker/Linux không bị.
 
 ## 1c. Runtime :8001 (quyết định user 2026-10-26)
 
@@ -103,3 +115,4 @@ Resp: `{"status":"ok","gpu_vram_used": MB,"gpu_util": %,"models_loaded":[...],"d
 ## 3. Changelog
 - **v0 (2026-10-26)** — DRAFT, ghi lại API hiện có tại baseline `15976b3`. Không đổi code.
 - **v0.1 (2026-10-26)** — DRAFT, chỉ tài liệu: thêm thang sẵn sàng (1b) và quyền runtime :8001 thuộc Claude, Codex chỉ HTTP/mock (1c). Schema không đổi.
+- **v0.2 (2026-10-26)** — DRAFT, chỉ tài liệu (AI-06): nguồn checkpoint canonical, thang sẵn sàng có bằng chứng HTTP thật (1b); ghi rõ startup thật cần Milvus và `PYTHONUTF8=1` trên Windows. Schema không đổi.

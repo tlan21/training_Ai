@@ -67,3 +67,11 @@ Claude không sửa `AGENTS.md` / `coordination/codex/**` (giữ ranh giới, qu
    - Chỉ cần mock + `go test`/build FE thì không cần Docker → phần không phụ thuộc Docker vẫn làm được.
 3. **Không chờ training (D11):** làm phần không phụ thuộc AI, dùng mock tới khi endpoint `API_READY` + integration test thật PASS.
 4. **PROJECT_STATUS (D12):** mỗi làn chỉ ghi tracker của mình; PROJECT_STATUS chung chỉ đổi trong release theo README mục 6.
+
+## 2026-10-26 REL AI-API v0.2 — DRAFT (AI-06, chỉ tài liệu, schema không đổi)
+- Contract §1b: thang sẵn sàng có bằng chứng HTTP thật (uvicorn + Bearer, CPU). vit/asr_ctc/highlight_fusion/minigpt = `ENDPOINT_OK*`;
+  siamese/two_tower dừng ở `LOADED` (503 `AI_UNAVAILABLE` đúng envelope vì Milvus tắt). Chưa endpoint nào `API_READY` (AI-01).
+- Nguồn checkpoint canonical: `E:/traning_ai/ai-core/checkpoints` (Claude giữ, Codex không mount — giữ nguyên HC-02).
+- Lưu ý cho INT-00/AI-07: inference-service chế độ thật **không khởi động** nếu Milvus `localhost:19530` không lên (lifespan bắt buộc).
+  Runtime :8001 (AI-07) cần Milvus từ stack Codex trước; khi Milvus UP xin báo trong `RE:HC-03` hoặc HO mới.
+- Runtime :8001 vẫn DOWN (AI-06 chỉ chạy tạm trên :8011 để đo, đã tắt).

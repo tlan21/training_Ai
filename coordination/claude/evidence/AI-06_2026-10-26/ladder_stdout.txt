@@ -1,0 +1,10 @@
+health                 HTTP 200     24 ms  PASS  stub_mode=False models=['asr_ctc', 'highlight_fusion', 'minigpt', 'siamese', 'two_tower', 'vit'] degraded=[] device=cpu
+no_bearer              HTTP 401     29 ms  PASS  {"error": {"code": "UNAUTHORIZED", "message": "Invalid or missing AI service key"}}
+wrong_bearer           HTTP 401      7 ms  PASS  {"error": {"code": "UNAUTHORIZED", "message": "Invalid or missing AI service key"}}
+vision                 HTTP 200   1483 ms  PASS  frames=10 category=tin_tuc emb=10x256
+asr                    HTTP 200    891 ms  PASS  segments=5 transcript='SUẤT TƯỢ U TI ĐẦU ĐÀ CHO SỰC SUCH CẤN HỒN ĐƯỢC YƯÊ CÓO RIYỆ SÙG PHÀI CHÚNG CRỐ N'
+highlight              HTTP 200    146 ms  PASS  seconds=10 audio_dim=64 scores=[74.6, 65.8, 77.9, 76.7, 76.7, 79.2, 65.1, 66.2, 68.4, 79.9]
+completions            HTTP 200   1106 ms  PASS  usage={'prompt_tokens': 42, 'completion_tokens': 28, 'total_tokens': 70} text='Đội tuyển bóng đá quốc gia đã có buổi tập đầu tiên vào sáng nay (24/9) tại Hà Nộ'
+search                 HTTP 503   3626 ms  PASS  expect 503 AI_UNAVAILABLE (Milvus off): {"error": {"code": "AI_UNAVAILABLE", "message": "search/siamese/milvus: MilvusException: <MilvusException: (code=2, message=Fail connecting to server on localho
+recommendation         HTTP 503   2329 ms  PASS  expect 503 AI_UNAVAILABLE (Milvus off): {"error": {"code": "AI_UNAVAILABLE", "message": "Recommendation index unavailable; gateway uses popularity fallback"}}
+SUMMARY 9 / 9 PASS
