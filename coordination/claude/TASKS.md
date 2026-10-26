@@ -15,8 +15,10 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | AI-03 | T1.6 | Mini-GPT: 03a Claude soạn summary 40 clip · 03b người duyệt · 03c train/eval | 03a TODO · 03b BLOCKED · 03c BLOCKED | 03b ⇐ user; 03c ⇐ 03b |
 | AI-04 | T1.8 / T4.3 | Đo VRAM sơ bộ Kaggle T4 (PRELIMINARY) | TODO | AI-06 |
 | AI-05 | T5.3 | Số liệu evaluation cho luận án | TODO | AI-02, AI-03, AI-04 |
+| AI-08 | — | Dọn dẹp dữ liệu/artefact làn AI an toàn (lặp lại sau mỗi đợt train) | TODO | không job/server nào đang dùng; user duyệt danh sách |
 
 Thứ tự đề xuất (tối đa 1 IN_PROGRESS): AI-06 → AI-01 → AI-07; khi chờ GPU/Kaggle/người duyệt thì xen AI-03a, AI-02a, AI-04.
+AI-08 (dọn dẹp) chạy sau mỗi đợt train xong hoặc khi một ổ chạm `BLOCKED_RESOURCE`; luôn qua manifest + user duyệt.
 
 Hoàn thành trước tách làn (bằng chứng ở INVENTORY mục 3, 5): T1.1, T1.2, T1.3, T1.4 (DoD metric), T1.5, T1.7 = DONE;
 T1.6, T1.8, T4.3 = PARTIAL. Không tạo lại các task này.
@@ -112,6 +114,49 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - T gốc: T5.3 | Owner: claude | Status: TODO
 - Depends on: AI-02, AI-03, AI-04 (hoặc dùng số thật hiện có nếu user chốt dừng thí nghiệm)
 - Acceptance: bảng metric 6 model vs baseline, CI, limitation thật, khớp `.claude/evaluation_plan.md`.
+- Evidence: — | Commits: — | Checkpoint: —
+
+### AI-08 — Dọn dẹp dữ liệu/artefact làn AI an toàn (yêu cầu user 2026-10-26)
+- T gốc: — | Owner: claude | Status: TODO (task lặp lại: chạy sau mỗi đợt train xong, hoặc khi một ổ chạm `BLOCKED_RESOURCE`)
+- Bối cảnh 2026-10-26: C: còn 3.5 GB, D: 1.2 GB, E: 2.2 GB. Ứng viên đã thấy (nhỏ): `ai-core/_probe_ckpt/` 3.2 MB, `ai-core/_tmp_tt/` 0.7 MB
+  (untracked), pytest tmp ~0.7 MB. Khảo sát `D:/data_training_ai` chưa xong (du timeout) → bước 1.
+- Mục tiêu: giải phóng dung lượng **mà không mất dữ liệu cần cho phát triển tiếp, tái lập kết quả hoặc luận án**.
+  Dọn dẹp không được làm dự án lùi lại: sau dọn, mọi test/smoke/manifest phải còn PASS như trước.
+- Phạm vi: chỉ path làn Claude — `ai-core/**` (file không track), `inference-service/**` cache, `data/**`, `dist/kaggle/**`,
+  `D:/data_training_ai/**`, file tạm do Claude tạo (pytest tmp, `__pycache__`, `/tmp/split`). **Cấm** đụng path Codex
+  (`backend`, `cms`, `client`, `node_modules`, Docker image/volume/vhdx), lịch sử git, `.git`.
+
+**Phân loại bắt buộc (mỗi mục 1 lớp, có lý do):**
+| Lớp | Ví dụ | Xử lý |
+|---|---|---|
+| `KEEP` — không bao giờ xóa | checkpoint active 6 model (`ai-core/checkpoints/*/best.pt`, SHA trong contract); nhãn/review/rating của người (export JSON, ASR review 7/60, transcript user đã sửa, human ratings T1.6); frozen test/val (frozen30, fixed10, VIVOS/FLEURS test refs); `data/manifests/**`; file được docs/report trích làm bằng chứng metric; nguồn không tải lại được (SoccerNet đã xóa video gốc, NDA) | giữ nguyên |
+| `ARCHIVE` — cần giữ nhưng không cần trên ổ làm việc | checkpoint ứng viên bị loại nhưng có số liệu trong report (vd ASR last134, MiniGPT candidate `70ec4790…`), output Kaggle các version cũ, gói dữ liệu đã dùng xong | chỉ xóa khỏi ổ làm việc **sau khi** đã có bản sao ở nơi lưu trữ user chỉ định và đã kiểm SHA bản sao |
+| `REGENERABLE` — tạo lại được bằng lệnh đã ghi | `__pycache__`, pytest tmp, `_probe_*`/`_tmp_*` scratch, feature/keyframe trung gian còn nguồn gốc + lệnh trích lại, zip packet Kaggle còn source | xóa sau khi ghi lệnh tái tạo + user duyệt |
+| `UNKNOWN` | không rõ nguồn gốc/không biết ai dùng | **không xóa**, hỏi user |
+
+**Quy trình (không bỏ bước):**
+1. **Điều kiện trước:** không có job train/Kaggle/eval đang chạy; không server nào phục vụ thư mục ứng viên (vd ASR review :8891 dùng
+   `D:/data_training_ai/asr_domain_expansion_v2_20261022` → KEEP khi AI-02b chưa xong); output Kaggle mới nhất đã tải về
+   (Kaggle chỉ giữ version mới nhất).
+2. **Khảo sát chỉ đọc:** kích thước, ngày sửa, số file, SHA256 (file ≤ vài GB; thư mục lớn: danh sách file + size), và **ai tham chiếu**
+   (grep path trong `docs/`, `data/manifests/`, `ai-core/`, `inference-service/`, `coordination/`, `.claude/`). Có tham chiếu → không
+   được `REGENERABLE` trừ khi tham chiếu chỉ là lịch sử và user đồng ý.
+3. **Manifest dọn dẹp:** `coordination/claude/cleanup/CLEANUP_<YYYY-MM-DD>.md` + `.json` (path, size, sha256/file-list, lớp, lý do,
+   tham chiếu, lệnh tái tạo nếu có, dung lượng dự kiến giải phóng). Commit trước khi xóa bất cứ gì.
+4. **User duyệt từng nhóm** trong manifest. Không duyệt = không xóa.
+5. **Thực hiện theo lớp:** `ARCHIVE` → sao chép sang nơi lưu trữ user chỉ định (ổ ngoài/cloud) → kiểm SHA bản sao → mới xóa bản gốc.
+   `REGENERABLE` → xóa từng path đã duyệt (không wildcard rộng, không `rm -rf` ở thư mục gốc dự án/ổ, không `git clean`).
+   Lưu ý: chuyển vào Recycle Bin hay thư mục `_trash` **cùng ổ không giải phóng dung lượng** — chỉ dùng làm bước đệm khi user muốn
+   có thời gian kiểm tra trước khi xóa hẳn.
+6. **Kiểm sau dọn:** ai-core pytest + inference pytest PASS; 6 checkpoint nạp `stub_mode=false`, SHA khớp contract; script kiểm mọi path
+   trong `data/manifests/*.json` còn tồn tại (hoặc có trong danh sách `ARCHIVE` kèm nơi lưu); ASR review/label tool còn mở được nếu đang dùng.
+   Có FAIL → dừng, khôi phục từ bản lưu trữ/trash, báo user.
+7. **Ghi kết quả:** dung lượng trước/sau từng ổ, danh sách đã xóa/đã lưu trữ, bằng chứng bước 6 → manifest + Evidence task này.
+   Ảnh hưởng tới Codex (vd đổi đường dẫn checkpoint) → append handoff trước khi đổi.
+
+- Acceptance mỗi đợt: manifest đã duyệt, dung lượng giải phóng đo được, bước 6 PASS, 0 mục `KEEP`/`UNKNOWN` bị đụng.
+- Không bao giờ: xóa để "cho chắc"; xóa thứ duy nhất chứng minh một con số trong báo cáo/luận án; xóa nhãn người; xóa mà không có
+  manifest + duyệt; rewrite lịch sử git để giảm `.git`.
 - Evidence: — | Commits: — | Checkpoint: —
 
 ### AI-06 — Xác minh nguồn checkpoint + thang sẵn sàng 6 model (ƯU TIÊN 1)
