@@ -745,20 +745,32 @@
             "title": "Score"
           },
           "title": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Title"
           },
           "thumbnail_url": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Thumbnail Url"
           }
         },
         "type": "object",
         "required": [
           "video_id",
-          "score",
-          "title",
-          "thumbnail_url"
+          "score"
         ],
         "title": "Recommendation"
       },
@@ -809,6 +821,10 @@
             "type": "string",
             "title": "Model"
           },
+          "recommendation_mode": {
+            "type": "string",
+            "title": "Recommendation Mode"
+          },
           "recommendations": {
             "items": {
               "$ref": "#/components/schemas/Recommendation"
@@ -822,6 +838,7 @@
           "id",
           "created",
           "model",
+          "recommendation_mode",
           "recommendations"
         ],
         "title": "RecommendationResponse"

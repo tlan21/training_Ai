@@ -1,6 +1,6 @@
 # AI API Contract — inference-service :8001
 
-**Version: AI-API v1.2 (2026-10-26) — release #2.** `API_READY` có hiệu lực khi commit release này có trên `master`. Owner: Claude. Codex chỉ đọc
+**Version: AI-API v1.3-rc1 — DRAFT trên `claude/ai-core` (2026-10-26); `master` = v1.2 (release #2).** v1.3 chỉ đổi recommendation (vẫn DRAFT); 6 endpoint `API_READY` của v1.2 không đổi. Owner: Claude. Codex chỉ đọc
 (`git show claude/ai-core:coordination/claude/api/AI_API_CONTRACT.md`, hoặc bản trên `master` sau release).
 Nguồn code: `inference-service/app/schemas.py`, `app/main.py`, `app/services.py`, `app/visual_index.py` trên `claude/ai-core` (AI-01).
 Đi kèm: `inference_openapi.json` (export `app.main:app.openapi()`, không sửa tay) và `examples/` (request/response/error sinh từ chạy thật, mục 4).
@@ -135,12 +135,16 @@ Resp: `{"id","object":"search_completion","created","model","results":[{"video_i
 
 ### 2.5 `POST /v1/recommendation/completions` — Two-Tower + Milvus — DRAFT
 Req: `{"model"?: str, "user_id": str, "limit": int (mặc định 10), "context": {}}`
-Resp: `{"id","object":"recommendation_completion","created","model","recommendations":[{"video_id","score":0–1,"title","thumbnail_url"}]}`
+Resp: `{"id","object":"recommendation_completion","created","model","recommendation_mode","recommendations":[{"video_id","score":0–1,"title":null,"thumbnail_url":null}]}`
+- v1.3 (D18): `title`/`thumbnail_url` **luôn `null`** — inference không có metadata sản phẩm; gateway lấy theo `video_id` từ Postgres (không bao giờ hiển thị giá trị giả).
+  `recommendation_mode` của inference: `personalized` (vector thật từ Milvus) | `stub` (FORCE_STUB). `popularity`/`fallback` là mode của **gateway** (Codex, INT-12):
+  503 từ inference → gateway trả popularity/fallback với metadata thật, không báo personalized.
+  Ví dụ 200 thật trên **sandbox** (ID MovieLens, không phải product): `examples/recommendation.sandbox_response.json`.
 - Hành vi thật (sửa so với v0.x): trả **503 `AI_UNAVAILABLE`** khi Milvus không kết nối, khi chưa có collection `user_recommendation_embeddings`,
   **và khi user chưa có vector (cold-start)** hoặc ANN trả 0 video. Gateway dùng popularity fallback cho mọi 503.
 - Hiện tại collection chưa tồn tại trong Milvus của stack → luôn 503 (`examples/recommendation.*`). Chưa có ví dụ 200 thật trên product → giữ `DRAFT`.
 - AI-09: artifact `two_tower-ml100k-v1` **không encode được user/video sản phẩm** (transductive, MovieLens) — `TWO_TOWER_ARTIFACT.md`.
-  Đường service đã chạy thật với sandbox (200 + 503 cold-start). `title`/`thumbnail_url` là placeholder — gateway lấy metadata từ Postgres.
+  Đường service đã chạy thật với sandbox (200 + 503 cold-start). Personalized cho product: AI-12 (Two-Tower v2, D18-B).
 - Nối Milvus thất bại / thiếu collection: thử lại tối đa mỗi 30 s (request hoặc `/health`), không cần restart. Trạng thái ở `/health.dependencies.recommendation_index`.
 
 ### 2.6 `POST /v1/completions` — Mini-GPT (OpenAI-style) — API_READY
@@ -163,6 +167,8 @@ Resp: `{"status":"ok","gpu_vram_used": MB,"gpu_util": %,"models_loaded":[...],"d
 - **v0 (2026-10-26)** — DRAFT, ghi lại API hiện có tại baseline `15976b3`. Không đổi code.
 - **v0.1 (2026-10-26)** — DRAFT, chỉ tài liệu: thêm thang sẵn sàng (1b) và quyền runtime :8001 thuộc Claude, Codex chỉ HTTP/mock (1c). Schema không đổi.
 - **v0.2 (2026-10-26)** — DRAFT, chỉ tài liệu (AI-06): nguồn checkpoint canonical, thang sẵn sàng có bằng chứng HTTP thật (1b); ghi rõ startup thật cần Milvus và `PYTHONUTF8=1` trên Windows. Schema không đổi.
+- **v1.3-rc1 (2026-10-26)** — AI-13 (D18). Recommendation: thêm `recommendation_mode`; `title`/`thumbnail_url` nullable và luôn `null` (trước đây placeholder giả).
+  Tương thích ngược cho client đọc string (null → rỗng); gateway phải hydrate metadata từ Postgres.
 - **v1.2 (2026-10-26)** — release #2: 6 endpoint `API_READY` (hiệu lực trên `master`), recommendation `DRAFT` (D14). Gồm rc1 bên dưới.
 - **v1.2-rc1 (2026-10-26)** — AI-11 (HO-01). Tương thích ngược: chỉ thêm `VisionRequest.video_id` (optional). Index frame từ data URI theo 1 fps;
   ASR qua MinIO presigned `localhost:9000` xác nhận. Nhánh ingest path cũ giữ nguyên.

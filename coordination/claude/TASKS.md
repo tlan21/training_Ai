@@ -13,7 +13,7 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | AI-10 | T1.8 | Health/degraded đúng ngữ nghĩa + dependency status + tự phục hồi (D15) | DONE (2026-10-26) | — |
 | AI-07 | T1.8 | Vận hành runtime :8001 thật cho Codex gọi HTTP (+ sửa UTF-8 Windows) | DONE (2026-10-26; :8001 UP; ingest path ⇐ HC-05) | AI-10; Milvus stack Codex (UP) |
 | AI-11 | T1.8 / T4.2 | HO-01: `video_id` tùy chọn cho Vision + index frame từ data URI 1 fps (contract minor) | DONE (2026-10-26) | HO-01 (Codex chọn HTTP media) |
-| AI-13 | T1.7 / T1.8 | D18: recommendation inference không trả metadata giả + `recommendation_mode` | IN_PROGRESS (2026-10-26) | D18 |
+| AI-13 | T1.7 / T1.8 | D18: recommendation inference không trả metadata giả + `recommendation_mode` | DONE (2026-10-26; lên master ở release kế) | D18 |
 | AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | TODO (roadmap) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | DONE (2026-10-26; sandbox + artifact; product → AI-12 theo D18) | HC-04 (sandbox READY) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a TODO · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
@@ -165,12 +165,22 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   ```
 
 ### AI-13 — Recommendation inference: không metadata giả + recommendation_mode (D18 mục 6–7)
-- T gốc: T1.7 / T1.8 | Owner: claude | Status: IN_PROGRESS (2026-10-26)
+- T gốc: T1.7 / T1.8 | Owner: claude | Status: DONE (2026-10-26)
 - Depends on: D18 | Blocks: Codex hydrate metadata thật (đề xuất INT-12)
 - Việc: `/v1/recommendation/completions` chỉ trả `video_id` + `score` thật; `title`/`thumbnail_url` → `null` (không dựng `Video <id>` / `https://storage.local/...`),
   kể cả stub; thêm `recommendation_mode` ("personalized" khi vector thật, "stub" khi FORCE_STUB) để gateway không nhầm. Tương thích ngược: field cũ còn, nullable.
 - Acceptance: unit test không còn metadata giả + mode đúng; suite inference PASS; smoke :8001 PASS; contract minor + openapi + REL/HC-06.
-- Evidence: — | Commits: — | Checkpoint: —
+- Evidence (VERIFIED-NOW 2026-10-26, `coordination/claude/evidence/AI-13_2026-10-26/`): test_api RED 2 → GREEN; suite 53 passed / 7 skipped;
+  sandbox :8011 200 personalized + metadata null; :8001 restart (PID 16808) 503 product + smoke 6/6; OpenAPI title/thumbnail nullable + recommendation_mode.
+  Contract v1.3-rc1 DRAFT + REL trong HANDOFF_OUT.
+- Commits: cafd788 (task), (commit AI-13) | Checkpoint:
+  ```
+  Lane: claude
+  Changed: inference-service/app/{schemas,services}.py, tests/test_api.py, coordination/claude/api/{AI_API_CONTRACT.md,inference_openapi.json,TWO_TOWER_ARTIFACT.md,examples/recommendation.sandbox_response.json}, HANDOFF_OUT, evidence
+  Verified: unit 2 mới PASS; suite 53/7; live sandbox 200 + product 503; smoke :8001 6/6
+  Contract touched: yes (v1.3-rc1 DRAFT, recommendation only)
+  Next safe task: AI-12a/12c (spec dữ liệu v2) hoặc AI-04 / AI-03a / AI-02a
+  ```
 
 ### AI-12 — Two-Tower v2 cho sản phẩm (D18 phương án B, roadmap)
 - T gốc: T1.7 | Owner: claude | Status: TODO (roadmap; không chặn task tích hợp nào)

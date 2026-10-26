@@ -28,10 +28,11 @@ Hệ quả: **artifact v1 không hỗ trợ user/video sản phẩm** (`usr_*`, 
 - ANN IVF_FLAT nprobe 128 vs brute-force IP: recall@10 = 1.0000 (53 user).
 - Service thật (instance tạm :8011, `MILVUS_RECO_COLLECTION`=sandbox): `ml100k_u_1` → 200, 5 gợi ý score 0–1; user lạ → 503 cold-start;
   `/health.dependencies.recommendation_index=ok`. Runtime :8001 sản phẩm không đổi (vẫn `missing_collection` → 503 → popularity fallback).
-- Lưu ý: `title`/`thumbnail_url` trong response recommendation là **placeholder** do service dựng (`Video <id>`, `https://storage.local/...`);
-  gateway phải lấy metadata thật từ Postgres theo `video_id`.
+- AI-13 (v1.3-rc1): response không còn placeholder — `title`/`thumbnail_url` = `null`, `recommendation_mode` = `personalized`;
+  gateway lấy metadata thật từ Postgres theo `video_id`.
 
-## 5. Personalized cho sản phẩm — cần quyết định user (chưa làm)
+## 5. Personalized cho sản phẩm — user chọn A + roadmap B (D18, 2026-10-26)
+MVP = popularity thật (Codex INT-12). v2 inductive = AI-12 (`coordination/claude/TASKS.md`). Phương án gốc để tham chiếu:
 Artifact v1 không thể phục vụ product. Phương án:
 - **A (đề xuất cho MVP):** giữ popularity fallback; personalized product = DEFERRED; Two-Tower báo cáo luận án trên MovieLens (offline + sandbox).
 - **B:** Two-Tower v2 inductive: user = sở thích danh mục (10) + tổng hợp video đã tương tác; video = danh mục (10) + embedding ViT 256-d + popularity.

@@ -177,3 +177,10 @@ Chia việc không chồng chéo (PROJECT_STATUS D18):
 - **Claude:** AI-13 (ngay): inference recommendation bỏ metadata giả, thêm `recommendation_mode` (`personalized` khi vector thật, `stub` khi FORCE_STUB) — contract minor,
   tương thích ngược. AI-12 (roadmap): Two-Tower v2 inductive, quality gate trước khi lên sản phẩm. Không sửa module Codex.
 - Không chặn: INT-00/INT-02/INT-11/AI-07 tiếp tục; v2 không phải điều kiện của task tích hợp hiện tại.
+
+## 2026-10-26 REL AI-API v1.3-rc1 — DRAFT (AI-13, D18): recommendation không metadata giả + recommendation_mode
+- `/v1/recommendation/completions`: thêm `recommendation_mode` (`personalized` | `stub`); `title`/`thumbnail_url` nullable, **luôn null** (trước đây placeholder giả).
+  Client Go đọc string → nhận rỗng, không vỡ; gateway (INT-12) phải hydrate metadata theo `video_id` từ Postgres và tự đặt mode `popularity`/`fallback` khi inference 503.
+- Đã chạy trên :8001 (restart, vẫn 503 cho product vì collection chưa có) và sandbox :8011 tạm (200, personalized, metadata null).
+- Ví dụ: `coordination/claude/api/examples/recommendation.sandbox_response.json` (ID MovieLens — chỉ minh họa shape, không dùng cho product).
+- Lên master ở release kế (user duyệt). 6 endpoint API_READY của v1.2 không đổi.

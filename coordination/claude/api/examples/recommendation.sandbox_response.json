@@ -1,0 +1,31 @@
+{
+ "http_status": 200,
+ "note": "sandbox_two_tower_ai09_20261026 (MovieLens IDs, NOT product)",
+ "body": {
+  "id": "rec-primitive-5e494645866c",
+  "object": "recommendation_completion",
+  "created": 1793005886,
+  "model": "primitive-two-tower-recommender",
+  "recommendation_mode": "personalized",
+  "recommendations": [
+   {
+    "video_id": "ml100k_i_56",
+    "score": 0.6177,
+    "title": null,
+    "thumbnail_url": null
+   },
+   {
+    "video_id": "ml100k_i_173",
+    "score": 0.6133,
+    "title": null,
+    "thumbnail_url": null
+   },
+   {
+    "video_id": "ml100k_i_168",
+    "score": 0.611,
+    "title": null,
+    "thumbnail_url": null
+   }
+  ]
+ }
+}
