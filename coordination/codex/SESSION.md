@@ -12,6 +12,15 @@
 - INT-11 next: restore stack control using existing daemon without global restart,
   rebuild gateway binary then real API integration/persistence. Never mark INTEGRATED_REAL from health alone.
 
+## INT-11 runtime checkpoint
+- Existing Linux Docker CLI+Compose found under /mnt/host/wsl/docker-desktop/cli-tools; use DOCKER_HOST=unix:///proc/195/root/run/docker.raw.sock.
+  Windows named pipes _ping both timeout; no global restart needed. Ignored backend/.tmp/docker-direct.yml binds gateway using daemon host path.
+- Go vet/test/build ./... PASS (GOMAXPROCS1, TMP/GOTMPDIR onE); latest Linux gateway binary rebuilt and deployed cached image, --no-deps --no-build --pull never.
+- MOCK_ONLY verify_business_persistence.ps1 PASS after latest binary: preferences+login preferences, likes/history/settings survive gateway restart;
+  publication/deletion privacy, playback206, recommendation503 fallback. Updated verification/INT-02-persistence.json.
+- Next: AI_SERVICE_KEY from Claude-local .env passed in environment only; compose root+direct gateway with realhost8001/stub0,
+  then health6models and existing real video_flow/visual_search E2E. No new real matrix claim until complete tests.
+
 ## Prior checkpoint (historical; newer facts above take precedence)
 
 # SESSION — current resume

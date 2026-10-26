@@ -44,3 +44,10 @@ Changed: sandbox/spec/identity policy; preferences PG port/repo/handler/wiring/t
 Verified: sandbox 2× PASS; Go unit/vet/build and 5 real PG tests PASS; runtime preference restart NOT RUN
 Contract touched: no public/AI schema change (existing preference API/table)
 Next safe task: restore disk/Docker capacity, restart prepared gateway, run preference persistence; consume AI-API v1.2 then real gate
+
+## Resume 2026-10-26 — preference runtime gate cleared
+- Latest gateway source rebuilt/deployed through existing Linux Docker CLI/direct Unix socket (Windows proxy stalls).
+- verify_business_persistence.ps1 PASS with real Postgres and gateway restart: preferences_persisted=true and login_preferences_retained=true,
+  alongside history/likes/settings/playback/privacy/fallback checks. Evidence: INT-02-persistence.json (new usr_1c69f9f0a380793d).
+- This clears the preference runtime deployment gap in9eded76. Product recommendation remains BLOCKED AI-09/schema/export/mapping gate;
+  no dataset train IDs loaded into product collection, no personalized recommendation DONE.
