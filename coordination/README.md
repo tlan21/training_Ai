@@ -51,13 +51,15 @@ Cần thay đổi ở path làn kia → **không sửa**, ghi handoff (mục 5).
 Mỗi task trong `TASKS.md` là 1 khối có: tiêu đề `### <ID> — <tên>`, `T gốc`, `Owner`, `Status`,
 `Depends on`, `Blocks`, `Acceptance`, `Evidence`, `Commits`, `Checkpoint`.
 
-Status (6 loại):
+Status (7 loại):
 - `TODO` — chưa bắt đầu.
 - `IN_PROGRESS` — đang làm (ghi ngày); tối đa 1 task IN_PROGRESS mỗi làn.
 - `PARTIAL` — chạy được một phần, gap ghi rõ, chưa đạt Acceptance.
 - `BLOCKED` — ghi lý do + chờ ai/task nào.
 - `REVIEW` — đạt Acceptance trên branch làn, chờ release lên master.
 - `DONE` — đạt Acceptance + Evidence kiểm thử + commit SHA. **Không có Evidence → không DONE.**
+- `DEFERRED / OUT_OF_SCOPE` — user quyết hoãn, ngoài phạm vi release hiện tại; giữ nguyên code, không xóa/revert, không phát triển thêm
+  cho tới khi user duyệt lại (thêm 2026-10-26).
 
 Mức bằng chứng:
 - `VERIFIED-NOW <ngày> <lệnh>` — chạy lại trong phiên, có output.
@@ -112,10 +114,13 @@ nếu `master` có commit mới (`git log HEAD..master --oneline`).
 
 ## 7. Runtime chung
 
-- Chỉ 1 docker-compose stack chạy tại 1 thời điểm (trùng port). **Codex sở hữu stack.**
-- Claude test inference bằng pytest / gọi `app.services` trực tiếp / `uvicorn` port riêng (vd 18001), không `compose up`.
-- Worktree Codex không có `ai-core/checkpoints/` (gitignored): compose phải mount checkpoint `:ro` từ
-  `E:/traning_ai/ai-core/checkpoints` (task `INT-00`). Claude chỉ thay `best.pt` active khi release AI API mới.
+(sửa 2026-10-26 theo quyết định user)
+- Chỉ 1 docker-compose stack chạy tại 1 thời điểm (trùng port). **Codex sở hữu stack hạ tầng + backend + UI**
+  (Postgres, Mongo, Redis, MinIO, Kafka, Milvus, gateway, workers, CMS, Client).
+- **Claude sở hữu runtime inference-service :8001 chạy checkpoint thật** (task AI-07), chạy từ worktree Claude, dùng Milvus của stack Codex.
+- **Codex không sao chép, mount hay quản lý checkpoint của Claude.** Codex chỉ gọi HTTP :8001 (Bearer key). Khi :8001 chưa sẵn sàng,
+  Codex dùng mock đúng AI API Contract để phát triển song song; mock không bao giờ tính là tích hợp thật.
+- Claude chỉ thay `best.pt` active khi release AI API mới.
 - Dữ liệu lớn (`D:/data_training_ai/**`, artefact `dist/kaggle`) không vào git.
 
 ## 8. Thứ tự đọc đầu phiên
@@ -126,3 +131,8 @@ nếu `master` có commit mới (`git log HEAD..master --oneline`).
 4. `coordination/<làn>/SESSION.md` → `TASKS.md`.
 5. Handoff làn kia qua `git show`.
 6. Skill đúng loại task trong `my-agent/agent/skills/`.
+
+## 9. Quyết định của user
+
+Quyết định user ghi tại `coordination/PROJECT_STATUS.md` mục 5 (kèm ngày). Khi mâu thuẫn với file của một làn, quyết định user thắng;
+làn sở hữu file tự sửa file của mình ở phiên kế (bên kia nhắc qua handoff, không sửa hộ). Ranh giới sở hữu mục 2 chỉ đổi khi user yêu cầu mới.

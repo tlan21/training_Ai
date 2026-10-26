@@ -10,10 +10,13 @@ Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên 
 - Lệnh verify dở: —
 
 ## Task kế an toàn
-AI-06 (sửa nguồn checkpoint local) → AI-01 (phát hành AI API Contract v1).
-AI-02/AI-03 chờ user; AI-04 chờ GPU.
+AI-06 (ưu tiên 1: xác minh vit/minigpt thiếu ở D:, thang sẵn sàng 6 model) → AI-01 → AI-07 (runtime :8001 cho Codex).
+Khi chờ (Kaggle/người duyệt): AI-03a (soạn 40 summary), AI-02a (đề xuất 53 clip ASR), AI-04 (VRAM sơ bộ T4).
+AI-02b/AI-03b chờ user duyệt. Runtime :8001: DOWN (chưa chạy).
 
 ## Phiên trước
+- 2026-10-26 — Ghi quyết định user D1–D8 (PROJECT_STATUS mục 5): tách AI-02a/b/c, AI-03a/b/c; thêm AI-07; AI-04 TODO (sơ bộ T4);
+  contract v0.1 (thang sẵn sàng, runtime :8001 thuộc Claude); rút HC-01, mở HC-02 cho Codex. Chỉ tài liệu.
 - 2026-10-26 — AI-00 tách làn + kiểm kê.
   ```
   Lane: claude

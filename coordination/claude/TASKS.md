@@ -1,22 +1,29 @@
 # TASKS — làn Claude (AI) · branch `claude/ai-core`
 
 Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordination/claude/TASKS.md`).
-Định dạng + 6 trạng thái: `coordination/README.md` mục 4. Kiểm kê gốc: `coordination/INVENTORY_2026-10-26.md`.
+Định dạng + trạng thái: `coordination/README.md` mục 4. Kiểm kê gốc: `coordination/INVENTORY_2026-10-26.md`.
 
 ## Tổng quan
 
 | ID | T gốc | Tên | Status | Depends on |
 |---|---|---|---|---|
 | AI-00 | — | Thiết lập tách làn + kiểm kê | DONE | — |
+| AI-06 | T1.8 | **Ưu tiên 1** — Xác minh nguồn checkpoint + thang sẵn sàng 6 model | TODO | — |
 | AI-01 | T1.8 | Phát hành AI API Contract v1 (API_READY) | TODO | AI-06 |
-| AI-02 | T1.4 | ASR domain adaptation | BLOCKED | user nghe duyệt 60 clip |
-| AI-03 | T1.6 | Mini-GPT human quality gate | BLOCKED | summary người viết |
-| AI-04 | T1.8 / T4.3 | Đo VRAM inference ≤4 GB trên GPU | BLOCKED | phần cứng NVIDIA (hoặc Kaggle T4) |
+| AI-07 | T1.8 | Vận hành runtime :8001 thật cho Codex gọi HTTP | TODO | AI-06; Milvus từ stack Codex (HC-02) |
+| AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a TODO · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
+| AI-03 | T1.6 | Mini-GPT: 03a Claude soạn summary 40 clip · 03b người duyệt · 03c train/eval | 03a TODO · 03b BLOCKED · 03c BLOCKED | 03b ⇐ user; 03c ⇐ 03b |
+| AI-04 | T1.8 / T4.3 | Đo VRAM sơ bộ Kaggle T4 (PRELIMINARY) | TODO | AI-06 |
 | AI-05 | T5.3 | Số liệu evaluation cho luận án | TODO | AI-02, AI-03, AI-04 |
-| AI-06 | T1.8 | Sửa cấu hình checkpoint local `inference-service/.env` | TODO | — |
+
+Thứ tự đề xuất (tối đa 1 IN_PROGRESS): AI-06 → AI-01 → AI-07; khi chờ GPU/Kaggle/người duyệt thì xen AI-03a, AI-02a, AI-04.
 
 Hoàn thành trước tách làn (bằng chứng ở INVENTORY mục 3, 5): T1.1, T1.2, T1.3, T1.4 (DoD metric), T1.5, T1.7 = DONE;
-T1.6, T1.8, T4.3 = PARTIAL.
+T1.6, T1.8, T4.3 = PARTIAL. Không tạo lại các task này.
+
+Quyết định user 2026-10-26 áp dụng cho làn này: AI-02 (Claude chỉ chuẩn bị/đề xuất, không tự HUMAN_VERIFIED), AI-03 (Claude soạn 40 summary, lưu nguồn/bằng chứng/trạng thái duyệt, không dùng dữ liệu giả để DONE), AI-04 (Kaggle T4 chỉ là sơ bộ, không thay nghiệm thu RTX 3060), AI-06 (ưu tiên; phân biệt 4 mức sẵn sàng, không API_READY khi chưa kiểm chứng). Xem `coordination/PROJECT_STATUS.md` mục 5.
+
+Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whisper/ASR) · `CLAUDE_PROPOSED` (Claude đề xuất/soạn) · `HUMAN_VERIFIED` (chỉ user/người duyệt gán, có file export làm bằng chứng) · `REJECTED`.
 
 ---
 
@@ -40,30 +47,66 @@ T1.6, T1.8, T4.3 = PARTIAL.
 - Evidence: — | Commits: — | Checkpoint: —
 
 ### AI-02 — ASR domain adaptation (T1.4 follow-up)
-- T gốc: T1.4 | Owner: claude | Status: BLOCKED
-- Depends on: user nghe/sửa/xác nhận 60 clip tại `http://127.0.0.1:8891/asr_review_v2/index.html` rồi xuất JSON thật (`.claude/TodoWrite.md` mục 2026-10-22). Hiện 7/60.
+- T gốc: T1.4 | Owner: claude | Status: 02a TODO · 02b BLOCKED · 02c BLOCKED
+- Tiến độ duyệt (ghi 2026-10-26): **7/60 đã duyệt, 53/60 còn phải kiểm tra** — số 7/60 là tiến độ trang review hiển thị
+  (lưu localStorage Chrome, `http://127.0.0.1:8891/asr_review_v2/index.html`); **chưa có file JSON export** nào
+  (Downloads không có `asr_expansion_review_v2*.json`) → bằng chứng file hiện là 0/60. Gói dữ liệu:
+  `D:/data_training_ai/asr_domain_expansion_v2_20261022/` (60 WAV/MP4 20 s, 180 bản nháp Whisper = `MACHINE_DRAFT`).
+- **AI-02a — Claude chuẩn bị + đề xuất (TODO):** cho 53 clip chưa duyệt, ưu tiên 9 clip trùng lời máy + 25 clip bị cờ:
+  đề xuất sửa chữ/chuẩn hóa theo `docs/T1.4_asr_label_contract.md`, ghi lý do, nhãn `CLAUDE_PROPOSED` trong file riêng
+  (không ghi đè nháp gốc, không ghi vào kết quả duyệt của user). Claude không nghe được audio → đề xuất chỉ dựa trên văn bản,
+  phải ghi rõ giới hạn này. Acceptance: file đề xuất + hash nguồn + test strict-intake vẫn từ chối mục chưa `HUMAN_VERIFIED`.
+- **AI-02b — người duyệt (BLOCKED ⇐ user):** user nghe/sửa/xác nhận hoặc loại từng clip, xuất JSON thật. Chỉ mục user xác nhận
+  mới là `HUMAN_VERIFIED`. Claude **không** tự gán.
+- **AI-02c — intake + train (BLOCKED ⇐ 02b):** strict intake giữ machine-assisted provenance/coverage/train-only vocab/CTC/split guard;
+  1 thí nghiệm bounded; chỉ promote khi guard VIVOS/FLEURS/domain không hồi quy; không chọn theo test.
 - Blocks: AI-05; chất lượng phụ đề video thật phía Codex (không chặn tích hợp kỹ thuật).
-- Acceptance: strict intake giữ machine-assisted provenance/coverage/train-only vocab/CTC/split guard; 1 thí nghiệm bounded; chỉ promote khi guard VIVOS/FLEURS/domain không hồi quy; không chọn theo test.
 - Evidence: lịch sử bên dưới + `docs/T1.4_*.md`. Checkpoint active `8f87986781cf…` giữ nguyên (HOLD PROMOTION).
 - Commits: `15976b3` (trước tách làn)
-- Checkpoint: Next safe task = chờ JSON review của user.
+- Checkpoint: Next safe task = AI-02a (không phụ thuộc user); 02b chờ user.
 
 ### AI-03 — Mini-GPT human quality gate (T1.6)
-- T gốc: T1.6 | Owner: claude | Status: BLOCKED
-- Depends on: summary người viết đã duyệt cho 40 clip real-domain (`data/manifests/minigpt_real_domain.json`, `docs/T1.6_whisper_review_intake.md`).
+- T gốc: T1.6 | Owner: claude | Status: 03a TODO · 03b BLOCKED · 03c BLOCKED
+- Nguồn 40 clip real-domain (30 train / 10 val, ngoài frozen30): `data/manifests/minigpt_real_domain.json`; transcript user đã rà
+  (export SHA `860f8068d0bd…`, 40 transcript/39 sửa) — `docs/T1.6_whisper_review_intake.md`.
+- **AI-03a — Claude soạn summary 40 clip (TODO, theo quyết định user 2026-10-26):** soạn từ transcript user đã rà; mỗi mục lưu
+  clip ID, hash media + hash transcript nguồn, văn bản summary, số BPE token (≤95), người/công cụ tạo = Claude + ngày,
+  nhãn `CLAUDE_PROPOSED`. Lưu file riêng trên D: + manifest `data/manifests/` + báo cáo `docs/T1.6_*`; không ghi đè dữ liệu cũ.
+  Acceptance: đủ 40 mục, hash khớp nguồn, strict intake từ chối dùng làm target khi chưa `HUMAN_VERIFIED`.
+- **AI-03b — người duyệt (BLOCKED ⇐ user):** user duyệt/sửa/loại từng summary → `HUMAN_VERIFIED`.
+  ⚠ Ràng buộc dự án (`my-agent/agent/instructions.md` §1: "không pseudo-label từ model ngoài"): summary do Claude soạn là
+  output của model ngoài → chỉ được làm target train/eval sau khi người duyệt từng mục **và** provenance ghi rõ
+  `claude_drafted_human_verified`. Mục chưa duyệt không bao giờ được dùng.
+- **AI-03c — train/eval bounded (BLOCKED ⇐ 03b):** guard clean+ASR không hồi quy; cổng cuối vẫn là human mean ≥3/5 trên video thật
+  mới, điểm do người chấm (summary Claude soạn **không** thay điểm chấm của người). Không tune trên frozen test, không hạ ngưỡng.
 - Blocks: AI-05; chất lượng summary phía Codex (không chặn tích hợp kỹ thuật).
-- Acceptance: human mean ≥3/5 trên tập video thật mới (ngoài frozen30), không tune trên frozen test; candidate chỉ promote khi guard clean+ASR không hồi quy. Không hạ ngưỡng âm thầm.
 - Evidence: ROUGE-L News PASS (0.2023 vs 0.1871), shared human 1.6/5 FAIL. Candidate mixed300 `70ec4790…` giữ riêng; active `cf9cfa71…`.
 - Commits: `15976b3`
-- Checkpoint: Next safe task = chờ summary người.
+- Checkpoint: Next safe task = AI-03a.
 
-### AI-04 — Đo VRAM inference ≤4 GB (AI-GATE điều kiện 4, T4.3 phần GPU)
-- T gốc: T1.8, T4.3 | Owner: claude | Status: BLOCKED
-- Depends on: máy NVIDIA/CUDA (máy hiện chỉ Intel UHD 630). Phương án: notebook Kaggle T4 nạp 6 checkpoint + 20 request tuần tự, đo `torch.cuda.max_memory_allocated/reserved`.
-- Blocks: INT-07 (T5.1 load test GPU), INT-08.
-- Acceptance: peak VRAM 6 model nạp + chạy đủ 6 endpoint ≤4 GiB; 20 request liên tiếp không tăng VRAM; số đo ghi `docs/T4.3_bao_cao.md`.
+### AI-04 — Đo VRAM sơ bộ trên Kaggle T4 (AI-GATE điều kiện 4, T4.3 phần GPU)
+- T gốc: T1.8, T4.3 | Owner: claude | Status: TODO (sơ bộ được user cho phép 2026-10-26)
+- Depends on: AI-06 (đúng 6 checkpoint active + SHA). Máy local chỉ Intel UHD 630.
+- Cách đo: notebook Kaggle private, GPU T4; nạp đúng 6 checkpoint active (SHA khớp contract) + 20 request tuần tự đủ 6 loại,
+  đo `torch.cuda.max_memory_allocated/reserved` sau nạp và sau mỗi request; tải output về trước khi push version kế
+  (memory: Kaggle chỉ giữ output bản mới nhất).
+- Acceptance (PRELIMINARY): báo cáo `docs/T4.3_bao_cao.md` ghi rõ GPU (T4 16 GB), driver/CUDA, torch, dtype (fp16/fp32), batch,
+  danh sách request, số đo peak/tail; kết luận ghi nhãn `PRELIMINARY_T4`.
+- **Không thay nghiệm thu:** AI-GATE điều kiện 4 và T4.3 vẫn `PARTIAL` cho tới khi đo trên RTX 3060 (hoặc user duyệt riêng kết quả T4
+  thay thế). T4 không chứng minh hành vi trên 3060 12 GB.
+- Blocks: INT-07 (T5.1 GPU) chỉ ở mức nghiệm thu cuối; Codex có thể chạy bản CPU trước.
 - Evidence: HIST CPU RSS 20 video PASS (`docs/T4.3_bao_cao.md`); GPU chưa đo.
 - Commits: — | Checkpoint: —
+
+### AI-07 — Vận hành runtime :8001 thật cho Codex
+- T gốc: T1.8 | Owner: claude | Status: TODO
+- Lý do: quyết định user 2026-10-26 — Codex không sao chép/quản lý checkpoint; tích hợp AI chỉ qua HTTP :8001.
+  → Claude sở hữu tiến trình inference-service chạy checkpoint thật.
+- Depends on: AI-06; Milvus từ stack Codex lắng nghe `localhost:19530` (HC-02). | Blocks: INT-01 (phần E2E thật), INT-03.
+- Acceptance: lệnh chạy chuẩn (uvicorn từ worktree Claude, `CHECKPOINT_DIR` canonical, `MILVUS_HOST` của stack Codex, port 8001,
+  `AI_SERVICE_KEY` dùng chung với gateway) ghi trong contract mục Runtime; `GET :8001/health` → `stub_mode=false`, 6 model;
+  trạng thái runtime (UP/DOWN + thời điểm) ghi `SESSION.md`. Khi :8001 DOWN, Codex dùng mock — không chặn nhau.
+- Evidence: — | Commits: — | Checkpoint: —
 
 ### AI-05 — Số liệu evaluation luận án (T5.3 phần AI)
 - T gốc: T5.3 | Owner: claude | Status: TODO
@@ -71,12 +114,24 @@ T1.6, T1.8, T4.3 = PARTIAL.
 - Acceptance: bảng metric 6 model vs baseline, CI, limitation thật, khớp `.claude/evaluation_plan.md`.
 - Evidence: — | Commits: — | Checkpoint: —
 
-### AI-06 — Sửa cấu hình checkpoint local
+### AI-06 — Xác minh nguồn checkpoint + thang sẵn sàng 6 model (ƯU TIÊN 1)
 - T gốc: T1.8 | Owner: claude | Status: TODO
-- Depends on: — | Blocks: AI-01
-- Vấn đề: `inference-service/.env` (local, không commit) trỏ `CHECKPOINT_DIR=D:/data_training_ai/checkpoints` chỉ có 4/6 model → uvicorn local fail khởi động.
-- Acceptance: một nguồn checkpoint duy nhất (khuyến nghị `E:/traning_ai/ai-core/checkpoints`) cho local + compose; ghi rõ trong `inference-service/README.md`; smoke `registry.load_all()` → `stub_mode=false`. Không xóa dữ liệu trên D:.
-- Evidence: — | Commits: — | Checkpoint: —
+- Depends on: — | Blocks: AI-01, AI-04, AI-07
+- Vấn đề: `inference-service/.env` (local, không commit) trỏ `CHECKPOINT_DIR=D:/data_training_ai/checkpoints` — thư mục đó chỉ có
+  4/6 (`asr_ctc`, `highlight_fusion`, `siamese`, `two_tower`), **thiếu `vit`, `minigpt`** → uvicorn local fail khởi động.
+  `E:/traning_ai/ai-core/checkpoints` có đủ 6 (SHA ở INVENTORY §3).
+- Việc: (1) xác minh 2 checkpoint thiếu: tìm mọi bản `vit`/`minigpt` trên D:/E: (+ output Kaggle đã tải), so SHA với bản active
+  `192d90e4…` / `cf9cfa71…`, ghi bản nào là gốc; (2) so SHA 4 model trùng tên giữa D: và E:; (3) chốt 1 nguồn canonical cho
+  local + runtime :8001, sửa `.env` local, ghi `inference-service/README.md`; (4) lập bảng thang sẵn sàng cho từng model.
+- Thang sẵn sàng (ghi riêng từng mức, có bằng chứng; mức sau chỉ khi mức trước đạt):
+  `DECLARED` (có trong registry) → `CKPT_PRESENT` (file + SHA ở nguồn canonical) → `LOADED` (`registry.load_all`, không degraded) →
+  `ENDPOINT_OK` (HTTP thật qua uvicorn, Bearer, response đúng schema) → `API_READY` (chỉ trong AI-01 khi có ví dụ thật đóng gói).
+  "AI_READY" trong quyết định user = `API_READY` này. Model chưa kiểm chứng đủ mức → không `API_READY`.
+- Acceptance: bảng 6 model × 4 mức đầu với lệnh + output + SHA trong `coordination/claude/api/AI_API_CONTRACT.md` mục 1b;
+  không xóa/ghi đè dữ liệu trên D:; search/recommendation ghi rõ mức đạt được nếu Milvus chưa có.
+- Evidence (đã có từ AI-00, VERIFIED-NOW 2026-10-26, gọi `app.services` trực tiếp — chưa qua HTTP): 6/6 CKPT_PRESENT + LOADED từ
+  `E:/traning_ai/ai-core/checkpoints`; vision/asr/highlight/completions chạy; search/recommendation 503 (Milvus tắt).
+- Commits: — | Checkpoint: —
 
 ---
 

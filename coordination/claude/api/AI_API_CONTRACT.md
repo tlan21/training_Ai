@@ -1,6 +1,6 @@
 # AI API Contract — inference-service :8001
 
-**Version: AI-API v0 — DRAFT (2026-10-26).** Owner: Claude. Codex chỉ đọc
+**Version: AI-API v0.1 — DRAFT (2026-10-26).** Owner: Claude. Codex chỉ đọc
 (`git show claude/ai-core:coordination/claude/api/AI_API_CONTRACT.md`, hoặc bản trên `master` sau release).
 Nguồn code: `inference-service/app/schemas.py`, `app/main.py`, `app/services.py` tại baseline `15976b3`.
 v1.0 (`API_READY`) phát hành ở task AI-01 kèm `inference_openapi.json` + `examples/` sinh từ chạy thật.
@@ -34,6 +34,28 @@ v1.0 (`API_READY`) phát hành ở task AI-01 kèm `inference_openapi.json` + `e
 | `highlight_fusion` | `/v1/highlight/completions` | `primitive-seq2seq-highlighter` | `becbd378ca237c6992867ca5309663d3c1c142a99b40da57f9a0fb652489b49c` |
 | `minigpt` | `/v1/completions` | `primitive-gpt-summarizer` | `cf9cfa7141d40f9d40b0065ae68855ff39ffe750260ee7b42c7c0eac719330ac` |
 | `two_tower` | `/v1/recommendation/completions` | `primitive-two-tower-recommender` | `f28c37943ec499d168f43b5281879273af326a97ee47e571100c93dee0c91695` |
+
+## 1b. Thang sẵn sàng từng model (cập nhật trong AI-06/AI-01)
+
+Mức: `DECLARED` → `CKPT_PRESENT` → `LOADED` → `ENDPOINT_OK` (HTTP thật) → `API_READY`. Chỉ ghi mức có bằng chứng.
+Bằng chứng hiện có: AI-00, 2026-10-26, nguồn `E:/traning_ai/ai-core/checkpoints`, gọi `app.services` trực tiếp (**chưa qua HTTP**).
+
+| Model | DECLARED | CKPT_PRESENT | LOADED | ENDPOINT_OK | API_READY | Ghi chú |
+|---|---|---|---|---|---|---|
+| vit | ✓ | ✓ (E:) · ✗ (D:) | ✓ | — (service call OK) | ✗ | thiếu ở `D:/data_training_ai/checkpoints` → AI-06 |
+| minigpt | ✓ | ✓ (E:) · ✗ (D:) | ✓ | — (service call OK) | ✗ | thiếu ở D: → AI-06 |
+| siamese | ✓ | ✓ (E:, D: chưa so SHA) | ✓ | — (503 khi Milvus tắt) | ✗ | cần Milvus |
+| asr_ctc | ✓ | ✓ (E:, D: chưa so SHA) | ✓ | — (service call OK) | ✗ | |
+| highlight_fusion | ✓ | ✓ (E:, D: chưa so SHA) | ✓ | — (service call OK, 256-d) | ✗ | |
+| two_tower | ✓ | ✓ (E:, D: chưa so SHA) | ✓ | — (503 khi Milvus tắt) | ✗ | cần Milvus |
+
+## 1c. Runtime :8001 (quyết định user 2026-10-26)
+
+- Claude sở hữu tiến trình inference-service chạy checkpoint thật (task AI-07). Codex **không** sao chép, mount hay quản lý checkpoint;
+  chỉ gọi HTTP `:8001` với Bearer key.
+- Khi :8001 chưa sẵn sàng (DOWN hoặc endpoint chưa `API_READY`), Codex phát triển bằng mock đúng contract này
+  (`mocks.AIClientMem` hoặc stub HTTP trả đúng schema mục 2). Mock không bao giờ được tính là tích hợp thật.
+- Lệnh chạy, địa chỉ host cho gateway trong Docker, và trạng thái UP/DOWN sẽ ghi tại đây trong AI-07.
 
 ## 2. Endpoints
 
@@ -80,3 +102,4 @@ Resp: `{"status":"ok","gpu_vram_used": MB,"gpu_util": %,"models_loaded":[...],"d
 
 ## 3. Changelog
 - **v0 (2026-10-26)** — DRAFT, ghi lại API hiện có tại baseline `15976b3`. Không đổi code.
+- **v0.1 (2026-10-26)** — DRAFT, chỉ tài liệu: thêm thang sẵn sàng (1b) và quyền runtime :8001 thuộc Claude, Codex chỉ HTTP/mock (1c). Schema không đổi.
