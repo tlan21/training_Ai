@@ -1,17 +1,4 @@
-# Use with docker-compose.yml on an NVIDIA host; CPU-only hosts must not use this override.
-services:
-  inference-service:
-    build:
-      args:
-        TORCH_INDEX_URL: https://download.pytorch.org/whl/cu126
-    environment:
-      INFER_DEVICE: cuda
-      INFERENCE_MEMORY_TRACE: "1"
-      NVIDIA_DRIVER_CAPABILITIES: compute,utility
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [gpu]
+# Legacy override retained for existing commands; this lane no longer starts inference.
+# Claude owns GPU/runtime configuration in E:/traning_ai (AI-07).
+# Gateway uses AI_BASE_URL=http://host.docker.internal:8001 and AI_ALLOW_STUB=0.
+services: {}

@@ -56,9 +56,12 @@ func main() {
 	subtitleStore := &mongo.SubtitleStore{Collection: documents.Collection("subtitles")}
 	eventBus := kafka.New(cfg.KafkaBrokers)
 	aiClient := aihttp.New(cfg.AIBaseURL, cfg.AIServiceKey)
-	if _, err := aiClient.Health(ctx); err != nil {
+	aiClient.AllowStub = cfg.AIAllowStub
+	health, err := aiClient.Health(ctx)
+	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("AI health: stub_mode=%t models_loaded=%v", health.StubMode, health.ModelsLoaded)
 	wirePipeline(videoRepo, jobRepo, clipRepo, analysisStore, subtitleStore, aiClient, eventBus, objectStorage)
 
 	resetRepo := mocks.NewPasswordResetRepoMem()
@@ -162,7 +165,7 @@ func main() {
 	cmsUsers.GET("", userCMS.List)
 	cmsUsers.PUT("/:id/role", userCMS.SetRole)
 
-	log.Printf("gateway :%s (PostgreSQL/Mongo/MinIO/Kafka/Redis, real AI) → AI %s", cfg.Port, cfg.AIBaseURL)
+	log.Printf("gateway :%s (PostgreSQL/Mongo/MinIO/Kafka/Redis) → AI %s", cfg.Port, cfg.AIBaseURL)
 	if err := r.Run(":" + cfg.Port); err != nil {
 		log.Fatal(err)
 	}

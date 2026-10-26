@@ -62,6 +62,10 @@ func TestClient_RejectsStubHealthAndPreservesHTTPError(t *testing.T) {
 	if _, err := client.Health(context.Background()); err == nil {
 		t.Fatal("stub accepted as real AI")
 	}
+	client.AllowStub = true
+	if health, err := client.Health(context.Background()); err != nil || !health.StubMode {
+		t.Fatalf("explicit development stub rejected: %+v %v", health, err)
+	}
 	_, err := client.Vision(context.Background(), nil)
 	var de *domain.DomainError
 	if !errors.As(err, &de) || de.Status != 401 {

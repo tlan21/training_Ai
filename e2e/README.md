@@ -1,3 +1,24 @@
+# Runtime sau Release #1 (2026-10-26)
+
+Claude sở hữu inference thật :8001 và checkpoint. Compose của Codex không dựng inference;
+`AI_BASE_URL=http://host.docker.internal:8001`, `AI_ALLOW_STUB=0` mặc định.
+Dùng `docker-compose.mock.yml` cho phát triển độc lập (MOCK_ONLY, không nghiệm thu AI thật):
+
+```powershell
+docker compose -f docker-compose.yml -f docker-compose.mock.yml config --quiet
+docker compose -f docker-compose.yml -f docker-compose.mock.yml up -d --build gateway ingest-worker cms client
+```
+
+Giữ project hiện hữu `video-ai` và volume `video-ai_*`. Đo C:/E: trước build/pull;
+không chạy build khi không đủ chỗ. Xem `coordination/codex/verification/INT-00.md` cho cách dùng image cũ + binary mới
+trong môi trường thiếu tài nguyên. Ingest tạm dùng image preprocessing cũ đã cache, không khởi chạy inference hoặc mount checkpoint.
+`docker-compose.gpu.yml` là override cũ đã nghỉ; GPU của runtime thật do Claude cấu hình ở worktree của Claude.
+Các lệnh `inference-service`/GPU ở phần lịch sử bên dưới không áp dụng cho stack Codex hiện tại.
+
+E2E AI thật T4.1/T4.2 chờ AI-01 API_READY + AI-07; test đi qua mock chỉ là bằng chứng MOCK_ONLY.
+
+---
+
 # T4.1 — Real video pipeline
 
 Run from the repository root in PowerShell:

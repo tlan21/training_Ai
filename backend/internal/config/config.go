@@ -8,6 +8,7 @@ type Config struct {
 	Port                string
 	AIBaseURL           string
 	AIServiceKey        string
+	AIAllowStub         bool
 	PostgresDSN         string
 	MongoURI            string
 	MongoDB             string
@@ -28,6 +29,7 @@ func Load() Config {
 		Port:                env("GATEWAY_PORT", "8000"),
 		AIBaseURL:           env("AI_BASE_URL", "http://localhost:8001"),
 		AIServiceKey:        env("AI_SERVICE_KEY", "sk-local-dev-key"),
+		AIAllowStub:         os.Getenv("AI_ALLOW_STUB") == "1",
 		PostgresDSN:         env("POSTGRES_DSN", "postgres://postgres:postgres@localhost:5432/traning_ai?sslmode=disable"),
 		MongoURI:            env("MONGO_URI", "mongodb://localhost:27017"),
 		MongoDB:             env("MONGO_DB", "traning_ai"),

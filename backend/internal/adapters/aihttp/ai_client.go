@@ -15,6 +15,7 @@ import (
 type Client struct {
 	baseURL, apiKey string
 	http            *http.Client
+	AllowStub       bool // Development only; real inference remains required by default.
 }
 
 func New(baseURL, apiKey string) *Client {
@@ -145,6 +146,9 @@ func (c *Client) Health(ctx context.Context) (*domain.AIHealth, error) {
 	var result domain.AIHealth
 	if err := c.request(ctx, "/health", nil, &result); err != nil {
 		return nil, err
+	}
+	if result.StubMode && c.AllowStub {
+		return &result, nil
 	}
 	if result.StubMode || len(result.ModelsLoaded) != 6 {
 		return nil, fmt.Errorf("inference is not running all six real checkpoints")
