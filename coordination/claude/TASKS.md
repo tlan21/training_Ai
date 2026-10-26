@@ -9,10 +9,10 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 |---|---|---|---|---|
 | AI-00 | — | Thiết lập tách làn + kiểm kê | DONE | — |
 | AI-06 | T1.8 | **Ưu tiên 1** — Xác minh nguồn checkpoint + thang sẵn sàng 6 model | DONE (2026-10-26) | — |
-| AI-01 | T1.8 | Phát hành AI API Contract v1 (API_READY) | REVIEW (v1.0-rc1 DRAFT; API_READY ⇐ AI-07 + release, D16) | AI-06 |
+| AI-01 | T1.8 | Phát hành AI API Contract v1 (API_READY) | DONE (2026-10-26, release #2 — hiệu lực khi lên master; recommendation DRAFT) | AI-06 |
 | AI-10 | T1.8 | Health/degraded đúng ngữ nghĩa + dependency status + tự phục hồi (D15) | DONE (2026-10-26) | — |
 | AI-07 | T1.8 | Vận hành runtime :8001 thật cho Codex gọi HTTP (+ sửa UTF-8 Windows) | DONE (2026-10-26; :8001 UP; ingest path ⇐ HC-05) | AI-10; Milvus stack Codex (UP) |
-| AI-11 | T1.8 / T4.2 | HO-01: `video_id` tùy chọn cho Vision + index frame từ data URI 1 fps (contract minor) | IN_PROGRESS (2026-10-26) | HO-01 (Codex chọn HTTP media) |
+| AI-11 | T1.8 / T4.2 | HO-01: `video_id` tùy chọn cho Vision + index frame từ data URI 1 fps (contract minor) | DONE (2026-10-26) | HO-01 (Codex chọn HTTP media) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | TODO | HC-04 (Codex: mapping ID + collection) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a TODO · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
 | AI-03 | T1.6 | Mini-GPT: 03a Claude soạn summary 40 clip · 03b người duyệt · 03c train/eval | 03a TODO · 03b BLOCKED · 03c BLOCKED | 03b ⇐ user; 03c ⇐ 03b |
@@ -41,8 +41,8 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - Checkpoint: xem SESSION.md
 
 ### AI-01 — Phát hành AI API Contract v1
-- T gốc: T1.8 | Owner: claude | Status: REVIEW (2026-10-26) — acceptance 1–5 đạt trên branch; theo D16 chưa công bố API_READY: contract = v1.0-rc1 DRAFT
-  (6 endpoint ứng viên, recommendation DRAFT). Công bố API_READY khi AI-07 xong + code trên `master` + smoke :8001 PASS.
+- T gốc: T1.8 | Owner: claude | Status: DONE (2026-10-26, release #2) — contract v1.2: 6 endpoint `API_READY` hiệu lực khi release #2 lên `master`
+  (D16: code trên master + :8001 UP + smoke PASS); recommendation `DRAFT` (D14). Nếu user không duyệt push → quay lại REVIEW.
 - Depends on: AI-06 | Blocks: INT-03 (DONE), mọi dòng `INTEGRATED_REAL` mới trong matrix Codex
 - Acceptance:
   1. `coordination/claude/api/inference_openapi.json` export từ `app.main:app.openapi()` (không sửa tay).
@@ -143,14 +143,24 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   ```
 
 ### AI-11 — HO-01: Vision `video_id` + index frame từ data URI (Codex RE:HC-05 chọn phương án b)
-- T gốc: T1.8 / T4.2 | Owner: claude | Status: IN_PROGRESS (2026-10-26)
+- T gốc: T1.8 / T4.2 | Owner: claude | Status: DONE (2026-10-26)
 - Depends on: HO-01 | Blocks: INT-11 (real upload → vision/index/search trên topology host/Docker), release #2
 - Việc: field optional `video_id` trên VisionRequest; có `video_id` + data URI/base64 → index Siamese frame theo thứ tự request = giây 0,1,2…,
   thumbnail MinIO `thumbnails/<video_id>/<8 số>.jpg`, payload/collection/metric/index giữ nguyên; nhánh ingest path cũ giữ nguyên. Xác nhận ASR đọc WAV
   qua MinIO presigned `http://localhost:9000/...`. Contract minor (chỉ thêm field) + RE:HO-01.
 - Acceptance: unit test index data URI (thứ tự/timestamp/key/payload, thiếu video_id → không index, video_id sai → 422/503 không degraded);
   live :8001: vision có video_id → frame vào Milvus, search thấy video đó; ASR presigned URL 200.
-- Evidence: — | Commits: — | Checkpoint: —
+- Evidence (VERIFIED-NOW 2026-10-26, `coordination/claude/evidence/AI-11_2026-10-26/README.md`): test_visual_search RED 2 → GREEN; suite 51 passed / 7 skipped;
+  live :8001 vision video_id → 3 row Milvus giây 0/1/2 + 3 thumbnail, search → `vid_ai11probe` giây 1 sim 1.0, ASR presigned localhost:9000 → 200;
+  dữ liệu probe đã dọn (0 row/0 thumbnail); smoke :8001 6/6; OpenAPI chỉ thêm `VisionRequest.video_id`. RE:HO-01 trong HANDOFF_OUT.
+- Commits: bc3ec2f (nhận task), 3b44592 (code + test + contract v1.2-rc1) | Checkpoint:
+  ```
+  Lane: claude
+  Changed: inference-service/app/{visual_index,schemas,services}.py, tests/test_visual_search.py, coordination/claude/{api/**,evidence/AI-11_2026-10-26/**,HANDOFF_OUT.md}; .env local (MINIO_*)
+  Verified: unit 4 mới PASS; suite 51/7; live probe :8001 index+search+ASR presigned PASS, đã dọn
+  Contract touched: yes (v1.2-rc1, chỉ thêm VisionRequest.video_id)
+  Next safe task: release #2 (user duyệt push)
+  ```
 
 ### AI-09 — Two-Tower recommendation phía AI (D14)
 - T gốc: T1.7 | Owner: claude | Status: TODO

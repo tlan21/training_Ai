@@ -133,3 +133,10 @@ Quyết định user D14 (PROJECT_STATUS mục 5). Claude **không** chạy `exp
 - Bằng chứng live :8001 (đã dọn dữ liệu probe `vid_ai11probe`): vision 200 → 3 row Milvus (giây 0/1/2) + 3 thumbnail; search frame 2 → `vid_ai11probe`
   giây 1, similarity 1.0; sau dọn 0 row/0 thumbnail. `coordination/claude/evidence/AI-11_2026-10-26/`.
 - Codex có thể gửi field `video_id` khi tích hợp; vẫn DRAFT theo D16 tới release.
+
+## 2026-10-26 REL AI-API v1.2 — release #2 (API_READY hiệu lực khi commit này có trên `master`)
+- 6 endpoint `API_READY`: `/health`, vision, asr, highlight, completions, search. Recommendation `DRAFT` (collection chưa có; D14, HC-04/AI-09).
+- Runtime :8001 UP (Claude), từ Docker: `http://host.docker.internal:8001`; Bearer = `AI_SERVICE_KEY` trong `E:/traning_ai/inference-service/.env`.
+- Topology (RE:HC-05/HO-01): vision gửi data URI + `video_id` (toàn bộ frame 1 video / 1 request), asr gửi presigned `http://localhost:9000/...`.
+- Gate Claude đã chạy: ai-core 285 PASS; inference 51 PASS/7 skip; smoke :8001 6/6 + 401; 6 checkpoint `stub_mode=false`.
+- Codex: sau khi master có release #2 → `git merge master`, đổi `AI_BASE_URL`/`AI_ALLOW_STUB=0`, chạy integration test thật; chỉ khi PASS mới `INTEGRATED_REAL` (D16).

@@ -3,7 +3,7 @@
 **Chỉ sửa trong release commit theo `coordination/README.md` mục 6** (user ra lệnh release cho đúng 1 làn) **hoặc khi user yêu cầu trực tiếp**.
 Ngoài ra: đọc trạng thái sống ở `coordination/claude/TASKS.md` và `coordination/codex/TASKS.md` (qua `git show`).
 
-Cập nhật lần cuối: 2026-10-26 · sync #4 (user yêu cầu, không release; `master` = `96ebc24`). Trên branch Claude có thêm D9–D17; lên `master` ở release kế.
+Cập nhật lần cuối: 2026-10-26 · **release #2 (làn Claude)** — commit này lên `master` khi user duyệt push.
 
 ## 1. Cổng nghiệm thu AI (AI-GATE — master plan §0)
 
@@ -12,7 +12,7 @@ Cập nhật lần cuối: 2026-10-26 · sync #4 (user yêu cầu, không releas
 | 1. 6 model train + unit test toán học | DONE | ai-core 285 tests PASS (NOW 2026-10-26) |
 | 2. Metric đạt ngưỡng `evaluation_plan.md` | PARTIAL | Mini-GPT human 1.6/5 FAIL (AI-03); 5 model còn lại đạt |
 | 3. Checkpoint load lại được | DONE | nguồn canonical `E:/traning_ai/ai-core/checkpoints` 6/6 SHA khớp (AI-06) |
-| 4. inference-service thật + VRAM ≤4 GB | PARTIAL | ENDPOINT_OK qua HTTP 5 model + health trên :8011 tạm (AI-06/AI-01), recommendation chưa; runtime :8001 chưa UP (AI-07); VRAM: T4 chỉ sơ bộ (AI-04), nghiệm thu vẫn RTX 3060 |
+| 4. inference-service thật + VRAM ≤4 GB | PARTIAL | runtime :8001 UP (AI-07), 6 checkpoint thật, smoke 6/6, 6 endpoint API_READY; recommendation DRAFT (D14); **VRAM chưa đo** (CPU-only; AI-04, nghiệm thu RTX 3060) |
 
 AI-GATE **không chặn** làn Codex (master §0); chỉ chặn nghiệm thu cuối và task phụ thuộc trực tiếp.
 
@@ -22,9 +22,10 @@ AI-GATE **không chặn** làn Codex (master §0); chỉ chặn nghiệm thu cu�
 |---|---|---|
 | AI-00 | tách làn | DONE |
 | AI-06 | xác minh checkpoint + thang sẵn sàng | DONE (canonical E:, ENDPOINT_OK HTTP) |
-| AI-01 | T1.8 contract v1 | REVIEW — v1.0-rc1 DRAFT + openapi + examples thật; API_READY ⇐ AI-07 + release (D16) |
-| AI-10 | health/degraded đúng ngữ nghĩa | TODO — làm trước AI-07 (D15) |
-| AI-07 | runtime :8001 thật + UTF-8 Windows | TODO — **ưu tiên** (⇐ AI-10; Milvus Codex UP) |
+| AI-01 | T1.8 contract v1 | DONE — AI-API v1.2, 6 endpoint API_READY (release #2), recommendation DRAFT |
+| AI-10 | health/degraded đúng ngữ nghĩa | DONE — `/health.dependencies`, degraded chỉ lỗi inference thật, tự phục hồi |
+| AI-07 | runtime :8001 thật + UTF-8 Windows | DONE — :8001 UP (`run_local_8001.cmd`), UTF-8 sửa trong code |
+| AI-11 | HO-01: vision `video_id` + index data URI | DONE — RE:HO-01 |
 | AI-09 | Two-Tower phía AI: embedding/schema/export/version, sandbox | TODO (⇐ HC-04 Codex: mapping ID + collection) — D14 |
 | AI-02 | T1.4 ASR domain | 02a TODO (Claude đề xuất) · 02b BLOCKED (user duyệt: 7/60, còn 53) · 02c BLOCKED |
 | AI-03 | T1.6 Mini-GPT | 03a TODO (Claude soạn 40 summary) · 03b BLOCKED (user duyệt) · 03c BLOCKED |
@@ -39,10 +40,11 @@ Chép từ `git show codex/integration:coordination/codex/TASKS.md` lúc sync #4
 | ID | T | Status |
 |---|---|---|
 | INT-00 | worktree + stack hạ tầng + mock AI qua HTTP (không checkpoint) | REVIEW (stack + Milvus UP, mock :18001) |
+| INT-11 | HTTP media gateway Docker ↔ inference host | PARTIAL (phương án b; chờ AI-API v1.2 trên master để test thật) |
 | INT-01 | T2.1–T2.5 verify | BLOCKED (⇐ INT-00) — phần DB với mock; E2E AI thật ⇐ AI-07 |
 | INT-02 | memory → Postgres | REVIEW (không phụ thuộc AI) |
-| INT-03 | Two-Tower user vector | TODO (⇐ INT-02, AI-01; personalized thật ⇐ HC-04/AI-09, D14) |
-| INT-04 | video gốc (OpenAPI) | IN_PROGRESS (không phụ thuộc AI) |
+| INT-03 | Two-Tower user vector | IN_PROGRESS (sandbox `sandbox_two_tower_ai09_20261026` đang chuẩn bị; personalized thật ⇐ AI-09, D14) |
+| INT-04 | video gốc (OpenAPI) | PARTIAL (không phụ thuộc AI) |
 | INT-05 | T3.1 parity | PARTIAL |
 | INT-06 | T3.2 parity | PARTIAL |
 | INT-07 | T5.1 load | BLOCKED (nghiệm thu GPU ⇐ AI-04 + RTX 3060) |
@@ -52,12 +54,12 @@ Chép từ `git show codex/integration:coordination/codex/TASKS.md` lúc sync #4
 
 ## 4. AI API
 
-`master`: **AI-API v0.1 DRAFT** (release #1). Branch Claude: **v1.0-rc1 DRAFT** (AI-01) — schema không đổi, openapi + examples thật.
-Chưa endpoint nào `API_READY`: theo D16 chỉ công bố khi code trên `master` + :8001 UP + test đạt (AI-07 + release).
+**AI-API v1.2** (release #2): `/health`, vision, asr, highlight, completions, search = `API_READY`; recommendation `DRAFT` (D14).
+Tương thích ngược v0.x: chỉ thêm `/health.dependencies` (v1.1) và `VisionRequest.video_id` (v1.2). Runtime :8001 UP (Claude), gọi từ Docker qua `host.docker.internal:8001`.
 Matrix Codex: search/recommendation `MOCK_ONLY (NOW)`; recommendation personalized `REAL_PENDING` tới khi đủ điều kiện D14.
 
 Dependency đang mở (integration gate):
-- AI-10 → AI-07 → release → Codex chuyển `AI_BASE_URL` sang :8001, `AI_ALLOW_STUB=0`, kiểm thật rồi mới `INTEGRATED_REAL`.
+- Release #2 lên master → Codex chuyển `AI_BASE_URL` sang :8001, `AI_ALLOW_STUB=0`, gửi data URI + `video_id` / presigned WAV (RE:HC-05), kiểm thật rồi mới `INTEGRATED_REAL`.
 - HC-04 (Codex: mapping ID sản phẩm, collection Milvus, sync pipeline) ↔ AI-09 (Claude: embedding/schema/export/version, sandbox). Nạp dữ liệu thật chỉ khi D14 thỏa.
 - Codex không chờ: INT-02/INT-04 không phụ thuộc AI; mọi phần AI dùng mock đúng contract.
 
@@ -95,3 +97,4 @@ khi người duyệt từng mục (`HUMAN_VERIFIED`) và provenance ghi rõ ngu�
 | 2 | 2026-10-26 | claude — **release #1** | `39ff344 → 96ebc24` (ff-only) | không đổi trạng thái task; D9–D12 ghi sau release | mở HC-03 | inference 37 PASS/1 skip; 6 ckpt `stub_mode=false`; 0 file code đổi; Codex worktree ff → 96ebc24 sạch |
 | 3 | 2026-10-26 | claude (user yêu cầu, không release) | không đổi (`96ebc24`) | thêm AI-08 (TODO), D13 | — | chỉ tài liệu |
 | 4 | 2026-10-26 | claude (user yêu cầu, không release) | không đổi (`96ebc24`) | AI-06 DONE; AI-01 REVIEW (v1.0-rc1 DRAFT); thêm AI-09, AI-10; D14–D17 | mở HC-04; đính chính REL v1.0 → rc1 DRAFT | AI-06/AI-01 evidence: HTTP ladder 9/9, live smoke 6/6, inference 37 PASS/7 skip |
+| 5 | 2026-10-26 | claude — **release #2** | `96ebc24 → <commit này>` (ff-only, chờ user duyệt) | AI-01, AI-06, AI-07, AI-10, AI-11 DONE; AI-API v1.2 (6 API_READY, reco DRAFT); :8001 UP | đóng HC-05 (RE:HC-05 phương án b), HO-01 (RE:HO-01); mở HC-04 chờ RE sandbox | ai-core 285 PASS; inference 51 PASS/7 skip; smoke :8001 6/6 (media thật + synthetic) + 401; 6 ckpt `stub_mode=false` |
