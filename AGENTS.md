@@ -21,8 +21,8 @@ chỉ dùng qua HTTP theo **AI API Contract** do Claude công bố.
 
 - Worktree: `E:\traning_ai-codex` · Branch: `codex/integration`. Đầu phiên chạy `git branch --show-current`; sai → DỪNG.
 - `master` không checkout ở đâu; chỉ fast-forward khi user ra lệnh release (mục 6).
-- Worktree này không có `ai-core/checkpoints/` (gitignored). Inference thật lấy checkpoint qua mount `:ro`
-  `AI_CHECKPOINT_DIR=E:/traning_ai/ai-core/checkpoints` (task INT-00).
+- Codex không sao chép, mount hoặc quản lý checkpoint. Claude sở hữu runtime inference thật :8001;
+  Codex gọi HTTP bằng `AI_BASE_URL`, dùng mock đúng contract khi AI chưa sẵn sàng (HC-02/HC-03).
 - Chỉ 1 docker-compose stack chạy tại 1 thời điểm; bạn sở hữu stack.
 
 ## 3. Path được ghi / cấm ghi
