@@ -3,10 +3,10 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
-- Task: — (không có task IN_PROGRESS)
-- Bước đã xong: —
-- Bước kế: —
-- File đang sửa: —
+- Task: AI-08 đợt #1 (dọn D:, user uỷ quyền tự quyết 2026-10-26) — IN_PROGRESS
+- Bước đã xong: 1 điều kiện trước · 2 khảo sát · 3 manifest `coordination/claude/cleanup/CLEANUP_2026-10-26.md`
+- Bước kế: 5 xóa đúng 6 path trong manifest mục 1 → 6 kiểm sau dọn → 7 ghi kết quả
+- File đang sửa: manifest trên
 - Lệnh verify dở: —
 
 ## Task kế an toàn
