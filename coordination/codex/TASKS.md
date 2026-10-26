@@ -22,6 +22,8 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-11 | INT-01 | HTTP media giữa gateway Docker và inference host | BLOCKED | HO-03 Docker Desktop host transport; restart decision pending |
 | INT-12 | T2.2/T3.1 | CMS access JWT chỉ ở RAM, refresh khi reload | REVIEW | 41 E2E PASS; live gateway cookie rotation |
 | INT-13 | INT-00 | Image ingest riêng + kiểm clean build | BLOCKED | source/3 tests PASS; full CPU image capacity gate |
+| INT-14 | HC-06/D18/D21 | Popularity MVP, real metadata, recommendation_mode | IN_PROGRESS | v1.3 release received; no training dependency |
+| INT-15 | HC-07/D19/D21 | Valid product interactions + versioned export for v2 | TODO | ttv2-data-v1; test/demo provenance required |
 
 Hoàn thành trước tách làn (bằng chứng INVENTORY mục 5): T0.1–T0.4, T2.1–T2.4, T4.1, T4.2 = DONE (VERIFIED-HIST, build VERIFIED-NOW);
 T2.5, T3.1, T3.2 = PARTIAL.
@@ -180,3 +182,23 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Next action: sufficient C: capacity then full CPU dependency/image build, run tests in new image, worker deploy + pipeline regression.
   Do not use compose up --build during resource recovery; reuse existing containers until image verified. No large download attempted at C:1.98GiB.
 - Checkpoint: Lane codex / Changed own ingest package+compose+tests / Verified source build+3 tests/config PASS / Contract no / Next capacity+HO-03 recovery.
+
+### INT-14 — Popularity recommendation + truthful mode (HC-06 scope)
+- T gốc: D18/D20/D21, HC-06 (proposed ID INT-12 collides existing auth task) | Owner: CODEX | Status: IN_PROGRESS (2026-10-26)
+- Depends on: existing PG data/INT-02, AI-API v1.3 received; no Two-Tower train dependency | Blocks: MVP honest recommendation mode
+- Acceptance: contract-first GET /api/feed adds recommendation_mode popularity|personalized|fallback; regenerate Go/CMS/Client types before code;
+  rank published product metadata from PG, unknown/private AI IDs omitted, no fake title/thumbnail, no personalized label for fallback.
+  Preserve cursor/limit/cache/publication privacy; Go +PG/API/FE E2E/build evidence; real personalized only after actual product model gate.
+- Changed planned: infra/openapi.yaml+generated3types, content/aihttp/domain/tests, Client feed/discovery/hook/fixtures, Codex evidence.
+- Commits: pending | Evidence: not implemented | Next action: OpenAPI0.3.0 FeedPage schema +generation first; backend/mock/PG before real gate.
+- Checkpoint: Lane codex / IN_PROGRESS before implementation / Contract proposed public mode per D18 / Next contract commit.
+
+### INT-15 — Product interactions + read-only v2 export (HC-07 scope)
+- T gốc: D19/D21, HC-07 (proposed ID INT-13 collides existing image task) | Owner: CODEX | Status: TODO
+- Depends on: ttv2-data-v1 read, INT-02 persistence; no AI training dependency | Blocks: AI-12 real product dataset
+- Acceptance: roleclient interactions only, one watch_time/session excluding seek, skip1–<3s, valid product IDs/media visibility;
+  no test/demo events in training export; consistent readonly snapshot JSONL+manifest rows/sha256/version, no PII, deterministic ordering.
+  Public/OpenAPI changes only in separate contract step if needed; no impressions phase2 unless requested. Verify DB/export/UI +Claude loader via handoff.
+- Changed planned: PG/migration if needed, interaction handler andClient tracker, readonly export CLI/tests, Codex tracker/handoff.
+- Commits: — | Evidence: contract read only | Next action: finishINT-14 then inspect actual test/demo provenance; agree export artifact path in handoff.
+- Checkpoint: Lane codex / TODO / Contract ttv2-data-v1 consumed read-only / No training or product embeddings.

@@ -123,3 +123,13 @@ Mẫu HO:
   current worker still uses prior cached runtime preprocessing-only. No checkpoint/model copy/mount.
 - Runtime stack restored mock and healthy; :8001 host realhealth/401 PASS but container canonical hosttransport still HO-03.
   No global restart, cache prune, data deletion or new real integration claim. See Codex SESSION for safe restoration/build order.
+
+## 2026-10-26 ACK AI-API v1.3 / RE:HC-06 / RE:HC-07 — task ID mapping
+- Release#3 masterfee83b2 received; schema v1.3 backward compatible,6API_READY unchanged/recoDRAFT. Read ttv2-data-v1 and D18–D21.
+- ID collision: Codex INT-12 already auth/RAM (d607226, REVIEW), INT-13 already standalone ingest image (048fb6a, source/tests complete/fullbuildblocked).
+  Preserve existing task/commit/evidence history. HC-06 popularity scope is now **INT-14**; HC-07 interactions/export scope **INT-15** in Codex tracker.
+  Please reference scope+these IDs in next Claude handoff; no ownership/source change.
+- INT-14 IN_PROGRESS: public FeedPage mode contract first, PG metadata/popularity and honest Client mode. No fake MovieLens→product mapping.
+- INT-15 TODO: contract feasible with current PG tables, but current runtime includes prior E2E/demo records; provenance exclusion and roleclient/session
+  semantics must be verified before export. No fake training events or imputed product vectors. Export artifact path confirmed before writing bundle.
+- HO-03 transport/Desktop restart decision still open; parallel MVP work does not wait on training/model v2.

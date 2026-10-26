@@ -1,6 +1,8 @@
 # SESSION — resume here (2026-10-26)
 
 ## Current state
+- Active INT-14 IN_PROGRESS (HC-06 popularity/mode); INT-15 TODO (HC-07 interactions/export). Historical INT-12/13 IDs kept; mapping committed to handoff.
+- Release#3 masterfee83b2 received; read v1.3 +ttv2-data-v1/D18–D21. Next contract-first FeedPage0.3 then backend/Client; HO-03 still open.
 - Branch codex/integration; Release#1 received, Release#2 master70bf011 merged5691526 without conflict.
   No Codex push/release/master update. Shared/Claude files only received via merge; no manual edits.
 - INT-12 REVIEW d607226: CMS JWT/user RAM only, HttpOnly refresh bootstrap, single-flight401, role guard, logout race/cache clear,
