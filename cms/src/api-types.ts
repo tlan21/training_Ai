@@ -468,7 +468,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Feed clip published (recommendation; fallback popularity) */
+        /** Feed clip published với mode gợi ý thực tế (D18) */
         get: {
             parameters: {
                 query?: {
@@ -487,7 +487,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["ClipPage"];
+                        "application/json": components["schemas"]["FeedPage"];
                     };
                 };
                 401: components["responses"]["Unauthorized"];
@@ -1964,6 +1964,13 @@ export interface components {
             status?: "draft" | "processing" | "published" | "rejected";
             /** Format: date-time */
             created_at?: string;
+        };
+        FeedPage: components["schemas"]["ClipPage"] & {
+            /**
+             * @description popularity khi xếp hạng từ dữ liệu sản phẩm; personalized chỉ khi AI trả vector sản phẩm thật, backend xác minh ID và hydrate metadata Postgres; fallback khi AI lỗi, timeout hoặc không có kết quả hợp lệ. Không suy diễn personalized từ HTTP 200. Chỉ trả clip published/video processed với metadata thật.
+             * @enum {string}
+             */
+            recommendation_mode: "popularity" | "personalized" | "fallback";
         };
         ClipPage: {
             items?: components["schemas"]["Clip"][];

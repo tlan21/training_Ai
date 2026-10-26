@@ -1,6 +1,9 @@
 # SESSION — resume here (2026-10-26)
 
 ## Current state
+- INT-14 contract checkpoint: public OpenAPI0.3.0 FeedPage with required recommendation_mode enum, existing ClipPage reused.
+  Go types/spec generated with oapi-codegen2.8.0; CMS+Client types generated openapi-typescript7.13.0.
+  gen Go compile +CMS/Client tsc PASS. No runtime behavior changed yet; next backend mode/cache/PG metadata, then Client labels/tests.
 - Active INT-14 IN_PROGRESS (HC-06 popularity/mode); INT-15 TODO (HC-07 interactions/export). Historical INT-12/13 IDs kept; mapping committed to handoff.
 - Release#3 masterfee83b2 received; read v1.3 +ttv2-data-v1/D18–D21. Next contract-first FeedPage0.3 then backend/Client; HO-03 still open.
 - Branch codex/integration; Release#1 received, Release#2 master70bf011 merged5691526 without conflict.

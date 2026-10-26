@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Video AI Platform — Public + CMS API
-  version: 0.2.0
+  version: 0.3.0
   description: >
     Contract-first (master plan §2). Nguồn sự thật cho gateway Go (oapi-codegen)
     và FE types (openapi-typescript). Điểm highlight thang 0–100; similarity/score 0–1.
@@ -247,7 +247,7 @@ paths:
   /api/feed:
     get:
       tags: [content]
-      summary: Feed clip published (recommendation; fallback popularity)
+      summary: Feed clip published với mode gợi ý thực tế (D18)
       parameters:
         - $ref: "#/components/parameters/Cursor"
         - $ref: "#/components/parameters/Limit"
@@ -256,7 +256,7 @@ paths:
           description: clip page
           content:
             application/json:
-              schema: { $ref: "#/components/schemas/ClipPage" }
+              schema: { $ref: "#/components/schemas/FeedPage" }
         "401": { $ref: "#/components/responses/Unauthorized" }
 
   /api/videos:
@@ -971,6 +971,20 @@ components:
         playback_url: { type: string, nullable: true, description: MinIO presigned URL }
         status: { type: string, enum: [draft, processing, published, rejected] }
         created_at: { type: string, format: date-time }
+
+    FeedPage:
+      allOf:
+        - $ref: "#/components/schemas/ClipPage"
+        - type: object
+          required: [recommendation_mode]
+          properties:
+            recommendation_mode:
+              type: string
+              enum: [popularity, personalized, fallback]
+              description: >
+                popularity khi xếp hạng từ dữ liệu sản phẩm; personalized chỉ khi AI trả vector sản phẩm thật,
+                backend xác minh ID và hydrate metadata Postgres; fallback khi AI lỗi, timeout hoặc không có kết quả hợp lệ.
+                Không suy diễn personalized từ HTTP 200. Chỉ trả clip published/video processed với metadata thật.
 
     ClipPage:
       type: object
