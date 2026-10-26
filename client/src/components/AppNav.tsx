@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import { Icon } from "@/components/Icon";
 import { useAuthStore } from "@/stores/authStore";
-import { apiClient, errorMessage } from "@/lib/apiClient";
+import { logoutSession, errorMessage } from "@/lib/apiClient";
 export type NavTab = "home" | "discover" | "library" | "profile" | "search";
 export function AppNav({ active, search = true, children }: {
     active: NavTab;
@@ -22,8 +22,7 @@ export function AppNav({ active, search = true, children }: {
         setBusy(true);
         setError("");
         try {
-            await apiClient.post("/api/auth/logout");
-            useAuthStore.getState().logout();
+            await logoutSession();
             query.clear();
             router.replace("/login");
         }

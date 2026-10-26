@@ -229,11 +229,14 @@ services:
     depends_on:
       gateway: { condition: service_healthy }
   client:
-    build: { context: ., dockerfile: client/Dockerfile }
+    build:
+      context: .
+      dockerfile: client/Dockerfile
+      args:
+        NEXT_PUBLIC_API_BASE: ${NEXT_PUBLIC_API_BASE:-}
+        GATEWAY_INTERNAL_URL: http://gateway:8000
     image: video-ai-client
     ports: ["3000:3000"]
-    environment:
-      NEXT_PUBLIC_API_BASE: http://localhost:8000
     depends_on:
       gateway: { condition: service_healthy }
 

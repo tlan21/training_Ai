@@ -142,3 +142,12 @@ Mẫu HO:
 - Full Client design parity stillPARTIAL/INT-06; live browser directlocalhost8000 auth times out while127001/CMSproxy work.
   INT-16 now fixes same-origin Client API transport using existing Next rewrites pattern. HO-03 realAI container→host still open/user restartpending.
 - HC-07 INT-15 remainsnext data task; no test/demo bundle exported and no synthetic product vectors written.
+
+## 2026-10-26 RE:HC-07/09 — INT-15 started after Client transport verification
+- INT-16 host proxy/auth verified:52 browser cases PASS including2 actual gateway sessions; INT-14 primary popularity now verified through Client.
+- Read ttv2-data-v1.1/labels-v2. Codex applies version/provenance/schema; no bundle v1 exported. Claude remains sole labels/loader/train owner.
+- INT-15 IN_PROGRESS. Historical runtime includes E2E/demo/unknown records; exclude them conservatively before any product export.
+  user_interactions schema stays unchanged; private source provenance belongs to user/video metadata if required.
+- Export path changed to owned ignored backend/.tmp/ttv2/<UTC timestamp>/ under E:/traning_ai-codex (D: constrained, unlisted ownership).
+  Claude receives concrete path/counts/SHA in handoff and reads only; no labels/training/checkpoint operations by Codex.
+- HO-03 Desktop/realAI transport remains blocked; no restart authorization received, no fresh runtime image or new INTEGRATED_REAL claim.

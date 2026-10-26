@@ -4,9 +4,9 @@
 - INT-14 contract checkpoint: public OpenAPI0.3.0 FeedPage with required recommendation_mode enum, existing ClipPage reused.
   Go types/spec generated with oapi-codegen2.8.0; CMS+Client types generated openapi-typescript7.13.0.
   gen Go compile +CMS/Client tsc PASS. Runtime behavior now implemented and verified; see verification/INT-14.md. Historical contract-only checkpoint retained.
-- Active INT-16 IN_PROGRESS: Client same-origin API proxy (live browser localhost8000 auth abort8s, IPv4/CMS proxy healthy).
+- Active INT-15 IN_PROGRESS: HC-07/09 interactions +readonly export ttv2-data-v1.1. Inspect role/session/provenance; no training/AI file writes.
 - INT-14 PARTIAL: primary PG popularity +honest3modes/realmetadata implemented; Go+5PG+46UI+8modes+live primary persistence PASS.
-  Full-screen design gaps remainINT-06; liveClient transport needsINT-16. INT-15 TODO (HC-07 interactions/export). Historical INT-12/13 IDs kept; mapping committed to handoff.
+  Full-screen design gaps remainINT-06; liveClient transport/session/feed verifiedINT-16. INT-15 IN_PROGRESS (HC-07 interactions/export). Historical INT-12/13 IDs kept; mapping committed to handoff.
 - Release#3 masterfee83b2 received; read v1.3 +ttv2-data-v1/D18–D21. Next contract-first FeedPage0.3 then backend/Client; HO-03 still open.
 - Branch codex/integration; Release#1 received, Release#2 master70bf011 merged5691526 without conflict.
   No Codex push/release/master update. Shared/Claude files only received via merge; no manual edits.
@@ -25,6 +25,8 @@
   Full new image NOT_BUILT, current ingest container remains cached video-ai-inference preprocessing-only. See verification/INT-13.md.
 - INT-00/02 REVIEW; INT-04/05/06 PARTIAL. INT-10 DEFERRED untouched. INT-07/08 need AI/GPU gates, INT-09 depends on them.
 - User scope question INT-05/06 remains pending (CONTRACT_DECISIONS.md); no extra public endpoint added.
+
+- INT-16 REVIEW: same-origin proxy +shared auth refresh/logout/identity/cache guard; tsc/lint/build14routes +config/types PASS;52E2E PASS including2live sessions on localhost/127001. See verification/INT-16.md. Client host server exec88948; fresh Docker build not run.
 
 ## Runtime / resource
 - Existing project video-ai preserved; gateway/mock/PG/Mongo/Redis/MinIO/Kafka/Milvus healthy, CMS5173/Client host127001:3000.

@@ -9,7 +9,7 @@ import { BottomNav } from "@/components/BottomNav";
 import { Icon } from "@/components/Icon";
 import { Thumbnail, PageState } from "@/components/Media";
 import { useAuthStore } from "@/stores/authStore";
-import { apiClient, errorMessage } from "@/lib/apiClient";
+import { apiClient, errorMessage, logoutSession } from "@/lib/apiClient";
 import { useClipPage, useHistory, useCategories, formatTime, formatDate, type Clip } from "@/lib/content";
 const tabs = [{ id: "liked", mobile: "Đã thích", desktop: "Video đã thích", icon: "favorite" }, { id: "saved", mobile: "Đã lưu", desktop: "Danh sách xem sau", icon: "schedule" }, { id: "history", mobile: "Lịch sử", desktop: "Lịch sử xem", icon: "history" }] as const;
 function Profile() {
@@ -64,8 +64,7 @@ function Profile() {
         setSaving(true);
         setError("");
         try {
-            await apiClient.post("/api/auth/logout");
-            useAuthStore.getState().logout();
+            await logoutSession();
             query.clear();
             router.replace("/login");
         }

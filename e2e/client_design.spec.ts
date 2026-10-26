@@ -70,6 +70,82 @@ async function setup(page:Page,{empty=false,fail='',prefs=user.preferences}: {em
  });
  return {interactions,requests};
 }
+
+async function expiringSession(page:Page) {
+ await setup(page);
+ const state={refreshes:0,expired:false,otherUser:false,denied:new Set<string>(),events:[] as string[],beforeRefresh:async()=>{}};
+ await page.route('**/api/**',async route=>{
+  const req=route.request(),pathname=new URL(req.url()).pathname;
+  if(pathname==='/api/auth/refresh'){
+   state.refreshes++;
+   if(state.refreshes>1)await state.beforeRefresh();
+   state.events.push('refresh');
+   return route.fulfill({json:{access_token:state.refreshes===1?'ui-fixture':'ui-renewed'}});
+  }
+  if(pathname==='/api/auth/logout'){state.events.push('logout');return route.fallback();}
+  if(pathname==='/api/users/me'&&state.otherUser&&req.headers().authorization==='Bearer ui-renewed')return route.fulfill({json:{...user,id:'usr_other',username:'Other account'}});
+  if(state.expired&&['/api/feed','/api/videos','/api/users/me/history'].includes(pathname)&&req.headers().authorization==='Bearer ui-fixture'){
+   state.denied.add(pathname);return route.fulfill({status:401,json:{error:{code:'UNAUTHORIZED',message:'Expired'}}});
+  }
+  return route.fallback();
+ });
+ return state;
+}
+
+test('INT-16 parallel 401s share refresh and hydrate the same user',async({page})=>{
+ const state=await expiringSession(page);state.expired=true;
+ let release!:()=>void;state.beforeRefresh=()=>new Promise<void>(resolve=>{release=resolve;});
+ await page.goto(client+'/discover');
+ await expect.poll(()=>state.refreshes).toBe(2);
+ await expect.poll(()=>state.denied.size).toBeGreaterThanOrEqual(3);
+ state.beforeRefresh=async()=>{};release();
+ await expect(page.locator('[data-recommendation-mode]:visible')).toHaveText('Phổ biến');
+ expect(state.refreshes).toBe(2);
+});
+
+test('INT-16 logout waits for refresh and reload cannot restore it',async({page})=>{
+ const state=await expiringSession(page);
+ await page.goto(client+'/profile?view=account');await expect(page.getByRole('dialog')).toBeVisible();
+ await page.getByRole('button',{name:'Đóng hồ sơ'}).click();await expect(page.getByRole('dialog')).not.toBeVisible();
+ state.expired=true;
+ let release!:()=>void;state.beforeRefresh=()=>new Promise<void>(resolve=>{release=resolve;});
+ await page.getByRole('link',{name:'Khám phá',exact:true}).click();
+ await expect.poll(()=>state.refreshes).toBe(2);
+ await expect.poll(()=>state.denied.size).toBeGreaterThanOrEqual(3);
+ await page.locator('.account-menu summary').click();
+ await page.locator('.account-dropdown').getByRole('button',{name:'Đăng xuất',exact:true}).click();
+ expect(state.events).toEqual(['refresh']);
+ state.beforeRefresh=async()=>{};release();
+ await expect(page).toHaveURL(client+'/login');
+ await expect(page.getByRole('button',{name:'Đăng nhập',exact:true})).toBeVisible();
+ expect(state.events).toEqual(['refresh','refresh','logout']);
+ await page.reload();await expect(page.getByRole('button',{name:'Đăng nhập',exact:true})).toBeVisible();
+ expect(state.refreshes).toBe(2);
+});
+
+test('INT-16 failed logout still closes local session across reload',async({page})=>{
+ const state=await expiringSession(page);
+ await page.route('**/api/auth/logout',route=>route.fulfill({status:503,json:{}}));
+ await page.goto(client+'/profile?view=account');
+ await page.getByRole('dialog').getByRole('button',{name:'Đăng xuất',exact:true}).click();
+ await expect(page).toHaveURL(client+'/login');
+ await expect(page.getByRole('button',{name:'Đăng nhập',exact:true})).toBeVisible();
+ await page.reload();await expect(page.getByRole('button',{name:'Đăng nhập',exact:true})).toBeVisible();
+ expect(state.refreshes).toBe(1);
+ expect(await page.evaluate(()=>localStorage.getItem('client-signed-out'))).toBe('1');
+});
+
+test('INT-16 changed refresh-cookie identity never mixes user data',async({page})=>{
+ const state=await expiringSession(page);
+ await page.goto(client+'/profile?view=account');await expect(page.getByRole('dialog')).toBeVisible();
+ await page.getByRole('button',{name:'Đóng hồ sơ'}).click();await expect(page.getByRole('dialog')).not.toBeVisible();
+ state.expired=true;state.otherUser=true;
+ await page.getByRole('link',{name:'Khám phá',exact:true}).click();
+ await expect(page).toHaveURL(client+'/login');
+ await expect(page.getByRole('button',{name:'Đăng nhập',exact:true})).toBeVisible();
+ await expect(page.getByText('Other account',{exact:true})).toHaveCount(0);
+ expect(state.refreshes).toBe(2);
+});
 async function noOverflow(page:Page){
  await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
  expect(await page.locator('.material-symbols-outlined').count()).toBe(0);

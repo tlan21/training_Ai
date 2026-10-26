@@ -194,26 +194,27 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Evidence: verification/INT-14.md: Go vet/test/build PASS,5realPG PASS/no skips, Client tsc/lint/build PASS;46UI E2E+8focusedmode PASS;
   live optional fallback then final primary popularity +restart/persistence/media/privacy PASS. Full-screen parity NOT_PASS (INT-06);
   live browser localhost8000 auth times out, IPv4/CMS proxy good (INT-16). No real personalized or AI pipeline claim.
-- Commits:0a86a14 contract; implementation checkpoint int(content): expose truthful recommendation modes and primary popularity (SHA next checkpoint).
+- Commits:0a86a14 contract;02001e0 implementation. INT-16 subsequently verified live Client proxy/session/feed.
 - Next action: INT-16 Client same-origin proxy, then liveClient mode/session verification; full parityINT-06. Existing single-page feed pagination remains unfinished.
 - Checkpoint: Lane codex / Changed MVP mode+metadata / Verified Go+PG+FE/mode+business checks / Contract public0.3 / Next INT-16.
 
 ### INT-15 — Product interactions + read-only v2 export (HC-07 scope)
-- T gốc: D19/D21, HC-07 (proposed ID INT-13 collides existing image task) | Owner: CODEX | Status: TODO
-- Depends on: ttv2-data-v1 read, INT-02 persistence; no AI training dependency | Blocks: AI-12 real product dataset
+- T gốc: D19/D21, HC-07/09 (proposed ID INT-13 collides existing image task) | Owner: CODEX | Status: IN_PROGRESS (2026-10-26)
+- Depends on: ttv2-data-v1.1 read, INT-02 persistence; no AI training dependency | Blocks: AI-12 real product dataset
 - Acceptance: roleclient interactions only, one watch_time/session excluding seek, skip1–<3s, valid product IDs/media visibility;
   no test/demo events in training export; consistent readonly snapshot JSONL+manifest rows/sha256/version, no PII, deterministic ordering.
   Public/OpenAPI changes only in separate contract step if needed; no impressions phase2 unless requested. Verify DB/export/UI +Claude loader via handoff.
 - Changed planned: PG/migration if needed, interaction handler andClient tracker, readonly export CLI/tests, Codex tracker/handoff.
-- Commits: — | Evidence: contract read only | Next action: finishINT-14 then inspect actual test/demo provenance; agree export artifact path in handoff.
-- Checkpoint: Lane codex / TODO / Contract ttv2-data-v1 consumed read-only / No training or product embeddings.
+- Commits: initial task checkpoint | Evidence: HC-09 contract read; current heartbeat/role gaps inspected | Next action: contract-first role/duration validation, provenance exclusion and readonly export.
+- Checkpoint: Lane codex / IN_PROGRESS / Contract ttv2-data-v1.1 consumed read-only / No training or product embeddings.
 
 ### INT-16 — Client same-origin API transport
-- T gốc: INT-14 live auth defect | Owner: CODEX | Status: IN_PROGRESS (2026-10-26)
+- T gốc: INT-14 live auth defect | Owner: CODEX | Status: REVIEW (host verified2026-10-26; fresh Docker capacity gate remains)
 - Depends on: current gateway IPv4 healthy; existing Next stack | Blocks: liveClient auth/mode/E2E
 - Acceptance: Client relative /api through existing Next proxy to gatewayIPv4 (host) or gatewayDNS (Docker), HttpOnly refresh/cookies preserved,
   optional explicit public base still supported; build/config correct, live login/reload/logout/feed request PASS; no new API endpoint/schema/library.
-- Changed planned: client apiClient/nextconfig/Dockerfile, compose/env example/docs, E2E fixtures/livechecks, Codex trackers.
-- Evidence: defect reproduced: live browser localhost8000 login abort8s;127001gateway health200/CMS proxy401expected.
-- Commits: pending | Next action: inspect existing base URL/build args, use built-in Next rewrites (same pattern as CMS proxy).
-- Checkpoint: Lane codex / IN_PROGRESS before implementation / Contract unchanged, existing /api routes proxied / Next implement+liveverify.
+- Changed: client HTTP/auth/store/Providers/login/register/logout callers/config/Dockerfile/README; compose/env; E2E fixture/livecases; Codex trackers.
+- Evidence: verification/INT-16.md +playwright log: Client tsc/lint/build14routes/config PASS, E2E types PASS,52browser cases PASS including2 live gateway sessions.
+  Parallel401, refresh/logout race, failedlogout/reload, changed cookie identity covered. No fresh Docker image or realAI claim.
+- Commits: int(client) proxy/session checkpoint | Next action: fresh Docker image smoke after capacity recovery; full UI parity staysINT-06.
+- Checkpoint: Lane codex / Verified52E2E+build/types/lint/config / Contract unchanged / Next INT-15.

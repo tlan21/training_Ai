@@ -35,7 +35,7 @@ export default function RegisterPage() {
         setLoading(true);
         try {
             const { data } = await apiClient.post<components["schemas"]["AuthResponse"]>("/api/auth/register", { username: username.trim(), email: email.trim(), password });
-            if (!data.access_token || !data.user)
+            if (!data.access_token || !data.user?.id)
                 throw new Error("Phản hồi đăng ký không hợp lệ.");
             query.clear();
             useAuthStore.getState().setAuth({ accessToken: data.access_token, user: data.user });
