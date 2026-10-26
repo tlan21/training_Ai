@@ -86,3 +86,22 @@ Claude không sửa `AGENTS.md` / `coordination/codex/**` (giữ ranh giới, qu
 - Sửa code: startup chạy 1 search warmup Milvus (trước đây search đầu tiên sau mỗi lần khởi động có thể 503 `DEADLINE_EXCEEDED`).
 - Theo README §5: Codex chỉ đánh `INTEGRATED_REAL` khi endpoint `API_READY` **trên master** (cần user ra lệnh release) **và** :8001 thật UP (AI-07; hiện DOWN).
 - Smoke để Codex/release gate chạy lại: contract §4 (`tests/test_live_smoke.py`, opt-in `INFERENCE_LIVE_URL`).
+
+## 2026-10-26 ĐÍNH CHÍNH REL AI-API v1.0 → v1.0-rc1 DRAFT (quyết định user D16)
+- Mục "REL AI-API v1.0" bên trên ghi 6 endpoint `API_READY` — **rút lại**. Theo D16, `API_READY` chỉ công bố khi code cần thiết đã trên `master`,
+  runtime :8001 hoạt động và smoke đạt (AI-07 + release). Hiện tại mọi endpoint `DRAFT`; 6 endpoint là ứng viên (có ví dụ thật, smoke PASS trên :8011 tạm).
+- Schema không đổi → mock hiện tại của Codex vẫn đúng. Codex tiếp tục INT-00/INT-02/INT-04 bằng mock, không chờ AI-07.
+- Thứ tự gate: AI-10 (health/degraded, chỉ thêm field) → AI-07 (:8001 UP) → release (user duyệt) → Claude công bố API_READY → Codex đổi
+  `AI_BASE_URL`/`AI_ALLOW_STUB=0`, chạy test thật, rồi mới `INTEGRATED_REAL`.
+
+## 2026-10-26 HC-04 — Recommendation personalized: chia việc theo D14 (Codex phản hồi trong RE:HC-04)
+Quyết định user D14 (PROJECT_STATUS mục 5). Claude **không** chạy `export_two_tower_milvus.py` vào collection sản phẩm.
+- **Codex phụ trách:** (1) mapping ID sản phẩm — user_id `usr_*`/video_id `vid_*` trong Postgres ↔ đầu vào Two-Tower (đặc tả: nguồn, khóa, cách xử lý
+  user/video mới); (2) collection Milvus sản phẩm `user_recommendation_embeddings` (tạo, vận hành, quyền ghi); (3) pipeline đồng bộ dữ liệu;
+  (4) nối recommendation vào backend; (5) cấp 1 **sandbox** tách biệt cho Claude thử với dataset train (đề xuất: collection riêng `sandbox_two_tower_*`
+  hoặc database Milvus riêng — Codex chọn, ghi host/port/tên trong RE:HC-04). Backend sản phẩm không đọc sandbox.
+- **Claude phụ trách (AI-09):** Two-Tower model, embedding (dim/chuẩn hóa/metric), schema export + version model, script export + kiểm thử dữ liệu AI.
+- Tham số hiện có để đối chiếu: dim 128, metric IP trên vector L2-norm (score trả 0–1 = (IP+1)/2), index IVF_FLAT; service đọc vector user theo
+  `id == user_id`, search `type == "video"`. Đổi tham số nào → handoff trước (D9).
+- Nạp dữ liệu thật chỉ khi schema, ID mapping, dim, metric, tiêu chí nghiệm thu được cả hai xác minh trong handoff. Tới lúc đó giữ popularity fallback,
+  INT-03 phần personalized không DONE.

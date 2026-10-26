@@ -9,15 +9,17 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 |---|---|---|---|---|
 | AI-00 | — | Thiết lập tách làn + kiểm kê | DONE | — |
 | AI-06 | T1.8 | **Ưu tiên 1** — Xác minh nguồn checkpoint + thang sẵn sàng 6 model | DONE (2026-10-26) | — |
-| AI-01 | T1.8 | Phát hành AI API Contract v1 (API_READY) | DONE (2026-10-26; recommendation DRAFT) | AI-06 |
-| AI-07 | T1.8 | Vận hành runtime :8001 thật cho Codex gọi HTTP | TODO | AI-06; Milvus từ stack Codex (HC-02) |
+| AI-01 | T1.8 | Phát hành AI API Contract v1 (API_READY) | REVIEW (v1.0-rc1 DRAFT; API_READY ⇐ AI-07 + release, D16) | AI-06 |
+| AI-10 | T1.8 | Health/degraded đúng ngữ nghĩa + dependency status + tự phục hồi (D15) | TODO — làm ngay, trước AI-07 | — |
+| AI-07 | T1.8 | Vận hành runtime :8001 thật cho Codex gọi HTTP (+ sửa UTF-8 Windows) | TODO — **ưu tiên** | AI-10; Milvus stack Codex (UP) |
+| AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | TODO | HC-04 (Codex: mapping ID + collection) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a TODO · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
 | AI-03 | T1.6 | Mini-GPT: 03a Claude soạn summary 40 clip · 03b người duyệt · 03c train/eval | 03a TODO · 03b BLOCKED · 03c BLOCKED | 03b ⇐ user; 03c ⇐ 03b |
 | AI-04 | T1.8 / T4.3 | Đo VRAM sơ bộ Kaggle T4 (PRELIMINARY) | TODO | AI-06 |
 | AI-05 | T5.3 | Số liệu evaluation cho luận án | TODO | AI-02, AI-03, AI-04 |
 | AI-08 | — | Dọn dẹp dữ liệu/artefact làn AI an toàn (lặp lại sau mỗi đợt train) | TODO (đợt #1 DONE 2026-10-26) | không job/server nào đang dùng; user duyệt danh sách |
 
-Thứ tự đề xuất (tối đa 1 IN_PROGRESS): AI-06 → AI-01 → AI-07; khi chờ GPU/Kaggle/người duyệt thì xen AI-03a, AI-02a, AI-04.
+Thứ tự đề xuất (tối đa 1 IN_PROGRESS, cập nhật D14–D17): AI-10 → AI-07 → release (user duyệt) → AI-01 công bố API_READY; song song khi chờ: AI-09 (phần không cần mapping: schema/version/test), AI-03a, AI-02a, AI-04.
 AI-08 (dọn dẹp) chạy sau mỗi đợt train xong hoặc khi một ổ chạm `BLOCKED_RESOURCE`; luôn qua manifest + user duyệt.
 
 Hoàn thành trước tách làn (bằng chứng ở INVENTORY mục 3, 5): T1.1, T1.2, T1.3, T1.4 (DoD metric), T1.5, T1.7 = DONE;
@@ -38,7 +40,8 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - Checkpoint: xem SESSION.md
 
 ### AI-01 — Phát hành AI API Contract v1
-- T gốc: T1.8 | Owner: claude | Status: DONE (2026-10-26) — 6/7 endpoint API_READY; recommendation DRAFT (acceptance 2 cho phép ghi rõ chưa có)
+- T gốc: T1.8 | Owner: claude | Status: REVIEW (2026-10-26) — acceptance 1–5 đạt trên branch; theo D16 chưa công bố API_READY: contract = v1.0-rc1 DRAFT
+  (6 endpoint ứng viên, recommendation DRAFT). Công bố API_READY khi AI-07 xong + code trên `master` + smoke :8001 PASS.
 - Depends on: AI-06 | Blocks: INT-03 (DONE), mọi dòng `INTEGRATED_REAL` mới trong matrix Codex
 - Acceptance:
   1. `coordination/claude/api/inference_openapi.json` export từ `app.main:app.openapi()` (không sửa tay).
@@ -118,14 +121,33 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - Evidence: HIST CPU RSS 20 video PASS (`docs/T4.3_bao_cao.md`); GPU chưa đo.
 - Commits: — | Checkpoint: —
 
+### AI-10 — Health/degraded đúng ngữ nghĩa (D15)
+- T gốc: T1.8 | Owner: claude | Status: TODO
+- Depends on: — | Blocks: AI-07 (kiểm health/readiness)
+- Việc: input không hợp lệ (400/422, ảnh/audio không đọc được, lệch chiều highlight) không đánh dấu model degraded; chỉ lỗi inference thật/timeout mới đánh dấu;
+  dependency (Milvus visual/recommendation: unavailable/missing_collection) có trạng thái riêng; degraded + dependency tự phục hồi khi gọi thành công / Milvus
+  sửa xong (không cache thất bại vĩnh viễn). Giữ tương thích: status code hiện có giữ nguyên; field mới trong `/health` chỉ thêm (minor version) + REL cho Codex.
+- Acceptance: test cho validation error, model failure, dependency unavailable, recovery; suite inference PASS; live smoke PASS; contract + openapi cập nhật.
+- Evidence: — | Commits: — | Checkpoint: —
+
+### AI-09 — Two-Tower recommendation phía AI (D14)
+- T gốc: T1.7 | Owner: claude | Status: TODO
+- Depends on: HC-04 (Codex: mapping ID sản phẩm user_id/video_id, collection Milvus, pipeline đồng bộ, nối backend) | Blocks: INT-03 phần personalized thật
+- Việc (Claude): đặc tả embedding (dim, chuẩn hóa, metric), schema export + version model, script export có kiểm thử dữ liệu AI; chỉ thử với dataset train
+  trong collection/môi trường **sandbox** tách biệt (Codex cấp theo HC-04). KHÔNG chạy `export_two_tower_milvus.py` vào collection sản phẩm khi mapping ID chưa xác minh.
+- Acceptance: schema/dim/metric/ID mapping/tiêu chí nghiệm thu được hai làn xác minh trong handoff; test export; nạp thật chỉ sau đó. Tới lúc đó giữ popularity
+  fallback, personalized recommendation không DONE.
+- Evidence: — | Commits: — | Checkpoint: —
+
 ### AI-07 — Vận hành runtime :8001 thật cho Codex
 - T gốc: T1.8 | Owner: claude | Status: TODO
 - Lý do: quyết định user 2026-10-26 — Codex không sao chép/quản lý checkpoint; tích hợp AI chỉ qua HTTP :8001.
   → Claude sở hữu tiến trình inference-service chạy checkpoint thật.
-- Depends on: AI-06; Milvus từ stack Codex lắng nghe `localhost:19530` (HC-02). | Blocks: INT-01 (phần E2E thật), INT-03.
+- Depends on: AI-06 (DONE), AI-10; Milvus từ stack Codex lắng nghe `localhost:19530` (UP theo RE:HC-03). | Blocks: INT-01 (phần E2E thật), INT-03, công bố API_READY (D16).
 - Acceptance: lệnh chạy chuẩn (uvicorn từ worktree Claude, `CHECKPOINT_DIR` canonical, `MILVUS_HOST` của stack Codex, port 8001,
   `AI_SERVICE_KEY` dùng chung với gateway) ghi trong contract mục Runtime; `GET :8001/health` → `stub_mode=false`, 6 model;
   trạng thái runtime (UP/DOWN + thời điểm) ghi `SESSION.md`. Khi :8001 DOWN, Codex dùng mock — không chặn nhau.
+- D16: kiểm model loading, endpoint, health, readiness, request/response, error handling; ghi kết quả từng model, không READY model chưa chạy.
 - Thêm phạm vi (user duyệt 2026-10-26 sau AI-06): sửa trong code lỗi Windows stdout cp1252 (`services._warn` print tiếng Việt →
   `UnicodeEncodeError` → 500 plain-text thay vì 503 envelope); có test tái hiện. Tới lúc đó chạy service với `PYTHONUTF8=1`.
 - Evidence: — | Commits: — | Checkpoint: —

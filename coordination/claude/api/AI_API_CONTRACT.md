@@ -1,22 +1,25 @@
 # AI API Contract — inference-service :8001
 
-**Version: AI-API v1.0 (2026-10-26).** Owner: Claude. Codex chỉ đọc
+**Version: AI-API v1.0-rc1 — DRAFT (2026-10-26).** Owner: Claude. Codex chỉ đọc
 (`git show claude/ai-core:coordination/claude/api/AI_API_CONTRACT.md`, hoặc bản trên `master` sau release).
 Nguồn code: `inference-service/app/schemas.py`, `app/main.py`, `app/services.py`, `app/visual_index.py` trên `claude/ai-core` (AI-01).
 Đi kèm: `inference_openapi.json` (export `app.main:app.openapi()`, không sửa tay) và `examples/` (request/response/error sinh từ chạy thật, mục 4).
 
+**D16 (user 2026-10-26):** `API_READY` chỉ công bố khi code cần thiết đã trên `master`, runtime :8001 hoạt động và smoke đạt (AI-07 + release).
+Tới lúc đó mọi endpoint là `DRAFT`; cột "Ứng viên" = đã có ví dụ thật + smoke PASS trên server tạm :8011. Codex tiếp tục bằng mock.
+
 Trạng thái endpoint: `API_READY` = schema ổn định + ví dụ thật đóng gói + smoke live PASS. `DRAFT` = schema theo code nhưng chưa có ví dụ
 thành công thật; Codex được dùng mock, chưa được đánh `INTEGRATED_REAL`. `API_READY` nói về **API**, không phải chất lượng model (ghi riêng từng endpoint).
 
-| Endpoint | Trạng thái v1.0 |
-|---|---|
-| `GET /health` | `API_READY` |
-| `POST /v1/vision/completions` | `API_READY` |
-| `POST /v1/asr/completions` | `API_READY` |
-| `POST /v1/highlight/completions` | `API_READY` |
-| `POST /v1/completions` | `API_READY` |
-| `POST /v1/search/completions` | `API_READY` |
-| `POST /v1/recommendation/completions` | `DRAFT` — Milvus chưa có collection `user_recommendation_embeddings`, luôn 503 (mục 2.5) |
+| Endpoint | Trạng thái v1.0-rc1 | Ứng viên API_READY |
+|---|---|---|
+| `GET /health` | `DRAFT` | ✓ (AI-10 sẽ thêm trạng thái dependency, chỉ thêm field) |
+| `POST /v1/vision/completions` | `DRAFT` | ✓ |
+| `POST /v1/asr/completions` | `DRAFT` | ✓ |
+| `POST /v1/highlight/completions` | `DRAFT` | ✓ |
+| `POST /v1/completions` | `DRAFT` | ✓ |
+| `POST /v1/search/completions` | `DRAFT` | ✓ |
+| `POST /v1/recommendation/completions` | `DRAFT` | ✗ — Milvus chưa có collection `user_recommendation_embeddings`, luôn 503; personalized chờ D14 (AI-09 + HC-04) |
 
 ## 0. Quy ước chung
 
@@ -67,11 +70,11 @@ CPU (`device=cpu`), port tạm 8011. Bằng chứng: `coordination/claude/eviden
 
 | Model | DECLARED | CKPT_PRESENT | LOADED | ENDPOINT_OK | API_READY | Ghi chú |
 |---|---|---|---|---|---|---|
-| vit | ✓ | ✓ `192d90e4…` | ✓ | ✓ | ✓ | |
-| asr_ctc | ✓ | ✓ `8f879867…` | ✓ | ✓ | ✓ | chất lượng video thật kém (transcript nhiễu, AI-02) |
-| highlight_fusion | ✓ | ✓ `becbd378…` | ✓ | ✓ | ✓ | |
-| minigpt | ✓ | ✓ `cf9cfa71…` | ✓ | ✓ | ✓ | chất lượng human 1.6/5 (AI-03), chỉ dùng làm draft cho admin |
-| siamese | ✓ | ✓ `b4ded465…` | ✓ | ✓ | ✓ | Milvus `video_frame_embeddings` 280 vector, HNSW/COSINE/M16/efC200 |
+| vit | ✓ | ✓ `192d90e4…` | ✓ | ✓ | ứng viên | |
+| asr_ctc | ✓ | ✓ `8f879867…` | ✓ | ✓ | ứng viên | chất lượng video thật kém (transcript nhiễu, AI-02) |
+| highlight_fusion | ✓ | ✓ `becbd378…` | ✓ | ✓ | ứng viên | |
+| minigpt | ✓ | ✓ `cf9cfa71…` | ✓ | ✓ | ứng viên | chất lượng human 1.6/5 (AI-03), chỉ dùng làm draft cho admin |
+| siamese | ✓ | ✓ `b4ded465…` | ✓ | ✓ | ứng viên | Milvus `video_frame_embeddings` 280 vector, HNSW/COSINE/M16/efC200 |
 | two_tower | ✓ | ✓ `f28c3794…` | ✓ | ✗ | ✗ | collection `user_recommendation_embeddings` chưa có → 503 |
 
 ## 1c. Runtime :8001 (quyết định user 2026-10-26)
@@ -92,28 +95,28 @@ CPU (`device=cpu`), port tạm 8011. Bằng chứng: `coordination/claude/eviden
 Ví dụ thật cho mỗi endpoint: `examples/<name>.request.json`, `<name>.response.json`, `<name>.error_request.json`, `<name>.error.json`
 (file response/error có dạng `{"http_status": int, "body": <JSON trả về>}`).
 
-### 2.1 `POST /v1/vision/completions` — ViT (chỉ nội bộ pipeline) — API_READY
+### 2.1 `POST /v1/vision/completions` — ViT (chỉ nội bộ pipeline) — DRAFT (ứng viên)
 Req: `{"model"?: str, "keyframes": [str]}` — mỗi phần tử là data URI base64, base64 trần, hoặc path file mà process inference đọc được.
 Resp: `{"id","object":"vision_completion","created","model","category_suggestion": str,"embeddings_256": [[float×256]]}`
 - `category_suggestion` ∈ `bong_da | the_thao | ca_nhac | tin_tuc` (ViT MVP 4 lớp). 6 danh mục còn lại của Postgres không có gợi ý.
 - `embeddings_256`: 1 vector/keyframe, cùng thứ tự; dùng làm `vision_embeddings` cho highlight.
 - Lỗi: thiếu `keyframes` → 422; ảnh hỏng/>20 MP → 503. Ví dụ: `examples/vision.*` (3 frame thật → `tin_tuc`, 3×256).
 
-### 2.2 `POST /v1/asr/completions` — ASR CTC — API_READY
+### 2.2 `POST /v1/asr/completions` — ASR CTC — DRAFT (ứng viên)
 Req: `{"model"?: str, "audio_url": str, "language": "vi"}` — `audio_url` = path WAV **trên máy chạy inference** hoặc `http(s)://` (MinIO nội bộ). 16 kHz mono.
 Resp: `{"id","object":"asr_completion","created","model","full_transcript": str,"segments":[{"id":int,"start_time":float,"end_time":float,"text":str,"confidence":0–1,"warning": null|"low_confidence"|"blacklist"}]}`
 - Audio xử lý theo cửa sổ 20 s, timestamp tuyệt đối; đoạn im lặng bị bỏ (có thể trả `segments: []`).
 - Lỗi: file không đọc được → 503. Ví dụ: `examples/asr.*` (path trong request là path cục bộ máy test, chỉ minh họa).
 - Chất lượng: VIVOS CER 0.1347; video thật còn nhiều lỗi (AI-02).
 
-### 2.3 `POST /v1/highlight/completions` — Fusion — API_READY
+### 2.3 `POST /v1/highlight/completions` — Fusion — DRAFT (ứng viên)
 Req: `{"model"?: str, "video_id": str, "features": {"vision_embeddings": [[float×256]], "audio_spectrogram_features": [[float×64]]}}`
 - **Ràng buộc:** 2 mảng **cùng số phần tử** (1 phần tử = 1 giây); vision 256-d (đầu ra 2.1), audio 64-d (`ai_core.audio.features.audio_features_per_second`).
   Sai → 503 `AI_UNAVAILABLE` (không phải 422).
 Resp: `{"id","object":"highlight_completion","created","model","video_id","timeline_scores":[{"second":int,"score":0–100}],"recommended_clips":[{"clip_id","start_time","end_time","average_score":0–100}]}`
 - `second` bắt đầu từ 0, liên tục; clip đề xuất = đoạn liên tiếp có score > 75 (có thể rỗng).
 
-### 2.4 `POST /v1/search/completions` — Siamese + Milvus — API_READY
+### 2.4 `POST /v1/search/completions` — Siamese + Milvus — DRAFT (ứng viên)
 Req: `{"model"?: str, "image": str (data URI/base64/path), "top_k": 1–100 (mặc định 5), "threshold": 0–1 (mặc định 0.75)}`
 Resp: `{"id","object":"search_completion","created","model","results":[{"video_id","timestamp":float,"similarity_score":0–1,"thumbnail_url"}],"query_metadata":{"execution_time_ms": float}}`
 - Collection Milvus `video_frame_embeddings` (128-d, HNSW, COSINE, M=16, efConstruction=200). Kết quả lọc `similarity_score >= threshold` phía inference.
@@ -128,13 +131,13 @@ Resp: `{"id","object":"recommendation_completion","created","model","recommendat
 - Hiện tại collection chưa tồn tại trong Milvus của stack → luôn 503 (`examples/recommendation.*`). Chưa có ví dụ 200 thật → giữ `DRAFT`.
 - Service cache kết quả nối Milvus lần đầu (kể cả thất bại) tới khi restart process.
 
-### 2.6 `POST /v1/completions` — Mini-GPT (OpenAI-style) — API_READY
+### 2.6 `POST /v1/completions` — Mini-GPT (OpenAI-style) — DRAFT (ứng viên)
 Req: `{"model"?: str, "prompt": str, "max_tokens": ≥1 (mặc định 150), "temperature": 0–2 (mặc định 0.7), "top_p": 0.9, "frequency_penalty": 0, "presence_penalty": 0}`
 Resp: `{"id","object":"text_completion","created","model","choices":[{"text","index":0,"logprobs":null,"finish_reason":"stop"}],"usage":{"prompt_tokens","completion_tokens","total_tokens"}}`
 - Prompt dài: service tự map-reduce theo chunk BPE (không giới hạn phía gateway). `temperature: 0` cho kết quả lặp lại được.
 - Chất lượng: tóm tắt video thật còn bịa/lặp (human 1.6/5, AI-03). Chỉ dùng làm **draft** để admin duyệt.
 
-### 2.7 `GET /health` — API_READY
+### 2.7 `GET /health` — DRAFT (ứng viên)
 Resp: `{"status":"ok","gpu_vram_used": MB,"gpu_util": %,"models_loaded":[...],"degraded":[...],"queue_depth":int,"device":"cpu|cuda","stub_mode":bool,"load_error": str|null}`
 - Integration test thật phải assert `stub_mode == false` và `models_loaded` đủ 6 key ở mục 1.
 - `degraded`: model đã có **ít nhất 1 request real-path lỗi kể từ startup**, kể cả lỗi do input (file không tồn tại, lệch chiều). Dính tới khi restart;
@@ -144,7 +147,7 @@ Resp: `{"status":"ok","gpu_vram_used": MB,"gpu_util": %,"models_loaded":[...],"d
 - **v0 (2026-10-26)** — DRAFT, ghi lại API hiện có tại baseline `15976b3`. Không đổi code.
 - **v0.1 (2026-10-26)** — DRAFT, chỉ tài liệu: thêm thang sẵn sàng (1b) và quyền runtime :8001 thuộc Claude, Codex chỉ HTTP/mock (1c). Schema không đổi.
 - **v0.2 (2026-10-26)** — DRAFT, chỉ tài liệu (AI-06): nguồn checkpoint canonical, thang sẵn sàng có bằng chứng HTTP thật (1b); ghi rõ startup thật cần Milvus và `PYTHONUTF8=1` trên Windows. Schema không đổi.
-- **v1.0 (2026-10-26)** — AI-01. Schema request/response **không đổi** so với v0.x (tương thích ngược). 6 endpoint `API_READY`, recommendation `DRAFT`.
+- **v1.0-rc1 (2026-10-26)** — AI-01 (ban đầu ghi "v1.0, 6 endpoint API_READY"; đính chính theo D16 → mọi endpoint DRAFT, 6 ứng viên). Schema request/response **không đổi** so với v0.x.
   Thêm `inference_openapi.json`, `examples/`, `tests/test_live_smoke.py`. Sửa hành vi: startup chạy 1 search warmup Milvus (trước đây search đầu tiên
   sau startup có thể 503 `DEADLINE_EXCEEDED` vì vượt timeout 1 s). Sửa tài liệu cho khớp code: cold-start recommendation trả 503 (không phải 200),
   lệch số giây highlight trả 503, vision ảnh hỏng trả 503 (search 422), `thumbnail_url` search là key tương đối, ngữ nghĩa `degraded`.

@@ -3,14 +3,15 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
-- Task: — (không có task IN_PROGRESS; chờ user trước khi sang AI-07)
+- Task: — (sắp nhận AI-10 → AI-07 theo D15/D16)
 - Bước đã xong: —
 - Bước kế: —
 - File đang sửa: —
 - Lệnh verify dở: —
 
 ## Task kế an toàn
-AI-07 (runtime :8001; Milvus Codex đã UP; gồm sửa UTF-8 Windows). Release AI-API v1.0 lên master chỉ khi user ra lệnh.
+AI-10 (health/degraded, D15) → AI-07 (:8001 thật + UTF-8, D16) → chuẩn bị release, user duyệt push → công bố API_READY. Chờ: AI-09 (⇐ HC-04).
+Giữ `D:/tmp/ai06_20261026/`, `D:/tmp/ai01_20261026/` (D17, không dọn).
 Khi chờ (Kaggle/người duyệt): AI-03a (soạn 40 summary), AI-02a (đề xuất 53 clip ASR), AI-04 (VRAM sơ bộ T4).
 AI-02b/AI-03b chờ user duyệt. Runtime :8001: DOWN (chưa chạy).
 
