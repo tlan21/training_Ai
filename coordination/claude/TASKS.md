@@ -8,7 +8,7 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | ID | T gốc | Tên | Status | Depends on |
 |---|---|---|---|---|
 | AI-00 | — | Thiết lập tách làn + kiểm kê | DONE | — |
-| AI-06 | T1.8 | **Ưu tiên 1** — Xác minh nguồn checkpoint + thang sẵn sàng 6 model | IN_PROGRESS (2026-10-26) | — |
+| AI-06 | T1.8 | **Ưu tiên 1** — Xác minh nguồn checkpoint + thang sẵn sàng 6 model | DONE (2026-10-26) | — |
 | AI-01 | T1.8 | Phát hành AI API Contract v1 (API_READY) | TODO | AI-06 |
 | AI-07 | T1.8 | Vận hành runtime :8001 thật cho Codex gọi HTTP | TODO | AI-06; Milvus từ stack Codex (HC-02) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a TODO · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
@@ -163,7 +163,7 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - Evidence: VERIFIED-NOW 2026-10-26 (đợt #1, xem manifest) | Commits: `a5f340f` (manifest trước khi xóa) + commit kết quả | Checkpoint: SESSION.md
 
 ### AI-06 — Xác minh nguồn checkpoint + thang sẵn sàng 6 model (ƯU TIÊN 1)
-- T gốc: T1.8 | Owner: claude | Status: IN_PROGRESS (2026-10-26)
+- T gốc: T1.8 | Owner: claude | Status: DONE (2026-10-26)
 - Depends on: — | Blocks: AI-01, AI-04, AI-07
 - Vấn đề: `inference-service/.env` (local, không commit) trỏ `CHECKPOINT_DIR=D:/data_training_ai/checkpoints` — thư mục đó chỉ có
   4/6 (`asr_ctc`, `highlight_fusion`, `siamese`, `two_tower`), **thiếu `vit`, `minigpt`** → uvicorn local fail khởi động.
@@ -179,7 +179,26 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   không xóa/ghi đè dữ liệu trên D:; search/recommendation ghi rõ mức đạt được nếu Milvus chưa có.
 - Evidence (đã có từ AI-00, VERIFIED-NOW 2026-10-26, gọi `app.services` trực tiếp — chưa qua HTTP): 6/6 CKPT_PRESENT + LOADED từ
   `E:/traning_ai/ai-core/checkpoints`; vision/asr/highlight/completions chạy; search/recommendation 503 (Milvus tắt).
-- Commits: — | Checkpoint: —
+- Evidence (AI-06, VERIFIED-NOW 2026-10-26, chi tiết `coordination/claude/evidence/AI-06_2026-10-26/README.md`):
+  - `find D:/ E:/ … *.pt` (142 file) + `sha256sum`: vit active `192d90e4…` chỉ ở E: (`ai-core/checkpoints` ≡ `dist/kaggle/output/vit/vit_s1338`, gốc Kaggle seed 1338);
+    minigpt active `cf9cfa71…` ở E: ≡ D: `minigpt_news/output-v2/news_run/minigpt/best.pt` (gốc) + 4 `pretrain.pt` upload; vocab `649ffc66…` khớp.
+    4 model trùng tên D: ≡ E: (best + last). `sha256sum -c` 8 file D: sau task → 8/8 OK, không ghi/xóa gì trên D:.
+  - Canonical = `E:/traning_ai/ai-core/checkpoints`; `.env` local `CHECKPOINT_DIR` đổi từ D: sang đây (không commit); `inference-service/README.md` ghi lại.
+  - Startup production `uvicorn app.main:app` khi Milvus tắt → `Application startup failed` (MilvusException localhost:19530), exit 3.
+  - Launcher bỏ Milvus preflight + `http_ladder.py` trên :8011 → 9/9 PASS: health `stub_mode=False`/6 model/`degraded=[]`; 401 thiếu+sai Bearer;
+    vision/asr/highlight/completions 200 + schema hợp lệ; search/recommendation 503 `AI_UNAVAILABLE`.
+  - `pytest inference-service/tests` → 37 passed, 1 skipped.
+  - Lỗi vận hành phát hiện: không `PYTHONUTF8=1` trên Windows → `services._warn` UnicodeEncodeError → search 500 plain-text thay vì 503. Ghi README/contract; chưa sửa code.
+  - Kết quả thang (contract §1b): vit/asr_ctc/highlight_fusion/minigpt = `ENDPOINT_OK*` (* launcher bỏ Milvus preflight); siamese/two_tower = `LOADED` (cần Milvus).
+    Không model nào `API_READY`. Startup production đầy đủ ⇐ Milvus của Codex (AI-07).
+- Commits: 91b0242 (nhận task), 8d1f053 (evidence + README + contract v0.2 + REL) | Checkpoint:
+  ```
+  Lane: claude
+  Changed: inference-service/README.md, coordination/claude/{api/AI_API_CONTRACT.md,HANDOFF_OUT.md,TASKS.md,SESSION.md,evidence/AI-06_2026-10-26/**}; .env local (không commit)
+  Verified: SHA 6 model + D: 8/8 unchanged; uvicorn HTTP ladder 9/9 PASS; prod startup fail khi Milvus tắt (đúng thiết kế); inference pytest 37 passed/1 skipped
+  Contract touched: yes (AI-API v0.2 DRAFT, chỉ tài liệu §1b, schema không đổi)
+  Next safe task: AI-01
+  ```
 
 ---
 
