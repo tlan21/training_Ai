@@ -34,8 +34,8 @@ func (h *InteractionHandlers) Create(c *gin.Context) {
 		ErrorEnvelope(c, http.StatusUnprocessableEntity, "VALIDATION_ERROR", "invalid interaction_type")
 		return
 	}
-	if req.InteractionType == "watch_time" && req.DurationWatched != nil && *req.DurationWatched < 0 {
-		ErrorEnvelope(c, http.StatusUnprocessableEntity, "VALIDATION_ERROR", "duration_watched must be >=0")
+	if req.DurationWatched != nil && (*req.DurationWatched < 0 || int64(*req.DurationWatched) > 2147483647) {
+		ErrorEnvelope(c, http.StatusUnprocessableEntity, "VALIDATION_ERROR", "duration_watched must be 0..2147483647")
 		return
 	}
 	uid := c.GetString("user_id")

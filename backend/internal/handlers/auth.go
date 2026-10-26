@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"traning_ai/backend/internal/domain"
+	"traning_ai/backend/internal/ports"
 )
 
 // AuthHandlers — T2.2: register/login/refresh/logout + users/* (me, preferences, history, likes).
@@ -18,6 +19,7 @@ type AuthHandlers struct {
 	vectorStore     vectorStoreI
 	categoryRepo    categoryRepo
 	interactionRepo interactionRepo
+	storage         ports.ObjectStorage
 }
 
 type authService interface {
@@ -45,8 +47,8 @@ type interactionRepo interface {
 	Likes(ctx context.Context, userID string, cursor *string, limit int) ([]domain.Clip, *string, error)
 }
 
-func NewAuthHandlers(a authService, u userRepo, vec vectorStoreI, cat categoryRepo, inter interactionRepo) *AuthHandlers {
-	return &AuthHandlers{authSvc: a, userRepo: u, vectorStore: vec, categoryRepo: cat, interactionRepo: inter}
+func NewAuthHandlers(a authService, u userRepo, vec vectorStoreI, cat categoryRepo, inter interactionRepo, storage ports.ObjectStorage) *AuthHandlers {
+	return &AuthHandlers{authSvc: a, userRepo: u, vectorStore: vec, categoryRepo: cat, interactionRepo: inter, storage: storage}
 }
 
 func (h *AuthHandlers) Register(c *gin.Context) {
@@ -217,7 +219,11 @@ func (h *AuthHandlers) History(c *gin.Context) {
 		handleDomainErr(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"items": items, "next_cursor": next})
+	result := make([]gin.H, 0, len(items))
+	for _, item := range items {
+		result = append(result, gin.H{"clip": toClipH(&item.Clip, h.storage), "watched_at": item.WatchedAt.UTC(), "duration_watched": item.DurationWatched})
+	}
+	c.JSON(http.StatusOK, gin.H{"items": result, "next_cursor": next})
 }
 
 func (h *AuthHandlers) Likes(c *gin.Context) {
@@ -232,7 +238,11 @@ func (h *AuthHandlers) Likes(c *gin.Context) {
 		handleDomainErr(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"items": items, "next_cursor": next})
+	result := make([]gin.H, 0, len(items))
+	for _, clip := range items {
+		result = append(result, toClipH(&clip, h.storage))
+	}
+	c.JSON(http.StatusOK, gin.H{"items": result, "next_cursor": next})
 }
 
 func handleDomainErr(c *gin.Context, err error) {

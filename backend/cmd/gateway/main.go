@@ -48,7 +48,7 @@ func main() {
 	sessionRepo := &pg.SessionRepo{DB: db}
 	vectorStore := milvus.NewFrames("http://"+cfg.MilvusHost+":"+cfg.MilvusPort, mocks.NewVectorStoreMem())
 	categoryRepo := &pg.CategoryRepo{DB: db}
-	interactionRepo := mocks.NewInteractionRepoMem()
+	interactionRepo := &pg.InteractionRepo{DB: db}
 	videoRepo := &pg.VideoRepo{DB: db}
 	clipRepo := &pg.ClipRepo{DB: db}
 	jobRepo := &pg.JobRepo{DB: db}
@@ -66,7 +66,7 @@ func main() {
 
 	resetRepo := mocks.NewPasswordResetRepoMem()
 	authSvc := auth.NewWithResets(userRepo, sessionRepo, resetRepo, jwtSvc)
-	authH := handlers.NewAuthHandlers(authSvc, userRepo, vectorStore, categoryRepo, interactionRepo)
+	authH := handlers.NewAuthHandlers(authSvc, userRepo, vectorStore, categoryRepo, interactionRepo, objectStorage)
 	contentH := handlers.NewContentHandlers(videoRepo, clipRepo, categoryRepo, interactionRepo, analysisStore, subtitleStore, cache, aiClient, objectStorage)
 	searchH := handlers.NewSearchHandlers(videoRepo, subtitleStore, cache, aiClient, clipRepo, objectStorage)
 	interH := handlers.NewInteractionHandlers(interactionRepo)
@@ -76,7 +76,7 @@ func main() {
 	clipCMS := cms.NewClipHandlers(clipRepo, videoRepo, eventBus, cache, analysisStore)
 	catCMS := cms.NewCategoryHandlers(categoryRepo, cache)
 	userCMS := cms.NewUserHandlers(userRepo)
-	sysCMS := cms.NewSystemHandlers(aiClient)
+	sysCMS := cms.NewSystemHandlers(aiClient, &pg.SettingsRepo{DB: db})
 
 	r := gin.New()
 	r.Use(gin.Recovery(), handlers.CORS())

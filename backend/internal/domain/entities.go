@@ -92,6 +92,15 @@ type Interaction struct {
 	CreatedAt       time.Time       `json:"created_at" bson:"created_at"`
 }
 
+type SystemSettings struct {
+	HighlightThreshold   int
+	ASRWarningThreshold  int
+	AutoHighlightEnabled bool
+	AutoSubtitleEnabled  bool
+	DefaultSubtitleLang  string
+	AIServiceAPIKey      string
+}
+
 type HistoryItem struct {
 	Clip            Clip      `json:"clip" bson:"clip"`
 	WatchedAt       time.Time `json:"watched_at" bson:"watched_at"`

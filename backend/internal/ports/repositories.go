@@ -73,6 +73,11 @@ type InteractionRepository interface {
 	PopularityTop(ctx context.Context, limit int) ([]string, error)
 }
 
+type SettingsRepository interface {
+	Get(ctx context.Context) (*domain.SystemSettings, error)
+	Update(ctx context.Context, values map[string]string) error
+}
+
 type CategoryRepository interface {
 	List(ctx context.Context) ([]domain.Category, error)
 	Create(ctx context.Context, name string) (*domain.Category, error)
