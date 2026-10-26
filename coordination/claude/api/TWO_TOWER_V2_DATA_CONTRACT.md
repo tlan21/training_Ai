@@ -1,6 +1,6 @@
 # Two-Tower v2 — Data contract (AI-12a/12c ↔ Codex INT-13)
 
-**Version: `ttv2-data-v1` (2026-10-26), DRAFT.** Owner: Claude (định nghĩa dữ liệu + nhãn). Codex: ghi tương tác + xuất bundle.
+**Version: export `ttv2-data-v1` (không đổi) · nhãn `ttv2-labels-v2` (2026-10-26), DRAFT.** Owner: Claude (định nghĩa dữ liệu + nhãn). Codex: ghi tương tác + xuất bundle.
 Bộ đọc/kiểm tra: `ai-core/ai_core/training/datasets/product_interactions.py` (test: `ai_core/tests/test_product_interactions.py`).
 Quyết định liên quan: D14, D18, D19 (gate 3 giai đoạn), D21 (phân việc). Không pseudo-label từ model ngoài.
 
@@ -43,7 +43,10 @@ UTF-8, JSON Lines, thời gian ISO8601 UTC có hậu tố `Z`. **Không PII**: k
 - Loại (đếm theo lý do): sai định dạng ID (vd ID số MovieLens), user/video không tồn tại, type ngoài enum, timestamp lỗi/sau snapshot/trước khi user tạo,
   video không `visible_to_client`, `clip_id` không thuộc `video_id`, `duration_watched` âm hoặc > 1.5× độ dài + 5 s; trùng (cùng user/video/clip/type trong 30 s, `watch_time` giữ max).
 - Độ dài mục: clip (end − start) nếu có `clip_id`, ngược lại `videos.duration_seconds`.
-- **Positive:** `like`/`share`/`save`; `watch_time` ≥ 50% độ dài **hoặc** ≥ 30 s. **Negative tường minh:** `skip`; `watch_time` < 10% (và < 30 s).
+- **Positive (`ttv2-labels-v2`):** `like`/`share`/`save`; `watch_time` ≥ 50% độ dài, **hoặc** (≥ 30 s **và** ≥ 10%).
+  **Negative tường minh:** `skip`; `watch_time` < 10% **và** < 30 s. Còn lại (vd 35 s trên video 600 s = 5.8%) → trung tính, không nhãn.
+  Hai luật loại trừ nhau theo cấu trúc (positive luôn cần ≥ 10%, negative luôn < 10%); đã quét 7 980 cặp (giây xem × độ dài), 0 xung đột.
+  `ttv2-labels-v1` (cũ) gán positive cho ≥ 30 s kể cả khi < 10% video dài — bỏ.
   `click` một mình: không phải nhãn (chỉ dùng cho popularity/exposure). Mỗi cặp (user, video) một nhãn; positive thắng, mốc = positive đầu tiên.
 - Split theo **mốc thời gian toàn cục** (mặc định 20% cuối là eval) → không sự kiện eval nào trước sự kiện train; popularity/feature chỉ tính từ phần train.
   User chỉ có positive sau mốc = **cold-start**, báo cáo riêng.

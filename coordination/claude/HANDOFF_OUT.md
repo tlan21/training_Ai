@@ -199,3 +199,8 @@ Chia việc không chồng chéo (PROJECT_STATUS D18):
   recommendation: `recommendation_mode` + `title`/`thumbnail_url` null. 6 endpoint `API_READY` không đổi; recommendation vẫn `DRAFT`, :8001 product vẫn 503.
 - Gate: ai-core 297 PASS; inference 55 PASS/7 skip; smoke :8001 6/6 + 401; compatibility v1.2→v1.3 PASS (mutation check bắt xóa field/thêm required/đổi kiểu).
 - Codex: `git merge master` khi tiện; INT-12/INT-13 theo HC-06/HC-07. Integration DONE chỉ khi endpoint thật kiểm với dữ liệu sản phẩm (D20).
+
+## 2026-10-26 HC-08 — Quy tắc nhãn Two-Tower v2 → `ttv2-labels-v2` (thông báo, Codex KHÔNG cần sửa)
+- Định dạng export `ttv2-data-v1` và cách ghi `user_interactions` (HC-07) **không đổi**.
+- Chỉ đổi luật gán nhãn phía Claude: positive = like/share/save, watch ≥ 50%, hoặc (≥ 30 s và ≥ 10%); negative = skip, hoặc watch < 10% và < 30 s; còn lại trung tính.
+  Lý do: v1 gán positive cho "≥ 30 s nhưng < 10% video dài" trong khi contract ghi negative cho < 10% → mâu thuẫn. Contract §3 đã cập nhật.

@@ -87,6 +87,19 @@ def test_labels_follow_data_contract(tmp_path):
         ("usr_b", "vid_3", False), ("usr_c", "vid_3", False), ("usr_c", "vid_1", True)}
 
 
+def test_long_video_short_watch_is_neutral_not_positive(tmp_path):
+    """ttv2-labels-v2: ≥30 s but <10% of a long video is ambiguous → no label (rules are mutually exclusive)."""
+    videos = [{"video_id": f"vid_{n}", "category_id": "cat_a", "duration_seconds": d, "visible_to_client": True, "created_at": T0}
+              for n, d in (("long", 600.0), ("mid", 200.0), ("short", 60.0), ("s100", 100.0))]
+    rows = [_ev(1, "usr_a", "vid_long", "watch_time", 10, watched=35),   # 5.8%, ≥30 s → neutral
+            _ev(2, "usr_a", "vid_mid", "watch_time", 20, watched=30),    # 15%, ≥30 s → positive
+            _ev(3, "usr_a", "vid_short", "watch_time", 30, watched=35),  # 58% → positive
+            _ev(4, "usr_a", "vid_s100", "watch_time", 40, watched=5)]    # 5%, <30 s → negative
+    labels = pi.label(pi.clean(pi.load_export(_write_export(tmp_path, rows, videos=videos, clips=[]))))
+    assert {(l.video_id, l.positive) for l in labels} == {("vid_mid", True), ("vid_short", True), ("vid_s100", False)}
+    assert pi.LABEL_VERSION == "ttv2-labels-v2"
+
+
 def test_positive_wins_and_keeps_first_positive_time(tmp_path):
     rows = [_ev(1, "usr_a", "vid_1", "skip", 10), _ev(2, "usr_a", "vid_1", "like", 20), _ev(3, "usr_a", "vid_1", "save", 30)]
     (lab,) = pi.label(pi.clean(pi.load_export(_write_export(tmp_path, rows))))
@@ -100,6 +113,8 @@ def test_time_split_has_no_leakage_and_reports_cold_start(tmp_path):
     split = pi.time_split(labels, eval_fraction=0.5)
     assert max(l.at for l in split.train) < split.cutoff <= min(l.at for l in split.eval)
     assert split.cold_start_users == {"usr_b"}
+    pairs = lambda ls: {(l.user_id, l.video_id) for l in ls}  # noqa: E731
+    assert not pairs(split.train) & pairs(split.eval)          # one label per pair → no pair on both sides
 
 
 def test_category_vocabulary_is_sorted_and_versioned(tmp_path):

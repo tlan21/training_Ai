@@ -13,6 +13,8 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 EXPORT_VERSION = "ttv2-data-v1"
+# v2: watch rules made mutually exclusive — v1 called ≥30 s positive even when it was <10% of a long video.
+LABEL_VERSION = "ttv2-labels-v2"
 FILES = ("users.jsonl", "categories.jsonl", "videos.jsonl", "clips.jsonl", "interactions.jsonl")
 TYPES = {"click", "watch_time", "like", "share", "skip", "save"}
 EXPLICIT_POSITIVE = {"like", "share", "save"}
@@ -148,9 +150,10 @@ def _signal(export: Export, row: dict) -> bool | None:
     if kind == "watch_time":
         watched = float(row.get("duration_watched") or 0)
         ratio = watched / max(item_seconds(export, row), 1e-9)
-        if ratio >= POSITIVE_RATIO or watched >= POSITIVE_SECONDS:
+        # Positive needs ratio ≥ 10% in every branch, negative needs < 10%: no watch can be both.
+        if ratio >= POSITIVE_RATIO or (watched >= POSITIVE_SECONDS and ratio >= NEGATIVE_RATIO):
             return True
-        if ratio < NEGATIVE_RATIO:
+        if ratio < NEGATIVE_RATIO and watched < POSITIVE_SECONDS:
             return False
     return None
 
