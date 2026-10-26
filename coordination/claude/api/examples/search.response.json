@@ -1,0 +1,44 @@
+{
+ "http_status": 200,
+ "body": {
+  "id": "vsearch-primitive-ffbe02c5a9a2",
+  "object": "search_completion",
+  "created": 1793000885,
+  "model": "primitive-siamese-vit",
+  "results": [
+   {
+    "video_id": "vid_dm3nf6fi23us",
+    "timestamp": 0.0,
+    "similarity_score": 0.45727306604385376,
+    "thumbnail_url": "thumbnails/vid_dm3nf6fi23us/00000000.jpg"
+   },
+   {
+    "video_id": "vid_dm4favp7p4co",
+    "timestamp": 0.0,
+    "similarity_score": 0.45727306604385376,
+    "thumbnail_url": "thumbnails/vid_dm4favp7p4co/00000000.jpg"
+   },
+   {
+    "video_id": "vid_dm4faof9kt4w",
+    "timestamp": 0.0,
+    "similarity_score": 0.45727306604385376,
+    "thumbnail_url": "thumbnails/vid_dm4faof9kt4w/00000000.jpg"
+   },
+   {
+    "video_id": "vid_dm4fah2tgldb",
+    "timestamp": 0.0,
+    "similarity_score": 0.45727306604385376,
+    "thumbnail_url": "thumbnails/vid_dm4fah2tgldb/00000000.jpg"
+   },
+   {
+    "video_id": "vid_dm4fa8juwduq",
+    "timestamp": 0.0,
+    "similarity_score": 0.45727306604385376,
+    "thumbnail_url": "thumbnails/vid_dm4fa8juwduq/00000000.jpg"
+   }
+  ],
+  "query_metadata": {
+   "execution_time_ms": 52.68
+  }
+ }
+}

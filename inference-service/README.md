@@ -43,6 +43,23 @@ FORCE_STUB=1 ../.venv/Scripts/python.exe -m uvicorn app.main:app --port 8001
 ../.venv/Scripts/python.exe -m pytest tests/ -q
 ```
 
+### Nguồn checkpoint canonical (AI-06, 2026-10-26)
+
+- Local + runtime :8001 dùng **`E:/traning_ai/ai-core/checkpoints`** (= default `../ai-core/checkpoints`): thư mục duy nhất có đủ 6 `best.pt`
+  + `minigpt/bpe_vocab.json`, SHA khớp `coordination/claude/api/AI_API_CONTRACT.md` §1. `.env` local đặt `CHECKPOINT_DIR` trỏ đây.
+- `D:/data_training_ai/checkpoints` chỉ có 4/6 (thiếu `vit`, `minigpt`; 4 model còn lại trùng SHA) → không dùng cho runtime.
+- Chế độ thật (`FORCE_STUB=0`) **bắt buộc Milvus** `MILVUS_HOST:MILVUS_PORT` lúc startup (lifespan gọi `visual_index.collection()`);
+  Milvus tắt → uvicorn thoát `Application startup failed`. Milvus thuộc stack Codex.
+- Windows: chạy với `PYTHONUTF8=1`. Không có → log tiếng Việt ra stdout bị redirect (cp1252) gây `UnicodeEncodeError`,
+  lỗi 503 có envelope biến thành 500 plain-text.
+
+```bash
+cd E:/traning_ai/inference-service
+PYTHONUTF8=1 PYTHONPATH=../ai-core ../.venv/Scripts/python -m uvicorn app.main:app --host 127.0.0.1 --port 8001
+```
+
+Bằng chứng: `coordination/claude/evidence/AI-06_2026-10-26/`.
+
 Validate all six reloadable checkpoints before starting the service:
 
 ```bash

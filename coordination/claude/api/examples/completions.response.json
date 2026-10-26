@@ -1,0 +1,22 @@
+{
+ "http_status": 200,
+ "body": {
+  "id": "cmpl-primitive-18a0ba68e59b",
+  "object": "text_completion",
+  "created": 1793000885,
+  "model": "primitive-gpt-summarizer",
+  "choices": [
+   {
+    "text": "Đội tuyển bóng đá quốc gia đã có buổi tập đầu tiên vào sáng nay (24/9) tại Hà Nội để chuẩn bị cho vòng loại World Cup 2018.",
+    "index": 0,
+    "logprobs": null,
+    "finish_reason": "stop"
+   }
+  ],
+  "usage": {
+   "prompt_tokens": 42,
+   "completion_tokens": 28,
+   "total_tokens": 70
+  }
+ }
+}

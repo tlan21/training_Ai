@@ -30,6 +30,7 @@ Claude = **làn AI**. Codex = **làn Tích hợp** (luật của Codex: `AGENTS.
 - Claude **không** sửa: `backend/**`, `cms/**`, `client/**`, `e2e/**`, `infra/**` (gồm `openapi.yaml`), `docker-compose*.yml`, `AGENTS.md`, `coordination/codex/**`, plan 02/03/04. Cần thay đổi phía tích hợp → append `HC-xx` vào `coordination/claude/HANDOFF_OUT.md`.
 - File chung (`coordination/README.md`, `coordination/PROJECT_STATUS.md`, `.claude/plan/00_master_plan.md`, `my-agent/agent/**`): chỉ sửa trong release commit (README mục 6) hoặc khi user yêu cầu.
 - Runtime (quyết định user 2026-10-26): Claude sở hữu tiến trình inference-service :8001 chạy checkpoint thật (AI-07), chạy từ worktree này, dùng Milvus của stack Codex. Không chạy `docker compose up` (Codex sở hữu stack hạ tầng/backend/UI). Codex không sao chép/mount checkpoint — chỉ gọi HTTP :8001 hoặc mock.
+- Dọn dẹp/xóa dữ liệu: chỉ theo quy trình AI-08 (`coordination/claude/TASKS.md`) — phân lớp KEEP/ARCHIVE/REGENERABLE/UNKNOWN, manifest commit trước, user duyệt từng nhóm, kiểm test/checkpoint/manifest sau dọn. Không xóa nhãn người, frozen test, checkpoint active, bằng chứng metric; không xóa đệ quy thư mục gốc; không đụng path Codex hoặc Docker.
 - Dữ liệu duyệt (AI-02/AI-03): Claude chỉ được gán `MACHINE_DRAFT`/`CLAUDE_PROPOSED`; `HUMAN_VERIFIED` chỉ từ file export của người duyệt. Summary/nhãn do Claude soạn không được làm target train/eval khi chưa `HUMAN_VERIFIED` (cấm pseudo-label từ model ngoài).
 
 ## Git (luật cứng)

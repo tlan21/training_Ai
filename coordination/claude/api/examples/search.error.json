@@ -1,0 +1,9 @@
+{
+ "http_status": 422,
+ "body": {
+  "error": {
+   "code": "VALIDATION_ERROR",
+   "message": "[{'type': 'greater_than_equal', 'loc': ('body', 'top_k'), 'msg': 'Input should be greater than or equal to 1', 'input': 0, 'ctx': {'ge': 1}}]"
+  }
+ }
+}

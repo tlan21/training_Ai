@@ -1,0 +1,4 @@
+INFO:     Waiting for application startup.
+    raise MilvusException(
+pymilvus.exceptions.MilvusException: <MilvusException: (code=2, message=Fail connecting to server on localhost:19530, illegal connection params or server unavailable)>
+ERROR:    Application startup failed. Exiting.

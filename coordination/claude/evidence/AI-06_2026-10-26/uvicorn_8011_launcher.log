@@ -1,0 +1,13 @@
+INFO:     Started server process [24396]
+INFO:     Waiting for application startup.
+[AI-06 launcher] skipped Milvus preflight (call #1 only)
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8011 (Press CTRL+C to quit)
+E:\traning_ai/inference-service\app\services.py:465: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\torch\csrc\utils\tensor_numpy.cpp:219.)
+  return torch.from_numpy(np.asarray(img)).float().div(255.0).permute(2, 0, 1)
+E:\traning_ai/inference-service\app\visual_index.py:25: PyMilvusDeprecationWarning: `connections.connect` is an ORM-style PyMilvus API and will be removed in PyMilvus 3.1. Use `MilvusClient` instead.
+  connections.connect(alias="visual", host=settings.milvus_host,
+[services] real path 'search/siamese/milvus' (model siamese) lỗi (MilvusException: <MilvusException: (code=2, message=Fail connecting to server on localhost:19530, illegal connection params or server unavailable)>) → request failed
+E:\traning_ai/inference-service\app\services.py:358: PyMilvusDeprecationWarning: `connections.connect` is an ORM-style PyMilvus API and will be removed in PyMilvus 3.1. Use `MilvusClient` instead.
+  connections.connect(alias="default", host=settings.milvus_host, port=settings.milvus_port, timeout=3)
+[services] không nối được Milvus (MilvusException: <MilvusException: (code=2, message=Fail connecting to server on localhost:19530, illegal connection params or server unavailable)>) → recommendation unavailable

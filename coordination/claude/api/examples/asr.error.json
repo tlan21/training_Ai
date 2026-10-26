@@ -1,0 +1,9 @@
+{
+ "http_status": 503,
+ "body": {
+  "error": {
+   "code": "AI_UNAVAILABLE",
+   "message": "asr: InvalidInput: audio_url không đọc được: LibsndfileError: Error opening 'D:\\\\tmp\\\\ai01_20261026\\\\media\\\\clip.wav.missing.wav': System error."
+  }
+ }
+}

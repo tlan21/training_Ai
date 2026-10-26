@@ -8,15 +8,20 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | ID | T gốc | Tên | Status | Depends on |
 |---|---|---|---|---|
 | AI-00 | — | Thiết lập tách làn + kiểm kê | DONE | — |
-| AI-06 | T1.8 | **Ưu tiên 1** — Xác minh nguồn checkpoint + thang sẵn sàng 6 model | TODO | — |
-| AI-01 | T1.8 | Phát hành AI API Contract v1 (API_READY) | TODO | AI-06 |
-| AI-07 | T1.8 | Vận hành runtime :8001 thật cho Codex gọi HTTP | TODO | AI-06; Milvus từ stack Codex (HC-02) |
+| AI-06 | T1.8 | **Ưu tiên 1** — Xác minh nguồn checkpoint + thang sẵn sàng 6 model | DONE (2026-10-26) | — |
+| AI-01 | T1.8 | Phát hành AI API Contract v1 (API_READY) | DONE (2026-10-26, release #2 — hiệu lực khi lên master; recommendation DRAFT) | AI-06 |
+| AI-10 | T1.8 | Health/degraded đúng ngữ nghĩa + dependency status + tự phục hồi (D15) | DONE (2026-10-26) | — |
+| AI-07 | T1.8 | Vận hành runtime :8001 thật cho Codex gọi HTTP (+ sửa UTF-8 Windows) | DONE (2026-10-26; :8001 UP; ingest path ⇐ HC-05) | AI-10; Milvus stack Codex (UP) |
+| AI-11 | T1.8 / T4.2 | HO-01: `video_id` tùy chọn cho Vision + index frame từ data URI 1 fps (contract minor) | DONE (2026-10-26) | HO-01 (Codex chọn HTTP media) |
+| AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | TODO | HC-04 (Codex: mapping ID + collection) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a TODO · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
 | AI-03 | T1.6 | Mini-GPT: 03a Claude soạn summary 40 clip · 03b người duyệt · 03c train/eval | 03a TODO · 03b BLOCKED · 03c BLOCKED | 03b ⇐ user; 03c ⇐ 03b |
 | AI-04 | T1.8 / T4.3 | Đo VRAM sơ bộ Kaggle T4 (PRELIMINARY) | TODO | AI-06 |
 | AI-05 | T5.3 | Số liệu evaluation cho luận án | TODO | AI-02, AI-03, AI-04 |
+| AI-08 | — | Dọn dẹp dữ liệu/artefact làn AI an toàn (lặp lại sau mỗi đợt train) | TODO (đợt #1 DONE 2026-10-26) | không job/server nào đang dùng; user duyệt danh sách |
 
-Thứ tự đề xuất (tối đa 1 IN_PROGRESS): AI-06 → AI-01 → AI-07; khi chờ GPU/Kaggle/người duyệt thì xen AI-03a, AI-02a, AI-04.
+Thứ tự đề xuất (tối đa 1 IN_PROGRESS, cập nhật D14–D17): AI-10 → AI-07 → release (user duyệt) → AI-01 công bố API_READY; song song khi chờ: AI-09 (phần không cần mapping: schema/version/test), AI-03a, AI-02a, AI-04.
+AI-08 (dọn dẹp) chạy sau mỗi đợt train xong hoặc khi một ổ chạm `BLOCKED_RESOURCE`; luôn qua manifest + user duyệt.
 
 Hoàn thành trước tách làn (bằng chứng ở INVENTORY mục 3, 5): T1.1, T1.2, T1.3, T1.4 (DoD metric), T1.5, T1.7 = DONE;
 T1.6, T1.8, T4.3 = PARTIAL. Không tạo lại các task này.
@@ -36,7 +41,8 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - Checkpoint: xem SESSION.md
 
 ### AI-01 — Phát hành AI API Contract v1
-- T gốc: T1.8 | Owner: claude | Status: TODO
+- T gốc: T1.8 | Owner: claude | Status: DONE (2026-10-26, release #2) — contract v1.2: 6 endpoint `API_READY` hiệu lực khi release #2 lên `master`
+  (D16: code trên master + :8001 UP + smoke PASS); recommendation `DRAFT` (D14). Nếu user không duyệt push → quay lại REVIEW.
 - Depends on: AI-06 | Blocks: INT-03 (DONE), mọi dòng `INTEGRATED_REAL` mới trong matrix Codex
 - Acceptance:
   1. `coordination/claude/api/inference_openapi.json` export từ `app.main:app.openapi()` (không sửa tay).
@@ -44,7 +50,25 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   3. `AI_API_CONTRACT.md` → v1.0: mọi endpoint có schema, ràng buộc chiều (vision 256-d, audio 64-d…), error codes, model + SHA256, `API_READY` cho endpoint đã có ví dụ thật.
   4. Smoke checkpoint thật đưa vào `inference-service/tests` (opt-in theo env) để release gate chạy lại được.
   5. Append bàn giao vào `coordination/claude/HANDOFF_OUT.md`.
-- Evidence: — | Commits: — | Checkpoint: —
+- Evidence (VERIFIED-NOW 2026-10-26, chi tiết `coordination/claude/evidence/AI-01_2026-10-26/README.md`):
+  1. `inference_openapi.json` export `app.main:app.openapi()`; export lại sau sửa code → `cmp` giống hệt.
+  2. `examples/` 23 file sinh bởi `tests/test_live_smoke.py` (`INFERENCE_EXAMPLES_DIR`) trên uvicorn startup production, Milvus thật, media thật → 6/6 PASS.
+     Recommendation: ví dụ 503 thật (collection `user_recommendation_embeddings` không tồn tại) → `DRAFT`.
+  3. Contract v1.0: `API_READY` health/vision/asr/highlight/completions/search; recommendation `DRAFT`; sửa tài liệu cho khớp code
+     (reco cold-start 503, vision ảnh hỏng 503 vs search 422, `thumbnail_url` tương đối, `degraded` dính).
+  4. `tests/test_live_smoke.py` opt-in `INFERENCE_LIVE_URL`: real media 6/6 PASS, synthetic 6/6 PASS; suite mặc định 37 passed / 7 skipped.
+  5. REL v1.0 trong HANDOFF_OUT.
+  - Bug sửa: search đầu tiên sau startup 503 `DEADLINE_EXCEEDED` (timeout 1 s, query đầu sau load 474 ms → >1 s khi Milvus lạnh) → warmup trong lifespan.
+- Follow-up (chưa làm, cần user): tạo/nạp `user_recommendation_embeddings` (`ai_core/scripts/export_two_tower_milvus.py` ghi vào Milvus stack Codex, ID từ dataset train);
+  ngữ nghĩa `degraded` dính; cache `_milvus_collection` giữ cả None tới restart.
+- Commits: 3fd0259 (nhận task), 2d34c24 (code + contract v1.0 + examples + REL) | Checkpoint:
+  ```
+  Lane: claude
+  Changed: inference-service/app/{main.py,visual_index.py}, inference-service/tests/test_live_smoke.py, coordination/claude/api/{AI_API_CONTRACT.md,inference_openapi.json,examples/**}, coordination/claude/{HANDOFF_OUT.md,TASKS.md,SESSION.md,evidence/AI-01_2026-10-26/**}
+  Verified: live smoke real media 6/6 + synthetic 6/6 PASS (startup production, Milvus thật); pytest tests/ 37 passed 7 skipped; openapi cmp unchanged
+  Contract touched: yes (AI-API v1.0; schema không đổi)
+  Next safe task: AI-07
+  ```
 
 ### AI-02 — ASR domain adaptation (T1.4 follow-up)
 - T gốc: T1.4 | Owner: claude | Status: 02a TODO · 02b BLOCKED · 02c BLOCKED
@@ -98,15 +122,82 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - Evidence: HIST CPU RSS 20 video PASS (`docs/T4.3_bao_cao.md`); GPU chưa đo.
 - Commits: — | Checkpoint: —
 
+### AI-10 — Health/degraded đúng ngữ nghĩa (D15)
+- T gốc: T1.8 | Owner: claude | Status: DONE (2026-10-26)
+- Depends on: — | Blocks: AI-07 (kiểm health/readiness)
+- Việc: input không hợp lệ (400/422, ảnh/audio không đọc được, lệch chiều highlight) không đánh dấu model degraded; chỉ lỗi inference thật/timeout mới đánh dấu;
+  dependency (Milvus visual/recommendation: unavailable/missing_collection) có trạng thái riêng; degraded + dependency tự phục hồi khi gọi thành công / Milvus
+  sửa xong (không cache thất bại vĩnh viễn). Giữ tương thích: status code hiện có giữ nguyên; field mới trong `/health` chỉ thêm (minor version) + REL cho Codex.
+- Acceptance: test cho validation error, model failure, dependency unavailable, recovery; suite inference PASS; live smoke PASS; contract + openapi cập nhật.
+- Evidence (VERIFIED-NOW 2026-10-26, `coordination/claude/evidence/AI-10_2026-10-26/README.md`): `tests/test_health_status.py` RED 9 ERROR → GREEN 9/9;
+  `pytest tests/` 46 passed / 7 skipped; live smoke startup production :8011 + Milvus thật 2 lượt liên tiếp 6/6 PASS, `/health` sau đó
+  `degraded=[]`, `dependencies={recommendation_index: missing_collection, visual_index: ok}`; OpenAPI diff chỉ thêm `HealthResponse.dependencies` (default `{}`).
+  Contract v1.1-rc1 DRAFT + REL trong HANDOFF_OUT.
+- Commits: 379c2f0 (nhận task), 0e5a3da (code + test + contract) | Checkpoint:
+  ```
+  Lane: claude
+  Changed: inference-service/app/{main,registry,schemas,services}.py, tests/{test_health_status,test_live_smoke}.py, coordination/claude/{api/**,evidence/AI-10_2026-10-26/**,HANDOFF_OUT.md,TASKS.md,SESSION.md}
+  Verified: health tests 9/9; suite 46 passed 7 skipped; live smoke 2×6/6 PASS
+  Contract touched: yes (AI-API v1.1-rc1 DRAFT, chỉ thêm field /health.dependencies)
+  Next safe task: AI-07
+  ```
+
+### AI-11 — HO-01: Vision `video_id` + index frame từ data URI (Codex RE:HC-05 chọn phương án b)
+- T gốc: T1.8 / T4.2 | Owner: claude | Status: DONE (2026-10-26)
+- Depends on: HO-01 | Blocks: INT-11 (real upload → vision/index/search trên topology host/Docker), release #2
+- Việc: field optional `video_id` trên VisionRequest; có `video_id` + data URI/base64 → index Siamese frame theo thứ tự request = giây 0,1,2…,
+  thumbnail MinIO `thumbnails/<video_id>/<8 số>.jpg`, payload/collection/metric/index giữ nguyên; nhánh ingest path cũ giữ nguyên. Xác nhận ASR đọc WAV
+  qua MinIO presigned `http://localhost:9000/...`. Contract minor (chỉ thêm field) + RE:HO-01.
+- Acceptance: unit test index data URI (thứ tự/timestamp/key/payload, thiếu video_id → không index, video_id sai → 422/503 không degraded);
+  live :8001: vision có video_id → frame vào Milvus, search thấy video đó; ASR presigned URL 200.
+- Evidence (VERIFIED-NOW 2026-10-26, `coordination/claude/evidence/AI-11_2026-10-26/README.md`): test_visual_search RED 2 → GREEN; suite 51 passed / 7 skipped;
+  live :8001 vision video_id → 3 row Milvus giây 0/1/2 + 3 thumbnail, search → `vid_ai11probe` giây 1 sim 1.0, ASR presigned localhost:9000 → 200;
+  dữ liệu probe đã dọn (0 row/0 thumbnail); smoke :8001 6/6; OpenAPI chỉ thêm `VisionRequest.video_id`. RE:HO-01 trong HANDOFF_OUT.
+- Commits: bc3ec2f (nhận task), 3b44592 (code + test + contract v1.2-rc1) | Checkpoint:
+  ```
+  Lane: claude
+  Changed: inference-service/app/{visual_index,schemas,services}.py, tests/test_visual_search.py, coordination/claude/{api/**,evidence/AI-11_2026-10-26/**,HANDOFF_OUT.md}; .env local (MINIO_*)
+  Verified: unit 4 mới PASS; suite 51/7; live probe :8001 index+search+ASR presigned PASS, đã dọn
+  Contract touched: yes (v1.2-rc1, chỉ thêm VisionRequest.video_id)
+  Next safe task: release #2 (user duyệt push)
+  ```
+
+### AI-09 — Two-Tower recommendation phía AI (D14)
+- T gốc: T1.7 | Owner: claude | Status: TODO
+- Depends on: HC-04 (Codex: mapping ID sản phẩm user_id/video_id, collection Milvus, pipeline đồng bộ, nối backend) | Blocks: INT-03 phần personalized thật
+- Việc (Claude): đặc tả embedding (dim, chuẩn hóa, metric), schema export + version model, script export có kiểm thử dữ liệu AI; chỉ thử với dataset train
+  trong collection/môi trường **sandbox** tách biệt (Codex cấp theo HC-04). KHÔNG chạy `export_two_tower_milvus.py` vào collection sản phẩm khi mapping ID chưa xác minh.
+- Acceptance: schema/dim/metric/ID mapping/tiêu chí nghiệm thu được hai làn xác minh trong handoff; test export; nạp thật chỉ sau đó. Tới lúc đó giữ popularity
+  fallback, personalized recommendation không DONE.
+- Evidence: — | Commits: — | Checkpoint: —
+
 ### AI-07 — Vận hành runtime :8001 thật cho Codex
-- T gốc: T1.8 | Owner: claude | Status: TODO
+- T gốc: T1.8 | Owner: claude | Status: DONE (2026-10-26)
 - Lý do: quyết định user 2026-10-26 — Codex không sao chép/quản lý checkpoint; tích hợp AI chỉ qua HTTP :8001.
   → Claude sở hữu tiến trình inference-service chạy checkpoint thật.
-- Depends on: AI-06; Milvus từ stack Codex lắng nghe `localhost:19530` (HC-02). | Blocks: INT-01 (phần E2E thật), INT-03.
+- Depends on: AI-06 (DONE), AI-10; Milvus từ stack Codex lắng nghe `localhost:19530` (UP theo RE:HC-03). | Blocks: INT-01 (phần E2E thật), INT-03, công bố API_READY (D16).
 - Acceptance: lệnh chạy chuẩn (uvicorn từ worktree Claude, `CHECKPOINT_DIR` canonical, `MILVUS_HOST` của stack Codex, port 8001,
   `AI_SERVICE_KEY` dùng chung với gateway) ghi trong contract mục Runtime; `GET :8001/health` → `stub_mode=false`, 6 model;
   trạng thái runtime (UP/DOWN + thời điểm) ghi `SESSION.md`. Khi :8001 DOWN, Codex dùng mock — không chặn nhau.
-- Evidence: — | Commits: — | Checkpoint: —
+- D16: kiểm model loading, endpoint, health, readiness, request/response, error handling; ghi kết quả từng model, không READY model chưa chạy.
+- Thêm phạm vi (user duyệt 2026-10-26 sau AI-06): sửa trong code lỗi Windows stdout cp1252 (`services._warn` print tiếng Việt →
+  `UnicodeEncodeError` → 500 plain-text thay vì 503 envelope); có test tái hiện. Tới lúc đó chạy service với `PYTHONUTF8=1`.
+- Evidence (VERIFIED-NOW 2026-10-26, `coordination/claude/evidence/AI-07_2026-10-26/README.md`):
+  - UTF-8: `tests/test_stdout_encoding.py` RED (`UnicodeEncodeError … 'ỗ'`) → `app/__init__.py` → GREEN; suite 47 passed / 7 skipped không có PYTHONUTF8.
+  - Runtime :8001 qua `run_local_8001.cmd` + Start-Process (PID 26396), startup production, Milvus thật; contract §1c ghi lệnh/log/trạng thái.
+  - Smoke :8001 media thật 6/6 (examples sinh lại từ :8001) + synthetic 6/6; `/health` stub_mode=false, 6 model, degraded=[],
+    dependencies {recommendation_index: missing_collection, visual_index: ok}; log 0 UnicodeEncodeError.
+  - Docker → `host.docker.internal:8001/health` 200 (từ `video-ai-gateway-1`, chỉ đọc).
+  - Từng model: vit/asr_ctc/highlight_fusion/minigpt/siamese chạy; two_tower nạp nhưng recommendation 503 (collection chưa có, D14) → không READY.
+  - Giới hạn: VRAM ≤4 GB chưa đo (CPU-only, AI-04); ingest `/srv/work` path ⇐ HC-05 (Codex chọn phương án).
+- Commits: cdb022f (nhận task), a970368 (UTF-8 fix + runtime + evidence + HC-05) | Checkpoint:
+  ```
+  Lane: claude
+  Changed: inference-service/app/__init__.py, inference-service/run_local_8001.cmd, inference-service/tests/test_stdout_encoding.py, coordination/claude/{api/**,evidence/AI-07_2026-10-26/**,HANDOFF_OUT.md,TASKS.md,SESSION.md}
+  Verified: encoding test RED→GREEN; suite 47 passed 7 skipped; :8001 smoke real 6/6 + synthetic 6/6; Docker→:8001 health 200
+  Contract touched: yes (v1.1-rc1 DRAFT §1b/§1c runtime; schema không đổi)
+  Next safe task: release (user duyệt) → công bố API_READY; song song AI-09 phần đặc tả
+  ```
 
 ### AI-05 — Số liệu evaluation luận án (T5.3 phần AI)
 - T gốc: T5.3 | Owner: claude | Status: TODO
@@ -114,8 +205,54 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - Acceptance: bảng metric 6 model vs baseline, CI, limitation thật, khớp `.claude/evaluation_plan.md`.
 - Evidence: — | Commits: — | Checkpoint: —
 
+### AI-08 — Dọn dẹp dữ liệu/artefact làn AI an toàn (yêu cầu user 2026-10-26)
+- T gốc: — | Owner: claude | Status: TODO (task lặp lại: chạy sau mỗi đợt train xong, hoặc khi một ổ chạm `BLOCKED_RESOURCE`)
+- Bối cảnh 2026-10-26: C: còn 3.5 GB, D: 1.2 GB, E: 2.2 GB. Ứng viên đã thấy (nhỏ): `ai-core/_probe_ckpt/` 3.2 MB, `ai-core/_tmp_tt/` 0.7 MB
+  (untracked), pytest tmp ~0.7 MB. Khảo sát `D:/data_training_ai` chưa xong (du timeout) → bước 1.
+- Mục tiêu: giải phóng dung lượng **mà không mất dữ liệu cần cho phát triển tiếp, tái lập kết quả hoặc luận án**.
+  Dọn dẹp không được làm dự án lùi lại: sau dọn, mọi test/smoke/manifest phải còn PASS như trước.
+- Phạm vi: chỉ path làn Claude — `ai-core/**` (file không track), `inference-service/**` cache, `data/**`, `dist/kaggle/**`,
+  `D:/data_training_ai/**`, file tạm do Claude tạo (pytest tmp, `__pycache__`, `/tmp/split`). **Cấm** đụng path Codex
+  (`backend`, `cms`, `client`, `node_modules`, Docker image/volume/vhdx), lịch sử git, `.git`.
+
+**Phân loại bắt buộc (mỗi mục 1 lớp, có lý do):**
+| Lớp | Ví dụ | Xử lý |
+|---|---|---|
+| `KEEP` — không bao giờ xóa | checkpoint active 6 model (`ai-core/checkpoints/*/best.pt`, SHA trong contract); nhãn/review/rating của người (export JSON, ASR review 7/60, transcript user đã sửa, human ratings T1.6); frozen test/val (frozen30, fixed10, VIVOS/FLEURS test refs); `data/manifests/**`; file được docs/report trích làm bằng chứng metric; nguồn không tải lại được (SoccerNet đã xóa video gốc, NDA) | giữ nguyên |
+| `ARCHIVE` — cần giữ nhưng không cần trên ổ làm việc | checkpoint ứng viên bị loại nhưng có số liệu trong report (vd ASR last134, MiniGPT candidate `70ec4790…`), output Kaggle các version cũ, gói dữ liệu đã dùng xong | chỉ xóa khỏi ổ làm việc **sau khi** đã có bản sao ở nơi lưu trữ user chỉ định và đã kiểm SHA bản sao |
+| `REGENERABLE` — tạo lại được bằng lệnh đã ghi | `__pycache__`, pytest tmp, `_probe_*`/`_tmp_*` scratch, feature/keyframe trung gian còn nguồn gốc + lệnh trích lại, zip packet Kaggle còn source | xóa sau khi ghi lệnh tái tạo + user duyệt |
+| `UNKNOWN` | không rõ nguồn gốc/không biết ai dùng | **không xóa**, hỏi user |
+
+**Quy trình (không bỏ bước):**
+1. **Điều kiện trước:** không có job train/Kaggle/eval đang chạy; không server nào phục vụ thư mục ứng viên (vd ASR review :8891 dùng
+   `D:/data_training_ai/asr_domain_expansion_v2_20261022` → KEEP khi AI-02b chưa xong); output Kaggle mới nhất đã tải về
+   (Kaggle chỉ giữ version mới nhất).
+2. **Khảo sát chỉ đọc:** kích thước, ngày sửa, số file, SHA256 (file ≤ vài GB; thư mục lớn: danh sách file + size), và **ai tham chiếu**
+   (grep path trong `docs/`, `data/manifests/`, `ai-core/`, `inference-service/`, `coordination/`, `.claude/`). Có tham chiếu → không
+   được `REGENERABLE` trừ khi tham chiếu chỉ là lịch sử và user đồng ý.
+3. **Manifest dọn dẹp:** `coordination/claude/cleanup/CLEANUP_<YYYY-MM-DD>.md` + `.json` (path, size, sha256/file-list, lớp, lý do,
+   tham chiếu, lệnh tái tạo nếu có, dung lượng dự kiến giải phóng). Commit trước khi xóa bất cứ gì.
+4. **User duyệt từng nhóm** trong manifest. Không duyệt = không xóa.
+5. **Thực hiện theo lớp:** `ARCHIVE` → sao chép sang nơi lưu trữ user chỉ định (ổ ngoài/cloud) → kiểm SHA bản sao → mới xóa bản gốc.
+   `REGENERABLE` → xóa từng path đã duyệt (không wildcard rộng, không `rm -rf` ở thư mục gốc dự án/ổ, không `git clean`).
+   Lưu ý: chuyển vào Recycle Bin hay thư mục `_trash` **cùng ổ không giải phóng dung lượng** — chỉ dùng làm bước đệm khi user muốn
+   có thời gian kiểm tra trước khi xóa hẳn.
+6. **Kiểm sau dọn:** ai-core pytest + inference pytest PASS; 6 checkpoint nạp `stub_mode=false`, SHA khớp contract; script kiểm mọi path
+   trong `data/manifests/*.json` còn tồn tại (hoặc có trong danh sách `ARCHIVE` kèm nơi lưu); ASR review/label tool còn mở được nếu đang dùng.
+   Có FAIL → dừng, khôi phục từ bản lưu trữ/trash, báo user.
+7. **Ghi kết quả:** dung lượng trước/sau từng ổ, danh sách đã xóa/đã lưu trữ, bằng chứng bước 6 → manifest + Evidence task này.
+   Ảnh hưởng tới Codex (vd đổi đường dẫn checkpoint) → append handoff trước khi đổi.
+
+- Acceptance mỗi đợt: manifest đã duyệt, dung lượng giải phóng đo được, bước 6 PASS, 0 mục `KEEP`/`UNKNOWN` bị đụng.
+- Không bao giờ: xóa để "cho chắc"; xóa thứ duy nhất chứng minh một con số trong báo cáo/luận án; xóa nhãn người; xóa mà không có
+  manifest + duyệt; rewrite lịch sử git để giảm `.git`.
+- Đợt #1 (2026-10-26, user uỷ quyền tự quyết): **DONE** — xóa 6 mục REGENERABLE trên D:, giải phóng 5,530,226,688 byte
+  (D: 1.22 → 6.75 GB); ai-core 285 PASS, inference 37 PASS/1 skip, SHA 6 checkpoint không đổi, server :8891 HTTP 200.
+  Manifest + kết quả: `coordination/claude/cleanup/CLEANUP_2026-10-26.md`. Task vẫn TODO cho các đợt sau.
+- Evidence: VERIFIED-NOW 2026-10-26 (đợt #1, xem manifest) | Commits: `a5f340f` (manifest trước khi xóa) + commit kết quả | Checkpoint: SESSION.md
+
 ### AI-06 — Xác minh nguồn checkpoint + thang sẵn sàng 6 model (ƯU TIÊN 1)
-- T gốc: T1.8 | Owner: claude | Status: TODO
+- T gốc: T1.8 | Owner: claude | Status: DONE (2026-10-26)
 - Depends on: — | Blocks: AI-01, AI-04, AI-07
 - Vấn đề: `inference-service/.env` (local, không commit) trỏ `CHECKPOINT_DIR=D:/data_training_ai/checkpoints` — thư mục đó chỉ có
   4/6 (`asr_ctc`, `highlight_fusion`, `siamese`, `two_tower`), **thiếu `vit`, `minigpt`** → uvicorn local fail khởi động.
@@ -131,7 +268,26 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   không xóa/ghi đè dữ liệu trên D:; search/recommendation ghi rõ mức đạt được nếu Milvus chưa có.
 - Evidence (đã có từ AI-00, VERIFIED-NOW 2026-10-26, gọi `app.services` trực tiếp — chưa qua HTTP): 6/6 CKPT_PRESENT + LOADED từ
   `E:/traning_ai/ai-core/checkpoints`; vision/asr/highlight/completions chạy; search/recommendation 503 (Milvus tắt).
-- Commits: — | Checkpoint: —
+- Evidence (AI-06, VERIFIED-NOW 2026-10-26, chi tiết `coordination/claude/evidence/AI-06_2026-10-26/README.md`):
+  - `find D:/ E:/ … *.pt` (142 file) + `sha256sum`: vit active `192d90e4…` chỉ ở E: (`ai-core/checkpoints` ≡ `dist/kaggle/output/vit/vit_s1338`, gốc Kaggle seed 1338);
+    minigpt active `cf9cfa71…` ở E: ≡ D: `minigpt_news/output-v2/news_run/minigpt/best.pt` (gốc) + 4 `pretrain.pt` upload; vocab `649ffc66…` khớp.
+    4 model trùng tên D: ≡ E: (best + last). `sha256sum -c` 8 file D: sau task → 8/8 OK, không ghi/xóa gì trên D:.
+  - Canonical = `E:/traning_ai/ai-core/checkpoints`; `.env` local `CHECKPOINT_DIR` đổi từ D: sang đây (không commit); `inference-service/README.md` ghi lại.
+  - Startup production `uvicorn app.main:app` khi Milvus tắt → `Application startup failed` (MilvusException localhost:19530), exit 3.
+  - Launcher bỏ Milvus preflight + `http_ladder.py` trên :8011 → 9/9 PASS: health `stub_mode=False`/6 model/`degraded=[]`; 401 thiếu+sai Bearer;
+    vision/asr/highlight/completions 200 + schema hợp lệ; search/recommendation 503 `AI_UNAVAILABLE`.
+  - `pytest inference-service/tests` → 37 passed, 1 skipped.
+  - Lỗi vận hành phát hiện: không `PYTHONUTF8=1` trên Windows → `services._warn` UnicodeEncodeError → search 500 plain-text thay vì 503. Ghi README/contract; chưa sửa code.
+  - Kết quả thang (contract §1b): vit/asr_ctc/highlight_fusion/minigpt = `ENDPOINT_OK*` (* launcher bỏ Milvus preflight); siamese/two_tower = `LOADED` (cần Milvus).
+    Không model nào `API_READY`. Startup production đầy đủ ⇐ Milvus của Codex (AI-07).
+- Commits: 91b0242 (nhận task), 8d1f053 (evidence + README + contract v0.2 + REL) | Checkpoint:
+  ```
+  Lane: claude
+  Changed: inference-service/README.md, coordination/claude/{api/AI_API_CONTRACT.md,HANDOFF_OUT.md,TASKS.md,SESSION.md,evidence/AI-06_2026-10-26/**}; .env local (không commit)
+  Verified: SHA 6 model + D: 8/8 unchanged; uvicorn HTTP ladder 9/9 PASS; prod startup fail khi Milvus tắt (đúng thiết kế); inference pytest 37 passed/1 skipped
+  Contract touched: yes (AI-API v0.2 DRAFT, chỉ tài liệu §1b, schema không đổi)
+  Next safe task: AI-01
+  ```
 
 ---
 

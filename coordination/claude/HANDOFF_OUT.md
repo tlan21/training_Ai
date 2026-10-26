@@ -45,3 +45,98 @@ Claude không sửa `AGENTS.md` / `coordination/codex/**` (giữ ranh giới, qu
    ngay sau INT-00. INT-01 tách: phần backend/integration DB làm được với mock; phần E2E AI thật ⇐ AI-07 (:8001 UP).
    INT-03 ⇐ AI-01 + AI-07.
 5. Ghi `RE:HC-02` vào `coordination/codex/HANDOFF_OUT.md` khi đã áp dụng.
+
+## 2026-10-26 REL #1 — master fast-forward 39ff344 → 96ebc24 (user duyệt)
+- Nội dung: chỉ tài liệu điều phối (D1–D8, contract v0.1 DRAFT, HC-02). 0 file code đổi.
+- Gate: inference-service pytest 37 passed/1 skipped; 6 checkpoint nạp `stub_mode=false`, degraded []. ai-core pytest không chạy lại
+  (0 file `.py` đổi kể từ 39ff344 đã 285 PASS; ổ C: còn 3.5 GB, test ghi ~0.75 GB tmp).
+- Worktree Codex đã `git merge --ff-only master` → `96ebc24`, tree sạch, Codex chưa có commit riêng.
+
+## 2026-10-26 HC-03 — Ràng buộc user D9–D12 + cảnh báo dung lượng (Codex áp dụng ở INT-00)
+1. **Milvus (D9):** Codex quản lý hạ tầng Milvus (container, volume, port `19530`, vận hành). Claude quản lý logic AI dùng Milvus
+   (collection frame/user-vector, encode, index, truy vấn trong inference-service). Mọi thay đổi giao diện giữa hai phần
+   (tên collection, dim, metric, index params, host/port, schema field) phải ghi handoff trước khi đổi.
+2. **Dung lượng (D10), đo 2026-10-26 sau release:** E: còn **2.2 GB**; C: còn **3.5 GB**; Docker Desktop lưu image trong
+   `C:/Users/PC/AppData/Local/Docker/wsl/disk/docker_data.vhdx` (40.6 GB, nằm trên C:). Worktree Codex chưa có `node_modules`.
+   - Trước `npm ci` (≈420 MB trên E:): đo lại E:, cần còn ≥1.5 GB sau cài, nếu không → `BLOCKED_RESOURCE`.
+   - Trước build/pull Docker image: đo lại C:. Worktree mới có tên project compose khác (`traning_ai-codex`) → có thể build lại
+     toàn bộ image và tạo volume mới, tốn nhiều GB trên C:. Thiếu chỗ → `BLOCKED_RESOURCE`, không xóa gì khi chưa có user duyệt.
+   - Phương án không mất dữ liệu để Codex đề xuất cho user: (a) dùng lại image/volume cũ bằng `COMPOSE_PROJECT_NAME=traning_ai`
+     (cùng dữ liệu stack T4.x); (b) user dọn file tạm/cache ngoài dự án; (c) `docker builder prune` chỉ xóa build cache (không volume)
+     — cần user duyệt; (d) chuyển Docker disk image sang ổ khác còn trống — cần user duyệt. Không `docker volume rm`/`system prune -a`.
+   - Chỉ cần mock + `go test`/build FE thì không cần Docker → phần không phụ thuộc Docker vẫn làm được.
+3. **Không chờ training (D11):** làm phần không phụ thuộc AI, dùng mock tới khi endpoint `API_READY` + integration test thật PASS.
+4. **PROJECT_STATUS (D12):** mỗi làn chỉ ghi tracker của mình; PROJECT_STATUS chung chỉ đổi trong release theo README mục 6.
+
+## 2026-10-26 REL AI-API v0.2 — DRAFT (AI-06, chỉ tài liệu, schema không đổi)
+- Contract §1b: thang sẵn sàng có bằng chứng HTTP thật (uvicorn + Bearer, CPU). vit/asr_ctc/highlight_fusion/minigpt = `ENDPOINT_OK*`;
+  siamese/two_tower dừng ở `LOADED` (503 `AI_UNAVAILABLE` đúng envelope vì Milvus tắt). Chưa endpoint nào `API_READY` (AI-01).
+- Nguồn checkpoint canonical: `E:/traning_ai/ai-core/checkpoints` (Claude giữ, Codex không mount — giữ nguyên HC-02).
+- Lưu ý cho INT-00/AI-07: inference-service chế độ thật **không khởi động** nếu Milvus `localhost:19530` không lên (lifespan bắt buộc).
+  Runtime :8001 (AI-07) cần Milvus từ stack Codex trước; khi Milvus UP xin báo trong `RE:HC-03` hoặc HO mới.
+- Runtime :8001 vẫn DOWN (AI-06 chỉ chạy tạm trên :8011 để đo, đã tắt).
+
+## 2026-10-26 REL AI-API v1.0 — AI-01 (trên `claude/ai-core`, chưa release lên master)
+- Contract: `coordination/claude/api/AI_API_CONTRACT.md` v1.0 + `inference_openapi.json` + `examples/` (chạy thật, checkpoint thật, Milvus thật của stack Codex).
+- `API_READY`: `/health`, vision, asr, highlight, completions, search. `DRAFT`: recommendation (Milvus chưa có collection `user_recommendation_embeddings`
+  → luôn 503; gateway giữ popularity fallback).
+- Schema request/response **không đổi** so với v0.x → mock hiện tại của Codex vẫn đúng. Hành vi cần biết (đã có trong code từ trước, nay ghi vào contract):
+  recommendation cold-start trả 503 (không phải 200); lệch số giây highlight → 503; vision ảnh hỏng → 503, search ảnh hỏng → 422;
+  `thumbnail_url` của search là key MinIO tương đối `thumbnails/<video_id>/<8 số>.jpg`; `/health.degraded` dính sau bất kỳ request lỗi nào.
+- Sửa code: startup chạy 1 search warmup Milvus (trước đây search đầu tiên sau mỗi lần khởi động có thể 503 `DEADLINE_EXCEEDED`).
+- Theo README §5: Codex chỉ đánh `INTEGRATED_REAL` khi endpoint `API_READY` **trên master** (cần user ra lệnh release) **và** :8001 thật UP (AI-07; hiện DOWN).
+- Smoke để Codex/release gate chạy lại: contract §4 (`tests/test_live_smoke.py`, opt-in `INFERENCE_LIVE_URL`).
+
+## 2026-10-26 ĐÍNH CHÍNH REL AI-API v1.0 → v1.0-rc1 DRAFT (quyết định user D16)
+- Mục "REL AI-API v1.0" bên trên ghi 6 endpoint `API_READY` — **rút lại**. Theo D16, `API_READY` chỉ công bố khi code cần thiết đã trên `master`,
+  runtime :8001 hoạt động và smoke đạt (AI-07 + release). Hiện tại mọi endpoint `DRAFT`; 6 endpoint là ứng viên (có ví dụ thật, smoke PASS trên :8011 tạm).
+- Schema không đổi → mock hiện tại của Codex vẫn đúng. Codex tiếp tục INT-00/INT-02/INT-04 bằng mock, không chờ AI-07.
+- Thứ tự gate: AI-10 (health/degraded, chỉ thêm field) → AI-07 (:8001 UP) → release (user duyệt) → Claude công bố API_READY → Codex đổi
+  `AI_BASE_URL`/`AI_ALLOW_STUB=0`, chạy test thật, rồi mới `INTEGRATED_REAL`.
+
+## 2026-10-26 HC-04 — Recommendation personalized: chia việc theo D14 (Codex phản hồi trong RE:HC-04)
+Quyết định user D14 (PROJECT_STATUS mục 5). Claude **không** chạy `export_two_tower_milvus.py` vào collection sản phẩm.
+- **Codex phụ trách:** (1) mapping ID sản phẩm — user_id `usr_*`/video_id `vid_*` trong Postgres ↔ đầu vào Two-Tower (đặc tả: nguồn, khóa, cách xử lý
+  user/video mới); (2) collection Milvus sản phẩm `user_recommendation_embeddings` (tạo, vận hành, quyền ghi); (3) pipeline đồng bộ dữ liệu;
+  (4) nối recommendation vào backend; (5) cấp 1 **sandbox** tách biệt cho Claude thử với dataset train (đề xuất: collection riêng `sandbox_two_tower_*`
+  hoặc database Milvus riêng — Codex chọn, ghi host/port/tên trong RE:HC-04). Backend sản phẩm không đọc sandbox.
+- **Claude phụ trách (AI-09):** Two-Tower model, embedding (dim/chuẩn hóa/metric), schema export + version model, script export + kiểm thử dữ liệu AI.
+- Tham số hiện có để đối chiếu: dim 128, metric IP trên vector L2-norm (score trả 0–1 = (IP+1)/2), index IVF_FLAT; service đọc vector user theo
+  `id == user_id`, search `type == "video"`. Đổi tham số nào → handoff trước (D9).
+- Nạp dữ liệu thật chỉ khi schema, ID mapping, dim, metric, tiêu chí nghiệm thu được cả hai xác minh trong handoff. Tới lúc đó giữ popularity fallback,
+  INT-03 phần personalized không DONE.
+
+## 2026-10-26 REL AI-API v1.1-rc1 — DRAFT (AI-10, quyết định user D15; tương thích ngược)
+- `/health` thêm `dependencies: {str: str}` (mặc định `{}`): `visual_index`, `recommendation_index` → `ok | unavailable | missing_collection`.
+  Mock Go (`backend/internal/mocks/ai_http.go`) không cần sửa; nếu CMS muốn hiển thị thì đọc field này (tùy Codex).
+- `degraded` đổi ngữ nghĩa: chỉ model có inference lỗi thật; input sai (vẫn trả 503/422 như cũ) và lỗi Milvus không làm model degraded; tự gỡ khi chạy lại được.
+- Status code không đổi. Recommendation thử lại Milvus mỗi 30 s (không cần restart service khi Codex tạo collection).
+- Vẫn DRAFT theo D16 cho tới AI-07 + release.
+
+## 2026-10-26 HC-05 — :8001 chạy trên host: path `/srv/work` của ingest không đọc được (integration gate; Codex phản hồi trong RE:HC-05)
+- Runtime thật :8001 UP (AI-07), gọi được từ container qua `http://host.docker.internal:8001` (đã kiểm từ `video-ai-gateway-1`).
+  `AI_SERVICE_KEY` = giá trị trong `E:/traning_ai/inference-service/.env` (file local, không commit) — gateway đặt cùng giá trị.
+- Vấn đề: orchestrator gửi vision `keyframes=["/srv/work/<vid>/00000001.jpg", …]` và asr `audio_url="/srv/work/<vid>/…"` (path trong volume `ingest_work`).
+  Inference chạy trên Windows host → không có `/srv/work` → 503. Index frame (search corpus) còn cần `MINIO_ENDPOINT/ACCESS_KEY/SECRET_KEY`.
+- Phương án (Codex chọn, ghi trong RE:HC-05; Claude làm phần inference sau khi chốt):
+  (a) **Đề xuất — không đổi contract:** Codex bind-mount `ingest_work` ra 1 thư mục host (vd `D:/video-ai/work:/srv/work`) và cấp MinIO endpoint/credential cho host
+      (`localhost:9000`); Claude thêm biến môi trường map tiền tố `/srv/work` → thư mục host trong inference.
+  (b) Orchestrator gửi keyframe dạng data URI và audio dạng URL MinIO `http://localhost:9000/...` (presigned) — chạy ngay, nhưng vision mất index frame cho search
+      (cần thêm field `video_id` tùy chọn vào vision request → contract minor, Claude làm nếu chọn).
+- Tới khi chốt: endpoint API dùng trực tiếp vẫn OK; luồng ingest thật end-to-end chưa `INTEGRATED_REAL`.
+
+## 2026-10-26 RE:HO-01 / REL AI-API v1.2-rc1 — DRAFT: Vision `video_id` + index data URI (AI-11)
+- Chấp nhận đề xuất HO-01. Contract v1.2-rc1 §2.1: `VisionRequest.video_id` optional (`vid_*`). Có `video_id` → index Siamese frame từ data URI/base64,
+  keyframe thứ i = giây i (1 fps theo thứ tự request), thumbnail `thumbnails/<video_id>/<8 số>.jpg`, payload/collection/metric/index giữ nguyên.
+  **Gửi toàn bộ frame của 1 video trong 1 request** (index ghi đè frame cũ của cùng video_id). Không có `video_id` → chỉ phân loại, không index.
+- Xác nhận: ASR đọc WAV qua MinIO presigned `http://localhost:9000/...` → 200 (probe AI-11 trên :8001). Runtime đặt `MINIO_*` = default compose.
+- Bằng chứng live :8001 (đã dọn dữ liệu probe `vid_ai11probe`): vision 200 → 3 row Milvus (giây 0/1/2) + 3 thumbnail; search frame 2 → `vid_ai11probe`
+  giây 1, similarity 1.0; sau dọn 0 row/0 thumbnail. `coordination/claude/evidence/AI-11_2026-10-26/`.
+- Codex có thể gửi field `video_id` khi tích hợp; vẫn DRAFT theo D16 tới release.
+
+## 2026-10-26 REL AI-API v1.2 — release #2 (API_READY hiệu lực khi commit này có trên `master`)
+- 6 endpoint `API_READY`: `/health`, vision, asr, highlight, completions, search. Recommendation `DRAFT` (collection chưa có; D14, HC-04/AI-09).
+- Runtime :8001 UP (Claude), từ Docker: `http://host.docker.internal:8001`; Bearer = `AI_SERVICE_KEY` trong `E:/traning_ai/inference-service/.env`.
+- Topology (RE:HC-05/HO-01): vision gửi data URI + `video_id` (toàn bộ frame 1 video / 1 request), asr gửi presigned `http://localhost:9000/...`.
+- Gate Claude đã chạy: ai-core 285 PASS; inference 51 PASS/7 skip; smoke :8001 6/6 + 401; 6 checkpoint `stub_mode=false`.
+- Codex: sau khi master có release #2 → `git merge master`, đổi `AI_BASE_URL`/`AI_ALLOW_STUB=0`, chạy integration test thật; chỉ khi PASS mới `INTEGRATED_REAL` (D16).
