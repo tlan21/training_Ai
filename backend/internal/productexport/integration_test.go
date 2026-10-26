@@ -25,7 +25,7 @@ func TestRealSnapshotProvenanceAndChecksums(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer db.Close()
+	t.Cleanup(db.Close)
 	suffix := strconv.FormatInt(time.Now().UnixNano(), 36)
 	user := "usr_export_" + suffix
 	video := "vid_export_" + suffix
@@ -39,8 +39,12 @@ func TestRealSnapshotProvenanceAndChecksums(t *testing.T) {
 		}
 	}
 	t.Cleanup(func() {
-		_, _ = db.Exec(ctx, `DELETE FROM videos WHERE id=ANY($1::text[])`, videos)
-		_, _ = db.Exec(ctx, `DELETE FROM users WHERE id=ANY($1::text[])`, users)
+		if _, err := db.Exec(ctx, `DELETE FROM videos WHERE id=ANY($1::text[])`, videos); err != nil {
+			t.Errorf("fixture cleanup videos: %v", err)
+		}
+		if _, err := db.Exec(ctx, `DELETE FROM users WHERE id=ANY($1::text[])`, users); err != nil {
+			t.Errorf("fixture cleanup users: %v", err)
+		}
 	})
 	exec(`INSERT INTO users(id,username,email,password_hash,role,training_origin) VALUES
 	($1,$1,$1,'private-hash','client','product'),($2,$2,$2,'private-hash','client','test'),

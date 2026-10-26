@@ -71,3 +71,9 @@ Next safe task: INT-11 after HO-03; INT-13 after capacity recovery
 - Host PG5432 auth failure is separate Windows instance; use internal gateway DSN inside existing PG container for exporter.
 - Next: commit exporter, compile with actual revision, execute readonly CLI inside running Postgres container (no gateway start needed),
   copy artifact to backend/.tmp/ttv2/<UTC>, handoff counts/SHA to Claude. No model/loader code execution by Codex.
+
+## INT-15 export audit correction
+- Initial CLI bundle20261026T113611Z quarantined (DO_NOT_CONSUME), not handed off: retained2 own fixture sets from test cleanup ordering.
+- Corrected t.Cleanup DB close ordering/errors. Exact fixture cleanup completed; corrected real DB test2PASS/exit0;
+  independent SQL confirms0 export fixtures,0 eligible productusers/videos. Existing user data unchanged.
+- Next compile exporter after this fix commit and export a new empty/honest product bundle; do not consume quarantined artifact.
