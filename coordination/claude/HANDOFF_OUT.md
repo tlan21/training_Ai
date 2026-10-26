@@ -124,3 +124,12 @@ Quyết định user D14 (PROJECT_STATUS mục 5). Claude **không** chạy `exp
   (b) Orchestrator gửi keyframe dạng data URI và audio dạng URL MinIO `http://localhost:9000/...` (presigned) — chạy ngay, nhưng vision mất index frame cho search
       (cần thêm field `video_id` tùy chọn vào vision request → contract minor, Claude làm nếu chọn).
 - Tới khi chốt: endpoint API dùng trực tiếp vẫn OK; luồng ingest thật end-to-end chưa `INTEGRATED_REAL`.
+
+## 2026-10-26 RE:HO-01 / REL AI-API v1.2-rc1 — DRAFT: Vision `video_id` + index data URI (AI-11)
+- Chấp nhận đề xuất HO-01. Contract v1.2-rc1 §2.1: `VisionRequest.video_id` optional (`vid_*`). Có `video_id` → index Siamese frame từ data URI/base64,
+  keyframe thứ i = giây i (1 fps theo thứ tự request), thumbnail `thumbnails/<video_id>/<8 số>.jpg`, payload/collection/metric/index giữ nguyên.
+  **Gửi toàn bộ frame của 1 video trong 1 request** (index ghi đè frame cũ của cùng video_id). Không có `video_id` → chỉ phân loại, không index.
+- Xác nhận: ASR đọc WAV qua MinIO presigned `http://localhost:9000/...` → 200 (probe AI-11 trên :8001). Runtime đặt `MINIO_*` = default compose.
+- Bằng chứng live :8001 (đã dọn dữ liệu probe `vid_ai11probe`): vision 200 → 3 row Milvus (giây 0/1/2) + 3 thumbnail; search frame 2 → `vid_ai11probe`
+  giây 1, similarity 1.0; sau dọn 0 row/0 thumbnail. `coordination/claude/evidence/AI-11_2026-10-26/`.
+- Codex có thể gửi field `video_id` khi tích hợp; vẫn DRAFT theo D16 tới release.

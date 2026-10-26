@@ -558,7 +558,7 @@ def _real_vision(req: schemas.VisionRequest):
     if not settings.force_stub:
         from .visual_index import index_frames
         try:
-            indexed = index_frames(req.keyframes)
+            indexed = index_frames(req.keyframes, video_id=req.video_id)
         except ValueError as e:
             raise InvalidInput(str(e)) from e
         except Exception as e:  # noqa: BLE001 — MinIO/Milvus behind the frame index

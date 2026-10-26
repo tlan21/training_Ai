@@ -1,4 +1,5 @@
 """Siamese frame index, database_schema §4.1; ViT/Fusion features stay 256d."""
+import base64
 import io
 import json
 import os
@@ -60,19 +61,35 @@ def encode(images):
     return vectors.tolist()
 
 
+def _image_bytes(ref):
+    if ref.startswith("data:"):
+        return base64.b64decode(ref.split(",", 1)[1])
+    if os.path.exists(ref):
+        return Path(ref).read_bytes()
+    return base64.b64decode(ref)
+
+
 def index_frames(paths, video_id=None):
-    """Canonical ingest paths identify video/seconds without changing the Vision contract."""
+    """Index one video's Siamese frames. Ingest/backfill files: seconds from `NNNNNNNN.jpg` names.
+    HO-01: data URI/base64 keyframes + explicit video_id → request order is second 0, 1, 2… (1 fps)."""
     from minio import Minio
     from .services import _load_keyframe
-    frames = [Path(ref) for ref in paths]
-    if not frames:
+    if not paths:
         raise ValueError("No keyframes to index")
-    if video_id is None and not all(p.parent.parent == Path("/srv/work") for p in frames):
-        return 0  # Direct base64 Vision calls have no video identity and cannot be indexed.
-    video_id = video_id or frames[0].parent.name
-    if not re.fullmatch(r"vid_[A-Za-z0-9_]{1,46}", video_id) or not all(
-            p.parent == frames[0].parent and re.fullmatch(r"\d{8}\.jpg", p.name) for p in frames):
-        raise ValueError("Invalid ingest keyframe paths")
+    if all(os.path.exists(ref) for ref in paths):
+        frames = [Path(ref) for ref in paths]
+        if video_id is None and not all(p.parent.parent == Path("/srv/work") for p in frames):
+            return 0  # Files outside ingest scratch have no video identity.
+        video_id = video_id or frames[0].parent.name
+        if not all(p.parent == frames[0].parent and re.fullmatch(r"\d{8}\.jpg", p.name) for p in frames):
+            raise ValueError("Invalid ingest keyframe paths")
+        seconds = [int(p.stem) for p in frames]
+    elif video_id is None:
+        return 0  # Direct base64 Vision calls without video_id have no video identity.
+    else:
+        seconds = list(range(len(paths)))
+    if not re.fullmatch(r"vid_[A-Za-z0-9_]{1,46}", video_id):
+        raise ValueError("Invalid video_id")
     storage = Minio(os.environ["MINIO_ENDPOINT"], access_key=os.environ["MINIO_ACCESS_KEY"],
                     secret_key=os.environ["MINIO_SECRET_KEY"], secure=False)
     if not storage.bucket_exists("thumbnails"):
@@ -80,18 +97,18 @@ def index_frames(paths, video_id=None):
     col = collection()
     # Auto-ID schema: replace one video's frames before retry/backfill, never duplicate them.
     col.delete(f'payload["video_id"] == {json.dumps(video_id)}', timeout=5)
-    for start in range(0, len(frames), 16):
-        batch = frames[start:start+16]
-        vectors = encode([_load_keyframe(str(path)) for path in batch])
+    for start in range(0, len(paths), 16):
+        batch = list(zip(paths[start:start+16], seconds[start:start+16]))
+        vectors = encode([_load_keyframe(str(ref)) for ref, _ in batch])
         payloads = []
-        for path in batch:
-            data = path.read_bytes()
-            key = f"{video_id}/{path.name}"
+        for ref, second in batch:
+            data = _image_bytes(str(ref))
+            key = f"{video_id}/{second:08d}.jpg"
             storage.put_object("thumbnails", key, io.BytesIO(data), len(data), content_type="image/jpeg")
-            payloads.append({"video_id": video_id, "timestamp": float(path.stem),
+            payloads.append({"video_id": video_id, "timestamp": float(second),
                              "thumbnail_url": f"thumbnails/{key}"})
         col.insert([vectors, payloads], timeout=10)
-    return len(frames)
+    return len(paths)
 
 
 def search(vector, top_k, threshold, ef=64, timeout=1):

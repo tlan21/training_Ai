@@ -151,6 +151,8 @@ class RecommendationResponse(BaseModel):
 class VisionRequest(BaseModel):
     model: str = "primitive-vit-classifier"
     keyframes: list[str] = Field(..., description="paths hoặc base64 keyframe")
+    # AI-API v1.2 (HO-01): có video_id → index frame cho visual search; keyframes = toàn bộ frame của video, 1 fps theo thứ tự.
+    video_id: str | None = Field(None, description="vid_*; keyframe thứ i = giây i; ghi đè frame đã index của video này")
 
 
 class VisionResponse(BaseModel):

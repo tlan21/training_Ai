@@ -1,6 +1,6 @@
 # AI API Contract — inference-service :8001
 
-**Version: AI-API v1.1-rc1 — DRAFT (2026-10-26).** Owner: Claude. Codex chỉ đọc
+**Version: AI-API v1.2-rc1 — DRAFT (2026-10-26).** Owner: Claude. Codex chỉ đọc
 (`git show claude/ai-core:coordination/claude/api/AI_API_CONTRACT.md`, hoặc bản trên `master` sau release).
 Nguồn code: `inference-service/app/schemas.py`, `app/main.py`, `app/services.py`, `app/visual_index.py` trên `claude/ai-core` (AI-01).
 Đi kèm: `inference_openapi.json` (export `app.main:app.openapi()`, không sửa tay) và `examples/` (request/response/error sinh từ chạy thật, mục 4).
@@ -76,7 +76,7 @@ media thật 6/6 + synthetic 6/6; `/health` → `stub_mode=false`, 6 model, `deg
 | asr_ctc | ✓ | ✓ `8f879867…` | ✓ | ✓ | ứng viên | chất lượng video thật kém (transcript nhiễu, AI-02) |
 | highlight_fusion | ✓ | ✓ `becbd378…` | ✓ | ✓ | ứng viên | |
 | minigpt | ✓ | ✓ `cf9cfa71…` | ✓ | ✓ | ứng viên | chất lượng human 1.6/5 (AI-03), chỉ dùng làm draft cho admin |
-| siamese | ✓ | ✓ `b4ded465…` | ✓ | ✓ | ứng viên | Milvus `video_frame_embeddings` 280 vector, HNSW/COSINE/M16/efC200; index frame từ ingest chờ HC-05 |
+| siamese | ✓ | ✓ `b4ded465…` | ✓ | ✓ | ứng viên | Milvus `video_frame_embeddings` 280 vector, HNSW/COSINE/M16/efC200; index qua `video_id` + data URI (AI-11) |
 | two_tower | ✓ | ✓ `f28c3794…` | ✓ | ✗ | ✗ | collection `user_recommendation_embeddings` chưa có → 503 |
 
 ## 1c. Runtime :8001 (quyết định user 2026-10-26)
@@ -91,8 +91,8 @@ media thật 6/6 + synthetic 6/6; `/health` → `stub_mode=false`, 6 model, `deg
   UTF-8 Windows đã sửa trong code (`app/__init__.py`), không cần `PYTHONUTF8`.
 - Từ container Docker: `http://host.docker.internal:8001` — đã kiểm `docker exec video-ai-gateway-1 wget host.docker.internal:8001/health` → 200.
 - **Trạng thái: UP từ 2026-10-26 14:47 (PID 26396)**. Máy khởi động lại / tiến trình chết → DOWN; Claude ghi UP/DOWN mới trong `coordination/claude/SESSION.md`.
-- **Giới hạn đã biết (HC-05):** inference chạy trên host không đọc được path trong container (`/srv/work/...`) mà orchestrator gửi cho vision/asr,
-  và index frame cần `MINIO_*`. Gọi bằng base64/data URI (vision, search) và `http(s)://` (asr) chạy bình thường. Luồng ingest thật ⇐ HC-05.
+- HC-05 đã chốt phương án (b) (RE:HC-05): gateway gửi data URI + `video_id` cho vision, URL MinIO presigned `localhost:9000` cho asr; không dùng `/srv/work`.
+  Runtime cần `MINIO_ENDPOINT/ACCESS_KEY/SECRET_KEY` trong `inference-service/.env` (local) để index frame — đã đặt theo default compose.
 
 ## 2. Endpoints
 
@@ -100,7 +100,11 @@ Ví dụ thật cho mỗi endpoint: `examples/<name>.request.json`, `<name>.resp
 (file response/error có dạng `{"http_status": int, "body": <JSON trả về>}`).
 
 ### 2.1 `POST /v1/vision/completions` — ViT (chỉ nội bộ pipeline) — DRAFT (ứng viên)
-Req: `{"model"?: str, "keyframes": [str]}` — mỗi phần tử là data URI base64, base64 trần, hoặc path file mà process inference đọc được.
+Req: `{"model"?: str, "keyframes": [str], "video_id"?: str}` — mỗi keyframe là data URI base64, base64 trần, hoặc path file mà process inference đọc được.
+- `video_id` (v1.2, tùy chọn, HO-01): `vid_*`. Có field này → frame được index cho visual search (Milvus `video_frame_embeddings` + thumbnail MinIO
+  `thumbnails/<video_id>/<8 số>.jpg`), keyframe thứ i = giây i (1 fps theo thứ tự request). **Gửi toàn bộ frame của video trong 1 request**: index ghi đè
+  frame đã index trước đó của cùng `video_id`. Không có `video_id` + data URI → chỉ phân loại, không index. `video_id` sai định dạng → 503, không làm model degraded.
+  Topology host/Docker (RE:HC-05 phương án b): gateway gửi data URI + `video_id`; không dùng path `/srv/work`.
 Resp: `{"id","object":"vision_completion","created","model","category_suggestion": str,"embeddings_256": [[float×256]]}`
 - `category_suggestion` ∈ `bong_da | the_thao | ca_nhac | tin_tuc` (ViT MVP 4 lớp). 6 danh mục còn lại của Postgres không có gợi ý.
 - `embeddings_256`: 1 vector/keyframe, cùng thứ tự; dùng làm `vision_embeddings` cho highlight.
@@ -108,6 +112,7 @@ Resp: `{"id","object":"vision_completion","created","model","category_suggestion
 
 ### 2.2 `POST /v1/asr/completions` — ASR CTC — DRAFT (ứng viên)
 Req: `{"model"?: str, "audio_url": str, "language": "vi"}` — `audio_url` = path WAV **trên máy chạy inference** hoặc `http(s)://` (MinIO nội bộ). 16 kHz mono.
+- Topology host/Docker: dùng URL MinIO presigned với host `localhost:9000` (đã kiểm AI-11: 200, 5 segment).
 Resp: `{"id","object":"asr_completion","created","model","full_transcript": str,"segments":[{"id":int,"start_time":float,"end_time":float,"text":str,"confidence":0–1,"warning": null|"low_confidence"|"blacklist"}]}`
 - Audio xử lý theo cửa sổ 20 s, timestamp tuyệt đối; đoạn im lặng bị bỏ (có thể trả `segments: []`).
 - Lỗi: file không đọc được → 503. Ví dụ: `examples/asr.*` (path trong request là path cục bộ máy test, chỉ minh họa).
@@ -155,6 +160,8 @@ Resp: `{"status":"ok","gpu_vram_used": MB,"gpu_util": %,"models_loaded":[...],"d
 - **v0 (2026-10-26)** — DRAFT, ghi lại API hiện có tại baseline `15976b3`. Không đổi code.
 - **v0.1 (2026-10-26)** — DRAFT, chỉ tài liệu: thêm thang sẵn sàng (1b) và quyền runtime :8001 thuộc Claude, Codex chỉ HTTP/mock (1c). Schema không đổi.
 - **v0.2 (2026-10-26)** — DRAFT, chỉ tài liệu (AI-06): nguồn checkpoint canonical, thang sẵn sàng có bằng chứng HTTP thật (1b); ghi rõ startup thật cần Milvus và `PYTHONUTF8=1` trên Windows. Schema không đổi.
+- **v1.2-rc1 (2026-10-26)** — AI-11 (HO-01). Tương thích ngược: chỉ thêm `VisionRequest.video_id` (optional). Index frame từ data URI theo 1 fps;
+  ASR qua MinIO presigned `localhost:9000` xác nhận. Nhánh ingest path cũ giữ nguyên.
 - **v1.1-rc1 (2026-10-26)** — AI-10 (D15). Tương thích ngược: chỉ thêm `/health.dependencies` (default `{}`); status code không đổi.
   Đổi ngữ nghĩa `degraded` (chỉ lỗi inference thật, tự phục hồi); recommendation thử lại Milvus mỗi 30 s thay vì cache thất bại tới restart.
   AI-07 (cùng rc): sửa UTF-8 stdout trên Windows trong code; runtime :8001 UP; examples sinh lại từ :8001.

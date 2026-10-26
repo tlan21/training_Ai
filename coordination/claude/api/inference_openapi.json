@@ -1052,6 +1052,18 @@
             "type": "array",
             "title": "Keyframes",
             "description": "paths hoặc base64 keyframe"
+          },
+          "video_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Video Id",
+            "description": "vid_*; keyframe thứ i = giây i; ghi đè frame đã index của video này"
           }
         },
         "type": "object",

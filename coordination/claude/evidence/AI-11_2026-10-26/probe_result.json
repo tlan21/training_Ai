@@ -1,0 +1,44 @@
+{
+ "vision": {
+  "http": 200,
+  "category": "tin_tuc",
+  "milvus_rows": 3,
+  "timestamps": [
+   0.0,
+   1.0,
+   2.0
+  ],
+  "thumbnails": [
+   "vid_ai11probe/00000000.jpg",
+   "vid_ai11probe/00000001.jpg",
+   "vid_ai11probe/00000002.jpg"
+  ]
+ },
+ "search": {
+  "http": 200,
+  "probe_hits": [
+   {
+    "video_id": "vid_ai11probe",
+    "timestamp": 1.0,
+    "similarity_score": 1.0,
+    "thumbnail_url": "thumbnails/vid_ai11probe/00000001.jpg"
+   }
+  ]
+ },
+ "buckets": [
+  "clips",
+  "milvus",
+  "raw-videos",
+  "thumbnails"
+ ],
+ "asr_presigned": {
+  "http": 200,
+  "url_host": "localhost:9000",
+  "segments": 5,
+  "error": null
+ },
+ "after_cleanup": {
+  "milvus_rows": 0,
+  "thumbnails": 0
+ }
+}
