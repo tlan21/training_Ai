@@ -2,7 +2,7 @@
 
 Owner duy nhất: Codex (bản đầu do Claude khởi tạo trong AI-00 ngày 2026-10-26, từ đây Codex tự ghi).
 Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
-Định dạng + 6 trạng thái: `coordination/README.md` mục 4. Kiểm kê gốc: `coordination/INVENTORY_2026-10-26.md`.
+Định dạng/trạng thái: `coordination/README.md` mục 4. Kiểm kê gốc: `coordination/INVENTORY_2026-10-26.md`.
 
 ## Tổng quan
 
@@ -19,7 +19,9 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-08 | T5.2 | Soak test 48 h | BLOCKED | INT-07 |
 | INT-09 | T5.3 | Docs bàn giao hệ thống | TODO | INT-05..08 |
 | INT-10 | — | Forgot-password giữ nguyên, ngoài release hiện tại | DEFERRED / OUT_OF_SCOPE | D1, HC-02 |
-| INT-11 | INT-01 | HTTP media giữa gateway Docker và inference host | IN_PROGRESS | INT-00; real vision/index chờ HO-01 |
+| INT-11 | INT-01 | HTTP media giữa gateway Docker và inference host | PARTIAL | RESOURCE; AI v1.2 master + real tests |
+| INT-12 | T2.2/T3.1 | CMS access JWT chỉ ở RAM, refresh khi reload | BLOCKED | RESOURCE browser/build gate |
+| INT-13 | INT-00 | Image ingest riêng + kiểm clean build | BLOCKED | RESOURCE Docker disk |
 
 Hoàn thành trước tách làn (bằng chứng INVENTORY mục 5): T0.1–T0.4, T2.1–T2.4, T4.1, T4.2 = DONE (VERIFIED-HIST, build VERIFIED-NOW);
 T2.5, T3.1, T3.2 = PARTIAL.
@@ -35,12 +37,12 @@ T2.5, T3.1, T3.2 = PARTIAL.
   chạy healthy, Milvus `localhost:19530` giữ nguyên giao diện. Mock HTTP đủ 6 endpoint + `/health` theo AI-API v0.1, auth/error envelope;
   gateway `/api/cms/system/health` dùng mock đúng schema. Đổi `AI_BASE_URL` sang host :8001 do Claude chạy không cần sửa code.
   Test/build PASS; matrix ghi MOCK_ONLY cho kiểm thử mới, không coi mock là bằng chứng AI thật.
-- Changed: AGENTS.md; coordination/codex/{TASKS,SESSION,HANDOFF_OUT}.md (đang cập nhật).
-- Next action: chờ release user duyệt; phát triển INT-02. Không cần mount/copy checkpoint.
+- Changed: AGENTS.md; backend aihttp/config/mock/Dockerfile; compose/env/gitignore; e2e docs; coordination/codex tracker/evidence.
+- Next action: resource recovery; clean build riêng INT-13 trước release deploy đầy đủ. Không mount/copy checkpoint.
 - Evidence: VERIFIED-NOW `verification/INT-00.md`, `verification/INT-00-smoke.json`: npm ci, Go test/vet/build,
   CMS/Client tsc/lint/build, compose config, stack healthy + authenticated gateway→mock + PG/Mongo integration PASS.
   Image mới chưa build (cached image + cross-compiled binary :ro); AI chỉ MOCK_ONLY, không INTEGRATED_REAL mới.
-- Commits: `a96b883`, `122ee33` (implementation); checkpoint verification commit theo sau.
+- Commits: a96b883, 122ee33, b952675 (verified checkpoint).
 - Checkpoint: Lane codex / Changed backend+compose+docs / Verified xem evidence / Contract no (AI-API v0.1 DRAFT) / Next INT-02.
 
 ### INT-01 — Xác minh lại backend trên stack thật
@@ -62,7 +64,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
   `GET/PUT /api/cms/settings` (`handlers/cms/system.go` hard-code, PUT không lưu) → bảng `system_settings`.
 - Acceptance: dữ liệu còn sau restart gateway (script persistence giống `verify_persistence.ps1`); repo/handler tests;
   lịch sử/likes đúng user, pagination, ẩn clip chưa published/video chưa processed; settings patch atomic + key masked; OpenAPI không đổi.
-- Changed dự kiến: PG interaction/settings adapters + tests, port/domain settings, gateway wiring, CMS system handler + tests,
+- Changed: PG interaction/settings adapters + tests, port/domain settings, gateway wiring, CMS system handler + tests,
   auth history/likes serialization dùng helper playback sẵn có, script persistence E2E + tracker.
 - Next action: chờ release user duyệt; INT-04 độc lập với AI.
 - Evidence: VERIFIED-NOW verification/INT-02.md + INT-02-persistence.json; Go test/vet/build PASS, 4 PG tests PASS,
@@ -79,34 +81,37 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Changed: sandbox initializer + schema §4.3 + product-ID spec; preference PG repository/port, auth handlers/wiring/tests, persistence script.
 - Evidence: VERIFIED-NOW verification/INT-03.md + INT-03-sandbox.json: sandbox 2× PASS/entities=0; Go checks and 5 real PG tests PASS.
   Preferences source/build verified; runtime preference restart pending because Docker stalled on full C:. No personalized result claimed.
-- Commits: `5615055` sandbox/mapping; preference implementation commit follows.
+- Commits: `5615055` sandbox/mapping; `9eded76` preference source/tests (runtime pending).
 - Next action: free C: capacity with user decision, inspect pending gateway stop/state; restart new binary and run extended persistence script;
   then AI-09 encoder/version/schema/mapping handshake. No training IDs or zero vectors to product Milvus.
 - Checkpoint: Lane codex / Changed sandbox+preferences / Verified unit/PG/sandbox PASS; runtime pending / Contract no / Next resource recovery.
 
 ### INT-04 — Nguồn phát video gốc
-- T gốc: T3.1, T3.2 | Owner: CODEX | Status: PARTIAL (functional PASS; full parity pending)
-- Depends on: INT-00 cho runtime; sửa contract/regen types độc lập, không phụ thuộc AI | Blocks: INT-05, INT-06
-- Acceptance: task riêng sửa `infra/openapi.yaml` (thêm field URL phát video gốc đã ký, chỉ video `processed`/quyền CMS) → regen
-  `api-types.ts` CMS/Client → gateway trả URL MinIO presigned → VideoDetail/CMS player phát được; test Playwright play/seek.
-- Changed dự kiến: infra/openapi.yaml + generated Go/CMS/Client types (commit contract riêng); detail handlers + tests,
-  CMS Highlight/Subtitles players + Client video page; E2E playback + Design Parity Check 10 mục.
-- Next action: thêm VideoDetail.playback_url nullable signed URL trong existing GET public/CMS detail; không thêm endpoint,
-  không xuất raw_file_path, list không cấp URL; public chỉ processed, CMS admin/editor trừ deleted. Sinh types trước code.
-- Evidence: — | Commits: — | Checkpoint: —
+- T gốc: T3.1/T3.2 | Owner: CODEX | Status: PARTIAL (functional PASS; full parity pending)
+- Depends on: INT-00; không AI | Blocks: full parity INT-05/06 (functional playback dependency đã PASS)
+- Acceptance: OpenAPI riêng + regen Go/TS types; signed original URL sau processed/auth gate; CMS/Client player play/seek; parity 10 mục.
+- Changed: infra/openapi.yaml + generated types; public/CMS detail handlers/tests; CMS/Client player source/seek, mobile pointer-event fix;
+  e2e/original_playback.spec.ts + verification/INT-04.md/screenshots.
+- Evidence: VERIFIED-NOW Go/CMS/Client checks PASS; E2E types PASS; 2 Playwright original playback PASS/29.1s ở 390×844 và 1440×900;
+  2 player logic PASS. Real media/storage/ingest với MOCK_ONLY AI. Parity 10 mục có gap, không FULL DONE.
+- Commits: 8733f97 contract; 39e7af6 implementation/evidence.
+- Next action: parity controls/native player + contract scope decision (CONTRACT_DECISIONS.md), sau resource recovery.
+- Checkpoint: Lane codex / Changed contract+players / Verified playback PASS, parity PARTIAL / Contract yes OpenAPI v0.2.0 / Next resource+scope.
 
 ### INT-05 — CMS Design Parity FULL
 - T gốc: T3.1 | Owner: codex | Status: PARTIAL
-- Depends on: INT-02, INT-04
+- Depends on: INT-02; INT-04 functional playback PASS; full parity còn cần scope/resource
 - Gap (HIST `docs/T3.1_cms_design_parity.md`): nguồn phát video gốc, metadata/analytics/rules/editor fields chưa có API, Settings chưa persist.
+- NOW: settings/interactions persistence và nguồn phát đã có; CMS native controls + metadata/analytics/rules/editor contract gaps còn mở.
 - Acceptance: checklist 10 mục `my-agent/agent/skills/ui_design_review.md` PASS toàn bộ màn (390×844, 1440×900); Playwright PASS.
 - Evidence: HIST 30 Playwright PASS 2026-10-14 | Commits: `5bc0ccf`, `b8b6dbe`, `59e92ba`, `b3ab36c`, `8cc773f` | Checkpoint: —
 
 ### INT-06 — Client Design Parity FULL
 - T gốc: T3.2 | Owner: codex | Status: PARTIAL
-- Depends on: INT-02, INT-04
+- Depends on: INT-02; INT-04 functional playback PASS; full parity còn cần scope/resource
 - Gap (HIST `docs/T3.2_client_design_parity.md`): URL video gốc, saved-list/playlist, DELETE likes/history, analytics count; preferences/history/likes memory.
-  Tính năng nào ngoài bảng API master §2 → hỏi user trước, không tự thêm endpoint.
+  NOW: source/history/likes/settings đã có; preference source đã sửa nhưng runtime restart pending. Saved-list/delete/playlist/count còn scope decision.
+  Tính năng ngoài master §2 vẫn chờ user (CONTRACT_DECISIONS.md), không tự thêm endpoint.
 - Acceptance: như INT-05 cho 8 màn Client.
 - Evidence: HIST 42 Playwright PASS 2026-10-14 | Commits: `5360af6`, `ebe5359` | Checkpoint: —
 
@@ -136,12 +141,32 @@ T2.5, T3.1, T3.2 = PARTIAL.
 
 
 ### INT-11 — Portable media transport cho AI host
-- T gốc: INT-01 | Owner: CODEX | Status: IN_PROGRESS (v1.2 source/unit follow-up only; runtime RESOURCE blocked)
+- T gốc: INT-01 | Owner: CODEX | Status: PARTIAL (v1.2 source/unit PASS; runtime RESOURCE blocked)
 - Depends on: INT-00; full real upload/search chờ HO-01 + AI-01 release trên master + AI-07 UP.
 - Acceptance: Vision gửi ảnh base64 (contract có sẵn), ASR nhận WAV qua URL MinIO presigned; không gửi path Docker cho host,
   không shared mount/checkpoint; staging WAV cleanup/error handling; unit + mock pipeline tests PASS. Indexing media mới thật chờ contract Claude.
 - Changed dự kiến: aihttp + tests, gateway preprocessing/audio staging + tests; tracker/handoff.
-- Next action: Claude bổ sung video_id optional + index base64 theo RE:HC-05, rồi Codex consume minor contract; chưa gửi field tự ý.
+- Next action: Claude đã công bố v1.2 video_id; source consume tại fae980c. Chờ capacity + release/master/API_READY, rebuild và real pipeline/index/search.
 - Evidence: VERIFIED-NOW verification/INT-11.md; Go checks/Linux builds và script persistence/fallback sau đổi transport PASS.
-  HO-01 `1e72069`; HC-05 báo :8001 UP nhưng contract v1.1-rc1 DRAFT chưa master. | Commits: implementation commit theo sau.
-- Checkpoint: Lane codex / Changed HTTP client+pipeline+tests / Verified mock transport/fallback PASS / Contract no / Next INT-03 sandbox.
+  v1.2 metadata unit 3 package PASS, Linux/runtime metadata chưa deploy; master pending tại checkpoint. | Commits: 7af1b1d, fae980c.
+- Checkpoint: Lane codex / Changed HTTP client+pipeline+tests / Verified mock transport/fallback PASS / Contract no / Next capacity + real gate.
+
+
+### INT-12 — CMS access JWT chỉ ở RAM
+- T gốc: T2.2/T3.1 | Owner: CODEX | Status: BLOCKED (RESOURCE cho browser/build)
+- Depends on: C: capacity/Docker ổn định | Blocks: release security convention
+- Source audit: cms/src/stores/authStore.ts persist partialize chứa accessToken vào local/sessionStorage, trái AGENTS §8.
+- Acceptance: token không ở storage; reload khôi phục HttpOnly refresh; single-flight/role/logout/401 đúng; update fixtures, type/build/E2E PASS;
+  không đổi layout/forgot-password deferred scope.
+- Changed: chưa triển khai. | Evidence: source audit, chưa test fix | Commits: —
+- Next action: sửa store/session bootstrap + fixtures sau resource recovery. | Checkpoint: chưa code/DONE.
+
+### INT-13 — Ingest image riêng, clean build
+- T gốc: INT-00 | Owner: CODEX | Status: BLOCKED (RESOURCE Docker disk)
+- Depends on: đủ disk Docker theo HC-03/D10 | Blocks: clean-machine deployment
+- Source audit: runtime hiện dùng cached video-ai-inference làm preprocessing (không checkpoint/process inference);
+  compose chưa có build riêng cho ingest trên máy không cache.
+- Acceptance: worker image build từ source thuộc backend/ingest-worker, DSP/PyAV, không model/checkpoint; clean compose build + pipeline PASS;
+  reuse deps đã chốt, không sửa source Claude.
+- Changed: chưa triển khai. | Evidence: compose/cache audit | Commits: —
+- Next action: capacity preflight rồi worker Dockerfile/deps; không tải/build image lớn khi C: full. | Checkpoint: chưa DONE.

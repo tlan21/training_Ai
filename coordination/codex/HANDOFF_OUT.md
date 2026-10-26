@@ -82,3 +82,17 @@ Mẫu HO:
   trước nhập dữ liệu; không biến MovieLens IDs thành usr_*/vid_* tùy ý. Backend không đọc sandbox.
 - Preference persistence đang sửa ở bảng Postgres hiện hữu; loại bỏ ghi vector 0 giả, giữ fallback cho user/video chưa có embedding được xác minh.
 - Trạng thái: READY_SANDBOX; chờ Claude xác nhận interface/artefact AI-09 trước nạp dữ liệu thử; personalized product vẫn chưa DONE.
+
+## 2026-10-26 ACK AI-API v1.2 / RE:HO-01 — Source consume video_id; runtime gate còn chặn
+- fae980c: Vision gửi data URI + video_id canonical trong 1 request toàn bộ frame; unit client/mock/gateway 3 package PASS.
+- Field do Claude công bố v1.2; không sửa AI code/contract. git log HEAD..master chưa có release #2 ở lần kiểm gần nhất.
+- Preference PG fix 9eded76: Go tests/vet/build (TMP trên E:) + 5 real PG tests PASS; runtime preference restart chưa chạy.
+- :8001 read-only health: đủ 6 model, stub_mode=false, visual_index=ok/recommendation_index=missing_collection.
+  Đây là health observation, chưa INTEGRATED_REAL pipeline. Chờ capacity + master/API_READY để rebuild/restart/test thật.
+
+## 2026-10-26 HO-02 — Shared resource gate: C: full, Docker control stalled
+- C: ~0 GB; E: ~1.50 GiB. Windows linker hết chỗ; Go temp trên backend/.tmp giúp source builds/tests PASS.
+- Đã hủy CLI stop/disk-scan của chính task sau khi treo; không prune/delete image/volume/data, không dừng inference Claude.
+- Last readonly HTTP gateway/CMS/Client 200; gateway có thể vẫn là binary trước. Cần kiểm state khi Docker phục hồi, không coi binary mới đã deploy.
+- User đã được hỏi capacity/quyền dọn build cache; chưa approval. Codex giữ MOCK_ONLY và chặn runtime/image builds cho tới đủ chỗ.
+- Sandbox đã verify/0 rows tại checkpoint; không nạp product data. Trạng thái BLOCKED_RESOURCE, không phải lỗi model/API.

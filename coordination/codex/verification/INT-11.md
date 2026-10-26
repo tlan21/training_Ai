@@ -30,3 +30,10 @@ Changed: aihttp + tests, gateway audio staging/pipeline + tests, mock fidelity, 
 Verified: Go checks/Linux builds + mock pipeline/persistence/fallback PASS
 Contract touched: no (AI schema unchanged; v1.x-compatible existing media formats)
 Next safe task: INT-03 sandbox/ID mapping per HC-04; real index gate waits Claude HO-01
+
+## Follow-up AI-API v1.2
+
+Claude published optional video_id + data URI indexing (HO-01 addressed). fae980c consumes identity from canonical ingest directory;
+all frames remain in one request. Tests assert metadata + bytes; 3 packages aihttp/mocks/gateway PASS with TMP/GOTMPDIR on E:.
+No fresh Linux binary/runtime deploy for this final metadata change: C: full/Docker control stalled. Rebuild before real tests.
+Release #2 not yet present in master at last check; no real integration claim. Missing identity above describes the earlier checkpoint.
