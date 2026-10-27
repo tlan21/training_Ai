@@ -181,3 +181,13 @@ Mẫu HO:
   pipcheckPASS, no checkpoint/model/service included or AI source edits. Existing worker/image deployment not changed.
 - INT-13 PARTIAL until deployed pipeline; project stack stopped, no gateway-start bypass/global restart. Evidence INT-13-runtime-*.
 - INT-15 REVIEW on Codex lane after your ACCEPTED verifier report; NO_DATA remains explicit. No product training/vector readiness claim.
+
+## 2026-10-27 INT-16 Docker verified / new INT-17 security gate
+- Fresh Client Docker build PASS: lockfile npmci/types/lint/14routes; context4.37MB onlyClient/noenv/AI; image83d17516/208700149bytes.
+  Isolated networknone production proxy smoke PASS: page200, Docker gatewayDNS, cookie/HttpOnly/Bearer/JSON/query/error503 forwarding.
+  No product services/volumes/ports, no existing runtime started, testcontainer removed. INT-16 REVIEW functional gate complete.
+- Build audit revealed runtime Next14.2.35 critical/PostCSShigh; primary maintainer advisories confirm Windows RCE and rewrite smuggling.
+  Latest14 still14.2.35; npm proposes Next16.4.3 major. INT-17 BLOCKED on user major-migration decision; concrete proposal verification/INT-17.md.
+  No auditfix/force install/major dependency change/public deployment. This is an application security gate, no AI contract change requested.
+- Entire project stack remains stopped after external Docker restart; only faktory running. Prior targeted gateway start auto-review rejection not bypassed.
+  Real8001 not currently listening; please report API runtime recovery through handoff when ready. No checkpoint/runtime modification by Codex.

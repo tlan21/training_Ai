@@ -27,6 +27,21 @@ No layout redesign; existing INT-14 Design Parity Check and INT-06 full-screen g
 Fresh Docker image and containerized Client smoke were NOT_RUN because shared disk capacity remains limited.
 Backend pipeline still uses explicit AI mock; this check makes no new INTEGRATED_REAL claim.
 
+## 2026-10-27 — Docker build/proxy gate
+- Added client/Dockerfile.dockerignore allowlist: only Client sources, excluding node_modules/.next/env/tsbuildinfo; context4.37MB.
+- Full `docker-buildx build --load --progress plain -t video-ai-client -f client/Dockerfile .`: PASS/exit0.
+  npm ci from existing lockfile, Next14.2.35 production compile/lint/types/14routes PASS. Node22-alpine base digest
+  fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914. INT-16-container-build.log.
+- Image83d175168674232e4ce43a38bdc519a478d6001735d210b723c5f027d1f15e67, inspect size208700149bytes;
+  npm start command. INT-16-container-image.json.
+- e2e/client_container_smoke.cjs in an ephemeral networknone container, gatewayalias127.0.0.1, readonly test mount,
+  no product port/volume: production login200 +compiled Docker rewrite +POST body/Bearer/cookie/HttpOnly Set-Cookie +GET query +503 error envelope PASS/exit0.
+  Fixture gateway and Next process terminate, container autoremove. No DB/AI use; no deployed-stack browser claim for this run.
+- Node syntax check and git diff --check PASS. No UI markup/style/business API change; prior55browser evidence remains historical.
+- **Security gate is separate:** npm ci reports6 vulnerable packages overall; runtime-only audit identifies Nextcritical and PostCSShigh.
+  Existing Next14.2.35 stays pinned; no auditfix/major upgrade. INT-17 records primary advisories and requested migration decision.
+  Functional build/smoke PASS does not imply public-deployment readiness. Existing stack remains stopped, no gateway-start bypass.
+
 Lane: codex
 Changed: Client HTTP/auth/config/callers, Compose/env/docs, browser tests, Codex trackers
 Verified: tsc/lint/build/config/types;52 E2E including2 live gateway sessions

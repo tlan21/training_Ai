@@ -24,7 +24,8 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-13 | INT-00 | Image ingest riêng + kiểm clean build | PARTIAL | full image+4packaged tests PASS; deployed pipeline pending runtime |
 | INT-14 | HC-06/D18/D21 | Popularity MVP, real metadata, recommendation_mode | PARTIAL | MVP/PG/Client live verified; full parity INT-06 remains |
 | INT-15 | HC-07/09/D19/D21 | Valid product interactions + versioned export for v2 | REVIEW | schema/provenance accepted byClaude; data gate NO_DATA |
-| INT-16 | INT-14 | Client same-origin API transport | IN_PROGRESS | fresh Docker image/proxy smoke; existing52E2E/live PASS |
+| INT-16 | INT-14 | Client same-origin API transport | REVIEW | fresh Docker build/proxy smoke PASS; security gate INT-17 separate |
+| INT-17 | INT-16 audit | Client framework security migration | BLOCKED | major Next migration decision; public deployment gated |
 
 Hoàn thành trước tách làn (bằng chứng INVENTORY mục 5): T0.1–T0.4, T2.1–T2.4, T4.1, T4.2 = DONE (VERIFIED-HIST, build VERIFIED-NOW);
 T2.5, T3.1, T3.2 = PARTIAL.
@@ -216,12 +217,24 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Checkpoint: Lane codex / REVIEW accepted format+source behavior / Contract public0.3.1 +ttv2-data-v1.1 / No product vectors/training.
 
 ### INT-16 — Client same-origin API transport
-- T gốc: INT-14 live auth defect | Owner: CODEX | Status: IN_PROGRESS (2026-10-27; verify fresh Docker image/proxy gate)
+- T gốc: INT-14 live auth defect | Owner: CODEX | Status: REVIEW (2026-10-27; host +fresh Docker functional gate verified)
 - Depends on: current gateway IPv4 healthy; existing Next stack | Blocks: liveClient auth/mode/E2E
 - Acceptance: Client relative /api through existing Next proxy to gatewayIPv4 (host) or gatewayDNS (Docker), HttpOnly refresh/cookies preserved,
   optional explicit public base still supported; build/config correct, live login/reload/logout/feed request PASS; no new API endpoint/schema/library.
 - Changed: client HTTP/auth/store/Providers/login/register/logout callers/config/Dockerfile/README; compose/env; E2E fixture/livecases; Codex trackers.
 - Evidence: verification/INT-16.md +playwright log: Client tsc/lint/build14routes/config PASS, E2E types PASS,52browser cases PASS including2 live gateway sessions.
   Parallel401, refresh/logout race, failedlogout/reload, changed cookie identity covered. No fresh Docker image or realAI claim.
-- Commits: int(client) proxy/session checkpoint | Next action: fresh Docker image smoke after capacity recovery; full UI parity staysINT-06.
-- Checkpoint: Lane codex / Verified52E2E+build/types/lint/config / Contract unchanged / Next INT-15.
+- Commits:c30c664 host transport/auth;bb79aa0 container allowlist/smoke; final evidence checkpoint. Next action: INT-17 major security decision; runtime recovery/full parityINT-06.
+- Evidence2026-10-27: fresh Docker npmci/build14routes PASS; image83d17516, isolated production proxy smoke PASS, no product stack attached.
+- Checkpoint: Lane codex / Verified host+Docker functionality / Contract unchanged / Next INT-17 security+runtime recovery.
+
+### INT-17 — Client framework security migration
+- T gốc: INT-16 fresh build audit | Owner: CODEX | Status: BLOCKED (major framework decision2026-10-27)
+- Depends on: user approval for Next14→16 major migration; runtime recovery for live checks | Blocks: public Client deployment
+- Acceptance: scoped upgrade approved; locked clean install/types/lint/build/Docker/55UI+live checks PASS; runtime critical/high findings resolved or explicitly reviewed;
+  existing Stitch/API/cookie/JWT behavior preserved, no unrelated features or AI edits.
+- Changed planned: client package/lock/compatibility configs/callers +existingE2E, Codex evidence/trackers only.
+- Evidence: verification/INT-17.md +INT-16-runtime-audit.json; runtime Nextcritical/PostCSShigh, maintainer advisories verified; latest14 remains14.2.35.
+  npm fix proposes16.4.3 major. No install/auditfix/major source edits made. Functional Client container smoke PASS is not a security pass.
+- Commits: audit checkpoint only | Next action: obtain scoped major-migration decision; preserve stopped runtime and do not deploy current vulnerable build publicly.
+- Checkpoint: Lane codex / Changed audit/proposal only / Verified registry+primary advisories / Contract no / Next approved migration or runtime recovery.
