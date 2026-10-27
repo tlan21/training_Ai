@@ -59,7 +59,7 @@ export default function OnboardingPage() {
    {categories.data.filter(c => c.id).map((c, i) => {
                 const art = categoryArt[c.name || ""];
                 return <button key={c.id} aria-pressed={selected.includes(c.id!)} onClick={() => toggle(c.id!)} className={`interest-card ${["Thể thao", "Phim ảnh"].includes(c.name || "") ? "wide" : ""} ${selected.includes(c.id!) ? "selected" : ""}`}>
-    <span className="thumbnail"><picture><source media="(min-width:1024px)" srcSet={`/stitch/interest_onboarding_desktop-${art?.desktop ?? i % 8}.jpg`}/>{/* eslint-disable-next-line @next/next/no-img-element */}<img src={`/stitch/interest_onboarding_mobile-${art?.mobile ?? i % 10}.jpg`} alt=""/></picture></span>
+    <span className="thumbnail"><picture><source media="(min-width:1024px)" srcSet={`/stitch/interest_onboarding_desktop-${art?.desktop ?? i % 8}.jpg`}/><img src={`/stitch/interest_onboarding_mobile-${art?.mobile ?? i % 10}.jpg`} alt=""/></picture></span>
     <span className="interest-label"><span><span className="desktop-only"><Icon name={art?.icon || "interests"}/></span>{c.name}{c.name === "Thể thao" && <small>Bóng đá, NBA, Fitness...</small>}{c.name === "Phim ảnh" && <small>Review, Trailer, Hậu trường...</small>}</span><span className="check"><Icon name="check_circle" filled size={24}/></span></span>
    </button>;
             })}

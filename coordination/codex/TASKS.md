@@ -25,7 +25,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-14 | HC-06/D18/D21 | Popularity MVP, real metadata, recommendation_mode | PARTIAL | MVP/PG/Client live verified; full parity INT-06 remains |
 | INT-15 | HC-07/09/D19/D21 | Valid product interactions + versioned export for v2 | REVIEW | schema/provenance accepted byClaude; data gate NO_DATA |
 | INT-16 | INT-14 | Client same-origin API transport | REVIEW | fresh Docker build/proxy smoke PASS; security gate INT-17 separate |
-| INT-17 | INT-16 audit | Client framework security migration | IN_PROGRESS | user approved major upgrade2026-10-27 |
+| INT-17 | INT-16 audit | Client framework security migration | PARTIAL | Next16/audits0/53E2E/Docker PASS;2live cases await gateway |
 
 Hoàn thành trước tách làn (bằng chứng INVENTORY mục 5): T0.1–T0.4, T2.1–T2.4, T4.1, T4.2 = DONE (VERIFIED-HIST, build VERIFIED-NOW);
 T2.5, T3.1, T3.2 = PARTIAL.
@@ -229,12 +229,14 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Checkpoint: Lane codex / Verified host+Docker functionality / Contract unchanged / Next INT-17 security+runtime recovery.
 
 ### INT-17 — Client framework security migration
-- T gốc: INT-16 fresh build audit | Owner: CODEX | Status: IN_PROGRESS (user approved2026-10-27: hãy nâng lên)
+- T gốc: INT-16 fresh build audit | Owner: CODEX | Status: PARTIAL (2026-10-27 approved migration verified;2live gateway checks pending)
 - Depends on: user approval for Next14→16 major migration; runtime recovery for live checks | Blocks: public Client deployment
 - Acceptance: scoped upgrade approved; locked clean install/types/lint/build/Docker/55UI+live checks PASS; runtime critical/high findings resolved or explicitly reviewed;
   existing Stitch/API/cookie/JWT behavior preserved, no unrelated features or AI edits.
 - Changed planned: client package/lock/compatibility configs/callers +existingE2E, Codex evidence/trackers only.
 - Evidence: verification/INT-17.md +INT-16-runtime-audit.json; runtime Nextcritical/PostCSShigh, maintainer advisories verified; latest14 remains14.2.35.
   npm fix proposes16.4.3 major. No install/auditfix/major source edits made. Functional Client container smoke PASS is not a security pass.
-- Commits: audit checkpoint only | Next action: obtain scoped major-migration decision; preserve stopped runtime and do not deploy current vulnerable build publicly.
-- Checkpoint: Lane codex / Changed audit/proposal only / Verified registry+primary advisories / Contract no / Next approved migration or runtime recovery.
+- Changed actual: client package/lock, flat ESLint, generated Next TS config, Docker gates,2unused directives; existing proxy smoke manifestreader; evidence.
+- Evidence2026-10-27: verification/INT-17.md +checks.json; host/Docker cleaninstall/lint/build/tsc PASS; full/runtime audits0;53Client E2E PASS1.4m; proxy smoke/E2Etypes PASS. Two live cases NOT_RUN/gateway stopped.
+- Commits:651820f approval/start; implementation checkpoint follows. Next action: runtime recovery then2live cases; no major decision pending, no force install/API/AI edits.
+- Checkpoint: Lane codex / Changed approved Next16 migration / Verified audits0+53E2E+host/Docker gates / Contract no / Next2live checks after gateway recovery.

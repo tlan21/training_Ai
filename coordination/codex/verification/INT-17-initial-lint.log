@@ -1,0 +1,315 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 845B 0.1s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/node:22-alpine
+#2 DONE 2.0s
+
+#3 [internal] load build context
+#3 DONE 0.0s
+
+#4 [builder 1/6] FROM docker.io/library/node:22-alpine@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914
+#4 resolve docker.io/library/node:22-alpine@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914 0.0s done
+#4 DONE 0.1s
+
+#3 [internal] load build context
+#3 transferring context: 26B 0.1s
+#3 transferring context: 257.47kB 0.7s done
+#3 DONE 0.8s
+
+#5 [builder 2/6] WORKDIR /src
+#5 CACHED
+
+#6 [builder 3/6] COPY client/package.json client/package-lock.json* ./
+#6 DONE 0.1s
+
+#7 [builder 4/6] RUN npm ci
+#7 38.94 npm warn deprecated eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+#7 80.00 
+#7 80.00 added 408 packages, and audited 409 packages in 1m
+#7 80.00 
+#7 80.00 156 packages are looking for funding
+#7 80.00   run `npm fund` for details
+#7 80.00 
+#7 80.00 1 moderate severity vulnerability
+#7 80.00 
+#7 80.00 To address all issues, run:
+#7 80.00   npm audit fix
+#7 80.00 
+#7 80.00 Run `npm audit` for details.
+#7 80.00 npm notice
+#7 80.00 npm notice New major version of npm available! 10.9.9 -> 12.2.1
+#7 80.00 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+#7 80.00 npm notice To update run: npm install -g npm@12.2.1
+#7 80.00 npm notice
+#7 DONE 105.3s
+
+#8 [builder 5/6] COPY client/ ./
+#8 DONE 1.0s
+
+#9 [builder 6/6] RUN npm run lint && npm run build && npx tsc --noEmit
+#9 1.050 
+#9 1.050 > client2@0.1.0 lint
+#9 1.050 > eslint src
+#9 1.050 
+#9 11.92 
+#9 11.92 /src/src/app/login/page.tsx
+#9 11.92   22:9  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+#9 11.92 
+#9 11.92 Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+#9 11.92 * Update external systems with the latest state from React.
+#9 11.92 * Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+#9 11.92 
+#9 11.92 Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+#9 11.92 
+#9 11.92 /src/src/app/login/page.tsx:22:9
+#9 11.92   20 |     const query = useQueryClient();
+#9 11.92   21 |     useEffect(() => { const stored = localStorage.getItem("client-remember-email"); if (stored) {
+#9 11.92 > 22 |         setEmail(stored);
+#9 11.92      |         ^^^^^^^^ Avoid calling setState() directly within an effect
+#9 11.92   23 |         setRemember(true);
+#9 11.92   24 |     } }, []);
+#9 11.92   25 |     const submit = async (e: React.FormEvent) => {  react-hooks/set-state-in-effect
+#9 11.92 
+#9 11.92 /src/src/app/onboarding/page.tsx
+#9 11.92   30:9    error    Error: Calling setState synchronously within an effect can trigger cascading renders
+#9 11.92 
+#9 11.92 Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+#9 11.92 * Update external systems with the latest state from React.
+#9 11.92 * Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+#9 11.92 
+#9 11.92 Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+#9 11.92 
+#9 11.92 /src/src/app/onboarding/page.tsx:30:9
+#9 11.92   28 |     const query = useQueryClient();
+#9 11.92   29 |     useEffect(() => { if (ready && user?.preferences)
+#9 11.92 > 30 |         setSelected(user.preferences); }, [ready, user]);
+#9 11.92      |         ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+#9 11.92   31 |     const toggle = (id: string) => setSelected(s => s.includes(id) ? s.filter(x => x !== id) : [...s, id]);
+#9 11.92   32 |     const complete = async () => {
+#9 11.92   33 |         setSaving(true);  react-hooks/set-state-in-effect
+#9 11.92   62:155  warning  Unused eslint-disable directive (no problems were reported from '@next/next/no-img-element')
+#9 11.92 
+#9 11.92 /src/src/app/profile/page.tsx
+#9 11.92   34:9   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+#9 11.92 
+#9 11.92 Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+#9 11.92 * Update external systems with the latest state from React.
+#9 11.92 * Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+#9 11.92 
+#9 11.92 Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+#9 11.92 
+#9 11.92 /src/src/app/profile/page.tsx:34:9
+#9 11.92   32 |     const account = sp.get("view") === "account";
+#9 11.92   33 |     useEffect(() => { if (sp.get("tab") === "history")
+#9 11.92 > 34 |         setTab("history"); }, [sp]);
+#9 11.92      |         ^^^^^^ Avoid calling setState() directly within an effect
+#9 11.92   35 |     useEffect(() => { if (account && !dialog.current?.open)
+#9 11.92   36 |         dialog.current?.showModal();
+#9 11.92   37 |     else if (!account && dialog.current?.open)                                                                       react-hooks/set-state-in-effect
+#9 11.92   39:23  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+#9 11.92 
+#9 11.92 Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+#9 11.92 * Update external systems with the latest state from React.
+#9 11.92 * Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+#9 11.92 
+#9 11.92 Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+#9 11.92 
+#9 11.92 /src/src/app/profile/page.tsx:39:23
+#9 11.92   37 |     else if (!account && dialog.current?.open)
+#9 11.92   38 |         dialog.current.close(); }, [account]);
+#9 11.92 > 39 |     useEffect(() => { setUsername(me.data?.username || ""); }, [me.data?.username]);
+#9 11.92      |                       ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+#9 11.92   40 |     const closeAccount = () => router.replace("/profile?view=library");
+#9 11.92   41 |     const saveProfile = async (e: React.FormEvent) => {
+#9 11.92   42 |         e.preventDefault();  react-hooks/set-state-in-effect
+#9 11.92 
+#9 11.92 /src/src/app/search/page.tsx
+#9 11.92   37:9   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+#9 11.92 
+#9 11.92 Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+#9 11.92 * Update external systems with the latest state from React.
+#9 11.92 * Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+#9 11.92 
+#9 11.92 Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+#9 11.92 
+#9 11.92 /src/src/app/search/page.tsx:37:9
+#9 11.92   35 |     useEffect(() => { const timer = setTimeout(() => setThreshold(similarity), 300); return () => clearTimeout(timer); }, [similarity]);
+#9 11.92   36 |     useEffect(() => { if (!file) {
+#9 11.92 > 37 |         setPreview("");
+#9 11.92      |         ^^^^^^^^^^ Avoid calling setState() directly within an effect
+#9 11.92   38 |         return;
+#9 11.92   39 |     } const url = URL.createObjectURL(file); setPreview(url); return () => URL.revokeObjectURL(url); }, [file]);
+#9 11.92   40 |     useEffect(() => { const value = sessionStorage.getItem("client-searches"); if (value) {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         react-hooks/set-state-in-effect
+#9 11.92   44:17  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+#9 11.92 
+#9 11.92 Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+#9 11.92 * Update external systems with the latest state from React.
+#9 11.92 * Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+#9 11.92 
+#9 11.92 Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+#9 11.92 
+#9 11.92 /src/src/app/search/page.tsx:44:17
+#9 11.92   42 |             const stored: unknown = JSON.parse(value);
+#9 11.92   43 |             if (Array.isArray(stored))
+#9 11.92 > 44 |                 setRecent(stored.filter((v): v is string => typeof v === "string").slice(0, 3));
+#9 11.92      |                 ^^^^^^^^^ Avoid calling setState() directly within an effect
+#9 11.92   45 |         }
+#9 11.92   46 |         catch { }
+#9 11.92   47 |     } }, []);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         react-hooks/set-state-in-effect
+#9 11.92   49:17  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+#9 11.92 
+#9 11.92 Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+#9 11.92 * Update external systems with the latest state from React.
+#9 11.92 * Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+#9 11.92 
+#9 11.92 Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+#9 11.92 
+#9 11.92 /src/src/app/search/page.tsx:49:17
+#9 11.92   47 |     } }, []);
+#9 11.92   48 |     useEffect(() => { if (!debounced)
+#9 11.92 > 49 |         return; setRecent(old => { const next = [debounced, ...old.filter(v => v !== debounced)].slice(0, 3); sessionStorage.setItem("client-searches", JSON.stringify(next)); return next; }); }, [debounced]);
+#9 11.92      |                 ^^^^^^^^^ Avoid calling setState() directly within an effect
+#9 11.92   50 |     useEffect(() => { if (sp.get("tab") === "visual")
+#9 11.92   51 |         setTab("visual"); }, [sp]);
+#9 11.92   52 |     const text = useQuery({ queryKey: ["search", debounced], enabled: ready && tab === "text" && !!debounced, queryFn: async ({ signal }) => (await apiClient.get<TextResults>("/api/search", { params: { q: debounced }, signal })).data });                                                                                                                                                                                                                                                                                                                                                                     react-hooks/set-state-in-effect
+#9 11.92   51:9   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+#9 11.92 
+#9 11.92 Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+#9 11.92 * Update external systems with the latest state from React.
+#9 11.92 * Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+#9 11.92 
+#9 11.92 Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+#9 11.92 
+#9 11.92 /src/src/app/search/page.tsx:51:9
+#9 11.92   49 |         return; setRecent(old => { const next = [debounced, ...old.filter(v => v !== debounced)].slice(0, 3); sessionStorage.setItem("client-searches", JSON.stringify(next)); return next; }); }, [debounced]);
+#9 11.92   50 |     useEffect(() => { if (sp.get("tab") === "visual")
+#9 11.92 > 51 |         setTab("visual"); }, [sp]);
+#9 11.92      |         ^^^^^^ Avoid calling setState() directly within an effect
+#9 11.92   52 |     const text = useQuery({ queryKey: ["search", debounced], enabled: ready && tab === "text" && !!debounced, queryFn: async ({ signal }) => (await apiClient.get<TextResults>("/api/search", { params: { q: debounced }, signal })).data });
+#9 11.92   53 |     const visual = useQuery({ queryKey: ["visual-search", revision, threshold], enabled: ready && tab === "visual" && !!file, retry: false, queryFn: async ({ signal }) => { const form = new FormData(); form.append("image", file!); form.append("min_similarity", String(threshold / 100)); return (await apiClient.post<VisualResults>("/api/search/visual", form, { signal })).data; } });
+#9 11.92   54 |     const choose = (f?: File) => {  react-hooks/set-state-in-effect
+#9 11.92   85:49  warning  Unused eslint-disable directive (no problems were reported from '@next/next/no-img-element')
+#9 11.92 
+#9 11.92 /src/src/app/videos/[id]/page.tsx
+#9 11.92   47:34   error  Compilation Skipped: Existing memoization could not be preserved
+#9 11.92 
+#9 11.92 React Compiler has skipped optimizing this component because the existing manual memoization could not be preserved. This value was memoized in source but not in compilation output.
+#9 11.92 
+#9 11.92 /src/src/app/videos/[id]/page.tsx:47:34
+#9 11.92   45 |     const end = original ? video.data?.duration_seconds || 0 : selectedClip?.end_time || 0;
+#9 11.92   46 |     const source = original || clip.data?.playback_url;
+#9 11.92 > 47 |     const register = useCallback((el: HTMLVideoElement | null) => { ref.current = el; usePlayerStore.getState().register(el, offset); }, [offset]);
+#9 11.92      |                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Could not preserve existing memoization
+#9 11.92   48 |     useEffect(() => { setSelected(null); pendingSeek.current = validTime; setMediaError(false); }, [id, validTime]);
+#9 11.92   49 |     useEffect(() => { if (ready)
+#9 11.92   50 |         track({ video_id: id, interaction_type: "click" }); }, [id, ready]);                                                                                                                                                                                                                                                                                                                               react-hooks/preserve-manual-memoization
+#9 11.92   47:139  error  Compilation Skipped: Existing memoization could not be preserved
+#9 11.92 
+#9 11.92 React Compiler has skipped optimizing this component because the existing manual memoization could not be preserved. This dependency may be mutated later, which could cause the value to change unexpectedly.
+#9 11.92 
+#9 11.92 /src/src/app/videos/[id]/page.tsx:47:139
+#9 11.92   45 |     const end = original ? video.data?.duration_seconds || 0 : selectedClip?.end_time || 0;
+#9 11.92   46 |     const source = original || clip.data?.playback_url;
+#9 11.92 > 47 |     const register = useCallback((el: HTMLVideoElement | null) => { ref.current = el; usePlayerStore.getState().register(el, offset); }, [offset]);
+#9 11.92      |                                                                                                                                           ^^^^^^ This dependency may be modified later
+#9 11.92   48 |     useEffect(() => { setSelected(null); pendingSeek.current = validTime; setMediaError(false); }, [id, validTime]);
+#9 11.92   49 |     useEffect(() => { if (ready)
+#9 11.92   50 |         track({ video_id: id, interaction_type: "click" }); }, [id, ready]);                                                                                                                                                                                                                                                                                              react-hooks/preserve-manual-memoization
+#9 11.92   48:23   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+#9 11.92 
+#9 11.92 Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+#9 11.92 * Update external systems with the latest state from React.
+#9 11.92 * Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+#9 11.92 
+#9 11.92 Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+#9 11.92 
+#9 11.92 /src/src/app/videos/[id]/page.tsx:48:23
+#9 11.92   46 |     const source = original || clip.data?.playback_url;
+#9 11.92   47 |     const register = useCallback((el: HTMLVideoElement | null) => { ref.current = el; usePlayerStore.getState().register(el, offset); }, [offset]);
+#9 11.92 > 48 |     useEffect(() => { setSelected(null); pendingSeek.current = validTime; setMediaError(false); }, [id, validTime]);
+#9 11.92      |                       ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+#9 11.92   49 |     useEffect(() => { if (ready)
+#9 11.92   50 |         track({ video_id: id, interaction_type: "click" }); }, [id, ready]);
+#9 11.92   51 |     useEffect(() => { setMediaError(false); }, [source]);  react-hooks/set-state-in-effect
+#9 11.92   51:23   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+#9 11.92 
+#9 11.92 Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+#9 11.92 * Update external systems with the latest state from React.
+#9 11.92 * Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+#9 11.92 
+#9 11.92 Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+#9 11.92 
+#9 11.92 /src/src/app/videos/[id]/page.tsx:51:23
+#9 11.92   49 |     useEffect(() => { if (ready)
+#9 11.92   50 |         track({ video_id: id, interaction_type: "click" }); }, [id, ready]);
+#9 11.92 > 51 |     useEffect(() => { setMediaError(false); }, [source]);
+#9 11.92      |                       ^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+#9 11.92   52 |     useEffect(() => { if (!message)
+#9 11.92   53 |         return; const timer = setTimeout(() => setMessage(""), 4500); return () => clearTimeout(timer); }, [message]);
+#9 11.92   54 |     useEffect(() => { if (sheet && !dialog.current?.open)                                                                                                            react-hooks/set-state-in-effect
+#9 11.92   74:20   error  Compilation Skipped: Existing memoization could not be preserved
+#9 11.92 
+#9 11.92 React Compiler has skipped optimizing this component because the existing manual memoization could not be preserved. This value was memoized in source but not in compilation output.
+#9 11.92 
+#9 11.92 /src/src/app/videos/[id]/page.tsx:74:20
+#9 11.92   72 |     };
+#9 11.92   73 |     const scores = useMemo(() => analysis.data?.timeline_scores || [], [analysis.data]);
+#9 11.92 > 74 |     const ranges = useMemo(() => buildHighlightRanges(scores.filter(s => (s.second || 0) >= offset && (s.second || 0) < end)), [scores, offset, end]);
+#9 11.92      |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Could not preserve existing memoization
+#9 11.92   75 |     const onTime = (el: HTMLVideoElement) => {
+#9 11.92   76 |         const time = el.currentTime + offset;
+#9 11.92   77 |         store.onTimeUpdate(time);                                                                                                                                                                                                                                                                                                                                                                                                                                                                      react-hooks/preserve-manual-memoization
+#9 11.92   74:137  error  Compilation Skipped: Existing memoization could not be preserved
+#9 11.92 
+#9 11.92 React Compiler has skipped optimizing this component because the existing manual memoization could not be preserved. This dependency may be mutated later, which could cause the value to change unexpectedly.
+#9 11.92 
+#9 11.92 /src/src/app/videos/[id]/page.tsx:74:137
+#9 11.92   72 |     };
+#9 11.92   73 |     const scores = useMemo(() => analysis.data?.timeline_scores || [], [analysis.data]);
+#9 11.92 > 74 |     const ranges = useMemo(() => buildHighlightRanges(scores.filter(s => (s.second || 0) >= offset && (s.second || 0) < end)), [scores, offset, end]);
+#9 11.92      |                                                                                                                                         ^^^^^^ This dependency may be modified later
+#9 11.92   75 |     const onTime = (el: HTMLVideoElement) => {
+#9 11.92   76 |         const time = el.currentTime + offset;
+#9 11.92   77 |         store.onTimeUpdate(time);                                                                                                                                                                                                                                                                                                                                                                                                                                                     react-hooks/preserve-manual-memoization
+#9 11.92   74:145  error  Compilation Skipped: Existing memoization could not be preserved
+#9 11.92 
+#9 11.92 React Compiler has skipped optimizing this component because the existing manual memoization could not be preserved. This dependency may be mutated later, which could cause the value to change unexpectedly.
+#9 11.92 
+#9 11.92 /src/src/app/videos/[id]/page.tsx:74:145
+#9 11.92   72 |     };
+#9 11.92   73 |     const scores = useMemo(() => analysis.data?.timeline_scores || [], [analysis.data]);
+#9 11.92 > 74 |     const ranges = useMemo(() => buildHighlightRanges(scores.filter(s => (s.second || 0) >= offset && (s.second || 0) < end)), [scores, offset, end]);
+#9 11.92      |                                                                                                                                                 ^^^ This dependency may be modified later
+#9 11.92   75 |     const onTime = (el: HTMLVideoElement) => {
+#9 11.92   76 |         const time = el.currentTime + offset;
+#9 11.92   77 |         store.onTimeUpdate(time);                                                                                                                                                                                                                                                                                                                                                                                                                                                react-hooks/preserve-manual-memoization
+#9 11.92 
+#9 11.92 ✖ 17 problems (15 errors, 2 warnings)
+#9 11.92   0 errors and 2 warnings potentially fixable with the `--fix` option.
+#9 11.92 
+#9 ERROR: process "/bin/sh -c npm run lint && npm run build && npx tsc --noEmit" did not complete successfully: exit code: 1
+------
+ > [builder 6/6] RUN npm run lint && npm run build && npx tsc --noEmit:
+11.92   73 |     const scores = useMemo(() => analysis.data?.timeline_scores || [], [analysis.data]);
+11.92 > 74 |     const ranges = useMemo(() => buildHighlightRanges(scores.filter(s => (s.second || 0) >= offset && (s.second || 0) < end)), [scores, offset, end]);
+11.92      |                                                                                                                                                 ^^^ This dependency may be modified later
+11.92   75 |     const onTime = (el: HTMLVideoElement) => {
+11.92   76 |         const time = el.currentTime + offset;
+11.92   77 |         store.onTimeUpdate(time);                                                                                                                                                                                                                                                                                                                                                                                                                                                react-hooks/preserve-manual-memoization
+11.92 
+11.92 ✖ 17 problems (15 errors, 2 warnings)
+11.92   0 errors and 2 warnings potentially fixable with the `--fix` option.
+11.92 
+------
+Dockerfile:10
+--------------------
+   8 |     ARG GATEWAY_INTERNAL_URL=http://gateway:8000
+   9 |     ENV GATEWAY_INTERNAL_URL=$GATEWAY_INTERNAL_URL
+  10 | >>> RUN npm run lint && npm run build && npx tsc --noEmit
+  11 |     FROM node:22-alpine
+  12 |     WORKDIR /src
+--------------------
+ERROR: failed to build: failed to solve: process "/bin/sh -c npm run lint && npm run build && npx tsc --noEmit" did not complete successfully: exit code: 1

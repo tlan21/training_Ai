@@ -1,8 +1,7 @@
 # INT-17 — Client framework security decision (2026-10-27)
 
-Owner CODEX. Status BLOCKED: major framework upgrade decision required under user's significant-architecture-change rule.
-This is a confirmed dependency finding from INT-16 fresh Docker npm ci, not a hypothetical warning or proof of exploitation.
-No package/source migration, forced install, audit fix, public deployment or AI change performed.
+Owner CODEX. Status PARTIAL: user approved2026-10-27 (“hãy nâng lên”), migration/security checks PASS; two live gateway cases remain blocked by runtime.
+Initial audit/proposal below is historical evidence. No public deployment, force install, AI/API/DB change performed.
 
 ## Evidence
 - Fresh Client image builds with pinned Next14.2.35; npm ci reports6 vulnerable packages overall.
@@ -32,3 +31,56 @@ No package/source migration, forced install, audit fix, public deployment or AI 
 
 Acceptance: approved scoped migration, required checks PASS, critical/high runtime findings resolved or explicitly reviewed,
 UI/API behavior preserved. Current build is functionally verified for isolated development; public deployment remains gated.
+
+## Implemented / verified2026-10-27
+- Pinned Next16.4.3, eslint-config-next16.4.3, ESLint9.39.5; React/ReactDOM18.3.1 and their type major retained.
+  Lockfile resolved normally, no --force/auditfix. Transitive postcss-selector-parser6.1.4→6.1.5 fixes the remaining moderate development advisory.
+- Replaced legacy .eslintrc with flat eslint.config.mjs and nextlint CLI with eslintsrc. Webpack remains explicit in build script.
+  Next16 new set-state-in-effect/preserve-manual-memoization diagnostics flagged existing React18 patterns; disabled only these2new diagnostics,
+  documented shortcut until adopting React Compiler. rules-of-hooks/exhaustive-deps and other Next/TS rules remain enabled.
+  Removed2unused inline lint directives only; rendered JSX/labels/styles/behavior unchanged. Initial lint failure recorded in INT-17-initial-lint.log,
+  final lint passes. This is a compatibility policy, not a claim that compiler optimization has been validated.
+- Next generated TypeScript configuration: jsxreact-jsx, targetES2017, .next/dev/types include and generated-route imports in next-env.
+  Standalone tsc on fresh checkout needs `npx next typegen` first; build also generates them. No route parameter rewrite needed because callers use navigation hooks.
+  Official [Next16 upgrade guide](https://nextjs.org/docs/app/guides/upgrading/version-16) documents CLI/bundler/typing migration.
+- Host clean `npm ci --no-audit --no-fund`: PASS403packages (INT-17-host-install.log). `npm run lint`, `npm run build`, `npx tsc --noEmit`: PASS,
+  all12existing route entries including dynamic video detail listed; Next reports13static generation jobs, a framework count change from14.
+- Docker clean npmci408packages/lint/productionbuild/tsc PASS, output INT-17-container-build.log; no host node_modules copied.
+  Image4fcf241026fb926cfd8d56bf5d31dade374df42dcded6c1037f2d2792d376cc3; inspect237333048bytes (INT-17-checks.json).
+  Next18compatibility deprecation warning and host monorepo tracing-root warning remain informational; React18 was deliberately retained, root lockfile not removed.
+- Docker production proxy smoke PASS/exit0, networknone/gatewayaliasloopback/no product volumes. Updated test to Next16 rewrites.afterFiles manifest format;
+  actual POST/Bearer/cookie/HttpOnly/JSON/query/503 envelope forwarding assertions retained. INT-17-container-smoke.log.
+- Full npm audit and runtime-only audit **0findings**, raw INT-17-full-audit.json/INT-17-runtime-audit.json. This verifies resolved dependencies at audit time,
+  not a general application-security guarantee.
+- `npm run test:e2e:types` PASS. **53Client fixture browser tests PASS (1.4m)** on host Next16 production (INT-17-playwright.log):
+  auth singleflight/logout race/cookieidentity/cache behavior, media seek/transcript/download, visual/text search, interactions and390×844/1440×900 layouts.
+- Two actual gateway session cases **NOT_RUN**, preflight127.0.0.1:8000 unavailable (INT-17-live-preflight.json). Earlier55tests belong to the pre-upgrade source,
+  not claimed as55new passes. Gateway remains stopped after prior automatic start rejection; no alternate start path used.
+  Keepalive fixture events during browser teardown can reach the unavailable proxy after route disposal; no product DB/service was running or modified.
+- Owned host testserver was stopped after verification; smoke container autoremove. Existing project/Claude/faktory containers unchanged.
+
+## Design compatibility check —390×844 /1440×900
+Migration changes no layout, tokens, copy or event logic. Inspected new screenshots against pre-upgrade Client baseline;
+original discovery_mobile/discovery_desktop HTML and INT-14 Stitch references remain read-only.
+
+| # | Item | Migration result / inherited scope |
+|---|---|---|
+|1|Layout|Same sections/nav/cards as prior build; whole-page Stitch gaps stillINT-06|
+|2|Colors|Existing CSS/Tailwind unchanged; preserved|
+|3|Typography|Existing font/size/weight unchanged; preserved|
+|4|Spacing/radius|Same geometry as baseline; inherited Stitch differences not repaired here|
+|5|Icons|Same SVG renderer/icons; browser assertions PASS|
+|6|Vietnamese copy|Unchanged; snapshot recommendation modes differ only by fixture data|
+|7|AI elements|Badges/player/mode labels unchanged; personalized never inferred from upgrade|
+|8|States|Loading/empty/error/disabled/auth/session/media tests PASS|
+|9|Responsive|390×844/1440×900 browser checks PASS/no body overflow|
+|10|Cut scope|No translation/social/new feature added; deferred forgot/reset behavior retained underD1|
+
+Screenshots: INT-17-design/client-discover-390.png and client-discover-1440.png; baseline/stitch refs in INT-14-design.
+Full-screen Stitch parity remains PARTIAL/INT-06; this check records migration compatibility, not full UI acceptance.
+
+Lane: codex
+Changed: Client package/lock/lint/TypeScript/Docker gate; unused comments; proxy-smoke manifest reader; owned evidence/tracker
+Verified: host+Docker clean install/lint/build/tsc;full+runtime audits0;53E2E/types;proxy smoke;design compatibility
+Contract touched: no (public0.3.1/AI-APIv1.3 unchanged)
+Next safe task: run2live Client cases after user gateway recovery, then INT-17 REVIEW; no release/push without user

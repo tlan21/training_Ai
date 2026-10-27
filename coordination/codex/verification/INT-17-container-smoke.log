@@ -1,0 +1,6 @@
+▲ Next.js 16.4.3
+- Local:         http://127.0.0.1:3000
+- Network:       http://127.0.0.1:3000
+✓ Ready in 718ms
+✓ Running next.config.mjs took 68ms
+INT-16 container production page + Docker rewrite + cookie/Bearer/JSON/query/error forwarding PASS

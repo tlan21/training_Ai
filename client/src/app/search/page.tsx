@@ -82,7 +82,7 @@ function Search() {
    <span><Icon name="photo_library" size={28}/></span><span className="mobile-only">Chọn từ thư viện</span><span className="desktop-only">Kéo và thả ảnh vào đây</span><small className="desktop-only">Hoặc</small><span className="btn-primary desktop-only">Chọn ảnh</span>
   </button>
   <button className="image-uploader camera" onClick={() => cameraInput.current?.click()}><span><Icon name="photo_camera" size={28}/></span><span>Mở máy ảnh</span></button>
-  <div className="search-preview">{preview ? <>{/* eslint-disable-next-line @next/next/no-img-element */}<img src={preview} alt="Ảnh tìm kiếm"/><small>{file?.name}</small></> : <><Icon name="visibility" size={36}/><span>Xem trước ảnh</span></>}</div>
+  <div className="search-preview">{preview ? <><img src={preview} alt="Ảnh tìm kiếm"/><small>{file?.name}</small></> : <><Icon name="visibility" size={36}/><span>Xem trước ảnh</span></>}</div>
  </div>;
     return <div className="content-page"><AppNav active="search" search={false}/><MobileHeader title="Tìm kiếm" back><Link className="icon-button" href="/profile?view=library&tab=history" aria-label="Lịch sử xem"><Icon name="history"/></Link></MobileHeader>
  <main className="search-main"><h1 className="search-title">Tìm kiếm đa phương thức</h1><div className="search-layout"><section className="search-input-panel">

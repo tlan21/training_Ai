@@ -6,7 +6,7 @@ const { spawn } = require('node:child_process');
 
 async function main() {
   const manifest = JSON.parse(fs.readFileSync('.next/routes-manifest.json', 'utf8'));
-  assert.ok(manifest.rewrites.some(rule => rule.destination === 'http://gateway:8000/api/:path*'));
+  assert.ok(manifest.rewrites.afterFiles.some(rule => rule.destination === 'http://gateway:8000/api/:path*'));
   const gateway = http.createServer(async (request, response) => {
     let body = '';
     for await (const chunk of request) body += chunk;

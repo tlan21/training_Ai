@@ -1,5 +1,9 @@
 # Client runtime
 
+Client uses Next16.4.3 with React18.3.1; Node20.9+ is required (Docker uses Node22).
+Production builds keep Webpack with `next build --webpack`; lint uses ESLint9 flat config through `eslint src`.
+On a clean checkout, run `npx next typegen` before standalone `npx tsc --noEmit` so Next's generated route types exist.
+
 Browser API requests default to relative `/api`. Next forwards the existing gateway endpoints;
 HttpOnly refresh cookies and Bearer headers use the same Client origin. API/refresh requests time out after10s.
 
@@ -19,5 +23,8 @@ The smoke runs `e2e/client_container_smoke.cjs` inside the built image with netw
 using an internal HTTP fixture; it checks the production page and cookie/Bearer/JSON/query/error forwarding without product services.
 This is separate from the earlier live gateway browser tests.
 
-Current public-deployment blocker: runtime audit flags the pinned Next14 as critical and its PostCSS dependency as high.
-See Codex verification/INT-17.md for primary advisories and the proposed framework upgrade. No forced audit fix or major upgrade was applied.
+2026-10-27 approved INT-17 upgrade: clean host/Docker installs, lint/types/build, Docker proxy smoke and53Client fixture E2E PASS.
+Full and runtime-only npm audits report0findings. React18 remains supported but deprecated by Next16; React Compiler is not enabled.
+Two newly added compiler-oriented lint diagnostics retain the previous React18 policy in eslint.config.mjs; existing hook/dependency checks remain.
+Two live gateway session cases await gateway runtime recovery. No production deployment/release is implied by these checks.
+See Codex verification/INT-17.md for migration details and the remaining live gate.
