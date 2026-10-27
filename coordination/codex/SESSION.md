@@ -3,14 +3,19 @@
 ## Branch / task state
 - E:/traning_ai-codex, codex/integration. Release#1/#2/#3 received; HEAD..master empty at session start. No master release/push authorized.
 - INT-06 PARTIAL pending production QA startup confirmation +library/forgot-link scope; code09f0611 +follow-up geometry source/final lint/build/tsc PASS.
-- Only INT-05 IN_PROGRESS: independent CMS parity preparation (user approved Client→CMS proposal), baseline18layouts running session86472.
-  Project skill cms_screen.md read +plan03§7 CẮT-list; no CMS source change yet. Current CMS5173 remains existing image; no new service started.
+- Only INT-05 IN_PROGRESS: CMS original-video controls/bounded preview implemented and verified. Project skill cms_screen.md +plan03§7 CẮT-list.
+  Baseline18PASS24.5s; final full37browserPASS38.7s before radius fix; final3playerPASS10.3s after radius correction, manual seek cancellation/native-modal checks.
+  CMS tsc/Vite production build +E2Etypes +diffcheck PASS. QA production Vite5174 PID22248 stopped after checking ownership; no active test/compiler/QA server.
+  CMS5173 remains existing image; real gateway healthok and Claude stubfalse/6models/degraded[]/CPU rechecked. Source fixes not deployed.
+  Changed sharedplayer/icons/Highlight+Subtitle callers/CSS, CMS UI/reference tests. Evidence verification/INT-05.md, paired12PNG+4JSON in INT-05-comparison.
+  Initial reference4FAIL were harness auth redirects, fixed with Stitch-only currentUser init; subsequent4capture +full37PASS. No fullCMS parity/DONE claim.
+  Next independent corrections: source time format/subtitle scrubber/proposal spacing +remaining per-screen10item review. MissingCMSfields still require scope/contract decision.
 - Client follow-up after09f0611: desktop register label cadence/header/footer/terms/checkbox sizes, login checkbox/type spacing,
   Discovery mobile49px header/flex search row and desktop nav action/avatar spacing aligned to actual reference source. New geometry tests pending production runtime;
   no pixel PASS inferred from source-only fixes. Latest final build/tsc/lint session67715 exited0; no active compiler or Client QA server.
 - INT-06 latest checkpoint: scoped UI source fixes ready (forms/header/onboarding/search/detail); paired8x2reference/baseline screenshots and metrics captured,
   final16reference captures with loaded images PASS36.8s. Targeted5PASS; dev full62PASS/1trackingFAIL3.3m (watch_time0 during effect cleanup), tracking source unchanged.
-  E2E/Clienttypes, proper client-directorylint, finalNext production build/tsc PASS. No production63PASS or new Client deployment yet.
+  E2E/Clienttypes, proper client-directorylint, finalNext production build/tsc PASS. No production full PASS or new Client deployment yet (current suite65 after geometry additions).
 - Automatic review rejected combined production QA startup at127.0.0.1:3100 with "blocked by policy". Build-only command passed afterwards.
   User asked via async tool for exact `node node_modules/next/dist/bin/next start --hostname 127.0.0.1 --port 3100` then63tests/stop plan.
   Do not bypass via alternate port/launcher/container/live Client replacement. Own dev server3100 stopped; production QA NOT running.

@@ -1,0 +1,10 @@
+
+Running 3 tests using 1 worker
+
+(node:9788) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 e2e\cms_design.spec.ts:118:7 › INT-05 390 original player controls and bounded highlight preview (4.6s)
+  ok 2 e2e\cms_design.spec.ts:118:7 › INT-05 1440 original player controls and bounded highlight preview (3.8s)
+  ok 3 e2e\cms_design.spec.ts:172:5 › INT-05 player reports an unavailable original source (627ms)
+
+  3 passed (10.3s)

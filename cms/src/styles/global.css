@@ -313,6 +313,13 @@ body:has(.dialog-root[open]) { overflow: hidden; }
 .highlight-player .player-time { position: absolute; left: 0; right: 0; bottom: 0; background: linear-gradient(transparent, #000c); }
 .cms-workspace:has(.highlight-page) .cms-main { background: white; }
 .video-player { width: 100%; aspect-ratio: 16/9; display: block; background: black; object-fit: contain; }
+.video-frame { position: relative; }
+.player-toggle { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 64px; height: 64px; border: 0; border-radius: 12px; display: grid; place-items: center; background: #ffffff33; backdrop-filter: blur(12px); color: white; cursor: pointer; transition: transform 150ms; }
+.player-toggle:hover { transform: translate(-50%, -50%) scale(1.1); }
+.player-subtitle { border-radius: 8px; overflow: hidden; border: 1px solid var(--outline-variant); }
+.player-subtitle .player-toggle, .player-subtitle .player-play { width: 48px; height: 48px; border-radius: 12px; background: rgba(70, 21, 153, .9); }
+.player-subtitle .player-toggle:active { transform: translate(-50%, -50%) scale(.95); }
+.player-error { position: absolute; bottom: 20px; left: 8px; right: 8px; padding: 6px 12px; border-radius: 4px; background: #000c; color: white; text-align: center; font-size: 12px; }
 .player-unavailable { min-height: 180px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 16px; color: white; background-position: center; background-size: cover; }
 .player-unavailable p { background: #0009; border-radius: 4px; padding: 6px 12px; font-size: 12px; text-align: center; }
 .player-play { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 12px; background: #ffffff33; }

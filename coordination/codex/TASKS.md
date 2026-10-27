@@ -109,13 +109,16 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - T gốc: T3.1 | Owner: CODEX | Status: IN_PROGRESS (2026-10-27; independent CMS parity work)
 - Depends on: INT-02; INT-04 functional playback PASS; full parity còn cần scope/resource
 - Gap (HIST `docs/T3.1_cms_design_parity.md`): nguồn phát video gốc, metadata/analytics/rules/editor fields chưa có API, Settings chưa persist.
-- NOW: settings/interactions persistence và nguồn phát đã có; CMS native controls + metadata/analytics/rules/editor contract gaps còn mở.
+- NOW: settings/interactions persistence và nguồn phát đã có; original-video center controls +bounded proposal preview verified; metadata/analytics/rules/editor contract gaps còn mở.
 - Acceptance: checklist 10 mục `my-agent/agent/skills/ui_design_review.md` PASS toàn bộ màn (390×844, 1440×900); Playwright PASS.
 - Evidence: HIST 30 Playwright PASS 2026-10-14 | Commits: `5bc0ccf`, `b8b6dbe`, `59e92ba`, `b3ab36c`, `8cc773f` | Checkpoint: —
 - Current scope: existing API/plan03§7 CẮT-list only; baseline9screen layouts x390/1440, compare reference HTML, correct proven UI/control gaps.
   No new metric/editor/rules/API fields, fake AI/model data or deferred forgot-password work. Settings/auth/history behavior already verified stays intact.
 - Changed planned: CMS existing pages/shared player/styles, E2E +owned evidence/tracker. Acceptance: per-screen10item review, CMS tsc/build and relevant browser checks.
-- Next action: finish18baseline captures, compare CMS player/control/layout against Stitch; fix independent gaps while Client QA confirmation remains pending.
+- Checkpoint2026-10-27: baseline18PASS; CMS tsc/build +E2Etypes PASS; full37 browser checks PASS38.7s, final3player checks PASS10.3s after radius correction/native-modal assertion.
+  Changed: shared VideoPlayer/Icon, Highlight/Subtitles callers, scoped CSS, CMS E2E/reference harness +owned evidence. See verification/INT-05.md and INT-05-comparison/README.md.
+  Original preview stops at proposal end; manual seek cancels boundary; center play/pause keyboard/404 errors tested. Production QA5174 stopped; CMS5173 not replaced.
+- Next action: existing-API player time/subtitle scrubber/proposal spacing corrections; full CMS parity and missing fields still need contract/scope decisions. Client QA confirmation remains pending.
 
 ### INT-06 — Client Design Parity FULL
 - T gốc: T3.2 | Owner: CODEX | Status: PARTIAL (2026-10-27; scoped fixes/build complete, QA/scope confirmation pending)

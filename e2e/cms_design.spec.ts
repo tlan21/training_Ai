@@ -1,4 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 import type { components } from '../cms/src/api-types';
 
 const cms = process.env.E2E_CMS_URL ?? 'http://localhost:5173';
@@ -111,6 +113,69 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
     });
   }
 }
+
+for (const width of [390, 1440]) {
+  test(`INT-05 ${width} original player controls and bounded highlight preview`, async ({ page }, info) => {
+    await setupUI(page);
+    await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
+    const media = readFileSync(path.join(__dirname, 'fixtures/video.mp4'));
+    await page.route('**/cms-ui-fixture.mp4', route => {
+      const range = route.request().headers().range?.match(/bytes=(\d+)-(\d*)/);
+      const start = range ? Number(range[1]) : 0, end = range?.[2] ? Number(range[2]) : media.length - 1;
+      return route.fulfill({ status: range ? 206 : 200, contentType: 'video/mp4', headers: { 'Accept-Ranges': 'bytes', ...(range ? { 'Content-Range': `bytes ${start}-${end}/${media.length}` } : {}) }, body: media.subarray(start, end + 1) });
+    });
+    await page.route(`**/api/cms/videos/${videoId}`, route => route.fulfill({ json: { ...videos[0], playback_url: `${cms}/cms-ui-fixture.mp4`, duration_seconds: 8 } satisfies components['schemas']['VideoDetail'] }));
+    await page.route(`**/api/cms/videos/${videoId}/analysis`, route => route.fulfill({ json: { ai_generated_clips: [{ start_time: 1, end_time: 2, average_score: 98, reason: 'Khoảnh khắc thử nghiệm' }], timeline_scores: Array.from({ length: 8 }, (_, second) => ({ second, score: 90 })) } satisfies components['schemas']['CmsAnalysis'] }));
+    await page.goto(`${cms}/highlight?video_id=${videoId}`);
+    const video = page.locator('video');
+    await expect.poll(() => video.evaluate((media: HTMLVideoElement) => media.readyState)).toBeGreaterThan(0);
+    await expect(page.getByText('Nguồn phát video gốc chưa được cung cấp.')).toHaveCount(0);
+    await expect(page.getByRole('button', { name: 'Xem trước', exact: true })).toBeEnabled();
+    await expect(page.getByRole('button', { name: 'Phát video', exact: true })).toHaveCSS('width', '64px');
+    await expect(page.getByRole('button', { name: 'Phát video', exact: true })).toHaveCSS('border-radius', '12px');
+    await page.screenshot({ path: info.outputPath(`highlight-original-${width}.png`), fullPage: true });
+    await page.getByRole('button', { name: 'Xem trước', exact: true }).click();
+    await expect.poll(() => video.evaluate((media: HTMLVideoElement) => media.currentTime)).toBeGreaterThan(1.2);
+    await expect.poll(() => video.evaluate((media: HTMLVideoElement) => media.paused)).toBe(true);
+    expect(await video.evaluate((media: HTMLVideoElement) => media.currentTime)).toBeCloseTo(2, 1);
+    await expect(page.getByLabel('Bắt đầu clip')).toHaveValue('0');
+    await page.getByRole('button', { name: 'Xem trước', exact: true }).click();
+    await page.getByRole('slider', { name: 'Timeline highlight' }).press('ArrowRight');
+    await page.getByRole('slider', { name: 'Timeline highlight' }).press('ArrowRight');
+    await expect.poll(() => video.evaluate((media: HTMLVideoElement) => media.currentTime)).toBeGreaterThan(3.1);
+    await page.getByRole('button', { name: 'Tạm dừng video', exact: true }).click();
+    await page.getByRole('button', { name: 'Phát video', exact: true }).focus();
+    await page.keyboard.press('Enter');
+    await expect(page.getByRole('button', { name: 'Tạm dừng video', exact: true })).toBeVisible();
+    await page.keyboard.press('Space');
+    await expect.poll(() => video.evaluate((media: HTMLVideoElement) => media.paused)).toBe(true);
+    await page.goto(`${cms}/subtitles?video_id=${videoId}`);
+    await expect.poll(() => video.evaluate((media: HTMLVideoElement) => media.readyState)).toBeGreaterThan(0);
+    await expect(page.getByRole('button', { name: 'Phát video', exact: true })).toHaveCSS('width', '48px');
+    await expect(page.getByRole('button', { name: 'Phát video', exact: true })).toHaveCSS('border-radius', '12px');
+    await page.getByRole('button', { name: '00:04 – 00:08', exact: true }).click();
+    await expect.poll(() => video.evaluate((media: HTMLVideoElement) => media.currentTime)).toBeCloseTo(4, 1);
+    await page.screenshot({ path: info.outputPath(`subtitles-original-${width}.png`), fullPage: true });
+    await page.getByRole('button', { name: 'Phát video', exact: true }).click();
+    await expect(page.getByRole('button', { name: 'Tạm dừng video', exact: true })).toBeVisible();
+    await page.getByRole('button', { name: 'Tạm dừng video', exact: true }).click();
+    await expect.poll(() => video.evaluate((media: HTMLVideoElement) => media.paused)).toBe(true);
+    await page.route('**/api/clips/clp_design01', route => route.fulfill({ json: { id: 'clp_design01', title: 'Bàn thắng đẹp', status: 'published', playback_url: `${cms}/cms-ui-fixture.mp4` } satisfies components['schemas']['Clip'] }));
+    await page.goto(`${cms}/published`);
+    await page.getByRole('button', { name: 'Xem clip Bàn thắng đẹp', exact: true }).click();
+    await expect.poll(() => video.evaluate((media: HTMLVideoElement) => media.readyState)).toBeGreaterThan(0);
+    expect(await video.evaluate((media: HTMLVideoElement) => media.controls)).toBe(true);
+    await expect(page.locator('.player-toggle')).toHaveCount(0);
+  });
+}
+
+test('INT-05 player reports an unavailable original source', async ({ page }) => {
+  await setupUI(page);
+  await page.route(`**/api/cms/videos/${videoId}`, route => route.fulfill({ json: { ...videos[0], playback_url: `${cms}/unavailable-original.mp4` } satisfies components['schemas']['VideoDetail'] }));
+  await page.route('**/unavailable-original.mp4', route => route.fulfill({ status: 404 }));
+  await page.goto(`${cms}/highlight?video_id=${videoId}`);
+  await expect(page.getByRole('alert')).toHaveText('Không thể tải video. Vui lòng tải lại trang.');
+});
 
 test('T3.1 transcript warning, seek, save and summary approval', async ({ page }) => {
   await setupUI(page);
