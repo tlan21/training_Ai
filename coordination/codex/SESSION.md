@@ -62,3 +62,9 @@ Changed: startup resiliency; worker SDK3 fixes/deployment; business-script no-re
 Verified: Go+3unit;delayedPG29.35s;8worker tests;deployed mock pipeline;2live Next16;host/container realhealth6+401;real config preflight
 Contract touched: no (public0.3.1/AI-APIv1.3 unchanged)
 Next safe task: INT-11 apply+realE2E after explicit confirmation; otherwise existing approved pagination/UI scope work
+
+## INT-11 explicit approval received2026-10-27
+- User: "cho phép chuyển sang AI thật". Gateway-only recreation/real API verification is authorized; no further confirmation needed for that step.
+- Refresh preflight/contract/artifact before apply, compare unrelated gateway env to current, retain original mock key only in process memory for rollback.
+- Apply tested gateway-int18 mount +canonicalHTTP/stub0/sharedkey processenv. Verify systemhealth6real, run2real E2E files; failure restores mock.
+- No checkpoint/AI source change, no other service recreation, no master release/push.
