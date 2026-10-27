@@ -236,3 +236,12 @@ Chia việc không chồng chéo (PROJECT_STATUS D18):
 - Quan sát (không sửa): compose đang chạy `video-ai-ai-mock-1`; gateway :8000 chưa lên. Bật gateway, chọn `AI_BASE_URL=http://host.docker.internal:8001`
   + `AI_ALLOW_STUB=0` cho INTEGRATED_REAL là việc của Codex/user (HO-03). AI-API trên master: v1.3 (release #3); recommendation DRAFT.
 - Từ 2026-10-27 phía AI: D22 (MiniGPT dùng summary Claude duyệt — candidate không promote), active checkpoint không đổi → contract không đổi.
+
+## 2026-10-27 HC-11 — Gateway :8000 chết lúc khởi động do race với Postgres (Claude đã `docker start` theo yêu cầu user)
+- Theo yêu cầu trực tiếp của user ("hãy bật gate 8000 lên"), Claude chỉ chạy `docker start video-ai-gateway-1` — không sửa compose/config/image,
+  không đụng container khác. Gateway giữ cấu hình cũ (`AI http://ai-mock:8001`).
+- Nguyên nhân exit 1 lúc 03:53 UTC: `failed to connect ... (postgres): FATAL: the database system is starting up (SQLSTATE 57P03)` —
+  gateway lên trước khi Postgres sẵn sàng; restart policy = `no` nên không tự lên lại.
+- Sau start: container healthy, `/healthz` 200, `/api/feed` 401 không token (đúng), Client :3000 200, CMS :5173 200.
+- Đề xuất cho Codex (file của Codex, Claude không sửa): `depends_on: postgres: condition: service_healthy` và/hoặc `restart: on-failure` cho gateway;
+  chuyển AI sang :8001 thật khi chốt HO-03 (:8001 đang UP, smoke 6/6).
