@@ -273,10 +273,10 @@ T2.5, T3.1, T3.2 = PARTIAL.
   Existing gateway recovered externally, not started/restarted by Codex. INT-13/17 REVIEW; no new INTEGRATED_REAL AI claim.
 
 ### INT-19 — Public cursor/error contract clarification
-- T gốc: INT-14 pagination | Owner: CODEX | Status: IN_PROGRESS (2026-10-27)
+- T gốc: INT-14 pagination | Owner: CODEX | Status: REVIEW (2026-10-27)
 - Depends on: existing OpenAPI feed/catalog routes; no AI/training dependency | Blocks: INT-14 pagination implementation
 - Acceptance: document opaque cursor bound to route/filter, fixed ranking snapshot, null at exhaustion, invalid cursor/sort/limit422 with existing error envelope;
   no new endpoint/body/response fields. Regenerate Go/CMS/Client types; schema parse/generated compilation checks PASS before implementation.
 - Changed planned: infra/openapi.yaml; generated3types; Codex trackers/evidence.
-- Commits: b08f2be taskstart; contract acceptance checkpoint | Evidence: verification/INT-19.md; bothTS/generatedGo/embeddedSchema checks PASS | Next action: INT-14 pagination implementation.
-- Checkpoint: Lane codex / Changed contract planned / Verified not yet / Contract public patch planned / Next INT-14 pagination.
+- Commits: b08f2be taskstart; 213aaa9 contract acceptance | Evidence: verification/INT-19.md; bothTS/generatedGo/embeddedSchema checks PASS | Next action: INT-14 pagination implementation.
+- Checkpoint: Lane codex / Changed OpenAPI+3generated types / Verified bothTS+Go+schema PASS / Contract public0.3.2 / Next INT-14 pagination.
