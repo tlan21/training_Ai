@@ -1,4 +1,8 @@
 # INT-02: real storage/ingest/cutter, HTTP mock AI. Never evidence of real AI quality.
+param(
+    [switch]$SkipGatewayRestart,
+    [string]$EvidencePath = 'coordination/codex/verification/INT-02-persistence.json'
+)
 $ErrorActionPreference = 'Stop'
 $PSDefaultParameterValues = @{'Invoke-RestMethod:TimeoutSec'=15; 'Invoke-WebRequest:TimeoutSec'=15}
 Set-Location (Split-Path $PSScriptRoot -Parent)
@@ -51,8 +55,10 @@ try {
     Invoke-RestMethod -Method Put "$base/api/cms/settings" -Headers $headers -ContentType 'application/json' -Body (@{highlight_threshold=$threshold} | ConvertTo-Json) | Out-Null
     $settingsChanged = $true
 
-    & docker restart video-ai-gateway-1
-    if ($LASTEXITCODE -ne 0) { throw 'Gateway restart failed' }
+    if (-not $SkipGatewayRestart) {
+        & docker restart video-ai-gateway-1
+        if ($LASTEXITCODE -ne 0) { throw 'Gateway restart failed' }
+    } else { Write-Host 'Gateway restart skipped; this run does not verify restart persistence' }
     $ready = $false
     for ($attempt=0; $attempt -lt 60; $attempt++) {
         try {
@@ -84,8 +90,8 @@ try {
     $hiddenHistory = Invoke-RestMethod "$base/api/users/me/history" -Headers $viewerHeaders
     $hiddenLikes = Invoke-RestMethod "$base/api/users/me/likes" -Headers $viewerHeaders
     if ($hiddenHistory.items.Count -ne 0 -or $hiddenLikes.items.Count -ne 0) { throw 'Deleted content leaked through history/likes' }
-    $evidence = [ordered]@{mode='MOCK_ONLY';user_id=$viewer.user.id;clip_id=$clip.id;restart_verified=$true;history_count=$history.items.Count;duration_watched=$history.items[0].duration_watched;likes_count=$likes.items.Count;settings_persisted=$true;key_masked=$true;playback_range_status=206;unpublished_interaction_status=$private.StatusCode;deleted_content_hidden=$true;recommendation_fallback=($feed.recommendation_mode -eq 'fallback');primary_popularity=($feed.recommendation_mode -eq 'popularity');recommendation_mode=$feed.recommendation_mode;preferences_persisted=$true;login_preferences_retained=$true}
-    $evidence | ConvertTo-Json | Set-Content -Encoding utf8 coordination/codex/verification/INT-02-persistence.json
+    $evidence = [ordered]@{mode='MOCK_ONLY';user_id=$viewer.user.id;clip_id=$clip.id;restart_verified=(-not $SkipGatewayRestart);history_count=$history.items.Count;duration_watched=$history.items[0].duration_watched;likes_count=$likes.items.Count;settings_persisted=$true;key_masked=$true;playback_range_status=206;unpublished_interaction_status=$private.StatusCode;deleted_content_hidden=$true;recommendation_fallback=($feed.recommendation_mode -eq 'fallback');primary_popularity=($feed.recommendation_mode -eq 'popularity');recommendation_mode=$feed.recommendation_mode;preferences_persisted=$true;login_preferences_retained=$true}
+    $evidence | ConvertTo-Json | Set-Content -LiteralPath $EvidencePath -Encoding utf8
     $evidence | ConvertTo-Json
 } finally {
     if ($settingsChanged) {

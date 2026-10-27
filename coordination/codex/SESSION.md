@@ -95,3 +95,10 @@ Next safe task: INT-17 live checks +INT-13 deployed pipeline after user runtime 
   so use host Next16 on a free alternate port for the2live cases; no gateway-start bypass needed.
 - Next INT-13 IN_PROGRESS: replace only stopped ingest with tested own image/no build/pull, run current mock pipeline without restarting gateway.
   Then INT-17 live2 cases, source upgrade alreadyPASS. Pagination deferred after runtime priorities changed.
+
+## INT-13 deployment gate resumed
+- INT-18 source91e7ef8 REVIEW; Go and isolatedPG +8worker tests verified, no gateway start/deployment.
+- Set INT-13 IN_PROGRESS: gateway nowhealthy from external restart and infra/mock ready. Replace only stopped old ingest with tested own43dd08cf image,
+  no build/pull/dependency recreation. Kafka/MinIO/volume/event interface unchanged; never start legacy inference container.
+- Business verification script gains explicit SkipGatewayRestart flag +separate EvidencePath, records restart_verified=false;
+  pipeline verification will not repeat or bypass the previously rejected gateway restart/start action. Historical INT-02 evidence preserved.
