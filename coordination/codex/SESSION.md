@@ -4,7 +4,7 @@
 - Worktree E:/traning_ai-codex, branch codex/integration. Release#1/#2/#3 received; HEAD..master empty at resume.
 - No Codex release/push/master/shared-file edits. Claude source read only via git show; no model/checkpoint/inference changes.
 - Skill: backend_endpoint for image/integration verification; Ponytail full. Current public contract0.3.1/AI-APIv1.3 unchanged.
-- No task IN_PROGRESS. INT-17 BLOCKED on scoped major-framework decision; INT-13 PARTIAL on deployed runtime gate.
+- No task IN_PROGRESS. INT-17 PARTIAL: approved upgrade691ede2 verified;2live gateway cases await runtime. INT-13 PARTIAL on deployed pipeline gate.
 
 ## Verified this session
 - INT-13 d6388dd: full own Python3.11-slim/CPU worker image build PASS, context14.31kB.
@@ -21,14 +21,20 @@
   users/videos/clips/interactions0, categories10; no promotion of test/unknown data. Quarantined20261026T113611Z never consume.
   Cleanup correction33495fb verified0fixtures; final manifest committed. Claude owns labels/loader/training.
 
-## New concrete blocker INT-17
-- Fresh image npmci reports6 vulnerable packages overall; readonly runtime-only audit: Nextcritical +PostCSShigh.
-- Primary Next advisories confirm Windows-hosted RCE (GHSA-p293-qw3h-jr36) and external-rewrite request smuggling (GHSA-ggv3-7p47-pfv8).
-  No exploit or current public exposure claimed. Current Windows server stopped; Linux smoke functionality is not a security pass.
-- Registry latest14=14.2.35; audit fix proposes Next16.4.3/isSemVerMajor=true (Node22 supports its>=20.9engine).
-- Concrete scope/acceptance in verification/INT-17.md; ask user approval for major migration under significant-architecture-change rule.
-  No package/lock upgrade, auditfix or forced install applied. Keep public deployment gated.
-
+## INT-17 approved upgrade — current
+- User explicitly approved2026-10-27 ("hãy nâng lên"); implemented691ede2. No major-migration approval pending.
+- Next16.4.3 +eslint-config-next16.4.3/ESLint9.39.5; React18.3.1 retained, Webpack explicit, flat lint config.
+- Source TypeScript generated config adopted (react-jsx/ES2017/Next route imports). Fresh-checkout standalone tsc needs nexttypegen first.
+- Host clean npmci403packages +lint/build/tsc PASS; Docker clean npmci408packages/lint/build/tsc PASS.
+- Full and runtime-only audits0findings after transitive parser6.1.5 patch. No auditfix/force install or API/DB/AI edit.
+- Image4fcf241026fb926cfd8d56bf5d31dade374df42dcded6c1037f2d2792d376cc3 (237333048bytes).
+  Production proxy smoke PASS using updated Next16 afterFiles manifest; all original cookie/Bearer/body/query/error assertions retained.
+- 53fixture browser E2E PASS1.4m +E2Etypes PASS; snapshots390/1440 preserve prior layout. Full Stitch gaps stayINT-06.
+- New compiler-oriented set-state-in-effect/preserve-manual-memoization lint diagnostics retain pre-upgrade policy with explicit shortcut;
+  ReactCompiler not enabled, existing hook/dependency checks retained. React18 deprecation/host monorepo-root warning documented.
+- Two live gateway session tests NOT_RUN: preflight8000 unavailable. Automatic targeted gateway-start rejection remains unresolved;
+  no bypass, no deployment/release claim. Owned Client testserver stopped; isolated smoke containers removed.
+- Evidence verification/INT-17.md +checks/audits/build/install/proxy/browser/preflight logs and screenshots.
 ## Runtime / resources
 - Docker restarted externally before resume; only faktory_server running. Project video-ai containers are stopped, no app/API listeners.
   Gateway exited2 from prior session; other project containers exited255 around Docker restart. Claude real8001 currently not listening.
@@ -39,7 +45,7 @@
   Recheck PID after external restart. Compose/buildx binaries: same cli-tools/usr/local/lib/docker/cli-plugins/.
 - Existing binary bind override backend/.tmp/docker-direct.yml retained; gateway binary is latest18d1a3b interaction/provenance source.
   Own ingest image now built but stopped old worker still references cached legacy image; replace only after runtime recovery.
-- C:13.26GiB/E:1.48GiB at final image checks. No prune/delete/project data loss, no new npm dependencies on host.
+- C:6.60GiB/E:1.27GiB after approved migration/install/build. Host Client dependencies now match Next16 lockfile; no prune or project data deletion.
   Test containers autoremove; images remain for verified deployment. Never start legacy inference-service container/attach checkpoints.
 
 ## Historical valid evidence / outstanding scope
@@ -52,7 +58,7 @@
 - INT-07/08 GPU/load/48hsoak gates; INT-09 docs depends on them. No task DONE repeated.
 
 ## Next safe actions
-1. User major-migration decision -> INT-17 IN_PROGRESS/commit; scoped compatibility update then audit/types/lint/build/Docker/proxy/UI/live checks.
+1. User gateway recovery -> run2actual e2e/client_auth_live.spec.ts cases on Next16; if PASS, INT-17 REVIEW. No further upgrade approval needed.
 2. User runtime recovery -> inspect intended containers/health first. Deploy verified own ingest image without pull/build, run pipeline with explicit mock.
    Do not bypass the earlier gateway-start rejection or start Claude's legacy Docker inference container.
 3. Claude8001/API health ready +container transport recovered -> INT-11 real pipeline/search E2E; only then update real integration matrix.
@@ -60,9 +66,9 @@
 
 Lane: codex
 Changed: ingest package audit/test/docs; Client build allowlist/container proxy smoke; Codex evidence/audit/task checkpoints
-Verified: full ingest image+4tests/pip; full Client npmci/build+production proxy smoke; Compose configs/syntax/diff; Claude bundle ACCEPTED/NO_DATA
+Verified: Next16 host/Docker cleaninstall/lint/build/tsc;audits0;53E2E/types;proxy smoke; prior ingest4tests and Claude bundleACCEPTED/NO_DATA
 Contract touched: no; existing public0.3.1 and AI-APIv1.3 unchanged
-Next safe task: INT-17 after major decision; INT-13 deployed pipeline after user runtime recovery
+Next safe task: INT-17 live checks +INT-13 deployed pipeline after user runtime recovery
 
 ## INT-17 approval / migration started2026-10-27
 - User explicitly approved the proposed major upgrade: "hãy nâng lên". INT-17 IN_PROGRESS, only active task.

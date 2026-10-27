@@ -230,7 +230,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 
 ### INT-17 — Client framework security migration
 - T gốc: INT-16 fresh build audit | Owner: CODEX | Status: PARTIAL (2026-10-27 approved migration verified;2live gateway checks pending)
-- Depends on: user approval for Next14→16 major migration; runtime recovery for live checks | Blocks: public Client deployment
+- Depends on: user major-upgrade approval received2026-10-27; runtime recovery for2live checks | Blocks: final Client runtime acceptance
 - Acceptance: scoped upgrade approved; locked clean install/types/lint/build/Docker/55UI+live checks PASS; runtime critical/high findings resolved or explicitly reviewed;
   existing Stitch/API/cookie/JWT behavior preserved, no unrelated features or AI edits.
 - Changed planned: client package/lock/compatibility configs/callers +existingE2E, Codex evidence/trackers only.
@@ -238,5 +238,5 @@ T2.5, T3.1, T3.2 = PARTIAL.
   npm fix proposes16.4.3 major. No install/auditfix/major source edits made. Functional Client container smoke PASS is not a security pass.
 - Changed actual: client package/lock, flat ESLint, generated Next TS config, Docker gates,2unused directives; existing proxy smoke manifestreader; evidence.
 - Evidence2026-10-27: verification/INT-17.md +checks.json; host/Docker cleaninstall/lint/build/tsc PASS; full/runtime audits0;53Client E2E PASS1.4m; proxy smoke/E2Etypes PASS. Two live cases NOT_RUN/gateway stopped.
-- Commits:651820f approval/start; implementation checkpoint follows. Next action: runtime recovery then2live cases; no major decision pending, no force install/API/AI edits.
+- Commits:651820f approval/start;691ede2 implementation+verification. Next action: runtime recovery then2live cases; no major decision pending, no force install/API/AI edits.
 - Checkpoint: Lane codex / Changed approved Next16 migration / Verified audits0+53E2E+host/Docker gates / Contract no / Next2live checks after gateway recovery.

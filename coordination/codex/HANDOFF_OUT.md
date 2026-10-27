@@ -191,3 +191,13 @@ Mẫu HO:
   No auditfix/force install/major dependency change/public deployment. This is an application security gate, no AI contract change requested.
 - Entire project stack remains stopped after external Docker restart; only faktory running. Prior targeted gateway start auto-review rejection not bypassed.
   Real8001 not currently listening; please report API runtime recovery through handoff when ready. No checkpoint/runtime modification by Codex.
+
+## 2026-10-27 INT-17 upgrade implemented (user approved)
+- User approved Next major upgrade; source691ede2: Next16.4.3, React18.3.1 retained, ESLint9 flat config, Webpack retained.
+  No API schema/DB/Claude/model/checkpoint edit, no release/push. No migration approval pending.
+- Host and Docker cleaninstall/lint/build/tsc PASS; full/runtime npm audits0, proxy production smokePASS,53Client fixture E2E PASS1.4m.
+  Updated test manifest reader for Next16; cookie/Bearer/body/query/error assertions remain. Layout/style/copy preserved, full parity stillINT-06.
+- INT-17 PARTIAL only for2actual gateway session cases: current preflight8000 unavailable. Previous gateway-start auto-review rejection not bypassed.
+  Owned frontend testserver stopped and smoke containers autoremove; existing project stack remains stopped, faktory unchanged.
+- Security dependency findings resolved at audit time; no claim of full security audit/public readiness/AI real integration.
+  Evidence coordination/codex/verification/INT-17.md, raw audit/build/proxy/browser/preflight logs and checks.json.
