@@ -26,5 +26,6 @@ This is separate from the earlier live gateway browser tests.
 2026-10-27 approved INT-17 upgrade: clean host/Docker installs, lint/types/build, Docker proxy smoke and53Client fixture E2E PASS.
 Full and runtime-only npm audits report0findings. React18 remains supported but deprecated by Next16; React Compiler is not enabled.
 Two newly added compiler-oriented lint diagnostics retain the previous React18 policy in eslint.config.mjs; existing hook/dependency checks remain.
-Two live gateway session cases await gateway runtime recovery. No production deployment/release is implied by these checks.
+The two live gateway session cases now pass on the deployed local Client image at localhost/127.0.0.1.
+Local Compose deployment is verified; no master release or public-production readiness is implied by these checks.
 See Codex verification/INT-17.md for migration details and the remaining live gate.

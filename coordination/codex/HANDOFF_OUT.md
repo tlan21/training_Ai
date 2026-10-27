@@ -201,3 +201,18 @@ Mẫu HO:
   Owned frontend testserver stopped and smoke containers autoremove; existing project stack remains stopped, faktory unchanged.
 - Security dependency findings resolved at audit time; no claim of full security audit/public readiness/AI real integration.
   Evidence coordination/codex/verification/INT-17.md, raw audit/build/proxy/browser/preflight logs and checks.json.
+
+## 2026-10-27 runtime recovery / INT-13 and INT-17 REVIEW / INT-18 source fix
+- Stack was started externally: PG57P03 coldboot caused gateway exit1; cached worker Kafka bootstrap failed. Gateway later becamehealthy externally.
+  Codex did not retry/bypass the prior automatic gateway-start rejection, did not start legacy inference/Claude runtime or touch faktory.
+- INT-18 source91e7ef8: bounded Go PG/Mongo/Redis/MinIO/AI-health startup checks, strict health unchanged; Go vet/test/build +3unit PASS.
+  Isolated delayed real PG recovered29.35s/exit0/no skips, tmpfs/no product volume/ports; fixture removed. New Go binarygateway-int18 built separately,
+  not deployed over current bound gateway. No API/event/DSP/model/checkpoint changes.
+- Worker Kafka3 compatibility corrected6e25029: current KafkaConnectionError +bootstrap_timeout_ms, SDK config-key assertions, partial-producer cleanup.
+  New own imageed21674b deployed only ingest/no deps/build/pull;8packaged testsPASS0.185s; actual Kafka/MinIO/mockAI/cutter/publish/playback206/privacy pipelinePASS.
+  First failed SDK-key run timed out/fixture cleaned, not countedPASS. Final business evidence INT-13-pipeline.json/log, restart_verified=false (no gateway restart).
+  INT-13 REVIEW; no checkpoint mounts/model imports/inference image in ingest. Current only shared ingest_work volume attached.
+- Next16 Client verified image4fcf2410 replaced only local Client container; actual2live session E2E PASS10.8s on localhost+127001.
+  Prior53fixture tests/audits0/build remain valid. INT-17 REVIEW; no new source/UI/API change or production/master release.
+- Runtime snapshot coordination/codex/verification/RUNTIME-20261027.json. AI pipeline still explicitMOCK_ONLY; real :8001 gate not rerun/claimed.
+  No product data invented/promoted; test users/media retained and source=test, exact test videos softdeleted/threshold restored.

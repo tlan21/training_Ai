@@ -1,0 +1,17 @@
+{
+  "verified_at": "2026-10-27T04:14:01.2981482Z",
+  "worker_image": "sha256:ed21674b559e233f4b6f4bd3600496ebf2c4da7d974db0f104822c6debebba0c",
+  "worker_state": "running",
+  "worker_mounts": [
+    "/srv/work"
+  ],
+  "client_image": "sha256:4fcf241026fb926cfd8d56bf5d31dade374df42dcded6c1037f2d2792d376cc3",
+  "client_state": "running",
+  "client_next": "16.4.3",
+  "gateway_start_by_codex": false,
+  "gateway_startup_code_deployed": false,
+  "new_mock_pipeline": "PASS",
+  "pipeline_restart_verified": false,
+  "client_live_auth_cases": 2,
+  "live_ai_integration": "NOT_RUN"
+}

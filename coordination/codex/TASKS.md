@@ -25,7 +25,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-14 | HC-06/D18/D21 | Popularity MVP, real metadata, recommendation_mode | PARTIAL | MVP/PG/Client live verified; full parity INT-06 remains |
 | INT-15 | HC-07/09/D19/D21 | Valid product interactions + versioned export for v2 | REVIEW | schema/provenance accepted byClaude; data gate NO_DATA |
 | INT-16 | INT-14 | Client same-origin API transport | REVIEW | fresh Docker build/proxy smoke PASS; security gate INT-17 separate |
-| INT-17 | INT-16 audit | Client framework security migration | IN_PROGRESS | gateway externally healthy; deploy Next16 and2live cases |
+| INT-17 | INT-16 audit | Client framework security migration | REVIEW | Next16 deployed;53fixture+2live/audits0/build PASS |
 | INT-18 | INT-00/13 boot | Bounded dependency startup recovery | REVIEW | Go+delayed PG+8worker tests/image PASS |
 
 Hoàn thành trước tách làn (bằng chứng INVENTORY mục 5): T0.1–T0.4, T2.1–T2.4, T4.1, T4.2 = DONE (VERIFIED-HIST, build VERIFIED-NOW);
@@ -230,7 +230,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Checkpoint: Lane codex / Verified host+Docker functionality / Contract unchanged / Next INT-17 security+runtime recovery.
 
 ### INT-17 — Client framework security migration
-- T gốc: INT-16 fresh build audit | Owner: CODEX | Status: IN_PROGRESS (2026-10-27; recovered gateway enables2live checks)
+- T gốc: INT-16 fresh build audit | Owner: CODEX | Status: REVIEW (2026-10-27; Next16 source/local deployment/live gate verified)
 - Depends on: user major-upgrade approval received2026-10-27; runtime recovery for2live checks | Blocks: final Client runtime acceptance
 - Acceptance: scoped upgrade approved; locked clean install/types/lint/build/Docker/55UI+live checks PASS; runtime critical/high findings resolved or explicitly reviewed;
   existing Stitch/API/cookie/JWT behavior preserved, no unrelated features or AI edits.
@@ -239,7 +239,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
   npm fix proposes16.4.3 major. No install/auditfix/major source edits made. Functional Client container smoke PASS is not a security pass.
 - Changed actual: client package/lock, flat ESLint, generated Next TS config, Docker gates,2unused directives; existing proxy smoke manifestreader; evidence.
 - Evidence2026-10-27: verification/INT-17.md +checks.json; host/Docker cleaninstall/lint/build/tsc PASS; full/runtime audits0;53Client E2E PASS1.4m; proxy smoke/E2Etypes PASS. Two live cases NOT_RUN/gateway stopped.
-- Commits:651820f approval/start;691ede2 implementation+verification. Next action: runtime recovery then2live cases; no major decision pending, no force install/API/AI edits.
+- Commits:651820f approval/start;691ede2 migration,3f3f7e4 checkpoint; live runtime gate closed now. Next action: normal release gates/user release only; no force install/API/AI edits.
 - Checkpoint: Lane codex / Changed approved Next16 migration / Verified audits0+53E2E+host/Docker gates / Contract no / Next2live checks after gateway recovery.
 
 ### INT-18 — Bounded dependency startup recovery
@@ -256,4 +256,6 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Checkpoint: Lane codex / IN_PROGRESS / Contract unchanged / Next implement/test startup recovery.
 - Evidence complete: verification/INT-18.md; Go vet/test/build +3startup unitPASS; isolated delayedPG29.35s PASS/exit0/no skips;
   own worker image43dd08cf buildPASS +8packaged testsPASS0.167s/networknone. Initial SDK import failure corrected before deployment.
-- Commits: d27beb2 taskstart; implementation checkpoint follows. Source REVIEW; no existing gateway deployment/start by Codex.
+- Commits: d27beb2 taskstart; 91e7ef8 implementation,6e25029 Kafka3 integration correction. Source REVIEW; no existing gateway deployment/start by Codex.
+- INT-17 live gate2026-10-27: verified image4fcf2410 deployed locally;2actual auth browser cases PASS10.8s alongside prior53fixture passes/audits0.
+  Existing gateway recovered externally, not started/restarted by Codex. INT-13/17 REVIEW; no new INTEGRATED_REAL AI claim.

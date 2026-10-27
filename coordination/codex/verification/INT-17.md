@@ -1,6 +1,6 @@
 # INT-17 — Client framework security decision (2026-10-27)
 
-Owner CODEX. Status PARTIAL: user approved2026-10-27 (“hãy nâng lên”), migration/security checks PASS; two live gateway cases remain blocked by runtime.
+Owner CODEX. Status REVIEW: approved migration/security/browser checks and two live gateway sessions PASS2026-10-27.
 Initial audit/proposal below is historical evidence. No public deployment, force install, AI/API/DB change performed.
 
 ## Evidence
@@ -84,3 +84,14 @@ Changed: Client package/lock/lint/TypeScript/Docker gate; unused comments; proxy
 Verified: host+Docker clean install/lint/build/tsc;full+runtime audits0;53E2E/types;proxy smoke;design compatibility
 Contract touched: no (public0.3.1/AI-APIv1.3 unchanged)
 Next safe task: run2live Client cases after user gateway recovery, then INT-17 REVIEW; no release/push without user
+
+## Live runtime gate closed2026-10-27
+- Gateway/infra/mock recovered externally. Existing Client container referenced old cached image, so Codex recreated only Client via
+  Compose up -d --no-deps --no-build --pull never client, using already-verified Next16 image4fcf2410.
+  No existing gateway/Claude/faktory start/restart by Codex; no dependency container recreation or orphan removal.
+- `npx playwright test e2e/client_auth_live.spec.ts --reporter=list`: **2PASS10.8s**, raw INT-17-live-auth.log.
+  Actual Client Docker→gateway→Postgres, both localhost/127.0.0.1: register/login, cookie origin/HttpOnly/rotation,
+  profilePUT, feed/modepopularity, logout/cookie removal/reload. No route mocks; test accounts retain test provenance.
+- This closes the2NOT_RUN cases in the earlier preflight. The53fixture cases were not needlessly repeated; same Client source/image already verified.
+  Readonly unauthenticated /api/categories requests return401 on both origins. Local deployment snapshot RUNTIME-20261027.json.
+- INT-17 acceptance met on lane, REVIEW pending normal release. No public API/schema/AI behavior change, no master push/release.
