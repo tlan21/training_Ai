@@ -106,3 +106,10 @@ Next safe task: user runtime recovery +Claude bundle verifier; no ready independ
 - C:14.63GiB/E:1.48GiB; no npm install needed. Set INT-13 IN_PROGRESS before full image build; select backend_endpoint project skill.
   Build only own allowlisted CPU worker, no checkpoint/model/inference source; tests networknone/no production volumes.
 - Next full image build, correct actual dependency failures if any, packaged3preprocess tests and source audit; pipeline deployment remains runtime gate.
+
+## INT-13 verified checkpoint2026-10-27
+- Full new runtime image build PASS,4packaged tests PASS13.836s/networknone, pipcheck PASS; image4caf38a8cfdc2651bdcb76195aae61ed7410d24edfe41f711a2002834fd0681b.
+- CPU-only/no model/checkpoint/inference source audit PASS. Testcontainers autoremove; existing worker unchanged. Source context14.31kB.
+- INT-13 PARTIAL pending deployed pipeline; old resource blocker lifted (C:13.5GiB after build). Project stack remains stopped; no start bypass.
+- INT-15 REVIEW: Claude verifier ACCEPTED schema/provenance/rows/SHA; NO_DATA, not train readiness. INT-14 popularity remains primary.
+- Next independent gate: INT-16 fresh Client image build/config proxy smoke, now Docker disk capacity sufficient; no UI layout change.

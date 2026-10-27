@@ -1,6 +1,6 @@
 # INT-13 — standalone ingest image (2026-10-26)
 
-Owner CODEX, project skill backend_endpoint.md. Status BLOCKED: full runtime build/pipeline gate not executed.
+Owner CODEX, project skill backend_endpoint.md. Status PARTIAL: full runtime image/tests PASS2026-10-27; deployed pipeline not executed.
 
 ## Source change
 - Own `backend/ingest-worker/Dockerfile` builds `video-ai-ingest-worker` from Python3.11 slim and explicit CPU Torch.
@@ -33,6 +33,24 @@ Owner CODEX, project skill backend_endpoint.md. Status BLOCKED: full runtime bui
   remain required before REVIEW/DONE. Cached dependency tests and the tiny source target do not prove a clean-machine runtime build.
 - Before restarting an existing stack, use the already existing containers; the new compose image is not built yet.
   Do not unintentionally trigger large builds with `compose up --build` during resource recovery.
+
+## 2026-10-27 — full runtime build and packaged tests
+- C:14.63GiB/E:1.48GiB before build, sufficient working room on Docker disk; no npm install. Docker externally restarted,
+  direct daemon pid193; project containers stopped, only unrelated faktory running. No restart/start of existing services by Codex.
+- Full `docker-buildx build --load --progress plain -t video-ai-ingest-worker -f backend/ingest-worker/Dockerfile .`: PASS/exit0.
+  Only14.31kB context. Python3.11-slim base digest9635410349cba3531fabde484e07f14e625abb40e1bc8b23fffa046cb497ce2d;
+  all pinned CPU/runtime packages downloaded/installed successfully. Full output INT-13-runtime-build.log.
+- Image sha256:4caf38a8cfdc2651bdcb76195aae61ed7410d24edfe41f711a2002834fd0681b; inspect size362651913bytes;
+  command python /srv/ingest-worker/main.py. Metadata INT-13-runtime-image.json.
+- New ephemeral container, networknone/memory1GiB, only tests+fixtures mountedreadonly, no production volumes:
+  **4tests PASS (13.836s), exit0**. Valid audio video, invalid media, silent2.5s and CPU/source audit.
+  Torch CUDA=None/+cpu, exactly audio/features.py+mel.py under ai_core; no inference-service or .pt files in /srv.
+  Tests patch checkpoint load to fail and check no model module import. INT-13-runtime-tests.log.
+- Fresh ephemeral networknone `python -m pip check`: PASS, no broken requirements (INT-13-runtime-pip.log).
+  Both task containers removed automatically; no existing container removed/replaced. Real/mock Compose config --quiet PASS.
+- Remaining: deploy this image into the existing stack and run actual Kafka→MinIO ingest→gateway/mock pipeline.
+  This is NOT_RUN because stack stopped and prior gateway start was rejected by automatic review; no bypass attempted.
+  Older cached-worker tests are separate evidence. No clean-machine full system or new realAI integration claim.
 
 Lane: codex
 Changed: own worker Dockerfile/ignore/locked requirements/test/README; compose image/build; Codex trackers/evidence

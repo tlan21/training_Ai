@@ -21,9 +21,9 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-10 | — | Forgot-password giữ nguyên, ngoài release hiện tại | DEFERRED / OUT_OF_SCOPE | D1, HC-02 |
 | INT-11 | INT-01 | HTTP media giữa gateway Docker và inference host | BLOCKED | HO-03 Docker Desktop host transport; restart decision pending |
 | INT-12 | T2.2/T3.1 | CMS access JWT chỉ ở RAM, refresh khi reload | REVIEW | 41 E2E PASS; live gateway cookie rotation |
-| INT-13 | INT-00 | Image ingest riêng + kiểm clean build | IN_PROGRESS | full runtime build/test; project stack currently stopped |
+| INT-13 | INT-00 | Image ingest riêng + kiểm clean build | PARTIAL | full image+4packaged tests PASS; deployed pipeline pending runtime |
 | INT-14 | HC-06/D18/D21 | Popularity MVP, real metadata, recommendation_mode | PARTIAL | MVP/PG/Client live verified; full parity INT-06 remains |
-| INT-15 | HC-07/09/D19/D21 | Valid product interactions + versioned export for v2 | PARTIAL | clean actual bundle delivered; Claude verifier +runtime recovery pending |
+| INT-15 | HC-07/09/D19/D21 | Valid product interactions + versioned export for v2 | REVIEW | schema/provenance accepted byClaude; data gate NO_DATA |
 | INT-16 | INT-14 | Client same-origin API transport | REVIEW | c30c664;52E2E+live sessions PASS; fresh Docker gate |
 
 Hoàn thành trước tách làn (bằng chứng INVENTORY mục 5): T0.1–T0.4, T2.1–T2.4, T4.1, T4.2 = DONE (VERIFIED-HIST, build VERIFIED-NOW);
@@ -170,7 +170,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Checkpoint: Lane codex; Changed auth+fixtures+login parity; Verified 41 E2E + types/build PASS; Contract touched no; Next safe task INT-11.
 
 ### INT-13 — Ingest image riêng, clean build
-- T gốc: INT-00 | Owner: CODEX | Status: IN_PROGRESS (2026-10-27; C:14.63GiB, full image build now feasible)
+- T gốc: INT-00 | Owner: CODEX | Status: PARTIAL (full runtime image+4tests PASS2026-10-27; deployed pipeline gate)
 - Depends on: enough Docker disk working room (D10/HC-03); transport recovery HO-03 for real integration | Blocks: clean-machine deployment
 - Acceptance: own worker image builds from source, CPU DSP/PyAV only, no model/checkpoint/inference process; no AI code edits;
   tests in fresh image + compose worker/pipeline PASS. Existing helper feature algorithm/event schema unchanged.
@@ -180,8 +180,9 @@ T2.5, T3.1, T3.2 = PARTIAL.
   extracted helper namespace + cached CPU dependencies with network disabled:3 preprocess tests PASS (0.147s). Real/mock compose config PASS,
   E2E types PASS, diff check PASS. Full runtime image NOT_BUILT; running worker remains legacy cached runtime, no pipeline claim for new image.
 - Commits: 048fb6a (own package/source build/3 tests); final checkpoint records current gate.
-- Next action: sufficient C: capacity then full CPU dependency/image build, run tests in new image, worker deploy + pipeline regression.
-  Do not use compose up --build during resource recovery; reuse existing containers until image verified. No large download attempted at C:1.98GiB.
+- Evidence2026-10-27: verification/INT-13.md, full runtime build exit0, image4caf38a8/362651913bytes;4packaged tests PASS13.836s/networknone/no product volumes;
+  pipcheck PASS, source CPU/no checkpoint audit PASS, both Compose configs PASS. Existing worker not changed; pipeline NOT_RUN while stack stopped.
+- Next action: user runtime recovery then own worker deploy without build/pull and pipeline regression. No global restart or gateway-start bypass.
 - Checkpoint: Lane codex / Changed own ingest package+compose+tests / Verified source build+3 tests/config PASS / Contract no / Next capacity+HO-03 recovery.
 
 ### INT-14 — Popularity recommendation + truthful mode (HC-06 scope)
@@ -199,7 +200,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Checkpoint: Lane codex / Changed MVP mode+metadata / Verified Go+PG+FE/mode+business checks / Contract public0.3 / Next INT-16.
 
 ### INT-15 — Product interactions + read-only v2 export (HC-07 scope)
-- T gốc: D19/D21, HC-07/09 (proposed ID INT-13 collides existing image task) | Owner: CODEX | Status: PARTIAL (source/export verified2026-10-26; Claude verifier/runtime gate)
+- T gốc: D19/D21, HC-07/09 (proposed ID INT-13 collides existing image task) | Owner: CODEX | Status: REVIEW (2026-10-27; source/export+Claude acceptance verified)
 - Depends on: ttv2-data-v1.1 read, INT-02 persistence; no AI training dependency | Blocks: AI-12 real product dataset
 - Acceptance: roleclient interactions only, one watch_time/session excluding seek, skip1–<3s, valid product IDs/media visibility;
   no test/demo events in training export; consistent readonly snapshot JSONL+manifest rows/sha256/version, no PII, deterministic ordering.
@@ -210,7 +211,9 @@ T2.5, T3.1, T3.2 = PARTIAL.
   corrected testcleanup +0fixture SQL; final actual CLI snapshot20261026T113856Z exit0/hash/count PASS (0product rows,10categories).
   Initial2fixture artifact quarantined/not handed off. Live staff403/nonwatch422/mock pipeline passed; restart attempt NOT_PASS (Desktop stalled).
 - Next action: Claude verifier ACCEPTED2026-10-27/data gate NO_DATA; user restore runtime (automatic review blocked targeted gateway start). No AI training or fabricated data.
-- Checkpoint: Lane codex / PARTIAL until external verifier/runtime / Contract public0.3.1 +ttv2-data-v1.1 / No product vectors/training.
+- Evidence2026-10-27: Claude handoff+verify_INT-15_20261026T113856Z.json schema/provenance/count/SHA ACCEPTED; data gate NO_DATA,0valid interactions.
+  Source/test/export acceptance met on lane; actual collection/training readiness remains AI-12 dependency, not claimed by INT-15.
+- Checkpoint: Lane codex / REVIEW accepted format+source behavior / Contract public0.3.1 +ttv2-data-v1.1 / No product vectors/training.
 
 ### INT-16 — Client same-origin API transport
 - T gốc: INT-14 live auth defect | Owner: CODEX | Status: REVIEW (host verified2026-10-26; fresh Docker capacity gate remains)

@@ -1,0 +1,16 @@
+{
+  "verified_at": "2026-10-27T02:48:42.5698335Z",
+  "image": "sha256:4caf38a8cfdc2651bdcb76195aae61ed7410d24edfe41f711a2002834fd0681b",
+  "size_bytes": 362651913,
+  "entrypoint": null,
+  "command": [
+    "python",
+    "/srv/ingest-worker/main.py"
+  ],
+  "workdir": "/srv/ingest-worker",
+  "network_for_tests": "none",
+  "production_volumes_attached": false,
+  "preprocess_tests": 4,
+  "ai_model_checkpoints_included": false,
+  "build_context_reported": "14.31kB"
+}

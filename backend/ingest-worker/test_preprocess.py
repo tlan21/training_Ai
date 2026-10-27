@@ -14,6 +14,15 @@ from main import preprocess
 
 
 class PreprocessTest(unittest.TestCase):
+    def test_packaged_cpu_only_sources(self):
+        root = Path("/srv")
+        self.assertEqual(torch.version.cuda, None)
+        self.assertTrue(torch.__version__.endswith("+cpu"))
+        self.assertFalse((root / "inference-service").exists())
+        self.assertEqual(sorted(str(p.relative_to(root / "ai_core")) for p in (root / "ai_core").rglob("*.py")),
+                         ["audio/features.py", "audio/mel.py"])
+        self.assertFalse(any(root.rglob("*.pt")))
+
     def check_output(self, directory, duration):
         features = np.asarray(json.loads((directory / "audio_features.json").read_text()))
         frames = sorted(directory.glob("*.jpg"))

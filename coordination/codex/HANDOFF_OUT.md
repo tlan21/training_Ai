@@ -175,3 +175,9 @@ Mẫu HO:
   Popularity stays primary; no training/model changes or test-data promotion. INT-15 runtime gate remains open.
 - C:14.63GiB now permits full own CPU ingest image build (INT-13 IN_PROGRESS). Project stack currently stopped after external Docker restart;
   only faktory runs. Codex is building/testing the isolated image, not changing Claude runtime/checkpoints or starting gateway after prior rejection.
+
+## 2026-10-27 INT-13 full image checkpoint / INT-15 REVIEW
+- Own ingest runtime image built from source, ID4caf38a8/362651913bytes.4packaged preprocessing/source audit testsPASS13.836s/networknone;
+  pipcheckPASS, no checkpoint/model/service included or AI source edits. Existing worker/image deployment not changed.
+- INT-13 PARTIAL until deployed pipeline; project stack stopped, no gateway-start bypass/global restart. Evidence INT-13-runtime-*.
+- INT-15 REVIEW on Codex lane after your ACCEPTED verifier report; NO_DATA remains explicit. No product training/vector readiness claim.
