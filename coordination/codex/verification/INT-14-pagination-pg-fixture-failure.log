@@ -1,0 +1,12 @@
+=== RUN   TestContentPages_RealFeedSnapshotPrivacyAndColdTail
+    content_pages_test.go:47: ERROR: null value in column "duration_seconds" of relation "videos" violates not-null constraint (SQLSTATE 23502)
+--- FAIL: TestContentPages_RealFeedSnapshotPrivacyAndColdTail (0.06s)
+=== RUN   TestContentPages_RealCatalogCategorySnapshotAndExhaustion
+=== RUN   TestContentPages_RealCatalogCategorySnapshotAndExhaustion/newest
+    content_pages_test.go:104: ERROR: null value in column "duration_seconds" of relation "videos" violates not-null constraint (SQLSTATE 23502)
+=== RUN   TestContentPages_RealCatalogCategorySnapshotAndExhaustion/trending
+    content_pages_test.go:104: ERROR: null value in column "duration_seconds" of relation "videos" violates not-null constraint (SQLSTATE 23502)
+--- FAIL: TestContentPages_RealCatalogCategorySnapshotAndExhaustion (0.06s)
+    --- FAIL: TestContentPages_RealCatalogCategorySnapshotAndExhaustion/newest (0.03s)
+    --- FAIL: TestContentPages_RealCatalogCategorySnapshotAndExhaustion/trending (0.03s)
+FAIL

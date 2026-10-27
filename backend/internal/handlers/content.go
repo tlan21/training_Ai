@@ -6,6 +6,7 @@ import (
 	"errors"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -50,7 +51,15 @@ func NewContentHandlers(
 func (h *ContentHandlers) Feed(c *gin.Context) {
 	ctx := c.Request.Context()
 	uid := c.GetString("user_id")
-	limit := parseLimit(c.Query("limit"), 10)
+	limit, err := contentLimit(c.Query("limit"))
+	if err != nil {
+		handleDomainErr(c, err)
+		return
+	}
+	if h.ai == nil {
+		h.popularityFeed(c, gen.Popularity, limit)
+		return
+	}
 	items := []gin.H{}
 	seen := map[string]bool{}
 	appendVideo := func(id string) error {
@@ -118,80 +127,72 @@ func (h *ContentHandlers) Feed(c *gin.Context) {
 		}
 	}
 	if len(items) == 0 {
-		if h.interactions != nil {
-			ids, err := h.interactions.PopularityTop(ctx, limit)
-			if err != nil {
-				fail()
-				return
-			}
-			for _, id := range ids {
-				if err := appendVideo(id); err != nil {
-					fail()
-					return
-				}
-			}
-		}
-		if len(items) == 0 {
-			// shortcut: cold start scans published clips; add a limited query when the catalog grows.
-			clips, err := h.clips.List(ctx, nil, strPtr(string(domain.ClipPublished)))
-			if err != nil {
-				fail()
-				return
-			}
-			for _, clip := range clips {
-				if err := appendVideo(clip.VideoID); err != nil {
-					fail()
-					return
-				}
-			}
-		}
+		h.popularityFeed(c, mode, limit)
+		return
 	}
-	// shortcut: preserve the existing single-page feed; implement cursor ranking in its own pagination task.
+	// shortcut: personalized remains single-page and production-disabled until INT-03/AI-12 acceptance.
+	if c.Query("cursor") != "" {
+		handleDomainErr(c, domain.ErrValidation)
+		return
+	}
 	c.JSON(http.StatusOK, gin.H{"items": items, "next_cursor": nil, "recommendation_mode": mode})
 }
 
-// GET /api/videos?category_id&sort&cursor&limit — cursor as offset string, trending via PopularityTop
+func (h *ContentHandlers) popularityFeed(c *gin.Context, mode gen.FeedPageRecommendationMode, limit int) {
+	clips, next, err := h.clips.ListPopularPage(c.Request.Context(), c.Query("cursor"), limit)
+	if err != nil {
+		contentPageError(c, err)
+		return
+	}
+	items := make([]gin.H, 0, len(clips))
+	for i := range clips {
+		items = append(items, toClipH(&clips[i], h.storage))
+	}
+	c.JSON(http.StatusOK, gin.H{"items": items, "next_cursor": next, "recommendation_mode": mode})
+}
+
+// GET /api/videos?category_id&sort&cursor&limit — stable creation/ranking cursor.
 func (h *ContentHandlers) ListVideos(c *gin.Context) {
-	limit := parseLimit(c.Query("limit"), 10)
+	limit, err := contentLimit(c.Query("limit"))
+	if err != nil {
+		handleDomainErr(c, err)
+		return
+	}
 	catID := c.Query("category_id")
 	sort := c.Query("sort")
 	if sort == "" {
 		sort = "newest"
 	}
-	var vids []domain.Video
-	if sort == "trending" && h.interactions != nil {
-		ids, _ := h.interactions.PopularityTop(c.Request.Context(), 100)
-		for _, id := range ids {
-			v, err := h.videos.Get(c.Request.Context(), id)
-			if err != nil || v.Status != domain.VideoProcessed {
-				continue
-			}
-			if catID != "" && (v.CategoryID == nil || *v.CategoryID != catID) {
-				continue
-			}
-			vids = append(vids, *v)
-			if len(vids) >= limit {
-				break
-			}
-		}
-	} else {
-		// newest fallback: list all processed
-		all, _, _ := h.videos.List(c.Request.Context(), strPtr(string(domain.VideoProcessed)), 1, 1000)
-		for _, v := range all {
-			if catID != "" && (v.CategoryID == nil || *v.CategoryID != catID) {
-				continue
-			}
-			vids = append(vids, v)
-			if len(vids) >= limit {
-				break
-			}
-		}
+	vids, next, err := h.videos.ListPublicPage(c.Request.Context(), catID, sort, c.Query("cursor"), limit)
+	if err != nil {
+		contentPageError(c, err)
+		return
 	}
 	items := make([]gin.H, 0, len(vids))
 	for i := range vids {
 		items = append(items, toVideoH(&vids[i], h.categories))
 	}
-	c.JSON(http.StatusOK, gin.H{"items": items, "next_cursor": nil})
+	c.JSON(http.StatusOK, gin.H{"items": items, "next_cursor": next})
+}
+
+func contentLimit(raw string) (int, error) {
+	if raw == "" {
+		return 10, nil
+	}
+	limit, err := strconv.Atoi(raw)
+	if err != nil || limit < 1 || limit > 50 {
+		return 0, domain.ErrValidation
+	}
+	return limit, nil
+}
+
+func contentPageError(c *gin.Context, err error) {
+	if errors.Is(err, domain.ErrValidation) {
+		handleDomainErr(c, domain.ErrValidation)
+		return
+	}
+	log.Printf("content page unavailable: %v", err)
+	ErrorEnvelope(c, 500, "INTERNAL", "Unable to load content")
 }
 
 // GET /api/videos/:id — only processed

@@ -15,8 +15,10 @@ import (
 // Mỗi mock embed mutex để test song song an toàn.
 
 type VideoRepoMem struct {
-	mu sync.Mutex
-	M  map[string]*domain.Video
+	Clips        *ClipRepoMem
+	Interactions *InteractionRepoMem
+	mu           sync.Mutex
+	M            map[string]*domain.Video
 }
 
 func NewVideoRepoMem() *VideoRepoMem { return &VideoRepoMem{M: map[string]*domain.Video{}} }
@@ -117,8 +119,10 @@ func (r *VideoRepoMem) SoftDelete(_ context.Context, id string) error {
 // --- Clip ---
 
 type ClipRepoMem struct {
-	mu sync.Mutex
-	M  map[string]*domain.Clip
+	Videos       *VideoRepoMem
+	Interactions *InteractionRepoMem
+	mu           sync.Mutex
+	M            map[string]*domain.Clip
 }
 
 func NewClipRepoMem() *ClipRepoMem { return &ClipRepoMem{M: map[string]*domain.Clip{}} }

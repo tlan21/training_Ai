@@ -1,0 +1,12 @@
+=== RUN   TestContentPages_RealFeedSnapshotPrivacyAndColdTail
+    content_pages_test.go:47: set TEST_POSTGRES_DSN to test real PostgreSQL
+--- SKIP: TestContentPages_RealFeedSnapshotPrivacyAndColdTail (0.00s)
+=== RUN   TestContentPages_RealCatalogCategorySnapshotAndExhaustion
+=== RUN   TestContentPages_RealCatalogCategorySnapshotAndExhaustion/newest
+    content_pages_test.go:104: set TEST_POSTGRES_DSN to test real PostgreSQL
+=== RUN   TestContentPages_RealCatalogCategorySnapshotAndExhaustion/trending
+    content_pages_test.go:104: set TEST_POSTGRES_DSN to test real PostgreSQL
+--- PASS: TestContentPages_RealCatalogCategorySnapshotAndExhaustion (0.00s)
+    --- SKIP: TestContentPages_RealCatalogCategorySnapshotAndExhaustion/newest (0.00s)
+    --- SKIP: TestContentPages_RealCatalogCategorySnapshotAndExhaustion/trending (0.00s)
+PASS

@@ -14,6 +14,7 @@ type VideoRepository interface {
 	Get(ctx context.Context, id string) (*domain.Video, error)
 	GetProcessed(ctx context.Context, id string) (*domain.Video, error)
 	List(ctx context.Context, status *string, page, size int) ([]domain.Video, int, error)
+	ListPublicPage(ctx context.Context, categoryID, sort, cursor string, limit int) ([]domain.Video, *string, error)
 	SetStatus(ctx context.Context, id string, s domain.VideoStatus) error
 	SetCategory(ctx context.Context, id, categoryID string) error
 	SetDuration(ctx context.Context, id string, seconds float64) error
@@ -25,6 +26,7 @@ type ClipRepository interface {
 	Get(ctx context.Context, id string) (*domain.Clip, error)
 	GetPublished(ctx context.Context, id string) (*domain.Clip, error)
 	ListPublishedByVideo(ctx context.Context, videoID string) ([]domain.Clip, error)
+	ListPopularPage(ctx context.Context, cursor string, limit int) ([]domain.Clip, *string, error)
 	List(ctx context.Context, videoID, status *string) ([]domain.Clip, error)
 	SetStatus(ctx context.Context, id string, s domain.ClipStatus) error
 	SetFilePath(ctx context.Context, id, path string) error

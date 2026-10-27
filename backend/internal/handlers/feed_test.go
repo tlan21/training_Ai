@@ -45,6 +45,7 @@ func TestFeedModeMetadataLimitAndCachedVisibility(t *testing.T) {
 				}
 			}
 			interactions := mocks.NewInteractionRepoMem()
+			clips.Videos, clips.Interactions = videos, interactions
 			interactions.Items = []domain.Interaction{{VideoID: "vid_public"}, {VideoID: "vid_private"}}
 			calls := 0
 			var ai ports.AIClient

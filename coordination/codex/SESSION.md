@@ -7,6 +7,10 @@
 - INT-19 REVIEW: public0.3.2 pagination/error contract clarified, 3types regenerated, bothTS/Go/embeddedSpec checks PASS. No application logic changed yet.
 - INT-14 IN_PROGRESS: implement primary/fallback feed and newest/trending catalog cursor pages under contract213aaa9. Only one active task.
   Acceptance/callers/tests listed in TASKS. Current gateway remains real; no runtime change until checks pass.
+- INT-14 current verification checkpoint: final Go vet/test/build +Linux artifacts PASS; real PG joined-query tests PASS/no skips using TEMP tables.
+  New gateway-int14 (SHA c5284c5c2fe00f5f2c20fe9faab0dfecb3fec1bfb62bc085ff5a1f0ab45c8d81) now deployed gateway-only, all env including realAI/stub0 unchanged.
+  Running guarded live4E2E session23040: content_pagination_live +video_flow +visual_search. Do not start another task/recreate gateway during this run.
+  Script backend/.tmp/apply-pagination.ps1 rolls back to verified real gateway-int18 on failure, never mock. Evidence INT-14-pagination.md/logs.
   INT-13/17/18 REVIEW, own worker/Next16/startup binary deployed locally. No master release/push authorized/performed.
 - Project skill backend_endpoint.md +Ponytail full. Claude code/checkpoints/models untouched; committed handoff communication only.
 
