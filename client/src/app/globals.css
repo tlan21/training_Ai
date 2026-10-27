@@ -902,7 +902,16 @@ input[type=checkbox] {
   .nav-actions {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 16px;
+  }
+  .nav-discover .avatar {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--surface-variant);
+  }
+  .nav-library .avatar,.nav-profile .avatar,.nav-detail .avatar {
+    width: 32px;
+    height: 32px;
   }
   .account-menu {
     position: relative;
@@ -1023,6 +1032,14 @@ input[type=checkbox] {
   }
   .remember-row {
     display: flex;
+    line-height: 20px;
+  }
+  .auth-login .remember-row input {
+    width: 20px;
+    height: 20px;
+  }
+  .auth-login .auth-submit {
+    line-height: 28px;
   }
   .auth-register .auth-backdrop,.auth-forgot .auth-backdrop,.auth-reset .auth-backdrop {
     background: linear-gradient(135deg,#0006,transparent,#630ed433),url('/stitch/studio.png') center/cover;
@@ -1041,7 +1058,7 @@ input[type=checkbox] {
     line-height: 32px;
   }
   .auth-register .auth-heading h2 {
-    margin: 0 0 4px;
+    margin: 0;
     font-weight: 600;
   }
   .auth-register .logo-desktop {
@@ -1062,10 +1079,23 @@ input[type=checkbox] {
   }
   .auth-register .terms {
     display: flex;
+    padding-top: 4px;
+    line-height: 16px;
+  }
+  .auth-register .terms input {
+    width: 16px;
+    height: 16px;
+    margin-top: 4px;
+  }
+  .auth-register .terms-link {
+    color: var(--primary);
+  }
+  .auth-register .auth-field>label {
+    line-height: 24px;
   }
   .auth-register .auth-footer {
     padding: 0;
-    margin-top: 32px;
+    margin-top: 40px;
   }
   .auth-forgot .auth-heading,.auth-reset .auth-heading {
     padding: 0 0 32px;
@@ -1260,13 +1290,38 @@ input[type=checkbox] {
   padding: 16px 16px 0;
 }
 .discovery-mobile-search input {
-  height: 48px;
+  height: 20px;
+  background: transparent;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+  flex: 1;
+  font-size: 14px;
+  line-height: 20px;
+}
+.discovery-mobile-search .input-wrap {
+  padding: 12px 16px;
   border-radius: 12px;
   background: var(--surface-container-low);
-  padding: 0 48px;
-  border: 1px solid #ccc3d833;
-  width: 100%;
-  font-size: 14px;
+  box-shadow: 0 1px 2px #0000000d,0 0 0 1px #ccc3d833;
+}
+.discovery-mobile-search .input-icon {
+  position: static;
+  transform: none;
+}
+.discovery-mobile-search .input-icon--left {
+  margin-right: 12px;
+}
+.discovery-mobile-search .input-icon--right {
+  border-left: 1px solid #ccc3d880;
+  padding-left: 12px;
+  color: var(--primary);
+}
+@media(max-width:1023px) {
+  .discovery-page .mobile-header {
+    height: 49px;
+    padding: 12px 16px;
+  }
 }
 .discovery-section {
   margin-top: 32px;
@@ -3405,6 +3460,7 @@ input[type=checkbox] {
   .quick-login p {
     text-align: center;
     font-size: 12px;
+    line-height: 16px;
     color: var(--on-surface-variant);
     text-transform: uppercase;
     font-weight: 600;

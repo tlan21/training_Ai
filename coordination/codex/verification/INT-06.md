@@ -80,6 +80,10 @@ Screen-specific remaining items:
 
 Status remains IN_PROGRESS/PARTIAL; no full Design Parity/production/deployment/release PASS claimed.
 
+Follow-up after09f0611: corrected desktop register row cadence102/header/footer/terms sizes, login checkbox20/line spacing, desktop action gaps/avatar sizes,
+and Discovery mobile49px header +input x68/y79/w253/h20 from actual reference structure. Source-only geometry checks added; latest Client lint/build/tsc PASS.
+Production browser gate still pending exact approved QA startup; no new current screenshot/PASS claimed. INT-06 nowPARTIAL while independent INT-05 proceeds.
+
 Lane: codex
 Changed: Client forms/header/onboarding/search/detail scoped fixes; generated scoped Next guide; reference/fixture tests and comparison evidence
 Verified:16reference captures/images,16baseline layouts,5targeted,dev62/63 (one failure),types/lint/final production build

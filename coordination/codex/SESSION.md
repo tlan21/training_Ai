@@ -2,7 +2,12 @@
 
 ## Branch / task state
 - E:/traning_ai-codex, codex/integration. Release#1/#2/#3 received; HEAD..master empty at session start. No master release/push authorized.
-- INT-06 IN_PROGRESS (user approved proposed UI parity work). INT-19 REVIEW, INT-14 pagination complete/PARTIAL for full Client parity.
+- INT-06 PARTIAL pending production QA startup confirmation +library/forgot-link scope; code09f0611 +follow-up geometry source/final lint/build/tsc PASS.
+- Only INT-05 IN_PROGRESS: independent CMS parity preparation (user approved Client→CMS proposal), baseline18layouts running session86472.
+  Project skill cms_screen.md read +plan03§7 CẮT-list; no CMS source change yet. Current CMS5173 remains existing image; no new service started.
+- Client follow-up after09f0611: desktop register label cadence/header/footer/terms/checkbox sizes, login checkbox/type spacing,
+  Discovery mobile49px header/flex search row and desktop nav action/avatar spacing aligned to actual reference source. New geometry tests pending production runtime;
+  no pixel PASS inferred from source-only fixes. Latest final build/tsc/lint session67715 exited0; no active compiler or Client QA server.
 - INT-06 latest checkpoint: scoped UI source fixes ready (forms/header/onboarding/search/detail); paired8x2reference/baseline screenshots and metrics captured,
   final16reference captures with loaded images PASS36.8s. Targeted5PASS; dev full62PASS/1trackingFAIL3.3m (watch_time0 during effect cleanup), tracking source unchanged.
   E2E/Clienttypes, proper client-directorylint, finalNext production build/tsc PASS. No production63PASS or new Client deployment yet.

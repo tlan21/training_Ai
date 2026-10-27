@@ -13,8 +13,8 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-02 | T2.5 | Thay adapter memory → Postgres (interactions/history/likes/settings) | REVIEW | INT-00 (DB); không phụ thuộc AI |
 | INT-03 | T2.5, T1.7 | Two-Tower: sandbox/ID mapping; product vectors + feed | BLOCKED | product v2 AI-12 production gate; AI-09 MovieLens sandbox only |
 | INT-04 | T3.1, T3.2 | Contract nguồn phát video gốc (OpenAPI) + nối UI | PARTIAL | INT-00 (runtime); contract có thể làm độc lập |
-| INT-05 | T3.1 | CMS Design Parity FULL | PARTIAL | INT-02, INT-04 |
-| INT-06 | T3.2 | Client Design Parity FULL | IN_PROGRESS | existing API/Stitch scope; INT-02/04/14 verified |
+| INT-05 | T3.1 | CMS Design Parity FULL | IN_PROGRESS | independent existing-API UI; Client QA approval pending |
+| INT-06 | T3.2 | Client Design Parity FULL | PARTIAL | scoped source/build complete; production QA/API scope decisions pending |
 | INT-07 | T5.1 | Load test 50 video dồn hàng đợi | BLOCKED | AI-04 (GPU); bản CPU chạy trước được |
 | INT-08 | T5.2 | Soak test 48 h | BLOCKED | INT-07 |
 | INT-09 | T5.3 | Docs bàn giao hệ thống | TODO | INT-05..08 |
@@ -106,15 +106,19 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Checkpoint: Lane codex / Changed contract+players / Verified playback PASS, parity PARTIAL / Contract yes OpenAPI v0.2.0 / Next resource+scope.
 
 ### INT-05 — CMS Design Parity FULL
-- T gốc: T3.1 | Owner: codex | Status: PARTIAL
+- T gốc: T3.1 | Owner: CODEX | Status: IN_PROGRESS (2026-10-27; independent CMS parity work)
 - Depends on: INT-02; INT-04 functional playback PASS; full parity còn cần scope/resource
 - Gap (HIST `docs/T3.1_cms_design_parity.md`): nguồn phát video gốc, metadata/analytics/rules/editor fields chưa có API, Settings chưa persist.
 - NOW: settings/interactions persistence và nguồn phát đã có; CMS native controls + metadata/analytics/rules/editor contract gaps còn mở.
 - Acceptance: checklist 10 mục `my-agent/agent/skills/ui_design_review.md` PASS toàn bộ màn (390×844, 1440×900); Playwright PASS.
 - Evidence: HIST 30 Playwright PASS 2026-10-14 | Commits: `5bc0ccf`, `b8b6dbe`, `59e92ba`, `b3ab36c`, `8cc773f` | Checkpoint: —
+- Current scope: existing API/plan03§7 CẮT-list only; baseline9screen layouts x390/1440, compare reference HTML, correct proven UI/control gaps.
+  No new metric/editor/rules/API fields, fake AI/model data or deferred forgot-password work. Settings/auth/history behavior already verified stays intact.
+- Changed planned: CMS existing pages/shared player/styles, E2E +owned evidence/tracker. Acceptance: per-screen10item review, CMS tsc/build and relevant browser checks.
+- Next action: finish18baseline captures, compare CMS player/control/layout against Stitch; fix independent gaps while Client QA confirmation remains pending.
 
 ### INT-06 — Client Design Parity FULL
-- T gốc: T3.2 | Owner: CODEX | Status: IN_PROGRESS (2026-10-27; user approved proposed UI parity work)
+- T gốc: T3.2 | Owner: CODEX | Status: PARTIAL (2026-10-27; scoped fixes/build complete, QA/scope confirmation pending)
 - Depends on: INT-02; INT-04 functional playback PASS; full parity còn cần scope/resource
 - Gap (HIST `docs/T3.2_client_design_parity.md`): URL video gốc, saved-list/playlist, DELETE likes/history, analytics count; preferences/history/likes memory.
   NOW: source/history/likes/settings đã có; preference source đã sửa nhưng runtime restart pending. Saved-list/delete/playlist/count còn scope decision.
@@ -127,6 +131,10 @@ T2.5, T3.1, T3.2 = PARTIAL.
   Client tsc/lint/build PASS. Full DONE still requires unresolved library/metrics scope decision; no false full parity PASS.
 - Changed planned: client/src pages/shared components/styles as proven by comparison; e2e parity checks; owned report/SESSION/tracker.
 - Next action: capture current/reference baseline from same deterministic data and identify concrete per-screen differences before edits.
+- Current checkpoint: 09f0611 scoped forms/header/onboarding/search/detail fixes; follow-up desktop form/search geometry source ready, final lint/build/tsc PASS.
+ 16loaded-image reference captures PASS, baseline16PASS, targeted5PASS; dev62/63 with tracking cleanup failure (not production PASS).
+ Production QA3100 startup rejected by automatic review "blocked by policy"; exact startup/stop plan awaits async user confirmation.
+ Library4routes/forgot-link decisions also pending. No runtime replacement to bypass startup rejection. Continue independent INT-05.
 
 ### INT-07 — Load test 50 video (T5.1)
 - T gốc: T5.1 | Owner: codex | Status: BLOCKED

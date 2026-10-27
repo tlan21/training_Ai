@@ -233,9 +233,28 @@ for(const width of [390,1440]){
   const inputs=page.locator('.auth-field input');await expect(inputs).toHaveCount(4);
   for(let i=0;i<4;i++){
    await expect(inputs.nth(i)).toHaveCSS('height',width===390?'58px':'50px');
-   if(width===390)expect((await inputs.nth(i).boundingBox())!.y).toBe(324+i*102);
+   expect((await inputs.nth(i).boundingBox())!.y).toBe((width===390?324:264)+i*102);
   }
   await expect(page.locator('.auth-submit')).toHaveCSS('height','60px');await noOverflow(page);
+ });
+ test(`INT-06 ${width} shared header and auth spacing follow reference geometry`,async({page})=>{
+  await page.setViewportSize({width,height:width===390?844:900});await setup(page);
+  if(width===390){
+   await page.goto(client+'/discover');
+   await expect(page.locator('.discovery-page .mobile-header')).toHaveCSS('height','49px');
+   const box=(await page.locator('.discovery-mobile-search input').boundingBox())!;
+   expect({x:box.x,y:box.y,width:box.width,height:box.height}).toEqual({x:68,y:79,width:253,height:20});
+  }else{
+   await page.goto(client+'/login');
+   const inputs=page.locator('.auth-field input');
+   expect((await inputs.nth(0).boundingBox())!.y).toBe(322.5);expect((await inputs.nth(1).boundingBox())!.y).toBe(424.5);
+   await expect(page.getByLabel('Ghi nhớ tôi',{exact:true})).toHaveCSS('height','20px');
+   for(const [route,expected]of [['feed',512],['discover',480],['profile?view=library',512]]as const){
+    await page.goto(client+'/'+route);await expect(page.locator('.desktop-nav .nav-search input')).toBeVisible();
+    expect((await page.locator('.desktop-nav .nav-search input').boundingBox())!.width).toBe(expected);
+   }
+  }
+  await noOverflow(page);
  });
  test(`INT-06 ${width} original video matches the happy-path player layout`,async({page},info)=>{
   await page.setViewportSize({width,height:width===390?844:900});await setup(page);

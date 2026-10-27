@@ -42,7 +42,7 @@ export default function DiscoverPage() {
     const filteredClips = category ? clips.filter(c => newItems.some(v => v.id === c.video_id) || trendItems.some(v => v.id === c.video_id)) : clips;
     const newestState = newest.isPending || newest.error || !newItems.length;
     const recommendation = feed.isPending || feed.error || !filteredClips.length;
-    return <div className="content-page"><AppNav active="discover"/><MobileHeader />
+    return <div className="content-page discovery-page"><AppNav active="discover"/><MobileHeader />
  <form className="discovery-mobile-search mobile-only" onSubmit={e => { e.preventDefault(); router.push(`/search?q=${encodeURIComponent(q)}`); }}><div className="input-wrap"><span className="input-icon input-icon--left"><Icon name="search"/></span><input aria-label="Tìm kiếm video" placeholder="Tìm kiếm video, hình ảnh..." value={q} onChange={e => setQ(e.target.value)}/><Link href="/search?tab=visual" className="input-icon input-icon--right" aria-label="Tìm bằng hình ảnh"><Icon name="image_search"/></Link></div></form>
  <section className="category-chips hide-scrollbar" aria-label="Danh mục"><button className={`pill ${!category ? "active" : ""}`} onClick={() => setCategory("")}>Tất cả</button>{categories.data?.map(c => <button key={c.id} className={`pill ${category === c.id ? "active" : ""}`} onClick={() => setCategory(c.id || "")}>{c.name}</button>)}</section>
  {categories.error && <div className="content-main"><PageState error={categories.error} retry={() => categories.refetch()}/></div>}
