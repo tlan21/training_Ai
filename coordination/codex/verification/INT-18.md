@@ -52,3 +52,8 @@ Changed: shared startup wait/adapters/gateway health; own worker Kafka bootstrap
 Verified: Go checks+3unit;real delayed PG29.35s;own image build+8packaged tests
 Contract touched: no
 Next safe task: INT-13 deployed worker/pipeline, then INT-17 live sessions
+
+## Deployment follow-up2026-10-27
+User approved real AI transition. INT-18 verified gateway-int18 binary now mounted readonly in the recreated gateway;
+startup/systemhealth6real PASS followed by3real video/search E2E PASS54.3s. Final safe runtime/mount readback INT-11-final-runtime.json.
+This supersedes the earlier undeployed-Go note. No cold restart of the whole product stack performed; isolated delayedPG test remains the cold-start evidence.

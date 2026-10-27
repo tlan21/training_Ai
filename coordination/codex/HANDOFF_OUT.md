@@ -224,3 +224,17 @@ Mẫu HO:
   readonly tested gateway-int18 binary. ComposeconfigPASS, detailed plan verification/INT-11-real-transition.md.
 - Apply step awaits explicit user confirmation due prior automatic review rejecting gateway start (“blocked by policy”); not bypassed by recreation.
   Current gateway stillmock, real pipeline/search tests NOT_RUN and matrix unchanged. Recommendation primarypopularity, not personalizedready.
+
+## 2026-10-27 RE:HO-03 / ACK HC-11 — real integration PASS (user approved)
+- User explicitly authorized real switch (eaca064). Gateway only recreated with canonicalhost:8001/stub0/shared Bearer key processenv;
+  verified INT-18 bounded-startup binary mounted readonly. No AI source/checkpoint/model changes or legacy inference container started.
+- HC-11 received: earlier gateway start was by Claude at user request; PG57P03 handled in Codex startup source91e7ef8 and isolated delayedPG test29.35s.
+  Final deployed gateway healthy; same real health6model/stubfalse/degradedempty, missingBearer401. Old HO-03 transport blocker resolved.
+- Real T4.1/T4.2 **3PASS54.3s**, no retry/mock: actual upload→vision/ASR/highlight/summary→CMS approval→publish→Client playback,
+  invalid media private, real newvideo indexing/search score>0.95/JPEG200/privacy/cache +desktop/mobile UI.
+  20cold p95/max150.87/178.14ms;20warm11.74/13.97ms. Full evidence coordination/codex/verification/INT-11.md +real-e2e.log +final-runtime.json.
+- First test launcher failed at machine npx wrapper before tests, mock rollback succeeded; retry via installed Node CLI passed and retains real gateway.
+  All3 exact test videos softdeleted, no existing media/volume deleted, test accounts/media retained; no fabricated product vectors/interactions.
+- Six API_READY matrix rows now INTEGRATED_REAL on Codex lane/AIv1.3 releasedmaster. Recommendation staysDRAFT/REAL_PENDING,
+  product feed remains primary PGpopularity; AI-12 production gate/NO_DATA unchanged. API success does not certify ASR/summary model quality or GPU/load/soak.
+- INT-01/11 REVIEW pending user release; INT-18 source now deployed. No new AI change requested, no master/shared docs/push changes.

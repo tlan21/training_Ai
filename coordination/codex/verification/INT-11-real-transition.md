@@ -1,7 +1,7 @@
 # INT-11 — reviewed real-API transition (2026-10-27)
 
-Preflight complete; applying this plan awaits explicit user confirmation because an earlier targeted gateway-start action was rejected
-by automatic review with reason “blocked by policy”. No alternate start/reconfiguration was used to bypass that rejection.
+User explicitly approved this transition: "cho phép chuyển sang AI thật" (2026-10-27, recorded at eaca064).
+Applied and verified: gateway now real/stub0, three real E2E PASS54.3s. Earlier preflight/approval notes below describe the staged plan.
 
 ## Verified readiness
 - AI-APIv1.3 release#3 present on master; six endpoints API_READY, recommendation stillDRAFT.
@@ -12,7 +12,7 @@ by automatic review with reason “blocked by policy”. No alternate start/reco
   da8d646b8a8bdfc48775ae9b15fd2ed313e50cedbedb548e307e4a8194cda280.
 - Existing stack healthy with gateway on explicit mock; own ingest and Next16Client already deployed/tested. No AI checkpoint/source change needed.
 
-## Exact change prepared, not applied
+## Exact change applied
 Local override backend/.tmp/docker-real-direct.yml merges with root Compose for gateway only:
 - AI_BASE_URL=http://host.docker.internal:8001, AI_ALLOW_STUB=0;
 - AI_SERVICE_KEY required from secure process environment, never persisted or printed;
@@ -30,4 +30,7 @@ and apply root+real-direct with `up -d --no-deps --no-build --pull never gateway
 - On failure, restore original mock mapping/env; report failure rather than marking matrixreal. Do not edit Claude code/checkpoints or loosen readiness assertions.
 - Only after relevant real tests PASS mark the affected matrix rows INTEGRATED_REAL; recommendation remains primary popularity/DRAFTpersonalized.
 
-Current state: **not applied**, gateway stillmock, real E2E NOT_RUN. No master release/push authorized.
+Current state: **applied and verified**. Gateway healthy, real AI6models/stubfalse, three real E2E PASS54.3s; final readback INT-11-final-runtime.json.
+First npx runner attempt failed before any test because the machine wrapper invoked `npm exec px`; rollback restored mock successfully.
+Retried using installed `node node_modules/@playwright/test/cli.js` without installing dependencies; full real suite PASS and real configuration retained.
+No master release/push authorized. No secret persisted in evidence or tracked configuration.

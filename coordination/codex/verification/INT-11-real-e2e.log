@@ -1,0 +1,10 @@
+
+Running 3 tests using 1 worker
+
+(node:25932) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 e2e\video_flow.spec.ts:11:5 › T4.1 upload → processed → approve → publish → client feed (38.4s)
+  ok 2 e2e\video_flow.spec.ts:183:5 › T4.1 invalid video fails processing and stays private (1.6s)
+  ok 3 e2e\visual_search.spec.ts:12:5 › T4.2 real Siamese search, publish privacy, cache, latency and Client (12.5s)
+
+  3 passed (54.3s)

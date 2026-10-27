@@ -8,15 +8,23 @@ Bản đầu do Claude khởi tạo 2026-10-26 từ INVENTORY; từ đây Codex 
 
 | AI endpoint | Contract | Nơi gọi (Go) | Màn/flow | Trạng thái | Bằng chứng |
 |---|---|---|---|---|---|
-| `POST /v1/vision/completions` | v1.2 API_READY | `backend/internal/orchestrator/runner.go` (stage vision) qua `adapters/aihttp/ai_client.go` | Upload → category suggestion (CMS Highlight/Video) | MOCK_ONLY (NOW); INTEGRATED_REAL (HIST) | `docs/T4.1_bao_cao.md` Playwright 2 PASS 2026-10-14 |
-| `POST /v1/asr/completions` | v1.2 API_READY | orchestrator stage asr | Subtitles CMS + Client video detail | MOCK_ONLY (NOW); INTEGRATED_REAL (HIST) | T4.1 |
-| `POST /v1/highlight/completions` | v1.2 API_READY | orchestrator stage highlight (`runner.go` clamp clip ≤ duration) | Heatmap CMS/Client, AI clips | MOCK_ONLY (NOW); INTEGRATED_REAL (HIST) | T4.1 |
-| `POST /v1/completions` | v1.2 API_READY | orchestrator stage summary; `handlers/cms/videos.go` regenerate | Summary review CMS, Client (chỉ approved) | MOCK_ONLY (NOW); INTEGRATED_REAL (HIST) — chất lượng AI-03 | T4.1 |
-| `POST /v1/search/completions` | v1.2 API_READY | `handlers/search.go` (visual) + Milvus frame index | Client visual search | MOCK_ONLY (NOW); INTEGRATED_REAL (HIST) | `docs/T4.2_bao_cao.md` Playwright 3 PASS |
-| `POST /v1/recommendation/completions` | v1.2 DRAFT | `handlers/content.go:68` feed | Client feed | MOCK_ONLY (NOW); REAL_PENDING — user vector còn `mocks.NewVectorStoreMem()`; fallback popularity | INT-03 |
-| `GET /health` | v1.2 API_READY | `handlers/cms/system.go` (`/api/cms/system/health`); gateway startup check | CMS Dashboard/Settings | MOCK_ONLY (NOW); INTEGRATED_REAL (HIST) | T4.1 |
+| `POST /v1/vision/completions` | v1.3 API_READY | `backend/internal/orchestrator/runner.go` (stage vision) qua `adapters/aihttp/ai_client.go` | Upload → category suggestion (CMS Highlight/Video) | INTEGRATED_REAL | 2026-10-27 T4.1 real upload/category PASS; `verification/INT-11-real-e2e.log` |
+| `POST /v1/asr/completions` | v1.3 API_READY | orchestrator stage asr | Subtitles CMS + Client video detail | INTEGRATED_REAL | 2026-10-27 T4.1 real pipeline/subtitles PASS; same log |
+| `POST /v1/highlight/completions` | v1.3 API_READY | orchestrator stage highlight (`runner.go` clamp clip ≤ duration) | Heatmap CMS/Client, AI clips | INTEGRATED_REAL | 2026-10-27 T4.1 real timeline/publish/playback PASS; same log |
+| `POST /v1/completions` | v1.3 API_READY | orchestrator stage summary; `handlers/cms/videos.go` regenerate | Summary review CMS, Client (chỉ approved) | INTEGRATED_REAL — model quality remains AI-03 | 2026-10-27 T4.1 real draft/editor approval/privacy PASS; regenerate route not separately exercised |
+| `POST /v1/search/completions` | v1.3 API_READY | `handlers/search.go` (visual) + Milvus frame index | Client visual search | INTEGRATED_REAL | 2026-10-27 T4.2 real index/search/privacy/cache/Client PASS; same log + `INT-11-visual-latency.json` |
+| `POST /v1/recommendation/completions` | v1.3 DRAFT | optional AI feed path; primary PG popularity enabled | Client feed | REAL_PENDING — personalized disabled under D18/D19 | INT-03/AI-12 product vectors and production gate pending; live `recommendation_mode=popularity` verified |
+| `GET /health` | v1.3 API_READY | `handlers/cms/system.go` (`/api/cms/system/health`); gateway startup check | CMS Dashboard/Settings | INTEGRATED_REAL | 2026-10-27 startup/authenticated system health6 + host stubfalse PASS; `INT-11-live-health.json`, `INT-11-final-runtime.json` |
 
-Release#2 AI-API v1.2 đã nhận từ master70bf011 qua merge5691526; ACK đã ghi trong HANDOFF_OUT. Cần chạy integration thật cho mọi dòng trước khi thay trạng thái NOW; recommendation vẫn DRAFT theo D14.
+Release#3 AI-API v1.3 đã nhận từ masterfee83b2 qua merge35cd1a9. Six API_READY endpoints now have real HTTP integration evidence; recommendation remains DRAFT. Public OpenAPI0.3.1 unchanged.
+
+## Current real gate — 2026-10-27
+- User explicitly approved switching to real AI. Gateway only recreated, canonical `http://host.docker.internal:8001`, `AI_ALLOW_STUB=0`, shared Bearer key passed in process environment only; no Claude code/checkpoint/mount changes.
+- `E2E_GATEWAY_URL=http://127.0.0.1:8000 E2E_AI_URL=http://127.0.0.1:8001 node node_modules/@playwright/test/cli.js test e2e/video_flow.spec.ts e2e/visual_search.spec.ts --reporter=list`: **3 PASS / 54.3s**, no retry/mock.
+- Host health stubfalse/6models/degradedempty, authenticated gateway health6, missing Bearer401. Real Kafka/own CPU worker/MinIO/AI/Milvus/cutter/CMS/Client used.
+- Cold visual20: p95 150.87ms/max178.14ms; warm20: p95 11.74ms/max13.97ms. All below2s; this small sequential sample is not load/soak acceptance.
+- Final gateway healthy/real; all3 exact fixture videos softdeleted, publication/cache privacy tests PASS. Real model quality/GPU/personalized readiness not claimed.
+- Sections below retain historical mock/transport checkpoints and are superseded by this current gate.
 
 ## INT-00 hiện tại (2026-10-26)
 - Unit HTTP round-trip đủ 6 endpoint + health với mock: `cd backend; $env:GOMAXPROCS='2'; go test -p 1 ./...` PASS.

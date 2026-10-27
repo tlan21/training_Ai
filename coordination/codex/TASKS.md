@@ -9,7 +9,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | ID | T gốc | Tên | Status | Depends on |
 |---|---|---|---|---|
 | INT-00 | — | Worktree, dependency, stack hạ tầng + mock AI HTTP | REVIEW | HC-02, HC-03 (đã nhận) |
-| INT-01 | T2.1–T2.5 | Xác minh lại backend trên stack thật | BLOCKED | INT-00 |
+| INT-01 | T2.1–T2.5 | Xác minh lại backend trên stack thật | REVIEW | INT-00; real T4.1/T4.2 3PASS2026-10-27 |
 | INT-02 | T2.5 | Thay adapter memory → Postgres (interactions/history/likes/settings) | REVIEW | INT-00 (DB); không phụ thuộc AI |
 | INT-03 | T2.5, T1.7 | Two-Tower: sandbox/ID mapping; product vectors + feed | BLOCKED | product v2 AI-12 production gate; AI-09 MovieLens sandbox only |
 | INT-04 | T3.1, T3.2 | Contract nguồn phát video gốc (OpenAPI) + nối UI | PARTIAL | INT-00 (runtime); contract có thể làm độc lập |
@@ -19,7 +19,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-08 | T5.2 | Soak test 48 h | BLOCKED | INT-07 |
 | INT-09 | T5.3 | Docs bàn giao hệ thống | TODO | INT-05..08 |
 | INT-10 | — | Forgot-password giữ nguyên, ngoài release hiện tại | DEFERRED / OUT_OF_SCOPE | D1, HC-02 |
-| INT-11 | INT-01 | HTTP media giữa gateway Docker và inference host | IN_PROGRESS | real preflight nowPASS; apply gateway transition awaits explicit confirmation |
+| INT-11 | INT-01 | HTTP media giữa gateway Docker và inference host | REVIEW | approved real deployment +3E2E PASS2026-10-27 |
 | INT-12 | T2.2/T3.1 | CMS access JWT chỉ ở RAM, refresh khi reload | REVIEW | 41 E2E PASS; live gateway cookie rotation |
 | INT-13 | INT-00 | Image ingest riêng + kiểm clean build | REVIEW | own image+8tests+deployed mock pipeline PASS |
 | INT-14 | HC-06/D18/D21 | Popularity MVP, real metadata, recommendation_mode | PARTIAL | MVP/PG/Client live verified; full parity INT-06 remains |
@@ -51,16 +51,18 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Checkpoint: Lane codex / Changed backend+compose+docs / Verified xem evidence / Contract no (AI-API v0.1 DRAFT) / Next INT-02.
 
 ### INT-01 — Xác minh lại backend trên stack thật
-- T gốc: T2.1–T2.5 | Owner: CODEX | Status: BLOCKED (2026-10-26; phần AI thật)
-- Depends on: INT-00 (DB/mock); phần E2E AI thật còn chờ AI-01 API_READY + AI-07 | Blocks: nghiệm thu integration thật
+- T gốc: T2.1–T2.5 | Owner: CODEX | Status: REVIEW (2026-10-27; real gate PASS)
+- Depends on: INT-00 (DB/mock), AI-01 API_READY on masterfee83b2 + AI-07 UP (satisfied) | Blocks: nghiệm thu integration thật
 - Acceptance: chạy lại Go integration (Postgres/Mongo) với mock trước; E2E Playwright T4.1/T4.2 thật khi AI-01/AI-07 sẵn sàng;
   ghi riêng bằng chứng mock/thật, không DONE trước khi E2E thật PASS.
 - Evidence: HIST `docs/T4.1_bao_cao.md`, `docs/T4.2_bao_cao.md`; NOW 2026-10-26 go vet/test/build PASS (cache).
 - Commits: trước tách làn `0206912`, `2bc9a6c`, `a75ea5c`, `74cd75f`, `495d26b`, `ab299e0`
 - Changed: chỉ evidence/tracker (không sửa source backend DONE).
 - Evidence bổ sung: VERIFIED-NOW INT-00 Go vet/test/build + PG/Mongo network integration PASS, authenticated health mock PASS.
-- Next action: AI-01 API_READY trên master + AI-07 runtime HTTP thật rồi chạy E2E T4.1/T4.2; không nới health assert 6 model của real E2E.
-- Checkpoint: Lane codex / Changed verification INT-00 / Verified DB PASS / Contract no / Next INT-02.
+- Evidence2026-10-27: verification/INT-11-real-e2e.log +INT-11-final-runtime.json; real T4.1/T4.2 **3PASS54.3s**, strict stubfalse/6model assertions retained; previous PG/Mongo checks remain valid.
+- Commits current: eaca064 authorization; real acceptance checkpoint commit (this change).
+- Next action: user-requested release gates only; no master/push authorization inferred.
+- Checkpoint: Lane codex / Changed real integration evidence+matrix / Verified DB checks +3real E2E PASS / Contract no (AIv1.3 consumed) / Next INT-14 pagination.
 
 ### INT-02 — Adapter memory → Postgres
 - T gốc: T2.5 | Owner: CODEX | Status: REVIEW (2026-10-26)
@@ -145,15 +147,17 @@ T2.5, T3.1, T3.2 = PARTIAL.
 
 
 ### INT-11 — Portable media transport cho AI host
-- T gốc: INT-01 | Owner: CODEX | Status: IN_PROGRESS (2026-10-27; real host/container preflight PASS, apply confirmation pending)
-- Depends on: INT-00; full real upload/search chờ HO-01 + AI-01 release trên master + AI-07 UP.
+- T gốc: INT-01 | Owner: CODEX | Status: REVIEW (2026-10-27; real gateway deployed and tested)
+- Depends on: INT-00 +HO-01/AI-01 released on master +AI-07 UP, user transition approval (all satisfied).
 - Acceptance: Vision gửi ảnh base64 (contract có sẵn), ASR nhận WAV qua URL MinIO presigned; không gửi path Docker cho host,
   không shared mount/checkpoint; staging WAV cleanup/error handling; unit + mock pipeline tests PASS. Indexing media mới thật chờ contract Claude.
-- Changed dự kiến: aihttp + tests, gateway preprocessing/audio staging + tests; tracker/handoff.
-- Next action: resolve HO-03 Desktop host proxy/transport (user restart decision pending). Then real gateway/stub0 + pipeline/index/search. Mock restored; no image pull.
+- Changed: aihttp +tests, gateway audio staging/pipeline +tests (existing commits); real local gateway configuration/binary deployment; Codex tracker/matrix/evidence/handoff.
+- Next action: release only on user instruction; retain current real gateway, continue independent INT-14 pagination. No new image pull/build/AI changes needed for this transition.
 - Evidence: VERIFIED-NOW verification/INT-11.md; Go checks/Linux builds và script persistence/fallback sau đổi transport PASS.
   Latest v1.2 Linux runtime deployedmock + restart preferences PASS; real attempt blocked HO-03 before E2E. Release#2 consumed. | Commits: 7af1b1d, fae980c, fc5a3c7,6d860ee.
-- Checkpoint: Lane codex / Changed HTTP client+pipeline+tests / Verified mock transport/fallback PASS / Contract no / Next capacity + real gate.
+- Evidence2026-10-27: verification/INT-11-real-e2e.log **3PASS54.3s**; live/final health6/stubfalse +missingBearer401; real upload/ASR/highlight/summary/index/search/privacy/cache/media/CMS/Client PASS. Visual20cold/20warm max178.14/13.97ms. Final gateway healthy/real, all3 fixture videos softdeleted. First runner failure preserved separately, rolled back before corrected invocation.
+- Commits current: eaca064 authorization; real acceptance checkpoint commit (this change). No source/schema change in this verification step.
+- Checkpoint: Lane codex / Changed real deployment+evidence+matrix / Verified3real E2E +health/auth/privacy PASS / Contract no (AIv1.3 consumed) / Next INT-14 pagination.
 
 
 ### INT-12 — CMS access JWT chỉ ở RAM
@@ -257,5 +261,6 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Evidence complete: verification/INT-18.md; Go vet/test/build +3startup unitPASS; isolated delayedPG29.35s PASS/exit0/no skips;
   own worker image43dd08cf buildPASS +8packaged testsPASS0.167s/networknone. Initial SDK import failure corrected before deployment.
 - Commits: d27beb2 taskstart; 91e7ef8 implementation,6e25029 Kafka3 integration correction. Source REVIEW; no existing gateway deployment/start by Codex.
+- Deployment2026-10-27: user approved real transition; verified gateway-int18 artifact now mounted readonly in gateway, startup+3real E2E PASS. Own worker remains final ed21674b image/8tests0.185s; this supersedes older source-only deployment notes above. Evidence INT-11-final-runtime.json.
 - INT-17 live gate2026-10-27: verified image4fcf2410 deployed locally;2actual auth browser cases PASS10.8s alongside prior53fixture passes/audits0.
   Existing gateway recovered externally, not started/restarted by Codex. INT-13/17 REVIEW; no new INTEGRATED_REAL AI claim.
