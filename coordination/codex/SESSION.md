@@ -1,122 +1,64 @@
 # SESSION — authoritative resume state (2026-10-27)
 
-## Branch / coordination
-- Worktree E:/traning_ai-codex, branch codex/integration. Release#1/#2/#3 received; HEAD..master empty at resume.
-- No Codex release/push/master/shared-file edits. Claude source read only via git show; no model/checkpoint/inference changes.
-- Skill: backend_endpoint for image/integration verification; Ponytail full. Current public contract0.3.1/AI-APIv1.3 unchanged.
-- No task IN_PROGRESS. INT-17 PARTIAL: approved upgrade691ede2 verified;2live gateway cases await runtime. INT-13 PARTIAL on deployed pipeline gate.
+## Branch / active task
+- E:/traning_ai-codex, codex/integration. Clean at latest checkpoint; Release#1/#2/#3 received, HEAD..master empty.
+- Only INT-11 IN_PROGRESS: real HTTP transition prepared, awaiting explicit gateway-apply confirmation requested via async question.
+- INT-13 REVIEW own image/deployed pipeline; INT-17 REVIEW Next16/deployed live sessions; INT-18 REVIEW startup source tests.
+- No master/shared-file release edits, push, reset/clean/stash. Claude code/checkpoints/models untouched; communicate through committed handoff.
+- Project skill backend_endpoint for current runtime/integration work. Ponytail full.
 
-## Verified this session
-- INT-13 d6388dd: full own Python3.11-slim/CPU worker image build PASS, context14.31kB.
-  Image4caf38a8cfdc2651bdcb76195aae61ed7410d24edfe41f711a2002834fd0681b (inspect362651913bytes).
-  Four packaged tests PASS13.836s/networknone/memory1GiB/no product volumes; pipcheckPASS.
-  CPU/no model/checkpoint/inference-service audit PASS. Existing worker not replaced; actual Kafka/MinIO pipeline NOT_RUN.
-  Evidence verification/INT-13-runtime-* +INT-13.md. INT-13 PARTIAL.
-- INT-16 fresh Docker build PASS, context4.37MB/client-only Dockerfile ignore; npmci/Next14.2.35 types/lint/build14routes PASS.
-  Image83d175168674232e4ce43a38bdc519a478d6001735d210b723c5f027d1f15e67 (inspect208700149bytes).
-  e2e/client_container_smoke.cjs PASS: production login200, baked gatewayDNS rewrite, cookie/HttpOnly/Bearer/JSON/query/503 envelope forwarding.
-  Ephemeral networknone container with internal fixture, no product service/port/volume, removed after test. INT-16 REVIEW functional acceptance.
-- INT-15 REVIEW: Claude2026-10-27 handoff+report accepted final bundle schema/provenance/rows/SHA. Data gate NO_DATA, not training readiness.
-  Only accepted bundle E:/traning_ai-codex/backend/.tmp/ttv2/20261026T113856Z, exporter33495fba40f2a3ffd79c1dbb50471585180ae3d7.
-  users/videos/clips/interactions0, categories10; no promotion of test/unknown data. Quarantined20261026T113611Z never consume.
-  Cleanup correction33495fb verified0fixtures; final manifest committed. Claude owns labels/loader/training.
+## INT-11 ready transition — NOT applied
+- Current AI-APIv1.3 release#3 on master:6API_READY, recommendationDRAFT. Primary product popularity remains enabled underD18.
+- Latest host127001:8001health200/stubfalse/6models; deployed worker→host.docker.internal:8001health200/stubfalse/6models.
+  Missing Bearer search401. OldHO-03 transport timeout no longer reproduces. Evidence AI-HEALTH-20261027.json +INT-11-transport-recheck.log.
+- Local backend/.tmp/docker-real-direct.yml configquietPASS: gateway-only canonicalhost8001/stub0/securekey processenv;
+  readonly mount backend/bin/gateway-int18 →/usr/local/bin/gateway. Artifact SHAda8d646b8a8bdfc48775ae9b15fd2ed313e50cedbedb548e307e4a8194cda280.
+- Current gateway is STILLMOCK; real upload/search E2E NOT_RUN, integration matrix unchanged. No new INTEGRATED_REAL.
+- Earlier automatic review rejected targeted gateway start with reason "blocked by policy". User confirmation now requested for the exact
+  prepared gateway recreation/realtests step; no response received yet. Do not infer consent or bypass via another route.
+- Concrete plan +verify/rollback: verification/INT-11-real-transition.md. After explicit approval, refresh daemon/health, capture existing mock env in memory,
+  read previously authorized shared Claude HTTP key into processenv only, apply root+real-direct --no-deps --no-build --pull never gateway.
+  No other service/legacy inference/checkpoint start. Failure restores original root+mock+docker-direct config/key; never log credentials.
+- Real gate commands after success: E2E_GATEWAY_URL=http://127.0.0.1:8000, E2E_AI_URL=http://127.0.0.1:8001;
+  npx playwright test e2e/video_flow.spec.ts e2e/visual_search.spec.ts --reporter=list. Only then mark relevant matrix rows real.
 
-## INT-17 approved upgrade — current
-- User explicitly approved2026-10-27 ("hãy nâng lên"); implemented691ede2. No major-migration approval pending.
-- Next16.4.3 +eslint-config-next16.4.3/ESLint9.39.5; React18.3.1 retained, Webpack explicit, flat lint config.
-- Source TypeScript generated config adopted (react-jsx/ES2017/Next route imports). Fresh-checkout standalone tsc needs nexttypegen first.
-- Host clean npmci403packages +lint/build/tsc PASS; Docker clean npmci408packages/lint/build/tsc PASS.
-- Full and runtime-only audits0findings after transitive parser6.1.5 patch. No auditfix/force install or API/DB/AI edit.
-- Image4fcf241026fb926cfd8d56bf5d31dade374df42dcded6c1037f2d2792d376cc3 (237333048bytes).
-  Production proxy smoke PASS using updated Next16 afterFiles manifest; all original cookie/Bearer/body/query/error assertions retained.
-- 53fixture browser E2E PASS1.4m +E2Etypes PASS; snapshots390/1440 preserve prior layout. Full Stitch gaps stayINT-06.
-- New compiler-oriented set-state-in-effect/preserve-manual-memoization lint diagnostics retain pre-upgrade policy with explicit shortcut;
-  ReactCompiler not enabled, existing hook/dependency checks retained. React18 deprecation/host monorepo-root warning documented.
-- Two live gateway session tests NOT_RUN: preflight8000 unavailable. Automatic targeted gateway-start rejection remains unresolved;
-  no bypass, no deployment/release claim. Owned Client testserver stopped; isolated smoke containers removed.
-- Evidence verification/INT-17.md +checks/audits/build/install/proxy/browser/preflight logs and screenshots.
-## Runtime / resources
-- Docker restarted externally before resume; only faktory_server running. Project video-ai containers are stopped, no app/API listeners.
-  Gateway exited2 from prior session; other project containers exited255 around Docker restart. Claude real8001 currently not listening.
-- Prior automatic approval review rejected targeted gateway start with reason "blocked by policy". Do not retry through another route;
-  user manual recovery/intervention remains needed. No Docker/WSL global restart or existing-container start by Codex this session.
-- Direct daemon CLI works with current dockerd pid193:
-  wsl -d docker-desktop -- /mnt/host/wsl/docker-desktop/cli-tools/usr/bin/docker -H unix:///proc/193/root/run/docker.raw.sock ps -a
-  Recheck PID after external restart. Compose/buildx binaries: same cli-tools/usr/local/lib/docker/cli-plugins/.
-- Existing binary bind override backend/.tmp/docker-direct.yml retained; gateway binary is latest18d1a3b interaction/provenance source.
-  Own ingest image now built but stopped old worker still references cached legacy image; replace only after runtime recovery.
-- C:6.60GiB/E:1.27GiB after approved migration/install/build. Host Client dependencies now match Next16 lockfile; no prune or project data deletion.
-  Test containers autoremove; images remain for verified deployment. Never start legacy inference-service container/attach checkpoints.
+## Runtime now
+- Stack was started externally during this turn. Gateway firstfailed PG57P03 then becamehealthy after another external restart;
+  Codex never started/restarted/reconfigured the existing gateway. Its mounted binary remains preINT-18 source.
+- Codex replaced only stopped ingest with own verified imageed21674b559e233f4b6f4bd3600496ebf2c4da7d974db0f104822c6debebba0c.
+  Worker running, only ingest_work volume attached; no old inference image/source bind/checkpoint. Two SDK3 issues corrected before final validation.
+- Codex replaced only old Client with verified Next16 image4fcf241026fb926cfd8d56bf5d31dade374df42dcded6c1037f2d2792d376cc3.
+  Client3000/CMS5173/gateway8000/infra/mock healthy/running. Real8001 now UP, owned by Claude. Legacy Docker inference remains stopped.
+- Faktory untouched. Isolated PG/test containers removed; no product volume deletion/prune. Own fixtures softdeleted, settings restored under guard;
+  even the first timed-out fixture vid_dmfbq4y4z7kn remainsdeleted after late worker delivery. Test users/media retained aspolicy/origin=test.
+- Direct daemon currentlypid193; recheck after external restart:
+  wsl -d docker-desktop -- /mnt/host/wsl/docker-desktop/cli-tools/usr/bin/docker -H unix:///proc/193/root/run/docker.raw.sock ps
+  Compose/buildx under same cli-tools/usr/local/lib/docker/cli-plugins/. Existing mock override backend/.tmp/docker-direct.yml retains old binary path.
+- C:5.93GiB/E:1.24GiB at finalcheck; no large new build/install without space check. Go GOMAXPROCS1/TMP/TEMP/GOTMPDIR backend/.tmp.
 
-## Historical valid evidence / outstanding scope
-- INT-00/02 REVIEW; INT-12 CMS auth REVIEW d607226/41E2E(2live), INT-16 host c30c664/52E2E then55Client E2E with INT-15.
-- INT-15 source18d1a3b, contract987d647; Go vet/test/build, CMS/Client checks,8intendedPGtests/no skips and55browser PASS2026-10-26.
-  Latest business restart attempt NOT_PASS/Desktop stalled; exact fixture rollback restored threshold75 and softdeleted owned testvideo.
-- INT-14 primary popularity02001e0 verified PG/metadata/modes/Client; full parity+feed pagination unfinished. Personalized gated AI-12 production readiness.
-- INT-11/01 realAI E2E still HO-03 transport; host health was real6models previously, container→host8001 timed out. No new INTEGRATED_REAL.
-- INT-05/06 full Stitch parity +extra API scope decision pending CONTRACT_DECISIONS.md; no unapproved routes. INT-10 DEFERRED unchanged.
-- INT-07/08 GPU/load/48hsoak gates; INT-09 docs depends on them. No task DONE repeated.
+## Verified checkpoints
+- INT-18 91e7ef8 +Kafka correction6e25029: shared bounded90s/perdependency Go PG/Mongo/Redis/MinIO/AI-health startupwait;
+  strict6model/stub opt-in unchanged. Go vet/test/build +3startup unitPASS, isolated delayed realPG29.35s PASS/exit0/no skips.
+  Linux gateway-int18 artifact built separately, not deployed. Kafka3 startup retry/partialcleanup/permanent-config handling;
+  KafkaConnectionError and bootstrap_timeout_ms match actual SDK; config-key assertions +8packaged tests PASS0.185s/networknone.
+- INT-13 6e25029: own worker deployed with no deps/build/pull; real Kafka/MinIO/ingest/cutter/clip publish/range206/privacy/business persistence PASS,
+  HTTP AI explicitMOCK_ONLY. Evidence INT-13-pipeline.json/log. Script SkipGatewayRestart/EvidencePath preserved old INT-02 evidence;
+  restart_verified=false, no new restart claim. First failed SDK-key attempt timedout/cleaned, never markedPASS.
+- INT-17 691ede2 +fbfa730: Next16.4.3/React18.3.1/ESLint9 flat config/Webpack; host+Docker cleaninstall/lint/build/tsc PASS;
+  full/runtime audits0,53fixtureE2E PASS, proxyproduction smokePASS. Two actual live auth sessions NOWPASS10.8s on deployed Next16Docker,
+  localhost/127001 through real gateway/Postgres. No need to rerun unchanged53fixture cases; complete source/localruntime acceptance REVIEW.
+- Runtime snapshot verification/RUNTIME-20261027.json. Detailed reports INT-13.md/INT-17.md/INT-18.md and raw logs committed.
 
-## Next safe actions
-1. User gateway recovery -> run2actual e2e/client_auth_live.spec.ts cases on Next16; if PASS, INT-17 REVIEW. No further upgrade approval needed.
-2. User runtime recovery -> inspect intended containers/health first. Deploy verified own ingest image without pull/build, run pipeline with explicit mock.
-   Do not bypass the earlier gateway-start rejection or start Claude's legacy Docker inference container.
-3. Claude8001/API health ready +container transport recovered -> INT-11 real pipeline/search E2E; only then update real integration matrix.
-4. Continue full UI parity only within approved contract; collect real product interactions without fabricating data to satisfy AI-12.
+## Other tasks / scope
+- INT-00/02/12/15/16 REVIEW with historical evidence; do not redo DONE work. INT-15 Claude verifier accepted final clean bundle
+  backend/.tmp/ttv2/20261026T113856Z; NO_DATA (0product rows,10categories), not training readiness. Never consume quarantined20261026T113611Z.
+- INT-14 PARTIAL: primary popularity/metadata/modes verified; feed/catalog pagination gap stillopen (deferred when runtime recovery became available).
+  Personalized production depends AI-12 quality gate; no MovieLens/zero/fake product vectors.
+- INT-05/06 full Stitch parity/extra API scope pending CONTRACT_DECISIONS.md; no new routes. INT-10 DEFERRED untouched.
+- INT-07/08 GPU/load/48hsoak gates and INT-09docs dependents remain. Full app/AI completion not claimed.
 
 Lane: codex
-Changed: ingest package audit/test/docs; Client build allowlist/container proxy smoke; Codex evidence/audit/task checkpoints
-Verified: Next16 host/Docker cleaninstall/lint/build/tsc;audits0;53E2E/types;proxy smoke; prior ingest4tests and Claude bundleACCEPTED/NO_DATA
-Contract touched: no; existing public0.3.1 and AI-APIv1.3 unchanged
-Next safe task: INT-17 live checks +INT-13 deployed pipeline after user runtime recovery
-
-## INT-17 approval / migration started2026-10-27
-- User explicitly approved the proposed major upgrade: "hãy nâng lên". INT-17 IN_PROGRESS, only active task.
-- Branch correct/clean, no new master release. Read coordination/Claude handoff; no new AI contract/schema.
-- Project skill client_screen for Client behavior/route compatibility regression; Ponytail full. Preserve Stitch markup/styles/API/auth behavior.
-- Scope: Next16.4.3 +compatible ESLint tooling, lockfile/config/compatibility only; retain React18 where supported and verified.
-- C:13.27GiB/E:1.48GiB. Prefer lockfile-only resolution then clean Docker install/build on C:; no host dependency trees/download duplication on E:.
-- Need runtime audit, type/lint/build, Docker proxy smoke,55Client E2E with live2 cases separately gated by stopped gateway.
-
-## Resume2026-10-27 — INT-18 startup recovery (authoritative current task)
-- Branch correct/clean, HEAD..master empty, no new Claude contract/handoff. Next upgrade checks alreadyPASS, not repeated.
-- Runtime changed externally during inspection: infra/mock/CMS/Client running; gateway exit1 at03:53:18UTC due PostgreSQL57P03 starting;
-  cached old ingest exit1/KafkaTimeoutError unablebootstrap. Claude legacy inference container alsoexited; no AI code/runtime touched.
-- INT-18 IN_PROGRESS before implementation. backend_endpoint skill. Implement bounded dependency startup handling rather than pagination now.
-- No existing gateway start/retry by Codex after earlier auto-review rejection. Test readiness via isolated PG test container/no product volume or ports;
-  own worker packaged unit/bootstrap tests. Deploy/start remains user intervention if still rejected.
-- C:11.86GiB/E:1.30GiB, deps already present; no large dependency downloads/pulls. Newimage uses cached layers only.
-
-## INT-18 source verified / runtime recovered externally
-- Source startup handling verified: Go vet/test/build+3startup testsPASS; delayed real isolatedPG29.35s PASS/no skips; fixture removed.
-- Worker SDK exception corrected to kafka-python3 KafkaConnectionError before deployment; rebuilt image43dd08cf,8testsPASS0.167s/networknone.
-- INT-18 REVIEW (source); Linux gateway-int18 artifact separate, existing bound binary untouched. No existing gateway start by Codex.
-- Gateway now externally restarted andhealthy; infra/mock/CMS/Client UP, old cached ingest stilldown. Current Client container is older cached image,
-  so use host Next16 on a free alternate port for the2live cases; no gateway-start bypass needed.
-- Next INT-13 IN_PROGRESS: replace only stopped ingest with tested own image/no build/pull, run current mock pipeline without restarting gateway.
-  Then INT-17 live2 cases, source upgrade alreadyPASS. Pagination deferred after runtime priorities changed.
-
-## INT-13 deployment gate resumed
-- INT-18 source91e7ef8 REVIEW; Go and isolatedPG +8worker tests verified, no gateway start/deployment.
-- Set INT-13 IN_PROGRESS: gateway nowhealthy from external restart and infra/mock ready. Replace only stopped old ingest with tested own43dd08cf image,
-  no build/pull/dependency recreation. Kafka/MinIO/volume/event interface unchanged; never start legacy inference container.
-- Business verification script gains explicit SkipGatewayRestart flag +separate EvidencePath, records restart_verified=false;
-  pipeline verification will not repeat or bypass the previously rejected gateway restart/start action. Historical INT-02 evidence preserved.
-
-## INT-13 REVIEW / INT-17 live gate active
-- INT-13 own image deployed ed21674b,8testsPASS0.185s and actual mock business pipelinePASS, evidence INT-13-pipeline.json/log.
-  Script explicitly skipped gateway restart, restart_verified=false; old INT-02 evidence preserved. Fixture cleanup completed.
-- Kafka3 removed bootstrap timeout key corrected to bootstrap_timeout_ms; SDK-key assertions added; initial failed deployment notPASS.
-- INT-18 sourceGo startup tests stillvalid/REVIEW, gateway-int18 artifact separate/not deployed. Existing gateway becamehealthy externally.
-- INT-17 IN_PROGRESS: existing Client container is old cached image; deploy only validated Next16 image4fcf2410 via same Compose/no deps/build/pull,
-  then run the existing2live client_auth cases on normal3000. No source feature/API change and no gateway-start bypass.
-
-## Current INT-11 — real transition staged, confirmation pending
-- INT-13 REVIEW own deployed worker/pipeline; INT-17 REVIEW Next16deployed+2live PASS10.8s; INT-18 sourceREVIEW/new Go binary not deployed yet.
-- New readiness: hostAIhealth200/stubfalse/6models; deployed worker→canonicalhost8001 health200/stubfalse/6; missing Bearer search401.
-  OldHO-03 transport timeout resolved. Contract API-READY stillv1.3/master; recommendationDRAFT/primarypopularity retained.
-- INT-11 now IN_PROGRESS, the only active task. Local override backend/.tmp/docker-real-direct.yml prepared/configquietPASS; not applied.
-  Mount gateway-int18 SHAda8d646b8a8bdfc48775ae9b15fd2ed313e50cedbedb548e307e4a8194cda280, AI_BASE_URLcanonical/stub0/key processenvonly.
-- Explicit async user confirmation requested for gateway-only recreation/apply+realtests because prior auto-review blocked targeted gateway start.
-  No answer yet; do not infer consent or apply through another route. See verification/INT-11-real-transition.md for concrete change/verify/rollback.
-- Current gateway stillmockhealthy; realE2E NOT_RUN/matrixunchanged. No source/schema/checkpoint edits on Claude lane or master release/push.
+Changed: startup resiliency; worker SDK3 fixes/deployment; business-script no-restart evidence mode; owned runtime/live/real-preflight evidence
+Verified: Go+3unit;delayedPG29.35s;8worker tests;deployed mock pipeline;2live Next16;host/container realhealth6+401;real config preflight
+Contract touched: no (public0.3.1/AI-APIv1.3 unchanged)
+Next safe task: INT-11 apply+realE2E after explicit confirmation; otherwise existing approved pagination/UI scope work
