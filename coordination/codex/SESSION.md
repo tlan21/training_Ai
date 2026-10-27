@@ -86,3 +86,12 @@ Next safe task: INT-17 live checks +INT-13 deployed pipeline after user runtime 
 - No existing gateway start/retry by Codex after earlier auto-review rejection. Test readiness via isolated PG test container/no product volume or ports;
   own worker packaged unit/bootstrap tests. Deploy/start remains user intervention if still rejected.
 - C:11.86GiB/E:1.30GiB, deps already present; no large dependency downloads/pulls. Newimage uses cached layers only.
+
+## INT-18 source verified / runtime recovered externally
+- Source startup handling verified: Go vet/test/build+3startup testsPASS; delayed real isolatedPG29.35s PASS/no skips; fixture removed.
+- Worker SDK exception corrected to kafka-python3 KafkaConnectionError before deployment; rebuilt image43dd08cf,8testsPASS0.167s/networknone.
+- INT-18 REVIEW (source); Linux gateway-int18 artifact separate, existing bound binary untouched. No existing gateway start by Codex.
+- Gateway now externally restarted andhealthy; infra/mock/CMS/Client UP, old cached ingest stilldown. Current Client container is older cached image,
+  so use host Next16 on a free alternate port for the2live cases; no gateway-start bypass needed.
+- Next INT-13 IN_PROGRESS: replace only stopped ingest with tested own image/no build/pull, run current mock pipeline without restarting gateway.
+  Then INT-17 live2 cases, source upgrade alreadyPASS. Pagination deferred after runtime priorities changed.

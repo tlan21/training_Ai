@@ -25,6 +25,10 @@ docker run --rm --network none --entrypoint python -e PYTHONPATH=/srv:/srv/inges
 Tests cover valid media, silent fractional-duration video, 1 fps/64-d alignment, mono WAV format and invalid media.
 They block checkpoint loading and verify that no model module is imported. No production volume is attached.
 
+Kafka bootstrap has a90s retry budget with5s SDK probes and2s delays. Transient connection/timeout errors retry;
+configuration errors fail immediately. A producer created before consumer bootstrap fails is closed before retry.
+This leaves the topic/group/commit/event/DSP contract unchanged. Packaged tests also cover bootstrap recovery, cleanup and deadline.
+
 Current validation (2026-10-27): full runtime image builds from Python3.11-slim and CPU wheels; all4 packaged tests pass with networknone,
 including CPU/source/checkpoint audit. `pip check` passes. Production volumes were not mounted and the existing worker was not replaced.
 The pipeline using the new image is **not yet verified** while the project stack is stopped; see `coordination/codex/verification/INT-13.md`.

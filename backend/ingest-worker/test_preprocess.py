@@ -3,14 +3,15 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 import wave
 
 import av
 import numpy as np
 import torch
 
-from main import preprocess
+from main import connect_kafka, preprocess
+from kafka.errors import KafkaTimeoutError, KafkaConnectionError
 
 
 class PreprocessTest(unittest.TestCase):
@@ -71,6 +72,47 @@ class PreprocessTest(unittest.TestCase):
             with self.assertRaises(av.error.InvalidDataError):
                 preprocess(raw, directory)
             self.assertFalse((directory / "audio_features.json").exists())
+
+
+class BootstrapTest(unittest.TestCase):
+    def test_producer_recovers_without_changing_consumer_contract(self):
+        producer, consumer = Mock(), Mock()
+        with patch("main.KafkaProducer", side_effect=[KafkaConnectionError(), producer]) as create, \
+                patch("main.KafkaConsumer", return_value=consumer) as consume, \
+                patch("main.time.monotonic", return_value=0), patch("main.time.sleep") as sleep:
+            self.assertEqual(connect_kafka(["kafka:9092"]), (producer, consumer))
+            self.assertEqual(create.call_count, 2)
+            sleep.assert_called_once_with(2)
+            self.assertEqual(consume.call_args.args, ("video.uploaded",))
+            self.assertEqual(consume.call_args.kwargs["group_id"], "ingest-worker")
+            self.assertFalse(consume.call_args.kwargs["enable_auto_commit"])
+
+    def test_consumer_bootstrap_failure_closes_partial_producer(self):
+        first, producer, consumer = Mock(), Mock(), Mock()
+        with patch("main.KafkaProducer", side_effect=[first, producer]), \
+                patch("main.KafkaConsumer", side_effect=[KafkaTimeoutError(), consumer]), \
+                patch("main.time.monotonic", return_value=0), patch("main.time.sleep"):
+            self.assertEqual(connect_kafka(["kafka:9092"]), (producer, consumer))
+            first.close.assert_called_once_with(timeout=0)
+            producer.close.assert_not_called()
+
+    def test_deadline_fails_without_unbounded_retry(self):
+        with patch("main.KafkaProducer", side_effect=KafkaConnectionError()) as create, \
+                patch("main.time.monotonic", side_effect=[0, 91]), patch("main.time.sleep") as sleep:
+            with self.assertRaises(KafkaConnectionError):
+                connect_kafka(["kafka:9092"])
+            self.assertEqual(create.call_count, 1)
+            sleep.assert_not_called()
+
+    def test_permanent_config_error_closes_producer_and_fails_immediately(self):
+        producer = Mock()
+        with patch("main.KafkaProducer", return_value=producer), \
+                patch("main.KafkaConsumer", side_effect=ValueError("invalid config")), \
+                patch("main.time.sleep") as sleep:
+            with self.assertRaises(ValueError):
+                connect_kafka(["kafka:9092"])
+            producer.close.assert_called_once_with(timeout=0)
+            sleep.assert_not_called()
 
 
 if __name__ == "__main__":

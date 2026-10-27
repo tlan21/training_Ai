@@ -26,7 +26,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-15 | HC-07/09/D19/D21 | Valid product interactions + versioned export for v2 | REVIEW | schema/provenance accepted byClaude; data gate NO_DATA |
 | INT-16 | INT-14 | Client same-origin API transport | REVIEW | fresh Docker build/proxy smoke PASS; security gate INT-17 separate |
 | INT-17 | INT-16 audit | Client framework security migration | PARTIAL | Next16/audits0/53E2E/Docker PASS;2live cases await gateway |
-| INT-18 | INT-00/13 boot | Bounded dependency startup recovery | IN_PROGRESS | reproduced PG/Kafka cold-start failures |
+| INT-18 | INT-00/13 boot | Bounded dependency startup recovery | REVIEW | Go+delayed PG+8worker tests/image PASS |
 
 Hoàn thành trước tách làn (bằng chứng INVENTORY mục 5): T0.1–T0.4, T2.1–T2.4, T4.1, T4.2 = DONE (VERIFIED-HIST, build VERIFIED-NOW);
 T2.5, T3.1, T3.2 = PARTIAL.
@@ -243,7 +243,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Checkpoint: Lane codex / Changed approved Next16 migration / Verified audits0+53E2E+host/Docker gates / Contract no / Next2live checks after gateway recovery.
 
 ### INT-18 — Bounded dependency startup recovery
-- T gốc: INT-00/13 runtime recovery | Owner: CODEX | Status: IN_PROGRESS (2026-10-27)
+- T gốc: INT-00/13 runtime recovery | Owner: CODEX | Status: REVIEW (startup source verified2026-10-27)
 - Depends on: existing cached Go/Python/Postgres images; no AI training/schema dependency | Blocks: reliable manual/daemon cold boot
 - Acceptance: gateway waits a bounded time for startup dependencies, honors cancellation/timeouts and keeps strict AI health gates;
   ingest retries transient Kafka bootstrap with partial-client cleanup, fails permanent config/deadline errors, no event/DSP changes.
@@ -254,3 +254,6 @@ T2.5, T3.1, T3.2 = PARTIAL.
   cached ingest exit1/KafkaTimeoutError unable bootstrap. Existing infra healthy after those exits; no Codex start/restart.
 - Next action: bounded readiness handling/tests, rebuild verified artifacts; keep pagination gap in INT-14 for later.
 - Checkpoint: Lane codex / IN_PROGRESS / Contract unchanged / Next implement/test startup recovery.
+- Evidence complete: verification/INT-18.md; Go vet/test/build +3startup unitPASS; isolated delayedPG29.35s PASS/exit0/no skips;
+  own worker image43dd08cf buildPASS +8packaged testsPASS0.167s/networknone. Initial SDK import failure corrected before deployment.
+- Commits: d27beb2 taskstart; implementation checkpoint follows. Source REVIEW; no existing gateway deployment/start by Codex.

@@ -1,0 +1,15 @@
+[ingest] Kafka not ready; retrying startup
+test_consumer_bootstrap_failure_closes_partial_producer (__main__.BootstrapTest.test_consumer_bootstrap_failure_closes_partial_producer) ... ok
+test_deadline_fails_without_unbounded_retry (__main__.BootstrapTest.test_deadline_fails_without_unbounded_retry) ... ok
+[ingest] Kafka not ready; retrying startup
+test_permanent_config_error_closes_producer_and_fails_immediately (__main__.BootstrapTest.test_permanent_config_error_closes_producer_and_fails_immediately) ... ok
+test_producer_recovers_without_changing_consumer_contract (__main__.BootstrapTest.test_producer_recovers_without_changing_consumer_contract) ... ok
+test_existing_fixture_with_audio (__main__.PreprocessTest.test_existing_fixture_with_audio) ... ok
+test_invalid_video_fails (__main__.PreprocessTest.test_invalid_video_fails) ... ok
+test_packaged_cpu_only_sources (__main__.PreprocessTest.test_packaged_cpu_only_sources) ... ok
+test_silent_fractional_video (__main__.PreprocessTest.test_silent_fractional_video) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.167s
+
+OK

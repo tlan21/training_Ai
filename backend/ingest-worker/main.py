@@ -4,10 +4,12 @@ import math
 import os
 from pathlib import Path
 import re
+import time
 import wave
 
 import av
 from kafka import KafkaConsumer, KafkaProducer
+from kafka.errors import KafkaTimeoutError, KafkaConnectionError
 from minio import Minio
 import numpy as np
 import soundfile as sf
@@ -72,17 +74,37 @@ def preprocess(raw: Path, directory: Path) -> float:
     return duration
 
 
+def connect_kafka(brokers):
+    deadline = time.monotonic() + 90
+    while True:
+        producer = None
+        try:
+            producer = KafkaProducer(bootstrap_servers=brokers, api_version_auto_timeout_ms=5000,
+                                     value_serializer=lambda x: json.dumps(x).encode())
+            consumer = KafkaConsumer("video.uploaded", bootstrap_servers=brokers, group_id="ingest-worker",
+                                     auto_offset_reset="earliest", enable_auto_commit=False,
+                                     max_poll_records=1, max_poll_interval_ms=2*60*60*1000,
+                                     api_version_auto_timeout_ms=5000)
+            return producer, consumer
+        except Exception as exc:
+            if producer is not None:
+                producer.close(timeout=0)
+            if not isinstance(exc, (KafkaTimeoutError, KafkaConnectionError, OSError)):
+                raise
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise
+            print("[ingest] Kafka not ready; retrying startup", flush=True)
+            time.sleep(min(2, remaining))
+
+
 def main():
     torch.set_num_threads(2)
     work = Path("/srv/work")
     work.mkdir(exist_ok=True)
     storage = Minio(os.environ["MINIO_ENDPOINT"], access_key=os.environ["MINIO_ACCESS_KEY"],
                     secret_key=os.environ["MINIO_SECRET_KEY"], secure=False)
-    brokers = os.environ["KAFKA_BROKERS"].split(",")
-    producer = KafkaProducer(bootstrap_servers=brokers, value_serializer=lambda x: json.dumps(x).encode())
-    consumer = KafkaConsumer("video.uploaded", bootstrap_servers=brokers, group_id="ingest-worker",
-                             auto_offset_reset="earliest", enable_auto_commit=False,
-                             max_poll_records=1, max_poll_interval_ms=2*60*60*1000)
+    producer, consumer = connect_kafka(os.environ["KAFKA_BROKERS"].split(","))
     for message in consumer:
         req = json.loads(message.value)
         video_id = req["video_id"]

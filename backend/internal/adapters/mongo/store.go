@@ -8,6 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 	"go.mongodb.org/mongo-driver/v2/mongo/readpref"
 	"traning_ai/backend/internal/domain"
+	"traning_ai/backend/internal/startup"
 )
 
 type AnalysisStore struct{ Collection *mongo.Collection }
@@ -18,7 +19,7 @@ func New(ctx context.Context, uri, name string) (*mongo.Database, error) {
 	if err != nil {
 		return nil, err
 	}
-	if err := client.Ping(ctx, readpref.Primary()); err != nil {
+	if err := startup.Wait(ctx, "MongoDB", func(probe context.Context) error { return client.Ping(probe, readpref.Primary()) }); err != nil {
 		_ = client.Disconnect(ctx)
 		return nil, err
 	}

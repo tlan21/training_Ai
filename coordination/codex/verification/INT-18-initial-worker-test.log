@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/tests/test_preprocess.py", line 13, in <module>
+    from main import connect_kafka, preprocess
+  File "/srv/ingest-worker/main.py", line 12, in <module>
+    from kafka.errors import KafkaTimeoutError, NoBrokersAvailable
+ImportError: cannot import name 'NoBrokersAvailable' from 'kafka.errors' (/usr/local/lib/python3.11/site-packages/kafka/errors.py)

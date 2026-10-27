@@ -20,6 +20,7 @@ import (
 	"traning_ai/backend/internal/handlers"
 	"traning_ai/backend/internal/handlers/cms"
 	"traning_ai/backend/internal/mocks"
+	"traning_ai/backend/internal/startup"
 )
 
 func main() {
@@ -57,11 +58,15 @@ func main() {
 	eventBus := kafka.New(cfg.KafkaBrokers)
 	aiClient := aihttp.New(cfg.AIBaseURL, cfg.AIServiceKey)
 	aiClient.AllowStub = cfg.AIAllowStub
-	health, err := aiClient.Health(ctx)
-	if err != nil {
+	if err := startup.Wait(ctx, "AI HTTP health", func(probe context.Context) error {
+		health, err := aiClient.Health(probe)
+		if err == nil {
+			log.Printf("AI health: stub_mode=%t models_loaded=%v", health.StubMode, health.ModelsLoaded)
+		}
+		return err
+	}); err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("AI health: stub_mode=%t models_loaded=%v", health.StubMode, health.ModelsLoaded)
 	wirePipeline(videoRepo, jobRepo, clipRepo, analysisStore, subtitleStore, aiClient, eventBus, objectStorage)
 
 	resetRepo := mocks.NewPasswordResetRepoMem()

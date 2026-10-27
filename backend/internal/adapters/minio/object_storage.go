@@ -7,6 +7,7 @@ import (
 	"io"
 	"strings"
 	"time"
+	"traning_ai/backend/internal/startup"
 )
 
 type Client struct{ internal, public *miniosdk.Client }
@@ -22,14 +23,14 @@ func New(ctx context.Context, endpoint, publicEndpoint, access, secret string) (
 		return nil, err
 	}
 	for _, bucket := range []string{"raw-videos", "clips"} {
-		exists, err := internal.BucketExists(ctx, bucket)
-		if err != nil {
-			return nil, err
-		}
-		if !exists {
-			if err := internal.MakeBucket(ctx, bucket, miniosdk.MakeBucketOptions{}); err != nil {
-				return nil, err
+		if err := startup.Wait(ctx, "MinIO "+bucket, func(probe context.Context) error {
+			exists, err := internal.BucketExists(probe, bucket)
+			if err != nil || exists {
+				return err
 			}
+			return internal.MakeBucket(probe, bucket, miniosdk.MakeBucketOptions{})
+		}); err != nil {
+			return nil, err
 		}
 	}
 	return &Client{internal: internal, public: public}, nil
