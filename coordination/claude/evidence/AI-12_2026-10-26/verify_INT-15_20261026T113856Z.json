@@ -1,0 +1,47 @@
+{
+ "export_version": "ttv2-data-v1.1",
+ "label_version": "ttv2-labels-v2",
+ "snapshot_at": "2026-10-26T11:38:57.5867Z",
+ "provenance": {
+  "source": "product_postgres",
+  "exporter": "ttv2-export@33495fba40f2a3ffd79c1dbb50471585180ae3d7",
+  "environment": "local"
+ },
+ "rows": {
+  "categories.jsonl": 10,
+  "clips.jsonl": 0,
+  "interactions.jsonl": 0,
+  "users.jsonl": 0,
+  "videos.jsonl": 0
+ },
+ "sha256": {
+  "categories.jsonl": "ef11725594c1b8976f5faf4930a31af19f55f2751151beceb45218cc7e142847",
+  "clips.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "interactions.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "users.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "videos.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+ },
+ "dropped": {
+  "bad_id_format": 0,
+  "unknown_user": 0,
+  "unknown_video": 0,
+  "bad_type": 0,
+  "bad_timestamp": 0,
+  "after_snapshot": 0,
+  "before_user_created": 0,
+  "video_not_visible": 0,
+  "clip_video_mismatch": 0,
+  "bad_duration": 0,
+  "duplicate": 0
+ },
+ "valid_interactions": 0,
+ "users_with_valid_interactions": 0,
+ "labels": {
+  "positive": 0,
+  "negative": 0
+ },
+ "category_vocab": "da2678432386",
+ "split": null,
+ "eval_users_with_5_pos": 0,
+ "stage": "NO_DATA"
+}

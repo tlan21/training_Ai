@@ -157,6 +157,7 @@ def test_category_vocabulary_is_sorted_and_versioned(tmp_path):
 
 
 def test_gate_stage_follows_d19():
+    assert pi.gate_stage(n_users=0, n_valid=0, eval_users_with_5_pos=0) == "NO_DATA"       # empty export: nothing to train on
     assert pi.gate_stage(n_users=10, n_valid=40, eval_users_with_5_pos=0) == "TRAIN_EXPERIMENTAL"
     assert pi.gate_stage(n_users=200, n_valid=5000, eval_users_with_5_pos=0) == "TRAIN_EXPERIMENTAL"
     assert pi.gate_stage(n_users=200, n_valid=5000, eval_users_with_5_pos=30) == "EVAL_READY"

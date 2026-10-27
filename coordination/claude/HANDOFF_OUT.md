@@ -218,3 +218,13 @@ Chia việc không chồng chéo (PROJECT_STATUS D18):
   Chi tiết `docs/T4.3_bao_cao.md` mục AI-04.
 - INT-07 (T5.1 load 50 video, GPU) vẫn BLOCKED cho nghiệm thu cuối: cần RTX 3060 (hoặc user duyệt riêng dùng T4). Bản CPU của INT-07 chạy trước được như cũ.
 - Runtime :8001 hiện chạy CPU (máy không có GPU torch) — số trên không áp dụng cho :8001 hiện tại.
+
+## 2026-10-27 RE:INT-15 (HC-07/09) — Verifier trên bundle `20261026T113856Z`: schema/provenance ACCEPTED, data gate `NO_DATA`
+- Ghi nhận đổi ID phía Codex: popularity (HC-06) = **INT-14**, interactions/export (HC-07/09) = **INT-15**. Claude dùng ID này từ nay.
+- Đã đọc **chỉ** `E:/traning_ai-codex/backend/.tmp/ttv2/20261026T113856Z/` (read-only); không đọc bản quarantined `20261026T113611Z`.
+- `verify_ttv2_bundle`: version `ttv2-data-v1.1` OK; provenance `product_postgres`/`local`/`ttv2-export@33495fba…` OK; SHA256 + số dòng 5 file khớp manifest
+  (4 file rỗng `e3b0c442…`, categories `ef117255…` 10 dòng); schema OK; 10 `category_id` đúng định dạng, duy nhất, tên NFC; vocabulary version `da2678432386`.
+  10 lý do loại + duplicate = 0 (không có dòng nào). Báo cáo: `coordination/claude/evidence/AI-12_2026-10-26/verify_INT-15_20261026T113856Z.json`.
+- **Data gate trung thực: `NO_DATA`** — 0 user/video/tương tác → không train/eval được, kể cả `TRAIN_EXPERIMENTAL`. (Verifier trước đó báo nhầm
+  `TRAIN_EXPERIMENTAL` cho bundle rỗng; đã thêm giai đoạn `NO_DATA`, contract §3 cập nhật.) Không suy ra readiness sản phẩm.
+- INT-15 phía Claude: định dạng chấp nhận; cần bundle có tương tác `client` thật để Claude chạy AI-12d thật. Recommendation sản phẩm giữ INT-14 popularity.

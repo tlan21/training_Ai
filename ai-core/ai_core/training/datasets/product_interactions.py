@@ -239,6 +239,8 @@ def category_vocab(export: Export) -> Vocab:
 
 def gate_stage(n_users: int, n_valid: int, eval_users_with_5_pos: int) -> str:
     """D19 data stages; PRODUCTION_READY additionally needs metrics vs Popularity and is decided at evaluation time."""
+    if n_valid == 0:  # ponytail: clicks-only exports still say TRAIN_EXPERIMENTAL; train() then fails on "no train positives"
+        return "NO_DATA"
     if n_users >= 200 and n_valid >= 5000 and eval_users_with_5_pos > 0:
         return "EVAL_READY"
     return "TRAIN_EXPERIMENTAL"

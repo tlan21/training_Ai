@@ -225,6 +225,8 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - Evidence 12b/12d + labels v2 + verify (VERIFIED-NOW 2026-10-26, `evidence/AI-12_2026-10-26/README_12bd.md`, SYNTHETIC = chỉ kiểm logic):
   nhãn v2 RED→GREEN, lưới 7 980 cặp 0 xung đột; `two_tower_v2.py` 8 test (feature chỉ từ train, oracle, loại item đã xem, popularity train-only, bootstrap,
   gate từng điều kiện, synthetic không qua production, train > untrained +0.2); `verify_ttv2_bundle.py` + schema/provenance 5 test; ai-core 311 passed.
+- Verify bundle thật đầu tiên (VERIFIED-NOW 2026-10-27): Codex INT-15 `20261026T113856Z` — schema/provenance/SHA ACCEPTED, 0 tương tác → gate `NO_DATA`
+  (thêm giai đoạn NO_DATA, test RED→GREEN, ai-core 311 passed). Evidence `verify_INT-15_20261026T113856Z.json`. AI-12 vẫn BLOCKED ⇐ dữ liệu tương tác thật.
 - Commits: 7dc80ac (D19–D21, task), b261600 (12a/12c), e65bb74 (labels v2, HC-08), 920bf9d (12b/12d), 5a8d837 (v1.1 verify) | Kế: 12b (encoder inductive) + 12d (eval harness, baseline Popularity) trên bundle thật khi INT-13 có dữ liệu;
   có thể chuẩn bị harness với dữ liệu tổng hợp (không dùng làm kết quả).
 

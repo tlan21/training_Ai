@@ -55,6 +55,7 @@ UTF-8, JSON Lines, thời gian ISO8601 UTC có hậu tố `Z`. **Không PII**: k
 - Split theo **mốc thời gian toàn cục** (mặc định 20% cuối là eval) → không sự kiện eval nào trước sự kiện train; popularity/feature chỉ tính từ phần train.
   User chỉ có positive sau mốc = **cold-start**, báo cáo riêng.
 - Vocabulary danh mục: `category_id` sắp xếp, version = sha256(12 ký tự đầu) ghi vào manifest model. Danh mục mới → version mới, train lại.
+- Bundle không có tương tác hợp lệ nào → giai đoạn `NO_DATA` (không train được, kể cả thử nghiệm).
 - Gate dữ liệu D19: `EVAL_READY` khi ≥ 200 user, ≥ 5 000 tương tác hợp lệ sau lọc, và có user eval với ≥ 5 positive; chưa đạt → `TRAIN_EXPERIMENTAL`
   (chỉ sandbox, không tuyên bố kết quả tin cậy).
 
