@@ -1,0 +1,22 @@
+INT-15 live client role/duration boundary PASS
+MOCK_ONLY upload/ingest/HTTP AI pipeline PASS
+Gateway restart skipped; this run does not verify restart persistence
+{
+  "mode": "MOCK_ONLY",
+  "user_id": "usr_6220531512f2b720",
+  "clip_id": "clp_dmfbruk6je5m",
+  "restart_verified": false,
+  "history_count": 1,
+  "duration_watched": 2,
+  "likes_count": 1,
+  "settings_persisted": true,
+  "key_masked": true,
+  "playback_range_status": 206,
+  "unpublished_interaction_status": 404,
+  "deleted_content_hidden": true,
+  "recommendation_fallback": false,
+  "primary_popularity": true,
+  "recommendation_mode": "popularity",
+  "preferences_persisted": true,
+  "login_preferences_retained": true
+}

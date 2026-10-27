@@ -79,12 +79,12 @@ def connect_kafka(brokers):
     while True:
         producer = None
         try:
-            producer = KafkaProducer(bootstrap_servers=brokers, api_version_auto_timeout_ms=5000,
+            producer = KafkaProducer(bootstrap_servers=brokers, bootstrap_timeout_ms=5000,
                                      value_serializer=lambda x: json.dumps(x).encode())
             consumer = KafkaConsumer("video.uploaded", bootstrap_servers=brokers, group_id="ingest-worker",
                                      auto_offset_reset="earliest", enable_auto_commit=False,
                                      max_poll_records=1, max_poll_interval_ms=2*60*60*1000,
-                                     api_version_auto_timeout_ms=5000)
+                                     bootstrap_timeout_ms=5000)
             return producer, consumer
         except Exception as exc:
             if producer is not None:

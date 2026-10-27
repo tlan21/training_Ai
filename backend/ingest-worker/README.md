@@ -31,4 +31,5 @@ This leaves the topic/group/commit/event/DSP contract unchanged. Packaged tests 
 
 Current validation (2026-10-27): full runtime image builds from Python3.11-slim and CPU wheels; all4 packaged tests pass with networknone,
 including CPU/source/checkpoint audit. `pip check` passes. Production volumes were not mounted and the existing worker was not replaced.
-The pipeline using the new image is **not yet verified** while the project stack is stopped; see `coordination/codex/verification/INT-13.md`.
+The own image is now deployed and its real ingest/MinIO/Kafka/cutter pipeline passes with explicit HTTP mock AI.
+Gateway restart was skipped and not claimed; see `coordination/codex/verification/INT-13.md` and INT-13-pipeline.json.

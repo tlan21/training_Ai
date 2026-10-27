@@ -34,6 +34,15 @@ Gateway subsequently becamehealthy after another external restart; this is not a
  4DSP/media/CPU-source audit +4Kafka recovery/deadline/partialcleanup/permanent-error tests. INT-18-worker-tests.log.
 - git diff --check PASS. Frontend checks not repeated; no frontend code changed in this checkpoint.
 
+## Kafka3 deployment compatibility follow-up
+- First deployed import-corrected image43dd08cf exited because v3 also removed api_version_auto_timeout_ms.
+  Initial business attempt timed out and its finally block softdeleted only its fixture; no PASS evidence claimed for that attempt.
+- Read installed SDK DEFAULT_CONFIG and replaced the removed key with bootstrap_timeout_ms=5000 for both producer and consumer.
+  Added assertions that every passed bootstrap config key belongs to actual SDKProducer/SDKConsumer DEFAULT_CONFIG.
+- Final imageed21674b559e233f4b6f4bd3600496ebf2c4da7d974db0f104822c6debebba0c rebuilt using cached dependency layers;
+  **8tests PASS0.185s**, deployed worker staysrunning and consumed actual Kafka messages. INT-13 pipeline subsequently PASS with mockAI;
+  restart_verified=false, no gateway restart/start by Codex. This supersedes the earlier43dd image and0.167s result.
+
 New Go startup code is not deployed yet; existing gateway was restored externally using prior binary.
 INT-13 now can deploy this verified own worker image and run pipeline with current healthy gateway/mock;
 INT-17 two live Next16 cases can run independently. RealAI capability remains its separate gate.

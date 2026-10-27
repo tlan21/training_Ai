@@ -1,6 +1,6 @@
 # INT-13 — standalone ingest image (2026-10-26)
 
-Owner CODEX, project skill backend_endpoint.md. Status PARTIAL: full runtime image/tests PASS2026-10-27; deployed pipeline not executed.
+Owner CODEX, project skill backend_endpoint.md. Status REVIEW: full own runtime build/tests and deployed mock-AI business pipeline PASS2026-10-27.
 
 ## Source change
 - Own `backend/ingest-worker/Dockerfile` builds `video-ai-ingest-worker` from Python3.11 slim and explicit CPU Torch.
@@ -51,6 +51,21 @@ Owner CODEX, project skill backend_endpoint.md. Status PARTIAL: full runtime ima
 - Remaining: deploy this image into the existing stack and run actual Kafka→MinIO ingest→gateway/mock pipeline.
   This is NOT_RUN because stack stopped and prior gateway start was rejected by automatic review; no bypass attempted.
   Older cached-worker tests are separate evidence. No clean-machine full system or new realAI integration claim.
+
+## 2026-10-27 — deployed pipeline gate PASS
+- Runtime recovered externally; gatewayhealthy/mock+infraready, old cached workerdown. Codex replaced only ingest-worker via
+  Compose up -d --no-deps --no-build --pull never ingest-worker. No gateway or legacy inference start/restart, no orphan removal.
+- Kafka3 constructor compatibility corrected during INT-18; final own worker image
+  ed21674b559e233f4b6f4bd3600496ebf2c4da7d974db0f104822c6debebba0c,8packaged testsPASS0.185s/networknone.
+  Uses only existing ingest_work volume; old source bind/inference image removed from this service configuration, no checkpoint/model mount.
+  Initial deployed SDK timeout-key failure and timed-out fixture were not markedPASS; corrected SDK-config assertions now guard supported keys.
+- e2e/verify_business_persistence.ps1 -SkipGatewayRestart -EvidencePath coordination/codex/verification/INT-13-pipeline.json: **PASS**.
+  Real upload→own workerPyAV/DSP→Kafka→gateway/HTTPmock→MinIO/cutter; clip publish, range playback206, unpublished404,
+  role403/nonwatch422, preferences/relogin/history/likes/settings/key masking, primary popularity, deleted-content privacy PASS.
+  JSON/log committed separately; old INT-02 restart evidence not overwritten. restart_verified=false, no new restart proof.
+- Test finally restores expected threshold and softdeletes only test video; test users/media retained under existing policy and origin=test,
+  excluded from training exports. Gateway uptime/service and unrelated faktory unchanged by Codex.
+- INT-13 source/runtime/pipeline acceptance met on lane; full system clean deployment and trueAI pipeline remain their separate gates.
 
 Lane: codex
 Changed: own worker Dockerfile/ignore/locked requirements/test/README; compose image/build; Codex trackers/evidence

@@ -21,11 +21,11 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-10 | — | Forgot-password giữ nguyên, ngoài release hiện tại | DEFERRED / OUT_OF_SCOPE | D1, HC-02 |
 | INT-11 | INT-01 | HTTP media giữa gateway Docker và inference host | BLOCKED | HO-03 Docker Desktop host transport; restart decision pending |
 | INT-12 | T2.2/T3.1 | CMS access JWT chỉ ở RAM, refresh khi reload | REVIEW | 41 E2E PASS; live gateway cookie rotation |
-| INT-13 | INT-00 | Image ingest riêng + kiểm clean build | IN_PROGRESS | runtime externally recovered; deploy own worker/pipeline |
+| INT-13 | INT-00 | Image ingest riêng + kiểm clean build | REVIEW | own image+8tests+deployed mock pipeline PASS |
 | INT-14 | HC-06/D18/D21 | Popularity MVP, real metadata, recommendation_mode | PARTIAL | MVP/PG/Client live verified; full parity INT-06 remains |
 | INT-15 | HC-07/09/D19/D21 | Valid product interactions + versioned export for v2 | REVIEW | schema/provenance accepted byClaude; data gate NO_DATA |
 | INT-16 | INT-14 | Client same-origin API transport | REVIEW | fresh Docker build/proxy smoke PASS; security gate INT-17 separate |
-| INT-17 | INT-16 audit | Client framework security migration | PARTIAL | Next16/audits0/53E2E/Docker PASS;2live cases await gateway |
+| INT-17 | INT-16 audit | Client framework security migration | IN_PROGRESS | gateway externally healthy; deploy Next16 and2live cases |
 | INT-18 | INT-00/13 boot | Bounded dependency startup recovery | REVIEW | Go+delayed PG+8worker tests/image PASS |
 
 Hoàn thành trước tách làn (bằng chứng INVENTORY mục 5): T0.1–T0.4, T2.1–T2.4, T4.1, T4.2 = DONE (VERIFIED-HIST, build VERIFIED-NOW);
@@ -172,7 +172,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Checkpoint: Lane codex; Changed auth+fixtures+login parity; Verified 41 E2E + types/build PASS; Contract touched no; Next safe task INT-11.
 
 ### INT-13 — Ingest image riêng, clean build
-- T gốc: INT-00 | Owner: CODEX | Status: IN_PROGRESS (2026-10-27; own worker deployment/pipeline now unblocked)
+- T gốc: INT-00 | Owner: CODEX | Status: REVIEW (2026-10-27; own image/deployed pipeline verified)
 - Depends on: enough Docker disk working room (D10/HC-03); transport recovery HO-03 for real integration | Blocks: clean-machine deployment
 - Acceptance: own worker image builds from source, CPU DSP/PyAV only, no model/checkpoint/inference process; no AI code edits;
   tests in fresh image + compose worker/pipeline PASS. Existing helper feature algorithm/event schema unchanged.
@@ -230,7 +230,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Checkpoint: Lane codex / Verified host+Docker functionality / Contract unchanged / Next INT-17 security+runtime recovery.
 
 ### INT-17 — Client framework security migration
-- T gốc: INT-16 fresh build audit | Owner: CODEX | Status: PARTIAL (2026-10-27 approved migration verified;2live gateway checks pending)
+- T gốc: INT-16 fresh build audit | Owner: CODEX | Status: IN_PROGRESS (2026-10-27; recovered gateway enables2live checks)
 - Depends on: user major-upgrade approval received2026-10-27; runtime recovery for2live checks | Blocks: final Client runtime acceptance
 - Acceptance: scoped upgrade approved; locked clean install/types/lint/build/Docker/55UI+live checks PASS; runtime critical/high findings resolved or explicitly reviewed;
   existing Stitch/API/cookie/JWT behavior preserved, no unrelated features or AI edits.

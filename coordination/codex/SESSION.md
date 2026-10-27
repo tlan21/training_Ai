@@ -102,3 +102,11 @@ Next safe task: INT-17 live checks +INT-13 deployed pipeline after user runtime 
   no build/pull/dependency recreation. Kafka/MinIO/volume/event interface unchanged; never start legacy inference container.
 - Business verification script gains explicit SkipGatewayRestart flag +separate EvidencePath, records restart_verified=false;
   pipeline verification will not repeat or bypass the previously rejected gateway restart/start action. Historical INT-02 evidence preserved.
+
+## INT-13 REVIEW / INT-17 live gate active
+- INT-13 own image deployed ed21674b,8testsPASS0.185s and actual mock business pipelinePASS, evidence INT-13-pipeline.json/log.
+  Script explicitly skipped gateway restart, restart_verified=false; old INT-02 evidence preserved. Fixture cleanup completed.
+- Kafka3 removed bootstrap timeout key corrected to bootstrap_timeout_ms; SDK-key assertions added; initial failed deployment notPASS.
+- INT-18 sourceGo startup tests stillvalid/REVIEW, gateway-int18 artifact separate/not deployed. Existing gateway becamehealthy externally.
+- INT-17 IN_PROGRESS: existing Client container is old cached image; deploy only validated Next16 image4fcf2410 via same Compose/no deps/build/pull,
+  then run the existing2live client_auth cases on normal3000. No source feature/API change and no gateway-start bypass.

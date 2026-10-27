@@ -12,6 +12,7 @@ import torch
 
 from main import connect_kafka, preprocess
 from kafka.errors import KafkaTimeoutError, KafkaConnectionError
+from kafka import KafkaProducer as SDKProducer, KafkaConsumer as SDKConsumer
 
 
 class PreprocessTest(unittest.TestCase):
@@ -86,6 +87,8 @@ class BootstrapTest(unittest.TestCase):
             self.assertEqual(consume.call_args.args, ("video.uploaded",))
             self.assertEqual(consume.call_args.kwargs["group_id"], "ingest-worker")
             self.assertFalse(consume.call_args.kwargs["enable_auto_commit"])
+            self.assertLessEqual(set(create.call_args.kwargs), SDKProducer.DEFAULT_CONFIG.keys())
+            self.assertLessEqual(set(consume.call_args.kwargs), SDKConsumer.DEFAULT_CONFIG.keys())
 
     def test_consumer_bootstrap_failure_closes_partial_producer(self):
         first, producer, consumer = Mock(), Mock(), Mock()

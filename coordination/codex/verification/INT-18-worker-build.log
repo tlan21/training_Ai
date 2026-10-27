@@ -5,15 +5,14 @@
 #1 DONE 0.0s
 
 #2 [internal] load metadata for docker.io/library/python:3.11-slim
-#2 DONE 1.6s
+#2 DONE 1.1s
 
 #3 [runtime 1/6] FROM docker.io/library/python:3.11-slim@sha256:9635410349cba3531fabde484e07f14e625abb40e1bc8b23fffa046cb497ce2d
 #3 resolve docker.io/library/python:3.11-slim@sha256:9635410349cba3531fabde484e07f14e625abb40e1bc8b23fffa046cb497ce2d 0.0s done
 #3 DONE 0.0s
 
 #4 [internal] load build context
-#4 transferring context: 6.39kB 0.2s
-#4 transferring context: 6.40kB 0.2s done
+#4 transferring context: 6.38kB 0.2s done
 #4 DONE 0.2s
 
 #5 [sources 1/2] COPY backend/ingest-worker/main.py backend/ingest-worker/requirements.txt /ingest-worker/
@@ -40,11 +39,11 @@
 #12 exporting to image
 #12 exporting layers
 #12 exporting layers 0.2s done
-#12 exporting manifest sha256:ab088a695e79b45608f5cd5814da0a6e118273c5bdef3e964e2dfcf40b35e848 0.0s done
-#12 exporting config sha256:175c8e1dcd6bb697947b4b43e2a4d6b24c8347b611fb79fd4b6a78cd8c01efe9 0.0s done
-#12 exporting attestation manifest sha256:6f15816ea0f91a5ce0b20b2be80b90a16518c129539bd26fb5f958ed39455352 0.0s done
-#12 exporting manifest list sha256:43dd08cfd8eb12281eadd7a7187dfb8476ae3b6cf8f6301ff4c6e990954bf447
-#12 exporting manifest list sha256:43dd08cfd8eb12281eadd7a7187dfb8476ae3b6cf8f6301ff4c6e990954bf447 0.0s done
+#12 exporting manifest sha256:a75c25528d53b9a0b4e4374d11c327dd479375a0b9b909a59770b357e69d7571 0.0s done
+#12 exporting config sha256:4bd6ff03ebd3759e22018468ec860ee2490372da603979ed4b727eb831e75db9 0.0s done
+#12 exporting attestation manifest sha256:105d243d8dec3d391aa9732b7b8e976fc8e3117b0895c7125350824a80b6b8eb 0.0s done
+#12 exporting manifest list sha256:ed21674b559e233f4b6f4bd3600496ebf2c4da7d974db0f104822c6debebba0c 0.0s done
+#12 naming to docker.io/library/video-ai-ingest-worker:latest
 #12 naming to docker.io/library/video-ai-ingest-worker:latest done
 #12 unpacking to docker.io/library/video-ai-ingest-worker:latest 0.1s done
-#12 DONE 0.5s
+#12 DONE 0.4s
