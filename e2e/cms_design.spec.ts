@@ -92,12 +92,17 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
         await expect(page.getByText('78% Match', { exact: true })).toHaveClass(/match-low/);
         await page.getByRole('button', { name: 'Chấp nhận', exact: true }).first().click();
         await expect(page.locator('.proposal-card.is-selected')).toContainText('98% Match');
+        await expect(page.locator('.highlight-player .player-time')).toContainText('00:41:05');
+        await expect(page.locator('.highlight-player .player-time')).toContainText('01:30:00');
+        await expect(page.locator('.proposal-card.is-selected .proposal-meta .mono')).toHaveText('00:41:05 - 00:42:30');
+        await expect(page.locator('.proposal-actions .icon-button').first()).toHaveCSS('width', '32px');
       }
       await page.evaluate(() => document.fonts.ready);
       await expect(page.locator('.material-symbols-outlined')).toHaveCount(0);
       await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(viewport.width);
       await expect(page.locator('main')).not.toContainText(/Nhận diện nhân vật|AI Tracking|Object detection|H100|Vision-X|OpenAI|mem-mock|vid_stub/);
       if (viewport.width === 1440) {
+        if (route.startsWith('highlight')) expect(await page.locator('.proposal-panel > .panel-heading').evaluate(element => element.getBoundingClientRect().height)).toBe(57);
         expect(await page.locator('.cms-sidebar').evaluate((element) => element.getBoundingClientRect().width)).toBe(260);
         if (route !== 'settings') expect(await page.locator('.cms-topbar').evaluate((element) => element.getBoundingClientRect().height)).toBe(48);
       } else {
@@ -133,6 +138,8 @@ for (const width of [390, 1440]) {
     await expect(page.getByRole('button', { name: 'Xem trước', exact: true })).toBeEnabled();
     await expect(page.getByRole('button', { name: 'Phát video', exact: true })).toHaveCSS('width', '64px');
     await expect(page.getByRole('button', { name: 'Phát video', exact: true })).toHaveCSS('border-radius', '12px');
+    await expect(page.locator('.player-time')).toContainText('00:00:00');
+    await expect(page.locator('.player-time')).toContainText('00:00:08');
     await page.screenshot({ path: info.outputPath(`highlight-original-${width}.png`), fullPage: true });
     await page.getByRole('button', { name: 'Xem trước', exact: true }).click();
     await expect.poll(() => video.evaluate((media: HTMLVideoElement) => media.currentTime)).toBeGreaterThan(1.2);
@@ -155,6 +162,8 @@ for (const width of [390, 1440]) {
     await expect(page.getByRole('button', { name: 'Phát video', exact: true })).toHaveCSS('border-radius', '12px');
     await page.getByRole('button', { name: '00:04 – 00:08', exact: true }).click();
     await expect.poll(() => video.evaluate((media: HTMLVideoElement) => media.currentTime)).toBeCloseTo(4, 1);
+    await expect(page.locator('.player-scrubber')).toHaveCSS('height', '4px');
+    await expect.poll(() => page.locator('.player-scrubber > span').evaluate(element => element.getBoundingClientRect().width / element.parentElement!.getBoundingClientRect().width)).toBeCloseTo(.5, 1);
     await page.screenshot({ path: info.outputPath(`subtitles-original-${width}.png`), fullPage: true });
     await page.getByRole('button', { name: 'Phát video', exact: true }).click();
     await expect(page.getByRole('button', { name: 'Tạm dừng video', exact: true })).toBeVisible();

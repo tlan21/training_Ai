@@ -6,8 +6,9 @@ export const VideoPlayer = forwardRef<PlayerHandle, { src?: string | null; poste
     const video = useRef<HTMLVideoElement>(null);
     const previewEnd = useRef<number | null>(null);
     const [playing, setPlaying] = useState(false);
+    const [progress, setProgress] = useState(0);
     const [error, setError] = useState("");
-    useEffect(() => { previewEnd.current = null; setPlaying(false); setError(""); }, [src]);
+    useEffect(() => { previewEnd.current = null; setPlaying(false); setProgress(0); setError(""); }, [src]);
     const play = async () => {
       setError("");
       try { await video.current?.play(); } catch (cause) {
@@ -28,9 +29,11 @@ export const VideoPlayer = forwardRef<PlayerHandle, { src?: string | null; poste
         if (previewEnd.current !== null && media.currentTime >= previewEnd.current) {
           const end = previewEnd.current; previewEnd.current = null; media.pause(); media.currentTime = end;
         }
+        if (variant === "subtitle") setProgress(Number.isFinite(media.duration) && media.duration > 0 ? media.currentTime / media.duration * 100 : 0);
         onTimeUpdate?.(media.currentTime);
       }} />
       {variant && <button className="player-toggle" aria-label={playing ? "Tạm dừng video" : "Phát video"} onClick={() => { if (video.current?.paused) void play(); else video.current?.pause(); }}><Icon name={playing ? "pause" : "play_arrow"} filled size={variant === "highlight" ? 40 : 24} /></button>}
+      {variant === "subtitle" && <div className="player-scrubber" aria-hidden="true"><span style={{ width: `${progress}%` }}><i /></span></div>}
       {error && <p className="player-error" role="alert">{error}</p>}
     </div> : <div className={`video-player player-unavailable ${variant ? `player-${variant}` : ""}`} style={poster ? { backgroundImage: `url("${poster}")` } : undefined}><span className="player-play"><Icon name="play_arrow" filled size={variant === "subtitle" ? 24 : 40} /></span><p>Nguồn phát video gốc chưa được cung cấp.</p></div>;
   },

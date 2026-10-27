@@ -19,17 +19,23 @@ Dependencies: INT-02/INT-04 functional source playback available. Full parity st
 Changed files: `cms/src/components/player/VideoPlayer.tsx`, `cms/src/components/common/Icon.tsx`,
 `cms/src/pages/HighlightPage.tsx`, `cms/src/pages/SubtitlesPage.tsx`, `cms/src/styles/global.css`,
 `e2e/cms_design.spec.ts`, `e2e/cms_stitch_reference.spec.ts`, owned verification/tracker/session files.
-Commit: see INT-05 task checkpoint entry / git history `int(cms): enable bounded original-video preview`.
+Commit: `f601958` original preview; follow-up `int(cms): align review timeline and proposal spacing` in git history.
+
+Follow-up: highlight player/proposal times now use HH:MM:SS, including durations over1h; existing minute-only callers
+keep their format. Player timeline uses12px/16px text,16px padding,4px track and white30% background. Subtitle player
+has its4px progress track/12px thumb bound to actual media time and4px outer radius. Proposal header57px, compact
+actions/32px remove icon, pill badges and selected-time styling now follow the source. No additional API dependency.
 
 ## Verification
 
 | Command (direct Node CLIs; npx wrapper is broken locally) | Result |
 |---|---|
-| CMS `node node_modules/typescript/bin/tsc --noEmit` and `node node_modules/vite/bin/vite.js build` | PASS, final bundle index-0zIpT5Ez.js / index-CoE8D0fz.css |
+| CMS `node node_modules/typescript/bin/tsc --noEmit` and `node node_modules/vite/bin/vite.js build` | PASS, final bundle index-DOmBeB3S.js / index-CCft9cBB.css |
 | Root `node node_modules/typescript/bin/tsc -p e2e/tsconfig.json --noEmit` | PASS |
 | Baseline `cms_design.spec.ts --grep 'T3.1 (390\|1440) .* layout'` on existing CMS5173 | 18 PASS, 24.5s |
 | `E2E_CMS_URL=http://127.0.0.1:5174` Playwright `cms_design.spec.ts cms_stitch_reference.spec.ts --output=backend/.tmp/int05-final --reporter=list` | 37 PASS, 38.7s (before final radius correction) |
 | Same QA URL, `cms_design.spec.ts --grep INT-05 --output=backend/.tmp/int05-controls-final --reporter=list` | 3 PASS, 10.3s after final radius correction; also verifies manual seek cancels preview and published modal retains native controls |
+| Same QA URL, `cms_design.spec.ts --grep 'INT-05\|highlight layout' --output=backend/.tmp/int05-spacing-final --reporter=list` | 5 PASS, 11.7s after time/progress/proposal follow-up; asserts90min format,57px header, media progress at50%, native modal and error state |
 | `git diff --check` | PASS |
 | Read-only gateway `/healthz` and Claude `/health` | gateway ok; stub_mode=false, 6 models, degraded=[], CPU |
 
@@ -38,7 +44,7 @@ its login page because the capture omitted its `currentUser` localStorage state.
 the subsequent four captures and full37 run passed. Test fixture response types were corrected to generated `VideoDetail`;
 no handwritten API types. Fixture tests are **UI evidence**, not real AI/E2E acceptance or AI quality evidence.
 
-QA used the production Vite bundle at127.0.0.1:5174. Owned PID22248 was checked and stopped afterwards.
+QA used the production Vite bundle at127.0.0.1:5174. Owned PID22248, then follow-up PID1636, were checked and stopped afterwards.
 CMS5173 and real gateway/AI runtime were not replaced. Client production QA3100 remains pending its separate startup approval.
 
 ## Design Parity Check — scoped player checkpoint
@@ -50,8 +56,8 @@ Paired screenshots: [comparison directory](INT-05-comparison/README.md), both390
 |---|---|---|
 | 1 | Layout | Highlight two columns / subtitle three columns retained on desktop. Center controls now exist over real video. Full CMS review still open. |
 | 2 | Colors | Scoped button backgrounds white20% and #46159990%, white glyph match rendered reference. Dynamic video frames excluded. |
-| 3 | Typography | Inherited local Inter/mono preserved. Remaining player time format/font and other per-screen differences are not certified. |
-| 4 | Spacing/radius | Center buttons64/48px and12px radius asserted at both viewports. Proposal/header spacing and subtitle scrubber still need correction. |
+| 3 | Typography | Inherited local Inter/mono preserved; scoped player time12px/16px and HH:MM:SS restored. Other per-screen typography is not certified. |
+| 4 | Spacing/radius | Center buttons64/48px and12px radius; subtitle4px track/12px thumb; proposal header57px/32px remove action restored and asserted. Full-page spacing review still open. |
 | 5 | Icons | play_arrow filled / pause Material SVG through existing icon system; no new icon library. |
 | 6 | Vietnamese copy | Existing Xem trước and missing-source message retained; actual playback errors exposed. Full copy review still open. |
 | 7 | AI UI | Preview uses returned proposal times, no fabricated score/model results. Heatmap/store and editable range remain independent of preview. |
@@ -59,13 +65,13 @@ Paired screenshots: [comparison directory](INT-05-comparison/README.md), both390
 | 9 | Responsive | Buttons and interactions tested at390x844/1440x900; baseline18 and regression18 shell layouts retain no horizontal body overflow. CMS has no separate mobile source exports; raw reference is fixed desktop geometry at390. |
 | 10 | Cut elements | Object detection/tracking/character recognition/H100/Vision-X remain absent in app. Raw reference screenshots retain the original cut content solely for comparison. |
 
-Remaining: actual width/height/fps; analytics/editor/category rule definitions; source time formatting and subtitle progress
-scrubber; proposal/header spacing and full-page ten-item comparisons. These are not marked DONE or silently accepted.
+Remaining: actual width/height/fps; analytics/editor/category rule definitions; full-page ten-item comparisons beyond
+these scoped player/proposal fixes. These are not marked DONE or silently accepted.
 No CMS deployment/master release/push performed. Next safe task: continue INT-05 existing-API visual corrections;
 INT-06 production regression requires the pending startup decision; new fields/routes require separate contract approval/task.
 
 Lane: codex
 Changed: CMS player/callers/styles/icons, E2E, owned verification/session/tracker
-Verified: CMS tsc/build; E2E tsc; 37 browser cases +3 final player checks; gateway/AI health
+Verified: CMS tsc/build; E2E tsc; 37 browser cases +3 player checks +5 follow-up checks; gateway/AI health
 Contract touched: no (OpenAPI0.3.2 and AI-APIv1.3 consumed unchanged)
 Next safe task: INT-05 existing-API visual corrections

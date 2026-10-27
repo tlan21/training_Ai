@@ -1,7 +1,7 @@
-export function fmtSec(s: number): string {
-  const m = Math.floor(s / 60);
+export function fmtSec(s: number, hours = false): string {
+  const m = hours ? Math.floor(s / 60) % 60 : Math.floor(s / 60);
   const sec = Math.floor(s % 60);
-  return `${String(m).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
+  return `${hours ? `${String(Math.floor(s / 3600)).padStart(2, "0")}:` : ""}${String(m).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
 }
 export function fmtISO(iso: string): string {
   try {

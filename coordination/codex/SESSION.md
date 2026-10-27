@@ -9,7 +9,9 @@
   CMS5173 remains existing image; real gateway healthok and Claude stubfalse/6models/degraded[]/CPU rechecked. Source fixes not deployed.
   Changed sharedplayer/icons/Highlight+Subtitle callers/CSS, CMS UI/reference tests. Evidence verification/INT-05.md, paired12PNG+4JSON in INT-05-comparison.
   Initial reference4FAIL were harness auth redirects, fixed with Stitch-only currentUser init; subsequent4capture +full37PASS. No fullCMS parity/DONE claim.
-  Next independent corrections: source time format/subtitle scrubber/proposal spacing +remaining per-screen10item review. MissingCMSfields still require scope/contract decision.
+  f601958 player checkpoint; follow-up restored HH:MM:SS/90min time, subtitle progress4px/thumb12px, proposal header57px/compact actions and badge spacing.
+  Final scoped5browserPASS11.7s +CMSbuild/tsc/E2Etypes/diffcheck PASS; final QA PID1636 also stopped. Paired current PNGs refreshed.
+  Next: remaining per-screen10item review. MissingCMSfields still require scope/contract decision; INT-05 remains IN_PROGRESS, not DONE.
 - Client follow-up after09f0611: desktop register label cadence/header/footer/terms/checkbox sizes, login checkbox/type spacing,
   Discovery mobile49px header/flex search row and desktop nav action/avatar spacing aligned to actual reference source. New geometry tests pending production runtime;
   no pixel PASS inferred from source-only fixes. Latest final build/tsc/lint session67715 exited0; no active compiler or Client QA server.
