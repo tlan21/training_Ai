@@ -21,7 +21,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-10 | — | Forgot-password giữ nguyên, ngoài release hiện tại | DEFERRED / OUT_OF_SCOPE | D1, HC-02 |
 | INT-11 | INT-01 | HTTP media giữa gateway Docker và inference host | BLOCKED | HO-03 Docker Desktop host transport; restart decision pending |
 | INT-12 | T2.2/T3.1 | CMS access JWT chỉ ở RAM, refresh khi reload | REVIEW | 41 E2E PASS; live gateway cookie rotation |
-| INT-13 | INT-00 | Image ingest riêng + kiểm clean build | BLOCKED | source/3 tests PASS; full CPU image capacity gate |
+| INT-13 | INT-00 | Image ingest riêng + kiểm clean build | IN_PROGRESS | full runtime build/test; project stack currently stopped |
 | INT-14 | HC-06/D18/D21 | Popularity MVP, real metadata, recommendation_mode | PARTIAL | MVP/PG/Client live verified; full parity INT-06 remains |
 | INT-15 | HC-07/09/D19/D21 | Valid product interactions + versioned export for v2 | PARTIAL | clean actual bundle delivered; Claude verifier +runtime recovery pending |
 | INT-16 | INT-14 | Client same-origin API transport | REVIEW | c30c664;52E2E+live sessions PASS; fresh Docker gate |
@@ -170,7 +170,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Checkpoint: Lane codex; Changed auth+fixtures+login parity; Verified 41 E2E + types/build PASS; Contract touched no; Next safe task INT-11.
 
 ### INT-13 — Ingest image riêng, clean build
-- T gốc: INT-00 | Owner: CODEX | Status: BLOCKED (full runtime build capacity/network; source complete2026-10-26)
+- T gốc: INT-00 | Owner: CODEX | Status: IN_PROGRESS (2026-10-27; C:14.63GiB, full image build now feasible)
 - Depends on: enough Docker disk working room (D10/HC-03); transport recovery HO-03 for real integration | Blocks: clean-machine deployment
 - Acceptance: own worker image builds from source, CPU DSP/PyAV only, no model/checkpoint/inference process; no AI code edits;
   tests in fresh image + compose worker/pipeline PASS. Existing helper feature algorithm/event schema unchanged.
@@ -209,7 +209,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Evidence: verification/INT-15.md: Go checks, CMS/Client checks,55browser PASS; intended PG8tests PASS/no skips; migrationrepeat0;
   corrected testcleanup +0fixture SQL; final actual CLI snapshot20261026T113856Z exit0/hash/count PASS (0product rows,10categories).
   Initial2fixture artifact quarantined/not handed off. Live staff403/nonwatch422/mock pipeline passed; restart attempt NOT_PASS (Desktop stalled).
-- Next action: Claude verify only final bundle/readiness; user restore gateway (automatic review blocked targeted start). No AI training or fabricated data.
+- Next action: Claude verifier ACCEPTED2026-10-27/data gate NO_DATA; user restore runtime (automatic review blocked targeted gateway start). No AI training or fabricated data.
 - Checkpoint: Lane codex / PARTIAL until external verifier/runtime / Contract public0.3.1 +ttv2-data-v1.1 / No product vectors/training.
 
 ### INT-16 — Client same-origin API transport

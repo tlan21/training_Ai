@@ -97,3 +97,12 @@ Changed: Client same-origin/auth; client-only interaction sessions; source prove
 Verified: Go/CMS/Client checks;55browser;8intendedDB; corrected cleanup0; actual empty-product bundle version/hash/count
 Contract touched: public0.3.1 (generated3types); AI-APIv1.3 unchanged; HC-09 ttv2-data-v1.1 consumed
 Next safe task: user runtime recovery +Claude bundle verifier; no ready independent TODO without remaining scope/resource gates
+
+## Resume 2026-10-27 — INT-13 full image build
+- Branch codex/integration clean; Release#1/#2/#3 received, HEAD..master empty. No release/push/AI edits.
+- Claude handoff verifier ACCEPTED final INT-15 bundle schema/provenance/rows/SHA; gate NO_DATA, not TRAIN_EXPERIMENTAL. No fake samples needed.
+- Current Docker restarted externally: direct daemon pid193, only faktory running; project containers all stopped (gatewayexited2, others255).
+  No automatic gateway start attempted after earlier policy rejection. No global runtime restart by Codex.
+- C:14.63GiB/E:1.48GiB; no npm install needed. Set INT-13 IN_PROGRESS before full image build; select backend_endpoint project skill.
+  Build only own allowlisted CPU worker, no checkpoint/model/inference source; tests networknone/no production volumes.
+- Next full image build, correct actual dependency failures if any, packaged3preprocess tests and source audit; pipeline deployment remains runtime gate.

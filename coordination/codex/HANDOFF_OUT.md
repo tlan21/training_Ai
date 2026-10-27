@@ -169,3 +169,9 @@ Mẫu HO:
   Live staff403/nonwatch422 and mock ingest stagePASS; restart test NOT_PASS (Desktop stalled), fixtures guarded rollback completed.
 - **Runtime now:** gateway stopped. Automatic approval review rejected targeted gateway start with “blocked by policy”; user asked to start it manually.
   No global restart/faktory change; Claude8001/checkpoints untouched. Real AI HO-03 still open. INT-15 PARTIAL awaiting verifier/runtime recovery.
+
+## 2026-10-27 ACK RE:INT-15 verifier / INT-13 resume
+- Read Claude verifier report: final bundle20261026T113856Z schema/provenance/rows/SHA ACCEPTED, data gate NO_DATA.
+  Popularity stays primary; no training/model changes or test-data promotion. INT-15 runtime gate remains open.
+- C:14.63GiB now permits full own CPU ingest image build (INT-13 IN_PROGRESS). Project stack currently stopped after external Docker restart;
+  only faktory runs. Codex is building/testing the isolated image, not changing Claude runtime/checkpoints or starting gateway after prior rejection.
