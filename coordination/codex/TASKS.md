@@ -22,7 +22,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-11 | INT-01 | HTTP media giữa gateway Docker và inference host | REVIEW | approved real deployment +3E2E PASS2026-10-27 |
 | INT-12 | T2.2/T3.1 | CMS access JWT chỉ ở RAM, refresh khi reload | REVIEW | 41 E2E PASS; live gateway cookie rotation |
 | INT-13 | INT-00 | Image ingest riêng + kiểm clean build | REVIEW | own image+8tests+deployed mock pipeline PASS |
-| INT-14 | HC-06/D18/D21 | Popularity MVP, real metadata, recommendation_mode | PARTIAL | MVP/PG/Client live verified; full parity INT-06 remains |
+| INT-14 | HC-06/D18/D21 | Popularity MVP, real metadata, recommendation_mode | IN_PROGRESS | pagination contract INT-19 REVIEW; primary real runtime |
 | INT-15 | HC-07/09/D19/D21 | Valid product interactions + versioned export for v2 | REVIEW | schema/provenance accepted byClaude; data gate NO_DATA |
 | INT-16 | INT-14 | Client same-origin API transport | REVIEW | fresh Docker build/proxy smoke PASS; security gate INT-17 separate |
 | INT-17 | INT-16 audit | Client framework security migration | REVIEW | Next16 deployed;53fixture+2live/audits0/build PASS |
@@ -193,7 +193,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Checkpoint: Lane codex / Changed own ingest package+compose+tests / Verified source build+3 tests/config PASS / Contract no / Next capacity+HO-03 recovery.
 
 ### INT-14 — Popularity recommendation + truthful mode (HC-06 scope)
-- T gốc: D18/D20/D21, HC-06 (ID INT-12 collided historical auth task) | Owner: CODEX | Status: PARTIAL (MVP functional verified2026-10-26)
+- T gốc: D18/D20/D21, HC-06 (ID INT-12 collided historical auth task) | Owner: CODEX | Status: IN_PROGRESS (2026-10-27; primary feed/catalog pagination)
 - Depends on: INT-02/PG, AI-API v1.3 received; no training/v2 dependency forMVP | Blocks: honest recommendation presentation
 - Acceptance: public contract-first feed mode enum +generated3types, primary PG product ranking/metadata, valid/public AI IDs only;
   fallback never personalized, limit/cache visibility correct; Go/PG/API/FE build/E2E and design parity evidence.
@@ -205,6 +205,12 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Commits:0a86a14 contract;02001e0 implementation. INT-16 subsequently verified live Client proxy/session/feed.
 - Next action: INT-16 Client same-origin proxy, then liveClient mode/session verification; full parityINT-06. Existing single-page feed pagination remains unfinished.
 - Checkpoint: Lane codex / Changed MVP mode+metadata / Verified Go+PG+FE/mode+business checks / Contract public0.3 / Next INT-16.
+- Pagination acceptance: primary popularity feed and newest/trending category catalog return bounded Postgres cursor pages, stable tuple ordering/fixed ranking cutoff,
+  no duplicates/skips on unchanged data, zero-interaction cold content remains reachable, current private/deleted content excluded, exhaustion null;
+  invalid/filter-mismatched cursor/sort/limit422. Unit+realPG+live HTTP/Client continuation tests, Go checks PASS. No new UI/AI feature.
+- Pagination changed planned: domain cursor; repository ports/PG/mocks; content handlers/tests; E2E continuation check; owned evidence/tracking.
+- Pagination dependency: INT-19 contract213aaa9 satisfied; personalized remains production-disabled under INT-03/AI-12, full parity still INT-06.
+- Pagination next action: implement primary/fallback paging and catalog queries, verify before any gateway binary transition.
 
 ### INT-15 — Product interactions + read-only v2 export (HC-07 scope)
 - T gốc: D19/D21, HC-07/09 (proposed ID INT-13 collides existing image task) | Owner: CODEX | Status: REVIEW (2026-10-27; source/export+Claude acceptance verified)

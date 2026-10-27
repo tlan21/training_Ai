@@ -5,6 +5,8 @@
 - User explicitly approved: "cho phép chuyển sang AI thật" (eaca064). Approved gateway-only transition is complete; no further apply confirmation pending.
 - INT-01 +INT-11 REVIEW: real upload/search integration **3PASS54.3s**. Six API_READY AIv1.3 matrix rows now INTEGRATED_REAL.
 - INT-19 REVIEW: public0.3.2 pagination/error contract clarified, 3types regenerated, bothTS/Go/embeddedSpec checks PASS. No application logic changed yet.
+- INT-14 IN_PROGRESS: implement primary/fallback feed and newest/trending catalog cursor pages under contract213aaa9. Only one active task.
+  Acceptance/callers/tests listed in TASKS. Current gateway remains real; no runtime change until checks pass.
   INT-13/17/18 REVIEW, own worker/Next16/startup binary deployed locally. No master release/push authorized/performed.
 - Project skill backend_endpoint.md +Ponytail full. Claude code/checkpoints/models untouched; committed handoff communication only.
 
