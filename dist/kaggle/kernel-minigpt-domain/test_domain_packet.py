@@ -105,3 +105,19 @@ def test_review_embedded_json_roundtrip_is_unicode_safe_without_script_injection
     assert json.loads(re.search(r'const packet=(.*);\nconst key=',page).group(1))==payload
     assert 'checked' not in re.sub(r'<script>.*?</script>','',page,flags=re.S)
     assert 'ASR của dự án' in page and 'không phải lời chuẩn' in page
+
+
+def test_d22_accepts_claude_reviewed_and_skips_rejected_rows():
+    """D22 (user 2026-10-27): Claude-reviewed summaries may be MiniGPT targets, only with the explicit decision marker."""
+    samples,payload = fixture()
+    samples.append({**samples[0],'sample_id':'c','video_id':'c','channel_id':'c'})
+    payload['records'].append({**payload['records'][0],'sample_id':'c','verified':False,'reject_reason':'duplicate'})
+    payload['decision'] = 'D22'
+    for row in payload['records']:
+        row['origin'] = 'claude_drafted_claude_reviewed'
+    result = validate(payload,samples,'packet',BPETokenizer())
+    assert [r['id'] for r in result['train']]==['a'] and [r['id'] for r in result['val']]==['b']
+    assert result['train'][0]['label_origin']=='claude_drafted_claude_reviewed'
+    del payload['decision']
+    with pytest.raises(ValueError, match='attestation'):
+        validate(payload,samples,'packet',BPETokenizer())

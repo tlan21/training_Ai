@@ -333,3 +333,23 @@ def test_training_entrypoint_refuses_pending_audit_before_gpu_or_output(tmp_path
     from ai_core.scripts.finetune_news_summary import validate_aligned_bundle
     with pytest.raises(ValueError,match='1 summaries have invalid sentence endings'):
         validate_aligned_bundle(tmp_path,manifest,train,val)
+
+
+def test_domain_pairs_encode_sum_only_with_real_inputs_and_refuse_unapproved_origin():
+    """AI-03c (D22): domain rows add summary pairs to both replay pools — clean = reviewed transcript, noisy = own active ASR."""
+    from ai_core.scripts.finetune_news_summary import domain_pairs
+    from ai_core.training.datasets.summary_dataset import summary_prompt_ids
+
+    tok = BPETokenizer()
+    row = {'id': 'dom_a', 'summary': 'A new school opens for children today.', 'label_origin': 'claude_drafted_claude_reviewed',
+           'inputs': {'human': 'City opens a school for children today.', 'active': 'city opns a scool for chidren today'}}
+    clean, noisy = domain_pairs([row], tok, repeat=3)
+    assert len(clean) == len(noisy) == 3
+    for items, source in ((clean, row['inputs']['human']), (noisy, row['inputs']['active'])):
+        x, y = items[0]
+        prompt = summary_prompt_ids(source, tok, 'sum', 512, 96)
+        assert x[:len(prompt)].tolist() == prompt
+        assert y[len(prompt)-1:].tolist() == tok.encode(row['summary'])+[tok.special_tokens['<eos>']]
+    for bad in ({'label_origin': 'CLAUDE_PROPOSED'}, {'summary': 'No ending'}):
+        with pytest.raises(ValueError):
+            domain_pairs([{**row, **bad}], tok, repeat=1)

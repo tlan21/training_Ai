@@ -21,13 +21,17 @@ def validate(payload, samples, packet_sha, tok):
     if len(ids)!=len(set(ids)) or set(ids)!=set(expected):
         raise ValueError('duplicate/missing/unknown sample IDs')
     parts = {'train':[],'val':[]}
+    # D22 (user 2026-10-27): Claude-drafted + Claude-reviewed summaries are allowed MiniGPT targets (disclosed distillation).
+    origin = 'claude_drafted_claude_reviewed' if payload.get('decision')=='D22' else 'human_written_from_audio'
     if not payload.get('annotator','').strip():
         raise ValueError('human annotator is missing; labels pending')
     for row in rows:
         item = expected[row['sample_id']]
+        if origin!='human_written_from_audio' and row.get('verified') is False and row.get('reject_reason','').strip():
+            continue  # explicitly rejected by the D22 reviewer
         if row.get('audio_sha256')!=item['audio_sha256'] or row.get('video_sha256')!=item['video_sha256']:
             raise ValueError('stale media hash')
-        if row.get('verified') is not True or row.get('origin')!='human_written_from_audio' or row.get('reject_reason','').strip():
+        if row.get('verified') is not True or row.get('origin')!=origin or row.get('reject_reason','').strip():
             raise ValueError(f"{row['sample_id']}: human-written/audio/language/support attestation pending or rejected")
         transcript,summary = (unicodedata.normalize('NFC',row.get(k,'')).strip() for k in ('transcript','summary'))
         if len(transcript.split())<5 or len(summary.split())<5 or not has_sentence_ending(summary):
@@ -49,7 +53,7 @@ def validate(payload, samples, packet_sha, tok):
         parts[item['split']].append({'id':row['sample_id'],'video_id':item['video_id'],
             'channel_id':item['channel_id'],'audio_sha256':item['audio_sha256'],'video_sha256':item['video_sha256'],
             'human_transcript':transcript,'summary':summary,'inputs':normalized,
-            'annotator':payload['annotator'].strip(),'label_origin':'human_written_from_audio',
+            'annotator':payload['annotator'].strip(),'label_origin':origin,
             'speaker_id':row.get('speaker_id','').strip() or None})
     for key in ('video_id','channel_id','speaker_id'):
         left = {r[key] for r in parts['train'] if r[key]}
@@ -93,9 +97,11 @@ def main():
         save(target/f'domain_{split}.json',rows)
     save(target/'labels_provenance.json',{'source_labels':str(Path(args.labels).resolve()),'source_sha256':sha(Path(args.labels)),
          'packet_sha256':manifest['samples_sha256'],'vocab_sha256':sha(vocab),'annotator':payload['annotator'],
-         'label_attestation':'User-supplied attestation; not an independent semantic audit',
+         'label_attestation':('D22: Claude-drafted, Claude-reviewed summaries (disclosed distillation; not human labels)'
+                              if payload.get('decision')=='D22' else 'User-supplied attestation; not an independent semantic audit'),
+         'decision':payload.get('decision'),
          'counts':{k:len(v) for k,v in parts.items()},'training_run':False,'protocol':'real-domain-human-v1'})
-    print('Human labels structurally verified/exported:',target,'No training or deployment.')
+    print('Labels structurally verified/exported:',target,'No training or deployment.')
 
 
 if __name__=='__main__':

@@ -92,6 +92,26 @@ def encoded_dataset(rows, tok, noisy, aligned=False):
     return result
 
 
+DOMAIN_ORIGINS = {"human_written_from_audio", "claude_drafted_claude_reviewed"}  # second one only via user decision D22
+
+
+def domain_pairs(rows, tok, repeat):
+    """AI-03c: real-video summary pairs for both replay pools (clean = reviewed transcript, noisy = own active ASR).
+
+    Summary format only — these clips have no title/caption. Repeated so 29 clips are not drowned by 956 News articles.
+    """
+    pools = []
+    for key in ("human", "active"):
+        pairs = []
+        for row in rows:
+            if row.get("label_origin") not in DOMAIN_ORIGINS or not has_sentence_ending(row["summary"]):
+                raise ValueError(f"{row.get('id')}: domain label origin/summary not accepted")
+            pairs.append((row["inputs"][key].strip(), row["summary"]))
+        ds = SummaryPairDataset(pairs, tok, fmt="sum", context_len=CONTEXT, max_target_tokens=OUTPUT_TOKENS)
+        pools.append([ds[i] for i in range(len(ds))] * repeat)
+    return pools[0], pools[1]
+
+
 def aligned_validation(model, rows, tok, device):
     """Select by paired summary ROUGE-L; auxiliary formats cannot change the score."""
     outputs = {name: evaluate(model, rows, tok, device, noisy=noisy, fmt=fmt, aligned=True)
@@ -175,6 +195,8 @@ def main():
     p.add_argument("--output", required=True)
     p.add_argument("--mixed-replay", action="store_true")
     p.add_argument("--baseline", help="Same-GPU initialization evaluation, required for mixed replay")
+    p.add_argument("--domain", help="AI-03c: accepted domain_train.json added to both mixed-replay pools")
+    p.add_argument("--domain-repeat", type=int, default=8)
     args = p.parse_args()
     torch.set_num_threads(4)
     data, out = Path(args.data), Path(args.output)
@@ -199,6 +221,9 @@ def main():
             raise ValueError("replay baseline does not match initialization/data/evaluation profile")
         replay_regressions(baseline["metrics"], baseline["metrics"])
     val = val[:VAL_COUNT if aligned else 128]
+    if args.domain and not args.mixed_replay:
+        raise ValueError("domain pairs are only supported in mixed replay")
+    domain_rows = json.loads(Path(args.domain).read_text(encoding="utf-8")) if args.domain else []
     tok = BPETokenizer.load(args.vocab)
     if aligned and file_checksum(args.vocab) != manifest["vocab_sha1"]:
         raise ValueError("prepared tokenizer checksum changed")
@@ -223,7 +248,9 @@ def main():
                 "max_target_tokens": OUTPUT_TOKENS, "asr_cer": CER,
                 "selection": manifest["selection"] if aligned else "Mean of clean and ASR-noisy validation title ROUGE-L; no test tuning",
                 "stages": stages, "eval_every": cfg.eval_every,
-                "recipe": "mixed-replay-1to1-v1" if args.mixed_replay else "staged",
+                "recipe": ("mixed-replay-1to1-v1+domain" if args.domain else "mixed-replay-1to1-v1") if args.mixed_replay else "staged",
+                "domain": {"file_sha256": hashlib.sha256(Path(args.domain).read_bytes()).hexdigest(), "n_rows": len(domain_rows),
+                           "repeat": args.domain_repeat, "origins": sorted({r["label_origin"] for r in domain_rows})} if args.domain else None,
                 "selection_guard": {"baseline_metrics":baseline["metrics"],
                                     "policy":"Both sum conditions: ROUGE/EOS >= init; repetition/cap <= init; tolerance1e-12",
                                     "baseline_sha256":hashlib.sha256(Path(args.baseline).read_bytes()).hexdigest()} if baseline else None}
@@ -241,6 +268,9 @@ def main():
         if args.mixed_replay:
             clean = encoded_dataset(train, tok, False, aligned=True)
             noisy_items = encoded_dataset(train, tok, True, aligned=True)
+            if args.domain:
+                extra_clean, extra_noisy = domain_pairs(domain_rows, tok, args.domain_repeat)
+                clean, noisy_items = clean + extra_clean, noisy_items + extra_noisy
             assert len(clean) == len(noisy_items)
             ds = clean + noisy_items
             loader = DataLoader(ds, batch_sampler=ReplayBatchSampler(len(clean),cfg.batch_size,cfg.seed), collate_fn=_pad_lm)
@@ -293,7 +323,7 @@ def main():
         shutil.copy2(args.vocab, final / "bpe_vocab.json")
     if aligned:
         report = {"protocol": PROTOCOL, "status": "CANDIDATE_ONLY_HELDOUT_AND_HUMAN_EVALUATION_PENDING" if chosen else "NO_CANDIDATE_PASSED_NON_REGRESSION_GUARD",
-                  "recipe":metadata["recipe"], "selection_guard":metadata["selection_guard"],
+                  "recipe":metadata["recipe"], "domain":metadata["domain"], "selection_guard":metadata["selection_guard"],
                   "seed": cfg.seed, "selected_stage": chosen["stage"] if chosen else None,
                   "selected_step": chosen["best_step"] if chosen else None,
                   "validation_metric": chosen["metric"] if chosen else None, "dataset": manifest,
