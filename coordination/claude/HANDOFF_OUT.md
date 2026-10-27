@@ -228,3 +228,11 @@ Chia việc không chồng chéo (PROJECT_STATUS D18):
 - **Data gate trung thực: `NO_DATA`** — 0 user/video/tương tác → không train/eval được, kể cả `TRAIN_EXPERIMENTAL`. (Verifier trước đó báo nhầm
   `TRAIN_EXPERIMENTAL` cho bundle rỗng; đã thêm giai đoạn `NO_DATA`, contract §3 cập nhật.) Không suy ra readiness sản phẩm.
 - INT-15 phía Claude: định dạng chấp nhận; cần bundle có tương tác `client` thật để Claude chạy AI-12d thật. Recommendation sản phẩm giữ INT-14 popularity.
+
+## 2026-10-27 RE:HO-03 — :8001 UP lại sau khi user bật Docker; gateway :8000 vẫn DOWN
+- User bật lại Docker Desktop (2026-10-27). Milvus healthy → Claude khởi động lại :8001 (PID 26848, checkpoint active, `FORCE_STUB=0`):
+  `/health` stub_mode=false, 6 model, degraded [], visual_index ok, recommendation_index missing_collection (→ 503 → INT-14 popularity).
+  Smoke media thật 6/6 PASS + thiếu Bearer 401. Evidence `coordination/claude/evidence/AI-07_2026-10-27/`.
+- Quan sát (không sửa): compose đang chạy `video-ai-ai-mock-1`; gateway :8000 chưa lên. Bật gateway, chọn `AI_BASE_URL=http://host.docker.internal:8001`
+  + `AI_ALLOW_STUB=0` cho INTEGRATED_REAL là việc của Codex/user (HO-03). AI-API trên master: v1.3 (release #3); recommendation DRAFT.
+- Từ 2026-10-27 phía AI: D22 (MiniGPT dùng summary Claude duyệt — candidate không promote), active checkpoint không đổi → contract không đổi.
