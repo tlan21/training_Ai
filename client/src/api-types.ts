@@ -468,7 +468,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Feed clip published với mode gợi ý thực tế (D18) */
+        /**
+         * Feed clip published với mode gợi ý thực tế (D18)
+         * @description Primary popularity pages use an opaque next_cursor bound to this route. Ranking uses the first page's fixed seven-day interaction window and creation cutoff; current publication/deletion visibility is checked on every page. Forward the cursor unchanged. next_cursor is null when exhausted. Invalid cursor or limit returns 422.
+         */
         get: {
             parameters: {
                 query?: {
@@ -491,6 +494,7 @@ export interface paths {
                     };
                 };
                 401: components["responses"]["Unauthorized"];
+                422: components["responses"]["ValidationError"];
             };
         };
         put?: never;
@@ -508,7 +512,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Duyệt video processed công khai (Discovery) */
+        /**
+         * Duyệt video processed công khai (Discovery)
+         * @description Opaque next_cursor is bound to sort and category_id; keep those filters unchanged between pages. Pages share the first page's creation cutoff; trending also fixes its seven-day interaction window. Current visibility is checked on every page. next_cursor is null when exhausted. Invalid cursor, sort or limit returns 422.
+         */
         get: {
             parameters: {
                 query?: {
@@ -536,6 +543,7 @@ export interface paths {
                     };
                 };
                 401: components["responses"]["Unauthorized"];
+                422: components["responses"]["ValidationError"];
             };
         };
         put?: never;

@@ -4,7 +4,7 @@
 - Worktree E:/traning_ai-codex, branch codex/integration. Release#1/#2/#3 received; HEAD..master empty at session check.
 - User explicitly approved: "cho phép chuyển sang AI thật" (eaca064). Approved gateway-only transition is complete; no further apply confirmation pending.
 - INT-01 +INT-11 REVIEW: real upload/search integration **3PASS54.3s**. Six API_READY AIv1.3 matrix rows now INTEGRATED_REAL.
-- INT-19 IN_PROGRESS: pagination contract clarification before INT-14 implementation; no application code changed yet.
+- INT-19 REVIEW: public0.3.2 pagination/error contract clarified, 3types regenerated, bothTS/Go/embeddedSpec checks PASS. No application logic changed yet.
   INT-13/17/18 REVIEW, own worker/Next16/startup binary deployed locally. No master release/push authorized/performed.
 - Project skill backend_endpoint.md +Ponytail full. Claude code/checkpoints/models untouched; committed handoff communication only.
 

@@ -27,7 +27,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-16 | INT-14 | Client same-origin API transport | REVIEW | fresh Docker build/proxy smoke PASS; security gate INT-17 separate |
 | INT-17 | INT-16 audit | Client framework security migration | REVIEW | Next16 deployed;53fixture+2live/audits0/build PASS |
 | INT-18 | INT-00/13 boot | Bounded dependency startup recovery | REVIEW | Go+delayed PG+8worker tests/image PASS |
-| INT-19 | INT-14 pagination | Clarify public cursor/error contract | IN_PROGRESS | existing feed/catalog endpoints; no AI dependency |
+| INT-19 | INT-14 pagination | Clarify public cursor/error contract | REVIEW | existing feed/catalog endpoints; no AI dependency |
 
 Hoàn thành trước tách làn (bằng chứng INVENTORY mục 5): T0.1–T0.4, T2.1–T2.4, T4.1, T4.2 = DONE (VERIFIED-HIST, build VERIFIED-NOW);
 T2.5, T3.1, T3.2 = PARTIAL.
@@ -272,5 +272,5 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Acceptance: document opaque cursor bound to route/filter, fixed ranking snapshot, null at exhaustion, invalid cursor/sort/limit422 with existing error envelope;
   no new endpoint/body/response fields. Regenerate Go/CMS/Client types; schema parse/generated compilation checks PASS before implementation.
 - Changed planned: infra/openapi.yaml; generated3types; Codex trackers/evidence.
-- Commits: task-start checkpoint | Evidence: pending | Next action: contract clarification and regenerate using installed tools.
+- Commits: b08f2be taskstart; contract acceptance checkpoint | Evidence: verification/INT-19.md; bothTS/generatedGo/embeddedSchema checks PASS | Next action: INT-14 pagination implementation.
 - Checkpoint: Lane codex / Changed contract planned / Verified not yet / Contract public patch planned / Next INT-14 pagination.
