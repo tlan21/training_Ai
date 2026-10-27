@@ -1,0 +1,52 @@
+{
+  "folder": "th_vi_n_n_i_dung_xu_t_b_n",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "assetFailures": [],
+  "metrics": [
+    {
+      "text": "logout\n        Đăng xuất",
+      "width": 227,
+      "height": 32,
+      "radius": "4px",
+      "background": "rgba(220, 38, 38, 0.1)"
+    },
+    {
+      "text": "cloud_upload\nTải lên video",
+      "width": 150.4375,
+      "height": 32,
+      "radius": "4px",
+      "background": "rgb(70, 21, 153)"
+    },
+    {
+      "text": "filter_list\nBộ lọc nâng cao",
+      "width": 177.75,
+      "height": 42,
+      "radius": "4px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "delete_sweep\nXóa hàng loạt",
+      "width": 159.59375,
+      "height": 42,
+      "radius": "4px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "chevron_left",
+      "width": 32,
+      "height": 38,
+      "radius": "2px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "chevron_right",
+      "width": 32,
+      "height": 38,
+      "radius": "2px",
+      "background": "rgba(0, 0, 0, 0)"
+    }
+  ]
+}

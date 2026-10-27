@@ -17,7 +17,7 @@ Dependencies: INT-02/INT-04 functional source playback available. Full parity st
 - All source/contract changes are confined to Codex-owned CMS/E2E files; no model, inference or shared document edits.
 
 Changed files: `cms/src/components/player/VideoPlayer.tsx`, `cms/src/components/common/Icon.tsx`,
-`cms/src/pages/HighlightPage.tsx`, `cms/src/pages/SubtitlesPage.tsx`, `cms/src/styles/global.css`,
+`cms/src/pages/HighlightPage.tsx`, `cms/src/pages/SubtitlesPage.tsx`, `cms/src/lib/time.ts`, `cms/src/styles/global.css`,
 `e2e/cms_design.spec.ts`, `e2e/cms_stitch_reference.spec.ts`, owned verification/tracker/session files.
 Commit: `f601958` original preview; follow-up `int(cms): align review timeline and proposal spacing` in git history.
 
@@ -36,6 +36,7 @@ actions/32px remove icon, pill badges and selected-time styling now follow the s
 | `E2E_CMS_URL=http://127.0.0.1:5174` Playwright `cms_design.spec.ts cms_stitch_reference.spec.ts --output=backend/.tmp/int05-final --reporter=list` | 37 PASS, 38.7s (before final radius correction) |
 | Same QA URL, `cms_design.spec.ts --grep INT-05 --output=backend/.tmp/int05-controls-final --reporter=list` | 3 PASS, 10.3s after final radius correction; also verifies manual seek cancels preview and published modal retains native controls |
 | Same QA URL, `cms_design.spec.ts --grep 'INT-05\|highlight layout' --output=backend/.tmp/int05-spacing-final --reporter=list` | 5 PASS, 11.7s after time/progress/proposal follow-up; asserts90min format,57px header, media progress at50%, native modal and error state |
+| Existing CMS5173, `cms_stitch_reference.spec.ts --output=backend/.tmp/int05-all-references --reporter=list` | 16 reference captures PASS57.0s for all8Stitch screens, both viewports; original image requests succeeded |
 | `git diff --check` | PASS |
 | Read-only gateway `/healthz` and Claude `/health` | gateway ok; stub_mode=false, 6 models, degraded=[], CPU |
 
@@ -75,3 +76,28 @@ Changed: CMS player/callers/styles/icons, E2E, owned verification/session/tracke
 Verified: CMS tsc/build; E2E tsc; 37 browser cases +3 player checks +5 follow-up checks; gateway/AI health
 Contract touched: no (OpenAPI0.3.2 and AI-APIv1.3 consumed unchanged)
 Next safe task: INT-05 existing-API visual corrections
+
+## Remaining screen comparison audit
+
+All eight original HTML exports were captured at both required sizes. Desktop images were compared block by block;
+reference and baseline screenshots for all screens are preserved in the comparison directory. A successful capture
+does not mean the app matches it. The six unchanged screens use baseline images, not a fictitious new deployment.
+
+| Screen | Concrete remaining differences using existing fields | Contract-dependent differences |
+|---|---|---|
+| Dashboard | Stat/card and chart heights; heading/action/table font weights; avatar/toolbar and sidebar spacing | Accuracy, online users, storage usage and historical model-update/log data have no defined source. Current job-derived chart is labelled; it is not a complete analytics API. |
+| Upload/queue | Upload copy size/wrapping, table/header density, stage legend appearance, toolbar spacing | CPU metric, uploader and elapsed stage timings unavailable. GPU/VRAM/queue use existing health values; H100/80GB remains cut. |
+| Videos | Filter/date row heights, table/action density, sidebar divider and header button sizing | Filename/MIME/size/uploader fields missing; filters currently operate partly on the loaded page. Do not claim whole-dataset filtering. |
+| Highlight | Scoped player/proposal fixes above verified; other header/heatmap typography and selection geometry still open | Logo proposal/insertion lacks an AI behavior contract; do not invent it. |
+| Subtitles/summary | Scoped controls/progress verified; remaining transcript/header/editor spacing and typography still open | Width/height/fps and title/description/priority/hashtag persistence need contract decisions. Low-confidence warnings use real schema fields. |
+| Categories | Table column wrapping, panel heading/row fonts and sidebar spacing | Description/status/custom rules absent. No fabricated system category, rule result or character-recognition control. |
+| Published library | Tab font/spacing, table/status/action sizing and toolbar proportions | Views/editor/render/storage metrics undefined; distinct hide/delete semantics require scope. Existing soft-hide and native preview remain functional. |
+| Settings | Tabs and secondary field spacing, sidebar divider, a few text/button dimensions | AI key remains masked/read-only; runtime rotation is a separate AI coordination operation. MinIO/vi-only/copy substitutions are approved cuts. |
+
+Ten-item status across these screens: layout/colors/typography/spacing/icons/copy remain **OPEN** beyond the scoped
+player fixes; AI content is **BLOCKED** where no field/behavior exists; states/responsive have passing fixture coverage
+but are not exhaustive visual/state certification; cut-list checks pass the exercised layouts. Login/Users use plan
+wireframes rather than one of these eight exports. No unreviewed category is represented as a full PASS.
+
+Next safe work remains scoped existing-API visual fixes; full acceptance additionally requires the pending contract
+scope decision. No new endpoint, model edit or release is inferred from this audit.

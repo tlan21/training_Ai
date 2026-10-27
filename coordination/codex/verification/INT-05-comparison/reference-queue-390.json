@@ -1,0 +1,115 @@
+{
+  "folder": "t_i_l_n_h_ng_i_x_l",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "assetFailures": [],
+  "metrics": [
+    {
+      "text": "logout\n        Đăng xuất",
+      "width": 227,
+      "height": 32,
+      "radius": "4px",
+      "background": "rgba(220, 38, 38, 0.1)"
+    },
+    {
+      "text": "cloud_upload\n                    Tải lên",
+      "width": 74.953125,
+      "height": 36,
+      "radius": "4px",
+      "background": "rgb(70, 21, 153)"
+    },
+    {
+      "text": "notifications",
+      "width": 32,
+      "height": 38,
+      "radius": "12px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "analytics",
+      "width": 32,
+      "height": 38,
+      "radius": "12px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "filter_list\n                            Bộ lọc",
+      "width": 73.4375,
+      "height": 36,
+      "radius": "4px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "pause_circle",
+      "width": 40,
+      "height": 46,
+      "radius": "12px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "delete",
+      "width": 40,
+      "height": 46,
+      "radius": "12px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "pause_circle",
+      "width": 40,
+      "height": 46,
+      "radius": "12px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "delete",
+      "width": 40,
+      "height": 46,
+      "radius": "12px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "replay",
+      "width": 40,
+      "height": 46,
+      "radius": "12px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "delete",
+      "width": 40,
+      "height": 46,
+      "radius": "12px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "play_arrow",
+      "width": 40,
+      "height": 46,
+      "radius": "12px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "delete",
+      "width": 40,
+      "height": 46,
+      "radius": "12px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "chevron_left",
+      "width": 32,
+      "height": 32,
+      "radius": "2px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "chevron_right",
+      "width": 32,
+      "height": 32,
+      "radius": "2px",
+      "background": "rgba(0, 0, 0, 0)"
+    }
+  ]
+}

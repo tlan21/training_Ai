@@ -1,0 +1,38 @@
+{
+  "folder": "c_i_t_h_th_ng",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "assetFailures": [],
+  "metrics": [
+    {
+      "text": "logout\n        Đăng xuất",
+      "width": 227,
+      "height": 32,
+      "radius": "4px",
+      "background": "rgba(220, 38, 38, 0.1)"
+    },
+    {
+      "text": "notifications",
+      "width": 44,
+      "height": 40,
+      "radius": "2px",
+      "background": "rgb(231, 224, 235)"
+    },
+    {
+      "text": "person",
+      "width": 44,
+      "height": 40,
+      "radius": "2px",
+      "background": "rgb(231, 224, 235)"
+    },
+    {
+      "text": "save\n                            Lưu thay đổi",
+      "width": 195.90625,
+      "height": 48,
+      "radius": "12px",
+      "background": "rgb(94, 53, 177)"
+    }
+  ]
+}

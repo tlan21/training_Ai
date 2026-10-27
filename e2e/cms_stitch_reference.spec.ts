@@ -3,7 +3,7 @@ import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 
 const origin = process.env.E2E_CMS_URL ?? 'http://localhost:5173';
-for (const width of [390, 1440]) for (const folder of ['ph_duy_t_c_t_highlight_ai', 'ph_t_m_t_t_ai']) {
+for (const width of [390, 1440]) for (const folder of ['t_ng_quan_h_th_ng', 't_i_l_n_h_ng_i_x_l', 'danh_s_ch_video', 'ph_duy_t_c_t_highlight_ai', 'ph_t_m_t_t_ai', 'qu_n_l_danh_m_c_ph_n_lo_i_video', 'th_vi_n_n_i_dung_xu_t_b_n', 'c_i_t_h_th_ng']) {
   test(`INT-05 Stitch ${folder} ${width}`, async ({ page }, info) => {
     const html = readFileSync(path.join(__dirname, '..', 'stitch_ai_video_cms', folder, 'code.html'), 'utf8');
     await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });

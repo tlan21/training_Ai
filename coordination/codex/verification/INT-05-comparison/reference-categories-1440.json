@@ -1,0 +1,101 @@
+{
+  "folder": "qu_n_l_danh_m_c_ph_n_lo_i_video",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "assetFailures": [],
+  "metrics": [
+    {
+      "text": "logout\n        Đăng xuất",
+      "width": 227,
+      "height": 32,
+      "radius": "4px",
+      "background": "rgba(220, 38, 38, 0.1)"
+    },
+    {
+      "text": "dns\nTrạng thái hệ thống",
+      "width": 187.09375,
+      "height": 38,
+      "radius": "4px",
+      "background": "rgba(94, 53, 177, 0.1)"
+    },
+    {
+      "text": "notifications",
+      "width": 40,
+      "height": 46,
+      "radius": "12px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "analytics",
+      "width": 40,
+      "height": 46,
+      "radius": "12px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "add\nThêm danh mục mới",
+      "width": 236.90625,
+      "height": 44,
+      "radius": "4px",
+      "background": "rgb(70, 21, 153)"
+    },
+    {
+      "text": "visibility",
+      "width": 40,
+      "height": 46,
+      "radius": "0px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "settings",
+      "width": 40,
+      "height": 46,
+      "radius": "0px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "edit",
+      "width": 40,
+      "height": 46,
+      "radius": "0px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "delete",
+      "width": 40,
+      "height": 46,
+      "radius": "0px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "edit",
+      "width": 40,
+      "height": 46,
+      "radius": "0px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "delete",
+      "width": 40,
+      "height": 46,
+      "radius": "0px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "edit",
+      "width": 40,
+      "height": 46,
+      "radius": "0px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "delete",
+      "width": 40,
+      "height": 46,
+      "radius": "0px",
+      "background": "rgba(0, 0, 0, 0)"
+    }
+  ]
+}

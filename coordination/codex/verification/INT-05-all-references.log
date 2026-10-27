@@ -1,0 +1,23 @@
+
+Running 16 tests using 1 worker
+
+(node:10740) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 e2e\cms_stitch_reference.spec.ts:7:7 › INT-05 Stitch t_ng_quan_h_th_ng 390 (4.1s)
+  ok  2 e2e\cms_stitch_reference.spec.ts:7:7 › INT-05 Stitch t_i_l_n_h_ng_i_x_l 390 (3.6s)
+  ok  3 e2e\cms_stitch_reference.spec.ts:7:7 › INT-05 Stitch danh_s_ch_video 390 (6.0s)
+  ok  4 e2e\cms_stitch_reference.spec.ts:7:7 › INT-05 Stitch ph_duy_t_c_t_highlight_ai 390 (3.1s)
+  ok  5 e2e\cms_stitch_reference.spec.ts:7:7 › INT-05 Stitch ph_t_m_t_t_ai 390 (3.6s)
+  ok  6 e2e\cms_stitch_reference.spec.ts:7:7 › INT-05 Stitch qu_n_l_danh_m_c_ph_n_lo_i_video 390 (3.9s)
+  ok  7 e2e\cms_stitch_reference.spec.ts:7:7 › INT-05 Stitch th_vi_n_n_i_dung_xu_t_b_n 390 (3.5s)
+  ok  8 e2e\cms_stitch_reference.spec.ts:7:7 › INT-05 Stitch c_i_t_h_th_ng 390 (3.2s)
+  ok  9 e2e\cms_stitch_reference.spec.ts:7:7 › INT-05 Stitch t_ng_quan_h_th_ng 1440 (3.0s)
+  ok 10 e2e\cms_stitch_reference.spec.ts:7:7 › INT-05 Stitch t_i_l_n_h_ng_i_x_l 1440 (3.2s)
+  ok 11 e2e\cms_stitch_reference.spec.ts:7:7 › INT-05 Stitch danh_s_ch_video 1440 (3.1s)
+  ok 12 e2e\cms_stitch_reference.spec.ts:7:7 › INT-05 Stitch ph_duy_t_c_t_highlight_ai 1440 (3.3s)
+  ok 13 e2e\cms_stitch_reference.spec.ts:7:7 › INT-05 Stitch ph_t_m_t_t_ai 1440 (3.1s)
+  ok 14 e2e\cms_stitch_reference.spec.ts:7:7 › INT-05 Stitch qu_n_l_danh_m_c_ph_n_lo_i_video 1440 (2.8s)
+  ok 15 e2e\cms_stitch_reference.spec.ts:7:7 › INT-05 Stitch th_vi_n_n_i_dung_xu_t_b_n 1440 (2.8s)
+  ok 16 e2e\cms_stitch_reference.spec.ts:7:7 › INT-05 Stitch c_i_t_h_th_ng 1440 (2.6s)
+
+  16 passed (57.0s)

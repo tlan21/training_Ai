@@ -11,7 +11,9 @@
   Initial reference4FAIL were harness auth redirects, fixed with Stitch-only currentUser init; subsequent4capture +full37PASS. No fullCMS parity/DONE claim.
   f601958 player checkpoint; follow-up restored HH:MM:SS/90min time, subtitle progress4px/thumb12px, proposal header57px/compact actions and badge spacing.
   Final scoped5browserPASS11.7s +CMSbuild/tsc/E2Etypes/diffcheck PASS; final QA PID1636 also stopped. Paired current PNGs refreshed.
-  Next: remaining per-screen10item review. MissingCMSfields still require scope/contract decision; INT-05 remains IN_PROGRESS, not DONE.
+  All8CMS references x390/1440 captured16PASS57.0s with loaded original images; E2Etypes PASS after harness expansion.
+  Comparison directory now36PNG/16JSON; report adds concrete remaining differences per screen and separates current contract gaps.
+  Next: remaining per-screen visual corrections listed in verification/INT-05.md. MissingCMSfields still require scope/contract decision; INT-05 remains IN_PROGRESS, not DONE.
 - Client follow-up after09f0611: desktop register label cadence/header/footer/terms/checkbox sizes, login checkbox/type spacing,
   Discovery mobile49px header/flex search row and desktop nav action/avatar spacing aligned to actual reference source. New geometry tests pending production runtime;
   no pixel PASS inferred from source-only fixes. Latest final build/tsc/lint session67715 exited0; no active compiler or Client QA server.

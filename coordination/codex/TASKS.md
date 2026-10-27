@@ -121,6 +121,8 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Follow-up: player/proposal HH:MM:SS, subtitle media progress track/thumb, proposal header57px/action32px/pill spacing corrected.
   Final build/tsc/E2Etypes PASS; 5targeted browser checks PASS11.7s; paired current screenshots refreshed. Commits: f601958 +follow-up in git history.
 - Next action: remaining full-page10item comparison; full CMS parity and missing fields still need contract/scope decisions. Client QA confirmation remains pending.
+- Comparison checkpoint: all8Stitch screens x2viewports16reference captures PASS57.0s;36paired/baseline/current PNG +16metrics JSON preserved.
+  verification/INT-05.md records concrete per-screen spacing/font/toolbar gaps and contract blockers. No full parityPASS inferred from screenshots; next action is the listed existing-API corrections.
 
 ### INT-06 — Client Design Parity FULL
 - T gốc: T3.2 | Owner: CODEX | Status: PARTIAL (2026-10-27; scoped fixes/build complete, QA/scope confirmation pending)
