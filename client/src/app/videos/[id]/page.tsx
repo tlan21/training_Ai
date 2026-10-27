@@ -107,9 +107,9 @@ function VideoDetail() {
     const currentSegment = segments.find(s => store.currentTime >= (s.start_time || 0) && store.currentTime < (s.end_time || 0));
     const transcriptProps = { segments, loading: subs.isPending, error: subs.error, currentTime: store.currentTime, seek, retry: () => { void subs.refetch(); }, videoId: id };
     if (video.isPending || video.error)
-        return <div className="content-page"><AppNav active="discover"/><MobileHeader center back/><PageState loading={video.isPending} error={video.error} retry={() => video.refetch()}/><BottomNav active="library"/></div>;
+        return <div className="content-page"><AppNav active="discover" variant="detail"/><MobileHeader center back/><PageState loading={video.isPending} error={video.error} retry={() => video.refetch()}/><BottomNav active="library"/></div>;
     const data = video.data;
-    return <div className="content-page"><AppNav active="discover"/><MobileHeader center back><button className="icon-button" onClick={share} aria-label="Chia sẻ video"><Icon name="share" size={22}/></button></MobileHeader>
+    return <div className="content-page"><AppNav active="discover" variant="detail"/><MobileHeader center back><button className="icon-button" onClick={share} aria-label="Chia sẻ video"><Icon name="share" size={22}/></button></MobileHeader>
  <main className="detail-main"><div className="detail-left">
  <section className="detail-player">
   <video key={selectedClip?.id || id} ref={register} src={source || undefined} poster={selectedClip?.thumbnail_url || data?.thumbnail_url || undefined} playsInline preload="metadata" onTimeUpdate={e => onTime(e.currentTarget)} onPlay={() => store.setPlaying(true)} onPause={() => store.setPlaying(false)} onError={() => setMediaError(true)} onLoadedMetadata={e => { e.currentTarget.playbackRate=rate;store.setDuration(data?.duration_seconds || end); const time = pendingSeek.current ?? validTime; if (time >= offset && time < end)
@@ -126,7 +126,6 @@ function VideoDetail() {
   </div>
  </section>
  {!original && <div className="notice detail-error">Đang xem clip đã xuất bản{selectedClip ? ` (${formatTime(offset)}–${formatTime(end)})` : ""}. Video gốc chưa có nguồn phát.</div>}
- <div className="auto-highlight-mobile"><button className="auto-highlight" aria-pressed={store.autoHighlight} onClick={auto} disabled={!source || !ranges.length}><Icon name="auto_awesome" size={16}/>Tự động phát Highlight</button></div>
  <section className="detail-metadata"><h1>{data?.title}</h1><div className="video-metadata-line"><span>{formatDate(data?.created_at)}</span><span>{formatTime(data?.duration_seconds)}</span>{data?.category?.name && <span className="category">#{data.category.name}</span>}</div>
  <div className="detail-channel"><span className="avatar"><Icon name="movie_filter" size={22}/></span><div><p>VidsAI</p><small>Video đã xử lý</small></div></div>
  <div className="detail-quick-actions hide-scrollbar"><button aria-pressed={liked} className={liked ? "active" : ""} onClick={() => action("like")}><Icon name="thumb_up" size={20}/>{liked ? "Đã thích" : "Thích"}</button><button className={`mobile-action ${saved ? "active" : ""}`} aria-pressed={saved} onClick={() => action("save")}><Icon name="bookmark" size={20} filled={saved}/>Lưu lại</button><button className="mobile-action" onClick={() => { setSummaryOpen(true); document.getElementById("ai-summary")?.scrollIntoView({ behavior: "smooth" }); }} disabled={!analysis.data?.summary}><Icon name="auto_awesome" size={20}/>Tóm tắt AI</button><button className="mobile-action" onClick={() => setSheet(true)}><Icon name="description" size={20}/>Bản ghi</button><button className="desktop-only" onClick={share}><Icon name="share" size={20}/>Chia sẻ</button></div></section>

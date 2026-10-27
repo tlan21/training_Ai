@@ -3,6 +3,16 @@
 ## Branch / task state
 - E:/traning_ai-codex, codex/integration. Release#1/#2/#3 received; HEAD..master empty at session start. No master release/push authorized.
 - INT-06 IN_PROGRESS (user approved proposed UI parity work). INT-19 REVIEW, INT-14 pagination complete/PARTIAL for full Client parity.
+- INT-06 latest checkpoint: scoped UI source fixes ready (forms/header/onboarding/search/detail); paired8x2reference/baseline screenshots and metrics captured,
+  final16reference captures with loaded images PASS36.8s. Targeted5PASS; dev full62PASS/1trackingFAIL3.3m (watch_time0 during effect cleanup), tracking source unchanged.
+  E2E/Clienttypes, proper client-directorylint, finalNext production build/tsc PASS. No production63PASS or new Client deployment yet.
+- Automatic review rejected combined production QA startup at127.0.0.1:3100 with "blocked by policy". Build-only command passed afterwards.
+  User asked via async tool for exact `node node_modules/next/dist/bin/next start --hostname 127.0.0.1 --port 3100` then63tests/stop plan.
+  Do not bypass via alternate port/launcher/container/live Client replacement. Own dev server3100 stopped; production QA NOT running.
+- Two other async decisions pending: concrete4library API routes vs disabled-MVP scope; login forgot link contact-admin vs preserved exception.
+  No new endpoint/forgot-reset change authorized by elapsed time. Report verification/INT-06.md lists specific remaining pixel/API gaps, no full parityPASS.
+- New client/AGENTS.md is Next16-generated; source generate-agent-files.js verified and bundled CSS/Tailwind3 guides read. Include owned generated guide;
+  next-env returned production imports after build, test-generated tsbuildinfo should not be included. No framework/dependency change.
 - Current next step: capture baseline8screen groups x390/1440 with paired Stitch references, then fix only proven existing-API UI gaps.
   Project skill client_screen.md +required ui_design_review checklist; UI/UX Pro Max targeted accessibility guidance, Ponytail full.
   No runtime/service changes yet; real gateway/AI preserved. No new API/deferred forgot-password scope approval inferred.

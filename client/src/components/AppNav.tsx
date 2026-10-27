@@ -7,9 +7,10 @@ import { Icon } from "@/components/Icon";
 import { useAuthStore } from "@/stores/authStore";
 import { logoutSession, errorMessage } from "@/lib/apiClient";
 export type NavTab = "home" | "discover" | "library" | "profile" | "search";
-export function AppNav({ active, search = true, children }: {
+export function AppNav({ active, search = true, variant = active, children }: {
     active: NavTab;
     search?: boolean;
+    variant?: NavTab | "detail";
     children?: React.ReactNode;
 }) {
     const user = useAuthStore(s => s.user);
@@ -33,15 +34,15 @@ export function AppNav({ active, search = true, children }: {
             setBusy(false);
         }
     };
-    return <header className="desktop-nav">
-    <Link href="/feed" className="brand">VidsAI</Link>
-    <nav aria-label="Điều hướng chính">{[["home", "Trang chủ", "/feed"], ["discover", "Khám phá", "/discover"], ["library", "Thư viện", "/profile?view=library"]].map(([id, label, href]) => <Link key={id} href={href} className={active === id || active === "search" && id === "discover" ? "active" : ""}>{label}</Link>)}</nav>
-    {search && <form className="nav-search input-wrap" onSubmit={e => { e.preventDefault(); router.push(`/search?q=${encodeURIComponent(q)}`); }}>
+    return <header className={`desktop-nav nav-${variant}`}>
+    <div className="nav-brand-group"><Link href="/feed" className="brand">VidsAI</Link>
+    <nav aria-label="Điều hướng chính">{[["home", "Trang chủ", "/feed"], ["discover", "Khám phá", "/discover"], ["library", "Thư viện", "/profile?view=library"]].map(([id, label, href]) => <Link key={id} href={href} className={variant !== "detail" && (active === id || active === "search" && id === "discover") ? "active" : ""}>{label}</Link>)}</nav></div>
+    {(search || children) && <div className="nav-search-shell">{search && <form className="nav-search input-wrap" onSubmit={e => { e.preventDefault(); router.push(`/search?q=${encodeURIComponent(q)}`); }}>
       <span className="input-icon input-icon--left"><Icon name="search" size={22}/></span>
-      <input aria-label="Tìm kiếm video" value={q} onChange={e => setQ(e.target.value)} placeholder="Tìm kiếm video, hình ảnh, hoặc khoảnh khắc..."/>
-      <Link className="input-icon input-icon--right" aria-label="Tìm bằng hình ảnh" href="/search?tab=visual"><Icon name="image" size={22}/></Link>
+      <input aria-label="Tìm kiếm video" value={q} onChange={e => setQ(e.target.value)} placeholder={variant === "home" ? "Tìm kiếm video bằng hình ảnh hoặc văn bản..." : variant === "detail" ? "Tìm kiếm video hoặc nội dung AI..." : "Tìm kiếm video, hình ảnh, hoặc khoảnh khắc..."}/>
+      {variant !== "detail" && <Link className="input-icon input-icon--right" aria-label="Tìm bằng hình ảnh" href="/search?tab=visual"><Icon name={variant === "home" ? "add_a_photo" : "image"} size={24}/></Link>}
     </form>}
-    {children}
+    {children}</div>}
     <div className="nav-actions">
       <button className="icon-button" disabled title="Thông báo chưa có API" aria-label="Thông báo"><Icon name="notifications"/></button>
       <Link className="icon-button" aria-label="Lịch sử xem" href="/profile?view=library&tab=history"><Icon name="history"/></Link>

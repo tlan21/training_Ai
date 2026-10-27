@@ -1,0 +1,146 @@
+[
+  {
+    "route": "login",
+    "width": 390,
+    "stitch_html": "stitch_ai_video_platform_vietnamese/login_mobile/code.html",
+    "stage": "dev iteration before final card-color correction; production QA pending",
+    "stitch": "login-390-stitch.png",
+    "before": "login-390-before.png",
+    "dev-iteration": "login-390-dev-iteration.png"
+  },
+  {
+    "route": "register",
+    "width": 390,
+    "stitch_html": "stitch_ai_video_platform_vietnamese/ng_k_mobile/code.html",
+    "stage": "dev iteration before final card-color correction; production QA pending",
+    "stitch": "register-390-stitch.png",
+    "before": "register-390-before.png",
+    "dev-iteration": "register-390-dev-iteration.png"
+  },
+  {
+    "route": "onboarding",
+    "width": 390,
+    "stitch_html": "stitch_ai_video_platform_vietnamese/interest_onboarding_mobile/code.html",
+    "stage": "dev iteration before final card-color correction; production QA pending",
+    "stitch": "onboarding-390-stitch.png",
+    "before": "onboarding-390-before.png",
+    "dev-iteration": "onboarding-390-dev-iteration.png"
+  },
+  {
+    "route": "feed",
+    "width": 390,
+    "stitch_html": "stitch_ai_video_platform_vietnamese/short_video_feed_mobile/code.html",
+    "stage": "dev iteration before final card-color correction; production QA pending",
+    "stitch": "feed-390-stitch.png",
+    "before": "feed-390-before.png",
+    "dev-iteration": "feed-390-dev-iteration.png"
+  },
+  {
+    "route": "discover",
+    "width": 390,
+    "stitch_html": "stitch_ai_video_platform_vietnamese/discovery_mobile/code.html",
+    "stage": "dev iteration before final card-color correction; production QA pending",
+    "stitch": "discover-390-stitch.png",
+    "before": "discover-390-before.png",
+    "dev-iteration": "discover-390-dev-iteration.png"
+  },
+  {
+    "route": "search",
+    "width": 390,
+    "stitch_html": "stitch_ai_video_platform_vietnamese/multimodal_search_mobile/code.html",
+    "stage": "dev iteration before final card-color correction; production QA pending",
+    "stitch": "search-390-stitch.png",
+    "before": "search-390-before.png",
+    "dev-iteration": "search-390-dev-iteration.png"
+  },
+  {
+    "route": "profile",
+    "width": 390,
+    "stitch_html": "stitch_ai_video_platform_vietnamese/personal_library_mobile/code.html",
+    "stage": "dev iteration before final card-color correction; production QA pending",
+    "stitch": "profile-390-stitch.png",
+    "before": "profile-390-before.png",
+    "dev-iteration": "profile-390-dev-iteration.png"
+  },
+  {
+    "route": "videos-vid_ui1",
+    "width": 390,
+    "stitch_html": "stitch_ai_video_platform_vietnamese/video_detail_ai_player_animated_mobile/code.html",
+    "stage": "dev iteration before final card-color correction; production QA pending",
+    "stitch": "videos-vid_ui1-390-stitch.png",
+    "before": "videos-vid_ui1-390-before.png",
+    "dev-iteration": "videos-vid_ui1-390-dev-iteration.png"
+  },
+  {
+    "route": "login",
+    "width": 1440,
+    "stitch_html": "stitch_ai_video_platform_vietnamese/login_desktop/code.html",
+    "stage": "dev iteration before final card-color correction; production QA pending",
+    "stitch": "login-1440-stitch.png",
+    "before": "login-1440-before.png",
+    "dev-iteration": "login-1440-dev-iteration.png"
+  },
+  {
+    "route": "register",
+    "width": 1440,
+    "stitch_html": "stitch_ai_video_platform_vietnamese/ng_k_desktop/code.html",
+    "stage": "dev iteration before final card-color correction; production QA pending",
+    "stitch": "register-1440-stitch.png",
+    "before": "register-1440-before.png",
+    "dev-iteration": "register-1440-dev-iteration.png"
+  },
+  {
+    "route": "onboarding",
+    "width": 1440,
+    "stitch_html": "stitch_ai_video_platform_vietnamese/interest_onboarding_desktop/code.html",
+    "stage": "dev iteration before final card-color correction; production QA pending",
+    "stitch": "onboarding-1440-stitch.png",
+    "before": "onboarding-1440-before.png",
+    "dev-iteration": "onboarding-1440-dev-iteration.png"
+  },
+  {
+    "route": "feed",
+    "width": 1440,
+    "stitch_html": "stitch_ai_video_platform_vietnamese/short_video_feed_desktop/code.html",
+    "stage": "dev iteration before final card-color correction; production QA pending",
+    "stitch": "feed-1440-stitch.png",
+    "before": "feed-1440-before.png",
+    "dev-iteration": "feed-1440-dev-iteration.png"
+  },
+  {
+    "route": "discover",
+    "width": 1440,
+    "stitch_html": "stitch_ai_video_platform_vietnamese/discovery_desktop/code.html",
+    "stage": "dev iteration before final card-color correction; production QA pending",
+    "stitch": "discover-1440-stitch.png",
+    "before": "discover-1440-before.png",
+    "dev-iteration": "discover-1440-dev-iteration.png"
+  },
+  {
+    "route": "search",
+    "width": 1440,
+    "stitch_html": "stitch_ai_video_platform_vietnamese/multimodal_search_desktop/code.html",
+    "stage": "dev iteration before final card-color correction; production QA pending",
+    "stitch": "search-1440-stitch.png",
+    "before": "search-1440-before.png",
+    "dev-iteration": "search-1440-dev-iteration.png"
+  },
+  {
+    "route": "profile",
+    "width": 1440,
+    "stitch_html": "stitch_ai_video_platform_vietnamese/personal_library_desktop/code.html",
+    "stage": "dev iteration before final card-color correction; production QA pending",
+    "stitch": "profile-1440-stitch.png",
+    "before": "profile-1440-before.png",
+    "dev-iteration": "profile-1440-dev-iteration.png"
+  },
+  {
+    "route": "videos-vid_ui1",
+    "width": 1440,
+    "stitch_html": "stitch_ai_video_platform_vietnamese/video_detail_ai_player_animated_desktop/code.html",
+    "stage": "dev iteration before final card-color correction; production QA pending",
+    "stitch": "videos-vid_ui1-1440-stitch.png",
+    "before": "videos-vid_ui1-1440-before.png",
+    "dev-iteration": "videos-vid_ui1-1440-dev-iteration.png"
+  }
+]

@@ -1,0 +1,23 @@
+
+Running 16 tests using 1 worker
+
+(node:26336) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 e2e\client_design.spec.ts:212:7 › T3.2 390 login layout (1.6s)
+  ok  2 e2e\client_design.spec.ts:212:7 › T3.2 390 register layout (541ms)
+  ok  3 e2e\client_design.spec.ts:212:7 › T3.2 390 onboarding layout (649ms)
+  ok  4 e2e\client_design.spec.ts:212:7 › T3.2 390 feed layout (1.1s)
+  ok  5 e2e\client_design.spec.ts:212:7 › T3.2 390 discover layout (751ms)
+  ok  6 e2e\client_design.spec.ts:212:7 › T3.2 390 search layout (596ms)
+  ok  7 e2e\client_design.spec.ts:212:7 › T3.2 390 profile layout (561ms)
+  ok  8 e2e\client_design.spec.ts:212:7 › T3.2 390 videos/vid_ui1 layout (946ms)
+  ok  9 e2e\client_design.spec.ts:212:7 › T3.2 1440 login layout (1.1s)
+  ok 10 e2e\client_design.spec.ts:212:7 › T3.2 1440 register layout (1.4s)
+  ok 11 e2e\client_design.spec.ts:212:7 › T3.2 1440 onboarding layout (809ms)
+  ok 12 e2e\client_design.spec.ts:212:7 › T3.2 1440 feed layout (1.2s)
+  ok 13 e2e\client_design.spec.ts:212:7 › T3.2 1440 discover layout (1.4s)
+  ok 14 e2e\client_design.spec.ts:212:7 › T3.2 1440 search layout (820ms)
+  ok 15 e2e\client_design.spec.ts:212:7 › T3.2 1440 profile layout (769ms)
+  ok 16 e2e\client_design.spec.ts:212:7 › T3.2 1440 videos/vid_ui1 layout (1.0s)
+
+  16 passed (17.5s)

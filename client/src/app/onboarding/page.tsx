@@ -7,6 +7,7 @@ import { useAuthStore } from "@/stores/authStore";
 import { apiClient, errorMessage } from "@/lib/apiClient";
 import { PageState } from "@/components/Media";
 import { Icon } from "@/components/Icon";
+import { isWideInterest, layoutInterests } from "@/lib/onboarding";
 const categoryArt: Record<string, {
     mobile: number;
     desktop: number;
@@ -56,9 +57,9 @@ export default function OnboardingPage() {
    <p><span className="mobile-only">Chọn ít nhất 3 chủ đề bạn yêu thích để chúng tôi tối ưu hóa trải nghiệm của bạn.</span><span className="desktop-only">Chọn ít nhất 3 hạng mục để chúng tôi cá nhân hóa trải nghiệm của bạn.</span></p>
   </header>
   {categories.isPending ? <PageState loading/> : categories.error ? <PageState error={categories.error} retry={() => categories.refetch()}/> : categories.data?.length ? <main className="onboard-grid">
-   {categories.data.filter(c => c.id).map((c, i) => {
+   {layoutInterests(categories.data).map((c, i) => {
                 const art = categoryArt[c.name || ""];
-                return <button key={c.id} aria-pressed={selected.includes(c.id!)} onClick={() => toggle(c.id!)} className={`interest-card ${["Thể thao", "Phim ảnh"].includes(c.name || "") ? "wide" : ""} ${selected.includes(c.id!) ? "selected" : ""}`}>
+                return <button key={c.id} data-category-id={c.id} aria-pressed={selected.includes(c.id!)} onClick={() => toggle(c.id!)} className={`interest-card ${isWideInterest(c) ? "wide" : ""} ${selected.includes(c.id!) ? "selected" : ""}`}>
     <span className="thumbnail"><picture><source media="(min-width:1024px)" srcSet={`/stitch/interest_onboarding_desktop-${art?.desktop ?? i % 8}.jpg`}/><img src={`/stitch/interest_onboarding_mobile-${art?.mobile ?? i % 10}.jpg`} alt=""/></picture></span>
     <span className="interest-label"><span><span className="desktop-only"><Icon name={art?.icon || "interests"}/></span>{c.name}{c.name === "Thể thao" && <small>Bóng đá, NBA, Fitness...</small>}{c.name === "Phim ảnh" && <small>Review, Trailer, Hậu trường...</small>}</span><span className="check"><Icon name="check_circle" filled size={24}/></span></span>
    </button>;

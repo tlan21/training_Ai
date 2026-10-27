@@ -1,0 +1,133 @@
+
+Running 16 tests using 1 worker
+
+(node:16552) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 e2e\stitch_reference.spec.ts:9:7 › INT-06 Stitch login 390 (4.8s)
+  x   2 e2e\stitch_reference.spec.ts:9:7 › INT-06 Stitch ng_k 390 (10.8s)
+(node:23832) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  3 e2e\stitch_reference.spec.ts:9:7 › INT-06 Stitch interest_onboarding 390 (1.6s)
+  ok  4 e2e\stitch_reference.spec.ts:9:7 › INT-06 Stitch short_video_feed 390 (1.6s)
+  ok  5 e2e\stitch_reference.spec.ts:9:7 › INT-06 Stitch discovery 390 (1.6s)
+  ok  6 e2e\stitch_reference.spec.ts:9:7 › INT-06 Stitch multimodal_search 390 (1.4s)
+  x   7 e2e\stitch_reference.spec.ts:9:7 › INT-06 Stitch personal_library 390 (11.2s)
+(node:1816) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  8 e2e\stitch_reference.spec.ts:9:7 › INT-06 Stitch video_detail_ai_player_animated 390 (2.2s)
+  ok  9 e2e\stitch_reference.spec.ts:9:7 › INT-06 Stitch login 1440 (2.0s)
+  x  10 e2e\stitch_reference.spec.ts:9:7 › INT-06 Stitch ng_k 1440 (10.6s)
+(node:26420) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 11 e2e\stitch_reference.spec.ts:9:7 › INT-06 Stitch interest_onboarding 1440 (1.5s)
+  ok 12 e2e\stitch_reference.spec.ts:9:7 › INT-06 Stitch short_video_feed 1440 (42.6s)
+  ok 13 e2e\stitch_reference.spec.ts:9:7 › INT-06 Stitch discovery 1440 (1.1m)
+  ok 14 e2e\stitch_reference.spec.ts:9:7 › INT-06 Stitch multimodal_search 1440 (1.8s)
+  ok 15 e2e\stitch_reference.spec.ts:9:7 › INT-06 Stitch personal_library 1440 (1.7s)
+  ok 16 e2e\stitch_reference.spec.ts:9:7 › INT-06 Stitch video_detail_ai_player_animated 1440 (1.7s)
+
+
+  1) e2e\stitch_reference.spec.ts:9:7 › INT-06 Stitch ng_k 390 ─────────────────────────────────────
+
+    Error: expect(received).toContain(expected) // indexOf
+
+    Expected substring: "Inter"
+    Received string:    "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\""
+
+    Call Log:
+    - Timeout 10000ms exceeded while waiting on the predicate
+
+      29 |     await page.goto(`${origin}/__stitch/${folder}/code.html`);
+      30 |     await expect(page).toHaveURL(`${origin}/__stitch/${folder}/code.html`);
+    > 31 |     await expect.poll(() => page.locator('body').evaluate(element => getComputedStyle(element).fontFamily)).toContain('Inter');
+         |                                                                                                             ^
+      32 |     await page.evaluate(() => document.fonts.ready);
+      33 |     await expect.poll(() => page.locator('head style').count()).toBeGreaterThan(0);
+      34 |     await page.screenshot({ path: info.outputPath(`${folder}-${width}.png`), fullPage: true, animations: 'disabled' });
+        at E:\traning_ai-codex\e2e\stitch_reference.spec.ts:31:109
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    backend\.tmp\int06-reference\stitch_reference-INT-06-Stitch-ng-k-390\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: backend\.tmp\int06-reference\stitch_reference-INT-06-Stitch-ng-k-390\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    backend\.tmp\int06-reference\stitch_reference-INT-06-Stitch-ng-k-390\trace.zip
+    Usage:
+
+        npx playwright show-trace backend\.tmp\int06-reference\stitch_reference-INT-06-Stitch-ng-k-390\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) e2e\stitch_reference.spec.ts:9:7 › INT-06 Stitch personal_library 390 ─────────────────────────
+
+    Error: expect(received).toContain(expected) // indexOf
+
+    Expected substring: "Inter"
+    Received string:    "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\""
+
+    Call Log:
+    - Timeout 10000ms exceeded while waiting on the predicate
+
+      29 |     await page.goto(`${origin}/__stitch/${folder}/code.html`);
+      30 |     await expect(page).toHaveURL(`${origin}/__stitch/${folder}/code.html`);
+    > 31 |     await expect.poll(() => page.locator('body').evaluate(element => getComputedStyle(element).fontFamily)).toContain('Inter');
+         |                                                                                                             ^
+      32 |     await page.evaluate(() => document.fonts.ready);
+      33 |     await expect.poll(() => page.locator('head style').count()).toBeGreaterThan(0);
+      34 |     await page.screenshot({ path: info.outputPath(`${folder}-${width}.png`), fullPage: true, animations: 'disabled' });
+        at E:\traning_ai-codex\e2e\stitch_reference.spec.ts:31:109
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    backend\.tmp\int06-reference\stitch_reference-INT-06-Stitch-personal-library-390\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: backend\.tmp\int06-reference\stitch_reference-INT-06-Stitch-personal-library-390\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    backend\.tmp\int06-reference\stitch_reference-INT-06-Stitch-personal-library-390\trace.zip
+    Usage:
+
+        npx playwright show-trace backend\.tmp\int06-reference\stitch_reference-INT-06-Stitch-personal-library-390\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) e2e\stitch_reference.spec.ts:9:7 › INT-06 Stitch ng_k 1440 ────────────────────────────────────
+
+    Error: expect(received).toContain(expected) // indexOf
+
+    Expected substring: "Inter"
+    Received string:    "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\""
+
+    Call Log:
+    - Timeout 10000ms exceeded while waiting on the predicate
+
+      29 |     await page.goto(`${origin}/__stitch/${folder}/code.html`);
+      30 |     await expect(page).toHaveURL(`${origin}/__stitch/${folder}/code.html`);
+    > 31 |     await expect.poll(() => page.locator('body').evaluate(element => getComputedStyle(element).fontFamily)).toContain('Inter');
+         |                                                                                                             ^
+      32 |     await page.evaluate(() => document.fonts.ready);
+      33 |     await expect.poll(() => page.locator('head style').count()).toBeGreaterThan(0);
+      34 |     await page.screenshot({ path: info.outputPath(`${folder}-${width}.png`), fullPage: true, animations: 'disabled' });
+        at E:\traning_ai-codex\e2e\stitch_reference.spec.ts:31:109
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    backend\.tmp\int06-reference\stitch_reference-INT-06-Stitch-ng-k-1440\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: backend\.tmp\int06-reference\stitch_reference-INT-06-Stitch-ng-k-1440\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    backend\.tmp\int06-reference\stitch_reference-INT-06-Stitch-ng-k-1440\trace.zip
+    Usage:
+
+        npx playwright show-trace backend\.tmp\int06-reference\stitch_reference-INT-06-Stitch-ng-k-1440\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3 failed
+    e2e\stitch_reference.spec.ts:9:7 › INT-06 Stitch ng_k 390 ──────────────────────────────────────
+    e2e\stitch_reference.spec.ts:9:7 › INT-06 Stitch personal_library 390 ──────────────────────────
+    e2e\stitch_reference.spec.ts:9:7 › INT-06 Stitch ng_k 1440 ─────────────────────────────────────
+  13 passed (2.8m)

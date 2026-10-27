@@ -60,6 +60,7 @@ function Search() {
             setFile(null);
             return;
         }
+        setThreshold(similarity);
         setFile(f);
         setRevision(v => v + 1);
         setCount(12);
@@ -92,7 +93,7 @@ function Search() {
  <input ref={imageInput} type="file" accept="image/jpeg,image/png,image/webp" hidden aria-label="Ảnh từ thư viện" onChange={e => { choose(e.target.files?.[0]); e.target.value = ""; }}/><input ref={cameraInput} type="file" accept="image/*" capture="environment" hidden aria-label="Ảnh từ máy ảnh" onChange={e => { choose(e.target.files?.[0]); e.target.value = ""; }}/>
  </section>
  <aside className={`search-filters ${tab === "text" ? "text-filters" : ""}`}><h2 className="filter-title"><Icon name="tune"/>Bộ lọc</h2><div className="filter-controls">
- <div><label htmlFor="similarity">Mức độ tương đồng: <span style={{ color: "var(--primary)" }}>{similarity}%</span></label><input id="similarity" type="range" min={50} max={100} value={similarity} disabled={tab === "text"} onChange={e => setSimilarity(Number(e.target.value))}/><div className="filter-scale"><span>Rộng</span><span>Chính xác</span></div></div>
+ <div><label htmlFor="similarity">Mức độ tương đồng: <span style={{ color: "var(--primary)" }}>{similarity}%</span></label><input id="similarity" type="range" min={50} max={100} value={similarity} onChange={e => setSimilarity(Number(e.target.value))}/><div className="filter-scale"><span>Rộng</span><span>Chính xác</span></div></div>
  <div className="filter-duration"><label>Thời lượng video</label><div className="duration-buttons">{[["Ngắn", "< 1p"], ["Vừa", "1–5p"], ["Dài", "5–20p"], ["Rất dài", "> 20p"]].map(([label, range], i) => <button key={label} className={duration === i ? "active" : ""} aria-pressed={duration === i} onClick={() => setDuration(duration === i ? null : i)}>{label}<span>{range}</span></button>)}</div></div>
  <div className="filter-sort"><label htmlFor="sort">Sắp xếp theo</label><select id="sort" value={sort} onChange={e => setSort(e.target.value)}><option value="match">Độ khớp cao nhất</option><option value="newest">Mới nhất</option><option disabled>Phổ biến nhất (chưa có dữ liệu)</option></select></div>
  </div></aside></div>

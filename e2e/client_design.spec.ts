@@ -1,5 +1,5 @@
 import {test,expect,type Page} from '@playwright/test';
-import {readFileSync} from 'node:fs';
+import {readFileSync,writeFileSync} from 'node:fs';
 import path from 'node:path';
 import type {components,paths} from '../client/src/api-types';
 const client=process.env.E2E_CLIENT_UI_URL||'http://localhost:3000';
@@ -208,6 +208,64 @@ const screens=[
 ['onboarding',''],['feed',''],['discover',''],['search?q=kiến%20trúc',''],['profile?view=library','Video đã thích'],['videos/vid_ui1?t=22',''],
 ] as const;
 for(const width of [390,1440]){
+ test(`INT-06 ${width} onboarding grid and keyboard follow the same API IDs`,async({page})=>{
+  await page.setViewportSize({width,height:width===390?844:900});await setup(page,{prefs:[]});await page.goto(client+'/onboarding');
+  const cards=page.locator('.interest-card');await expect(cards).toHaveCount(categories.length);
+  await expect(cards.first()).toHaveCSS('background-color',width===390?'rgb(255, 248, 245)':'rgb(255, 255, 255)');
+  const boxes=await cards.evaluateAll(elements=>elements.map(element=>{const rect=element.getBoundingClientRect();return {id:element.getAttribute('data-category-id'),wide:element.classList.contains('wide'),x:rect.x,y:rect.y,right:rect.right};}));
+  expect(boxes.map(box=>box.id).sort()).toEqual(categories.map(category=>category.id).sort());
+  for(let i=0;i<boxes.length;i++){
+   expect(boxes[i].x).toBeGreaterThanOrEqual(0);expect(boxes[i].right).toBeLessThanOrEqual(width);
+   if(i)expect(boxes[i].y).toBeGreaterThanOrEqual(boxes[i-1].y);
+   if(width===390&&boxes[i].wide)expect(boxes[i].x).toBe(16);
+  }
+  await cards.first().focus();
+  for(let i=1;i<boxes.length;i++){await page.keyboard.press('Tab');await expect(cards.nth(i)).toBeFocused();}
+  for(let i=0;i<3;i++)await cards.nth(i).click();
+  await expect(cards.first()).toHaveCSS('background-color',width===390?'rgb(237, 224, 255)':'rgb(245, 243, 255)');
+  const save=page.waitForRequest(request=>request.url().endsWith('/api/users/me/preferences')&&request.method()==='PUT');
+  await page.getByRole('button',{name:width===390?'Hoàn tất':'Hoàn tất và khám phá',exact:true}).click();
+  expect((await save).postDataJSON().category_ids.sort()).toEqual(boxes.slice(0,3).map(box=>box.id).sort());
+ });
+ test(`INT-06 ${width} register geometry matches Stitch`,async({page})=>{
+  await page.setViewportSize({width,height:width===390?844:900});await setup(page);await page.goto(client+'/register');
+  await page.evaluate(()=>document.fonts.ready);
+  const inputs=page.locator('.auth-field input');await expect(inputs).toHaveCount(4);
+  for(let i=0;i<4;i++){
+   await expect(inputs.nth(i)).toHaveCSS('height',width===390?'58px':'50px');
+   if(width===390)expect((await inputs.nth(i).boundingBox())!.y).toBe(324+i*102);
+  }
+  await expect(page.locator('.auth-submit')).toHaveCSS('height','60px');await noOverflow(page);
+ });
+ test(`INT-06 ${width} original video matches the happy-path player layout`,async({page},info)=>{
+  await page.setViewportSize({width,height:width===390?844:900});await setup(page);
+  await page.route('**/api/videos/vid_ui1',route=>route.fulfill({json:{...videos[0],playback_url:client+'/ui-fixture.mp4',duration_seconds:8} satisfies components['schemas']['VideoDetail']}));
+  await page.route('**/api/videos/vid_ui1/analysis',route=>route.fulfill({json:{...analysis,timeline_scores:Array.from({length:8},(_,second)=>({second,score:second>=2&&second<4?94:20})),key_moments:[{timestamp:2,text:'Điểm nhấn'},{timestamp:6,text:'Kết luận'}]}}));
+  await page.route('**/api/videos/vid_ui1/subtitles',route=>route.fulfill({json:{segments:[{segment_index:0,start_time:0,end_time:4,text:'Video gốc',confidence:.98}]}}));
+  await page.goto(client+'/videos/vid_ui1?t=2');
+  await expect.poll(()=>page.locator('.detail-player video').evaluate((video:HTMLVideoElement)=>video.readyState)).toBeGreaterThan(0);
+  await expect(page.locator('.detail-left .notice')).toHaveCount(0);
+  await expect(page.locator('.auto-highlight-mobile')).toHaveCount(0);
+  if(width===390){
+   const player=(await page.locator('.detail-player').boundingBox())!,heading=(await page.locator('.detail-metadata h1').boundingBox())!;
+   expect(heading.y-player.y-player.height).toBe(16);
+  }else{
+   await expect(page.locator('.nav-detail .nav-search input')).toHaveAttribute('placeholder','Tìm kiếm video hoặc nội dung AI...');
+   await expect(page.locator('.nav-detail .nav-search input')).toHaveCSS('height','32px');
+   await expect(page.locator('.nav-detail nav a.active')).toHaveCount(0);
+   const auto=page.getByRole('button',{name:'Tự động phát Highlight',exact:true});await expect(auto).toBeEnabled();await auto.click();await expect(auto).toHaveAttribute('aria-pressed','true');
+  }
+  await page.screenshot({path:info.outputPath(`detail-original-${width}.png`),fullPage:true});await noOverflow(page);
+ });
+ if(width===1440)test('INT-06 search similarity can be prepared before image upload without an AI request',async({page})=>{
+  await page.setViewportSize({width,height:900});const {requests}=await setup(page);await page.goto(client+'/search?q=kiến%20trúc');
+  const slider=page.getByLabel('Mức độ tương đồng:',{exact:false});await expect(slider).toBeEnabled();await slider.fill('90');
+  await page.getByRole('tab',{name:'Tìm bằng hình ảnh',exact:true}).click();
+  expect(requests.filter(path=>path==='/api/search/visual')).toHaveLength(0);
+  const searched=page.waitForRequest(request=>request.url().endsWith('/api/search/visual')&&!!request.postData()?.includes('0.9'));
+  await page.getByLabel('Ảnh từ thư viện',{exact:true}).setInputFiles(path.join(__dirname,'../client/public/stitch/interest_onboarding_mobile-0.jpg'));
+  await searched;await expect(page.locator('.search-result')).toHaveCount(2);
+ });
  for(const [route,heading]of screens){
   test('T3.2 '+width+' '+route.split('?')[0]+' layout',async({page},info)=>{
    await page.setViewportSize({width,height:width===390?844:900});await setup(page);const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
@@ -219,6 +277,11 @@ for(const width of [390,1440]){
    if(route.startsWith('videos')){await expect(page.getByRole('heading',{name:videos[0].title,exact:true})).toBeVisible();await expect.poll(()=>page.locator('.detail-player video').evaluate((el:HTMLVideoElement)=>el.readyState)).toBeGreaterThan(0);}
    if(route==='onboarding')await expect(page.locator('.interest-card')).toHaveCount(8);
    await page.evaluate(()=>document.fonts.ready);await noOverflow(page);expect(errors).toEqual([]);
+   const metrics=await page.locator('header,nav,main,aside,section,h1,h2,input,button').evaluateAll(elements=>elements.slice(0,100).map(element=>{
+    const box=element.getBoundingClientRect(),css=getComputedStyle(element);
+    return {tag:element.tagName,text:element.textContent?.trim().slice(0,100),id:element.id,x:box.x,y:box.y,width:box.width,height:box.height,font:css.fontFamily,size:css.fontSize,weight:css.fontWeight,line:css.lineHeight,color:css.color,background:css.backgroundColor,padding:css.padding,gap:css.gap,radius:css.borderRadius};
+   }));
+   writeFileSync(info.outputPath('client-metrics.json'),JSON.stringify({route,viewport:page.viewportSize(),metrics},null,2));
    await page.screenshot({path:info.outputPath(route.split('?')[0].replaceAll('/','-')+'-'+width+'.png'),fullPage:true});
   });
  }

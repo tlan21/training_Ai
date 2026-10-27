@@ -1,0 +1,44 @@
+▲ Next.js 16.4.3 (webpack)
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of E:\traning_ai-codex\package-lock.json as the root directory.
+ To silence this warning, set `outputFileTracingRoot` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/output#caveats for more information.
+ Detected additional lockfiles: 
+   * E:\traning_ai-codex\client\package-lock.json
+
+⚠ React 18 support is deprecated in Next.js 16 and will be removed in Next.js 17. Please upgrade to React 19. Learn more: https://nextjs.org/docs/messages/react-version
+✓ Running next.config.mjs took 39ms
+- Experiments (use with caution):
+  · cpus: 1
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 4.5s
+  Running TypeScript ...
+  Finished TypeScript in 1845ms ...
+  Collecting page data using 1 worker ...
+  Generating static pages using 1 worker (0/13) ...
+  Generating static pages using 1 worker (3/13) 
+  Generating static pages using 1 worker (6/13) 
+  Generating static pages using 1 worker (9/13) 
+✓ Generating static pages using 1 worker (13/13) in 1182ms
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /discover
+├ ○ /feed
+├ ○ /forgot-password
+├ ○ /login
+├ ○ /onboarding
+├ ○ /profile
+├ ○ /register
+├ ○ /reset-password
+├ ○ /search
+└ ƒ /videos/[id]
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
