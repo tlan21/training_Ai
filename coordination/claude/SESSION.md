@@ -3,7 +3,7 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
-- Task: AI-03c IN_PROGRESS (2026-10-27, D22) — fine-tune MiniGPT: mixed replay News + 29 cặp domain Claude-reviewed, guard News không hồi quy, đánh giá CLAUDE_JUDGE.
+- Task: — AI-03c DONE (2026-10-27, D22): candidate 62974ef8 KHÔNG promote (sạch 1.5→1.8, đường thật 1.0→1.0). Nút thắt ASR → AI-02b cần người nghe.
   :8001 DOWN — Milvus/stack Codex tắt (startup fail-fast Milvus); chờ Codex/user bật stack.
 - Trước đó: (2026-10-27) AI-02a DONE (60 đề xuất ASR CLAUDE_PROPOSED), AI-03a DONE, AI-04 DONE (PRELIMINARY_T4). Verify bundle INT-15 → NO_DATA.
   Còn mở đều chờ người/dữ liệu: AI-02b, AI-03b (user duyệt), AI-12 (tương tác thật INT-15), AI-04 nghiệm thu RTX 3060.

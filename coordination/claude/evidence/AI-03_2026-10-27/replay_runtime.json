@@ -1,0 +1,11 @@
+{
+  "completed": true,
+  "gpu": "Tesla T4",
+  "torch": "2.11.0+cu128",
+  "seed": 1337,
+  "elapsed_seconds": 430.7081878185272,
+  "peak_allocated_gib": 1.056251049041748,
+  "peak_reserved_gib": 2.19140625,
+  "scope": "same-GPU baseline + candidate training/validation; not six-model inference",
+  "train_8gib_pass": true
+}

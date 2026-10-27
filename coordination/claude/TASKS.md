@@ -95,7 +95,7 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - Checkpoint: Next safe task = AI-02a (không phụ thuộc user); 02b chờ user.
 
 ### AI-03 — Mini-GPT human quality gate (T1.6)
-- T gốc: T1.6 | Owner: claude | Status: 03a DONE · 03b DONE theo D22 (Claude duyệt, 2026-10-27) · 03c IN_PROGRESS (2026-10-27)
+- T gốc: T1.6 | Owner: claude | Status: 03a DONE · 03b DONE theo D22 (Claude duyệt, 2026-10-27) · 03c DONE — thí nghiệm xong, KHÔNG promote; cổng người ≥3/5 chưa đạt
 - Nguồn 40 clip real-domain (30 train / 10 val, ngoài frozen30): `data/manifests/minigpt_real_domain.json`; transcript user đã rà
   (export SHA `860f8068d0bd…`, 40 transcript/39 sửa) — `docs/T1.6_whisper_review_intake.md`.
 - **AI-03a — Claude soạn summary 40 clip (TODO, theo quyết định user 2026-10-26):** soạn từ transcript user đã rà; mỗi mục lưu
@@ -110,6 +110,9 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   (`dom_p7FlzMrLDSo_1` trùng transcript). File `D:/.../claude_review_d22_v1/claude_reviewed_summaries_v1.json` SHA `bf1ee8ec…`, provenance `claude_drafted_claude_reviewed`.
   Baseline CLAUDE_JUDGE (`evidence/AI-03_2026-10-27/judge_baseline.json`): MiniGPT active với transcript sạch 1.44/5 (val 1.50), với ASR active 1.0/5 (40/40 bịa);
   ASR active CER 0.584 / candidate 0.481 trên 40 clip. Hiệu chuẩn 30 clip người chấm: judge 1.0 vs người 1.6 — 5 bất đồng đều là câu bịa trôi chảy.
+- **AI-03c (VERIFIED-NOW 2026-10-27, `docs/T1.6_d22_domain_finetune.md`):** Kaggle T4 mixed replay + 29 cặp D22 ×8, guard News PASS (0.232→0.322, step 120,
+  2.19 GiB). Candidate `62974ef8…` (D:, không thay active). CLAUDE_JUDGE domain val: sạch 1.5→1.8, ASR 1.0→1.0; ROUGE sạch 0.126→0.125; train học thuộc.
+  KHÔNG promote. Nút thắt = ASR (CER 0.584 video thật) → cần AI-02b (người nghe). Commits 054e2af, 77e3af8, (commit kết quả).
 - *(Gốc)* **AI-03b — người duyệt:** user duyệt/sửa/loại từng summary → `HUMAN_VERIFIED`.
   ⚠ Ràng buộc dự án (`my-agent/agent/instructions.md` §1: "không pseudo-label từ model ngoài"): summary do Claude soạn là
   output của model ngoài → chỉ được làm target train/eval sau khi người duyệt từng mục **và** provenance ghi rõ
