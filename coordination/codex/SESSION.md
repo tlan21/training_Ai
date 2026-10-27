@@ -2,7 +2,10 @@
 
 ## Branch / task state
 - E:/traning_ai-codex, codex/integration. Release#1/#2/#3 received; HEAD..master empty at session start. No master release/push authorized.
-- No task IN_PROGRESS. INT-19 REVIEW (contract0.3.2), INT-14 pagination complete; overallINT-14 PARTIAL only for full Client parity dependencyINT-06.
+- INT-06 IN_PROGRESS (user approved proposed UI parity work). INT-19 REVIEW, INT-14 pagination complete/PARTIAL for full Client parity.
+- Current next step: capture baseline8screen groups x390/1440 with paired Stitch references, then fix only proven existing-API UI gaps.
+  Project skill client_screen.md +required ui_design_review checklist; UI/UX Pro Max targeted accessibility guidance, Ponytail full.
+  No runtime/service changes yet; real gateway/AI preserved. No new API/deferred forgot-password scope approval inferred.
 - INT-01/11/13/17/18 REVIEW; real HTTP integration retained. Project skill backend_endpoint.md +Ponytail full. No subagents.
 - Latest source: contract213aaa9, pagination e476005. Original real switch approved by user/eaca064; prior3realE2E ff0494f/cea8a94.
 - No shared/Claude/AI/model/checkpoint edits, push/reset/clean/stash or product volume deletion.

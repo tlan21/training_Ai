@@ -14,7 +14,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-03 | T2.5, T1.7 | Two-Tower: sandbox/ID mapping; product vectors + feed | BLOCKED | product v2 AI-12 production gate; AI-09 MovieLens sandbox only |
 | INT-04 | T3.1, T3.2 | Contract nguồn phát video gốc (OpenAPI) + nối UI | PARTIAL | INT-00 (runtime); contract có thể làm độc lập |
 | INT-05 | T3.1 | CMS Design Parity FULL | PARTIAL | INT-02, INT-04 |
-| INT-06 | T3.2 | Client Design Parity FULL | PARTIAL | INT-02, INT-04 |
+| INT-06 | T3.2 | Client Design Parity FULL | IN_PROGRESS | existing API/Stitch scope; INT-02/04/14 verified |
 | INT-07 | T5.1 | Load test 50 video dồn hàng đợi | BLOCKED | AI-04 (GPU); bản CPU chạy trước được |
 | INT-08 | T5.2 | Soak test 48 h | BLOCKED | INT-07 |
 | INT-09 | T5.3 | Docs bàn giao hệ thống | TODO | INT-05..08 |
@@ -114,13 +114,19 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Evidence: HIST 30 Playwright PASS 2026-10-14 | Commits: `5bc0ccf`, `b8b6dbe`, `59e92ba`, `b3ab36c`, `8cc773f` | Checkpoint: —
 
 ### INT-06 — Client Design Parity FULL
-- T gốc: T3.2 | Owner: codex | Status: PARTIAL
+- T gốc: T3.2 | Owner: CODEX | Status: IN_PROGRESS (2026-10-27; user approved proposed UI parity work)
 - Depends on: INT-02; INT-04 functional playback PASS; full parity còn cần scope/resource
 - Gap (HIST `docs/T3.2_client_design_parity.md`): URL video gốc, saved-list/playlist, DELETE likes/history, analytics count; preferences/history/likes memory.
   NOW: source/history/likes/settings đã có; preference source đã sửa nhưng runtime restart pending. Saved-list/delete/playlist/count còn scope decision.
   Tính năng ngoài master §2 vẫn chờ user (CONTRACT_DECISIONS.md), không tự thêm endpoint.
 - Acceptance: như INT-05 cho 8 màn Client.
 - Evidence: HIST 42 Playwright PASS 2026-10-14 | Commits: `5360af6`, `ebe5359` | Checkpoint: —
+- Current scope: audit8Client screen groups against mobile390x844/desktop1440x900 Stitch +plan04§8 CẮT-list; fix layout/copy/icons/spacing and existing API mapping only.
+  Preserve auth RAM/refresh, playback/playerStore/tracking, infinite pagination and realAI runtime; no new endpoint/dependency or deferred forgot-password work.
+- Acceptance current: paired reference/current screenshots and explicit10item checklist per screen; functional states/network/UI/player regressions,
+  Client tsc/lint/build PASS. Full DONE still requires unresolved library/metrics scope decision; no false full parity PASS.
+- Changed planned: client/src pages/shared components/styles as proven by comparison; e2e parity checks; owned report/SESSION/tracker.
+- Next action: capture current/reference baseline from same deterministic data and identify concrete per-screen differences before edits.
 
 ### INT-07 — Load test 50 video (T5.1)
 - T gốc: T5.1 | Owner: codex | Status: BLOCKED
