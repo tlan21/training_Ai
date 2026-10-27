@@ -110,3 +110,13 @@ Next safe task: INT-17 live checks +INT-13 deployed pipeline after user runtime 
 - INT-18 sourceGo startup tests stillvalid/REVIEW, gateway-int18 artifact separate/not deployed. Existing gateway becamehealthy externally.
 - INT-17 IN_PROGRESS: existing Client container is old cached image; deploy only validated Next16 image4fcf2410 via same Compose/no deps/build/pull,
   then run the existing2live client_auth cases on normal3000. No source feature/API change and no gateway-start bypass.
+
+## Current INT-11 — real transition staged, confirmation pending
+- INT-13 REVIEW own deployed worker/pipeline; INT-17 REVIEW Next16deployed+2live PASS10.8s; INT-18 sourceREVIEW/new Go binary not deployed yet.
+- New readiness: hostAIhealth200/stubfalse/6models; deployed worker→canonicalhost8001 health200/stubfalse/6; missing Bearer search401.
+  OldHO-03 transport timeout resolved. Contract API-READY stillv1.3/master; recommendationDRAFT/primarypopularity retained.
+- INT-11 now IN_PROGRESS, the only active task. Local override backend/.tmp/docker-real-direct.yml prepared/configquietPASS; not applied.
+  Mount gateway-int18 SHAda8d646b8a8bdfc48775ae9b15fd2ed313e50cedbedb548e307e4a8194cda280, AI_BASE_URLcanonical/stub0/key processenvonly.
+- Explicit async user confirmation requested for gateway-only recreation/apply+realtests because prior auto-review blocked targeted gateway start.
+  No answer yet; do not infer consent or apply through another route. See verification/INT-11-real-transition.md for concrete change/verify/rollback.
+- Current gateway stillmockhealthy; realE2E NOT_RUN/matrixunchanged. No source/schema/checkpoint edits on Claude lane or master release/push.

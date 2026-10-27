@@ -216,3 +216,11 @@ Mẫu HO:
   Prior53fixture tests/audits0/build remain valid. INT-17 REVIEW; no new source/UI/API change or production/master release.
 - Runtime snapshot coordination/codex/verification/RUNTIME-20261027.json. AI pipeline still explicitMOCK_ONLY; real :8001 gate not rerun/claimed.
   No product data invented/promoted; test users/media retained and source=test, exact test videos softdeleted/threshold restored.
+
+## 2026-10-27 HO-03 preflight recovered / INT-11 transition prepared
+- Host :8001 and container→host.docker.internal:8001/health now200/stubfalse/6models; missing Bearer search401.
+  Transport blocker no longer reproduces. No AI request with product media/index writes performed in this preflight.
+- INT-11 IN_PROGRESS, ready real transition root+local backend/.tmp/docker-real-direct.yml: canonicalhostHTTP/stub0, securekey processenv,
+  readonly tested gateway-int18 binary. ComposeconfigPASS, detailed plan verification/INT-11-real-transition.md.
+- Apply step awaits explicit user confirmation due prior automatic review rejecting gateway start (“blocked by policy”); not bypassed by recreation.
+  Current gateway stillmock, real pipeline/search tests NOT_RUN and matrix unchanged. Recommendation primarypopularity, not personalizedready.

@@ -1,0 +1,13 @@
+{
+  "checked_at": "2026-10-27T04:15:41.8478409Z",
+  "available": true,
+  "stub_mode": false,
+  "models_loaded": [
+    "asr_ctc",
+    "highlight_fusion",
+    "minigpt",
+    "siamese",
+    "two_tower",
+    "vit"
+  ]
+}
