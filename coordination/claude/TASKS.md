@@ -73,7 +73,7 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   ```
 
 ### AI-02 — ASR domain adaptation (T1.4 follow-up)
-- T gốc: T1.4 | Owner: claude | Status: 02a DONE (2026-10-27) · 02b BLOCKED ⇐ user nghe/duyệt · 02c BLOCKED
+- T gốc: T1.4 | Owner: claude | Status: 02a DONE · 02b IN_PROGRESS (user duyệt lại v3, 2026-10-27) · 02c BLOCKED ⇐ 02b
 - Tiến độ duyệt (ghi 2026-10-26): **7/60 đã duyệt, 53/60 còn phải kiểm tra** — số 7/60 là tiến độ trang review hiển thị
   (lưu localStorage Chrome, `http://127.0.0.1:8891/asr_review_v2/index.html`); **chưa có file JSON export** nào
   (Downloads không có `asr_expansion_review_v2*.json`) → bằng chứng file hiện là 0/60. Gói dữ liệu:
@@ -85,7 +85,11 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   Evidence 02a (VERIFIED-NOW 2026-10-27, `docs/T1.4_asr_claude_proposals.md`, `data/manifests/asr_claude_proposals_v1.json`): 60/60 clip
   (13 EXCLUDE_CANDIDATE gồm 9 nháp ảo giác Whisper, 30 CORRECTION, 17 LISTEN_ONLY), hash audio/video/nháp + hash packet; chữ số trùng nháp 100%;
   0 verified; file D: SHA `9ade1bb4…` không ghi đè; intake `test_claude_proposed_transcript_is_never_approved` (2 case) → 40 passed.
-- **AI-02b — người duyệt (BLOCKED ⇐ user):** user nghe/sửa/xác nhận hoặc loại từng clip, xuất JSON thật. Chỉ mục user xác nhận
+- **AI-02b lần 1 (export v2, 2026-10-27, `received_87a7eb6fd111`, SHA `87a7eb6f…`): KHÔNG intake** — 60/60 xác nhận nhưng 57 giống hệt nháp Whisper
+  (gồm 10 câu ảo giác 'Để không bỏ lỡ…'/'Đi nào?', chuỗi lặp, lỗi chính tả rõ) → nhãn = Whisper, vi phạm §0. User chọn duyệt lại bản gọn.
+  Trang v3 `asr_review_v3` (`prepare_expansion_review_v3.py`, test 10 passed + kiểm trình duyệt): 57 clip xếp ưu tiên 11/26/20, điền sẵn gợi ý Claude,
+  **chỉ cho xác nhận sau khi audio phát hết** (`audio_played_full` trong export). 3 clip user đã sửa giữ từ v2. Intake 02c sẽ yêu cầu `audio_played_full=true`.
+- **AI-02b — người duyệt (gốc):** user nghe/sửa/xác nhận hoặc loại từng clip, xuất JSON thật. Chỉ mục user xác nhận
   mới là `HUMAN_VERIFIED`. Claude **không** tự gán.
 - **AI-02c — intake + train (BLOCKED ⇐ 02b):** strict intake giữ machine-assisted provenance/coverage/train-only vocab/CTC/split guard;
   1 thí nghiệm bounded; chỉ promote khi guard VIVOS/FLEURS/domain không hồi quy; không chọn theo test.

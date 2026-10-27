@@ -1,0 +1,19 @@
+{
+  "status": "RE_REVIEW_READY",
+  "reason": "v2 export confirmed 57/60 Whisper drafts unchanged incl. hallucination stubs",
+  "clips": 57,
+  "tiers": {
+    "1": 11,
+    "2": 26,
+    "3": 20
+  },
+  "accepted_from_v2": [
+    "ext2_-wJIxQwbjOM_1",
+    "ext2_qlt8lkh_G5k_2",
+    "ext2_uvs5djEOuH4_2"
+  ],
+  "received_v2_sha256": "87a7eb6fd1118931e3c748bfeef09f5c03eeca5af1440c74b5f91bf85a30210a",
+  "packet_sha256": "e14ad85ece1e11409fe6762c8c64cc71c8d5cc9e9e6ad731b9f1ce61d55181b8",
+  "index_sha256": "c8474e34485c290c5bc68cbdb860ac2d1ed911d47b6f4fad0afaee0ff7f78b80",
+  "training_ready": false
+}
