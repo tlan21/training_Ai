@@ -26,6 +26,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-15 | HC-07/09/D19/D21 | Valid product interactions + versioned export for v2 | REVIEW | schema/provenance accepted byClaude; data gate NO_DATA |
 | INT-16 | INT-14 | Client same-origin API transport | REVIEW | fresh Docker build/proxy smoke PASS; security gate INT-17 separate |
 | INT-17 | INT-16 audit | Client framework security migration | PARTIAL | Next16/audits0/53E2E/Docker PASS;2live cases await gateway |
+| INT-18 | INT-00/13 boot | Bounded dependency startup recovery | IN_PROGRESS | reproduced PG/Kafka cold-start failures |
 
 Hoàn thành trước tách làn (bằng chứng INVENTORY mục 5): T0.1–T0.4, T2.1–T2.4, T4.1, T4.2 = DONE (VERIFIED-HIST, build VERIFIED-NOW);
 T2.5, T3.1, T3.2 = PARTIAL.
@@ -240,3 +241,16 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Evidence2026-10-27: verification/INT-17.md +checks.json; host/Docker cleaninstall/lint/build/tsc PASS; full/runtime audits0;53Client E2E PASS1.4m; proxy smoke/E2Etypes PASS. Two live cases NOT_RUN/gateway stopped.
 - Commits:651820f approval/start;691ede2 implementation+verification. Next action: runtime recovery then2live cases; no major decision pending, no force install/API/AI edits.
 - Checkpoint: Lane codex / Changed approved Next16 migration / Verified audits0+53E2E+host/Docker gates / Contract no / Next2live checks after gateway recovery.
+
+### INT-18 — Bounded dependency startup recovery
+- T gốc: INT-00/13 runtime recovery | Owner: CODEX | Status: IN_PROGRESS (2026-10-27)
+- Depends on: existing cached Go/Python/Postgres images; no AI training/schema dependency | Blocks: reliable manual/daemon cold boot
+- Acceptance: gateway waits a bounded time for startup dependencies, honors cancellation/timeouts and keeps strict AI health gates;
+  ingest retries transient Kafka bootstrap with partial-client cleanup, fails permanent config/deadline errors, no event/DSP changes.
+  Unit +isolated delayed PostgreSQL readiness +packaged preprocessing tests PASS; Go vet/test/build and own worker image build PASS.
+  Existing gateway is not started via an alternate route after prior automatic-review rejection; deployed pipeline remains separate.
+- Changed planned: shared Go startup wait/adapter startup callers/gateway health; own Python broker bootstrap/tests; owned docs/evidence.
+- Commits: initial checkpoint | Evidence: external stack started just now; gateway exit1/Postgres57P03 "database system is starting up";
+  cached ingest exit1/KafkaTimeoutError unable bootstrap. Existing infra healthy after those exits; no Codex start/restart.
+- Next action: bounded readiness handling/tests, rebuild verified artifacts; keep pagination gap in INT-14 for later.
+- Checkpoint: Lane codex / IN_PROGRESS / Contract unchanged / Next implement/test startup recovery.

@@ -77,3 +77,12 @@ Next safe task: INT-17 live checks +INT-13 deployed pipeline after user runtime 
 - Scope: Next16.4.3 +compatible ESLint tooling, lockfile/config/compatibility only; retain React18 where supported and verified.
 - C:13.27GiB/E:1.48GiB. Prefer lockfile-only resolution then clean Docker install/build on C:; no host dependency trees/download duplication on E:.
 - Need runtime audit, type/lint/build, Docker proxy smoke,55Client E2E with live2 cases separately gated by stopped gateway.
+
+## Resume2026-10-27 — INT-18 startup recovery (authoritative current task)
+- Branch correct/clean, HEAD..master empty, no new Claude contract/handoff. Next upgrade checks alreadyPASS, not repeated.
+- Runtime changed externally during inspection: infra/mock/CMS/Client running; gateway exit1 at03:53:18UTC due PostgreSQL57P03 starting;
+  cached old ingest exit1/KafkaTimeoutError unablebootstrap. Claude legacy inference container alsoexited; no AI code/runtime touched.
+- INT-18 IN_PROGRESS before implementation. backend_endpoint skill. Implement bounded dependency startup handling rather than pagination now.
+- No existing gateway start/retry by Codex after earlier auto-review rejection. Test readiness via isolated PG test container/no product volume or ports;
+  own worker packaged unit/bootstrap tests. Deploy/start remains user intervention if still rejected.
+- C:11.86GiB/E:1.30GiB, deps already present; no large dependency downloads/pulls. Newimage uses cached layers only.
