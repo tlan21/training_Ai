@@ -16,7 +16,7 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | AI-13 | T1.7 / T1.8 | D18: recommendation inference không trả metadata giả + `recommendation_mode` | DONE (2026-10-26; release #3) | D18 |
 | AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | BLOCKED ⇐ bundle INT-13 (phần độc lập xong 2026-10-26) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | DONE (2026-10-26; sandbox + artifact; product → AI-12 theo D18) | HC-04 (sandbox READY) |
-| AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a TODO · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
+| AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a DONE (2026-10-27) · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
 | AI-03 | T1.6 | Mini-GPT: 03a Claude soạn summary 40 clip · 03b người duyệt · 03c train/eval | 03a DONE (2026-10-26) · 03b BLOCKED ⇐ user · 03c BLOCKED | 03b ⇐ user; 03c ⇐ 03b |
 | AI-04 | T1.8 / T4.3 | Đo VRAM sơ bộ Kaggle T4 (PRELIMINARY) | DONE — PRELIMINARY_T4 (2026-10-26; nghiệm thu 3060 vẫn mở) | AI-06 (DONE) |
 | AI-05 | T5.3 | Số liệu evaluation cho luận án | TODO | AI-02, AI-03, AI-04 |
@@ -73,7 +73,7 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   ```
 
 ### AI-02 — ASR domain adaptation (T1.4 follow-up)
-- T gốc: T1.4 | Owner: claude | Status: 02a TODO · 02b BLOCKED · 02c BLOCKED
+- T gốc: T1.4 | Owner: claude | Status: 02a DONE (2026-10-27) · 02b BLOCKED ⇐ user nghe/duyệt · 02c BLOCKED
 - Tiến độ duyệt (ghi 2026-10-26): **7/60 đã duyệt, 53/60 còn phải kiểm tra** — số 7/60 là tiến độ trang review hiển thị
   (lưu localStorage Chrome, `http://127.0.0.1:8891/asr_review_v2/index.html`); **chưa có file JSON export** nào
   (Downloads không có `asr_expansion_review_v2*.json`) → bằng chứng file hiện là 0/60. Gói dữ liệu:
@@ -82,6 +82,9 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   đề xuất sửa chữ/chuẩn hóa theo `docs/T1.4_asr_label_contract.md`, ghi lý do, nhãn `CLAUDE_PROPOSED` trong file riêng
   (không ghi đè nháp gốc, không ghi vào kết quả duyệt của user). Claude không nghe được audio → đề xuất chỉ dựa trên văn bản,
   phải ghi rõ giới hạn này. Acceptance: file đề xuất + hash nguồn + test strict-intake vẫn từ chối mục chưa `HUMAN_VERIFIED`.
+  Evidence 02a (VERIFIED-NOW 2026-10-27, `docs/T1.4_asr_claude_proposals.md`, `data/manifests/asr_claude_proposals_v1.json`): 60/60 clip
+  (13 EXCLUDE_CANDIDATE gồm 9 nháp ảo giác Whisper, 30 CORRECTION, 17 LISTEN_ONLY), hash audio/video/nháp + hash packet; chữ số trùng nháp 100%;
+  0 verified; file D: SHA `9ade1bb4…` không ghi đè; intake `test_claude_proposed_transcript_is_never_approved` (2 case) → 40 passed.
 - **AI-02b — người duyệt (BLOCKED ⇐ user):** user nghe/sửa/xác nhận hoặc loại từng clip, xuất JSON thật. Chỉ mục user xác nhận
   mới là `HUMAN_VERIFIED`. Claude **không** tự gán.
 - **AI-02c — intake + train (BLOCKED ⇐ 02b):** strict intake giữ machine-assisted provenance/coverage/train-only vocab/CTC/split guard;
