@@ -63,3 +63,11 @@ Changed: ingest package audit/test/docs; Client build allowlist/container proxy 
 Verified: full ingest image+4tests/pip; full Client npmci/build+production proxy smoke; Compose configs/syntax/diff; Claude bundle ACCEPTED/NO_DATA
 Contract touched: no; existing public0.3.1 and AI-APIv1.3 unchanged
 Next safe task: INT-17 after major decision; INT-13 deployed pipeline after user runtime recovery
+
+## INT-17 approval / migration started2026-10-27
+- User explicitly approved the proposed major upgrade: "hãy nâng lên". INT-17 IN_PROGRESS, only active task.
+- Branch correct/clean, no new master release. Read coordination/Claude handoff; no new AI contract/schema.
+- Project skill client_screen for Client behavior/route compatibility regression; Ponytail full. Preserve Stitch markup/styles/API/auth behavior.
+- Scope: Next16.4.3 +compatible ESLint tooling, lockfile/config/compatibility only; retain React18 where supported and verified.
+- C:13.27GiB/E:1.48GiB. Prefer lockfile-only resolution then clean Docker install/build on C:; no host dependency trees/download duplication on E:.
+- Need runtime audit, type/lint/build, Docker proxy smoke,55Client E2E with live2 cases separately gated by stopped gateway.

@@ -25,7 +25,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-14 | HC-06/D18/D21 | Popularity MVP, real metadata, recommendation_mode | PARTIAL | MVP/PG/Client live verified; full parity INT-06 remains |
 | INT-15 | HC-07/09/D19/D21 | Valid product interactions + versioned export for v2 | REVIEW | schema/provenance accepted byClaude; data gate NO_DATA |
 | INT-16 | INT-14 | Client same-origin API transport | REVIEW | fresh Docker build/proxy smoke PASS; security gate INT-17 separate |
-| INT-17 | INT-16 audit | Client framework security migration | BLOCKED | major Next migration decision; public deployment gated |
+| INT-17 | INT-16 audit | Client framework security migration | IN_PROGRESS | user approved major upgrade2026-10-27 |
 
 Hoàn thành trước tách làn (bằng chứng INVENTORY mục 5): T0.1–T0.4, T2.1–T2.4, T4.1, T4.2 = DONE (VERIFIED-HIST, build VERIFIED-NOW);
 T2.5, T3.1, T3.2 = PARTIAL.
@@ -229,7 +229,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Checkpoint: Lane codex / Verified host+Docker functionality / Contract unchanged / Next INT-17 security+runtime recovery.
 
 ### INT-17 — Client framework security migration
-- T gốc: INT-16 fresh build audit | Owner: CODEX | Status: BLOCKED (major framework decision2026-10-27)
+- T gốc: INT-16 fresh build audit | Owner: CODEX | Status: IN_PROGRESS (user approved2026-10-27: hãy nâng lên)
 - Depends on: user approval for Next14→16 major migration; runtime recovery for live checks | Blocks: public Client deployment
 - Acceptance: scoped upgrade approved; locked clean install/types/lint/build/Docker/55UI+live checks PASS; runtime critical/high findings resolved or explicitly reviewed;
   existing Stitch/API/cookie/JWT behavior preserved, no unrelated features or AI edits.
