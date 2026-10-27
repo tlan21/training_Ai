@@ -1,0 +1,7 @@
+**
+!client/
+!client/**
+client/node_modules/
+client/.next/
+client/.env*
+client/*.tsbuildinfo

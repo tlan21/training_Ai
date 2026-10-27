@@ -24,7 +24,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-13 | INT-00 | Image ingest riêng + kiểm clean build | PARTIAL | full image+4packaged tests PASS; deployed pipeline pending runtime |
 | INT-14 | HC-06/D18/D21 | Popularity MVP, real metadata, recommendation_mode | PARTIAL | MVP/PG/Client live verified; full parity INT-06 remains |
 | INT-15 | HC-07/09/D19/D21 | Valid product interactions + versioned export for v2 | REVIEW | schema/provenance accepted byClaude; data gate NO_DATA |
-| INT-16 | INT-14 | Client same-origin API transport | REVIEW | c30c664;52E2E+live sessions PASS; fresh Docker gate |
+| INT-16 | INT-14 | Client same-origin API transport | IN_PROGRESS | fresh Docker image/proxy smoke; existing52E2E/live PASS |
 
 Hoàn thành trước tách làn (bằng chứng INVENTORY mục 5): T0.1–T0.4, T2.1–T2.4, T4.1, T4.2 = DONE (VERIFIED-HIST, build VERIFIED-NOW);
 T2.5, T3.1, T3.2 = PARTIAL.
@@ -216,7 +216,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Checkpoint: Lane codex / REVIEW accepted format+source behavior / Contract public0.3.1 +ttv2-data-v1.1 / No product vectors/training.
 
 ### INT-16 — Client same-origin API transport
-- T gốc: INT-14 live auth defect | Owner: CODEX | Status: REVIEW (host verified2026-10-26; fresh Docker capacity gate remains)
+- T gốc: INT-14 live auth defect | Owner: CODEX | Status: IN_PROGRESS (2026-10-27; verify fresh Docker image/proxy gate)
 - Depends on: current gateway IPv4 healthy; existing Next stack | Blocks: liveClient auth/mode/E2E
 - Acceptance: Client relative /api through existing Next proxy to gatewayIPv4 (host) or gatewayDNS (Docker), HttpOnly refresh/cookies preserved,
   optional explicit public base still supported; build/config correct, live login/reload/logout/feed request PASS; no new API endpoint/schema/library.

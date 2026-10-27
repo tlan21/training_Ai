@@ -113,3 +113,10 @@ Next safe task: user runtime recovery +Claude bundle verifier; no ready independ
 - INT-13 PARTIAL pending deployed pipeline; old resource blocker lifted (C:13.5GiB after build). Project stack remains stopped; no start bypass.
 - INT-15 REVIEW: Claude verifier ACCEPTED schema/provenance/rows/SHA; NO_DATA, not train readiness. INT-14 popularity remains primary.
 - Next independent gate: INT-16 fresh Client image build/config proxy smoke, now Docker disk capacity sufficient; no UI layout change.
+
+## INT-16 Docker checkpoint started2026-10-27
+- INT-13 PARTIAL after full image/tests success, deployed pipeline needs runtime recovery. INT-15 REVIEW after Claude ACCEPTED/NO_DATA.
+- INT-16 IN_PROGRESS to close fresh Docker build/config smoke gate; backend_endpoint project skill, no UI layout redesign.
+- Client Dockerfile-specific context allowlist excludes other lanes, host deps/builds/env files. Existing Next production proxy/cookies/Bearer/error tests
+  run in a new networknone container with an in-process HTTP fixture bound inside it; no product ports/volumes/services attached.
+- Next Client image build then e2e/client_container_smoke.cjs. Do not start existing gateway after prior automatic-review rejection.
