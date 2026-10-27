@@ -18,6 +18,10 @@ Bản đầu do Claude khởi tạo 2026-10-26 từ INVENTORY; từ đây Codex 
 
 Release#3 AI-API v1.3 đã nhận từ masterfee83b2 qua merge35cd1a9. Six API_READY endpoints now have real HTTP integration evidence; recommendation remains DRAFT. Public OpenAPI0.3.1 unchanged.
 
+Latest regression2026-10-27 after public0.3.2 cursor contract +gateway e476005: **4realE2E PASS1.6m** (new pagination +all3video/search cases).
+Gateway keeps canonicalreal/stub0/6models; primary feed remains popularity. Allsix real endpoint rows retained; no personalized/model quality promotion.
+Evidence verification/INT-14-pagination-real-e2e.log +INT-14-pagination-runtime.json. Earlier public0.3.1 references below describe prior checkpoints.
+
 ## Current real gate — 2026-10-27
 - User explicitly approved switching to real AI. Gateway only recreated, canonical `http://host.docker.internal:8001`, `AI_ALLOW_STUB=0`, shared Bearer key passed in process environment only; no Claude code/checkpoint/mount changes.
 - `E2E_GATEWAY_URL=http://127.0.0.1:8000 E2E_AI_URL=http://127.0.0.1:8001 node node_modules/@playwright/test/cli.js test e2e/video_flow.spec.ts e2e/visual_search.spec.ts --reporter=list`: **3 PASS / 54.3s**, no retry/mock.

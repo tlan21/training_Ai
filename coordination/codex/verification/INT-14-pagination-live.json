@@ -1,0 +1,49 @@
+{
+  "real_health": {
+    "status": "ok",
+    "gpu_vram_used": 0,
+    "gpu_util": 0,
+    "models_loaded": [
+      "asr_ctc",
+      "highlight_fusion",
+      "minigpt",
+      "siamese",
+      "two_tower",
+      "vit"
+    ],
+    "degraded": [],
+    "dependencies": {
+      "recommendation_index": "missing_collection",
+      "visual_index": "ok"
+    },
+    "queue_depth": 0,
+    "device": "cpu",
+    "stub_mode": false,
+    "load_error": null
+  },
+  "videos": [
+    "vid_dmfnuxlcawkp",
+    "vid_dmfnvcga2aj0",
+    "vid_dmfnvhpqupc1"
+  ],
+  "clips": [
+    "clp_dmfnva6gyebn",
+    "clp_dmfnvana8ccf",
+    "clp_dmfnvb3zbx9x",
+    "clp_dmfnvbkpliuy",
+    "clp_dmfnvfo8ls5x",
+    "clp_dmfnvg4zk48j",
+    "clp_dmfnvglr7uju",
+    "clp_dmfnvh2j7b6n",
+    "clp_dmfnvkxkfokb",
+    "clp_dmfnvle949rn",
+    "clp_dmfnvluytb1v",
+    "clp_dmfnvmboj74i"
+  ],
+  "feed_pages": 3,
+  "catalog_pages": {
+    "newest": 2,
+    "trending": 2
+  },
+  "client_unique_clips": 12
+}

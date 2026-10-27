@@ -59,3 +59,12 @@ Changed: public feed contract/generated types; gateway/PG/AI adapter/domain/test
 Verified: Go checks;5realPG;46Client E2E+8focused modes; FE build/lint/types; live primary/fallback business persistence checks
 Contract touched: yes (public OpenAPI0.3.0); AI-API v1.3 consumed unchanged
 Next safe task: INT-16 live Client API transport; INT-15 interactions/export
+
+## Latest follow-up2026-10-27
+- Earlier transport blockers above are historical: INT-16/17 Client same-origin/security/live sessions verified; INT-11 realAI integration verified.
+- INT-19/213aaa9 public0.3.2 cursor/error clarification +e476005 primary/fallback feed/newest/trending cursor implementation complete and deployed.
+  Go vet/test/build, generated/schema/FE/E2Etypes, explicit realPG3scenarios/no skips PASS; **4realE2E PASS1.6m** including pagination and original video/search regressions.
+- Client scroll loads10→12unique clips, feed3pages, categorynewest/trending2pages each, invalid/mismatched cursor422, no duplicates/exhaustionnull.
+  Healthy gateway keeps real6model/stub0/popularity;3pagination videos softdeleted/12clips public404. Full evidence INT-14-pagination.md and accompanying logs/JSON.
+- Pagination shortcut in the original report is removed. Overall INT-14 remainsPARTIAL for full Client parity dependencyINT-06; personalized production still INT-03/AI-12.
+  No UI style/source changes, no full parity/model-quality/load/soak claim, no master release/push.

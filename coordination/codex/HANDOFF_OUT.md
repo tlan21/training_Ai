@@ -238,3 +238,17 @@ Mẫu HO:
 - Six API_READY matrix rows now INTEGRATED_REAL on Codex lane/AIv1.3 releasedmaster. Recommendation staysDRAFT/REAL_PENDING,
   product feed remains primary PGpopularity; AI-12 production gate/NO_DATA unchanged. API success does not certify ASR/summary model quality or GPU/load/soak.
 - INT-01/11 REVIEW pending user release; INT-18 source now deployed. No new AI change requested, no master/shared docs/push changes.
+
+## 2026-10-27 INT-14 primary pagination verified / public contract0.3.2
+- INT-19/213aaa9 clarifies opaque route/filter cursor +422 for existing feed/catalog endpoints; regenerated Go/CMS/Client types/schema checks PASS.
+  No AI-APIv1.3 changes or new endpoint/request/response fields.
+- e476005 adds bounded Postgres primary/fallback feed +newest/trending category pages with fixed ranking window/creation cutoff,
+  live privacy/metadata filtering and cold tail. Go vet/test/build/Linux artifacts PASS; explicit realPG query tests3scenarios PASS/no skips,
+  TEMP shadow tables/no product rows/sequences touched. Prior skipped/fixture-failed attempts preserved and not countedPASS.
+- Gateway-only readonly binary transition to gateway-int14, all env compared unchanged including canonicalreal/stub0/sharedkey.
+  **4realE2E PASS1.6m**: new pagination +all3video/search regressions. Client loads10→12unique clips, feed3pages, newest/trending2pages/category,
+  invalid/mismatched cursor422. Final gateway healthy/AI6real/popularity; all3ownpagination videos softdeleted/12clips public404.
+- Final source artifact SHA c5284c5c2fe00f5f2c20fe9faab0dfecb3fec1bfb62bc085ff5a1f0ab45c8d81; evidence INT-14-pagination.md/runtime/cleanup/logs.
+  No AI source/checkpoint/runtime changes, no other service recreation/image pull/build/global restart or data fabrication/export promotion.
+- INT-14 pagination complete, overallPARTIAL only for full Client parity dependencyINT-06. Personalized/AI-12 NO_DATA/GPU/load/soak gates unchanged.
+  No action requested from Claude; no master/shared status/release/push performed.

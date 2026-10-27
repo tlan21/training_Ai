@@ -22,7 +22,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-11 | INT-01 | HTTP media giữa gateway Docker và inference host | REVIEW | approved real deployment +3E2E PASS2026-10-27 |
 | INT-12 | T2.2/T3.1 | CMS access JWT chỉ ở RAM, refresh khi reload | REVIEW | 41 E2E PASS; live gateway cookie rotation |
 | INT-13 | INT-00 | Image ingest riêng + kiểm clean build | REVIEW | own image+8tests+deployed mock pipeline PASS |
-| INT-14 | HC-06/D18/D21 | Popularity MVP, real metadata, recommendation_mode | IN_PROGRESS | pagination contract INT-19 REVIEW; primary real runtime |
+| INT-14 | HC-06/D18/D21 | Popularity MVP, real metadata, recommendation_mode | PARTIAL | pagination/live4E2E PASS; full Client parity remains INT-06 |
 | INT-15 | HC-07/09/D19/D21 | Valid product interactions + versioned export for v2 | REVIEW | schema/provenance accepted byClaude; data gate NO_DATA |
 | INT-16 | INT-14 | Client same-origin API transport | REVIEW | fresh Docker build/proxy smoke PASS; security gate INT-17 separate |
 | INT-17 | INT-16 audit | Client framework security migration | REVIEW | Next16 deployed;53fixture+2live/audits0/build PASS |
@@ -193,7 +193,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Checkpoint: Lane codex / Changed own ingest package+compose+tests / Verified source build+3 tests/config PASS / Contract no / Next capacity+HO-03 recovery.
 
 ### INT-14 — Popularity recommendation + truthful mode (HC-06 scope)
-- T gốc: D18/D20/D21, HC-06 (ID INT-12 collided historical auth task) | Owner: CODEX | Status: IN_PROGRESS (2026-10-27; primary feed/catalog pagination)
+- T gốc: D18/D20/D21, HC-06 (ID INT-12 collided historical auth task) | Owner: CODEX | Status: PARTIAL (2026-10-27; pagination complete, full parity INT-06 remains)
 - Depends on: INT-02/PG, AI-API v1.3 received; no training/v2 dependency forMVP | Blocks: honest recommendation presentation
 - Acceptance: public contract-first feed mode enum +generated3types, primary PG product ranking/metadata, valid/public AI IDs only;
   fallback never personalized, limit/cache visibility correct; Go/PG/API/FE build/E2E and design parity evidence.
@@ -210,7 +210,12 @@ T2.5, T3.1, T3.2 = PARTIAL.
   invalid/filter-mismatched cursor/sort/limit422. Unit+realPG+live HTTP/Client continuation tests, Go checks PASS. No new UI/AI feature.
 - Pagination changed planned: domain cursor; repository ports/PG/mocks; content handlers/tests; E2E continuation check; owned evidence/tracking.
 - Pagination dependency: INT-19 contract213aaa9 satisfied; personalized remains production-disabled under INT-03/AI-12, full parity still INT-06.
-- Pagination next action: implement primary/fallback paging and catalog queries, verify before any gateway binary transition.
+- Pagination completed: contract213aaa9 +implementation e476005; final Go vet/test/build/Linux artifacts PASS; realPG feed/newest/trending PASS/no skips;
+  live4E2E PASS1.6m (pagination +video/invalidmedia/visual), E2Etypes and bothFE generated-types checks PASS.
+  Evidence verification/INT-14-pagination.md, pagination-pg.log, pagination-real-e2e.log, pagination-live.json, pagination-runtime/cleanup.json, screenshot.
+  Gateway-int14 deployed/healthy, realAI6/stub0/popularity unchanged. Three pagination fixtures softdeleted/12clips public404; no original rows touched.
+- Pagination next action: none; maintain current real deployment. Next safe work INT-06 within current API/Stitch scope; extra endpoints still require CONTRACT_DECISIONS.
+- Current checkpoint: Lane codex / Changed cursor+PG+ports+mocks+handlers/tests/E2E / Verified Go+realPG+4realE2E / Contract public0.3.2,AIv1.3 unchanged / Next INT-06.
 
 ### INT-15 — Product interactions + read-only v2 export (HC-07 scope)
 - T gốc: D19/D21, HC-07/09 (proposed ID INT-13 collides existing image task) | Owner: CODEX | Status: REVIEW (2026-10-27; source/export+Claude acceptance verified)
