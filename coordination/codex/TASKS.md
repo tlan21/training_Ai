@@ -60,7 +60,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Changed: chỉ evidence/tracker (không sửa source backend DONE).
 - Evidence bổ sung: VERIFIED-NOW INT-00 Go vet/test/build + PG/Mongo network integration PASS, authenticated health mock PASS.
 - Evidence2026-10-27: verification/INT-11-real-e2e.log +INT-11-final-runtime.json; real T4.1/T4.2 **3PASS54.3s**, strict stubfalse/6model assertions retained; previous PG/Mongo checks remain valid.
-- Commits current: eaca064 authorization; real acceptance checkpoint commit (this change).
+- Commits current: eaca064 authorization; ff0494f real acceptance/evidence.
 - Next action: user-requested release gates only; no master/push authorization inferred.
 - Checkpoint: Lane codex / Changed real integration evidence+matrix / Verified DB checks +3real E2E PASS / Contract no (AIv1.3 consumed) / Next INT-14 pagination.
 
@@ -156,7 +156,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Evidence: VERIFIED-NOW verification/INT-11.md; Go checks/Linux builds và script persistence/fallback sau đổi transport PASS.
   Latest v1.2 Linux runtime deployedmock + restart preferences PASS; real attempt blocked HO-03 before E2E. Release#2 consumed. | Commits: 7af1b1d, fae980c, fc5a3c7,6d860ee.
 - Evidence2026-10-27: verification/INT-11-real-e2e.log **3PASS54.3s**; live/final health6/stubfalse +missingBearer401; real upload/ASR/highlight/summary/index/search/privacy/cache/media/CMS/Client PASS. Visual20cold/20warm max178.14/13.97ms. Final gateway healthy/real, all3 fixture videos softdeleted. First runner failure preserved separately, rolled back before corrected invocation.
-- Commits current: eaca064 authorization; real acceptance checkpoint commit (this change). No source/schema change in this verification step.
+- Commits current: eaca064 authorization; ff0494f real acceptance/evidence. No source/schema change in this verification step.
 - Checkpoint: Lane codex / Changed real deployment+evidence+matrix / Verified3real E2E +health/auth/privacy PASS / Contract no (AIv1.3 consumed) / Next INT-14 pagination.
 
 

@@ -66,3 +66,5 @@ Changed: approved real gateway config/startup artifact deployment; owned evidenc
 Verified:3real E2E PASS54.3s;health6/stubfalse/Bearer401;finalreadback/popularity/3fixturecleanup
 Contract touched: no (public0.3.1/AI-APIv1.3 consumed)
 Next safe task: INT-14 pagination; release gates only upon explicit user release instruction
+
+Final real acceptance commit: ff0494f (runtime/evidence/matrix/INT-01+11 REVIEW/handoff). All verification commands completed; no running E2E session.
