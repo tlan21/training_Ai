@@ -95,7 +95,7 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - Checkpoint: Next safe task = AI-02a (không phụ thuộc user); 02b chờ user.
 
 ### AI-03 — Mini-GPT human quality gate (T1.6)
-- T gốc: T1.6 | Owner: claude | Status: 03a DONE (2026-10-26) · 03b BLOCKED ⇐ user duyệt · 03c BLOCKED
+- T gốc: T1.6 | Owner: claude | Status: 03a DONE · 03b DONE theo D22 (Claude duyệt, 2026-10-27) · 03c IN_PROGRESS (2026-10-27)
 - Nguồn 40 clip real-domain (30 train / 10 val, ngoài frozen30): `data/manifests/minigpt_real_domain.json`; transcript user đã rà
   (export SHA `860f8068d0bd…`, 40 transcript/39 sửa) — `docs/T1.6_whisper_review_intake.md`.
 - **AI-03a — Claude soạn summary 40 clip (TODO, theo quyết định user 2026-10-26):** soạn từ transcript user đã rà; mỗi mục lưu
@@ -106,7 +106,11 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   từ export `860f8068…` + hash transcript nguồn, BPE mean 46.2 / max 58 (tokenizer active), 40/40 câu kết thúc, `verified=false`, `CLAUDE_PROPOSED`;
   file D: SHA `978a32e0…` (không ghi đè); intake `test_gate_refuses_claude_proposed_summaries` (2 case, kể cả verified=true giả) → 22 passed.
   Lưu ý cho người duyệt: 2 mục trùng lời chào kênh, 2 mục transcript rất nhiễu (doc). Script: `dist/kaggle/kernel-minigpt-domain/build_claude_summaries.py`.
-- **AI-03b — người duyệt (BLOCKED ⇐ user):** user duyệt/sửa/loại từng summary → `HUMAN_VERIFIED`.
+- **AI-03b — DONE theo D22 (2026-10-27):** Claude duyệt (không phải người): 38 đạt, 1 sửa (`dom_sTeS-7km_NM_1` bỏ suy diễn), 1 loại
+  (`dom_p7FlzMrLDSo_1` trùng transcript). File `D:/.../claude_review_d22_v1/claude_reviewed_summaries_v1.json` SHA `bf1ee8ec…`, provenance `claude_drafted_claude_reviewed`.
+  Baseline CLAUDE_JUDGE (`evidence/AI-03_2026-10-27/judge_baseline.json`): MiniGPT active với transcript sạch 1.44/5 (val 1.50), với ASR active 1.0/5 (40/40 bịa);
+  ASR active CER 0.584 / candidate 0.481 trên 40 clip. Hiệu chuẩn 30 clip người chấm: judge 1.0 vs người 1.6 — 5 bất đồng đều là câu bịa trôi chảy.
+- *(Gốc)* **AI-03b — người duyệt:** user duyệt/sửa/loại từng summary → `HUMAN_VERIFIED`.
   ⚠ Ràng buộc dự án (`my-agent/agent/instructions.md` §1: "không pseudo-label từ model ngoài"): summary do Claude soạn là
   output của model ngoài → chỉ được làm target train/eval sau khi người duyệt từng mục **và** provenance ghi rõ
   `claude_drafted_human_verified`. Mục chưa duyệt không bao giờ được dùng.

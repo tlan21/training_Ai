@@ -1,0 +1,76 @@
+{
+ "label": "CLAUDE_JUDGE (D22) — not a human score",
+ "rubric": {
+  "5": "faithful, covers main points, fluent",
+  "4": "faithful, misses a minor point",
+  "3": "main point right, small errors/omissions",
+  "2": "topic roughly right but invents facts/entities",
+  "1": "off-topic/hallucinated, or repetition loop to the output cap"
+ },
+ "model": "MiniGPT active cf9cfa71",
+ "n": 39,
+ "excluded": [
+  "dom_p7FlzMrLDSo_1 (rejected duplicate)"
+ ],
+ "clean_transcript_input": {
+  "mean_all": 1.44,
+  "mean_val": 1.5,
+  "scores": {
+   "dom_-1Is0o2ZWk0_1": 1,
+   "dom_-1Is0o2ZWk0_2": 2,
+   "dom_6CDgfB3MhmA_1": 2,
+   "dom_6CDgfB3MhmA_2": 2,
+   "dom_9BHoS_sDlUw_1": 1,
+   "dom_9BHoS_sDlUw_2": 1,
+   "dom_DNM7BTlJnxA_1": 1,
+   "dom_DNM7BTlJnxA_2": 1,
+   "dom_Hew7T-qHV-8_1": 2,
+   "dom_Hew7T-qHV-8_2": 2,
+   "dom_NNbXoXEWEfY_1": 2,
+   "dom_NNbXoXEWEfY_2": 2,
+   "dom_Q95eDJlAhyI_1": 1,
+   "dom_Q95eDJlAhyI_2": 1,
+   "dom_any7NAvA7AY_1": 1,
+   "dom_any7NAvA7AY_2": 1,
+   "dom_b3Y2ckFkva0_1": 1,
+   "dom_b3Y2ckFkva0_2": 1,
+   "dom_cvZqE-2LEG8_1": 1,
+   "dom_cvZqE-2LEG8_2": 1,
+   "dom_f7VbxhaVtfk_1": 1,
+   "dom_f7VbxhaVtfk_2": 1,
+   "dom_p7FlzMrLDSo_2": 2,
+   "dom_qoYByuKMIv4_1": 1,
+   "dom_qoYByuKMIv4_2": 2,
+   "dom_sTeS-7km_NM_1": 1,
+   "dom_sTeS-7km_NM_2": 2,
+   "dom_soszp1_iK0E_1": 1,
+   "dom_soszp1_iK0E_2": 3,
+   "dom_uY0zUhWOLJM_1": 1,
+   "dom_uY0zUhWOLJM_2": 2,
+   "dom_vlSB_Kyx_kA_1": 1,
+   "dom_vlSB_Kyx_kA_2": 2,
+   "dom_wYRFi4-KWek_1": 2,
+   "dom_wYRFi4-KWek_2": 1,
+   "dom_wzKzkenrYew_1": 2,
+   "dom_wzKzkenrYew_2": 2,
+   "dom_x1x03SI8jV0_1": 1,
+   "dom_x1x03SI8jV0_2": 1
+  }
+ },
+ "own_asr_active_input": {
+  "mean_all": 1.0,
+  "mean_val": 1.0,
+  "note": "40/40 off-topic hallucinations; ASR CER 0.584 vs reviewed transcript"
+ },
+ "rouge_l_vs_reviewed_summary": {
+  "clean": 0.11,
+  "asr_active": 0.038
+ },
+ "calibration_vs_human_30_clips": {
+  "human_mean": 1.6,
+  "claude_judge_mean": 1.0,
+  "agree_on_score_1": 25,
+  "disagree": 5,
+  "note": "the 5 samples humans scored >=3 (02,04,07,11,13) are fluent but invented news leads generated from unreadable ASR input"
+ }
+}

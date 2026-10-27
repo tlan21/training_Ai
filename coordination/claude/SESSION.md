@@ -3,7 +3,9 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
-- Task: — (2026-10-27) AI-02a DONE (60 đề xuất ASR CLAUDE_PROPOSED), AI-03a DONE, AI-04 DONE (PRELIMINARY_T4). Verify bundle INT-15 → NO_DATA.
+- Task: AI-03c IN_PROGRESS (2026-10-27, D22) — fine-tune MiniGPT: mixed replay News + 29 cặp domain Claude-reviewed, guard News không hồi quy, đánh giá CLAUDE_JUDGE.
+  :8001 DOWN — Milvus/stack Codex tắt (startup fail-fast Milvus); chờ Codex/user bật stack.
+- Trước đó: (2026-10-27) AI-02a DONE (60 đề xuất ASR CLAUDE_PROPOSED), AI-03a DONE, AI-04 DONE (PRELIMINARY_T4). Verify bundle INT-15 → NO_DATA.
   Còn mở đều chờ người/dữ liệu: AI-02b, AI-03b (user duyệt), AI-12 (tương tác thật INT-15), AI-04 nghiệm thu RTX 3060.
   AI-12 BLOCKED ⇐ bundle INT-13 (phần độc lập xong). Runtime :8001 UP PID 16808 (restart AI-13).
 - Release #2 đã lên `master` 70bf011 (user duyệt 2026-10-26). AI-API v1.2: 6 endpoint API_READY, recommendation DRAFT.
