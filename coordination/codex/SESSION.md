@@ -1,19 +1,24 @@
-# SESSION — authoritative resume state (2026-10-28, Client production65PASS)
+# SESSION — authoritative resume state (2026-10-28, CMS planA source verified)
 
 ## Branch / task state
 -2026-10-28 user approved CMS planA: metadata width/height/fps, video title/description/editorial hashtags, category description;
  preserve soft-hide; defer priority/customAIrules/logo/undefinedmetrics/keyrotation. Client4library routes/forgot-link still unapproved.
  Release#4 received by `git merge master` without conflict; AI-APIv1.3 and active checkpoints unchanged. No Codex release/push authorized.
  INT-20 REVIEW: OpenAPI0.4.0 and3generatedtypes verified; embedded schema testPASS0.484s +CMS/Clienttsc PASS. Evidence verification/INT-20.md.
- Only INT-21 IN_PROGRESS: additive migration/PG+memory repositories, CPU ingest metadata, guarded backend update, CMS mapping/deferred states,
- meaningful validation/persistence/worker/browser tests and builds; source/client contracts unchanged beyond additive fields.
-- E:/traning_ai-codex, codex/integration. Release#1/#2/#3 received; HEAD..master empty at session start. No master release/push authorized.
+ INT-21 REVIEW: additive004migration/domain/PG+memory, CPU source metadata/orchestrator, protected editorial metadata/category updates,
+ CMS save/reload/error/AI-unavailable states and Client editorial-tag priority implemented. No model/inference code or AI API change.
+ Evidence verification/INT-21.md: final Go vet/test/buildPASS; realPG protected HTTP/migration/source/editorial/category +existing paginationPASS;
+ 8workerPASS1.016s; CMS39PASS45.9s +final7PASS9.7s; Client71PASS1.2m; CMS/Client/E2Etypes +CMSbuild/Clientlint/build PASS.
+ Final CMS index-B8Z5jrXZ.js; Client build0jpAiC3YO74qVW4EcxQDJ. Owned QA3100/5174 stopped and PG/tmp test artifacts removed.
+ Live product DB NOT migrated; live gateway/orchestrator/worker/CMS5173/Client3000 NOT replaced. Deploy004 BEFORE new binaries when approved.
+ Old source metadata remains null until obtained; no automatic reprocessing/backfill. No master/shared-status publication/push.
+- E:/traning_ai-codex, codex/integration. Release#1/#2/#3/#4 received; normal master merge without conflict. No master release/push authorized.
 - INT-06 PARTIAL: user-approved QA3100 completed2026-10-28. Existing production build CAT_3TF7GI5-2Dm5o3Y8f,
  65fixture/player/onboarding checks PASS1.6m without source/assertion changes. Tracking single-watch/seek/hidden-time/dedup, latest geometry all PASS.
  Evidence verification/INT-06-production-20261028.md/.log;16production layout PNG+16metrics JSON+2original-player PNG in comparison index.
  Owned Next PID19872 stopped after identity/listener checks; port3100 closed. QA login200, APIproxy401UNAUTHORIZED; gatewayhealthok/liveClient3000login200.
  Library/forgot-link and full design decisions remain pending. No app source/dependency/runtime deployment/master/push/realAI acceptance change.
-- INT-05 PARTIAL: CMS original-video controls/bounded preview implemented and verified. Project skill cms_screen.md +plan03§7 CẮT-list.
+- Only INT-05 IN_PROGRESS: remaining visual corrections after planA implementation. Earlier player checkpoint below is historical. Project skill cms_screen.md +plan03§7 CẮT-list.
   Baseline18PASS24.5s; final full37browserPASS38.7s before radius fix; final3playerPASS10.3s after radius correction, manual seek cancellation/native-modal checks.
   CMS tsc/Vite production build +E2Etypes +diffcheck PASS. QA production Vite5174 PID22248 stopped after checking ownership; no active test/compiler/QA server.
   CMS5173 remains existing image; real gateway healthok and Claude stubfalse/6models/degraded[]/CPU rechecked. Source fixes not deployed.
@@ -23,7 +28,8 @@
   Final scoped5browserPASS11.7s +CMSbuild/tsc/E2Etypes/diffcheck PASS; final QA PID1636 also stopped. Paired current PNGs refreshed.
   All8CMS references x390/1440 captured16PASS57.0s with loaded original images; E2Etypes PASS after harness expansion.
   Comparison directory now36PNG/16JSON; report adds concrete remaining differences per screen and separates current contract gaps.
-  Next: remaining per-screen visual corrections listed in verification/INT-05.md. MissingCMSfields still require scope/contract decision; INT-05 remains IN_PROGRESS, not DONE.
+  Next: remaining per-screen visual corrections listed in verification/INT-05.md. CMS planA metadata fields are now verified under INT-21;
+  priority/custom rules/status workflow/logo/undefinedmetrics/keyrotation explicitly deferred. INT-05 global parity still not DONE.
 - Client follow-up after09f0611: desktop register label cadence/header/footer/terms/checkbox sizes, login checkbox/type spacing,
   Discovery mobile49px header/flex search row and desktop nav action/avatar spacing aligned to actual reference source. New geometry tests productionPASS2026-10-28;
   only asserted scope is verified, not full pixel parity. Latest build/tsc/lint2026-10-27PASS; no active compiler or Client QA server.
@@ -104,7 +110,7 @@
 - Release only at user request: full Go/CMS/Client gates +relevant real matrix E2E, shared status/masterplan updates only in that release flow; no push inferred.
 
 Lane: codex
-Changed: Client QA evidence/captures/index +ownedSESSION/TASKS; app source unchanged
-Verified: Next production3100 start;65fixture/helper checks PASS1.6m;proxy401;owned stop/closed3100
-Contract touched: no (public0.3.2/AI-APIv1.3 unchanged)
+Changed: public0.4.0/3types; CMS metadata/editorial/category stack +Client tag mapping +tests/docs
+Verified: Go gates; realPG HTTP/migration/pages;8worker;CMS39+final7;Client71;types/build/lint
+Contract touched: public0.4.0; AI-APIv1.3 unchanged
 Next safe task: INT-05 existing-API visual corrections; release only on explicit user instruction

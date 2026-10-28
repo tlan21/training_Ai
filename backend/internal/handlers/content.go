@@ -209,6 +209,7 @@ func (h *ContentHandlers) GetVideo(c *gin.Context) {
 		clipHs = append(clipHs, toClipH(&cls[i], h.storage))
 	}
 	vh := toVideoH(v, h.categories)
+	vh["width"], vh["height"], vh["fps"], vh["hashtags"] = v.Width, v.Height, v.FPS, v.Hashtags
 	vh["playback_url"] = nil
 	if v.RawFilePath != "" {
 		url, err := h.storage.GetPresigned(c.Request.Context(), "raw-videos", v.RawFilePath, time.Hour)
@@ -323,7 +324,7 @@ func (h *ContentHandlers) ListCategories(c *gin.Context) {
 	cats, _ := h.categories.List(c.Request.Context())
 	out := make([]gin.H, 0, len(cats))
 	for _, cc := range cats {
-		out = append(out, gin.H{"id": cc.ID, "name": cc.Name})
+		out = append(out, gin.H{"id": cc.ID, "name": cc.Name, "description": cc.Description})
 	}
 	if h.cache != nil {
 		if b, err := json.Marshal(out); err == nil {
@@ -342,7 +343,7 @@ func toVideoH(v *domain.Video, catRepo ports.CategoryRepository) gin.H {
 			if cats, err := catRepo.List(context.Background()); err == nil {
 				for _, cc := range cats {
 					if cc.ID == *v.CategoryID {
-						cat = gin.H{"id": cc.ID, "name": cc.Name}
+						cat = gin.H{"id": cc.ID, "name": cc.Name, "description": cc.Description}
 						break
 					}
 				}

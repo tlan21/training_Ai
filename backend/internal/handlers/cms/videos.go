@@ -138,7 +138,7 @@ func (h *VideoHandlers) Get(c *gin.Context) {
 		handlers.ErrorEnvelope(c, http.StatusNotFound, "VIDEO_NOT_FOUND", "Video not found")
 		return
 	}
-	result := toVideoCMS(v)
+	result := toVideoDetailCMS(v)
 	result["playback_url"] = nil
 	if v.Status != domain.VideoDeleted && v.RawFilePath != "" {
 		url, err := h.storage.GetPresigned(c.Request.Context(), "raw-videos", v.RawFilePath, time.Hour)
@@ -292,11 +292,15 @@ func (h *VideoHandlers) UpdateSubtitles(c *gin.Context) {
 }
 
 func toVideoCMS(v *domain.Video) gin.H {
-	return gin.H{
+	result := gin.H{
 		"id": v.ID, "title": v.Title, "description": v.Description,
 		"thumbnail_url": v.ThumbnailURL, "duration_seconds": v.DurationSeconds,
 		"status": string(v.Status), "created_at": v.CreatedAt.UTC().Format(time.RFC3339),
 	}
+	if v.CategoryID != nil {
+		result["category"] = gin.H{"id": *v.CategoryID}
+	}
+	return result
 }
 func toJobCMS(j *domain.ProcessingJob) gin.H {
 	if j == nil {

@@ -25,6 +25,10 @@ CREATE TABLE videos (
     raw_file_path VARCHAR(512) NOT NULL,
     thumbnail_url VARCHAR(512),
     duration_seconds NUMERIC(10, 2) NOT NULL,
+    width INTEGER CHECK (width > 0),
+    height INTEGER CHECK (height > 0),
+    fps DOUBLE PRECISION CHECK (fps > 0 AND fps < 'Infinity'::float8),
+    hashtags TEXT[] CHECK (cardinality(hashtags) <= 30),
     status VARCHAR(20) NOT NULL DEFAULT 'uploaded'
         CHECK (status IN ('uploaded', 'processing', 'processed', 'failed', 'deleted')),
     uploaded_by VARCHAR(50) REFERENCES users(id) ON DELETE SET NULL,
@@ -56,6 +60,7 @@ CREATE TABLE video_processing_jobs (
 CREATE TABLE categories (
     id VARCHAR(50) PRIMARY KEY DEFAULT 'cat_' || replace(uuid_generate_v4()::text, '-', ''),
     name VARCHAR(100) UNIQUE NOT NULL,
+    description TEXT CHECK (char_length(description) <= 2000),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 

@@ -38,6 +38,10 @@ type Video struct {
 	RawFilePath     string      `json:"raw_file_path" bson:"raw_file_path"`
 	ThumbnailURL    *string     `json:"thumbnail_url" bson:"thumbnail_url"`
 	DurationSeconds float64     `json:"duration_seconds" bson:"duration_seconds"`
+	Width           *int        `json:"width" bson:"width"`
+	Height          *int        `json:"height" bson:"height"`
+	FPS             *float64    `json:"fps" bson:"fps"`
+	Hashtags        []string    `json:"hashtags" bson:"hashtags"`
 	Status          VideoStatus `json:"status" bson:"status"`
 	UploadedBy      *string     `json:"uploaded_by" bson:"uploaded_by"`
 	CategoryID      *string     `json:"category_id" bson:"category_id"`
@@ -77,9 +81,10 @@ type Clip struct {
 }
 
 type Category struct {
-	ID        string    `json:"id" bson:"id"`
-	Name      string    `json:"name" bson:"name"`
-	CreatedAt time.Time `json:"created_at" bson:"created_at"`
+	ID          string    `json:"id" bson:"id"`
+	Name        string    `json:"name" bson:"name"`
+	Description *string   `json:"description" bson:"description"`
+	CreatedAt   time.Time `json:"created_at" bson:"created_at"`
 }
 
 type Interaction struct {

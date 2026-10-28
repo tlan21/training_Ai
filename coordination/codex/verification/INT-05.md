@@ -1,5 +1,9 @@
 # INT-05 — CMS player parity checkpoint, 2026-10-27
 
+Update2026-10-28: user approved CMS planA. Source metadata/editorial fields/category descriptions are now implemented/tested
+under [INT-21](INT-21.md), contract af0e989/OpenAPI0.4.0. Priority/custom rules/status workflow/logo/undefined metrics/key rotation
+are explicitly deferred. Historical missing-field/startup statements below are superseded for that scope; no live deployment/full parity claim.
+
 Owner: CODEX. Overall task remains IN_PROGRESS; this checkpoint does not certify full CMS parity.
 Dependencies: INT-02/INT-04 functional source playback available. Full parity still needs the scope decisions in
 `../CONTRACT_DECISIONS.md` and remaining per-screen corrections. No new endpoint, response field or AI behavior was added.

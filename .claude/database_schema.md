@@ -317,3 +317,11 @@ Milvus đóng vai trò then chốt cho tính năng **Tìm kiếm bằng Hình �
 - Codex tạo sandbox rỗng, xác minh schema/index; Claude chỉ nạp dữ liệu thử sau xác nhận handoff. Không nạp dataset train vào collection sản phẩm.
 - Backend sản phẩm không đọc sandbox. Product mapping/encoder/version/tiêu chí dữ liệu phải được hai làn xác minh trước nạp product vectors.
 - Init idempotent: `infra/milvus/init_recommendation_sandbox.py`; không drop/reset collection hoặc đụng dữ liệu hiện hữu.
+
+## 2026-10-28 — CMS planA approved (INT-20/21)
+OpenAPI0.4.0 is authoritative for this scoped extension. videos adds nullable width/height INTEGER>0,
+fps finite DOUBLE PRECISION>0, hashtags TEXT[] (NULL=no editorial override, []=explicit empty override).
+Encoded source dimensions/average fps come from CPU ingest before resizing; no fabricated metadata/backfill.
+Editorial title/description/hashtags update together, preserve status/file/provenance and remain separate from Mongo AI proposals.
+categories.description is nullable TEXT(max2000); omitted/null write preserves existing description, empty string clears.
+Additive/idempotent migration004_cms_metadata.sql; no row deletion or historical training-origin change.

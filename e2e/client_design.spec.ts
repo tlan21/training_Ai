@@ -151,6 +151,19 @@ async function noOverflow(page:Page){
  expect(await page.locator('.material-symbols-outlined').count()).toBe(0);
  expect(await page.locator('svg[data-icon]').evaluateAll(elements=>elements.length>0&&elements.every(el=>el.getAttribute('data-fallback')==='false'))).toBe(true);
 }
+for(const width of [390,1440])for(const mode of ['edited','cleared','legacy']as const){
+ test(`INT-21 ${width} detail uses ${mode} editorial hashtags`,async({page})=>{
+  await setup(page);await page.setViewportSize({width,height:width===390?844:900});
+  const hashtags=mode==='edited'?['BiênTập','AI_2026']:mode==='cleared'?[]:null;
+  await page.route('**/api/videos/vid_ui1',route=>route.fulfill({json:{...videos[0],hashtags} satisfies components['schemas']['VideoDetail']}));
+  await page.goto(client+'/videos/vid_ui1');
+  await expect(page.locator('#ai-summary')).toBeVisible();
+  const expected=mode==='legacy'?(analysis.hashtags??[]):(hashtags??[]);
+  if(expected.length)await expect(page.locator('.summary-hashtags span')).toHaveText(expected.map(tag=>tag.startsWith('#')?tag:'#'+tag));
+  else await expect(page.locator('.summary-hashtags')).toHaveCount(0);
+ });
+}
+
 test('INT-15 one watch row on session end, no heartbeat, seek or duplicate exit',async({page})=>{
  const {interactions}=await setup(page);await page.goto(client+'/feed');
  const video=page.locator('.feed-clip').first().locator('video');

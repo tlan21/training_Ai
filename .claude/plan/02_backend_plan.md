@@ -525,3 +525,9 @@ Sub-task ≤0.5 ngày. DoD = Definition of Done. "Sau" = phụ thuộc.
 | 2.6.6 | /health gpu stats + queue depth | proxy CMS trả đủ field | 2.6.2 |
 
 **Thứ tự tổng:** T0.1 → T2.1 (kèm 2.1.0 openapi trước tiên) → {T2.2, T2.3, T2.4} song song → T2.5 → T2.6 (ghép checkpoint sau Phase 1; trước đó MockAIClient nên không bị chặn).
+
+## 2026-10-28 — User-approved CMS planA (INT-20/21)
+OpenAPI0.4.0 PUT /api/cms/videos/{id} (admin/editor) persists full title/description/hashtags update; 422 invalid/unknown fields,
+404 missing/deleted. GET detail returns nullable source width/height/fps +editorial hashtags; category writes add optional description.
+CPU worker adds width/height/fps to video.preprocessed; old payloads still accepted without guessing/clearing source metadata.
+No model/inference contract change; no automatic update of historical rows or product provenance.

@@ -15,11 +15,12 @@ func contentPageDB(t *testing.T) *pgxpool.Pool {
 	t.Helper()
 	db := integrationDB(t)
 	ctx := context.Background()
-	for _, table := range []string{"videos", "clips", "user_interactions"} {
+	for _, table := range []string{"videos", "clips", "user_interactions", "categories"} {
 		if _, err := db.Exec(ctx, "CREATE TEMP TABLE "+table+" (LIKE public."+table+" INCLUDING DEFAULTS)"); err != nil {
 			t.Fatal(err)
 		}
 	}
+	applyMetadataMigration(t, db)
 	base := time.Now().UTC().Add(-time.Hour).Truncate(time.Microsecond)
 	for i := 0; i < 12; i++ {
 		id, cat := fmt.Sprintf("vid_page_%02d", i), "cat_a"

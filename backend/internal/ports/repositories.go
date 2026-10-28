@@ -17,7 +17,8 @@ type VideoRepository interface {
 	ListPublicPage(ctx context.Context, categoryID, sort, cursor string, limit int) ([]domain.Video, *string, error)
 	SetStatus(ctx context.Context, id string, s domain.VideoStatus) error
 	SetCategory(ctx context.Context, id, categoryID string) error
-	SetDuration(ctx context.Context, id string, seconds float64) error
+	SetMediaMetadata(ctx context.Context, id string, seconds float64, width, height *int, fps *float64) error
+	UpdateMetadata(ctx context.Context, id, title, description string, hashtags []string) (*domain.Video, error)
 	SoftDelete(ctx context.Context, id string) error
 }
 
@@ -87,7 +88,7 @@ type PreferenceRepository interface {
 
 type CategoryRepository interface {
 	List(ctx context.Context) ([]domain.Category, error)
-	Create(ctx context.Context, name string) (*domain.Category, error)
-	Update(ctx context.Context, id, name string) (*domain.Category, error)
+	Create(ctx context.Context, name string, description *string) (*domain.Category, error)
+	Update(ctx context.Context, id, name string, description *string) (*domain.Category, error)
 	Delete(ctx context.Context, id string) error
 }

@@ -581,3 +581,11 @@ Audit 2 chiều Stitch export ↔ AI core đã chốt. Quy tắc: **HTML trong `
 |---|---|---|---|
 | T3.1.15 | Màn 11 Settings: hooks settings, form 2 toggle + slider + key masked | 0.5d | PUT stub ok; slider đổi 75→80 thì heatmap/clip panel dùng 80 (đọc settings, bỏ hằng số) |
 | T3.1.16 | Gộp màn 6+7 theo layout 3 cột Stitch; confidence % + warning đỏ; nút regenerate | 0.5d | Segment 62% hiện đỏ; regenerate thay draft; layout khớp `ph_t_m_t_t_ai/code.html` |
+
+## 2026-10-28 — User-approved CMS planA override (INT-20/21)
+- Editable/persistent video title/description/editorial hashtags and category description; read-only real source width/height/fps.
+  Canonical contract OpenAPI0.4.0; editorial values stay separate from AI candidate fields. Save errors retain unsaved editor state.
+- Approved release deferrals: priority scheduling, custom category AI rules/status workflow, logo insertion/proposals,
+  undefined accuracy/online/render/storage/view metrics, AI key rotation. Hide/disable these honestly; never invent a value/state.
+- Existing soft-hide semantics retained. No new AI model/API operation. Four Client library routes/forgot-link remain separate undecided scope.
+- New editable input/category-description modal controls are the approved functional additions to Stitch. Other visual parity work remains INT-05.

@@ -137,6 +137,7 @@ func main() {
 	cmsGroup.POST("/videos", videoCMS.Create)
 	cmsGroup.GET("/videos", videoCMS.List)
 	cmsGroup.GET("/videos/:id", videoCMS.Get)
+	cmsGroup.PUT("/videos/:id", videoCMS.UpdateMetadata)
 	cmsGroup.DELETE("/videos/:id", videoCMS.Delete)
 	cmsGroup.GET("/videos/:id/analysis", videoCMS.GetAnalysis)
 	cmsGroup.POST("/videos/:id/summary/regenerate", videoCMS.RegenerateSummary)

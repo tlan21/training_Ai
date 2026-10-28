@@ -21,6 +21,9 @@ undefined accuracy/online/render/storage/view metrics and AI key rotation. Hide/
 The four Client library routes below, playlists and forgot-link/INT-10 decisions remain UNAPPROVED: the latest planA was CMS-only.
 Contract/types must be committed before implementation. Full historical Stitch acceptance is limited by these approved deferrals.
 
+Implementation checkpoint: INT-20 contract af0e989, INT-21 source/tests REVIEW (verification/INT-21.md).
+CMS metadata/category fields are no longer waiting for a scope decision; migration/live deployment remains separate.
+
 ## Smallest useful extension (recommended)
 
 | Proposed route | Behavior | Existing UI |

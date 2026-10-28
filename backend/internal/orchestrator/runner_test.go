@@ -4,12 +4,49 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"os"
+	"path/filepath"
 	"testing"
 	"time"
 
 	"traning_ai/backend/internal/domain"
 	"traning_ai/backend/internal/mocks"
 )
+
+func TestPreprocessedMetadataPreservesEditorialFields(t *testing.T) {
+	for _, legacy := range []bool{false, true} {
+		t.Run(map[bool]string{false: "metadata", true: "legacy_payload"}[legacy], func(t *testing.T) {
+			ctx := context.Background()
+			videos := mocks.NewVideoRepoMem()
+			jobs := mocks.NewJobRepoMem()
+			_ = videos.Create(ctx, &domain.Video{ID: "vid_metadata", Title: "Editorial", Hashtags: []string{"EditorialTag"}, Status: domain.VideoUploaded})
+			_, _ = jobs.Create(ctx, "vid_metadata")
+			dir := t.TempDir()
+			if err := os.WriteFile(filepath.Join(dir, "audio_features.json"), []byte(`[[1,2]]`), 0600); err != nil {
+				t.Fatal(err)
+			}
+			payload := map[string]any{"video_id": "vid_metadata", "duration": 8, "keyframes_path": dir, "audio_path": "audio"}
+			if !legacy {
+				payload["width"], payload["height"], payload["fps"] = 1920, 1080, 29.97
+			}
+			data, _ := json.Marshal(payload)
+			r := New(videos, jobs, mocks.NewAnalysisStoreMem(), mocks.NewSubtitleStoreMem(), &mocks.AIClientMem{}, mocks.NewEventBusMem())
+			if err := r.HandlePreprocessed(ctx, data); err != nil {
+				t.Fatal(err)
+			}
+			v, _ := videos.Get(ctx, "vid_metadata")
+			if v.Title != "Editorial" || len(v.Hashtags) != 1 || v.Hashtags[0] != "EditorialTag" || v.DurationSeconds != 8 {
+				t.Fatalf("editorial overwritten: %+v", v)
+			}
+			if legacy && (v.Width != nil || v.FPS != nil) {
+				t.Fatal("fabricated legacy metadata")
+			}
+			if !legacy && (v.Width == nil || *v.Width != 1920 || *v.Height != 1080 || *v.FPS != 29.97) {
+				t.Fatal("metadata not saved")
+			}
+		})
+	}
+}
 
 func TestRunner_RetrySuccessOnThird(t *testing.T) {
 	videoRepo := mocks.NewVideoRepoMem()

@@ -42,8 +42,12 @@ class PreprocessTest(unittest.TestCase):
             self.assertGreater(len(source.streams.audio), 0)
         with tempfile.TemporaryDirectory() as work, patch.object(torch, "load", side_effect=AssertionError("No checkpoint in ingest")):
             directory = Path(work)
-            duration = preprocess(Path("/fixtures/video.mp4"), directory)
-            self.check_output(directory, duration)
+            metadata = preprocess(Path("/fixtures/video.mp4"), directory)
+            self.check_output(directory, metadata["duration"])
+            with av.open("/fixtures/video.mp4") as source:
+                stream = source.streams.video[0]
+                self.assertEqual((metadata["width"], metadata["height"]), (stream.width, stream.height))
+                self.assertAlmostEqual(metadata["fps"], float(stream.average_rate))
             self.assertFalse(any(name.startswith("ai_core.models") for name in sys.modules))
 
     def test_silent_fractional_video(self):
@@ -59,9 +63,10 @@ class PreprocessTest(unittest.TestCase):
                 container.mux(stream.encode(None))
             directory = root / "output"
             directory.mkdir()
-            duration = preprocess(raw, directory)
-            self.assertAlmostEqual(duration, 2.5)
-            self.check_output(directory, duration)
+            metadata = preprocess(raw, directory)
+            self.assertAlmostEqual(metadata["duration"], 2.5)
+            self.assertEqual((metadata["width"], metadata["height"], metadata["fps"]), (64, 64, 10))
+            self.check_output(directory, metadata["duration"])
             with wave.open(str(directory / "audio.wav")) as audio:
                 self.assertEqual(set(audio.readframes(audio.getnframes())), {0})
 

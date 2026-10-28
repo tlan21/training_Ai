@@ -27,6 +27,9 @@ func TestCMSPlanAContract(t *testing.T) {
 	if spec.Components.Schemas["CategoryWrite"].Value.Properties["description"] == nil {
 		t.Fatal("missing category description")
 	}
+	if spec.Paths.Find("/api/cms/categories").Post.Responses.Status(422) == nil || spec.Paths.Find("/api/cms/categories/{id}").Put.Responses.Status(409) == nil {
+		t.Fatal("missing category validation/conflict responses")
+	}
 	for _, name := range []string{"width", "height", "fps", "hashtags"} {
 		if spec.Components.Schemas["VideoDetail"].Value.AllOf[1].Value.Properties[name] == nil {
 			t.Fatalf("missing %s", name)

@@ -21,6 +21,9 @@ type preprocessed struct {
 	KeyframesPath string      `json:"keyframes_path"`
 	AudioPath     string      `json:"audio_path"`
 	Duration      float64     `json:"duration"`
+	Width         *int        `json:"width"`
+	Height        *int        `json:"height"`
+	FPS           *float64    `json:"fps"`
 	AudioFeatures [][]float32 `json:"-"`
 }
 
@@ -70,7 +73,7 @@ func (r *Runner) HandleUploaded(ctx context.Context, payload []byte) error {
 	return r.jobs.SetStage(ctx, job.ID, domain.StageSplittingFrames)
 }
 
-// HandlePreprocessed: consume video.preprocessed → SetDuration → RunChain.
+// HandlePreprocessed: consume video.preprocessed → source metadata → RunChain.
 func (r *Runner) HandlePreprocessed(ctx context.Context, payload []byte) error {
 	var p preprocessed
 	if err := json.Unmarshal(payload, &p); err != nil {
@@ -83,7 +86,7 @@ func (r *Runner) HandlePreprocessed(ctx context.Context, payload []byte) error {
 	if job.Status == domain.JobCompleted || (job.ErrorLog != nil && *job.ErrorLog == "canceled_by_user") {
 		return nil
 	}
-	if p.Duration <= 0 {
+	if p.Duration <= 0 || math.IsNaN(p.Duration) || math.IsInf(p.Duration, 0) || (p.Width != nil && *p.Width <= 0) || (p.Height != nil && *p.Height <= 0) || (p.FPS != nil && (*p.FPS <= 0 || math.IsNaN(*p.FPS) || math.IsInf(*p.FPS, 0))) {
 		message, _ := os.ReadFile(filepath.Join(p.KeyframesPath, "error.txt"))
 		err := fmt.Errorf("preprocess: invalid video: %s", message)
 		_ = r.jobs.SetError(ctx, job.ID, err.Error())
@@ -97,7 +100,7 @@ func (r *Runner) HandlePreprocessed(ctx context.Context, payload []byte) error {
 	if err := json.Unmarshal(data, &p.AudioFeatures); err != nil {
 		return err
 	}
-	if err := r.videos.SetDuration(ctx, p.VideoID, p.Duration); err != nil {
+	if err := r.videos.SetMediaMetadata(ctx, p.VideoID, p.Duration, p.Width, p.Height, p.FPS); err != nil {
 		return err
 	}
 	return r.RunChain(ctx, job, p)

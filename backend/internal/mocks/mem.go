@@ -93,15 +93,36 @@ func (r *VideoRepoMem) SetCategory(_ context.Context, id, catID string) error {
 	v.CategoryID = &catID
 	return nil
 }
-func (r *VideoRepoMem) SetDuration(_ context.Context, id string, sec float64) error {
+func (r *VideoRepoMem) SetMediaMetadata(_ context.Context, id string, sec float64, width, height *int, fps *float64) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	v, ok := r.M[id]
-	if !ok {
+	if !ok || v.Status == domain.VideoDeleted {
 		return domain.ErrVideoNotFound
 	}
 	v.DurationSeconds = sec
+	if width != nil {
+		v.Width = width
+	}
+	if height != nil {
+		v.Height = height
+	}
+	if fps != nil {
+		v.FPS = fps
+	}
 	return nil
+}
+func (r *VideoRepoMem) UpdateMetadata(_ context.Context, id, title, description string, hashtags []string) (*domain.Video, error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	v, ok := r.M[id]
+	if !ok || v.Status == domain.VideoDeleted {
+		return nil, domain.ErrVideoNotFound
+	}
+	v.Title, v.Description, v.Hashtags = title, &description, append([]string{}, hashtags...)
+	v.UpdatedAt = time.Now()
+	cp := *v
+	return &cp, nil
 }
 func (r *VideoRepoMem) SoftDelete(_ context.Context, id string) error {
 	r.mu.Lock()
@@ -512,7 +533,7 @@ func (r *CategoryRepoMem) List(_ context.Context) ([]domain.Category, error) {
 	}
 	return out, nil
 }
-func (r *CategoryRepoMem) Create(_ context.Context, name string) (*domain.Category, error) {
+func (r *CategoryRepoMem) Create(_ context.Context, name string, description *string) (*domain.Category, error) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	for _, v := range r.M {
@@ -520,18 +541,26 @@ func (r *CategoryRepoMem) Create(_ context.Context, name string) (*domain.Catego
 			return nil, domain.ErrConflict
 		}
 	}
-	c := &domain.Category{ID: "cat_" + name, Name: name}
+	c := &domain.Category{ID: "cat_" + name, Name: name, Description: description}
 	r.M[c.ID] = c
 	return c, nil
 }
-func (r *CategoryRepoMem) Update(_ context.Context, id, name string) (*domain.Category, error) {
+func (r *CategoryRepoMem) Update(_ context.Context, id, name string, description *string) (*domain.Category, error) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	v, ok := r.M[id]
 	if !ok {
 		return nil, domain.ErrCategoryNotFound
 	}
+	for otherID, other := range r.M {
+		if otherID != id && other.Name == name {
+			return nil, domain.ErrConflict
+		}
+	}
 	v.Name = name
+	if description != nil {
+		v.Description = description
+	}
 	cp := *v
 	return &cp, nil
 }

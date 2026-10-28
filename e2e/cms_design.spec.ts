@@ -17,6 +17,8 @@ const videos: components['schemas']['Video'][] = [
 
 // Isolated UI fixtures exercise visual states. video_flow.spec.ts uses real APIs/AI only.
 async function setupUI(page: Page, role: 'admin' | 'editor' = 'admin') {
+  const videoDetail: components['schemas']['VideoDetail'] = { ...videos[0], width: 1920, height: 1080, fps: 29.97, hashtags: null };
+  const categoryState: components['schemas']['Category'][] = categories.map(category => ({ ...category }));
   const analysis: components['schemas']['CmsAnalysis'] = {
     category_suggestion: 'bong_da', summary: 'Man City và Arsenal tạo ra nhiều tình huống nguy hiểm.', suggested_title: 'Các khoảnh khắc nổi bật', summary_status: 'draft', hashtags: ['BongDa', 'Highlight'],
     timeline_scores: Array.from({ length: 5400 }, (_, second) => ({ second, score: second > 2400 && second < 2580 ? 95 : 40 + Math.round(Math.sin(second / 200) * 35) })),
@@ -51,16 +53,30 @@ async function setupUI(page: Page, role: 'admin' | 'editor' = 'admin') {
     if (pathname === '/api/users/me') return route.fulfill({ json: { id: 'usr_design_admin', username: 'Admin CMS', email: 'admin@example.test', role, preferences: [] } });
     if (pathname === '/api/cms/system/health') return route.fulfill({ json: { gpu_vram_used: 0, gpu_util: 0, models_loaded: ['asr_ctc', 'highlight_fusion', 'minigpt', 'siamese', 'two_tower', 'vit'], queue_depth: 2 } });
     if (pathname === '/api/cms/videos') return route.fulfill({ json: { items: videos.filter((video) => !url.searchParams.get('status') || video.status === url.searchParams.get('status')), total: videos.length, page: 1 } });
-    if (pathname === `/api/cms/videos/${videoId}`) return route.fulfill({ json: videos[0] });
+    if (pathname === `/api/cms/videos/${videoId}`) {
+      if (method === 'PUT') Object.assign(videoDetail, request.postDataJSON());
+      return route.fulfill({ json: videoDetail });
+    }
     if (pathname === `/api/cms/videos/${videoId}/analysis`) return route.fulfill({ json: analysis });
     if (pathname === `/api/videos/${videoId}/subtitles`) return route.fulfill({ json: subtitles });
     if (pathname === `/api/cms/videos/${videoId}/subtitles`) { subtitles.segments = request.postDataJSON().segments; return route.fulfill({ json: {} }); }
     if (pathname.endsWith('/summary/regenerate')) { analysis.summary = 'Bản tóm tắt mới'; analysis.suggested_title = 'Tiêu đề mới'; analysis.summary_status = 'draft'; return route.fulfill({ json: { summary: analysis.summary, suggested_title: analysis.suggested_title } }); }
     if (pathname.endsWith('/summary/approve')) { analysis.summary_status = 'approved'; return route.fulfill({ json: {} }); }
     if (pathname.endsWith('/summary')) { analysis.summary = request.postDataJSON().summary; analysis.summary_status = 'draft'; return route.fulfill({ json: {} }); }
-    if (pathname.endsWith('/category')) { videos[0].category = categories.find((category) => category.id === request.postDataJSON().category_id); return route.fulfill({ json: {} }); }
+    if (pathname.endsWith('/category')) { videoDetail.category = categoryState.find((category) => category.id === request.postDataJSON().category_id); return route.fulfill({ json: {} }); }
     if (pathname === '/api/cms/clips') return route.fulfill({ json: clips });
-    if (pathname === '/api/cms/categories') return route.fulfill({ json: categories });
+    if (pathname === '/api/cms/categories') {
+      if (method === 'POST') {
+        const body: components['schemas']['CategoryWrite'] = request.postDataJSON();
+        const category: components['schemas']['Category'] = { id: 'cat_design_new', ...body };
+        categoryState.push(category); return route.fulfill({ status: 201, json: category });
+      }
+      return route.fulfill({ json: categoryState });
+    }
+    if (pathname.startsWith('/api/cms/categories/') && method === 'PUT') {
+      const category = categoryState.find(category => category.id === pathname.split('/').pop());
+      Object.assign(category!, request.postDataJSON()); return route.fulfill({ json: category });
+    }
     if (pathname === '/api/cms/jobs') return route.fulfill({ json: jobs });
     if (pathname === '/api/cms/jobs/job_design03') return route.fulfill({ json: jobs[2] });
     if (pathname.endsWith('/retry') || pathname.endsWith('/cancel')) return route.fulfill({ json: {} });
@@ -72,6 +88,93 @@ async function setupUI(page: Page, role: 'admin' | 'editor' = 'admin') {
     return route.fulfill({ status: 404, json: { error: { code: 'NOT_FOUND', message: `UI fixture missing: ${pathname}` } } });
   });
 }
+
+for (const width of [390, 1440]) {
+  test(`INT-21 ${width} editorial metadata survives reload and AI regeneration`, async ({ page }, info) => {
+    await setupUI(page);
+    const summaryWrites: string[] = [];
+    page.on('request', request => { if (request.method() === 'PUT' && request.url().endsWith('/summary')) summaryWrites.push(request.url()); });
+    await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
+    await page.goto(`${cms}/subtitles?video_id=${videoId}`);
+    await expect(page.getByText('1920 × 1080', { exact: true })).toBeVisible();
+    await expect(page.getByText('29.97', { exact: true })).toBeVisible();
+    await page.getByLabel('Tiêu đề đề xuất').fill('Tiêu đề biên tập');
+    await page.getByLabel('Mô tả chi tiết').fill('Mô tả đã sửa');
+    await page.getByRole('button', { name: 'Dùng thẻ AI đề xuất', exact: true }).click();
+    await expect(page.getByLabel('Thẻ Hashtag', { exact: true })).toHaveValue('BongDa, Highlight');
+    await page.getByLabel('Thẻ Hashtag', { exact: true }).fill('#BóngĐá, AI_2026');
+    const saved = page.waitForRequest(request => request.url().endsWith(`/api/cms/videos/${videoId}`) && request.method() === 'PUT');
+    await page.getByRole('button', { name: 'Lưu bản nháp', exact: true }).click();
+    expect((await saved).postDataJSON()).toEqual({ title: 'Tiêu đề biên tập', description: 'Mô tả đã sửa', hashtags: ['BóngĐá', 'AI_2026'] });
+    await expect(page.getByText('Đã lưu bản nháp', { exact: true })).toBeVisible();
+    expect(summaryWrites).toEqual([]);
+    await page.reload();
+    await expect(page.getByLabel('Tiêu đề đề xuất')).toHaveValue('Tiêu đề biên tập');
+    await expect(page.getByLabel('Mô tả chi tiết')).toHaveValue('Mô tả đã sửa');
+    await expect(page.getByLabel('Thẻ Hashtag', { exact: true })).toHaveValue('BóngĐá, AI_2026');
+    let releaseGeneration!: () => void;
+    const generation = new Promise<void>(resolve => { releaseGeneration = resolve; });
+    await page.route('**/summary/regenerate', async route => { await generation; await route.fallback(); });
+    await page.getByRole('button', { name: 'Thử tiêu đề khác', exact: true }).click();
+    try { await expect(page.getByLabel('Tiêu đề đề xuất')).toBeDisabled(); } finally { releaseGeneration(); }
+    await expect(page.getByLabel('Tiêu đề đề xuất')).toHaveValue('Tiêu đề mới');
+    await expect(page.getByLabel('Thẻ Hashtag', { exact: true })).toHaveValue('BóngĐá, AI_2026');
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+    await page.screenshot({ path: info.outputPath(`editorial-${width}.png`), fullPage: true });
+    await page.getByLabel('Mô tả chi tiết').fill('');
+    await page.getByLabel('Thẻ Hashtag', { exact: true }).fill('');
+    await page.getByRole('button', { name: 'Lưu bản nháp', exact: true }).click();
+    await expect(page.getByText('Đã lưu bản nháp', { exact: true })).toBeVisible();
+    await page.reload();
+    await expect(page.getByLabel('Thẻ Hashtag', { exact: true })).toHaveValue('');
+    await expect(page.getByLabel('Mô tả chi tiết')).toHaveValue('');
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+  });
+
+  test(`INT-21 ${width} category descriptions can be created edited and reloaded`, async ({ page }, info) => {
+    await setupUI(page);
+    await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
+    await page.goto(`${cms}/categories`);
+    await page.getByRole('button', { name: 'Sửa danh mục Bóng đá', exact: true }).click();
+    await page.getByLabel('Mô tả danh mục', { exact: true }).fill('Các trận đấu và bàn thắng');
+    await page.getByRole('button', { name: 'Lưu', exact: true }).click();
+    await expect(page.getByRole('cell', { name: 'Các trận đấu và bàn thắng', exact: true })).toBeVisible();
+    await page.reload();
+    await expect(page.getByRole('cell', { name: 'Các trận đấu và bàn thắng', exact: true })).toBeVisible();
+    await page.getByRole('button', { name: 'Thêm danh mục mới', exact: true }).click();
+    await page.getByLabel('Tên danh mục', { exact: true }).fill('Danh mục mới');
+    await page.getByLabel('Mô tả danh mục', { exact: true }).fill('Mô tả danh mục mới');
+    await page.getByRole('button', { name: 'Lưu', exact: true }).click();
+    await expect(page.getByRole('cell', { name: 'Mô tả danh mục mới', exact: true })).toBeVisible();
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+    await page.screenshot({ path: info.outputPath(`category-description-${width}.png`), fullPage: true });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+  });
+}
+
+test('INT-21 metadata save failure retains the editor draft and stops later mutations', async ({ page }) => {
+  await setupUI(page);
+  await page.route(`**/api/cms/videos/${videoId}`, async route => route.request().method() === 'PUT' ? route.fulfill({ status: 503, json: { error: { code: 'UNAVAILABLE', message: 'Không lưu được metadata' } } }) : route.fallback());
+  const summaryWrites: string[] = [];
+  page.on('request', request => { if (request.method() === 'PUT' && request.url().endsWith('/summary')) summaryWrites.push(request.url()); });
+  await page.goto(`${cms}/subtitles?video_id=${videoId}`);
+  await page.getByLabel('Tiêu đề đề xuất').fill('Bản nháp chưa lưu');
+  await page.getByRole('button', { name: 'Lưu bản nháp', exact: true }).click();
+  await expect(page.getByText('Không lưu được metadata', { exact: true })).toBeVisible();
+  await expect(page.getByLabel('Tiêu đề đề xuất')).toHaveValue('Bản nháp chưa lưu');
+  expect(summaryWrites).toEqual([]);
+});
+
+test('INT-21 editorial metadata can save while AI analysis is unavailable', async ({ page }) => {
+  await setupUI(page);
+  await page.route(`**/api/cms/videos/${videoId}/analysis`, route => route.fulfill({ status: 503, json: { error: { code: 'AI_UNAVAILABLE', message: 'AI unavailable' } } }));
+  await page.goto(`${cms}/subtitles?video_id=${videoId}`);
+  await page.getByLabel('Tiêu đề đề xuất').fill('Biên tập độc lập AI');
+  const saved = page.waitForRequest(request => request.url().endsWith(`/api/cms/videos/${videoId}`) && request.method() === 'PUT');
+  await page.getByRole('button', { name: 'Lưu bản nháp', exact: true }).click();
+  expect((await saved).postDataJSON().title).toBe('Biên tập độc lập AI');
+  await expect(page.getByText('Đã lưu bản nháp', { exact: true })).toBeVisible();
+});
 
 const screens = [
   ['dashboard', 'Tổng quan hệ thống'], ['queue', 'Hàng đợi xử lý'], ['videos', 'Danh sách Video'],

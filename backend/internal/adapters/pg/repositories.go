@@ -42,15 +42,15 @@ func update(ctx context.Context, db *pgxpool.Pool, sql string, args ...any) erro
 	return nil
 }
 
-const videoColumns = `id,title,description,raw_file_path,thumbnail_url,duration_seconds::float8,status,uploaded_by,category_id,deleted_at,created_at,updated_at`
+const videoColumns = `id,title,description,raw_file_path,thumbnail_url,duration_seconds::float8,status,uploaded_by,category_id,deleted_at,created_at,updated_at,width,height,fps,hashtags`
 
 func scanVideo(row pgx.Row) (*domain.Video, error) {
 	var v domain.Video
-	err := row.Scan(&v.ID, &v.Title, &v.Description, &v.RawFilePath, &v.ThumbnailURL, &v.DurationSeconds, &v.Status, &v.UploadedBy, &v.CategoryID, &v.DeletedAt, &v.CreatedAt, &v.UpdatedAt)
+	err := row.Scan(&v.ID, &v.Title, &v.Description, &v.RawFilePath, &v.ThumbnailURL, &v.DurationSeconds, &v.Status, &v.UploadedBy, &v.CategoryID, &v.DeletedAt, &v.CreatedAt, &v.UpdatedAt, &v.Width, &v.Height, &v.FPS, &v.Hashtags)
 	return &v, notFound(err, domain.ErrVideoNotFound)
 }
 func (r *VideoRepo) Create(ctx context.Context, v *domain.Video) error {
-	_, err := r.DB.Exec(ctx, `INSERT INTO videos(id,title,description,raw_file_path,duration_seconds,status,uploaded_by,training_origin) VALUES($1,$2,$3,$4,$5,$6,$7,$8)`, v.ID, v.Title, v.Description, v.RawFilePath, v.DurationSeconds, v.Status, v.UploadedBy, trainingOrigin(r.DataOrigin, v.Title))
+	_, err := r.DB.Exec(ctx, `INSERT INTO videos(id,title,description,raw_file_path,duration_seconds,status,uploaded_by,training_origin,width,height,fps,hashtags) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)`, v.ID, v.Title, v.Description, v.RawFilePath, v.DurationSeconds, v.Status, v.UploadedBy, trainingOrigin(r.DataOrigin, v.Title), v.Width, v.Height, v.FPS, v.Hashtags)
 	return err
 }
 func (r *VideoRepo) Get(ctx context.Context, id string) (*domain.Video, error) {
@@ -85,8 +85,11 @@ func (r *VideoRepo) SetStatus(ctx context.Context, id string, status domain.Vide
 func (r *VideoRepo) SetCategory(ctx context.Context, id, category string) error {
 	return update(ctx, r.DB, `UPDATE videos SET category_id=$2,updated_at=now() WHERE id=$1`, id, category)
 }
-func (r *VideoRepo) SetDuration(ctx context.Context, id string, seconds float64) error {
-	return update(ctx, r.DB, `UPDATE videos SET duration_seconds=$2,updated_at=now() WHERE id=$1`, id, seconds)
+func (r *VideoRepo) SetMediaMetadata(ctx context.Context, id string, seconds float64, width, height *int, fps *float64) error {
+	return update(ctx, r.DB, `UPDATE videos SET duration_seconds=$2,width=coalesce($3,width),height=coalesce($4,height),fps=coalesce($5,fps),updated_at=now() WHERE id=$1 AND status!='deleted'`, id, seconds, width, height, fps)
+}
+func (r *VideoRepo) UpdateMetadata(ctx context.Context, id, title, description string, hashtags []string) (*domain.Video, error) {
+	return scanVideo(r.DB.QueryRow(ctx, `UPDATE videos SET title=$2,description=$3,hashtags=$4,updated_at=now() WHERE id=$1 AND status!='deleted' RETURNING `+videoColumns, id, title, description, hashtags))
 }
 func (r *VideoRepo) SoftDelete(ctx context.Context, id string) error {
 	return update(ctx, r.DB, `UPDATE videos SET status='deleted',deleted_at=now(),updated_at=now() WHERE id=$1`, id)
@@ -259,7 +262,7 @@ func (r *SessionRepo) DeleteByUser(ctx context.Context, id string) error {
 }
 
 func (r *CategoryRepo) List(ctx context.Context) ([]domain.Category, error) {
-	rows, err := r.DB.Query(ctx, `SELECT id,name,created_at FROM categories ORDER BY created_at,id`)
+	rows, err := r.DB.Query(ctx, `SELECT id,name,created_at,description FROM categories ORDER BY created_at,id`)
 	if err != nil {
 		return nil, err
 	}
@@ -267,22 +270,29 @@ func (r *CategoryRepo) List(ctx context.Context) ([]domain.Category, error) {
 	items := []domain.Category{}
 	for rows.Next() {
 		var c domain.Category
-		if err := rows.Scan(&c.ID, &c.Name, &c.CreatedAt); err != nil {
+		if err := rows.Scan(&c.ID, &c.Name, &c.CreatedAt, &c.Description); err != nil {
 			return nil, err
 		}
 		items = append(items, c)
 	}
 	return items, rows.Err()
 }
-func (r *CategoryRepo) Create(ctx context.Context, name string) (*domain.Category, error) {
+func (r *CategoryRepo) Create(ctx context.Context, name string, description *string) (*domain.Category, error) {
 	var c domain.Category
-	err := r.DB.QueryRow(ctx, `INSERT INTO categories(name) VALUES($1) RETURNING id,name,created_at`, name).Scan(&c.ID, &c.Name, &c.CreatedAt)
-	return &c, err
+	err := r.DB.QueryRow(ctx, `INSERT INTO categories(name,description) VALUES($1,$2) RETURNING id,name,created_at,description`, name, description).Scan(&c.ID, &c.Name, &c.CreatedAt, &c.Description)
+	return &c, categoryWriteError(err)
 }
-func (r *CategoryRepo) Update(ctx context.Context, id, name string) (*domain.Category, error) {
+func (r *CategoryRepo) Update(ctx context.Context, id, name string, description *string) (*domain.Category, error) {
 	var c domain.Category
-	err := r.DB.QueryRow(ctx, `UPDATE categories SET name=$2 WHERE id=$1 RETURNING id,name,created_at`, id, name).Scan(&c.ID, &c.Name, &c.CreatedAt)
-	return &c, notFound(err, domain.ErrCategoryNotFound)
+	err := r.DB.QueryRow(ctx, `UPDATE categories SET name=$2,description=coalesce($3,description) WHERE id=$1 RETURNING id,name,created_at,description`, id, name, description).Scan(&c.ID, &c.Name, &c.CreatedAt, &c.Description)
+	return &c, categoryWriteError(notFound(err, domain.ErrCategoryNotFound))
+}
+func categoryWriteError(err error) error {
+	var conflict *pgconn.PgError
+	if errors.As(err, &conflict) && conflict.Code == "23505" {
+		return domain.ErrConflict
+	}
+	return err
 }
 func (r *CategoryRepo) Delete(ctx context.Context, id string) error {
 	return update(ctx, r.DB, `DELETE FROM categories WHERE id=$1`, id)

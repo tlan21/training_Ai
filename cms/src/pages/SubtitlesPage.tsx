@@ -26,6 +26,9 @@ export default function SubtitlesPage() {
   const [subsDirty, setSubsDirty] = useState(false);
   const [summary, setSummary] = useState("");
   const [category, setCategory] = useState("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [hashtagText, setHashtagText] = useState("");
   const [currentTime, setCurrentTime] = useState(0);
   const [autoScroll, setAutoScroll] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -34,12 +37,15 @@ export default function SubtitlesPage() {
   const rows = useRef<Record<number, HTMLDivElement | null>>({});
   const summaryDirty = summary !== (analysis.data?.summary ?? "");
   const categoryDirty = category !== (video.data?.category?.id ?? "");
-  const dirty = subsDirty || summaryDirty || categoryDirty;
+  const hashtags = hashtagText.split(",").map(tag => tag.trim().replace(/^#/, "")).filter(Boolean);
+  const metadataDirty = title !== (video.data?.title ?? "") || description !== (video.data?.description ?? "") || JSON.stringify(hashtags) !== JSON.stringify(video.data?.hashtags ?? []);
+  const dirty = subsDirty || summaryDirty || categoryDirty || metadataDirty;
   const blocker = useBlocker(dirty);
   useEffect(() => { if (blocker.state === "blocked") { if (confirm("Bạn có thay đổi chưa lưu. Rời màn biên tập?")) blocker.proceed(); else blocker.reset(); } }, [blocker]);
   useEffect(() => { setSegments(subs.data?.segments ?? []); setSubsDirty(false); }, [subs.data, videoId]);
   useEffect(() => { setSummary(analysis.data?.summary ?? ""); }, [analysis.data, videoId]);
   useEffect(() => { setCategory(video.data?.category?.id ?? ""); }, [video.data, videoId]);
+  useEffect(() => { setTitle(video.data?.title ?? ""); setDescription(video.data?.description ?? ""); setHashtagText((video.data?.hashtags ?? []).join(", ")); }, [video.data, videoId]);
   useEffect(() => { setCurrentTime(0); }, [videoId]);
   useEffect(() => { const handle = (event: BeforeUnloadEvent) => { if (dirty) { event.preventDefault(); event.returnValue = ""; } }; window.addEventListener("beforeunload", handle); return () => window.removeEventListener("beforeunload", handle); }, [dirty]);
   const active = segments.findIndex((segment) => currentTime >= (segment.start_time ?? 0) && currentTime < (segment.end_time ?? 0));
@@ -52,17 +58,21 @@ export default function SubtitlesPage() {
   const saveSummary = async (approve: boolean) => {
     setSaving(true);
     try {
-      if (categoryDirty && category) { await apiClient.put(`/api/cms/videos/${videoId}/category`, { category_id: category }); await qc.invalidateQueries({ queryKey: ["video", videoId] }); await qc.invalidateQueries({ queryKey: ["videos"] }); }
-      if (summaryDirty || !approve) await apiClient.put(`/api/cms/videos/${videoId}/summary`, { summary });
+      if (metadataDirty || !approve) {
+        const body: components["schemas"]["VideoMetadataUpdate"] = { title, description, hashtags };
+        await apiClient.put(`/api/cms/videos/${videoId}`, body);
+      }
+      if (categoryDirty && category) await apiClient.put(`/api/cms/videos/${videoId}/category`, { category_id: category });
+      if (analysis.data && summaryDirty) await apiClient.put(`/api/cms/videos/${videoId}/summary`, { summary });
       if (approve) await apiClient.post(`/api/cms/videos/${videoId}/summary/approve`);
-      await qc.invalidateQueries({ queryKey: ["analysis", videoId] });
+      await Promise.all([qc.invalidateQueries({ queryKey: ["analysis", videoId] }), qc.invalidateQueries({ queryKey: ["video", videoId] }), qc.invalidateQueries({ queryKey: ["videos"] })]);
       toast.ok(approve ? "Đã phê duyệt nội dung" : "Đã lưu bản nháp");
     } catch (error) { toast.err(errorMessage(error)); } finally { setSaving(false); }
   };
   const regenerate = async () => {
-    if (summaryDirty && !confirm("Tạo lại tóm tắt sẽ thay thế nội dung chưa lưu. Tiếp tục?")) return;
+    if ((summaryDirty || title !== (video.data?.title ?? "")) && !confirm("Tạo lại tóm tắt và tiêu đề sẽ thay thế nội dung chưa lưu. Tiếp tục?")) return;
     setRegenerating(true);
-    try { const result = await apiClient.post<paths["/api/cms/videos/{id}/summary/regenerate"]["post"]["responses"][200]["content"]["application/json"]>(`/api/cms/videos/${videoId}/summary/regenerate`); setSummary(result.data.summary ?? ""); await qc.invalidateQueries({ queryKey: ["analysis", videoId] }); toast.ok("Đã tạo lại bản nháp AI"); } catch (error) { toast.err(errorMessage(error)); } finally { setRegenerating(false); }
+    try { const result = await apiClient.post<paths["/api/cms/videos/{id}/summary/regenerate"]["post"]["responses"][200]["content"]["application/json"]>(`/api/cms/videos/${videoId}/summary/regenerate`); setSummary(result.data.summary ?? ""); setTitle(result.data.suggested_title ?? title); await qc.invalidateQueries({ queryKey: ["analysis", videoId] }); toast.ok("Đã tạo lại bản nháp AI"); } catch (error) { toast.err(errorMessage(error)); } finally { setRegenerating(false); }
   };
   const exportSubtitles = () => {
     const timestamp = (seconds: number) => new Date(Math.max(0, seconds) * 1000).toISOString().slice(11, 23).replace(".", ",");
@@ -71,7 +81,7 @@ export default function SubtitlesPage() {
   };
   const approved = analysis.data?.summary_status === "approved" && !summaryDirty;
   return <div className="subtitle-workspace">
-    <section className="subtitle-video">{!videoId && <VideoPicker />}<VideoPlayer variant="subtitle" ref={player} src={video.data?.playback_url} poster={video.data?.thumbnail_url} onTimeUpdate={setCurrentTime} /><div className="stream-heading"><h4><Icon name="movie" size={18} />Thông tin luồng</h4><span className="badge ai-badge mono">{fmtSec(currentTime)} / {fmtSec(video.data?.duration_seconds ?? 0)}</span></div><div className="stream-stats"><div><span className="field-label">Độ phân giải</span><p>—</p></div><div><span className="field-label">FPS</span><p>—</p></div></div>{videoId && video.isError && <ErrorState msg={errorMessage(video.error)} onRetry={() => video.refetch()} />}<p className="micro">{video.data?.title ?? "Chọn video đã xử lý để biên tập phụ đề và tóm tắt."}</p></section>
+    <section className="subtitle-video">{!videoId && <VideoPicker />}<VideoPlayer variant="subtitle" ref={player} src={video.data?.playback_url} poster={video.data?.thumbnail_url} onTimeUpdate={setCurrentTime} /><div className="stream-heading"><h4><Icon name="movie" size={18} />Thông tin luồng</h4><span className="badge ai-badge mono">{fmtSec(currentTime)} / {fmtSec(video.data?.duration_seconds ?? 0)}</span></div><div className="stream-stats"><div><span className="field-label">Độ phân giải</span><p>{video.data?.width && video.data?.height ? `${video.data.width} × ${video.data.height}` : "—"}</p></div><div><span className="field-label">FPS</span><p>{video.data?.fps?.toFixed(2) ?? "—"}</p></div></div>{videoId && video.isError && <ErrorState msg={errorMessage(video.error)} onRetry={() => video.refetch()} />}<p className="micro">{video.data?.title ?? "Chọn video đã xử lý để biên tập phụ đề và tóm tắt."}</p></section>
     <section className="transcript-panel"><div className="panel-heading"><h4>Phụ đề AI (Vietnamese)</h4><div className="row-actions"><button className="icon-button" aria-label="Tải lại phụ đề" disabled={subsDirty || !videoId} onClick={() => subs.refetch()}><Icon name="refresh" size={18} /></button><button className="icon-button" aria-label="Tải phụ đề SRT" disabled={!segments.length} onClick={exportSubtitles}><Icon name="download" size={18} /></button></div></div><div className="transcript-list">
       {videoId && subs.isLoading ? <Skeleton h={140} /> : subs.isError ? <ErrorState msg={errorMessage(subs.error)} onRetry={() => subs.refetch()} /> : !segments.length && <Empty msg={videoId ? "Chưa có phụ đề" : "Chọn video để xem phụ đề"} />}
       {segments.map((segment, index) => {
@@ -82,11 +92,11 @@ export default function SubtitlesPage() {
     </div><div className="transcript-footer"><div className="autoscroll-row"><span className="field-label">Tự động cuộn theo video</span><label className="switch"><span /><input type="checkbox" aria-label="Tự động cuộn theo video" checked={autoScroll} onChange={(event) => setAutoScroll(event.target.checked)} /></label></div><button className="btn-secondary" disabled={!subsDirty || saving} onClick={saveSubtitles}><Icon name="save" size={18} />{saving ? "Đang lưu…" : "Lưu thay đổi phụ đề"}</button></div></section>
     <section className="summary-panel"><div className="summary-fields"><div className="summary-heading"><h3>Biên tập Tóm tắt</h3><span className="badge ai-badge">{approved ? "ĐÃ DUYỆT" : "BẢN NHÁP AI"}</span></div>
       {videoId && analysis.isLoading && <Skeleton h={64} />}{analysis.isError && <ErrorState msg={errorMessage(analysis.error)} onRetry={() => analysis.refetch()} />}
-      <div className="field"><label htmlFor="suggested-title">Tiêu đề đề xuất</label><input id="suggested-title" className="input" readOnly value={analysis.data?.suggested_title ?? ""} title="Tiêu đề do AI đề xuất; chưa hỗ trợ lưu tiêu đề tùy chỉnh" /><button className="btn-text regenerate-button" disabled={!videoId || !analysis.data || regenerating} onClick={regenerate}><Icon name="refresh" size={14} />{regenerating ? "Đang tạo lại…" : "Thử tiêu đề khác"}</button></div>
-      <div className="summary-two-fields"><div className="field"><label htmlFor="summary-category">Chuyên mục</label><select id="summary-category" className="input" value={category} onChange={(event) => setCategory(event.target.value)} disabled={!videoId}><option value="">Chọn chuyên mục</option>{categories.data?.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}</select></div><div className="field"><label htmlFor="video-priority">Độ ưu tiên</label><select id="video-priority" className="input" disabled defaultValue=""><option value="">Chưa hỗ trợ</option></select></div></div>
-      <div className="field"><label htmlFor="video-description">Mô tả chi tiết</label><textarea id="video-description" className="input" readOnly rows={4} value={video.data?.description ?? ""} /></div>
+      <div className="field"><label htmlFor="suggested-title">Tiêu đề đề xuất</label><input id="suggested-title" className="input" value={title} onChange={event => setTitle(event.target.value)} maxLength={255} disabled={!video.data || saving || regenerating} /><button className="btn-text regenerate-button" disabled={!videoId || !analysis.data || regenerating || saving} onClick={regenerate}><Icon name="refresh" size={14} />{regenerating ? "Đang tạo lại…" : "Thử tiêu đề khác"}</button></div>
+      <div className="summary-two-fields"><div className="field"><label htmlFor="summary-category">Chuyên mục</label><select id="summary-category" className="input" value={category} onChange={(event) => setCategory(event.target.value)} disabled={!videoId || saving}><option value="">Chọn chuyên mục</option>{categories.data?.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}</select></div><div className="field"><label htmlFor="video-priority">Độ ưu tiên</label><select id="video-priority" className="input" disabled title="Độ ưu tiên xử lý được hoãn trong phiên bản này" defaultValue=""><option value="">Đã hoãn</option></select></div></div>
+      <div className="field"><label htmlFor="video-description">Mô tả chi tiết</label><textarea id="video-description" className="input" rows={4} value={description} onChange={event => setDescription(event.target.value)} maxLength={10000} disabled={!video.data || saving} /></div>
       <div className="field"><label htmlFor="ai-summary">Tóm tắt AI (TL;DR)</label><div className="summary-input"><textarea id="ai-summary" className="input" data-testid="summary-editor" value={summary} onChange={(event) => setSummary(event.target.value)} rows={6} disabled={!analysis.data || saving || regenerating} /><button className="icon-button copy-summary" aria-label="Sao chép tóm tắt" disabled={!summary} onClick={() => navigator.clipboard.writeText(summary).then(() => toast.ok("Đã sao chép"), (error: unknown) => toast.err(errorMessage(error)))}><Icon name="content_copy" size={16} /></button></div></div>
-      <div className="field"><label>Thẻ Hashtag</label><div className="hashtag-list">{analysis.data?.hashtags?.map((tag) => <span className="hashtag" key={tag}>{tag.startsWith("#") ? tag : `#${tag}`}</span>)}<button className="hashtag-add" disabled title="Chưa hỗ trợ chỉnh sửa hashtag">+ Thêm</button></div></div>
-    </div><div className="summary-footer"><button className="btn-outline" disabled={!dirty || saving} onClick={() => { if (!confirm("Hủy các thay đổi chưa lưu?")) return; setSummary(analysis.data?.summary ?? ""); setCategory(video.data?.category?.id ?? ""); setSegments(subs.data?.segments ?? []); setSubsDirty(false); }}>Hủy thay đổi</button><button className="btn-secondary" disabled={!analysis.data || saving || regenerating} onClick={() => saveSummary(false)}>Lưu bản nháp</button><button className="btn-primary" disabled={!analysis.data || !summary.trim() || (approved && !categoryDirty) || saving || regenerating} onClick={() => saveSummary(true)}>Duyệt nội dung</button></div></section>
+      <div className="field"><label htmlFor="editorial-hashtags">Thẻ Hashtag</label><input id="editorial-hashtags" className="input" value={hashtagText} onChange={event => setHashtagText(event.target.value)} placeholder="VD: BongDa, Highlight" disabled={!video.data || saving} /><div className="hashtag-list">{hashtags.map((tag, index) => <span className="hashtag" key={`${tag}-${index}`}>#{tag}</span>)}</div><p className="micro">Phân cách bằng dấu phẩy, tối đa 30 thẻ.</p>{analysis.data?.hashtags?.length ? <button className="btn-text" disabled={saving} onClick={() => setHashtagText(analysis.data!.hashtags!.join(", "))}>Dùng thẻ AI đề xuất</button> : null}</div>
+    </div><div className="summary-footer"><button className="btn-outline" disabled={!dirty || saving} onClick={() => { if (!confirm("Hủy các thay đổi chưa lưu?")) return; setSummary(analysis.data?.summary ?? ""); setCategory(video.data?.category?.id ?? ""); setTitle(video.data?.title ?? ""); setDescription(video.data?.description ?? ""); setHashtagText((video.data?.hashtags ?? []).join(", ")); setSegments(subs.data?.segments ?? []); setSubsDirty(false); }}>Hủy thay đổi</button><button className="btn-secondary" disabled={!video.data || saving || regenerating} onClick={() => saveSummary(false)}>Lưu bản nháp</button><button className="btn-primary" disabled={!analysis.data || !summary.trim() || (approved && !categoryDirty && !metadataDirty) || saving || regenerating} onClick={() => saveSummary(true)}>Duyệt nội dung</button></div></section>
   </div>;
 }

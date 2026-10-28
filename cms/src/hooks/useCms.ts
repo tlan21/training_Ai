@@ -61,7 +61,7 @@ export function useCreateCategory() {
 }
 export function useUpdateCategory() {
   const qc = useQueryClient();
-  return useMutation({ mutationFn: async ({ id, name }: { id: string; name: string }) => (await apiClient.put(`/api/cms/categories/${id}`, { name })).data, onSuccess: () => qc.invalidateQueries({ queryKey: qk.categories() }) });
+  return useMutation({ mutationFn: async ({ id, ...body }: { id: string } & components["schemas"]["CategoryWrite"]) => (await apiClient.put(`/api/cms/categories/${id}`, body)).data, onSuccess: () => qc.invalidateQueries({ queryKey: qk.categories() }) });
 }
 export function useDeleteCategory() {
   const qc = useQueryClient();

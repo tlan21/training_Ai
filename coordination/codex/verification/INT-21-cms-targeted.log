@@ -1,0 +1,13 @@
+
+Running 6 tests using 1 worker
+
+(node:26540) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 e2e\cms_design.spec.ts:93:7 › INT-21 390 editorial metadata survives reload and AI regeneration (2.1s)
+  ok 2 e2e\cms_design.spec.ts:124:7 › INT-21 390 category descriptions can be created edited and reloaded (985ms)
+  ok 3 e2e\cms_design.spec.ts:93:7 › INT-21 1440 editorial metadata survives reload and AI regeneration (1.7s)
+  ok 4 e2e\cms_design.spec.ts:124:7 › INT-21 1440 category descriptions can be created edited and reloaded (1.1s)
+  ok 5 e2e\cms_design.spec.ts:144:5 › INT-21 metadata save failure retains the editor draft and stops later mutations (633ms)
+  ok 6 e2e\cms_design.spec.ts:157:5 › INT-21 editorial metadata can save while AI analysis is unavailable (1.4s)
+
+  6 passed (9.9s)

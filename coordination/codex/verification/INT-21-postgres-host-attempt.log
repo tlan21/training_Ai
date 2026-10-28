@@ -1,0 +1,17 @@
+=== RUN   TestContentPages_RealFeedSnapshotPrivacyAndColdTail
+    content_pages_test.go:48: failed to connect to `user=app database=video_ai`: 127.0.0.1:5432 (127.0.0.1): failed SASL auth: FATAL: password authentication failed for user "app" (SQLSTATE 28P01)
+--- FAIL: TestContentPages_RealFeedSnapshotPrivacyAndColdTail (0.75s)
+=== RUN   TestContentPages_RealCatalogCategorySnapshotAndExhaustion
+=== RUN   TestContentPages_RealCatalogCategorySnapshotAndExhaustion/newest
+    content_pages_test.go:105: failed to connect to `user=app database=video_ai`: 127.0.0.1:5432 (127.0.0.1): failed SASL auth: FATAL: password authentication failed for user "app" (SQLSTATE 28P01)
+=== RUN   TestContentPages_RealCatalogCategorySnapshotAndExhaustion/trending
+    content_pages_test.go:105: failed to connect to `user=app database=video_ai`: 127.0.0.1:5432 (127.0.0.1): failed SASL auth: FATAL: password authentication failed for user "app" (SQLSTATE 28P01)
+--- FAIL: TestContentPages_RealCatalogCategorySnapshotAndExhaustion (0.10s)
+    --- FAIL: TestContentPages_RealCatalogCategorySnapshotAndExhaustion/newest (0.05s)
+    --- FAIL: TestContentPages_RealCatalogCategorySnapshotAndExhaustion/trending (0.05s)
+=== RUN   TestCMSMetadataRealPersistenceAndMigration
+    metadata_test.go:29: failed to connect to `user=app database=video_ai`: 127.0.0.1:5432 (127.0.0.1): failed SASL auth: FATAL: password authentication failed for user "app" (SQLSTATE 28P01)
+--- FAIL: TestCMSMetadataRealPersistenceAndMigration (0.05s)
+FAIL
+FAIL	traning_ai/backend/internal/adapters/pg	2.076s
+FAIL
