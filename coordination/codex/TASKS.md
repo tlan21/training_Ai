@@ -329,5 +329,5 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Changed planned: backend domain/ports/PG/memory/handlers/orchestrator/ingest-worker/tests; infra migration; CMS hooks/pages/tests; owned plans/docs/evidence.
 - Evidence: verification/INT-21.md; Go vet/test/build PASS; realPG protected HTTP PUT/GET +repeat migration +old pages PASS;
  8workerPASS1.016s; CMS39PASS45.9s +final7PASS9.7s; Client71PASS1.2m; CMS/Client/E2Etypes, CMS/Client builds +Clientlint PASS.
-- Changed: listed in verification/INT-21.md (source/storage/worker/API/CMS+Clientmapping/tests/owned docs). Commit: implementation checkpoint in git history.
+- Changed: listed in verification/INT-21.md (source/storage/worker/API/CMS+Clientmapping/tests/owned docs). Commits: af0e989 contract; aad0c75 implementation/evidence.
 - Next action: INT-05 visual work. No live migration/deployment; apply004 before new binaries when deployment is approved. AI API unchanged.

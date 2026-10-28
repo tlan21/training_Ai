@@ -7,6 +7,7 @@
  INT-20 REVIEW: OpenAPI0.4.0 and3generatedtypes verified; embedded schema testPASS0.484s +CMS/Clienttsc PASS. Evidence verification/INT-20.md.
  INT-21 REVIEW: additive004migration/domain/PG+memory, CPU source metadata/orchestrator, protected editorial metadata/category updates,
  CMS save/reload/error/AI-unavailable states and Client editorial-tag priority implemented. No model/inference code or AI API change.
+ Commits af0e989 contract +aad0c75 implementation/evidence; approval/taskstart89550ad.
  Evidence verification/INT-21.md: final Go vet/test/buildPASS; realPG protected HTTP/migration/source/editorial/category +existing paginationPASS;
  8workerPASS1.016s; CMS39PASS45.9s +final7PASS9.7s; Client71PASS1.2m; CMS/Client/E2Etypes +CMSbuild/Clientlint/build PASS.
  Final CMS index-B8Z5jrXZ.js; Client build0jpAiC3YO74qVW4EcxQDJ. Owned QA3100/5174 stopped and PG/tmp test artifacts removed.

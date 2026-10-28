@@ -3,6 +3,7 @@
 Owner CODEX. Status: REVIEW on codex/integration; scoped planA implementation verified, not deployed/released.
 User explicitly approved CMS metadata/editorial/category-description scope after API clarification.
 Contract checkpoint af0e989 (OpenAPI0.4.0) preceded implementation; final generated types also document category409/422 responses.
+Implementation/evidence commit: aad0c75.
 Release#4 received by normal master merge; AI-APIv1.3 and active checkpoints unchanged.
 
 ## Delivered behavior
