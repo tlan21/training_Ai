@@ -1,0 +1,17 @@
+BEGIN
+SET
+SET
+SET
+DO
+LOCK TABLE
+SELECT 2
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+psql:/tmp/int22-apply.sql:57: NOTICE:  INT22 preserved videos: rows=79, fingerprint=caaadd6588f7f8f4a2da381f51577b9a
+psql:/tmp/int22-apply.sql:57: NOTICE:  INT22 preserved categories: rows=10, fingerprint=2279cd784f346ec1e52ce40605752c91
+psql:/tmp/int22-apply.sql:57: NOTICE:  INT22 five nullable columns and five validated checks verified
+DO
+COMMIT

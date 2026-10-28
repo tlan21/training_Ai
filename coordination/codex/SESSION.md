@@ -1,9 +1,10 @@
-# SESSION — authoritative resume state (2026-10-28, CMS planA source verified)
+# SESSION — authoritative resume state (2026-10-28, product DB004 applied)
 
 ## Branch / task state
-- User explicitly requested applying004_cms_metadata.sql to product DB. Only INT-22 IN_PROGRESS; INT-05 PARTIAL temporarily.
-  Scope: verify target/schema/rows, private ignored backup, guarded transactional additive migration, idempotent repeat +data/schema/health evidence.
-  No application service deployment, AI operation, backfill, master release or push authorized by this DB-only request.
+- INT-22 runtime operation complete2026-10-28: user-approved004 applied to product Postgres video_ai/public via existing container.
+  Private ignored full backup backend/.tmp/db-backups/int22-20261028T095827Z-before.dump retained; metadata/hash in verification/INT-22-backup.json.
+  Guarded transaction +repeat COMMIT;79videos/10categories ordered row fingerprints unchanged;5nullable columns/5validated checks correct.
+  New fields remain NULL; gatewayhealthok/CMS5173+Client3000HTTP200. Evidence verification/INT-22.md +logs/JSON; no app rollout/AI/backfill/master/push.
 -2026-10-28 user approved CMS planA: metadata width/height/fps, video title/description/editorial hashtags, category description;
  preserve soft-hide; defer priority/customAIrules/logo/undefinedmetrics/keyrotation. Client4library routes/forgot-link still unapproved.
  Release#4 received by `git merge master` without conflict; AI-APIv1.3 and active checkpoints unchanged. No Codex release/push authorized.
@@ -14,7 +15,7 @@
  Evidence verification/INT-21.md: final Go vet/test/buildPASS; realPG protected HTTP/migration/source/editorial/category +existing paginationPASS;
  8workerPASS1.016s; CMS39PASS45.9s +final7PASS9.7s; Client71PASS1.2m; CMS/Client/E2Etypes +CMSbuild/Clientlint/build PASS.
  Final CMS index-B8Z5jrXZ.js; Client build0jpAiC3YO74qVW4EcxQDJ. Owned QA3100/5174 stopped and PG/tmp test artifacts removed.
- Live product DB NOT migrated; live gateway/orchestrator/worker/CMS5173/Client3000 NOT replaced. Deploy004 BEFORE new binaries when approved.
+ Live product DB004 now migrated under INT-22; gateway/orchestrator/worker/CMS5173/Client3000 still NOT replaced. New binaries can follow when deployment is instructed.
  Old source metadata remains null until obtained; no automatic reprocessing/backfill. No master/shared-status publication/push.
 - E:/traning_ai-codex, codex/integration. Release#1/#2/#3/#4 received; normal master merge without conflict. No master release/push authorized.
 - INT-06 PARTIAL: user-approved QA3100 completed2026-10-28. Existing production build CAT_3TF7GI5-2Dm5o3Y8f,
@@ -22,7 +23,7 @@
  Evidence verification/INT-06-production-20261028.md/.log;16production layout PNG+16metrics JSON+2original-player PNG in comparison index.
  Owned Next PID19872 stopped after identity/listener checks; port3100 closed. QA login200, APIproxy401UNAUTHORIZED; gatewayhealthok/liveClient3000login200.
  Library/forgot-link and full design decisions remain pending. No app source/dependency/runtime deployment/master/push/realAI acceptance change.
-- Only INT-05 IN_PROGRESS: remaining visual corrections after planA implementation. Earlier player checkpoint below is historical. Project skill cms_screen.md +plan03§7 CẮT-list.
+- INT-05 remaining visual corrections after planA implementation. Earlier player checkpoint below is historical. Project skill cms_screen.md +plan03§7 CẮT-list.
   Baseline18PASS24.5s; final full37browserPASS38.7s before radius fix; final3playerPASS10.3s after radius correction, manual seek cancellation/native-modal checks.
   CMS tsc/Vite production build +E2Etypes +diffcheck PASS. QA production Vite5174 PID22248 stopped after checking ownership; no active test/compiler/QA server.
   CMS5173 remains existing image; real gateway healthok and Claude stubfalse/6models/degraded[]/CPU rechecked. Source fixes not deployed.
@@ -114,7 +115,7 @@
 - Release only at user request: full Go/CMS/Client gates +relevant real matrix E2E, shared status/masterplan updates only in that release flow; no push inferred.
 
 Lane: codex
-Changed: public0.4.0/3types; CMS metadata/editorial/category stack +Client tag mapping +tests/docs
-Verified: Go gates; realPG HTTP/migration/pages;8worker;CMS39+final7;Client71;types/build/lint
-Contract touched: public0.4.0; AI-APIv1.3 unchanged
-Next safe task: INT-05 existing-API visual corrections; release only on explicit user instruction
+Changed: live product DB004 schema +owned evidence/session/tracker
+Verified: private backup;guarded apply/repeat COMMIT;79/10row checksums;5columns/checks;live health
+Contract touched: no (public0.4.0/AI-APIv1.3 unchanged)
+Next safe task: INT-05 visuals; application deployment/master release only on instruction

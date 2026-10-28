@@ -1,5 +1,8 @@
 # INT-21 — CMS planA implementation, 2026-10-28
 
+Runtime update: [INT-22](INT-22.md) subsequently applied004 to the live product DB with backup/data/schema/repeat checks.
+Application services remain the prior deployment. The no-live-migration statements below describe the earlier source checkpoint.
+
 Owner CODEX. Status: REVIEW on codex/integration; scoped planA implementation verified, not deployed/released.
 User explicitly approved CMS metadata/editorial/category-description scope after API clarification.
 Contract checkpoint af0e989 (OpenAPI0.4.0) preceded implementation; final generated types also document category409/422 responses.

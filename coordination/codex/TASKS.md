@@ -30,7 +30,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-19 | INT-14 pagination | Clarify public cursor/error contract | REVIEW | existing feed/catalog endpoints; no AI dependency |
 | INT-20 | INT-05 planA | CMS metadata/editorial/category contract | REVIEW | OpenAPI0.4.0/3types/schema+FEtsc PASS |
 | INT-21 | INT-20 | Persist/map approved CMS planA | REVIEW | realPG/worker/UI/build gates PASS; not deployed |
-| INT-22 | INT-21 | Apply004 to product Postgres | IN_PROGRESS | explicit user approval; code aad0c75 |
+| INT-22 | INT-21 | Apply004 to product Postgres | REVIEW | live apply/repeat/data/schema/health PASS; evidence checkpoint |
 
 Hoàn thành trước tách làn (bằng chứng INVENTORY mục 5): T0.1–T0.4, T2.1–T2.4, T4.1, T4.2 = DONE (VERIFIED-HIST, build VERIFIED-NOW);
 T2.5, T3.1, T3.2 = PARTIAL.
@@ -331,12 +331,15 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Evidence: verification/INT-21.md; Go vet/test/build PASS; realPG protected HTTP PUT/GET +repeat migration +old pages PASS;
  8workerPASS1.016s; CMS39PASS45.9s +final7PASS9.7s; Client71PASS1.2m; CMS/Client/E2Etypes, CMS/Client builds +Clientlint PASS.
 - Changed: listed in verification/INT-21.md (source/storage/worker/API/CMS+Clientmapping/tests/owned docs). Commits: af0e989 contract; aad0c75 implementation/evidence.
-- Next action: INT-05 visual work. No live migration/deployment; apply004 before new binaries when deployment is approved. AI API unchanged.
+- Next action: INT-05 visual work. Live migration004 completed INT-22; application deployment still separate. AI API unchanged.
 
 ### INT-22 — Apply approved CMS metadata migration to product DB
-- Owner: CODEX | Status: IN_PROGRESS (2026-10-28)
+- Owner: CODEX | Status: REVIEW (2026-10-28; live operation complete, evidence checkpoint)
 - Dependency: INT-20/21 source verified (aad0c75); explicit user instruction to apply migration on product DB.
 - Acceptance: identify correct product Postgres; private consistent backup; apply exact004 DDL transactionally with bounded locks;
  verify5nullable columns/check constraints, original rows/data unchanged while locked, repeat safely, current gateway/UI health.
 - Changed planned: coordination/codex task/session/evidence +guarded migration runner under infra; actual public database schema.
-- Commit/Evidence: pending | Next action: preflight and backup; no service deployment, AI API change, data backfill/deletion or master/push.
+- Commits: f7fcc0e start; evidence checkpoint in git history. Evidence: verification/INT-22.md/.sql +apply/repeat logs/backup/schema/health JSON.
+- Verified: live PostgreSQL16.15/video_ai; full backup50278bytes; guarded COMMIT twice;79videos/10categories fingerprints unchanged;
+ 5nullable/no-default columns +5validated checks; gatewayok/CMS+Client200. No application deployment/AI/backfill/data deletion/master/push.
+- Changed: product DBschema, owned runner/evidence/session/tasks. Next action: mark DONE with evidence SHA; INT-05 remains available.

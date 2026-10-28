@@ -1,0 +1,72 @@
+{
+  "checks": [
+    {
+      "name": "categories_description_check",
+      "validated": true,
+      "definition": "CHECK ((char_length(description) <= 2000))"
+    },
+    {
+      "name": "videos_fps_check",
+      "validated": true,
+      "definition": "CHECK (((fps > (0)::double precision) AND (fps < 'Infinity'::double precision)))"
+    },
+    {
+      "name": "videos_hashtags_check",
+      "validated": true,
+      "definition": "CHECK ((cardinality(hashtags) <= 30))"
+    },
+    {
+      "name": "videos_height_check",
+      "validated": true,
+      "definition": "CHECK ((height > 0))"
+    },
+    {
+      "name": "videos_width_check",
+      "validated": true,
+      "definition": "CHECK ((width > 0))"
+    }
+  ],
+  "videos": 79,
+  "columns": [
+    {
+      "type": "text",
+      "table": "categories",
+      "column": "description",
+      "default": null,
+      "nullable": "YES"
+    },
+    {
+      "type": "float8",
+      "table": "videos",
+      "column": "fps",
+      "default": null,
+      "nullable": "YES"
+    },
+    {
+      "type": "_text",
+      "table": "videos",
+      "column": "hashtags",
+      "default": null,
+      "nullable": "YES"
+    },
+    {
+      "type": "int4",
+      "table": "videos",
+      "column": "height",
+      "default": null,
+      "nullable": "YES"
+    },
+    {
+      "type": "int4",
+      "table": "videos",
+      "column": "width",
+      "default": null,
+      "nullable": "YES"
+    }
+  ],
+  "database": "video_ai",
+  "categories": 10,
+  "verified_at": "2026-10-28T17:00:15.424288+07:00",
+  "known_video_metadata": 0,
+  "known_category_descriptions": 0
+}
