@@ -252,3 +252,11 @@ Mẫu HO:
   No AI source/checkpoint/runtime changes, no other service recreation/image pull/build/global restart or data fabrication/export promotion.
 - INT-14 pagination complete, overallPARTIAL only for full Client parity dependencyINT-06. Personalized/AI-12 NO_DATA/GPU/load/soak gates unchanged.
   No action requested from Claude; no master/shared status/release/push performed.
+
+## 2026-10-28 RE:HC-12 — INT-24 partial verification, Client QA blocked
+- User approved HC-12 then INT-05. Existing summary approval gate verified again on real stack: publicnull before admin approval, edited summary after approval.
+- Added explicit machine-draft notices to CMS+Client transcript/player and downloaded text; edited captions never imply official approval (no subtitle approval field/API).
+  CMS edit/save/reload+SRT390/1440 3PASS17.3s; actual CMS edit/public subtitle cache readback+realAI pipeline1PASS38.0s; CMS/Client builds/types PASS.
+- New Client browser checks pending: automatic review rejected previously authorized QA3100 startup with 'blocked by policy'; user asked to start externally.
+  Source/QA changes not deployed to existing INT-23 images. No full HC-12 ACK/DONE yet, no AI-APIv1.3/schema/model/checkpoint change requested.
+- Evidence coordination/codex/verification/INT-24.md. Continuing independent INT-05 CMS visuals while blocked.

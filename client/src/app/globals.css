@@ -2186,6 +2186,12 @@ input[type=checkbox] {
 .transcript-search {
   padding: 12px 16px;
 }
+.transcript-draft-note {
+  padding: 8px 16px;
+  color: var(--on-surface-variant);
+  font-size: 12px;
+  line-height: 18px;
+}
 .transcript-search .input {
   height: 40px;
   background: var(--surface-container-low);
@@ -2291,6 +2297,16 @@ input[type=checkbox] {
   text-shadow: 0 1px 4px black;
   font-size: 14px;
   pointer-events: none;
+}
+.subtitle-draft-label {
+  display: block;
+  width: fit-content;
+  margin: 0 auto 4px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #000b;
+  font-size: 12px;
+  line-height: 18px;
 }
 .detail-error {
   margin: 12px 16px;

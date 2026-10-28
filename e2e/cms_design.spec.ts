@@ -90,6 +90,29 @@ async function setupUI(page: Page, role: 'admin' | 'editor' = 'admin') {
 }
 
 for (const width of [390, 1440]) {
+  test(`HC-12 ${width} subtitle edits and downloads remain explicit drafts`, async ({ page }, info) => {
+    await setupUI(page);
+    await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
+    await page.goto(`${cms}/subtitles?video_id=${videoId}`);
+    await expect(page.getByText('BẢN NHÁP MÁY', { exact: true })).toBeVisible();
+    await page.getByLabel('Nội dung phụ đề 2').fill('Phụ đề được biên tập');
+    const saved = page.waitForResponse(response => response.url().endsWith(`/videos/${videoId}/subtitles`) && response.request().method() === 'PUT');
+    await page.getByRole('button', { name: 'Lưu thay đổi phụ đề', exact: true }).click();
+    expect((await saved).status()).toBe(200);
+    await expect(page.getByText('Đã lưu phụ đề', { exact: true })).toBeVisible();
+    await page.reload();
+    await expect(page.getByLabel('Nội dung phụ đề 2')).toHaveValue('Phụ đề được biên tập');
+    await expect(page.getByText('BẢN NHÁP MÁY', { exact: true })).toBeVisible();
+    const download = page.waitForEvent('download');
+    await page.getByRole('button', { name: 'Tải phụ đề SRT', exact: true }).click();
+    const file = await download;
+    expect(file.suggestedFilename()).toBe(`${videoId}-ban-nhap-ai.srt`);
+    const text = readFileSync((await file.path())!, 'utf8');
+    expect(text).toMatch(/^1\n\d\d:\d\d:\d\d,\d{3} --> /);
+    expect(text).toContain('Phụ đề được biên tập');
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+    await page.screenshot({ path: info.outputPath(`subtitle-draft-${width}.png`), fullPage: true });
+  });
   test(`INT-21 ${width} editorial metadata survives reload and AI regeneration`, async ({ page }, info) => {
     await setupUI(page);
     const summaryWrites: string[] = [];

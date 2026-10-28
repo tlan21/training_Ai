@@ -320,11 +320,13 @@ for(const width of [390,1440]){
  test('T3.2 '+width+' player seek transcript and download',async({page},info)=>{
   await page.setViewportSize({width,height:width===390?844:900});await setup(page);await page.goto(client+'/videos/vid_ui1?t=22');
   const player=page.locator('.detail-player video');await expect.poll(()=>player.evaluate((el:HTMLVideoElement)=>el.currentTime)).toBeCloseTo(2,0);
+  await expect(page.locator('.subtitle-overlay')).toContainText('Bản nháp phụ đề AI');
   await page.getByRole('button',{name:'Đến 00:24, điểm 94',exact:true}).click();await expect.poll(()=>player.evaluate((el:HTMLVideoElement)=>el.currentTime)).toBeCloseTo(4,0);
   if(width===390)await page.getByRole('button',{name:'Bản ghi',exact:true}).click();
   const panel=page.locator(width===390?'.transcript-dialog':'.transcript-desktop');
+  await expect(panel.getByText('BẢN NHÁP MÁY',{exact:true})).toBeVisible();
   await panel.getByRole('textbox',{name:'Tìm trong bản ghi'}).fill('quan trọng');await expect(panel.locator('.transcript-row')).toHaveCount(1);
-  const download=page.waitForEvent('download');await panel.getByRole('button',{name:'Tải bản ghi (.txt)',exact:true}).click();expect((await download).suggestedFilename()).toBe('vid_ui1.txt');
+  const download=page.waitForEvent('download');await panel.getByRole('button',{name:'Tải bản ghi (.txt)',exact:true}).click();const file=await download;expect(file.suggestedFilename()).toBe('vid_ui1-ban-nhap-ai.txt');const text=readFileSync((await file.path())!,'utf8');expect(text).toMatch(/^BẢN NHÁP PHỤ ĐỀ AI/);expect(text).toContain('Chào mừng các bạn đến với VidsAI.');expect(text).toContain('Đây là khoảnh khắc quan trọng của video.');
   await page.screenshot({path:info.outputPath('transcript-'+width+'.png'),fullPage:true});
   if(width===390){await page.keyboard.press('Escape');await expect(page.locator('.transcript-dialog')).not.toBeVisible();}
   if(width===1440){await page.getByLabel('Cài đặt trình phát').click();await page.getByLabel('Tốc độ phát').selectOption('1.5');expect(await player.evaluate((el:HTMLVideoElement)=>el.playbackRate)).toBe(1.5);}

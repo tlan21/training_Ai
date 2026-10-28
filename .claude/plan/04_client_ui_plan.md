@@ -582,3 +582,9 @@ Quy tắc: **HTML trong `stitch_ai_video_platform_vietnamese/` là nguồn sự 
 |---|---|---|---|
 | T3.2.14 | Màn 8 Discovery: chip filter + 3 section + badge | 0.5d | Filter category đổi list; trending stub render; không gọi analysis cho card nhỏ |
 | T3.2.15 | Key moments + hashtags + tải .txt + tìm transcript (màn 4); slider min_similarity (màn 5); nút save (màn 3) | 0.5d | Click điểm nhấn seek đúng; .txt tải được; slider đổi payload; save bắn interaction |
+
+## 2026-10-28 — User-approved HC-12/D23 subtitle disclosure (INT-24)
+- Label Client transcript (desktop/mobile sheet) BẢN NHÁP MÁY, explain possible mistakes; subtitle overlay also says Bản nháp phụ đề AI.
+- Downloaded transcript includes a draft notice and -ban-nhap-ai.txt filename, preserving all segments regardless of local search.
+- Existing API has no subtitle approval state; never imply official approval, even after editorial changes. No new API/schema.
+- User-approved copy/notice additions override these Stitch areas; summary stays hidden until existing admin approval.

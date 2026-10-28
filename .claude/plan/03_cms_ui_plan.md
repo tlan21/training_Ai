@@ -589,3 +589,9 @@ Audit 2 chiều Stitch export ↔ AI core đã chốt. Quy tắc: **HTML trong `
   undefined accuracy/online/render/storage/view metrics, AI key rotation. Hide/disable these honestly; never invent a value/state.
 - Existing soft-hide semantics retained. No new AI model/API operation. Four Client library routes/forgot-link remain separate undecided scope.
 - New editable input/category-description modal controls are the approved functional additions to Stitch. Other visual parity work remains INT-05.
+
+## 2026-10-28 — User-approved HC-12/D23 subtitle disclosure (INT-24)
+- AI subtitles remain machine drafts: show explicit BẢN NHÁP MÁY notice with verification/edit guidance in the CMS transcript panel.
+  Existing edit/save/reload endpoint remains; no subtitle approval field or official-status claim is introduced.
+- SRT downloads retain valid cue syntax and use -ban-nhap-ai.srt filename; summary approval gate remains separate.
+- This user-approved disclosure overrides original Stitch copy/notice spacing; other layout/parity requirements remain INT-05.

@@ -1,11 +1,13 @@
 # SESSION — authoritative resume state (2026-10-28, INT-23 Docker update verified)
 
 ## Branch / task state
-- INT-24 IN_PROGRESS: user approved HC-12 first, then INT-05. Only this task active.
-  Summary approval already has existing backend/live evidence; subtitle UI lacks explicit draft label.
-  Add CMS/Client/download draft disclosure using existing API, no approval status/endpoint or AI change; verify responsive/states +real edit/approval; append RE:HC-12.
-  Skill ui_design_review.md, Ponytail full and targeted UI/UX accessibility guidance. Current Docker images remain INT-23 until separately recorded rollout.
-
+- INT-05 IN_PROGRESS: user-approved remaining CMS visual corrections. Selected cms_screen.md; use existing Stitch references and10item design check.
+  No new metric/editor/uploader/rules fields or AI/model changes. CMSQA5174 owned execsession99670 running; ClientQA3100 not started.
+- INT-24 BLOCKED only on new Client browser verification: exact authorized QA3100 startup rejected by automatic review 'blocked by policy'.
+  User asked asynchronously to start external command; do not retry/bypass rejection. Source explicit draft labels+downloads implemented.
+  CMS3PASS17.3s, real CMSedit/summaryapproval1PASS38s, CMS/Clientbuilds+types PASS; evidence verification/INT-24.md.
+  Actual Client3000/CMS5173 remain INT-23 images, no new-label deployment. Pending Client tests need E2E_CLIENT_UI_URL=http://127.0.0.1:3100.
+  Host client/.next now rewritten for127.0.0.1:8000 after build; current HC12 code not deployed. One active tracker task only INT-05.
 - INT-23 DONE: user-authorized gateway/CPUworker/CMS/Client Docker update and real E2E completed. Evidence ad80f8f; fix fa8a382.
   All4 live images int23-fa8a382, local latest tags point to verified images; rollback-int23 images retained. No code/dist binds now.
   Gateway/CMS/Client healthy, worker running and real-pipeline exercised; original ingest_work volume preserved.

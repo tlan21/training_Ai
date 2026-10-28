@@ -122,6 +122,18 @@ test('T4.1 upload → processed → approve → publish → client feed', async 
     await expect(page.getByLabel('Tiêu đề đề xuất')).toHaveValue(title);
     await expect(page.getByLabel('Mô tả chi tiết')).toHaveValue(description);
     await expect(page.getByLabel('Thẻ Hashtag', { exact: true })).toHaveValue('BiênTập, INT_23');
+    // An explicit editorial test caption exercises persistence/cache without claiming ASR accuracy.
+    const caption = `Phụ đề biên tập kiểm thử ${name}`;
+    expect((await request.put(`${gateway}/api/cms/videos/${videoId}/subtitles`, { headers: adminHeaders, data: { segments: [{ segment_index: 0, start_time: 0, end_time: 5, text: 'Bản nháp kiểm thử', confidence: 0 }] } })).status()).toBe(200);
+    await page.reload();
+    await page.getByLabel('Nội dung phụ đề 1').fill(caption);
+    const subtitlesSaved = page.waitForResponse(response => response.url().endsWith(`/videos/${videoId}/subtitles`) && response.request().method() === 'PUT');
+    await page.getByRole('button', { name: 'Lưu thay đổi phụ đề', exact: true }).click();
+    expect((await subtitlesSaved).status()).toBe(200);
+    await expect(page.getByText('Đã lưu phụ đề', { exact: true })).toBeVisible();
+    await page.reload();
+    await expect(page.getByLabel('Nội dung phụ đề 1')).toHaveValue(caption);
+    expect((await (await request.get(`${gateway}/api/videos/${videoId}/subtitles`, { headers: viewerHeaders })).json()).segments[0].text).toBe(caption);
     const persisted = await (await request.get(metadataURL, { headers: adminHeaders })).json();
     expect(persisted).toMatchObject({ title, description, hashtags: ['BiênTập', 'INT_23'], width: 160, height: 90, fps: 10, status: 'processed' });
     expect(new URL(persisted.playback_url).pathname).toBe(new URL(original.playback_url).pathname);

@@ -13,7 +13,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-02 | T2.5 | Thay adapter memory → Postgres (interactions/history/likes/settings) | REVIEW | INT-00 (DB); không phụ thuộc AI |
 | INT-03 | T2.5, T1.7 | Two-Tower: sandbox/ID mapping; product vectors + feed | BLOCKED | product v2 AI-12 production gate; AI-09 MovieLens sandbox only |
 | INT-04 | T3.1, T3.2 | Contract nguồn phát video gốc (OpenAPI) + nối UI | PARTIAL | INT-00 (runtime); contract có thể làm độc lập |
-| INT-05 | T3.1 | CMS Design Parity FULL | PARTIAL | remaining visuals; user prioritizes production DB migration |
+| INT-05 | T3.1 | CMS Design Parity FULL | IN_PROGRESS | existing-API visual corrections after INT-23 |
 | INT-06 | T3.2 | Client Design Parity FULL | PARTIAL | production65PASS2026-10-28; API/design scope remains |
 | INT-07 | T5.1 | Load test 50 video dồn hàng đợi | BLOCKED | AI-04 (GPU); bản CPU chạy trước được |
 | INT-08 | T5.2 | Soak test 48 h | BLOCKED | INT-07 |
@@ -29,10 +29,10 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-18 | INT-00/13 boot | Bounded dependency startup recovery | REVIEW | Go+delayed PG+8worker tests/image PASS |
 | INT-19 | INT-14 pagination | Clarify public cursor/error contract | REVIEW | existing feed/catalog endpoints; no AI dependency |
 | INT-20 | INT-05 planA | CMS metadata/editorial/category contract | REVIEW | OpenAPI0.4.0/3types/schema+FEtsc PASS |
-| INT-21 | INT-20 | Persist/map approved CMS planA | REVIEW | realPG/worker/UI/build gates PASS; not deployed |
+| INT-21 | INT-20 | Persist/map approved CMS planA | REVIEW | realPG/worker/UI/build gates PASS; deployed INT-23 |
 | INT-22 | INT-21 | Apply004 to product Postgres | DONE | live apply/repeat/data/schema/health PASS; f8d82b8 |
 | INT-23 | INT-21/22 | Deploy planA Docker services +real E2E | DONE | explicit user deployment approval; DB004 applied |
-| INT-24 | HC-12/D23 | Explicit draft subtitles +approval evidence | IN_PROGRESS | user approved HC-12 first, then INT-05 |
+| INT-24 | HC-12/D23 | Explicit draft subtitles +approval evidence | BLOCKED | user approved HC-12 first, then INT-05 |
 
 Hoàn thành trước tách làn (bằng chứng INVENTORY mục 5): T0.1–T0.4, T2.1–T2.4, T4.1, T4.2 = DONE (VERIFIED-HIST, build VERIFIED-NOW);
 T2.5, T3.1, T3.2 = PARTIAL.
@@ -111,7 +111,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Checkpoint: Lane codex / Changed contract+players / Verified playback PASS, parity PARTIAL / Contract yes OpenAPI v0.2.0 / Next resource+scope.
 
 ### INT-05 — CMS Design Parity FULL
-- T gốc: T3.1 | Owner: CODEX | Status: PARTIAL (2026-10-28; user prioritizes live DB migration INT-22)
+- T gốc: T3.1 | Owner: CODEX | Status: IN_PROGRESS (2026-10-28; approved existing-API visual corrections after INT-23)
 - Depends on: INT-02; INT-04 functional playback PASS; full parity còn cần scope/resource
 - Gap (HIST `docs/T3.1_cms_design_parity.md`): nguồn phát video gốc, metadata/analytics/rules/editor fields chưa có API, Settings chưa persist.
 - NOW: settings/interactions persistence và nguồn phát đã có; original-video center controls +bounded proposal preview verified; metadata/analytics/rules/editor contract gaps còn mở.
@@ -361,11 +361,11 @@ T2.5, T3.1, T3.2 = PARTIAL.
  No AI/source/checkpoint/model/runtime/contract change, old-video backfill, datastoredown/volume deletion, master/shared-status edit or push.
 - Next action: INT-05 remaining approved visual parity; INT-06 library/forgot-link decisions remain pending.
 ### INT-24 — HC-12: machine subtitle drafts and summary approval
-- Owner: CODEX | Status: IN_PROGRESS (2026-10-28)
+- Owner: CODEX | Status: BLOCKED (2026-10-28; Client QA3100 automatic review rejected)
 - Dependency: user accepted proposed HC-12 then INT-05; current public0.4.0/AI-APIv1.3 unchanged; Release#4 received.
 - Acceptance: public summary remains hidden before approval; CMS clearly identifies machine subtitle drafts with edit/save/reload;
  Client transcript and downloaded text identify drafts without implying official approval; existing API/types/media unchanged;
  CMS/Client builds/types, targeted 390x844/1440x900 UI/state checks and real approval/edit evidence; RE:HC-12 handoff.
 - Scope: ui_design_review.md +Ponytail full; approved D23 copy override, no new subtitle approval endpoint/status, AI/model or contract schema.
 - Changed planned: CMS subtitles, shared Client Transcript/styles, fixture/live E2E, owned plans/SESSION/TASKS/HANDOFF/evidence.
-- Evidence/commits: pending. Next action: add minimal draft disclosure; verify existing summary gate/subtitle edit persistence; then INT-05.
+- Evidence: verification/INT-24.md; CMS3PASS17.3s, real edit/approval1PASS38s, CMS/Client builds+types PASS. New Client browser checks pending QA3100 external startup; automatic review rejected despite prior authorization. Next action: independent INT-05 while waiting.
