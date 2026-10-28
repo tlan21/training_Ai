@@ -13,7 +13,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-02 | T2.5 | Thay adapter memory → Postgres (interactions/history/likes/settings) | REVIEW | INT-00 (DB); không phụ thuộc AI |
 | INT-03 | T2.5, T1.7 | Two-Tower: sandbox/ID mapping; product vectors + feed | BLOCKED | product v2 AI-12 production gate; AI-09 MovieLens sandbox only |
 | INT-04 | T3.1, T3.2 | Contract nguồn phát video gốc (OpenAPI) + nối UI | PARTIAL | INT-00 (runtime); contract có thể làm độc lập |
-| INT-05 | T3.1 | CMS Design Parity FULL | IN_PROGRESS | planA implementation reviewed; remaining visual differences |
+| INT-05 | T3.1 | CMS Design Parity FULL | PARTIAL | remaining visuals; user prioritizes production DB migration |
 | INT-06 | T3.2 | Client Design Parity FULL | PARTIAL | production65PASS2026-10-28; API/design scope remains |
 | INT-07 | T5.1 | Load test 50 video dồn hàng đợi | BLOCKED | AI-04 (GPU); bản CPU chạy trước được |
 | INT-08 | T5.2 | Soak test 48 h | BLOCKED | INT-07 |
@@ -30,6 +30,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-19 | INT-14 pagination | Clarify public cursor/error contract | REVIEW | existing feed/catalog endpoints; no AI dependency |
 | INT-20 | INT-05 planA | CMS metadata/editorial/category contract | REVIEW | OpenAPI0.4.0/3types/schema+FEtsc PASS |
 | INT-21 | INT-20 | Persist/map approved CMS planA | REVIEW | realPG/worker/UI/build gates PASS; not deployed |
+| INT-22 | INT-21 | Apply004 to product Postgres | IN_PROGRESS | explicit user approval; code aad0c75 |
 
 Hoàn thành trước tách làn (bằng chứng INVENTORY mục 5): T0.1–T0.4, T2.1–T2.4, T4.1, T4.2 = DONE (VERIFIED-HIST, build VERIFIED-NOW);
 T2.5, T3.1, T3.2 = PARTIAL.
@@ -108,7 +109,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Checkpoint: Lane codex / Changed contract+players / Verified playback PASS, parity PARTIAL / Contract yes OpenAPI v0.2.0 / Next resource+scope.
 
 ### INT-05 — CMS Design Parity FULL
-- T gốc: T3.1 | Owner: CODEX | Status: IN_PROGRESS (2026-10-28; planA source verified; remaining visual corrections)
+- T gốc: T3.1 | Owner: CODEX | Status: PARTIAL (2026-10-28; user prioritizes live DB migration INT-22)
 - Depends on: INT-02; INT-04 functional playback PASS; full parity còn cần scope/resource
 - Gap (HIST `docs/T3.1_cms_design_parity.md`): nguồn phát video gốc, metadata/analytics/rules/editor fields chưa có API, Settings chưa persist.
 - NOW: settings/interactions persistence và nguồn phát đã có; original-video center controls +bounded proposal preview verified; metadata/analytics/rules/editor contract gaps còn mở.
@@ -331,3 +332,11 @@ T2.5, T3.1, T3.2 = PARTIAL.
  8workerPASS1.016s; CMS39PASS45.9s +final7PASS9.7s; Client71PASS1.2m; CMS/Client/E2Etypes, CMS/Client builds +Clientlint PASS.
 - Changed: listed in verification/INT-21.md (source/storage/worker/API/CMS+Clientmapping/tests/owned docs). Commits: af0e989 contract; aad0c75 implementation/evidence.
 - Next action: INT-05 visual work. No live migration/deployment; apply004 before new binaries when deployment is approved. AI API unchanged.
+
+### INT-22 — Apply approved CMS metadata migration to product DB
+- Owner: CODEX | Status: IN_PROGRESS (2026-10-28)
+- Dependency: INT-20/21 source verified (aad0c75); explicit user instruction to apply migration on product DB.
+- Acceptance: identify correct product Postgres; private consistent backup; apply exact004 DDL transactionally with bounded locks;
+ verify5nullable columns/check constraints, original rows/data unchanged while locked, repeat safely, current gateway/UI health.
+- Changed planned: coordination/codex task/session/evidence +guarded migration runner under infra; actual public database schema.
+- Commit/Evidence: pending | Next action: preflight and backup; no service deployment, AI API change, data backfill/deletion or master/push.

@@ -1,6 +1,9 @@
 # SESSION — authoritative resume state (2026-10-28, CMS planA source verified)
 
 ## Branch / task state
+- User explicitly requested applying004_cms_metadata.sql to product DB. Only INT-22 IN_PROGRESS; INT-05 PARTIAL temporarily.
+  Scope: verify target/schema/rows, private ignored backup, guarded transactional additive migration, idempotent repeat +data/schema/health evidence.
+  No application service deployment, AI operation, backfill, master release or push authorized by this DB-only request.
 -2026-10-28 user approved CMS planA: metadata width/height/fps, video title/description/editorial hashtags, category description;
  preserve soft-hide; defer priority/customAIrules/logo/undefinedmetrics/keyrotation. Client4library routes/forgot-link still unapproved.
  Release#4 received by `git merge master` without conflict; AI-APIv1.3 and active checkpoints unchanged. No Codex release/push authorized.
