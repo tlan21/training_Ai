@@ -1,0 +1,65 @@
+{
+ "label": "CLAUDE_JUDGE (D22) — not a human score",
+ "candidate_sha256": "62974ef8cd88e29cb82ff55693b5135615cc9e525cdc2a6d8024141f2fd1647a",
+ "init": "cf9cfa71 (active)",
+ "news_guard": {
+  "status": "PASS",
+  "selected_step": 120,
+  "news_val_paired_rouge_l": 0.3224,
+  "init": 0.2323,
+  "train_peak_reserved_gib": 2.19
+ },
+ "domain_val_10": {
+  "claude_judge_clean": {
+   "baseline": 1.5,
+   "candidate": 1.8,
+   "scores": {
+    "dom_-1Is0o2ZWk0_1": 2,
+    "dom_-1Is0o2ZWk0_2": 1,
+    "dom_f7VbxhaVtfk_1": 3,
+    "dom_f7VbxhaVtfk_2": 1,
+    "dom_uY0zUhWOLJM_1": 1,
+    "dom_uY0zUhWOLJM_2": 2,
+    "dom_wYRFi4-KWek_1": 1,
+    "dom_wYRFi4-KWek_2": 1,
+    "dom_wzKzkenrYew_1": 3,
+    "dom_wzKzkenrYew_2": 3
+   }
+  },
+  "claude_judge_own_asr": {
+   "baseline": 1.0,
+   "candidate": 1.0
+  },
+  "rouge_l_clean": {
+   "baseline": 0.126,
+   "candidate": 0.125
+  },
+  "rouge_l_own_asr": {
+   "baseline": 0.021,
+   "candidate": 0.041
+  },
+  "clean_repetition_loops": {
+   "baseline": 2,
+   "candidate": 2
+  },
+  "own_asr_repetition_loops": {
+   "baseline": 2,
+   "candidate": 5
+  },
+  "news_prefix_habit_clean": {
+   "baseline": 10,
+   "candidate": 2
+  }
+ },
+ "domain_train_29": {
+  "rouge_l_clean": 0.789,
+  "rouge_l_own_asr": 0.418,
+  "note": "memorised (incl. unreadable ASR -> summary): not evidence of quality"
+ },
+ "observations": [
+  "style moved from News lead '(TNO) Ngày…' to extractive summary on clean input",
+  "train phrases leak into val outputs ('Báo Tuổi trẻ Thủ đô trao…', 'Chuyên gia đề nghị gia đình') — overfitting from 29 clips x8",
+  "own-ASR path unchanged at 1.0/5: input CER 0.584 carries too little content"
+ ],
+ "verdict": "NOT PROMOTED — gain on clean input small (1.5→1.8, ROUGE flat), real pipeline unchanged; human gate ≥3/5 not met"
+}

@@ -23,7 +23,8 @@ def _write_export(tmp_path, interactions, users=None, videos=None, clips=None, s
         "clips.jsonl": clips or [{"clip_id": "clp_1", "video_id": "vid_1", "start_time": 0.0, "end_time": 20.0, "status": "published"}],
         "interactions.jsonl": interactions,
     }
-    manifest = {"export_version": pi.EXPORT_VERSION, "generated_at": snapshot, "snapshot_at": snapshot, "files": {}}
+    manifest = {"export_version": pi.EXPORT_VERSION, "generated_at": snapshot, "snapshot_at": snapshot, "files": {},
+                "provenance": {"source": "product_postgres", "exporter": "test-fixture@0000000", "environment": "test"}}
     for name, rows in files.items():
         data = "".join(json.dumps(r) + "\n" for r in rows).encode()
         (tmp_path / name).write_bytes(data)
@@ -42,6 +43,37 @@ def _ev(i, user, video, kind, minute, watched=0, clip=None):
 def test_manifest_checksum_is_enforced(tmp_path):
     with pytest.raises(ValueError, match="sha256"):
         pi.load_export(_write_export(tmp_path, [], tamper=True))
+
+
+def test_provenance_is_required_and_recorded(tmp_path):
+    root = _write_export(tmp_path, [])
+    assert pi.load_export(root).provenance["source"] == "product_postgres"
+    man = json.loads((root / "manifest.json").read_text())
+    del man["provenance"]
+    (root / "manifest.json").write_text(json.dumps(man))
+    with pytest.raises(ValueError, match="provenance"):
+        pi.load_export(root)
+
+
+@pytest.mark.parametrize("field,value,match", [("video_id", None, "video_id"), ("duration_watched", "10", "duration_watched"),
+                                               ("interaction_id", None, "interaction_id")])
+def test_schema_violations_are_rejected_before_cleaning(tmp_path, field, value, match):
+    row = _ev(1, "usr_a", "vid_1", "like", 10)
+    if value is None:
+        del row[field]
+    else:
+        row[field] = value
+    with pytest.raises(ValueError, match=match):
+        pi.load_export(_write_export(tmp_path, [row]))
+
+
+def test_verify_report_lists_every_reject_reason(tmp_path):
+    from ai_core.scripts.verify_ttv2_bundle import verify
+    rep = verify(_write_export(tmp_path, [_ev(1, "usr_a", "vid_1", "like", 10), _ev(2, "usr_zzz", "vid_1", "like", 11)]))
+    assert set(rep["dropped"]) == set(pi.REJECT_REASONS) | {"duplicate"}
+    assert rep["dropped"]["unknown_user"] == 1 and rep["rows"]["interactions.jsonl"] == 2 and rep["valid_interactions"] == 1
+    assert rep["provenance"]["exporter"] == "test-fixture@0000000" and rep["stage"] == "TRAIN_EXPERIMENTAL"
+    assert rep["export_version"] == pi.EXPORT_VERSION and rep["label_version"] == pi.LABEL_VERSION
 
 
 def test_invalid_rows_are_dropped_with_reasons(tmp_path):
@@ -87,6 +119,19 @@ def test_labels_follow_data_contract(tmp_path):
         ("usr_b", "vid_3", False), ("usr_c", "vid_3", False), ("usr_c", "vid_1", True)}
 
 
+def test_long_video_short_watch_is_neutral_not_positive(tmp_path):
+    """ttv2-labels-v2: ≥30 s but <10% of a long video is ambiguous → no label (rules are mutually exclusive)."""
+    videos = [{"video_id": f"vid_{n}", "category_id": "cat_a", "duration_seconds": d, "visible_to_client": True, "created_at": T0}
+              for n, d in (("long", 600.0), ("mid", 200.0), ("short", 60.0), ("s100", 100.0))]
+    rows = [_ev(1, "usr_a", "vid_long", "watch_time", 10, watched=35),   # 5.8%, ≥30 s → neutral
+            _ev(2, "usr_a", "vid_mid", "watch_time", 20, watched=30),    # 15%, ≥30 s → positive
+            _ev(3, "usr_a", "vid_short", "watch_time", 30, watched=35),  # 58% → positive
+            _ev(4, "usr_a", "vid_s100", "watch_time", 40, watched=5)]    # 5%, <30 s → negative
+    labels = pi.label(pi.clean(pi.load_export(_write_export(tmp_path, rows, videos=videos, clips=[]))))
+    assert {(l.video_id, l.positive) for l in labels} == {("vid_mid", True), ("vid_short", True), ("vid_s100", False)}
+    assert pi.LABEL_VERSION == "ttv2-labels-v2"
+
+
 def test_positive_wins_and_keeps_first_positive_time(tmp_path):
     rows = [_ev(1, "usr_a", "vid_1", "skip", 10), _ev(2, "usr_a", "vid_1", "like", 20), _ev(3, "usr_a", "vid_1", "save", 30)]
     (lab,) = pi.label(pi.clean(pi.load_export(_write_export(tmp_path, rows))))
@@ -100,6 +145,8 @@ def test_time_split_has_no_leakage_and_reports_cold_start(tmp_path):
     split = pi.time_split(labels, eval_fraction=0.5)
     assert max(l.at for l in split.train) < split.cutoff <= min(l.at for l in split.eval)
     assert split.cold_start_users == {"usr_b"}
+    pairs = lambda ls: {(l.user_id, l.video_id) for l in ls}  # noqa: E731
+    assert not pairs(split.train) & pairs(split.eval)          # one label per pair → no pair on both sides
 
 
 def test_category_vocabulary_is_sorted_and_versioned(tmp_path):
@@ -110,6 +157,7 @@ def test_category_vocabulary_is_sorted_and_versioned(tmp_path):
 
 
 def test_gate_stage_follows_d19():
+    assert pi.gate_stage(n_users=0, n_valid=0, eval_users_with_5_pos=0) == "NO_DATA"       # empty export: nothing to train on
     assert pi.gate_stage(n_users=10, n_valid=40, eval_users_with_5_pos=0) == "TRAIN_EXPERIMENTAL"
     assert pi.gate_stage(n_users=200, n_valid=5000, eval_users_with_5_pos=0) == "TRAIN_EXPERIMENTAL"
     assert pi.gate_stage(n_users=200, n_valid=5000, eval_users_with_5_pos=30) == "EVAL_READY"

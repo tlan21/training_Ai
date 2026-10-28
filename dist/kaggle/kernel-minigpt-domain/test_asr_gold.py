@@ -93,3 +93,12 @@ def test_frozen_validation_cannot_be_rewritten(tmp_path):
     approved['val'][0]['extra']['transcript'] = 'OTHER'
     with pytest.raises(ValueError): freeze_validation(target, approved['val'])
     assert target.read_bytes() == original
+
+
+@pytest.mark.parametrize('verified', [True, False])
+def test_claude_proposed_transcript_is_never_approved(verified):
+    """AI-02a: a CLAUDE_PROPOSED record (text-only, nobody listened) is rejected, even with a flipped verified flag."""
+    packet, payload, _ = fixture()
+    payload['records'][0].update(transcript_verified=verified, origin='CLAUDE_PROPOSED', label='CLAUDE_PROPOSED')
+    with pytest.raises(ValueError, match='provenance'):
+        validate(payload, packet)

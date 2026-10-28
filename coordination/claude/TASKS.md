@@ -14,11 +14,11 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | AI-07 | T1.8 | Vận hành runtime :8001 thật cho Codex gọi HTTP (+ sửa UTF-8 Windows) | DONE (2026-10-26; :8001 UP; ingest path ⇐ HC-05) | AI-10; Milvus stack Codex (UP) |
 | AI-11 | T1.8 / T4.2 | HO-01: `video_id` tùy chọn cho Vision + index frame từ data URI 1 fps (contract minor) | DONE (2026-10-26) | HO-01 (Codex chọn HTTP media) |
 | AI-13 | T1.7 / T1.8 | D18: recommendation inference không trả metadata giả + `recommendation_mode` | DONE (2026-10-26; release #3) | D18 |
-| AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | IN_PROGRESS (2026-10-26; 12a/12c) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
+| AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | BLOCKED ⇐ bundle INT-13 (phần độc lập xong 2026-10-26) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | DONE (2026-10-26; sandbox + artifact; product → AI-12 theo D18) | HC-04 (sandbox READY) |
-| AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a TODO · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
-| AI-03 | T1.6 | Mini-GPT: 03a Claude soạn summary 40 clip · 03b người duyệt · 03c train/eval | 03a TODO · 03b BLOCKED · 03c BLOCKED | 03b ⇐ user; 03c ⇐ 03b |
-| AI-04 | T1.8 / T4.3 | Đo VRAM sơ bộ Kaggle T4 (PRELIMINARY) | TODO | AI-06 |
+| AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a DONE (2026-10-27) · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
+| AI-03 | T1.6 | Mini-GPT: 03a Claude soạn summary 40 clip · 03b người duyệt · 03c train/eval | 03a DONE (2026-10-26) · 03b BLOCKED ⇐ user · 03c BLOCKED | 03b ⇐ user; 03c ⇐ 03b |
+| AI-04 | T1.8 / T4.3 | Đo VRAM sơ bộ Kaggle T4 (PRELIMINARY) | DONE — PRELIMINARY_T4 (2026-10-26; nghiệm thu 3060 vẫn mở) | AI-06 (DONE) |
 | AI-05 | T5.3 | Số liệu evaluation cho luận án | TODO | AI-02, AI-03, AI-04 |
 | AI-08 | — | Dọn dẹp dữ liệu/artefact làn AI an toàn (lặp lại sau mỗi đợt train) | TODO (đợt #1 DONE 2026-10-26) | không job/server nào đang dùng; user duyệt danh sách |
 
@@ -73,7 +73,7 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   ```
 
 ### AI-02 — ASR domain adaptation (T1.4 follow-up)
-- T gốc: T1.4 | Owner: claude | Status: 02a TODO · 02b BLOCKED · 02c BLOCKED
+- T gốc: T1.4 | Owner: claude | Status: 02a DONE · 02b IN_PROGRESS (user duyệt lại v3, 2026-10-27) · 02c BLOCKED ⇐ 02b
 - Tiến độ duyệt (ghi 2026-10-26): **7/60 đã duyệt, 53/60 còn phải kiểm tra** — số 7/60 là tiến độ trang review hiển thị
   (lưu localStorage Chrome, `http://127.0.0.1:8891/asr_review_v2/index.html`); **chưa có file JSON export** nào
   (Downloads không có `asr_expansion_review_v2*.json`) → bằng chứng file hiện là 0/60. Gói dữ liệu:
@@ -82,7 +82,14 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   đề xuất sửa chữ/chuẩn hóa theo `docs/T1.4_asr_label_contract.md`, ghi lý do, nhãn `CLAUDE_PROPOSED` trong file riêng
   (không ghi đè nháp gốc, không ghi vào kết quả duyệt của user). Claude không nghe được audio → đề xuất chỉ dựa trên văn bản,
   phải ghi rõ giới hạn này. Acceptance: file đề xuất + hash nguồn + test strict-intake vẫn từ chối mục chưa `HUMAN_VERIFIED`.
-- **AI-02b — người duyệt (BLOCKED ⇐ user):** user nghe/sửa/xác nhận hoặc loại từng clip, xuất JSON thật. Chỉ mục user xác nhận
+  Evidence 02a (VERIFIED-NOW 2026-10-27, `docs/T1.4_asr_claude_proposals.md`, `data/manifests/asr_claude_proposals_v1.json`): 60/60 clip
+  (13 EXCLUDE_CANDIDATE gồm 9 nháp ảo giác Whisper, 30 CORRECTION, 17 LISTEN_ONLY), hash audio/video/nháp + hash packet; chữ số trùng nháp 100%;
+  0 verified; file D: SHA `9ade1bb4…` không ghi đè; intake `test_claude_proposed_transcript_is_never_approved` (2 case) → 40 passed.
+- **AI-02b lần 1 (export v2, 2026-10-27, `received_87a7eb6fd111`, SHA `87a7eb6f…`): KHÔNG intake** — 60/60 xác nhận nhưng 57 giống hệt nháp Whisper
+  (gồm 10 câu ảo giác 'Để không bỏ lỡ…'/'Đi nào?', chuỗi lặp, lỗi chính tả rõ) → nhãn = Whisper, vi phạm §0. User chọn duyệt lại bản gọn.
+  Trang v3 `asr_review_v3` (`prepare_expansion_review_v3.py`, test 10 passed + kiểm trình duyệt): 57 clip xếp ưu tiên 11/26/20, điền sẵn gợi ý Claude,
+  **chỉ cho xác nhận sau khi audio phát hết** (`audio_played_full` trong export). 3 clip user đã sửa giữ từ v2. Intake 02c sẽ yêu cầu `audio_played_full=true`.
+- **AI-02b — người duyệt (gốc):** user nghe/sửa/xác nhận hoặc loại từng clip, xuất JSON thật. Chỉ mục user xác nhận
   mới là `HUMAN_VERIFIED`. Claude **không** tự gán.
 - **AI-02c — intake + train (BLOCKED ⇐ 02b):** strict intake giữ machine-assisted provenance/coverage/train-only vocab/CTC/split guard;
   1 thí nghiệm bounded; chỉ promote khi guard VIVOS/FLEURS/domain không hồi quy; không chọn theo test.
@@ -92,14 +99,25 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - Checkpoint: Next safe task = AI-02a (không phụ thuộc user); 02b chờ user.
 
 ### AI-03 — Mini-GPT human quality gate (T1.6)
-- T gốc: T1.6 | Owner: claude | Status: 03a TODO · 03b BLOCKED · 03c BLOCKED
+- T gốc: T1.6 | Owner: claude | Status: 03a DONE · 03b DONE theo D22 (Claude duyệt, 2026-10-27) · 03c DONE — thí nghiệm xong, KHÔNG promote; cổng người ≥3/5 chưa đạt
 - Nguồn 40 clip real-domain (30 train / 10 val, ngoài frozen30): `data/manifests/minigpt_real_domain.json`; transcript user đã rà
   (export SHA `860f8068d0bd…`, 40 transcript/39 sửa) — `docs/T1.6_whisper_review_intake.md`.
 - **AI-03a — Claude soạn summary 40 clip (TODO, theo quyết định user 2026-10-26):** soạn từ transcript user đã rà; mỗi mục lưu
   clip ID, hash media + hash transcript nguồn, văn bản summary, số BPE token (≤95), người/công cụ tạo = Claude + ngày,
   nhãn `CLAUDE_PROPOSED`. Lưu file riêng trên D: + manifest `data/manifests/` + báo cáo `docs/T1.6_*`; không ghi đè dữ liệu cũ.
   Acceptance: đủ 40 mục, hash khớp nguồn, strict intake từ chối dùng làm target khi chưa `HUMAN_VERIFIED`.
-- **AI-03b — người duyệt (BLOCKED ⇐ user):** user duyệt/sửa/loại từng summary → `HUMAN_VERIFIED`.
+  Evidence 03a (VERIFIED-NOW 2026-10-26, `docs/T1.6_claude_summaries.md`, `data/manifests/minigpt_claude_summaries_v1.json`): 40/40 mục, hash audio/video
+  từ export `860f8068…` + hash transcript nguồn, BPE mean 46.2 / max 58 (tokenizer active), 40/40 câu kết thúc, `verified=false`, `CLAUDE_PROPOSED`;
+  file D: SHA `978a32e0…` (không ghi đè); intake `test_gate_refuses_claude_proposed_summaries` (2 case, kể cả verified=true giả) → 22 passed.
+  Lưu ý cho người duyệt: 2 mục trùng lời chào kênh, 2 mục transcript rất nhiễu (doc). Script: `dist/kaggle/kernel-minigpt-domain/build_claude_summaries.py`.
+- **AI-03b — DONE theo D22 (2026-10-27):** Claude duyệt (không phải người): 38 đạt, 1 sửa (`dom_sTeS-7km_NM_1` bỏ suy diễn), 1 loại
+  (`dom_p7FlzMrLDSo_1` trùng transcript). File `D:/.../claude_review_d22_v1/claude_reviewed_summaries_v1.json` SHA `bf1ee8ec…`, provenance `claude_drafted_claude_reviewed`.
+  Baseline CLAUDE_JUDGE (`evidence/AI-03_2026-10-27/judge_baseline.json`): MiniGPT active với transcript sạch 1.44/5 (val 1.50), với ASR active 1.0/5 (40/40 bịa);
+  ASR active CER 0.584 / candidate 0.481 trên 40 clip. Hiệu chuẩn 30 clip người chấm: judge 1.0 vs người 1.6 — 5 bất đồng đều là câu bịa trôi chảy.
+- **AI-03c (VERIFIED-NOW 2026-10-27, `docs/T1.6_d22_domain_finetune.md`):** Kaggle T4 mixed replay + 29 cặp D22 ×8, guard News PASS (0.232→0.322, step 120,
+  2.19 GiB). Candidate `62974ef8…` (D:, không thay active). CLAUDE_JUDGE domain val: sạch 1.5→1.8, ASR 1.0→1.0; ROUGE sạch 0.126→0.125; train học thuộc.
+  KHÔNG promote. Nút thắt = ASR (CER 0.584 video thật) → cần AI-02b (người nghe). Commits 054e2af, 77e3af8, (commit kết quả).
+- *(Gốc)* **AI-03b — người duyệt:** user duyệt/sửa/loại từng summary → `HUMAN_VERIFIED`.
   ⚠ Ràng buộc dự án (`my-agent/agent/instructions.md` §1: "không pseudo-label từ model ngoài"): summary do Claude soạn là
   output của model ngoài → chỉ được làm target train/eval sau khi người duyệt từng mục **và** provenance ghi rõ
   `claude_drafted_human_verified`. Mục chưa duyệt không bao giờ được dùng.
@@ -111,7 +129,7 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - Checkpoint: Next safe task = AI-03a.
 
 ### AI-04 — Đo VRAM sơ bộ trên Kaggle T4 (AI-GATE điều kiện 4, T4.3 phần GPU)
-- T gốc: T1.8, T4.3 | Owner: claude | Status: TODO (sơ bộ được user cho phép 2026-10-26)
+- T gốc: T1.8, T4.3 | Owner: claude | Status: DONE — mức PRELIMINARY_T4 (2026-10-26). AI-GATE đk 4 / T4.3 GPU vẫn PARTIAL (cần RTX 3060).
 - Depends on: AI-06 (đúng 6 checkpoint active + SHA). Máy local chỉ Intel UHD 630.
 - Cách đo: notebook Kaggle private, GPU T4; nạp đúng 6 checkpoint active (SHA khớp contract) + 20 request tuần tự đủ 6 loại,
   đo `torch.cuda.max_memory_allocated/reserved` sau nạp và sau mỗi request; tải output về trước khi push version kế
@@ -121,8 +139,18 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - **Không thay nghiệm thu:** AI-GATE điều kiện 4 và T4.3 vẫn `PARTIAL` cho tới khi đo trên RTX 3060 (hoặc user duyệt riêng kết quả T4
   thay thế). T4 không chứng minh hành vi trên 3060 12 GB.
 - Blocks: INT-07 (T5.1 GPU) chỉ ở mức nghiệm thu cuối; Codex có thể chạy bản CPU trước.
-- Evidence: HIST CPU RSS 20 video PASS (`docs/T4.3_bao_cao.md`); GPU chưa đo.
-- Commits: — | Checkpoint: —
+- Evidence (VERIFIED-NOW 2026-10-26, `docs/T4.3_bao_cao.md` mục AI-04, `coordination/claude/evidence/AI-04_2026-10-26/`):
+  Kaggle private kernel `traininghighlight/ai-vram-t4-run-v1` v3, 2×T4 (đo GPU 0), driver 580.178.04, CUDA 12.8, torch 2.11.0+cu128, fp16; 6 ckpt SHA khớp contract;
+  20 request tuần tự (vision 32 frame, ASR 25 s, highlight 120 s, completions map-reduce, Siamese 32) 20/20 OK. Sau nạp: nvidia-smi 305 MiB; peak 347 MiB
+  (PyTorch reserved 210, allocated 133); tail allocated 82 MiB ổn định. Dry-run CPU cục bộ trước khi push. v1 (input nhỏ) → v2 (input xấu nhất) → v3 (+nvidia-smi).
+- Commits: 06dcb0e (nhận task), 3a380dc (kernel+builder), 4b47b5a (v2), c5d0e60 (v3), 9918151 (báo cáo) | Checkpoint:
+  ```
+  Lane: claude
+  Changed: dist/kaggle/kernel-vram-t4/{build_dataset.py,run_vram_t4.py,kernel-metadata.json}, docs/T4.3_bao_cao.md, coordination/claude/{TASKS,SESSION,HANDOFF_OUT}.md, evidence/AI-04_2026-10-26/**
+  Verified: Kaggle T4 v3 20/20 OK, peak nvidia-smi 347 MiB ≤ 4096; SHA 6 ckpt khớp; CPU dry-run 5/5
+  Contract touched: no
+  Next safe task: AI-03a (Claude soạn 40 summary, CLAUDE_PROPOSED) / AI-02a
+  ```
 
 ### AI-10 — Health/degraded đúng ngữ nghĩa (D15)
 - T gốc: T1.8 | Owner: claude | Status: DONE (2026-10-26)
@@ -183,7 +211,8 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   ```
 
 ### AI-12 — Two-Tower v2 cho sản phẩm (D18 phương án B, roadmap)
-- T gốc: T1.7 | Owner: claude | Status: IN_PROGRESS (2026-10-26) — 12a/12c DONE (data contract + loader); 12b–12f chờ bundle thật (INT-13); không chặn task tích hợp
+- T gốc: T1.7 | Owner: claude | Status: BLOCKED ⇐ bundle thật INT-13 (2026-10-26) — phần độc lập dữ liệu thật xong: 12a/12c (contract `ttv2-data-v1.1` + nhãn `ttv2-labels-v2`),
+  12b/12d (feature inductive, train loop, harness, gate D19, verify bundle). Còn: chạy trên bundle thật INT-13 (12d thật, 12e, 12f) — chưa đạt acceptance, không DONE
 - Depends on: dữ liệu tương tác hợp lệ của sản phẩm (Codex ghi `user_interactions`, đề xuất INT-13) | Blocks: recommendation `personalized` trên sản phẩm
 - Giữ nguyên: Two-Tower v1 (`two_tower-ml100k-v1`, SHA `f28c3794…`) làm baseline nghiên cứu trong sandbox; không xóa model/checkpoint/dữ liệu.
 - Bước (mỗi bước có test/bằng chứng riêng; chỉ AI-12f mới chạm sản phẩm):
@@ -205,9 +234,14 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   - Bắt buộc: split theo thời gian, chống leakage/trùng/tương tác không hợp lệ; báo cáo kích thước mẫu, tập candidate, phương pháp CI, benchmark, cold-start.
     Không pseudo-label từ model ngoài. Ngưỡng xem lại nếu quy mô/phân phối thực tế không phù hợp (ghi lý do, user duyệt).
 - Evidence 12a/12c (VERIFIED-NOW 2026-10-26, `coordination/claude/evidence/AI-12_2026-10-26/`): data contract `coordination/claude/api/TWO_TOWER_V2_DATA_CONTRACT.md`
-  (`ttv2-data-v1`); `ai_core/training/datasets/product_interactions.py` — test RED (module thiếu) → 8/8 PASS (checksum, 9 lý do loại, dedup 30 s, nhãn,
+  (`ttv2-data-v1`); `ai_core/training/datasets/product_interactions.py` — test RED (module thiếu) → 8/8 PASS (checksum, lý do loại [đính chính: 10 lý do + duplicate, không phải 9], dedup 30 s, nhãn,
   split thời gian không leakage + cold-start, vocabulary versioned, gate D19); ai-core 297 passed; `dataset_spec.md` §3.6 cập nhật; HC-07 cho Codex.
-- Commits: 7dc80ac (D19–D21, task), b261600 (12a/12c) | Kế: 12b (encoder inductive) + 12d (eval harness, baseline Popularity) trên bundle thật khi INT-13 có dữ liệu;
+- Evidence 12b/12d + labels v2 + verify (VERIFIED-NOW 2026-10-26, `evidence/AI-12_2026-10-26/README_12bd.md`, SYNTHETIC = chỉ kiểm logic):
+  nhãn v2 RED→GREEN, lưới 7 980 cặp 0 xung đột; `two_tower_v2.py` 8 test (feature chỉ từ train, oracle, loại item đã xem, popularity train-only, bootstrap,
+  gate từng điều kiện, synthetic không qua production, train > untrained +0.2); `verify_ttv2_bundle.py` + schema/provenance 5 test; ai-core 311 passed.
+- Verify bundle thật đầu tiên (VERIFIED-NOW 2026-10-27): Codex INT-15 `20261026T113856Z` — schema/provenance/SHA ACCEPTED, 0 tương tác → gate `NO_DATA`
+  (thêm giai đoạn NO_DATA, test RED→GREEN, ai-core 311 passed). Evidence `verify_INT-15_20261026T113856Z.json`. AI-12 vẫn BLOCKED ⇐ dữ liệu tương tác thật.
+- Commits: 7dc80ac (D19–D21, task), b261600 (12a/12c), e65bb74 (labels v2, HC-08), 920bf9d (12b/12d), 5a8d837 (v1.1 verify) | Kế: 12b (encoder inductive) + 12d (eval harness, baseline Popularity) trên bundle thật khi INT-13 có dữ liệu;
   có thể chuẩn bị harness với dữ liệu tổng hợp (không dùng làm kết quả).
 
 ### AI-09 — Two-Tower recommendation phía AI (D14)

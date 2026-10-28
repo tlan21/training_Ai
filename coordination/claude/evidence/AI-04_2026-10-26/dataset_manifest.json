@@ -1,0 +1,18 @@
+{
+ "purpose": "AI-04 PRELIMINARY_T4 VRAM",
+ "sha256": {
+  "ai_core.zip": "7ba11f5e53fa75b357c24bf9c87ba66a7cfdfe7ebea715a9e79e53e0f2c515b3",
+  "ckpt_asr_ctc.pt": "8f87986781cfb3d4716691f2051e5798187693e2452f9f41b28ca4a753ea5531",
+  "ckpt_highlight_fusion.pt": "becbd378ca237c6992867ca5309663d3c1c142a99b40da57f9a0fb652489b49c",
+  "ckpt_minigpt.pt": "cf9cfa7141d40f9d40b0065ae68855ff39ffe750260ee7b42c7c0eac719330ac",
+  "ckpt_minigpt_bpe_vocab.json": "649ffc66d05bdda9c4586fe5500284dc5feef90414a8762ef4d541331937d713",
+  "ckpt_siamese.pt": "b4ded465b8eea134a01652811008656b9e0c59716431136bb161216310bbcebb",
+  "ckpt_two_tower.pt": "f28c37943ec499d168f43b5281879273af326a97ee47e571100c93dee0c91695",
+  "ckpt_vit.pt": "192d90e4fad893cec1542c5630715cc3bc22197e8cd8ba22a6fb84a64a88ad7f",
+  "inference_service.zip": "5b8871f09cf4a32972ecf1ae21a1f977541febfb4b5b5370c68d67ac831c4af8",
+  "media_00000001.jpg": "b4e3ba32e9ad60bae0845d029b34ac0c5335ec8113a11ddbd487ea0917ca0698",
+  "media_00000005.jpg": "808dbe2e6a39619b019b23efa1280c5dad75d1c2edd97ce6097ef43a056fcf6d",
+  "media_00000009.jpg": "87d58a496e89b9c8dc0fc3bfab093ec534d71864485fb69c061b65b631674ad4",
+  "media_clip.wav": "7b16c5ea2855d7394f2f58deebde394cb3fbe01aac102cd37029eae360969a57"
+ }
+}

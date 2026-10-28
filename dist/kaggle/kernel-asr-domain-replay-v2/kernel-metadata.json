@@ -1,0 +1,18 @@
+{
+  "id": "traininghighlight/asr-domain-replay-guarded-v2",
+  "title": "ASR domain replay guarded v2",
+  "code_file": "run_asr_domain_replay.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": false,
+  "dataset_sources": [
+    "traininghighlight/asr-domain-replay-v2",
+    "traininghighlight/asr-three-source-v1",
+    "traininghighlight/asr-robust-human",
+    "traininghighlight/vivos-asr"
+  ],
+  "competition_sources": [],
+  "kernel_sources": []
+}

@@ -3,7 +3,11 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
-- Task: AI-12 IN_PROGRESS — 12a/12c DONE (b261600); chờ bundle INT-13 cho 12b/12d. Release #3 (v1.3) lên master theo D20. Runtime :8001 UP PID 16808 (restart AI-13).
+- Task: AI-02c IN_PROGRESS (2026-10-28) — Kaggle `asr-domain-replay-guarded-v2` (81 clip domain). Release #4 lên master 2026-10-28.
+  :8001 UP lại 2026-10-27 (PID 26848) sau khi user bật Docker; smoke 6/6 + 401. Gateway :8000 DOWN (Codex).
+- Trước đó: (2026-10-27) AI-02a DONE (60 đề xuất ASR CLAUDE_PROPOSED), AI-03a DONE, AI-04 DONE (PRELIMINARY_T4). Verify bundle INT-15 → NO_DATA.
+  Còn mở đều chờ người/dữ liệu: AI-02b, AI-03b (user duyệt), AI-12 (tương tác thật INT-15), AI-04 nghiệm thu RTX 3060.
+  AI-12 BLOCKED ⇐ bundle INT-13 (phần độc lập xong). Runtime :8001 UP PID 16808 (restart AI-13).
 - Release #2 đã lên `master` 70bf011 (user duyệt 2026-10-26). AI-API v1.2: 6 endpoint API_READY, recommendation DRAFT.
 - Kế an toàn: AI-09 (đặc tả embedding/schema/version; chờ Codex báo sandbox UP), AI-04 (VRAM T4 sơ bộ), AI-03a, AI-02a.
 - **Runtime :8001: UP từ 2026-10-26 (restart cho AI-11), PID 21520** (`inference-service/run_local_8001.cmd`, log `D:/tmp/ai07_runtime/inference_8001.log`).

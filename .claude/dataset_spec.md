@@ -11,6 +11,7 @@
    - Không dùng model có sẵn để **gán nhãn giả (pseudo-labeling)** — ví dụ: cấm dùng Whisper sinh transcript làm nhãn ASR.
    - Không dùng tokenizer đã train sẵn (tiktoken, file model SentencePiece...). BPE phải tự viết thuật toán merge và tự train trên corpus của dự án.
    - Không distillation, không embedding trích từ model ngoài.
+   - **Ngoại lệ D22 (user, 2026-10-27):** MiniGPT được train/eval trên summary do Claude soạn + Claude duyệt (provenance `claude_drafted_claude_reviewed`) — distillation có công bố, chỉ áp dụng cho MiniGPT; đánh giá `CLAUDE_JUDGE` tách khỏi điểm người. ASR và các model khác không có ngoại lệ.
 2. **Được phép:**
    - **Dataset công khai** (audio + transcript do con người tạo, văn bản, ảnh) — đây là dữ liệu, không phải mô hình.
    - **Thuật toán xử lý tín hiệu cổ điển** (FFT, Mel filterbank, cross-correlation, color histogram, speed perturbation/resample) — đây là toán, không phải mô hình học máy pre-trained. Dùng làm feature đầu vào và baseline so sánh.

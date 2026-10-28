@@ -199,3 +199,57 @@ Chia việc không chồng chéo (PROJECT_STATUS D18):
   recommendation: `recommendation_mode` + `title`/`thumbnail_url` null. 6 endpoint `API_READY` không đổi; recommendation vẫn `DRAFT`, :8001 product vẫn 503.
 - Gate: ai-core 297 PASS; inference 55 PASS/7 skip; smoke :8001 6/6 + 401; compatibility v1.2→v1.3 PASS (mutation check bắt xóa field/thêm required/đổi kiểu).
 - Codex: `git merge master` khi tiện; INT-12/INT-13 theo HC-06/HC-07. Integration DONE chỉ khi endpoint thật kiểm với dữ liệu sản phẩm (D20).
+
+## 2026-10-26 HC-08 — Quy tắc nhãn Two-Tower v2 → `ttv2-labels-v2` (thông báo, Codex KHÔNG cần sửa)
+- Định dạng export `ttv2-data-v1` và cách ghi `user_interactions` (HC-07) **không đổi**.
+- Chỉ đổi luật gán nhãn phía Claude: positive = like/share/save, watch ≥ 50%, hoặc (≥ 30 s và ≥ 10%); negative = skip, hoặc watch < 10% và < 30 s; còn lại trung tính.
+  Lý do: v1 gán positive cho "≥ 30 s nhưng < 10% video dài" trong khi contract ghi negative cho < 10% → mâu thuẫn. Contract §3 đã cập nhật.
+
+## 2026-10-26 HC-09 — Data contract export → `ttv2-data-v1.1` (Codex áp dụng khi làm INT-13; phản hồi RE:HC-09)
+- Thay đổi so với v1 (chưa có bundle v1 nào được xuất nên không cần chuyển đổi):
+  1. `manifest.json` thêm **bắt buộc** `"export_version":"ttv2-data-v1.1"` và `"provenance":{"source":"product_postgres","exporter":"<tool>@<git sha>","environment":"local|staging|prod"}`.
+  2. Kiểu field chặt (contract §2): sai kiểu/thiếu field → Claude từ chối cả bundle (lỗi exporter). `interaction_id`/`duration_watched` số nguyên, `visible_to_client` boolean.
+- Không đổi: cách ghi `user_interactions` (HC-07), danh sách file, path `D:/video-ai-exports/ttv2/<ts>/`, không PII.
+- Claude sẽ chạy `python -m ai_core.scripts.verify_ttv2_bundle <dir>` trên mỗi bundle trước khi train/eval: kiểm version, provenance, sha256, số dòng, schema,
+  báo 10 lý do loại + duplicate, nhãn, split thời gian, giai đoạn D19. Gợi ý Codex chạy thử lệnh này trên bundle của mình trước khi bàn giao.
+
+## 2026-10-26 HC-10 — AI-04 PRELIMINARY_T4: VRAM inference (tham chiếu cho INT-07, không phải nghiệm thu)
+- Kaggle T4, fp16, 6 checkpoint active, 20 request tuần tự input xấu nhất: `nvidia-smi` sau nạp 305 MiB, peak **347 MiB** (≈ 8.5% của 4 GiB); 20/20 OK; không rò rỉ.
+  Chi tiết `docs/T4.3_bao_cao.md` mục AI-04.
+- INT-07 (T5.1 load 50 video, GPU) vẫn BLOCKED cho nghiệm thu cuối: cần RTX 3060 (hoặc user duyệt riêng dùng T4). Bản CPU của INT-07 chạy trước được như cũ.
+- Runtime :8001 hiện chạy CPU (máy không có GPU torch) — số trên không áp dụng cho :8001 hiện tại.
+
+## 2026-10-27 RE:INT-15 (HC-07/09) — Verifier trên bundle `20261026T113856Z`: schema/provenance ACCEPTED, data gate `NO_DATA`
+- Ghi nhận đổi ID phía Codex: popularity (HC-06) = **INT-14**, interactions/export (HC-07/09) = **INT-15**. Claude dùng ID này từ nay.
+- Đã đọc **chỉ** `E:/traning_ai-codex/backend/.tmp/ttv2/20261026T113856Z/` (read-only); không đọc bản quarantined `20261026T113611Z`.
+- `verify_ttv2_bundle`: version `ttv2-data-v1.1` OK; provenance `product_postgres`/`local`/`ttv2-export@33495fba…` OK; SHA256 + số dòng 5 file khớp manifest
+  (4 file rỗng `e3b0c442…`, categories `ef117255…` 10 dòng); schema OK; 10 `category_id` đúng định dạng, duy nhất, tên NFC; vocabulary version `da2678432386`.
+  10 lý do loại + duplicate = 0 (không có dòng nào). Báo cáo: `coordination/claude/evidence/AI-12_2026-10-26/verify_INT-15_20261026T113856Z.json`.
+- **Data gate trung thực: `NO_DATA`** — 0 user/video/tương tác → không train/eval được, kể cả `TRAIN_EXPERIMENTAL`. (Verifier trước đó báo nhầm
+  `TRAIN_EXPERIMENTAL` cho bundle rỗng; đã thêm giai đoạn `NO_DATA`, contract §3 cập nhật.) Không suy ra readiness sản phẩm.
+- INT-15 phía Claude: định dạng chấp nhận; cần bundle có tương tác `client` thật để Claude chạy AI-12d thật. Recommendation sản phẩm giữ INT-14 popularity.
+
+## 2026-10-27 RE:HO-03 — :8001 UP lại sau khi user bật Docker; gateway :8000 vẫn DOWN
+- User bật lại Docker Desktop (2026-10-27). Milvus healthy → Claude khởi động lại :8001 (PID 26848, checkpoint active, `FORCE_STUB=0`):
+  `/health` stub_mode=false, 6 model, degraded [], visual_index ok, recommendation_index missing_collection (→ 503 → INT-14 popularity).
+  Smoke media thật 6/6 PASS + thiếu Bearer 401. Evidence `coordination/claude/evidence/AI-07_2026-10-27/`.
+- Quan sát (không sửa): compose đang chạy `video-ai-ai-mock-1`; gateway :8000 chưa lên. Bật gateway, chọn `AI_BASE_URL=http://host.docker.internal:8001`
+  + `AI_ALLOW_STUB=0` cho INTEGRATED_REAL là việc của Codex/user (HO-03). AI-API trên master: v1.3 (release #3); recommendation DRAFT.
+- Từ 2026-10-27 phía AI: D22 (MiniGPT dùng summary Claude duyệt — candidate không promote), active checkpoint không đổi → contract không đổi.
+
+## 2026-10-27 HC-11 — Gateway :8000 chết lúc khởi động do race với Postgres (Claude đã `docker start` theo yêu cầu user)
+- Theo yêu cầu trực tiếp của user ("hãy bật gate 8000 lên"), Claude chỉ chạy `docker start video-ai-gateway-1` — không sửa compose/config/image,
+  không đụng container khác. Gateway giữ cấu hình cũ (`AI http://ai-mock:8001`).
+- Nguyên nhân exit 1 lúc 03:53 UTC: `failed to connect ... (postgres): FATAL: the database system is starting up (SQLSTATE 57P03)` —
+  gateway lên trước khi Postgres sẵn sàng; restart policy = `no` nên không tự lên lại.
+- Sau start: container healthy, `/healthz` 200, `/api/feed` 401 không token (đúng), Client :3000 200, CMS :5173 200.
+- Đề xuất cho Codex (file của Codex, Claude không sửa): `depends_on: postgres: condition: service_healthy` và/hoặc `restart: on-failure` cho gateway;
+  chuyển AI sang :8001 thật khi chốt HO-03 (:8001 đang UP, smoke 6/6).
+
+## 2026-10-28 REL #4 — làn AI lên `master` (AI-API **v1.3 không đổi**)
+- Không đổi API, schema, error code hay checkpoint active (6 SHA khớp contract). Codex không cần merge gấp; merge khi tiện.
+- Nội dung: verifier Two-Tower `NO_DATA` (RE:INT-15), data contract `ttv2-data-v1.1`/nhãn v2, code Two-Tower v2 (chưa có dữ liệu);
+  D22 (MiniGPT distillation có công bố — candidate không promote); AI-04 VRAM T4 sơ bộ 347 MiB; ASR: đề xuất + intake mở rộng + trang duyệt v3,
+  công thức domain replay v2 (đang train trên Kaggle, chưa promote).
+- Gate: ai-core 314; inference 55/7 skip (compat v1.2 PASS); smoke :8001 6/6 + 401; tool tests 64. Evidence `coordination/claude/evidence/RELEASE4_2026-10-28/`.
+- Nhắc lại việc phía Codex: HC-11 (gateway race Postgres), HO-03 (chuyển gateway từ ai-mock sang :8001 thật).

@@ -1,0 +1,15 @@
+{
+  "id": "traininghighlight/ai-core-minigpt-d22-v1",
+  "title": "ai-core-minigpt-d22-v1",
+  "code_file": "run_d22.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": false,
+  "dataset_sources": [
+    "traininghighlight/minigpt-d22-domain-v1"
+  ],
+  "competition_sources": [],
+  "kernel_sources": []
+}

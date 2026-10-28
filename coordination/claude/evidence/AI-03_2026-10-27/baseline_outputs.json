@@ -1,0 +1,565 @@
+{
+ "model_sha256": "cf9cfa71 (active)",
+ "rows": [
+  {
+   "sample_id": "dom_-1Is0o2ZWk0_1",
+   "split": "val",
+   "reference": "Tổng kim ngạch xuất nhập khẩu của Việt Nam lần đầu đạt 930,5 tỷ USD, mức cao nhất từ trước đến nay; năm 2025 nền kinh tế phục hồi kiên cường và lạm phát được kiểm soát.",
+   "review": "approved",
+   "clean": {
+    "input": "một nhóm năng động hàng đầu trong năm qua. Tổng kín ngạch xuất nhật khẩu của Việt Nam lần đầu tiên đạt mức 930,5 tỷ đô la mỹ(USD). Đây là mức cao nhất từ trước đến nay, đánh giấu mức quan trọng của nền kinh tế trong tiếng trình hội nhập quốc tế. Năm 2025, nền kinh tế thể hiện khả năng phục hồi kiên cường lạm phát bình quân được kiểm soát ở 31,3% tỷ giá và lại sống.",
+    "output": "(ĐTCK) Tổng thống Mỹ Donald Trump vừa công bố báo cáo về tình hình kinh tế Việt Nam giai đoạn 2011-2015."
+   },
+   "asr_active": {
+    "input": "NHỎM NHNG ĐỒNG THÀN ĐẦ  TNM I GNH SN N Ậ H U CVỆT AM LÌNH ĐIU KIN ĐẶC MÓC CIN M BA M Ì NĂM IỆU LÀ L Đ ƯỚC CN NHẤT C IỆM NÀY ĐẢNH G MẤT UANH CHN C NIỀN KIÊN TỶ CN KIỂM N N ỂN N   NG NG  NG RONG      NĂMG MAI NHIỆN HÔNG CH AI LÂM NÊN KIN KỂ T IỆC HOẠNHĐĂNG PHỤC QUYỆ KIÊM QUƯỢNG LP PHÁCH QIỆN HÔN ĐƯỢC HIỆC SUỐC HUỢN HỨC HO THÔ BO HẾT TỰA ROHA H Đ VÀ L CH",
+    "output": "(ĐTCK) Ngày 2/9, Công ty TNHH một thành viên Thương mại và Công nghiệp Việt Nam (Vietnam’s) cho biết Công ty TNHH một thành viên Thương mại và Công nghiệp Việt Nam (Vietnam’s) đã ký kết hợp đồng hợp tác với Công ty TNHH một thành viên Thương mại và Công nghiệp Việt Nam (Vietnam’s)."
+   }
+  },
+  {
+   "sample_id": "dom_-1Is0o2ZWk0_2",
+   "split": "val",
+   "reference": "Khoảng 75–85% nguyên vật liệu được đảm bảo trong nước theo yêu cầu các hiệp định; Việt Nam là một trong những nền kinh tế mở nhất thế giới với mạng lưới FTA rộng, gồm CPTPP và hiệp định với Liên minh châu Âu.",
+   "review": "approved",
+   "clean": {
+    "input": "Toàn bộ nguyên thu liệu bây giờ cũng đang 75-85% nguyên vật liệu trong nước đảm bảo các yêu cầu về nguyên vật liệu , các hiệp định. Việt Nam là 1 trong những quốc gia có độ mở kinh tế lớn nhất thế giới với mạng lưới FTA rộng khắp. Các FTA thế hệ mới với tiêu chuẩn cao như hiệp định đối tác toàn diện và tiến bộ, xuyên Thái Bình Dương CPTTP hiệp đinh thương mại Việt Nam, liên minh Châu Âu",
+    "output": "(TNO) Ngày 23.11, tại Hà Nội, Bộ trưởng Bộ Công thương Nguyễn Thị Kim Tiến đã có buổi làm việc với các cơ quan liên quan về việc đầu tư vào các dự án FTA và các dự án FTA khác của Việt Nam."
+   },
+   "asr_active": {
+    "input": "Đ ẠC  CẦN BỘT LU LỘT NG RỤNG TRÌNH MẠ MÀI LNM ÔN L RNG LỘG L TRONG LƯC AY LÀ LÀ Ạ L ÂY M N N LO  À ỰÀ BẠ Ở ÊU CÒNG C M  ĐVIỆN N  NM C U N CA MU Ư I U C IY  VỚI M N I T RA UN Ấ   CẤC ÍT T  MỤI VỚI CHÊ CRẬN CAU NH HẬ ĐIỂT BUICÁẤT TOÀN SIỆN VÀ KIỂM MUỘN SYN H HN HƯƠNGXEY RA T P RY ĐIẾH CƯỚC MẶI TIÊN SUA VIÍTH AMÊN MIÊN CHU ƯU",
+    "output": "(PL)- Ngày 2-7, ông Nguyễn Văn Luyện, Phó Giám đốc Sở NN&PTNT tỉnh Quảng Ninh cho biết, Sở NN&PTNT tỉnh đã có công văn gửi Sở NN&PTNT tỉnh về việc kiểm tra, kiểm tra, kiểm tra, kiểm tra, kiểm tra, kiểm tra, kiểm tra, kiểm tra, kiểm tra, kiểm tra, kiểm tra, kiểm tra, kiểm tra, kiểm tra, kiểm tra, kiểm tra, kiểm tra, kiểm tra, kiểm tra, kiểm tra, kiểm tra, kiểm"
+   }
+  },
+  {
+   "sample_id": "dom_6CDgfB3MhmA_1",
+   "split": "train",
+   "reference": "Mở đầu bản tin 18 giờ của kênh YouTube Sài Gòn Đầu tư Tài chính; tin đầu tiên về quỹ đầu tư ngoại muốn rót hàng tỷ USD vào chứng khoán Việt Nam.",
+   "review": "approved",
+   "clean": {
+    "input": "Kính chào quý khán giả, quý vị đang xem bản tin 18 giờ trên kênh youtube chuyên đề xây gom đầu tư tài chính online, với những tin tức mới nhất, nóng nhất, về các lĩnh vực kinh tế, thị trường và đời sống dân sinh trong và ngoài nước, được chúng tôi cập nhật liên tục trong ngày. Và sau đây là thông tin chi tiết. Lộ diện quý đầu tư ngoại muốn rót tỉ đô la Mỹ vào chứng khoáng Việt. Tối 18/9, bộ tài.",
+    "output": "(ĐTCK) Bộ Tài chính vừa công bố thông tin về việc phát hành cổ phiếu của các doanh nghiệp nhà nước và doanh nghiệp nước ngoài vào ngày 18/9/2018."
+   },
+   "asr_active": {
+    "input": "Ế Q  GIẢ TÚI VY DANH TI NẮN DHO TDONG DH N HÚI LẤ TIYỀN NỆN DÀẠY LÒN DẦU T ẢN TAI V  DÌNH DN MÁ NHẤT NHNG DÚC LÀ L C T N T N   I HIỆN DỒNTU D U SÓNG DNG  TNG V GUẬ UCDỤ TH  T ẶT NẢ H TỤ D NG NÀNG MH Đ Y L  TÌNH  T  ÁC DẦU DIỆỄN QUÝ ĐẦU TƯ MẬI MUỐN RẤT Ỹ ĐU LÀ BỸ VÀO CHỨNG HOẮN VIỆCTỐI VƯỊI CÁM CHÁN HNHBỘI CÀY",
+    "output": "(NLĐ) - Ngày 2-7, ông Nguyễn Quý Toàn, Giám đốc Công ty TNHH Dệt may Việt Nam (Vinaconex) cho biết: “Cám chán” DN này đã có mặt tại TPHCM để làm thủ tục làm thủ tục làm thủ tục làm thủ tục làm thủ tục làm thủ tục làm thủ tục làm thủ tục làm thủ tục làm thủ tục làm thủ tục làm thủ tục làm thủ tục làm thủ"
+   }
+  },
+  {
+   "sample_id": "dom_6CDgfB3MhmA_2",
+   "split": "train",
+   "reference": "Lãi suất tiết kiệm được chào ở mức 9,2–9,4%/năm, có thể tới 9,5% với khoản gửi lớn; Ngân hàng Nhà nước cho biết tiền gửi của khách hàng cá nhân tiếp tục tăng mạnh trong tháng 7.",
+   "review": "approved",
+   "clean": {
+    "input": "và hệ thống ngân hàng tăng mạnh. Trên nhiều hội nhóm, nhân viên tính dụng chào mời khách hàng gửi tiết kiểm và đưa ra mức lãi suất lên đến 9,2 - 9, 4% một năm khá phổ biến. Thậm chí, tùy vào số tiền gửi nếu ở mức đủ lớn tùy mỗi nhà băng, khách hàng cá nhân có thể thoả thuận riêng lãi suất với mức cao hơn lên đến 9,5% một năm. Ngân hàng nhà nước vừa công bố lượng tiền gửi khách hàng cá nhân gửi vào hệ thống các tổ chức tín dụng tiếp tục tăng mạnh trong tháng 7. Cụ thể lượng tiền gửi khách hàng cá nhân gửi vào hệ thống các tổ chức tiến dụng tiếp tục tăng mạnh trong tháng 7.",
+    "output": "(ĐTCK) Theo số liệu của Ngân hàng Nhà nước (NHNN) vừa công bố, trong tháng 7, ngân hàng đã đạt mức tăng 6,5%."
+   },
+   "asr_active": {
+    "input": "VÀ Y TNG N NG N H TRN HIỀU I NHÓM DHƯNG VIÊN TÍH DỤNG CH Ờ ÁC HÀNG G I K Ế KIỂM VÀ ƯA RA BỨCT LẢI XUẤT ĐÊN ĐÍN CHÍNH HĨ HI ĐẾN HÍNH V BÚN VƯNG TRAM T AM KHÁ Ụ IẾN CẢM HÍTÙ VÀO SỐ TIỀN GỬI N U Ở MỨC Ủ LỚC Y MUI NHÀ  CÁC HÀNG CÁI N ÂN CÓ KẺ H N IÊ I ỨT VỚI MỨC CO Ư N H H NM N G C  ƠNG DHN NHÀ NƯỚC VỪA CÔG BÚ LƯỢNG TIỀN KICÁC HÀNG CÁI N N KỞI VÀO H THỐNG CÁC Ư CHC H DNG HIẾT ẠNH TRNG TÁN BẢ C THỂ DƯỰNG TIỀN GỠI CA GƯỜI DNG TRONG THÁN B Ă Ộ G",
+    "output": "(PL)- Ngày 2-8, Công an TPHCM cho biết đã bắt giữ nhóm DHNN có hành vi hít tiền gửi tiền gửi ngân hàng để làm thủ tục nhận tiền gửi ngân hàng để làm thủ tục nhận tiền gửi ngân hàng để làm thủ tục nhận tiền gửi ngân hàng để làm thủ tục nhận tiền gửi ngân hàng để làm thủ tục nhận tiền gửi ngân hàng để làm thủ tục nhận tiền gửi ngân hàng để làm thủ tục nhận"
+   }
+  },
+  {
+   "sample_id": "dom_9BHoS_sDlUw_1",
+   "split": "train",
+   "reference": "Lời chào mở đầu bản tin 18 giờ của kênh YouTube Sài Gòn Đầu tư Tài chính, cập nhật tin kinh tế, thị trường và đời sống dân sinh trong và ngoài nước.",
+   "review": "approved",
+   "clean": {
+    "input": "Kính chào quý khán giả, quý vị đang xem bản tin 18 giờ trên kênh youtube chuyên đề xây gom đầu tư tài chính online, với những tin tức mới nhất, nóng nhất về các lĩnh vực kinh tế, thị trường, và đời sống dương sinh trong và ngoài nước, được chúng tôi cập nhật liên tục trong này và sau đây là thông tin chi tiết.",
+    "output": "(TNO) Chiều ngày 23.11, kênh truyền hình ATV chính thức đưa tin đã chính thức được công bố trên kênh truyền hình ATV chính thức của Đài Truyền hình Việt Nam."
+   },
+   "asr_active": {
+    "input": "T   ẾN T GIẢ TI V NG ĐẠÃ TƯỒI NẮG DHO ỢN N HÚI NẤP IN ĐẠ CÀYG CÒN HU N  TI  I NHẢNG T H T Ự MỚ NT NÓNG NHTV QUN  ĐN T C A D SN N  TÔNG  GÀN  D N NH N TÔI N NH     NG  NẦY HANH UA SÓO RĐÂY LÀN HÔNG TÌNM YẾT   U   ANH ROT ỨỚC ANH  DÂN ĂNG VỐI",
+    "output": "(Dân Việt) - Sau khi có mưa lớn, anh Nguyễn Văn Nên, trú tại thôn Tân Phú, xã Tân Phú, huyện Tân Phú, tỉnh Đồng Tháp, đã có những chia sẻ về những điều anh em họ đã làm nên chuyện khó khăn."
+   }
+  },
+  {
+   "sample_id": "dom_9BHoS_sDlUw_2",
+   "split": "train",
+   "reference": "Mức độ quan tâm tìm kiếm bất động sản tăng 3,5% so với quý trước; nhà dưới 5 tỷ đồng thu hút 37% lượng tìm kiếm, còn phân khúc 5–10 tỷ đồng chiếm 59% tin đăng bán nhưng chỉ tiếp cận 45% nhu cầu.",
+   "review": "approved",
+   "clean": {
+    "input": "mất độ quan tâm của người tìm kiếm mất động sản, tăng 3.5% so với quy trước. Tuy nhiên, tại khu vực nổi thành, sự dân có đang diễn ra khá rõ ở phân khúc nhà dân cho đồ lịch và giữ ngùng hàng và tối tiền của số đồng. Cô thể, các cân nhà dân dưới năm tỷ đồng thu hút tới 37% lượng quan tâm tìm kiếm nhưng chỉ 922% ngùng hàng chào bán. Ngược lại, phân khúc từ năm đến 10 tỷ đồng, 9 tới 59% số lượng tinh đăng bán, nhưng chỉ tiếp cận được 45% dù cầu của người mua.",
+    "output": "(TNO) Ngày 23.11, tại TP.HCM, Công ty Cổ phần Đầu tư và Phát triển Việt Nam (Vinashin) đã tổ chức lễ trao giải thưởng “Tìm kiếm tài sản” cho người mua và người mua mua nhà tại TP.HCM."
+   },
+   "asr_active": {
+    "input": "C N N N NI N NG  N BÀ ĐI M P N T N  TCAI HU VỰC NỘI NH ON DN N ANG I C TRH Ở N N H N NH ĐỘ C VÀ NG N I NG   T Ể  C AH HÀ C N T Ớ B H N N Ư NG M Ế NHƯNG H H   Á NGƯỢC LẠI PHẦN KHUẤT KNH NĂM ĐẾN NGƯỜI KGỈYĐỒNG HI Ế NẰ VỊ CH PHN TRAM LƯỢNG K NH CÀN BN NHƯNG CHỈ TIẾT CẬN ĐƯỢC ÚN NÀ LÀ P N TRA N U GNỜI ND À",
+    "output": "(NLĐ) - Theo các chuyên gia kinh tế, người dân có thể thấy họ có một số lượng lớn người dân có thể sống trong các khu vực nội địa như Hà Nội, TPHCM..."
+   }
+  },
+  {
+   "sample_id": "dom_DNM7BTlJnxA_1",
+   "split": "train",
+   "reference": "Thăng Long – Hà Nội được khẳng định là vùng đất địa linh nhân kiệt với giá trị nghìn năm; các giá trị văn hóa là nền tảng, động lực và nguồn lực cho xây dựng, phát triển hôm nay và mai sau.",
+   "review": "approved",
+   "clean": {
+    "input": "Hà Nội Bày Tỏ, Thăng Long Hà Nội là vùng địa linh nhân kiệt là nơi lắng ngủ nối sông ngàn năm.Những giá trị cuộc sống qua các thời kỳ lịch sử, cùng với các giá trị văn hóa trong thời đại HCM đã đang và sẽ là nền tảng là động lực, là nguồn lực trong xây dựng, phát triển hôm nay và mai sau.Quán triệt và nhận biết 1 cách toàn diện",
+    "output": "(SGGP).- Ngày 30-8, tại Hà Nội, UBND TP Hà Nội đã tổ chức Hội nghị tổng kết công tác xây dựng và phát triển văn hóa, văn hóa, văn hóa, văn hóa, văn hóa, văn hóa, văn hóa, văn hóa, văn hóa, văn hóa, văn hóa, văn hóa, văn hóa, văn hóa, văn hóa, văn hóa, văn hóa, văn hóa, văn hóa, văn hóa, văn hóa, văn hóa, văn hóa, văn hóa, văn hóa, văn hóa, văn hóa, văn hóa, văn hóa, văn hóa, văn hóa, văn"
+   },
+   "asr_active": {
+    "input": "HN ĐỘC BẦY CẠĂN LÔNG À ĐỒI LÀ TÙNG BỂ LIÊN DHN ỊỆP  NHI LẪNG ÙN NỔI SUNG NGÀ NAN N GAI TỜ QUA R GN QUA C I QUỒN ỚI V N GÁ  A Q TÔNG I V HY Ờ  I Đ N LỢN  N N LỰC U B IQỐI  Đ CUẦ NGÀY VÀN BẠI U QUN CTRỆ À LẠI TỨC MỘC BẤC QGOI  ĐỀI ĐY  QAI RỒ TUẦN QUAN DÒNG CUN BAN QỌ",
+    "output": "(NLĐ) - Ngày 2-8, ông Nguyễn Văn Hưởng, Phó Chủ tịch UBND TP Hà Nội cho biết, UBND TP Hà Nội vừa ra quyết định khởi tố vụ án hình sự đối với ông Nguyễn Văn Hưởng, nguyên Phó Chủ tịch UBND TP Hà Nội về tội “Giết người”."
+   }
+  },
+  {
+   "sample_id": "dom_DNM7BTlJnxA_2",
+   "split": "train",
+   "reference": "Giải báo chí thu hút 345 tác phẩm của 48 cơ quan báo chí, gồm 7 cơ quan của Hà Nội và 41 cơ quan Trung ương, bộ ngành, địa phương, góp phần phát huy văn hóa Thăng Long – Hà Nội.",
+   "review": "approved",
+   "clean": {
+    "input": "Đã thực sự trở thành ngành kinh tế mũi nhọn, để văn hóa Thăng Long hà nội thực sự trở thành nguồn lực quan trọng đóng góp vào mục tiêu xây dựng thủ đô trở thành thành phố văn hiến, văn minh, hiện đại, người dân hạnh phúc. \"Giải báo chí thu hút 345 các tác phẩm của 48 cơ quan báo chí, trong đó có 7 cơ quan báo chí Hà Nội, 41 cơ quan báo chí Trung ương, bộ ngành, địa phương người tham dự\"",
+    "output": "(Chinhphu.vn) - Sáng 19-9, tại Hà Nội, Báo chí đã tổ chức Hội nghị tổng kết công tác năm 2013 và triển khai nhiệm vụ năm 2013 của Báo chí."
+   },
+   "asr_active": {
+    "input": "UY ÀYỌ Đ Q N Q   TN  VÀI ẠN GUN LỢC QUAN ĐÓNG QU N ỦA MỘT GN  VÀ   Y  QQ I  O SẼ N  N  VỜ LM CÁC N VUỘ C NG ĐỊ CẮM C A H ẠO  TRỐNG ĐỎ CỞ MÀ CƠ ANH BẠO SĨ HÀ NỒI MUỐG MY MỐT CƠI QOANH TẠO SẼ HIN ƯƠNG BỘT HNH HIỆP T UÂNG GỜ CAM V Ý",
+    "output": "(NLĐ) - Ngày 2-8, tại Hà Nội, Bộ trưởng Bộ Công an Nguyễn Văn Trường đã có buổi làm việc với các cơ quan chức năng về việc làm rõ thông tin về việc một cán bộ Công an ở Hà Nội đã có mặt tại Hà Nội để làm việc với các cơ quan chức năng về việc làm rõ thông tin về việc làm rõ thông tin về việc làm rõ thông tin về việc làm rõ thông tin về việc làm rõ thông tin về việc làm"
+   }
+  },
+  {
+   "sample_id": "dom_Hew7T-qHV-8_1",
+   "split": "train",
+   "reference": "Lời chào và kết thúc bản tin 18 giờ trên kênh YouTube Báo Sài Gòn Đầu tư Tài chính, mời khán giả đăng ký kênh để theo dõi tin kinh tế, đời sống.",
+   "review": "approved",
+   "clean": {
+    "input": "Kính chào quý khán giả của bản tin 18 giờ trên kênh youtube báo sài gòn đầu tư tài chính. Với những tin tức mới nhất và nóng nhất về các lĩnh vực kinh tế, đời sống, dân sinh trong và ngoài nước được chúng tôi cập nhật trong ngày. Vừa rồi là những thông tin chính mà chúng tôi gửi đến quý khán giả hôm nay. Để tiện theo dõi và cập nhật thông tin, quý khản giả hãy nhấn vào nút chuông đang kí kênh.",
+    "output": "(TNO) Chiều ngày 25.9, Báo Sài Gòn Giải Phóng đã đăng tải thông tin về những tin tức mới nhất và nóng nhất về các sự kiện kinh tế - xã hội năm nay."
+   },
+   "asr_active": {
+    "input": "T          LÚN RNO VUI PHÁN GIẢ TUẢ MẢN TỊNH NIỀ TẢN GIÀO THN T ÀN NỤC TÚC MẮ SẢ RÀ LẦ TƯ L HỮ  TẾ NHN T T QỚI NHẤT V NÓCT VÀI CT HUN VÀO C TÁ DA SÓN LÊ SNH TỒNG VÀ QUẠI HƯỐC NỢC CHỨNG TÒI T  ẬT TRONG NGÀY VỪ RỒI L G HNG THON TNH CHÍNH PHÀI CHNG STU GỬỮA LẾN QUY THÁM GIÃ HNG NÀY LẾ TƯỢNG THAO GIẢI VÀ TẬC NẬ PHÔNG TÌNH UY TÁN GIẢO HÃY NHẤNG VÀ NUÚC CHUÔN NĂNG KIÉT CÀNH",
+    "output": "(TNO) Ngày 23.11, tại TP.HCM đã diễn ra lễ trao giải thưởng “Giải thưởng “Giải thưởng “Giải thưởng” lần thứ II năm 2013”."
+   }
+  },
+  {
+   "sample_id": "dom_Hew7T-qHV-8_2",
+   "split": "train",
+   "reference": "Quốc hội giám sát các dự án hạ tầng trọng điểm như sân bay Long Thành, đường sắt tốc độ cao Bắc – Nam và tuyến đường sắt Lào Cai – Hà Nội – Hải Phòng; sân bay Long Thành có quy mô khoảng 5.000 ha.",
+   "review": "approved",
+   "clean": {
+    "input": "Đối với dự án hạ tầng trong điểm, quốc hội giám sát việc thực hiện các nghị quyết dự án cảng hàng không quốc tế Long Thành, dự án đường sắt tốc độ cao trên trục Bắc Nam. Chủ trương đầu tư dự án đầu tư xây dựng tuyến đường sắt lào cai, Hà Nội, Hải Phòng. Cơ chế, chính sách đặc thủ, đặc biệt để phát triển hệ thống mạng lưới đường sắt đô thị tại thành phố Hà Nội, thành phố Hồ Chi Minh. Được biết, sân bay Long Thành là dự án trong điểm quốc gia với Quy Mô khoảng 5.000 héc ta, tổng mức đầu tư gần 337.000 nghìn tỷ đồng.",
+    "output": "(Chinhphu.vn) - Ngày 2/9, tại Hà Nội, Ủy ban Nhân dân thành phố Hà Nội, Ủy ban Nhân dân thành phố Hà Nội đã họp phiên thứ hai với chủ đề “Hà Nội - đường sắt cao tốc trên trục Bắc - Nam”."
+   },
+   "asr_active": {
+    "input": "CHN M U ĐU V I Ả H T N N N IM  I N C Ơ H N H N NH  I Ư N T ÀM  I RƯƠNG Ư N UC LÀ I   NG  NH C N  T I T NPC H G I T NH N  ÀNH V MÌNH ĐƯỢC BỨT XSẤN BAY DÔNG THÀNH LÀ Ự ÁNM TỌC ĐIỆM QUỐC GÀ VƯỚI U I U HON NĂM NHIỆN T À TNG MỨC ĐẦU HƯ H N BA CHOM A ỚY BINH HIỀ ÌNGCUỐ NÂN",
+    "output": "(NLĐ) - Ngày 2-8, TAND TPHCM đã mở phiên tòa xét xử sơ thẩm vụ án hình sự xảy ra tại Công ty cổ phần Tập đoàn Công nghiệp Than - Khoáng sản Việt Nam (Vinashin)."
+   }
+  },
+  {
+   "sample_id": "dom_NNbXoXEWEfY_1",
+   "split": "train",
+   "reference": "Các sở ngành TP.HCM nêu giải pháp thúc đẩy tăng trưởng: Sở Công Thương tổ chức 7 sự kiện kết nối cung cầu, Sở Xây dựng đẩy mạnh giải ngân đầu tư công cho dự án trọng điểm, hải quan triển khai đợt cao điểm 100 ngày.",
+   "review": "approved",
+   "clean": {
+    "input": "và lượng kêu hối chuyện về thành phố hồ chí Minh, đại diện các sửa ngành cũng nêu nhiều dạy pháp thúc đẩy tăng trưởng. Trong đó, sở công thương sẽ tổ chức 7 sự kiện lớn kết nối cùng cầu, triển lạm sáng phẩm công nghiệp, tổ chức khuyến mại tập trung quốc gia, bình ổn thị trường mua cao điểm cuối năm. Đại diện sở xây dựng nêu dạy pháp thúc đẩy giảnh ngân đầu tư công đặc biệt tập trung toàn lực vào các công trình dự án trong điểm. Trong khi đó, ông Nguyễn Hữu Thịnh, có gì cuộc trưởng chỉ cuộc hải quan khu vực hai cho biết, đơn vị truyến khai được cao điểm 100 ngày tăng .",
+    "output": "(Chinhphu.vn) - Ngày 2/9, tại Hà Nội, đại diện các đơn vị liên quan đã có buổi làm việc với các đơn vị liên quan đến việc tăng trưởng kinh tế và đầu tư công của các đơn vị liên quan đến các dự án trong nước."
+   },
+   "asr_active": {
+    "input": "I À ƯNG I U H NI H IỂ IỆ ÀNH HU NH ĐẠN DIN ÁC N N H NG N N I Á T T T NG  RONG ĐÓ Ở NG HƯN T Ổ C C B Ự IỆN LỚN CÁC NỐI NG C U  N SẢN HNM I  CHC H ẾN U Ố  ÌN N H Ư N G Y YÊU I T NY NG NG I  TẬP RNG CÒÀN LỰC VÀO CÁC CÙNG TRÌNH DỰ ÁN TRỌNG IỂM TRONG KHI ĐÓ ÔNG NGUYỄN HỮ HỊNH VỚI CH CỤC THƯỞNG CHI CUỘC HẢI QUN KHU VỰC H I CHO BIẾT ƠNG VỊ TRIỆN KHN ĐỢT CAO I M MỘT RẦN NGÀY C N",
+    "output": "(NLĐ) - Ngày 2-8, ông Nguyễn Thanh Chấn, Cục trưởng Cục Quản lý chất lượng nông lâm sản (Bộ Nông nghiệp và Phát triển nông thôn) cho biết:"
+   }
+  },
+  {
+   "sample_id": "dom_NNbXoXEWEfY_2",
+   "split": "train",
+   "reference": "Thống kê TP.HCM cho biết tổng sản phẩm trên địa bàn quý III tăng 9,86% so với cùng kỳ, 10,08% nếu loại trừ dầu khí; khu vực nông, lâm nghiệp và thủy sản tăng 3,4%.",
+   "review": "approved",
+   "clean": {
+    "input": "9 tỷ đô la Mỹ tăng 323% so với cùng kỳ. Trước đó, thống kê thành phố Hồ Chí Minh có báo cáo nhanh về tăng trưởng tổng sản phẩm trên địa bàn quý ba và 09 tháng 05 năm 2026. Theo đó, tổng sống phẩm trên địa bàn quý ba năm 2016 tăng 9,86% so với cung kỳ nếu loại trừ yếu tố dầu khí tăng 10,08%. Trong quý ba, khu vực nông, lâm nghiệp và thủy sản tăng 3,4% Đóng góp 0,7% vào mức tăng tổng sản phẩm",
+    "output": "Theo báo cáo của Cục Thống kê, trong quý 3/2017, tổng sản phẩm trên địa bàn quý ba và 09 tháng 05 năm 2017, tổng sản phẩm trên địa bàn quý ba và 09 tháng 05 năm 2017 ước đạt 4,5 triệu tấn, tăng 9,5% so với cùng kỳ năm trước."
+   },
+   "asr_active": {
+    "input": "C U  ĂN C M AN ABIB T I N K TRƯỚC Đ  CHÚNG K HNH MÌNH C BT C N N T N ƯN TNG N N HI BAN ÍI  VÀ HIN CHẮG NẰ ÀNY NG H N T M N ÁU   TNG ÁNT P N CH N H AN TBÀ N ÀN N H T M NY ẤU H N H N N KH NẾU Đ  DU KHÍ ĂN NGƯỜI Ĩ KHÙN TẤM V N ÂMTRUNG KHÍ BKHU VỰC NU IN NGHIỆP VÀ THI SẢN CĂNG BÀ VẢ BUỐN V N TÂM ĐHÚNG GỐ KHÔN PH Ấ HƯNG TRN VN HỨC N TN",
+    "output": "(NLĐ) - Ngày 2-7, TAND tỉnh Khánh Hòa đã tuyên phạt bị cáo Nguyễn Văn Niên (28 tuổi, ngụ tại xã Khánh Hòa) về tội “Cố ý gây thương tích”."
+   }
+  },
+  {
+   "sample_id": "dom_Q95eDJlAhyI_1",
+   "split": "train",
+   "reference": "Báo Tuổi trẻ Thủ đô và Ngân hàng Hợp tác xã Việt Nam phối hợp với Tỉnh đoàn Lào Cai giúp vợ chồng ông Tân, bà Xiếc có mái nhà vững chãi sau khi bão số 10 gây ảnh hưởng nghiêm trọng.",
+   "review": "approved",
+   "clean": {
+    "input": "giữ góp sức của báo tuổi trẻ thủ đô, ngân hàng hợp tác xã Việt Nam với sự phối hợp của tình đoàn lào cai và bà con trong bản. Sẽ khó hình dung, chỉ mới cách đây có hơn một tháng. Sau ảnh hưởng nghiêm trọng của cơn bão số 10, ngon nhà của ông bà thực diện 4-6 hộ khác phải di dời. Giấc mơ về một mái nhà vững chãi tưởng chừng xa vời đối với ông tân bà xiếc, thì nay đã trở thành hiện thực. Song bằng sự sẻ chia đồng hành không để ai lại phía sau, báo tuổi trẻ thủ đô và ngân hàng hợp tác xã vẻ.",
+    "output": "(Dân Việt) - Ngày 23.11, tại Hà Nội, Ngân hàng TMCP Công thương Việt Nam (VCCI) đã tổ chức lễ ký kết hợp đồng hợp tác với Ngân hàng TMCP Công thương Việt Nam (VCCI) về việc ký kết hợp đồng hợp tác với Ngân hàng TMCP Công thương Việt Nam."
+   },
+   "asr_active": {
+    "input": "GỐN S CỦA TÔỘI NĐỚN THÀNG HƯỢNG Á H Đ HI NAM MỖI S A MỖI HỒN C RIỆN LON LÒNG RAIHA BÀ H V N TRUNG SẼ KHỎ H DUN CHỊU MỌI CÁN ĐƠI C  SXÒÀI VƯN DUM HNG H CỘ N VẢO GT MUI NHA CỦ NG BÀ C GA N SỎ  C ẢI DU I AN MƠI VÀ MỘC MÁN NH V N HẼ ÁY ĐƯỢC CU N A I L I N  T NH BẮN ÀN T THÌM NÀY ĐÃ SỰ TỰ I CSN BẰNG SƯ SẼ CAÙNG I  KHÙNG ĐỊA ẠI LOẠI  SA N BÁO CIỀU TRỜI HU ĐU V N ÊN HÀN NƯƠN C S UY",
+    "output": "(NLĐO) - Ngày 2-7, tại TPHCM, Công an TPHCM đã khởi tố vụ án, khởi tố bị can và bắt tạm giam Nguyễn Văn Tuấn (SN 1982, trú tại xã Tân Phú, huyện Tân Phú, TPHCM) về hành vi “Cố ý gây thương tích”."
+   }
+  },
+  {
+   "sample_id": "dom_Q95eDJlAhyI_2",
+   "split": "train",
+   "reference": "Báo Tuổi trẻ Thủ đô trao suất hỗ trợ 60 triệu đồng cho hai ông bà, họ trích 1 triệu đồng giúp gia đình khó khăn khác; đoàn công tác còn chăm lo cho thế hệ tương lai.",
+   "review": "approved",
+   "clean": {
+    "input": "chúng tôi đại diện cho báo tuổi trẻ thủ đô. Trao cái suất 60 triệu đồng cho 2 ông bà đấy thì ông bà đã trích ra 1 triệu đồng để hỗ trợ cho những cái gia đình còn khó khăn khác trên địa bàn xã. Chúng tôi rất là xúc động và đối với tính thần của ông bà đó là cái sự nở hoa trong lòng người tốt. Không dừng lại ở việc trao quà, trong chuyến công tác lần này, báo tuổi trẻ thủ đô và ngân hàng hợp tác xã Việt Nam còn chăm lo cho thế hệ tương lai.",
+    "output": "(NLĐO) - Ngày 2-8, Báo Tuổi Trẻ phối hợp với Báo Tuổi trẻ Thủ đô tổ chức buổi giao lưu với báo Tuổi trẻ Thủ đô."
+   },
+   "asr_active": {
+    "input": "NG Ô T Y IN O BA T  CAU SỐ A CỦA CHO SN CH ĐỒNG CO AI V N À AN  ĐẺY KIỆUN BÀ ĐÃ CHÂ GA M U ĐỒNG ĐỂ Ô CHỜ CR N NHỮNG CI AN ĐIỀN CÒN H C H M N ÁC CHÚNG TÔI CÁ À U ĐỘNG Đ I LỂ KINH CẠNH Ự Ệ  NÓ   NỘ HOA CHONG  L NG   TUNG XUNG LẠI Ộ HUIỆT SAU UÀ TRONG TRIỂ KHUNG CÓ LÌNH ÀY KBOÁO IỢI TRỆC THỰC U VÀ TH HÀN HƯỢT THOÁT SÁ LỊCH NAN LẦN COAO LO O HÔI HIỂN ƯN LIHNU BÁO BƯƠN N QUYT ĐỒNG TOÀI",
+    "output": "(PL)- Ngày 2-8, ông Nguyễn Văn Chấn, Giám đốc Công ty cổ phần Chứng khoán An Giang cho biết, ông đã có chuyến thăm và làm việc tại Công ty cổ phần Chứng khoán An Giang (Q.12) từ ngày 2-8."
+   }
+  },
+  {
+   "sample_id": "dom_any7NAvA7AY_1",
+   "split": "train",
+   "reference": "Chương trình tư vấn hướng nghiệp: đại diện các trường đại học cập nhật phương án tuyển sinh năm 2025, mốc thời gian và phương thức xét tuyển mới; chuyên gia giải đáp câu hỏi của học sinh về chọn ngành, chọn trường.",
+   "review": "approved",
+   "clean": {
+    "input": "\"Dành cho giới trẻ trong đó có hoạt động tư vấn hướng nghiệp. Chúng tôi tin rằng với sự hỗ trợ các chuyên gia, các thầy cô giáo đều rút kinh nghiệm, \"các học sinh sẽ nhận được những góc nhìn đúng đắn từ đó xây được một kế hoạch học tập hiệu quả nhất.\" Tại chương trình, đại diện các trường đại học uy tín đã cung cấp thông tin cập nhật về phương án tuyển sinh năm 2025. Các mốc thời gian quan trọng, phương thức xét tuyển mới cũng như những điểm thay đổi đáng chú ý trong quy chế. Các truyên gia cũng trực tiếp lắng nghe và giải đáp các câu hỏi của học sinh về chọn ngành. Chọn trường hay cơ hội nghề nghiệp.",
+    "output": "(TNO) Ngày 23.11, tại Hà Nội, Đại sứ quán Việt Nam tại Hà Nội đã tổ chức chương trình “Dành cho giới trẻ trong giới trẻ”."
+   },
+   "asr_active": {
+    "input": "C I HN  VÔ N T C Ó T  ÂI U G Á U U N     L L LN T QU H NGV  ÂI CHIN T  DI N CÁCH TƯNG ẠN H C TINM Á U N C N I NH C ƯƠN N I N N NH  CẤC MỐ C DÂN  T ỊH CHỌC VUÔG CỨC CÁC TIỂM HỘI CUNG NIÊU NHỮN ĐIÌM KHY ĐUỘI ĐẢNG HU G SẦU VRỊ S CKẾT SINH SAO CŨNG CHỨNC GIẾP LẦMGNGHM V SĨ ĐÁP CÁC CÙN HI CỦA HỌC XINH VIỆC  ÀN SOẠA THNHAY CÔ ỘI NHIỆN GĨ",
+    "output": "(Dân Việt) - Ngày 2-8, tại TPHCM, Cty TNHH Gương mặt xây dựng TPHCM đã tổ chức hội nghị giao ban công tác cán bộ công tác tại TPHCM cho các cán bộ công tác tại TPHCM và các địa phương trên địa bàn."
+   }
+  },
+  {
+   "sample_id": "dom_any7NAvA7AY_2",
+   "split": "train",
+   "reference": "Một thầy giáo cho rằng AI dù phát triển đến đâu cũng không thể thay thế con người; khu vực tư vấn tuyển sinh giới thiệu chỉ tiêu, học phí, chương trình đào tạo và học bổng để học sinh chọn lựa phù hợp.",
+   "review": "approved",
+   "clean": {
+    "input": "và chúng ta có những cái kiến thức hiểu biết sâu, vì thầy tin chắc rằng là dù một AI có phát triển đến đâu nữa thì cũng không thể thay thế được con người. Song hành cùng phiên đối thoại là khu vực tư vấn tuyển sinh, nơi các trường đại học cao đẳng giới thiệu cụ thể về chỉ tiêu tuyển sinh, học phí, chương trình đào tạo và các trình sách học bổng. Những nội dung này giúp học sinh có cái nhìn toàn diện thực tế hơn để đưa ra lựa chọn phù hợp. Nhờ có buổi hôm nay, bọn em đã giúp cho",
+    "output": "(TNO) Ngày 23.11, tại Hà Nội, Bộ GD&ĐT tổ chức Hội thảo “Tôi muốn học sinh có thể học phí và có kiến thức hiểu biết sâu hơn để học sinh có thể học phí và có kiến thức hiểu biết sâu hơn để học sinh có thể học phí và có kiến thức hiểu biết sâu hơn để học sinh có thể học phí và có kiến thức hiểu biết sâu hơn để học phí và có kiến thức hiểu biết sâu"
+   },
+   "asr_active": {
+    "input": "T  H V Y     ÁC V HU N I VN I CIÁNH HAN UNG P IN ĐƯA HLI LÀ HUY V T N K N IN LƠ I CÁC Ư N ĐẠI HỌC CO ĐỒNG S KIỂU CỦ K VH S ÊU K N XIN  Í CHƯIC N TP  À CÁC IH Á C N HẾU LỘI N N Y N UT HỌC I CÓ NHÌ N T N CỰ T HƯN ĐỂ ĐƯA À L TSẢN PHỤ HTRE CẨU HÓ  HY H  E M  EM RÁ Á HỚ CO  E RA Ấ HEỂU ĐÓ ƠI  E",
+    "output": "(NLĐ)- Ngày 2-8, Sở GD-ĐT TPHCM cho biết Sở GD-ĐT TP đã có công văn gửi Sở GD-ĐT TPHCM yêu cầu Sở GD-ĐT TPHCM chỉ đạo các trường ĐH, CĐ phải làm rõ trách nhiệm"
+   }
+  },
+  {
+   "sample_id": "dom_b3Y2ckFkva0_1",
+   "split": "train",
+   "reference": "Ý kiến cho rằng vấn đề xuất phát từ lợi ích chủ đầu tư condotel: lợi nhuận rất lớn, giá bán ngang căn hộ cao cấp trong khi nghĩa vụ nộp tiền sử dụng đất chưa tương xứng, và họ muốn bán nhanh, chốt lời nhanh.",
+   "review": "approved",
+   "clean": {
+    "input": "cho rằng việc này xuất phát từ lợi ích của các chủ đầu tư dự án. Cụ thể là trong các năm qua, các chủ đầu tư dự án Cô đối theo đã đạt được lợi nhận rất lớn. Giờ giá bán can hộ Cô đối theo tương đương giá bán căn hộ cao cấp trong khi giá thành thấp và nghĩa phụ của dân nghiệp đục tiền sử dụng đất, tiền thuê đất dự án vào ngân sách nhà nước chưa tương xứng. Kể đến là với mục đích muốn bán nhanh, chốt lời nhanh, dự án Cô đối theo, nên các chủ đối tư thường thực hiện phương thức bán cân hộ cơ đô theo với",
+    "output": "(ĐTCK) CTCP Đầu tư và Phát triển đô thị Việt Nam (VEC) vừa công bố kết quả kinh doanh năm 2013 với giá bán lẻ là 36,5 triệu đồng/m2."
+   },
+   "asr_active": {
+    "input": "T DẢNG GC NÀY SÁC HÁT T ỊỢ ÉT CỘC CẤT THỤ Đ ẢNH CUNG THỀI ÃI CHONG CẤT NĂM QATẤT HÙỤ ĐỘỒ TƯ Ự ẢNH CÔN ĐƯA THÀO ĐÃ ĐẠCP ĐƯC LỢT NHẪN DẤT LƯỞNG DÓ IA BẢNH ANH HỮ CỦNG ĐỒI TREO TƯƠNG ĐƯƠNG D BẢNH CANH R CÂO CẤ TRONG KHI IẢ THÀN THẤP  N GIÁO VỤ CUẢA GIÂN GIẶP ĐƯẬC DGÀN SỰ DỤC ĐẾT TRN THƠI Đ C ẢNH PHẦN ÁC N CH Ư C CHƯ Ư N  KỲ ĐIỂ LÀM VI MỤT ĐIT ỐN BẢNH DHAN RẤT LỢI NHANH  ẢNH CÔN ĐƯỢC ĐÀO NÊN CẮT TƯỢNC ĐỢC TƯ THƯỜG THỰC HIỆN PƯƠNG THỨC BÁNH TANH HUỘ CÙ ĐƯỢU THÀO VI ÂM CÁC LỢH DON",
+    "output": "(PL)- Ngày 2-8, TAND TPHCM đã mở phiên tòa xét xử sơ thẩm vụ án hình sự đối với bị cáo Nguyễn Văn Thúy, nguyên là Phó Chánh án TAND TPHCM về tội “Giết người”."
+   }
+  },
+  {
+   "sample_id": "dom_b3Y2ckFkva0_2",
+   "split": "train",
+   "reference": "Chưa có quy định bắt buộc chủ đầu tư condotel bảo lãnh nghĩa vụ tài chính với khách hàng, cá nhân nước ngoài chưa được mua căn hộ condotel; Hiệp hội Bất động sản TP.HCM kiến nghị sửa Luật Đất đai để phát triển du lịch.",
+   "review": "approved",
+   "clean": {
+    "input": "\"Quy định bảo lãnh trong bán, cho thuê, mua nhà ở hình thành trong tương lai, mà chưa có quy định phải thực hiện bảo lãnh nghĩa vụ tài chính của chủ đầu tư dự án cơ đô theo, hình thành trong tương lai với khách hàng.\" \"Ngoài ra đến nay, cá nhân nước ngoài vẫn chưa được phép một càn hộ cơ đô theo.\" Hiệp hội bất động sản thành phố Chí Minh cũng kiến nghị để thực hiện nghị quyết số 08-NQTW của bộ chính trị, về phá triển dù lịch trở thành ngành kinh tế mũi nhọn, rất cần thiết sửa đổi luật đất đai, theo hướng cho phép",
+    "output": "(Chinhphu.vn) - Thủ tướng Chính phủ vừa có văn bản số 08-QĐ/TW gửi Thủ tướng Chính phủ về việc thực hiện Nghị quyết số 08-NQ/TW của Thủ tướng Chính phủ về việc thực hiện Nghị quyết số 08-NQ/TW của Thủ tướng Chính phủ về việc thực hiện Nghị quyết số 08-NQ/TW của Thủ tướng Chính phủ về việc thực hiện Nghị quyết số 08"
+   },
+   "asr_active": {
+    "input": "CUIA ĐIỆT BON LÃN T ONG N THÒ  UÔN NHẢ Ở VHIỀN THẲNG CHÂN TỪ LAI M TRƯA CÓ CUI ĐIỆT PHẢI TUỢC GINC BO LÃNH GI TI CHIỂN CỦA CHỦ ĐƯC NH CÔ ĐỒN TAO ÌNH THÀNG TRON TỪNG LÀI VỚI PHÁC HÀG GOÀI GI ĐỊ NÀY CÁ NHNH NƯT NGÀI VÍNH CƯA ĐƯỢC PHÁT MUỘN CÀN ỘI CA ĐỢC RÀO CỜO VI AN ĐẶN SẠNH TN PHÚ TỊ MN H G T Đ IỊN GH  Q UẾT SỦ KHÔNG TẠM ÀNH NỘI QUI TỀ ĐẮT IÊU CỦA BỘ TRIỂN TRỊVỀ O PHÁ TRN DU LUYỆN TRỢ THÀNH NGÀNG TRINH ĐỂ MUŨI NHỌ ẤT CÀNH THẾT SỰA ĐA LẬC ĐÍT ĐAI THO HƯỞNG TRÒ HÁT",
+    "output": "(PL)- Ngày 2-8, ông Nguyễn Văn Hùng, Chủ tịch UBND TP Hà Nội cho biết, đã ký kết thỏa thuận hợp tác với Công ty cổ phần Chống ong Việt Nam (VH) về hợp tác với Công ty Chống ong Việt Nam (VH) về hợp tác với Công ty Chống ong Việt Nam."
+   }
+  },
+  {
+   "sample_id": "dom_cvZqE-2LEG8_1",
+   "split": "train",
+   "reference": "Do khí hậu lạnh và khô, búp chè ở đây nhỏ; một thương hiệu trà sức khỏe chuyên sâu mang sứ mệnh bảo tồn và phát triển.",
+   "review": "approved",
+   "clean": {
+    "input": "\"Đó đại năng thạch búp, nó chỉ có to và một phần mười, hoặc một phần năm của trà 60 tuổi chúng ta thôi, vì không khí hậu lạnh, khô, cho nên là cũng búp chè nhỏ. Rất ít nước thương hiệu trà sức khỏe chuyên sâu, mang trong mình sứ mệnh bảo tồn và phát triển.",
+    "output": "(Dân Việt) - Một trong những loại trà búp kỳ lạ nhất thế giới được giới chuyên môn đánh giá là trà búp, trà búp, trà búp, trà búp, trà búp, trà búp, trà búp, trà búp, trà búp, trà búp, trà búp, trà búp, trà búp, trà búp, trà búp, trà búp, trà búp, trà búp,"
+   },
+   "asr_active": {
+    "input": "LĐ      V  Y Ạ V    TÔI N H OẠLUỒN ÂY Y  RUÔN N   N Đ   H    U  Đ  ĐI BỎ A Ạ ƠO HÔNG TI SUỔI RẰN ĐƯỢC BIẾT ĐẾ LÀ TỨ DIU CHÀ SUỨC HOÈE HYN SÂUĐUA KHÔNG MN Ặ XỨN MẶT TÒI U  HÁC TR",
+    "output": "(NLĐ) - Ngày 2-8, ông Nguyễn Văn Hạnh, Chủ tịch UBND TPHCM cho biết, ông Nguyễn Văn Hạnh, Chủ tịch UBND TPHCM cho biết: “Tôi đã có một người đàn ông ở Sài Gòn, nhưng không có người ở lại thì không có người ở lại thì không có người ở lại thì không có người ở lại thì không có người ở lại thì không có người ở lại thì không có người"
+   }
+  },
+  {
+   "sample_id": "dom_cvZqE-2LEG8_2",
+   "split": "train",
+   "reference": "Trà Dragon Tea Suối Giàng không chỉ là sản phẩm mà còn là biểu tượng cho nỗ lực phát triển kinh tế vùng, bảo vệ môi trường và gìn giữ bản sắc văn hóa dân tộc thiểu số.",
+   "review": "approved",
+   "clean": {
+    "input": "Không chỉ là một sản phẩm, Dragon Tea Suối Giàng còn là biểu tượng cho sự nỗ lực phát triển kinh tế vùng, bảo vệ môi trường và gìn giữ bản sắc văn hóa dân tộc thiểu số. Trong suốt hành trình nhiều năm vừa qua đối với công tác tuyên truyền",
+    "output": "(SGGP).- Ngày 30-8, tại TP Đà Nẵng, Tổng cục Thống kê, Tổng cục Thống kê, Tổng cục Thống kê, Tổng cục Thống kê, Tổng cục Thống kê, Tổng cục Thống kê, Tổng cục Thống kê, Tổng cục Thống kê, Tổng cục Thống kê, Tổng cục Thống kê, Tổng cục Thống kê, Tổng cục Thống kê, Tổng cục Thống kê, Tổng cục Thống kê, Tổng cục Thống kê, Tổng cục Thống kê"
+   },
+   "asr_active": {
+    "input": "HÔNG TH LÀ M T SẠNH HẦ RA GÔNG KI SUỐI GIÀN CA L ĐI C ƯỢN CH NẤÚ UẬC PÁCHTR N KHNH Y VÙNG BÀU VI N MƯA TRƯỜNG VÀ ÌM SỨ BẠN SẮT ANH HÓ DÂN C ĐUỀU SỐ   I LIÊU Đ ƯỢ  VỀ  N Ư N N   ĐÔI BÁR  N ĐĐỞ RỘN RA SN NÊC CUA TRẺ",
+    "output": "(Dân Việt) - Ngày 2-8, ông Nguyễn Văn Thắm, Giám đốc Công ty cổ phần Tập đoàn Công nghiệp Than - Khoáng sản Việt Nam cho biết, Công ty đã ký kết hợp đồng hợp tác với Công ty Than - Khoáng sản Việt Nam (Vinaconex) để hợp tác với Công ty Than - Khoáng sản Việt Nam."
+   }
+  },
+  {
+   "sample_id": "dom_f7VbxhaVtfk_1",
+   "split": "val",
+   "reference": "Đồng Tháp đẩy mạnh xúc tiến thương mại để nâng thu nhập nông thôn; nhiều sản phẩm OCOP của tỉnh đã vào các hệ thống bán lẻ lớn và các sàn thương mại điện tử như Lazada, Shopee.",
+   "review": "approved",
+   "clean": {
+    "input": "lợi thế khu vực nông thôn, góp phần nâng cao thu nhập của người dân, cơ cấu lại ngành nông nghiệp gắn với phát triển tiểu thủ công nghiệp, ngành nghề, dịch vụ và du lịch nông thôn, thời gian qua, công tác xuất tiến thương mại đã được đồng tháp đẩy mạnh thực hiện. Từ đó, nhiều sản phẩm đặc trưng, sản phẩm Ocop của tỉnh, vào được hệ thống phân phối bán lẻ lớn, như coopmark, BigC, Winmark, hàng trăm sản phẩm của doanh nghiệp, hợp tác xã, cơ sở sản xuất, đã có mặt trên các trang thương mại diện tử, uy tín như vỏ sò, posmark, lazada, shopee, sen đỏ, ngoài ra,",
+    "output": "(HQ Online)- Theo kết quả phân phối của Công ty TNHH MTV Thương mại và Phát triển nông thôn Việt Nam (Vinamark), ngành nông nghiệp gắn với phát triển nông thôn, dịch vụ và du lịch nông thôn, vừa được công bố là một trong những thành viên của Công ty TNHH MTV Thương mại và Phát triển nông thôn Việt Nam."
+   },
+   "asr_active": {
+    "input": "LƯC Y N ÔN M N NG QUẤC MÀNH ẾN CN UN ỊỆ D H  ƯÔN LẠ HÀN UNG GHIỆP ÃN VI CÁCH ST LUỢC Ộ UN GIỆP TGÀN NGHỀ  VỤ VÀ UL ỆC NUNG  THỜI TAN QUA ÔN TẤT S CỨ MAI Á ƯỢC NG TẤP ỢỆ BN   Đ NHIỀU SẢN RẦN ĐẶT TRHƯƠNG ÀN HN UỐ UỐC TR ÊN  VÀO L EN ỔNG H N I N I N NHƯ UC M  T NYÊN M C    TONG THÀN HÀN UÂ NIỆP  TẤT CÔ TỰ THẬT QUỐCH ĐÓ CÓ MCHCHN A CON C B BIN TƯỢNG UYT IỂN NH O SÒ Q MÁT  SO ĐA XUẤT RXEN ĐNGOÀI SO",
+    "output": "(NLĐO) - Ngày 2-7, tại Hà Nội, Bộ NN&PTNT tổ chức lễ kỷ niệm 40 năm Ngày Thương binh liệt sĩ (27/7/1945 - 7/7/2012) và đón nhận Huân chương Lao động hạng Nhất."
+   }
+  },
+  {
+   "sample_id": "dom_f7VbxhaVtfk_2",
+   "split": "val",
+   "reference": "Ngoài thương mại điện tử và điểm bán OCOP, gian hàng Đồng Tháp tại các hội chợ thu hút doanh nghiệp với sản phẩm đặc trưng chế biến từ sen và xoài, được người tiêu dùng ưa thích.",
+   "review": "approved",
+   "clean": {
+    "input": "không chỉ chỉ có sản thương mại điện từ, các điểm bán hàng Ocop mà tại các hội trợ thương mại, hội trợ chuyên ngành, thì gian hàng quảng bá sản phẩm của tỉnh đồng tháp được sự tham gia nhiệt tình của các doanh nghiệp với các sản phẩm rất lập trưng, được chế biến từ sen, xoài và các sản phẩm từ xoài. Tất cả các sản phẩm này rất được người tiêu dùng ưa thích. Tôi cũng đã tham gia được. Lần này là lần thứ 2 của kỳ, hội chợ là Việt Nam, Apple đi rồi. Thì lần thứ nhất cũng cũng có 1 cái hiệu quả rồi. Ừ, mà trước đây tôi đã...",
+    "output": "(TNO) Hội chợ thương mại điện tử lần thứ nhất diễn ra từ ngày 2 đến 23.12.2012 tại TP.HCM, với sự tham gia của nhiều doanh nghiệp với các sản phẩm từ xoài, sản phẩm từ xoài, sản phẩm từ xoài, sản phẩm từ xoài, sản phẩm từ xoài, sản phẩm từ xoài, sản phẩm từ xoài, sản phẩm từ xoài, sản phẩm từ xoài,"
+   },
+   "asr_active": {
+    "input": "ÔNG CHA THỂA CÓ TOÀN THO IÊ TƯN RẤT ĐI M Ả HẬN UỐC MÀ T Á UC CỰA THƯN MẠ QU CH TRIN NẠI  TÁN À U UÁ ON QỦ TI N ĐUNG THẤP ĐƯỢC SỰN THNM O NHẬT TI N C TUÂN GHIPHỎI ÁM SẢT ẬN CHẤT RẬTRƯNG ĐƯỢC Đ Ể ÀI À CÓ SỘN RẬN TIU HOÀI TẤT Ạ CO SN R NÀY GẤT ĐƯỢC V I ƯN N Ế NA C N Á HA N GI A  LẦNG MÀY L LÒNG HAI CKỲ ỞA CHỎ LÀ VIỆT NMỜ T BỘ KÌ À LĂNG  NC VÃ VỐ Ộ CÁ YU QUẢ RỖCÓ MÀ NHỨC BẦY ỦA BÃ LỜ",
+    "output": "(Dân Việt) - Theo ông Nguyễn Văn Linh, Phó Giám đốc Sở Văn hóa-Thể thao TPHCM, hiện có hơn 2 triệu con trai đang sinh sống tại Việt Nam đang sinh sống tại khu vực Nam Trung Bộ, nhưng hiện có hơn 2 triệu con trai đang sinh sống tại khu vực Nam Trung Bộ."
+   }
+  },
+  {
+   "sample_id": "dom_p7FlzMrLDSo_1",
+   "split": "train",
+   "reference": "Lời chào mở đầu bản tin 18 giờ của kênh YouTube Sài Gòn Đầu tư Tài chính, cập nhật tin kinh tế, thị trường và đời sống dân sinh trong và ngoài nước.",
+   "review": "rejected",
+   "clean": {
+    "input": "Kính chào quý khán giả, quý vị đang xem bản tin 18 giờ trên kênh youtube chuyên đề xây gom đầu tư tài chính online, với những tin tức mới nhất, nóng nhất về các lĩnh vực kinh tế, thị trường, và đời sống dương sinh trong và ngoài nước, được chúng tôi cập nhật liên tục trong này và sau đây là thông tin chi tiết.",
+    "output": "(TNO) Chiều ngày 23.11, kênh truyền hình ATV chính thức đưa tin đã chính thức được công bố trên kênh truyền hình ATV chính thức của Đài Truyền hình Việt Nam."
+   },
+   "asr_active": {
+    "input": "T         NHƯUC CÀ QUI TN GIẢ QUYT B À MẲG T H I N NH TOÀH NHNT T T DIN NÀ SÀI ÒN TÙI TỊ T T OÀI Ớ NHNG TỪN T Ó MI NỐNNÓG  CVÀ CÁC N VỤNG  NG CÁP T D  VÀ ĐÀNO NG   ÀI H N  C NHM UẾN TNG THNG GNAY  SAO NÀN L ÔN N          MỚI ĐN",
+    "output": "(PL)- Ngày 2-8, TAND TPHCM đã mở phiên tòa xét xử sơ thẩm vụ án hình sự xảy ra tại TPHCM và TPHCM ngày 2-8."
+   }
+  },
+  {
+   "sample_id": "dom_p7FlzMrLDSo_2",
+   "split": "train",
+   "reference": "Dự thảo quy định khi giá đầu mối tăng, đơn vị phân phối không bắt buộc tăng tương ứng; Bộ Công Thương điều chỉnh chi phí định mức theo CPI, doanh nghiệp báo cáo chi phí thực tế hằng năm và kiểm toán độc lập 3 năm một lần.",
+   "review": "approved",
+   "clean": {
+    "input": "Khi đầu mối tăng giá, đơn vị phân phối không bắt buộc tăng tương ứng, với địa bằng xa cảng, kho đầu mối, giá bán có thể cao hơn nhưng chênh lệch không quá 200%. Về chi phí kinh doanh định mức trong công thức tính giá, bộ công thương thông báo mức điều trịnh theo CPI và thời điểm áp dụng, chậm nhất ngày 31/1 hàng năm, doanh nghiệp phải báo cáo chi phí thực tế hàng năm và kiểm toán độc lập mỗi 3 năm. Dự thảo cũng xác định dấu hiệu để điều tra hạn chế cạnh tranh, nhưng nhóm từ hai đầu mối, hoặc phương phối trên cùng địa bàn có tổng thị phụ.",
+    "output": "(ĐTCK-online) CPI và thời điểm áp dụng cho các doanh nghiệp (DN) trong nước đã được công bố, trong đó có một số doanh nghiệp (DN) trong nước đã được công bố."
+   },
+   "asr_active": {
+    "input": "U MUI H GI  N V N ỐI KHÔG T B C N NG Ớ H C  H Ộ GI BÁN CÓ TRNY CA NH NG I T U Ạ N T  VÌ CỊ Í I H OA N N HỨC IN GIÁ  BỘ G ƯỜNG CHNG BÁU M  À NH D NG HẢ H NHẤT NGÀY N ÀN NG O NH I T O  TỰC K HÀNH NẰM PHÀ KI M CẤ ĐỘC LẬP MI BÀ NẬDỰ THẢOU CŨNG XÁC ĐỊ H DU HI U ĐƯỢC RA HẠN CHÍ NH TR NH NHÊN NHÓM TỪ HAI ĐẦU UỚI HOẶC PHÂ HỐI TR CÙNG GI BÀN CÓT TỔNG K T",
+    "output": "(PL)- Ngày 2-8, TAND tỉnh Quảng Nam đã mở phiên tòa xét xử sơ thẩm vụ án hình sự đối với bị cáo Nguyễn Văn N. (28 tuổi, ở xã Tân Phú, huyện Tân Phú, Quảng Nam) về tội “Giết người”."
+   }
+  },
+  {
+   "sample_id": "dom_qoYByuKMIv4_1",
+   "split": "train",
+   "reference": "Trước hình ảnh người giúp việc đánh trẻ sơ sinh, chuyên gia pháp luật cho rằng có lỗ hổng lớn: người giúp việc làm việc thường xuyên, liên tục nhưng không xác lập hợp đồng.",
+   "review": "approved",
+   "clean": {
+    "input": "Chào ông, đầu tiên, xin cảm ơn ông đã nhận là mời đến với chương trình của chúng tôi ngày hôm nay. Khi mà nhìn đến cái hình ảnh, được có ghi lại bằng camera, phụ hồ, người giúp việc, đánh trẻ em sơ sinh tại nhà thì giữa góc độ pháp luật thì ông cảm thấy thế nào? Thì như hiện nay, có thể thấy rằng là nó có một cái cái lỗ hổng rất lớn mà pháp luật mà chưa điều chỉnh Tức là những cái người đó họ làm những công việc thường xuyên, liên tục, nhưng lại không xác lập các quan hệ pháp luật về hợp đồng . Và cũng không có những điều kiện.",
+    "output": "(TNO) Một số người có thể nói rằng cái lỗ hổng rất lớn mà không có sự hiểu biết về những cái lỗ hổng lớn mà không có sự hiểu biết về những cái lỗ hổng lớn mà không có sự hiểu biết về những cái lỗ hổng lớn mà không có sự hiểu biết về những cái lỗ hổng lớn mà không có sự hiểu biết về những cái lỗ hổng lớn mà không có sự hiểu biết về những cái lỗ hổng lớn"
+   },
+   "asr_active": {
+    "input": "N ỘỢI  T N ÔNG À MÀ N NY   YN NHIN N ÀY ĐỀU CÒN VHI LẠI LẦN CAI R RA VN N HÌ DU  N BAẠN S M S S N ĐẸ NHÀ  H GỰI CÁ ĐỐ TUỐC ĐRÍ   LẠI Ệ KH RA      NG ĐN  P N C  TUÔI MỜI  Ơ G I Ó HỌO LOẠN YÊ CÙNG RỨC HƯƠNG S  T HIỀU MÀ LÀI KHÔNG SỨC LẬC CA Ơ QUÀ HY HÁN SÁCH RỰC ĐỢ ĐỒNG NAN ĐC  N HÔNG C N M RI",
+    "output": "(PL)- Ngày 2-8, ông Nguyễn Văn Niên, Phó Giám đốc Sở NN&PTNT tỉnh Quảng Ninh cho biết, ông đã có đơn xin nghỉ hưu từ ngày 1-8."
+   }
+  },
+  {
+   "sample_id": "dom_qoYByuKMIv4_2",
+   "split": "train",
+   "reference": "Chuyên gia đề nghị gia đình kiểm tra nhân thân người giúp việc, pháp luật cần quy định kiểm tra sức khỏe về bệnh truyền nhiễm và tiền sử bệnh tâm thần; người dẫn hỏi về giải pháp ngăn chặn của cơ quan chức năng.",
+   "review": "approved",
+   "clean": {
+    "input": "mà kiểm tra được những người mà sẽ giúp việc cho mình nhé là họ còn là những người tốt, con nhân thân tốt thứ hai nữa là pháp luật cũng phải quy định và bản thân những gia đình đấy cũng cần phải yêu cầu là họ phải kiểm tra sức khỏe ví dụ như có các bệnh truyền nhiễm hay không có tiền sử bệnh tâm thân hay không và những cái dấu hiệu khác Ở thế còn từ phía các quan chức năm có giải pháp nào để có thể ngăn chặn tình trạng này không?",
+    "output": "(TNTT>) Ngày 23.11, tại TP.HCM, Bộ Y tế đã ban hành Thông tư số 03/2011/TT-BTC hướng dẫn thực hiện công tác kiểm tra sức khỏe và phòng ngừa bệnh lý tâm thần cho các bệnh nhân mắc bệnh tâm thần và bệnh tâm thần cho các bệnh nhân mắc bệnh tâm thần và bệnh tâm thần."
+   },
+   "asr_active": {
+    "input": "M KỊM A ĐƯT CHN CÂY GƯI U S N M  H N QUN N N N I TỐT  T ÀNH TỐ  AI L L NG KHÔNG L N HÔNG THẢT QY BÀ N IA I T N T N U HA   Y B N RUY N N H   Ó S N BÁC T NH HN NY ÔNG VÀI YIN CÂY N THÁC CÒN CÁI CON ĐIỢC HĨ CÁ ĐÔNGQUA CỨC NẰN Ỏ GAN PHÁP NÀO ĐỂ CÓ CHÀNG NAH SÁC TIN  NÀY KHÔG  LU ĐỢC S YN QUN HAN LUẬC ĐÒI NÀI  C H ĐAI",
+    "output": "(NLĐO) - Một cây nám ở TP.HCM đã bị cây nám của ông N. N. N. N. N. N. N. N. N. N. N. N. N. N. N. N. N. N. N. N. N. N. N. N. N. N. N. N. N. N. N. N. N. N. N. N."
+   }
+  },
+  {
+   "sample_id": "dom_sTeS-7km_NM_1",
+   "split": "train",
+   "reference": "Nhà nước đã có nhiều chính sách, chương trình nâng cao hiệu quả công tác này, nhưng sự mất cân bằng trong phân bổ nguồn nhân lực hiện nay gây lãng phí.",
+   "review": "edited",
+   "clean": {
+    "input": "Đối với sự phát triển của Thủ đô và đất nước. Trong thời gian vừa qua Nhà Nước đã quan tâm và có nhiều chính sách, chương trình nhằm để nâng cao hiệu quả của công tác này, tuy nhiên nhận thức của bạn học sinh về vấn đề sự mất cân bằng trong phân bổ nguồn nhân lực như hiện nay là gây lãng phí cho chất lượng nhân lực,",
+    "output": "(Chinhphu.vn) - Sáng nay (21/9), tại Hà Nội, Thủ tướng Chính phủ đã có buổi làm việc với Thủ tướng Chính phủ Nguyễn Tấn Dũng và các đồng chí lãnh đạo các bộ, ngành, địa phương về công tác cán bộ chủ chốt trong công tác cán bộ chủ chốt trong các lĩnh vực liên quan và địa phương."
+   },
+   "asr_active": {
+    "input": "V CÁC Ủ  À N C  À LNG LÙI LAN LƯC QUA LƯỚC LAN VAN TOÂN VÀ M DIỀU TÍY ÁC  LỚN CA LÚC QUẢ T H LAN NIÊU LÀ ỢỆG C C BẠ H N TI VÀ LY YT Ề Ư N Ạ  MẤC NH B UN MÔ N ƯĐỢA A  VN N N N   LÀ CHNG L NHNG L NHU NAY YÊU NM UN ĐỢC I NƯỚGỐ ĐÔ ĐIÊU RA HOẢ VẢNH CON TAY N ÀY N Ề AI  VÀ TC LÀN MAN  D",
+    "output": "(NLĐO) - Các nhà khoa học đã phát hiện một con mắt có thể là một con mắt có thể là một con mắt có thể là một con mắt có thể là một con mắt có thể là một con mắt có thể là một con mắt có thể là một con mắt có thể là một con mắt có thể là một con mắt có thể là một con mắt có thể là một con mắt có thể là một con mắt có thể là một con mắt có"
+   }
+  },
+  {
+   "sample_id": "dom_sTeS-7km_NM_2",
+   "split": "train",
+   "reference": "Bộ Giáo dục và Đào tạo lưu ý học sinh tham gia xét tuyển sớm cần nghiên cứu thông tin tuyển sinh trên website các trường để không bỏ lỡ hồ sơ và thời hạn; học sinh còn được chuyên gia các trường tư vấn.",
+   "review": "approved",
+   "clean": {
+    "input": "Một điểm nữa bộ giáo dục và đạo tạo đặc biệt lưu ý đó là việc tham gia vào các phương thức xét tuyển sớm của các trường đại học. Các em cần nghiên cứu tuyển sinh của trường đại học đã công bố trên website để bám sát về hồ sơ, thủ tục, giấy tờ và các thời hạn, không được bỏ lỡ các thời hạn đó. Bên cảnh đó, học sinh cũng sẽ được chuyên gia đến từ các trường cao đẳng, đại học tư vấn.",
+    "output": "(SGGP).- Ngày 2-7, Bộ Giáo dục và Đào tạo đã công bố các phương thức xét tuyển nguyện vọng của các trường đại học trong cả nước."
+   },
+   "asr_active": {
+    "input": "D N C I Y H N ĐU  Á  ÂU M NHẤT  H NG   UI ĐIM NỮA BỘ ÁN C VÀ ĐÀO ẠO ĐẶT BIỆT LIU IN ĐÓ L VIỆC CN G VÀ CÁC PƯ NG C C K H N Ủ C Ư NG Ể HỌC C EM H NHIÊN ĐYU CH K Í ỊA ẢN NH SINH Ủ ƯƠN HỌC Đ G N N Y SAI  IỀ BÁM ÁC V   CH TGÂY TỪ VÀ CÁ THUỂI HẠCH KHÔNG ĐƯỢC BÒ LỮA C Ể HẠNH BIÊN CẠN Ó HÔC SINH CHN S ĐƯỢC TUYN G NG O G ĐÂY H C T VĨNH",
+    "output": "(SGGP).- Bộ GD-ĐT vừa ban hành Thông tư số 03/2014/TT-BTC hướng dẫn thực hiện dự án Luật Giáo dục đại học (sửa đổi) năm học 2016-2016."
+   }
+  },
+  {
+   "sample_id": "dom_soszp1_iK0E_1",
+   "split": "train",
+   "reference": "Một hộ dân cho rằng mức đền bù quá thấp, chưa phù hợp luật đất đai; gia đình đã cải tạo vùng đất trũng sâu 7–8 mét từ khoảng 40 năm trước và ủng hộ dự án mở đường Đặng Thai Mai.",
+   "review": "approved",
+   "clean": {
+    "input": "Đồng là quá thấp, chưa phù hợp với luật đất đài 2020. Nha đất nhà tôi là đầu tiên một cái vùng đất hủng hâu rất Sâu. Quang hóa gia đình nhà chúng tôi là được phép là cải tạo. Đất bên đấy sâu và sâu 7, 8 mét. Cách đây là 40 năm rồi. Bao nhiêu công sức chúng tôi làm lên mà chúng tôi cũng đã ở đây rất là lâu rồi. 3, 40 năm là nhà nước có cái dự án mở đường Đặng Thai Mai thì cá nhân chúng tôi cũng là nếu mà làm đường ủng hộ nhưng mà",
+    "output": "(Dân Việt) - Đó là những điều tôi làm ở tòa nhà của tôi, nhưng không phải ai cũng làm được ở tòa nhà của tôi."
+   },
+   "asr_active": {
+    "input": "LN LẬC V T HUỘT LỖI LUẬC ĐẤT ĐẠÀI HÀNH UNG TRÙMG H I TỪ ROÀ ĐÁC N TÔI ÂA L  ĐÂU  EN NÀ MỘ C VÙNG LẮC  ÔN VẤT UQUAN GÁ VA ĐIN NHÀ CNG TÔI LÀ ÁI À ẠI ẮT Ă ÊN Đ Y ÔNG VÀ TẤU BẬY Ả MÁT CÁI GÂY LÀN MÔỐI UỐN L N RỒI ÂU CN  TÔI LLÂ BÀ NÔI  ĐÃ  ÂY RT LONG ĐƯỜI BAO BA HI Ă LÀ CI NƯỚC CÓ GI A ẢÁ N OAI MÀ M ƯỢN ĐNG LẤY NAI Ả NHƯN CÚNG TÔI GÌ LÀ Ơ LÊN ĐẾN MÀ LÀM LỜN UN Ộ NHƯNG M",
+    "output": "(PL)- Tôi đã có một người đàn ông có một cái chết không phải là một cái chết không phải là một cái chết không phải là một cái chết không phải là một cái chết không phải là một cái chết không phải là một cái chết không phải là một cái chết không phải là một cái chết không phải là một cái chết không phải là một cái chết không phải là một cái chết không phải là một cái chết không phải là một cái chết không phải"
+   }
+  },
+  {
+   "sample_id": "dom_soszp1_iK0E_2",
+   "split": "train",
+   "reference": "Người dân có đăng ký đất đai và nộp thuế đất phi nông nghiệp thì công trình, tài sản gắn liền với đất được pháp luật bảo vệ và phải được bồi thường đầy đủ khi thu hồi đất mở rộng đường.",
+   "review": "approved",
+   "clean": {
+    "input": "980 có đăng ký đất đai, nộp thuế đất phi nông nghiệp, các công trình và tài sản gắn liền với đất của họ được bảo vệ theo quy định pháp luật, do đó phải được bồi thường đầy đủ. Điều này có nghĩa là không thể áp dụng cơ sở từ điều 105 nhằm loại trừ quyền được đền bù của người dân. Việc thu hồi đất phục vụ mở rộng tuyến đườngcần đảm bảo rằng các tài sản gắn liền với đất của hộ dân được đánh giá và bồi thường đầy đủ. Theo quy định về việc xác nhận quyền sự dụng đất và quyền đất.",
+    "output": "(PLO)- Theo quy định của pháp luật, các công trình xây dựng sẽ được cấp quyền sử dụng đất và quyền được sử dụng đất của hộ dân được bảo vệ theo quy định pháp luật."
+   },
+   "asr_active": {
+    "input": "C H M  L N KI ẤC ĐÀAI  LUẬC UỚI ĐẤC H TH N GIP CÁC C H VÀ T ÀI SÀNH GNH H V I C T ĐƯỢC N C U N ĐƯỢC  S O ĐÓ H I ĐƯỢC MU TRƯỜNG ĐỜI Ư U ĐAY C N HĨA L  KHÔNG THIỆC ÁP CÔ C RUMUT C N N N LOẠI T U U H ƯC ÊN D C I ẤT MÀI NCT N Ư I H À BÀO À CÁC AÀ À N I N N Đ MẬT DIN ĐƯỢC ÁNH GIÁO VÀ MÙI THƯỜNG ĐỀ Đ U ĐIỆT Ó LU HU MÔC CHO ỐI QHC HIN LUẬC ĐẤT ĐAY HAI NH H KHÔG TONG HA BI TƯ N YỆN VỀ IÊC SÁC NHT U H S Ự C ĐẤ VÀ QI",
+    "output": "(Dân Việt) - Ngày 2-8, ông Nguyễn Văn H, Giám đốc Sở GD&ĐT TPHCM cho biết, ông Nguyễn Văn H, Giám đốc Sở GD&ĐT TPHCM cho biết:"
+   }
+  },
+  {
+   "sample_id": "dom_uY0zUhWOLJM_1",
+   "split": "val",
+   "reference": "Triển lãm giới thiệu công nghệ, máy móc về cơ khí chế tạo, hàn cắt, gia công kim loại, tự động hóa, thiết bị điện và dây cáp; doanh nghiệp tham gia có giải pháp sẵn sàng cho các dự án trọng điểm quốc gia như dự án tàu điện.",
+   "review": "approved",
+   "clean": {
+    "input": "Vùng lãnh thổ tập trung giới thiệu các công nghệ, máy móc và sản phẩm trong nhiều lĩnh vực như cơ khí trái tạo, thiết bị công nghiệp, công nghệ hàng cắt, ra công kim loại, gang thép, tự động hóa, điều khiển thông minh, thiết bị điện công nghiệp và công nghệ cách nối dây cắp. Đến với hội trở này, chúng tôi đem được rất là nhiều giải pháp để giới thiệu cho người dùng trong đó đặc biệt là chúng tôi có nhiều giải pháp sẵn sàng tham gia vào những dự án trong điểm quốc gia như là những dựa án về tàu điện Châu Âu trong tương lai",
+    "output": "(TNO) Ngày 23.11, tại Hà Nội, Hội đồng Bảo an Liên hợp quốc (UNCL) đã tổ chức Hội nghị triển khai chương trình hợp tác giữa các nước thành viên trong lĩnh vực công nghiệp và công nghệ thông tin với các nước thành viên trong lĩnh vực công nghiệp và công nghệ thông tin."
+   },
+   "asr_active": {
+    "input": "T VU NG C ĐẬ TRỜNG C ỆT MẤY MÁT VÀ SÀNH PHẦM TRON D N VỰC NHƯ CƯÔ KH SỰ TÀO CC B C N NGHỆP  N NG Ệ HẠNH C ĐH CON   ÀI  Ư ĐỘNG H U H C MÌNH CƯT ĐI ĐỊNH UN NGHỆP VÀ CỤN Ể C Ự CÁP TÔ T ĐÂY T O M I RA TLÀ NHÊ Ả GẢ PHÁ  HỚI        NG ĐÓ ĐẶNG  TTÔI ĐÓ N Ư I PH HẮNG SÀN TH GI N Ự  QUT L ĐNG   TẠO I A H C N AI",
+    "output": "(TNO) Ngày 23.11, tại TP.HCM, TP.HCM đã diễn ra lễ hội cồng chiêng “Hàng ngàn người” tại TP.HCM với chủ đề “Hàng ngàn người”."
+   }
+  },
+  {
+   "sample_id": "dom_uY0zUhWOLJM_2",
+   "split": "val",
+   "reference": "Mô hình triển lãm đa chuyên đề tạo hệ sinh thái kết nối cho ngành công nghiệp, từ máy móc, tự động hóa, dụng cụ cầm tay đến hàn cắt, gia công kim loại và dây cáp điện; đơn vị tổ chức đánh giá hiệu quả rất tốt.",
+   "review": "approved",
+   "clean": {
+    "input": "Mô hình triển lãm đa chuyên đề, tạo lên hệ sinh thái kết nối toàn diện cho ngành công nghiệp như máy móc thiết bị công nghiệp, tư động hóa và công nghệ, ngũ kim và dùng cụ cầm tay, điều khiển từ động hóa, công nghệ hàn cắt và gia công kim loại, điện máy vòng bi và xử lý bề mặt, đầu nối và dây cáp điện. Tham gia, tổ chức một cái trình lãm chuyên ngành trong khuôn khổ, đó là trình lãm về công nghệ tr chương động hoá, IT, SPO và có thể nói là sau 3 năm có trước, tôi thấy, nó có tác dụng rất là tốt",
+    "output": "(TBKTSG) - Triển lãm về công nghệ thông tin và công nghệ thông tin Việt Nam (Việt Nam) vừa tổ chức triển lãm “Tạo ra những công nghệ thông tin và công nghệ thông tin”."
+   },
+   "asr_active": {
+    "input": "Ộ H N H ÃM N ĐƯIU TÀU NÊN HỆ SINH KHI C NUỔI TÒN SỰN COÀN NÀN CỤN GIỆP DMỌYI MT CỨC I NG GIP TƯ ĐNG HÁ VÀ CÔN HỆ MUỐI KỀM À S N CU CẦM TÀY ÊU I N CỰ ĐỘNG VẢ CÔNG H NH C VÀ A N OÀẠ ẾC M Y VON HÊ VÀ SỰ IỂ VỀ M CH ĐỒ MŨI VÀ SỰ C ĐIỆT NG    THONG SH ẠI  TRONG HANH HI  HÁCH ĐOÀN LỜ ẮM RỀ ÔN GAY ĐỒNG HỎA RIYỆN TY  VÀ CÔ THÀN ỜI Â AN AN N CHỨC N ƯI THẢI Ạ AN ÁN H N Đ LẠ ỐN MỨA",
+    "output": "(NLĐO) - Ngày 2-8, Công an tỉnh Thanh Hóa cho biết đã khởi tố vụ án, khởi tố bị can và bắt tạm giam Nguyễn Văn An (SN 1982, trú tại xã Thanh Hóa) về hành vi 'cướp tài sản'."
+   }
+  },
+  {
+   "sample_id": "dom_vlSB_Kyx_kA_1",
+   "split": "train",
+   "reference": "Thành phố xác định vùng đỏ có nguy cơ cao, đóng 30 đường kết nối và lập 23 chốt kiểm soát trực 24/24 do công an chủ trì, đồng thời yêu cầu không để đứt gãy chuỗi cung ứng hàng hóa thiết yếu.",
+   "review": "approved",
+   "clean": {
+    "input": "\"Đi thông nghiệp\" cơ sở kinh doanh dịch vụ. \"Thành phố xác định khu vực này là vung đỏ, nhiều trường hợp nguy cơ cao.\" \"Huyện có 53 đường qua sông kênh kết nối vùng một và vùng hai, 3, thành phố sẽ đóng cứng 30 đường kết nối không thuận lợi cho giao thông lập chốt kiểm soát tại 23 vị trí. Lực lượng liên ngành tham ra chốt do công an chủ trì, trực 24 trên 24, thành phố yêu cầu cơ quan chức năng chuẩn bị đầy đủ, sẵn sàng, bảo đảm không đứt gãy chuỗi cung ứng hàng hóa, lương thực, thực phẩm thiết yếu. Thực hiện tốt an sinh xã hội, tăng cường shper vận chuyển hàng hóa thiết yếu theo đạt hàng của người dân. Vùng hai gồm toàn bộ địa dân.",
+    "output": "(Chinhphu.vn) - Thủ tướng Chính phủ vừa phê duyệt phương án điều chỉnh quy hoạch xây dựng và điều chỉnh quy hoạch xây dựng và điều chỉnh quy hoạch xây dựng và điều chỉnh quy hoạch xây dựng và điều chỉnh quy hoạch xây dựng và điều chỉnh quy hoạch xây dựng và điều chỉnh quy hoạch xây dựng và điều chỉnh quy hoạch xây dựng và điều chỉnh quy hoạch xây dựng và điều chỉnh quy hoạch xây dựng và điều chỉnh quy hoạch xây dựng và điều"
+   },
+   "asr_active": {
+    "input": "N Ệ H   TH Á T IU N C  IN CN Ê BA ĐƯỜNG QU N KỀ ÁẾT I VÀ NG AI BC H U DÁ ỒNG Ư G A Ư Á I T N Ư G Ấ IỂ M À  ƯỢU N IN NÀH HN GI C  Ự I À I  ÁC Ố U A C N N  BÀ ĐÀM HÔNG ĐƯẾC Y CHI UN NG HÀNG HA Ư CỰC TRỰC PẦN TRIẾT YIỂU TRỰC HIỆN TÚT ĂN SINH TAI ƯỜN S Í TI VẬN UYỆN HÀN HI ÁC YI U HÀ ĐẶT HÀN A D N VUNG HAI UÙNG TOẦN U Đ",
+    "output": "(NLĐ) - Ngày 2-7, tại Hà Nội, Chi đoàn Y tế Hà Nội đã tổ chức hội nghị giao ban chuyên đề về việc tổ chức bữa ăn sinh tai và bữa cơm bữa cơm bữa cơm bữa cơm bữa cơm bữa cơm bữa cơm bữa cơm bữa cơm bữa cơm bữa cơm bữa cơm bữa cơm bữa cơm bữa cơm bữa cơm bữa cơm bữa cơm bữa cơm bữa cơ"
+   }
+  },
+  {
+   "sample_id": "dom_vlSB_Kyx_kA_2",
+   "split": "train",
+   "reference": "Hà Nội đóng 30 đường kết nối từ vùng 1 sang vùng 2, 3, hạn chế tối đa di chuyển liên vùng, kiểm soát chặt và chia sẻ chi phí xét nghiệm khi cần đi lại; các quận, huyện quyết định việc phòng, chống dịch.",
+   "review": "approved",
+   "clean": {
+    "input": "và một số biện pháp và mức cao hơn theo từng phân khu trong vùng về sản xuất công nghiệp, tiểu thủ công nghiệp và sản xuất nông nghiệp hỗ trợ vùng mục. Thành phố Hà Nội sẽ lòng cứng 30 đường kết nối do thông từ vùng 1 đến vùng 2, 3, để lại 18 đến 23 đường, cầu lớn. Theo lãnh đạo Hà Nội, một tiêu của phân vùng để sức chặt vùng mục kiểm sát luận ra khỏi vùng mục sáng vùng 2 và vùng 3. Thành phố rất định giảm tối đa người di chuyển liên vùng, kiểm so chặt chẽ và chia sẻ áp lực chi phí xét nghiệm, test, nhanh kháng nguyên, RTPCR, khi có như cầu dĩ truyền liên vùng. Các quận, huyện, thì xã quyết định việc phòng, chống dịch bệnh, tổ chức.",
+    "output": "(HQ Online)- Ngày 2-8, ông Nguyễn Văn Thành, Phó Chủ tịch UBND TPHCM cho biết, từ ngày 2-8, tỉnh đã có công văn yêu cầu các quận, huyện, huyện, thị xã và huyện, huyện, thị xã và huyện vùng 3 phải kiểm sát để xử lý tình trạng này."
+   },
+   "asr_active": {
+    "input": "T N N Á C O NG N N IỆ I U U NG I P À N N I   H U VN ỘI A NG Ư G ĐƯN ÁI N ỂN G    ẠN I I BA Đ Ư NG  O NG Ạ CA N N IỂ C UN N N AI N C  H CT N I I N N N KIỂ S T C TRẺ VÀ SỰ Ẻ Á ƯỢC T NHIỆP CÁC NHƯN KHẢN NUYÊN RỢI K VI S ƯỢC KI CÒ N U S IN NGÁ QUẢ VUYỆC KHI GI QUYI Đ N ỰI PÒ NG CHÚNG T C",
+    "output": "(NLĐ) - Theo Bộ Y tế vừa ban hành Thông tư số 03/2014/TT-BTC về việc ban hành Thông tư số 03/2014/TT-BTC về việc ban hành Thông tư số 03/2014/TT-BTC về việc ban hành Thông tư số 03/2014/TT-BTC về việc ban hành Thông tư số 03/2014/TT-BTC về việc ban hành Thông tư số 03/2014/"
+   }
+  },
+  {
+   "sample_id": "dom_wYRFi4-KWek_1",
+   "split": "val",
+   "reference": "Thương hiệu quốc gia Việt Nam liên tục tăng giá trị và thứ hạng quốc tế; ngoài kinh tế vĩ mô, chính trị, văn hóa, cộng đồng doanh nghiệp đóng góp quan trọng vì thương hiệu doanh nghiệp nâng giá trị thương hiệu quốc gia.",
+   "review": "approved",
+   "clean": {
+    "input": "Thưa quý vị, Thưa các bạn, những năm qua, thương hiệu quốc gia Việt Nam linh tục ra tăng vì giá trị và thứ hạng trên trường quốc tế được nhiều tổ chức uy tín trên thế giới khi nhận. Để đạt được những thành công đó, ngoài yếu tố kinh tế phĩ mô, chính trị văn hóa xã hội, còn có vai trò và sự đám góp rất quan trọng của cộng đồng doanh nghiệp. Thương hiệu doanh nghiệp được biết đến rộng dãi trong và ngoài nước, chính là yếu tố ghi thêm điểm cộng cho giá trị thương hiệu quốc gia.",
+    "output": "(HNMO) - Theo báo cáo của Hiệp hội Thương mại Việt Nam (Việt Nam), trong năm 2015, Việt Nam sẽ tăng giá trị thương hiệu quốc gia với mức tăng hơn 3% so với năm trước."
+   },
+   "asr_active": {
+    "input": "UI H BẠN NHỮNG N M QU Ơ DIỂU Ố A VIỆT NAM LÊN TỤC GA TẦM VỆ GIẢ Ị VÀ TỬ HẲNG T N THƯƠN CỦA TỂ ĐƯỢ NHIỀU TƯỢC CHỚC U TIỂN RÌNH H  Ì N VIỆ B ĐƯỢC NHI MGTHÀNH NG ĐÓ ÀI YẾU TÚ KIN TỂ VỈ Ô V N HỌ  I CÒN VÀI TÒ V SỰ   M V ỐP SỨC QUÀN TRM CUAC CỘC ĐỘNG OÀNH NHIỆP THỪN DIỂU DIN GIỆP ĐƯỢC BI ĐỂN DỤNGIẢI TRON VÀ NGOỌI NƯỚC CÍN LÀ GHI TÊM ĐIM CỘNG CHA SÃ C TỢN YỂU CUỐC GI",
+    "output": "(Kiến Thức) - Những ngày này, bạn có thể thấy những người có những đặc điểm này trong cuộc sống của mình và những người có hoàn cảnh khó khăn."
+   }
+  },
+  {
+   "sample_id": "dom_wYRFi4-KWek_2",
+   "split": "val",
+   "reference": "Giá trị thương hiệu tăng trưởng hai con số trong 5 năm qua; ngoài doanh nghiệp lớn, nhiều doanh nghiệp vừa và nhỏ trong công nghệ, cơ khí, đổi mới sáng tạo cũng tăng trưởng nhanh, với đóng góp quan trọng của giá trị thương hiệu.",
+   "review": "approved",
+   "clean": {
+    "input": "Trong nhiều năm qua, luôn luôn tăng trưởng mức độ 2 con số trong năm năm trở lại đây. Từ thương nghiệm quốc gia cho đến tốt năm trăm các doanh nghiệp lớn của Việt Nam, tuy nhiên, trong nền kinh tế của Việt Nam, thì còn rất nhiều những cái thương hiệu của các doanh nghiệp vừa và nhỏ. Trong lĩnh vực công nghệ, trong lĩnh vực cơ khí trong lĩnh vực đổi mới sáng tạo, thì cũng đã tạo ra được một cái tốc độ tăng trưởng rất nhanh và trong tốc độ tăng trưởng nhanh đó thì đóng góp của giá trị thương hiệu ở những cực kỳ quan trọng.",
+    "output": "(ĐTCK) Theo ông Nguyễn Văn Thành, Tổng cục trưởng Tổng cục Thống kê, trong năm 2015, Việt Nam đã có những bước phát triển mạnh mẽ, trong đó có cả những thành tựu của ngành công nghiệp trong lĩnh vực này."
+   },
+   "asr_active": {
+    "input": "TẬC C TỘNG U Đ N MẠC Ở NU UÔN N NG RỢN  LUN L ẠI N TẠ LN A ĐÂY LƯ LỢI Ư NGHIP L IA C NƯẾA LÀ N NẦM TM LIỆ  LN  ÀM Ý NHÊN  SONG L N HÊN Ư ƯỘ N N N   Ô D NHIỆP LỪA M NỌ SONG LÍN CỰC CỤN N ỀY AN N N L N L LUN Đ N   IỆN ĐÃ ĐẠN LÀ LỢ  HC RẠI  N  VẠ ƯÔ LUẬT TẦN SƯỜNG ĐÍCH AN MSONG VỞI THÔC LUỘI ĂN RUYN DHÂN Đ HÌ ỘNG QU GÃ CÂY TRƯỢNG GHỤU LN UIỆ QUN T",
+    "output": "(PL)- Ngày 2-8, TAND tỉnh Long An đã mở phiên tòa xét xử sơ thẩm vụ án hình sự xảy ra tại khu vực Long An thuộc xã Long An, huyện Long An (Quảng Ninh)."
+   }
+  },
+  {
+   "sample_id": "dom_wzKzkenrYew_1",
+   "split": "val",
+   "reference": "Kim loại sản xuất trong nước đáp ứng khoảng 85–90% nhu cầu sản xuất xe máy, 20–40% cho ô tô và khoảng 10% linh kiện cho công nghiệp công nghệ cao. Viện Nghiên cứu Cơ khí nhận định ngành cơ khí Việt Nam đi sau nhưng đang phát triển.",
+   "review": "approved",
+   "clean": {
+    "input": "Kim loại sản xuất trong nước đã đáp ứng được hoảng 85-90% nhu cầu cho sản xuất xe máy. Khoảng 20-40% nhu cầu cho sản xuất ô tô. Khoảng 20% cho sản xuất thịp bị đồng bộ. Khoảng 40-60% cho sản xuất có lại máy nông nghiệp, máy động lực và cung ứng, khoảng 10% nhu cầu linh kiện kim loại cho các ngành công nghiệp công nghệ cao. Nhìn nhận về ngành cơ khí, viện nghiên cứu cơ khí của công thương cho rằng Ngành Cơ khí Việt Nam mặc dù đi sau nhưng đang trong tiếng trình phát triển và là Ngành Công",
+    "output": "(TBKTSG Online) - Bộ Công Thương vừa có công văn gửi các doanh nghiệp và doanh nghiệp (DN) về việc triển khai dự án phát triển và sản xuất ô tô."
+   },
+   "asr_active": {
+    "input": "N I ẠN SH TSONG LƯỨC Đ C ẢN TNM NH M ỂM N LÀM  ẦY  ẢNH SEY MẢY MÀN AI QA NÊ UYN ÌNHTRĂM HN CẦU ẠNH CC UỘC  HOÀN HM VÌNH THĂM CHO SÀCH ẾT KIẾT V N HN HƯƠI I N Ố NH CH M SẤT I MẢY N M GHIỆP  MÃI D N LỰC  N HÀ GUY H RAM HU CẦU LIÊN DINH KIM LOẠI O CÁC ÀNH CUN NGHỆ  NG CC NHIÌỀM DẠNH VIỆC NAY GỸ VIỆN NHIÊN THỮ CƠ KH MỘT ÔNG GƯỜNG TRÒ N NÀN CỰ KHỸ RÌCH NAM MÀT SỰ L SAU NHƯÌNG ĐĂNG TRONG KỈNH TINH PHẮT TRIỆN VÀ LÀ NÀH NG",
+    "output": "(TNO) Ngày 23.11, tại TP.HCM, Viện KSND TPHCM đã tổ chức hội nghị tổng kết công tác năm 2013 và triển khai nhiệm vụ năm 2013."
+   }
+  },
+  {
+   "sample_id": "dom_wzKzkenrYew_2",
+   "split": "val",
+   "reference": "Doanh nghiệp cơ khí dùng công nghệ CNC và linh kiện nhập khẩu để tối ưu chi phí, nâng tiêu chuẩn sản xuất theo chuẩn quốc tế; ngành thang máy Việt Nam có nhu cầu rất cao và doanh nghiệp trong nước muốn làm sản phẩm chất lượng cho người Việt.",
+   "review": "approved",
+   "clean": {
+    "input": "Sử dụng công nghệ CNC, chấn bẻ Inaugz, kết hợp linh kiện nhập hậu để tối ưu chi phí và linh hoạt kích thước. Các doanh nhiệp sản xuất cũng đẩy mạnh kết nối, hợp tác kĩ thuật, năng cao tiêu chuẩn sản xuất cơ khí trong nước theo tiêu chuẩn quốc tế. \"Nói ngành thang máy thì Việt Nam đang rất là nhu cầu rất là cao. Với dung lượng thị trường rất là lớn, như là các doanh nhiệp Việt Nam muốn tập trung sâu vào để mình trực tiếp, làm sản phẩm chất lượng phục vụ người Việt với những sản phẩm đặc thù, như thang máy,",
+    "output": "(TBKTSG Online) - Theo Bộ Công Thương, ngành thang máy Việt Nam hiện nay đang có nhiều bước phát triển trong lĩnh vực này."
+   },
+   "asr_active": {
+    "input": "SỰ TNG ÔN GHỆ U EN XY CHỈNH BẠN NÓC KẾC HỢP LIÊN KỊM NHẬỆP KHẨU ĐIỆT UỔI UN Ì PÍA VÀ LINH HOẶC K THC CÁC OANH NGIỆP SN SUẤT CŨNG ĐỂ MẠN KẾT NŨI HỢP ĐẤT KỸ TUẬT NÂN CAO ĐÊU TRÌNH SẢN S ẤT CƠ KÝ TON LƯỚC LÀO TIỢC TỊNHQUC IỂN Ở   N   T  VA VỞ RẤT V  HỦ  H B TH N TẤC LÍNH A L ÂN NÙN NÀM UỐN  THUNG KHU VÀN T KÍC MẮM SÀ PHỌNG CÍCH LỢ GƯỜI DẠCH VỚI NHNG C MÁCT NAI N",
+    "output": "(PL)- Ngày 14-7, Bộ Công Thương đã ban hành Thông tư số 03/2014/TT-BTC về việc phê duyệt Đề án phối hợp với Bộ Công Thương, Bộ Công Thương, Bộ Công Thương, Bộ Công Thương, Bộ Công Thương, Bộ Công Thương, Bộ Công Thương, Bộ Công Thương, Bộ Công Thương, Bộ Công Thương, Bộ Công Thương, Bộ Công Thương, Bộ Công Thương, Bộ Công Thương, Bộ Công Thương, Bộ"
+   }
+  },
+  {
+   "sample_id": "dom_x1x03SI8jV0_1",
+   "split": "train",
+   "reference": "Vụ tranh chấp 477,8 m² đất có nguồn gốc do ông Nguyễn Tấn Tạo mua năm 1945, sau cho ông Hội cất nhà ở; ông Hội mất năm 1951, đến năm 1987 gia đình bà Đỗ Thị Lan kê khai đăng ký nhà đất.",
+   "review": "approved",
+   "clean": {
+    "input": "Diện tích 477,8 m2  đất tranh chấp, có 1 gốc của ông Nguyen Tấn Tạo, La Chủ trì Chùa Tây Tạng, mua của ông Võ Phan Hường, ngày 15 tháng 7 năm 1945, năm 1946, ông tạo cho ông hội cất Nhà Để Ở. Ông hội, chết năm 1951, trong quá trình xử dụng, ông hội cho các cháu làm nhà ở, năm 1987, giá đình Bà Đỗ Thị Lan, kê khai đăng ký nhà đất, và được sở xây dựng tỉnh xâu bé. Này là tỉnh.",
+    "output": "(Dân Việt) - Ngày 15/7, ông Nguyễn Văn Ngọ, Phó Chủ tịch UBND tỉnh Đồng Nai cho biết, ông đã ký quyết định phê chuẩn quyết định phê chuẩn quyết định phê chuẩn quyết định phê chuẩn quyết định phê chuẩn quyết định phê chuẩn quyết định phê chuẩn quyết định phê chuẩn quyết định phê chuẩn quyết định phê chuẩn quyết định phê chuẩn quyết định phê chuẩn quyết định phê chuẩn quyết định phê chuẩn quyết định phê chuẩn quyết định phê chuẩn quyết định phê chuẩn quyết"
+   },
+   "asr_active": {
+    "input": "VÓ GẾT TÍ H MBỐẾN RĂM N B ẬY VÀI TẠM N V ÔN ĐẤT TRÀN CHẮP CÓ M N ỐC CỦA ÔNG U YNT T T L CH T HÙ TÂY TA MU CỦA ÔNG V V N HƯỜNG NAY MUÔ NĂM THẢN BÀY NĂM M T NGHIỆM N CON B NÊ LÂMNĂM NGIN T NG NC SÁU  ÔNG T N N H CÁCH NHÀ Đ   ÔNG  CHẾT NĂMG NIÌN AM N N MỐ  N G V   T ỊN SỰ DNG ÔNG HỘ CHO C CHÁU LÀM NHÀ  NĂM A NHIN TRUIN SĂM TÁM Y BY SẾ ĐN BÀ ĐỐ K LAN KẾT KHAI ĐÁC KỸ HÀ ĐẤT TO ĐƠN SỰN XÂ SỰN TÌN X NG B  NAY LÀ TÌN",
+    "output": "(Dân Việt) - Ngày 2-8, ông Nguyễn Văn Niên, Phó Chủ tịch UBND TPHCM cho biết, ông Nguyễn Văn Niên, Phó Chủ tịch UBND TPHCM cho biết:"
+   }
+  },
+  {
+   "sample_id": "dom_x1x03SI8jV0_2",
+   "split": "train",
+   "reference": "Liên quan vụ việc của ông Trung và bà Lan, ngày 7/4/2010 UBND tỉnh Bình Dương ra quyết định số 1041 hủy bỏ quyết định số 5562 ngày 2/10/2002 và quyết định số 2606.",
+   "review": "approved",
+   "clean": {
+    "input": "của ông Trung và bà Lan. Bà Lan thì hiện nay đã mất bật từ trước khi có vụ kiện năm 2016. 3 năm sau đến ngày 07 tháng 04 năm 2010, ủy ban nhân dân tỉnh Bình Dương lại ra quy định số 1041-QDUBND, trong điều 1.1 của quy định nêu, hủy bỏ quy định số 5562, QDCT, ngày 02/10/2002 và quy định số 2606-QDUBND.",
+    "output": "(PL)- Ngày 07/9, Ủy ban Nhân dân tỉnh Bình Dương đã có quyết định xử phạt vi phạm hành chính đối với bà Lan về hành vi vi phạm hành chính đối với bà Lan về hành vi vi phạm hành chính đối với bà Lan về hành vi vi phạm hành chính đối với bà Lan về hành vi vi phạm hành chính đối với bà Lan về hành vi vi phạm hành chính đối với bà Lan về hành vi vi phạm hành chính đối với bà"
+   },
+   "asr_active": {
+    "input": "ÔN N  ÃN   BÃ NĂM SAU NĐẾN À MUNG BỆTHÁN TÔI NĂM AY NHÌM HN O ỜI UY BÁ DAN TÌN BỊ DÔN S QU ĐIỆN SỐ KHÔNG UÝẾ   Ê ƯỢC T TRỐN ƯNU NG CUỘ UI ĐIỆ NÊU HUYI MỌT A NINSỐ NĂNG LĂM SÀU HAI UỐI ĐIXE ĐE NAN MUNG HAI THẨN MỜ NĂM HAI NHIỆ HÔNG XOM LỂT HAI À QUÓ ĐIỆNSỐ HAI SÁU ÔNG SÁU VỐI ĐE U BÂ ƯỢC GÌN",
+    "output": "(NLĐ) - Ngày 2-8, ông Nguyễn Văn Nên, Phó Chủ tịch UBND TP Hà Nội cho biết, ông Nguyễn Văn Nên, Phó Chủ tịch UBND TP Hà Nội cho biết:"
+   }
+  }
+ ]
+}

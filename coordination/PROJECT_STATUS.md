@@ -3,7 +3,7 @@
 **Chỉ sửa trong release commit theo `coordination/README.md` mục 6** (user ra lệnh release cho đúng 1 làn) **hoặc khi user yêu cầu trực tiếp**.
 Ngoài ra: đọc trạng thái sống ở `coordination/claude/TASKS.md` và `coordination/codex/TASKS.md` (qua `git show`).
 
-Cập nhật lần cuối: 2026-10-26 · **release #3 (làn Claude, D20)** — `master` = commit release này.
+Cập nhật lần cuối: 2026-10-28 · **release #4 (làn Claude)** — `master` = commit release này.
 
 ## 1. Cổng nghiệm thu AI (AI-GATE — master plan §0)
 
@@ -27,12 +27,12 @@ AI-GATE **không chặn** làn Codex (master §0); chỉ chặn nghiệm thu cu�
 | AI-07 | runtime :8001 thật + UTF-8 Windows | DONE — :8001 UP (`run_local_8001.cmd`), UTF-8 sửa trong code |
 | AI-11 | HO-01: vision `video_id` + index data URI | DONE — RE:HO-01 |
 | AI-13 | recommendation không metadata giả + `recommendation_mode` | DONE — release #3 |
-| AI-12 | Two-Tower v2 (D18-B, gate D19) | IN_PROGRESS — 12a/12c DONE (data contract `ttv2-data-v1` + loader); chờ dữ liệu INT-13 |
+| AI-12 | Two-Tower v2 (D18-B, gate D19) | BLOCKED ⇐ dữ liệu INT-15 — code độc lập xong (contract `ttv2-data-v1.1`, nhãn v2, feature/harness/gate, verifier); bundle thật đầu tiên = `NO_DATA` |
 | AI-09 | Two-Tower v1 sandbox/artifact | DONE — baseline sandbox, không dùng cho product |
 | AI-09 | Two-Tower phía AI: embedding/schema/export/version, sandbox | TODO (⇐ HC-04 Codex: mapping ID + collection) — D14 |
-| AI-02 | T1.4 ASR domain | 02a TODO (Claude đề xuất) · 02b BLOCKED (user duyệt: 7/60, còn 53) · 02c BLOCKED |
-| AI-03 | T1.6 Mini-GPT | 03a TODO (Claude soạn 40 summary) · 03b BLOCKED (user duyệt) · 03c BLOCKED |
-| AI-04 | VRAM sơ bộ Kaggle T4 | TODO (⇐ AI-06) |
+| AI-02 | ASR domain (T1.4) | 02a DONE; 02b DONE (user duyệt lại: 51 xác nhận, 9 loại); 02c đang train trên Kaggle (domain replay v2, 81 clip) — chưa promote |
+| AI-03 | MiniGPT chất lượng (T1.6) | 03a/03b DONE (D22: Claude soạn+duyệt), 03c thí nghiệm xong — candidate KHÔNG promote (CLAUDE_JUDGE sạch 1.5→1.8, đường thật 1.0); cổng người ≥3/5 chưa đạt |
+| AI-04 | VRAM sơ bộ T4 | DONE PRELIMINARY_T4 (peak 347 MiB); nghiệm thu RTX 3060 còn mở |
 | AI-05 | T5.3 số liệu | TODO (⇐ AI-02/03/04) |
 | AI-08 | dọn dẹp an toàn (lặp lại) | TODO — sau mỗi đợt train / khi ổ đầy; manifest + user duyệt |
 
@@ -91,6 +91,7 @@ Dependency đang mở (integration gate):
 | D19 | 2026-10-26 | AI-12 quality gate 3 giai đoạn: **TRAIN_EXPERIMENTAL** (train thử với dữ liệu hợp lệ hiện có, artifact chỉ sandbox); **EVAL_READY** (mục tiêu ≥200 user, ≥5 000 tương tác hợp lệ, ≥5 positive/user eval — chưa đạt vẫn thử nghiệm nhưng không tuyên bố đủ tin cậy); **PRODUCTION_READY** (Recall@10 và NDCG@10 vượt Popularity cùng tập đánh giá, CI95 của chênh lệch có cận dưới > 0, coverage ≥20%, p95 CPU ≤50 ms/user trên cấu hình benchmark xác định). Bắt buộc split theo thời gian, chống leakage/trùng lặp/tương tác không hợp lệ; ghi kích thước mẫu, tập candidate, phương pháp CI, benchmark latency, kết quả cold-start. Không pseudo-label từ model ngoài; không tự đưa lên production khi chưa duyệt. Ngưỡng được đánh giá lại nếu quy mô/phân phối thực tế không phù hợp. |
 | D20 | 2026-10-26 | v1.3-rc1 vào release kế sau khi regression + compatibility test đạt. Codex dùng contract DRAFT + HC-06 để làm INT-12/INT-13 song song, không chờ release. Không đổi 6 endpoint API_READY v1.2; không công bố personalized production khi :8001 còn 503. Integration DONE chỉ khi endpoint thật kiểm chứng với dữ liệu sản phẩm. |
 | D21 | 2026-10-26 | Phân việc: Claude — AI-12a/12c (chuẩn hóa dữ liệu, schema, vocabulary, yêu cầu dữ liệu), data contract cho Codex thu interactions, phát triển AI-12 theo gate D19; không sửa backend/frontend/database Codex. Codex — INT-12 (popularity + metadata Postgres), INT-13 (thu tương tác hợp lệ + export cho v2), đúng product user_id/video_id, UI đúng; không sửa training/model/checkpoint Claude. Mỗi làn cập nhật tracker, handoff, dependency, bằng chứng test, commit. Training AI không chặn hoàn thiện ứng dụng. |
+| D22 | 2026-10-27 | **Ngoại lệ ràng buộc §0 cho MiniGPT (user chọn "Bỏ ràng buộc, Claude tự duyệt")**: Claude duyệt 40 summary do chính Claude soạn (AI-03b) và được dùng làm target train/eval MiniGPT — đây là **distillation từ Claude, phải công bố trong luận án**; provenance `claude_drafted_claude_reviewed`, tách khỏi nhãn người. Đánh giá chất lượng do Claude chấm mang nhãn `CLAUDE_JUDGE`, không thay/không gộp với điểm người chấm (cổng human ≥3/5 ghi riêng). **ASR không thuộc D22** (Claude không nghe audio; nhãn ASR vẫn chỉ từ người). Các model khác giữ §0. |
 
 Lưu ý từ Claude cho D3: `instructions.md` §1 cấm "pseudo-label từ model ngoài" → summary Claude soạn chỉ được làm target train/eval sau
 khi người duyệt từng mục (`HUMAN_VERIFIED`) và provenance ghi rõ nguồn Claude; cổng chất lượng T1.6 vẫn do người chấm.
@@ -106,3 +107,4 @@ khi người duyệt từng mục (`HUMAN_VERIFIED`) và provenance ghi rõ ngu�
 | 4 | 2026-10-26 | claude (user yêu cầu, không release) | không đổi (`96ebc24`) | AI-06 DONE; AI-01 REVIEW (v1.0-rc1 DRAFT); thêm AI-09, AI-10; D14–D17 | mở HC-04; đính chính REL v1.0 → rc1 DRAFT | AI-06/AI-01 evidence: HTTP ladder 9/9, live smoke 6/6, inference 37 PASS/7 skip |
 | 5 | 2026-10-26 | claude — **release #2** | `96ebc24 →` commit release này (ff-only, user duyệt 2026-10-26; xem `git log -1 master`) | AI-01, AI-06, AI-07, AI-10, AI-11 DONE; AI-API v1.2 (6 API_READY, reco DRAFT); :8001 UP | đóng HC-05 (RE:HC-05 phương án b), HO-01 (RE:HO-01); mở HC-04 chờ RE sandbox | ai-core 285 PASS; inference 51 PASS/7 skip (chạy lại lúc release); smoke :8001 6/6 (media thật) + 401; 6 ckpt `stub_mode=false`, degraded [] |
 | 6 | 2026-10-26 | claude — **release #3** (D20) | `70bf011 →` commit release này (ff-only) | AI-09, AI-13 DONE; AI-12 IN_PROGRESS (12a/12c); D18–D21 | mở HC-06, HC-07 (Codex: INT-12, INT-13); RE:HO-02 | ai-core 297 PASS; inference 55 PASS/7 skip (gồm compatibility v1.2→v1.3); smoke :8001 6/6 + 401; health stub_mode=false, degraded [] |
+| 7 | 2026-10-28 | claude — **release #4** | `fee83b2 →` commit release này (ff-only) | AI-02a/b, AI-03a/b/c, AI-04 (PRELIMINARY_T4), AI-12 phần độc lập; D22 | HC-08…HC-11, RE:INT-15, RE:HO-03 | ai-core 314; inference 55/7 skip (compat v1.2 PASS); smoke :8001 6/6 + 401; tool tests 64; 6 ckpt SHA = contract; AI-API v1.3 không đổi |
