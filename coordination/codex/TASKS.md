@@ -13,7 +13,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-02 | T2.5 | Thay adapter memory → Postgres (interactions/history/likes/settings) | REVIEW | INT-00 (DB); không phụ thuộc AI |
 | INT-03 | T2.5, T1.7 | Two-Tower: sandbox/ID mapping; product vectors + feed | BLOCKED | product v2 AI-12 production gate; AI-09 MovieLens sandbox only |
 | INT-04 | T3.1, T3.2 | Contract nguồn phát video gốc (OpenAPI) + nối UI | PARTIAL | INT-00 (runtime); contract có thể làm độc lập |
-| INT-05 | T3.1 | CMS Design Parity FULL | IN_PROGRESS | existing-API visual corrections after INT-23 |
+| INT-05 | T3.1 | CMS Design Parity FULL | PARTIAL | 480style properties match; full widget/state audit remains |
 | INT-06 | T3.2 | Client Design Parity FULL | PARTIAL | production65PASS2026-10-28; API/design scope remains |
 | INT-07 | T5.1 | Load test 50 video dồn hàng đợi | BLOCKED | AI-04 (GPU); bản CPU chạy trước được |
 | INT-08 | T5.2 | Soak test 48 h | BLOCKED | INT-07 |
@@ -111,7 +111,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Checkpoint: Lane codex / Changed contract+players / Verified playback PASS, parity PARTIAL / Contract yes OpenAPI v0.2.0 / Next resource+scope.
 
 ### INT-05 — CMS Design Parity FULL
-- T gốc: T3.1 | Owner: CODEX | Status: IN_PROGRESS (2026-10-28; approved existing-API visual corrections after INT-23)
+- T gốc: T3.1 | Owner: CODEX | Status: PARTIAL (2026-10-28; measured typography/spacing batch verified, full widget/state audit remains)
 - Depends on: INT-02; INT-04 functional playback PASS; full parity còn cần scope/resource
 - Gap (HIST `docs/T3.1_cms_design_parity.md`): nguồn phát video gốc, metadata/analytics/rules/editor fields chưa có API, Settings chưa persist.
 - NOW: settings/interactions persistence và nguồn phát đã có; original-video center controls +bounded proposal preview verified; metadata/analytics/rules/editor contract gaps còn mở.
@@ -129,6 +129,11 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Comparison checkpoint: all8Stitch screens x2viewports16reference captures PASS57.0s;36paired/baseline/current PNG +16metrics JSON preserved.
   verification/INT-05.md records concrete per-screen spacing/font/toolbar gaps and contract blockers. No full parityPASS inferred from screenshots; next action is the listed existing-API corrections.
 
+- 2026-10-28 current checkpoint: verification/INT-05-20261028.md;480/480selected reference style properties match (before356),
+ fullCMS41PASS56.8s +afterlastcategory4PASS6.3s +final18layoutcapturesPASS20.5s; CMSbuild/tsc/E2Etypes PASS.
+ Source-only scoped classes/styles across8Stitch screens;36before/afterPNG+36metrics. Product images remain INT-23, not recreated.
+ Remaining: full widget/action/icon/hover/focus comparisons, subtitle footer and queue result-action geometry; undefined API fields outside approved scope.
+ Metadata/editorial/category-description gaps in historical bullets are resolved INT-20..23. Next: remaining widget comparison; HC-12 ClientQA blocked.
 ### INT-06 — Client Design Parity FULL
 - T gốc: T3.2 | Owner: CODEX | Status: PARTIAL (2026-10-28; approved production QA65PASS; scope/design gaps remain)
 - Depends on: INT-02; INT-04 functional playback PASS; full parity còn cần scope/resource

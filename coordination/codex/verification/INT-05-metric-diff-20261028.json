@@ -1,0 +1,4342 @@
+{
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "source_sha256": {
+    "dashboard": "dc790be695684782cdf32045e7a162a0423265b7851ed19c3d07b4b412e49836",
+    "queue": "0ead3e4818502865af3d34121c7e98b93e5d443cd4a109e650f6651df32eac68",
+    "videos": "a91ab0a255196e8894b98017c13f7f7c6e7b333323cb87cd5aca4678557763c4",
+    "highlight": "2ea5187ab69ebca065083a6eae1b02525a369ac4181bc164f66e2e4900a7583e",
+    "subtitles": "073467dd6bc9553997dc5695c748287d3836ea7c760323fd42fc1c83f22b6436",
+    "categories": "d7469c134ec0819ede224bbbbf1efad9b40ca7e4b7d7f6b61216f118cef1d43f",
+    "published": "5b258e679b26ad9ffd1a194b2f1af5432d846072186ff03b8448f91bc4dcfa94",
+    "settings": "a7969ab7eac9af70466fb4a4c5dea7bdfbced5cdf35ad9243b80f469470ddbd4"
+  },
+  "properties_compared": 480,
+  "matched_before": 356,
+  "matched_after": 480,
+  "remaining": [],
+  "rows": [
+    {
+      "page": "dashboard",
+      "current": "body",
+      "reference": "body",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "dashboard",
+      "current": "body",
+      "reference": "body",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "dashboard",
+      "current": "body",
+      "reference": "body",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "dashboard",
+      "current": "body",
+      "reference": "body",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "dashboard",
+      "current": "body",
+      "reference": "body",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "dashboard",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "padding",
+      "expected": "24px",
+      "before": "24px",
+      "after": "24px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "fontSize",
+      "expected": "18px",
+      "before": "18px",
+      "after": "18px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "fontWeight",
+      "expected": "700",
+      "before": "700",
+      "after": "700"
+    },
+    {
+      "page": "dashboard",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "lineHeight",
+      "expected": "18px",
+      "before": "18px",
+      "after": "18px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "fontSize",
+      "expected": "10px",
+      "before": "10px",
+      "after": "10px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "dashboard",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "lineHeight",
+      "expected": "15px",
+      "before": "15px",
+      "after": "15px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "dashboard",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "padding",
+      "expected": "16px 8px",
+      "before": "16px 8px",
+      "after": "16px 8px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "16px",
+      "after": "16px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "dashboard",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "24px",
+      "after": "24px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "padding",
+      "expected": "8px 16px",
+      "before": "8px 16px",
+      "after": "8px 16px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "borderRadius",
+      "expected": "4px",
+      "before": "4px",
+      "after": "4px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "16px",
+      "after": "16px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "dashboard",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "24px",
+      "after": "24px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "dashboard",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "borderRadius",
+      "expected": "12px",
+      "before": "12px",
+      "after": "12px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "fontSize",
+      "expected": "14px",
+      "before": "14px",
+      "after": "14px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "fontWeight",
+      "expected": "600",
+      "before": "600",
+      "after": "600"
+    },
+    {
+      "page": "dashboard",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "lineHeight",
+      "expected": "20px",
+      "before": "21px",
+      "after": "20px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "dashboard",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "padding",
+      "expected": "0px 24px",
+      "before": "0px 24px",
+      "after": "0px 24px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "16px",
+      "after": "16px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "dashboard",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "20px",
+      "after": "24px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "padding",
+      "expected": "4px 16px 4px 44px",
+      "before": "4px 12px 4px 44px",
+      "after": "4px 16px 4px 44px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "borderRadius",
+      "expected": "12px",
+      "before": "12px",
+      "after": "12px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".data-table th",
+      "reference": "table th",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "16px",
+      "after": "16px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".data-table th",
+      "reference": "table th",
+      "property": "fontWeight",
+      "expected": "700",
+      "before": "700",
+      "after": "700"
+    },
+    {
+      "page": "dashboard",
+      "current": ".data-table th",
+      "reference": "table th",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "24px",
+      "after": "24px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".data-table th",
+      "reference": "table th",
+      "property": "padding",
+      "expected": "8px 24px",
+      "before": "8px 24px",
+      "after": "8px 24px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".data-table th",
+      "reference": "table th",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".data-table td",
+      "reference": "table td",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".data-table td",
+      "reference": "table td",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "dashboard",
+      "current": ".data-table td",
+      "reference": "table td",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".data-table td",
+      "reference": "table td",
+      "property": "padding",
+      "expected": "8px 24px",
+      "before": "8px 24px",
+      "after": "8px 24px"
+    },
+    {
+      "page": "dashboard",
+      "current": ".data-table td",
+      "reference": "table td",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "queue",
+      "current": "body",
+      "reference": "body",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "queue",
+      "current": "body",
+      "reference": "body",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "queue",
+      "current": "body",
+      "reference": "body",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "queue",
+      "current": "body",
+      "reference": "body",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "queue",
+      "current": "body",
+      "reference": "body",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "queue",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "queue",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "queue",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "queue",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "padding",
+      "expected": "24px",
+      "before": "24px",
+      "after": "24px"
+    },
+    {
+      "page": "queue",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "queue",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "fontSize",
+      "expected": "18px",
+      "before": "18px",
+      "after": "18px"
+    },
+    {
+      "page": "queue",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "fontWeight",
+      "expected": "700",
+      "before": "700",
+      "after": "700"
+    },
+    {
+      "page": "queue",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "lineHeight",
+      "expected": "18px",
+      "before": "18px",
+      "after": "18px"
+    },
+    {
+      "page": "queue",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "queue",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "queue",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "fontSize",
+      "expected": "10px",
+      "before": "10px",
+      "after": "10px"
+    },
+    {
+      "page": "queue",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "queue",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "lineHeight",
+      "expected": "15px",
+      "before": "15px",
+      "after": "15px"
+    },
+    {
+      "page": "queue",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "queue",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "queue",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "queue",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "queue",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "queue",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "padding",
+      "expected": "16px 8px",
+      "before": "16px 8px",
+      "after": "16px 8px"
+    },
+    {
+      "page": "queue",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "queue",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "16px",
+      "after": "16px"
+    },
+    {
+      "page": "queue",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "queue",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "24px",
+      "after": "24px"
+    },
+    {
+      "page": "queue",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "padding",
+      "expected": "8px 16px",
+      "before": "8px 16px",
+      "after": "8px 16px"
+    },
+    {
+      "page": "queue",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "borderRadius",
+      "expected": "4px",
+      "before": "4px",
+      "after": "4px"
+    },
+    {
+      "page": "queue",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "16px",
+      "after": "16px"
+    },
+    {
+      "page": "queue",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "queue",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "24px",
+      "after": "24px"
+    },
+    {
+      "page": "queue",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "queue",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "queue",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "queue",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "queue",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "queue",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "queue",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "borderRadius",
+      "expected": "12px",
+      "before": "12px",
+      "after": "12px"
+    },
+    {
+      "page": "queue",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "fontSize",
+      "expected": "14px",
+      "before": "14px",
+      "after": "14px"
+    },
+    {
+      "page": "queue",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "fontWeight",
+      "expected": "600",
+      "before": "600",
+      "after": "600"
+    },
+    {
+      "page": "queue",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "lineHeight",
+      "expected": "20px",
+      "before": "21px",
+      "after": "20px"
+    },
+    {
+      "page": "queue",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "queue",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "queue",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "queue",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "queue",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "queue",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "padding",
+      "expected": "0px 24px",
+      "before": "0px 24px",
+      "after": "0px 24px"
+    },
+    {
+      "page": "queue",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "queue",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "fontSize",
+      "expected": "14px",
+      "before": "14px",
+      "after": "14px"
+    },
+    {
+      "page": "queue",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "queue",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "lineHeight",
+      "expected": "20px",
+      "before": "20px",
+      "after": "20px"
+    },
+    {
+      "page": "queue",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "padding",
+      "expected": "8px 12px 8px 40px",
+      "before": "4px 12px 4px 44px",
+      "after": "8px 12px 8px 40px"
+    },
+    {
+      "page": "queue",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "borderRadius",
+      "expected": "4px",
+      "before": "4px",
+      "after": "4px"
+    },
+    {
+      "page": "queue",
+      "current": ".data-table th",
+      "reference": "table th",
+      "property": "fontSize",
+      "expected": "11px",
+      "before": "11px",
+      "after": "11px"
+    },
+    {
+      "page": "queue",
+      "current": ".data-table th",
+      "reference": "table th",
+      "property": "fontWeight",
+      "expected": "700",
+      "before": "700",
+      "after": "700"
+    },
+    {
+      "page": "queue",
+      "current": ".data-table th",
+      "reference": "table th",
+      "property": "lineHeight",
+      "expected": "16px",
+      "before": "16.5px",
+      "after": "16px"
+    },
+    {
+      "page": "queue",
+      "current": ".data-table th",
+      "reference": "table th",
+      "property": "padding",
+      "expected": "8px 16px",
+      "before": "12px 16px",
+      "after": "8px 16px"
+    },
+    {
+      "page": "queue",
+      "current": ".data-table th",
+      "reference": "table th",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "queue",
+      "current": ".data-table td",
+      "reference": "table td",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "queue",
+      "current": ".data-table td",
+      "reference": "table td",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "queue",
+      "current": ".data-table td",
+      "reference": "table td",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "queue",
+      "current": ".data-table td",
+      "reference": "table td",
+      "property": "padding",
+      "expected": "8px 16px",
+      "before": "12px 16px",
+      "after": "8px 16px"
+    },
+    {
+      "page": "queue",
+      "current": ".data-table td",
+      "reference": "table td",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "videos",
+      "current": "body",
+      "reference": "body",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "videos",
+      "current": "body",
+      "reference": "body",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "videos",
+      "current": "body",
+      "reference": "body",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "videos",
+      "current": "body",
+      "reference": "body",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "videos",
+      "current": "body",
+      "reference": "body",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "videos",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "videos",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "videos",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "videos",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "padding",
+      "expected": "24px",
+      "before": "24px",
+      "after": "24px"
+    },
+    {
+      "page": "videos",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "videos",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "fontSize",
+      "expected": "18px",
+      "before": "18px",
+      "after": "18px"
+    },
+    {
+      "page": "videos",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "fontWeight",
+      "expected": "700",
+      "before": "700",
+      "after": "700"
+    },
+    {
+      "page": "videos",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "lineHeight",
+      "expected": "18px",
+      "before": "18px",
+      "after": "18px"
+    },
+    {
+      "page": "videos",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "videos",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "videos",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "fontSize",
+      "expected": "10px",
+      "before": "10px",
+      "after": "10px"
+    },
+    {
+      "page": "videos",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "videos",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "lineHeight",
+      "expected": "15px",
+      "before": "15px",
+      "after": "15px"
+    },
+    {
+      "page": "videos",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "videos",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "videos",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "videos",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "videos",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "videos",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "padding",
+      "expected": "16px 8px",
+      "before": "16px 8px",
+      "after": "16px 8px"
+    },
+    {
+      "page": "videos",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "videos",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "16px",
+      "after": "16px"
+    },
+    {
+      "page": "videos",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "videos",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "24px",
+      "after": "24px"
+    },
+    {
+      "page": "videos",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "padding",
+      "expected": "8px 16px",
+      "before": "8px 16px",
+      "after": "8px 16px"
+    },
+    {
+      "page": "videos",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "borderRadius",
+      "expected": "4px",
+      "before": "4px",
+      "after": "4px"
+    },
+    {
+      "page": "videos",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "16px",
+      "after": "16px"
+    },
+    {
+      "page": "videos",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "videos",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "24px",
+      "after": "24px"
+    },
+    {
+      "page": "videos",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "videos",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "videos",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "videos",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "videos",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "videos",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "videos",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "borderRadius",
+      "expected": "12px",
+      "before": "12px",
+      "after": "12px"
+    },
+    {
+      "page": "videos",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "fontSize",
+      "expected": "14px",
+      "before": "14px",
+      "after": "14px"
+    },
+    {
+      "page": "videos",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "fontWeight",
+      "expected": "600",
+      "before": "600",
+      "after": "600"
+    },
+    {
+      "page": "videos",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "lineHeight",
+      "expected": "20px",
+      "before": "21px",
+      "after": "20px"
+    },
+    {
+      "page": "videos",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "videos",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "videos",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "videos",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "videos",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "videos",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "padding",
+      "expected": "0px 24px",
+      "before": "0px 24px",
+      "after": "0px 24px"
+    },
+    {
+      "page": "videos",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "videos",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "fontSize",
+      "expected": "14px",
+      "before": "14px",
+      "after": "14px"
+    },
+    {
+      "page": "videos",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "videos",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "lineHeight",
+      "expected": "20px",
+      "before": "20px",
+      "after": "20px"
+    },
+    {
+      "page": "videos",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "padding",
+      "expected": "6px 16px 6px 24px",
+      "before": "4px 12px 4px 44px",
+      "after": "6px 16px 6px 24px"
+    },
+    {
+      "page": "videos",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "borderRadius",
+      "expected": "12px",
+      "before": "12px",
+      "after": "12px"
+    },
+    {
+      "page": "videos",
+      "current": ".data-table th",
+      "reference": "table th",
+      "property": "fontSize",
+      "expected": "11px",
+      "before": "11px",
+      "after": "11px"
+    },
+    {
+      "page": "videos",
+      "current": ".data-table th",
+      "reference": "table th",
+      "property": "fontWeight",
+      "expected": "700",
+      "before": "700",
+      "after": "700"
+    },
+    {
+      "page": "videos",
+      "current": ".data-table th",
+      "reference": "table th",
+      "property": "lineHeight",
+      "expected": "16px",
+      "before": "16.5px",
+      "after": "16px"
+    },
+    {
+      "page": "videos",
+      "current": ".data-table th",
+      "reference": "table th",
+      "property": "padding",
+      "expected": "8px 24px",
+      "before": "12px 16px",
+      "after": "8px 24px"
+    },
+    {
+      "page": "videos",
+      "current": ".data-table th",
+      "reference": "table th",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "videos",
+      "current": ".data-table td",
+      "reference": "table td",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "videos",
+      "current": ".data-table td",
+      "reference": "table td",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "videos",
+      "current": ".data-table td",
+      "reference": "table td",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "videos",
+      "current": ".data-table td",
+      "reference": "table td",
+      "property": "padding",
+      "expected": "8px 24px",
+      "before": "12px 16px",
+      "after": "8px 24px"
+    },
+    {
+      "page": "videos",
+      "current": ".data-table td",
+      "reference": "table td",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "highlight",
+      "current": "body",
+      "reference": "body",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "highlight",
+      "current": "body",
+      "reference": "body",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "highlight",
+      "current": "body",
+      "reference": "body",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "highlight",
+      "current": "body",
+      "reference": "body",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "highlight",
+      "current": "body",
+      "reference": "body",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "highlight",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "highlight",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "highlight",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "highlight",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "padding",
+      "expected": "24px",
+      "before": "24px",
+      "after": "24px"
+    },
+    {
+      "page": "highlight",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "highlight",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "fontSize",
+      "expected": "18px",
+      "before": "18px",
+      "after": "18px"
+    },
+    {
+      "page": "highlight",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "fontWeight",
+      "expected": "700",
+      "before": "700",
+      "after": "700"
+    },
+    {
+      "page": "highlight",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "lineHeight",
+      "expected": "18px",
+      "before": "18px",
+      "after": "18px"
+    },
+    {
+      "page": "highlight",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "highlight",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "highlight",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "fontSize",
+      "expected": "10px",
+      "before": "10px",
+      "after": "10px"
+    },
+    {
+      "page": "highlight",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "highlight",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "lineHeight",
+      "expected": "15px",
+      "before": "15px",
+      "after": "15px"
+    },
+    {
+      "page": "highlight",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "highlight",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "highlight",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "highlight",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "highlight",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "highlight",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "padding",
+      "expected": "16px 8px",
+      "before": "16px 8px",
+      "after": "16px 8px"
+    },
+    {
+      "page": "highlight",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "highlight",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "16px",
+      "after": "16px"
+    },
+    {
+      "page": "highlight",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "highlight",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "24px",
+      "after": "24px"
+    },
+    {
+      "page": "highlight",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "padding",
+      "expected": "8px 16px",
+      "before": "8px 16px",
+      "after": "8px 16px"
+    },
+    {
+      "page": "highlight",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "borderRadius",
+      "expected": "4px",
+      "before": "4px",
+      "after": "4px"
+    },
+    {
+      "page": "highlight",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "16px",
+      "after": "16px"
+    },
+    {
+      "page": "highlight",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "highlight",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "24px",
+      "after": "24px"
+    },
+    {
+      "page": "highlight",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "highlight",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "highlight",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "highlight",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "highlight",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "highlight",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "highlight",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "borderRadius",
+      "expected": "12px",
+      "before": "12px",
+      "after": "12px"
+    },
+    {
+      "page": "highlight",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "fontSize",
+      "expected": "14px",
+      "before": "14px",
+      "after": "14px"
+    },
+    {
+      "page": "highlight",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "fontWeight",
+      "expected": "600",
+      "before": "600",
+      "after": "600"
+    },
+    {
+      "page": "highlight",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "lineHeight",
+      "expected": "20px",
+      "before": "21px",
+      "after": "20px"
+    },
+    {
+      "page": "highlight",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "highlight",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "highlight",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "highlight",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "highlight",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "highlight",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "padding",
+      "expected": "0px 24px",
+      "before": "0px 24px",
+      "after": "0px 24px"
+    },
+    {
+      "page": "highlight",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "highlight",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "fontSize",
+      "expected": "14px",
+      "before": "14px",
+      "after": "14px"
+    },
+    {
+      "page": "highlight",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "highlight",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "lineHeight",
+      "expected": "20px",
+      "before": "20px",
+      "after": "20px"
+    },
+    {
+      "page": "highlight",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "padding",
+      "expected": "4px 16px 4px 40px",
+      "before": "4px 12px 4px 44px",
+      "after": "4px 16px 4px 40px"
+    },
+    {
+      "page": "highlight",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "borderRadius",
+      "expected": "4px",
+      "before": "12px",
+      "after": "4px"
+    },
+    {
+      "page": "subtitles",
+      "current": "body",
+      "reference": "body",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "subtitles",
+      "current": "body",
+      "reference": "body",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "subtitles",
+      "current": "body",
+      "reference": "body",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "subtitles",
+      "current": "body",
+      "reference": "body",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "subtitles",
+      "current": "body",
+      "reference": "body",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "subtitles",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "padding",
+      "expected": "24px",
+      "before": "24px",
+      "after": "24px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "fontSize",
+      "expected": "18px",
+      "before": "18px",
+      "after": "18px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "fontWeight",
+      "expected": "700",
+      "before": "700",
+      "after": "700"
+    },
+    {
+      "page": "subtitles",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "lineHeight",
+      "expected": "18px",
+      "before": "18px",
+      "after": "18px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "fontSize",
+      "expected": "10px",
+      "before": "10px",
+      "after": "10px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "subtitles",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "lineHeight",
+      "expected": "15px",
+      "before": "15px",
+      "after": "15px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "subtitles",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "padding",
+      "expected": "16px 8px",
+      "before": "16px 8px",
+      "after": "16px 8px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "16px",
+      "after": "16px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "subtitles",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "24px",
+      "after": "24px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "padding",
+      "expected": "8px 16px",
+      "before": "8px 16px",
+      "after": "8px 16px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "borderRadius",
+      "expected": "4px",
+      "before": "4px",
+      "after": "4px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "16px",
+      "after": "16px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "subtitles",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "24px",
+      "after": "24px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "subtitles",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "borderRadius",
+      "expected": "12px",
+      "before": "12px",
+      "after": "12px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "fontSize",
+      "expected": "14px",
+      "before": "14px",
+      "after": "14px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "fontWeight",
+      "expected": "600",
+      "before": "600",
+      "after": "600"
+    },
+    {
+      "page": "subtitles",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "lineHeight",
+      "expected": "20px",
+      "before": "21px",
+      "after": "20px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "subtitles",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "padding",
+      "expected": "0px 24px",
+      "before": "0px 24px",
+      "after": "0px 24px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "fontSize",
+      "expected": "12px",
+      "before": "12px",
+      "after": "12px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "subtitles",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "lineHeight",
+      "expected": "18px",
+      "before": "20px",
+      "after": "18px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "padding",
+      "expected": "4px 16px 4px 24px",
+      "before": "4px 12px 4px 44px",
+      "after": "4px 16px 4px 24px"
+    },
+    {
+      "page": "subtitles",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "borderRadius",
+      "expected": "4px",
+      "before": "12px",
+      "after": "4px"
+    },
+    {
+      "page": "categories",
+      "current": "body",
+      "reference": "body",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "categories",
+      "current": "body",
+      "reference": "body",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "categories",
+      "current": "body",
+      "reference": "body",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "categories",
+      "current": "body",
+      "reference": "body",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "categories",
+      "current": "body",
+      "reference": "body",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "categories",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "categories",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "categories",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "categories",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "padding",
+      "expected": "24px",
+      "before": "24px",
+      "after": "24px"
+    },
+    {
+      "page": "categories",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "categories",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "fontSize",
+      "expected": "18px",
+      "before": "18px",
+      "after": "18px"
+    },
+    {
+      "page": "categories",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "fontWeight",
+      "expected": "700",
+      "before": "700",
+      "after": "700"
+    },
+    {
+      "page": "categories",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "lineHeight",
+      "expected": "18px",
+      "before": "18px",
+      "after": "18px"
+    },
+    {
+      "page": "categories",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "categories",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "categories",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "fontSize",
+      "expected": "10px",
+      "before": "10px",
+      "after": "10px"
+    },
+    {
+      "page": "categories",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "categories",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "lineHeight",
+      "expected": "15px",
+      "before": "15px",
+      "after": "15px"
+    },
+    {
+      "page": "categories",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "categories",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "categories",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "categories",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "categories",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "categories",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "padding",
+      "expected": "16px 8px",
+      "before": "16px 8px",
+      "after": "16px 8px"
+    },
+    {
+      "page": "categories",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "categories",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "16px",
+      "after": "16px"
+    },
+    {
+      "page": "categories",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "categories",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "24px",
+      "after": "24px"
+    },
+    {
+      "page": "categories",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "padding",
+      "expected": "8px 16px",
+      "before": "8px 16px",
+      "after": "8px 16px"
+    },
+    {
+      "page": "categories",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "borderRadius",
+      "expected": "4px",
+      "before": "4px",
+      "after": "4px"
+    },
+    {
+      "page": "categories",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "16px",
+      "after": "16px"
+    },
+    {
+      "page": "categories",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "categories",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "24px",
+      "after": "24px"
+    },
+    {
+      "page": "categories",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "categories",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "categories",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "categories",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "categories",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "categories",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "categories",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "borderRadius",
+      "expected": "12px",
+      "before": "12px",
+      "after": "12px"
+    },
+    {
+      "page": "categories",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "fontSize",
+      "expected": "14px",
+      "before": "14px",
+      "after": "14px"
+    },
+    {
+      "page": "categories",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "fontWeight",
+      "expected": "600",
+      "before": "600",
+      "after": "600"
+    },
+    {
+      "page": "categories",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "lineHeight",
+      "expected": "20px",
+      "before": "21px",
+      "after": "20px"
+    },
+    {
+      "page": "categories",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "categories",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "categories",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "categories",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "categories",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "categories",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "padding",
+      "expected": "0px 24px",
+      "before": "0px 24px",
+      "after": "0px 24px"
+    },
+    {
+      "page": "categories",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "categories",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "fontSize",
+      "expected": "14px",
+      "before": "14px",
+      "after": "14px"
+    },
+    {
+      "page": "categories",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "categories",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "lineHeight",
+      "expected": "20px",
+      "before": "20px",
+      "after": "20px"
+    },
+    {
+      "page": "categories",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "padding",
+      "expected": "6px 16px 6px 40px",
+      "before": "4px 12px 4px 44px",
+      "after": "6px 16px 6px 40px"
+    },
+    {
+      "page": "categories",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "borderRadius",
+      "expected": "4px",
+      "before": "12px",
+      "after": "4px"
+    },
+    {
+      "page": "categories",
+      "current": ".data-table th",
+      "reference": "table th",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "16px",
+      "after": "16px"
+    },
+    {
+      "page": "categories",
+      "current": ".data-table th",
+      "reference": "table th",
+      "property": "fontWeight",
+      "expected": "700",
+      "before": "700",
+      "after": "700"
+    },
+    {
+      "page": "categories",
+      "current": ".data-table th",
+      "reference": "table th",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "24px",
+      "after": "24px"
+    },
+    {
+      "page": "categories",
+      "current": ".data-table th",
+      "reference": "table th",
+      "property": "padding",
+      "expected": "8px 16px",
+      "before": "10px 12px",
+      "after": "8px 16px"
+    },
+    {
+      "page": "categories",
+      "current": ".data-table th",
+      "reference": "table th",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "categories",
+      "current": ".data-table td",
+      "reference": "table td",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "13px",
+      "after": "16px"
+    },
+    {
+      "page": "categories",
+      "current": ".data-table td",
+      "reference": "table td",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "categories",
+      "current": ".data-table td",
+      "reference": "table td",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "19.5px",
+      "after": "24px"
+    },
+    {
+      "page": "categories",
+      "current": ".data-table td",
+      "reference": "table td",
+      "property": "padding",
+      "expected": "8px 16px",
+      "before": "10px 12px",
+      "after": "8px 16px"
+    },
+    {
+      "page": "categories",
+      "current": ".data-table td",
+      "reference": "table td",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "published",
+      "current": "body",
+      "reference": "body",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "published",
+      "current": "body",
+      "reference": "body",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "published",
+      "current": "body",
+      "reference": "body",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "published",
+      "current": "body",
+      "reference": "body",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "published",
+      "current": "body",
+      "reference": "body",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "published",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "published",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "published",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "published",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "padding",
+      "expected": "24px",
+      "before": "24px",
+      "after": "24px"
+    },
+    {
+      "page": "published",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "published",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "fontSize",
+      "expected": "18px",
+      "before": "18px",
+      "after": "18px"
+    },
+    {
+      "page": "published",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "fontWeight",
+      "expected": "700",
+      "before": "700",
+      "after": "700"
+    },
+    {
+      "page": "published",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "lineHeight",
+      "expected": "18px",
+      "before": "18px",
+      "after": "18px"
+    },
+    {
+      "page": "published",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "published",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "published",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "fontSize",
+      "expected": "10px",
+      "before": "10px",
+      "after": "10px"
+    },
+    {
+      "page": "published",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "published",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "lineHeight",
+      "expected": "15px",
+      "before": "15px",
+      "after": "15px"
+    },
+    {
+      "page": "published",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "published",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "published",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "published",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "published",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "published",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "padding",
+      "expected": "16px 8px",
+      "before": "16px 8px",
+      "after": "16px 8px"
+    },
+    {
+      "page": "published",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "published",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "16px",
+      "after": "16px"
+    },
+    {
+      "page": "published",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "published",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "24px",
+      "after": "24px"
+    },
+    {
+      "page": "published",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "padding",
+      "expected": "8px 16px",
+      "before": "8px 16px",
+      "after": "8px 16px"
+    },
+    {
+      "page": "published",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "borderRadius",
+      "expected": "4px",
+      "before": "4px",
+      "after": "4px"
+    },
+    {
+      "page": "published",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "16px",
+      "after": "16px"
+    },
+    {
+      "page": "published",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "published",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "24px",
+      "after": "24px"
+    },
+    {
+      "page": "published",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "published",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "published",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "published",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "published",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "published",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "published",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "borderRadius",
+      "expected": "12px",
+      "before": "12px",
+      "after": "12px"
+    },
+    {
+      "page": "published",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "fontSize",
+      "expected": "14px",
+      "before": "14px",
+      "after": "14px"
+    },
+    {
+      "page": "published",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "fontWeight",
+      "expected": "600",
+      "before": "600",
+      "after": "600"
+    },
+    {
+      "page": "published",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "lineHeight",
+      "expected": "20px",
+      "before": "21px",
+      "after": "20px"
+    },
+    {
+      "page": "published",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "published",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "published",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "published",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "published",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "published",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "padding",
+      "expected": "0px 24px",
+      "before": "0px 24px",
+      "after": "0px 24px"
+    },
+    {
+      "page": "published",
+      "current": ".cms-topbar",
+      "reference": "header",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "published",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "fontSize",
+      "expected": "12px",
+      "before": "12px",
+      "after": "12px"
+    },
+    {
+      "page": "published",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "published",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "lineHeight",
+      "expected": "18px",
+      "before": "20px",
+      "after": "18px"
+    },
+    {
+      "page": "published",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "padding",
+      "expected": "8px 16px 8px 40px",
+      "before": "4px 12px 4px 44px",
+      "after": "8px 16px 8px 40px"
+    },
+    {
+      "page": "published",
+      "current": ".topbar-search input",
+      "reference": "header input",
+      "property": "borderRadius",
+      "expected": "4px",
+      "before": "4px",
+      "after": "4px"
+    },
+    {
+      "page": "published",
+      "current": ".data-table th",
+      "reference": "table th",
+      "property": "fontSize",
+      "expected": "11px",
+      "before": "11px",
+      "after": "11px"
+    },
+    {
+      "page": "published",
+      "current": ".data-table th",
+      "reference": "table th",
+      "property": "fontWeight",
+      "expected": "700",
+      "before": "700",
+      "after": "700"
+    },
+    {
+      "page": "published",
+      "current": ".data-table th",
+      "reference": "table th",
+      "property": "lineHeight",
+      "expected": "16px",
+      "before": "16.5px",
+      "after": "16px"
+    },
+    {
+      "page": "published",
+      "current": ".data-table th",
+      "reference": "table th",
+      "property": "padding",
+      "expected": "8px 16px",
+      "before": "12px 16px",
+      "after": "8px 16px"
+    },
+    {
+      "page": "published",
+      "current": ".data-table th",
+      "reference": "table th",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "published",
+      "current": ".data-table td",
+      "reference": "table td",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "published",
+      "current": ".data-table td",
+      "reference": "table td",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "published",
+      "current": ".data-table td",
+      "reference": "table td",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "published",
+      "current": ".data-table td",
+      "reference": "table td",
+      "property": "padding",
+      "expected": "8px 16px",
+      "before": "12px 16px",
+      "after": "8px 16px"
+    },
+    {
+      "page": "published",
+      "current": ".data-table td",
+      "reference": "table td",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "settings",
+      "current": "body",
+      "reference": "body",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "settings",
+      "current": "body",
+      "reference": "body",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "settings",
+      "current": "body",
+      "reference": "body",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "settings",
+      "current": "body",
+      "reference": "body",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "settings",
+      "current": "body",
+      "reference": "body",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "settings",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "settings",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "settings",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "settings",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "padding",
+      "expected": "24px",
+      "before": "24px",
+      "after": "24px"
+    },
+    {
+      "page": "settings",
+      "current": ".sidebar-brand",
+      "reference": "aside > div:first-child",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "settings",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "18px",
+      "after": "16px"
+    },
+    {
+      "page": "settings",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "fontWeight",
+      "expected": "700",
+      "before": "700",
+      "after": "700"
+    },
+    {
+      "page": "settings",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "lineHeight",
+      "expected": "16px",
+      "before": "18px",
+      "after": "16px"
+    },
+    {
+      "page": "settings",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "settings",
+      "current": ".sidebar-brand h1",
+      "reference": "aside h1",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "settings",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "fontSize",
+      "expected": "10px",
+      "before": "10px",
+      "after": "10px"
+    },
+    {
+      "page": "settings",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "settings",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "lineHeight",
+      "expected": "15px",
+      "before": "15px",
+      "after": "15px"
+    },
+    {
+      "page": "settings",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "settings",
+      "current": ".sidebar-brand p",
+      "reference": "aside > div:first-child p",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "settings",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "settings",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "settings",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "settings",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "padding",
+      "expected": "16px 8px",
+      "before": "16px 8px",
+      "after": "16px 8px"
+    },
+    {
+      "page": "settings",
+      "current": ".sidebar-nav",
+      "reference": "aside nav",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "settings",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "16px",
+      "after": "16px"
+    },
+    {
+      "page": "settings",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "settings",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "24px",
+      "after": "24px"
+    },
+    {
+      "page": "settings",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "padding",
+      "expected": "8px 16px",
+      "before": "8px 16px",
+      "after": "8px 16px"
+    },
+    {
+      "page": "settings",
+      "current": ".sidebar-link",
+      "reference": "aside nav a",
+      "property": "borderRadius",
+      "expected": "4px",
+      "before": "4px",
+      "after": "4px"
+    },
+    {
+      "page": "settings",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "16px",
+      "after": "16px"
+    },
+    {
+      "page": "settings",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "settings",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "24px",
+      "after": "24px"
+    },
+    {
+      "page": "settings",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "settings",
+      "current": ".sidebar-link span",
+      "reference": "aside nav a span:last-child",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "settings",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "settings",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "400",
+      "after": "400"
+    },
+    {
+      "page": "settings",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "settings",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "settings",
+      "current": ".avatar",
+      "reference": "#user-avatar-placeholder",
+      "property": "borderRadius",
+      "expected": "12px",
+      "before": "12px",
+      "after": "12px"
+    },
+    {
+      "page": "settings",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "fontSize",
+      "expected": "16px",
+      "before": "14px",
+      "after": "16px"
+    },
+    {
+      "page": "settings",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "fontWeight",
+      "expected": "400",
+      "before": "600",
+      "after": "400"
+    },
+    {
+      "page": "settings",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "lineHeight",
+      "expected": "24px",
+      "before": "21px",
+      "after": "24px"
+    },
+    {
+      "page": "settings",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "padding",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    },
+    {
+      "page": "settings",
+      "current": ".account-row strong",
+      "reference": "#user-name",
+      "property": "borderRadius",
+      "expected": "0px",
+      "before": "0px",
+      "after": "0px"
+    }
+  ]
+}

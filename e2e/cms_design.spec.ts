@@ -1,5 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
-import { readFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import type { components } from '../cms/src/api-types';
 
@@ -228,6 +228,28 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
       await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(viewport.width);
       await expect(page.locator('main')).not.toContainText(/Nhận diện nhân vật|AI Tracking|Object detection|H100|Vision-X|OpenAI|mem-mock|vid_stub/);
       if (viewport.width === 1440) {
+        // Values measured from the original Stitch HTML, including per-page token differences.
+        await expect(page.locator('body')).toHaveCSS('font-size', '16px');
+        await expect(page.locator('.sidebar-link:not(.is-active)').first()).toHaveCSS('border-left-width', '0px');
+        await expect(page.locator('.sidebar-brand h1')).toHaveCSS('font-size', route === 'settings' ? '16px' : '18px');
+        const screen = route.split('?')[0];
+        const searchPadding: Record<string, string> = { dashboard: '44px', queue: '40px', videos: '24px', highlight: '40px', subtitles: '24px', categories: '40px', published: '40px' };
+        if (searchPadding[screen]) await expect(page.locator('.topbar-search input')).toHaveCSS('padding-left', searchPadding[screen]);
+        if (['dashboard', 'queue', 'videos', 'categories', 'published'].includes(screen)) {
+          const cellPadding = ['dashboard', 'videos'].includes(screen) ? '8px 24px' : '8px 16px';
+          await expect(page.locator('.data-table th').first()).toHaveCSS('padding', cellPadding);
+          await expect(page.locator('.data-table td').first()).toHaveCSS('font-size', '16px');
+          await expect(page.locator('.data-table td').first()).toHaveCSS('line-height', '24px');
+        }
+        if (screen === 'dashboard') {
+          await expect(page.locator('.stat-card').first()).toHaveCSS('height', '152px');
+          await expect(page.locator('.page-header p')).toHaveCSS('line-height', '24px');
+        }
+        if (screen === 'categories') {
+          await expect(page.locator('.category-recent')).toHaveCSS('height', '400px');
+          await expect(page.locator('.page-header .btn-primary')).toHaveCSS('height', '44px');
+          await expect(page.locator('.category-table td.micro').first()).toHaveCSS('font-size', '12px');
+        }
         if (route.startsWith('highlight')) expect(await page.locator('.proposal-panel > .panel-heading').evaluate(element => element.getBoundingClientRect().height)).toBe(57);
         expect(await page.locator('.cms-sidebar').evaluate((element) => element.getBoundingClientRect().width)).toBe(260);
         if (route !== 'settings') expect(await page.locator('.cms-topbar').evaluate((element) => element.getBoundingClientRect().height)).toBe(48);
@@ -239,6 +261,12 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
       }
       const iconBounds = await page.locator('svg[data-icon]:visible').evaluateAll((icons) => icons.map((icon) => { const path = icon.querySelector('path'); const svg = icon as SVGSVGElement; const bounds = path?.getBBox(); return { name: icon.getAttribute('data-icon'), visible: !!bounds && bounds.width > svg.viewBox.baseVal.width * .05 && bounds.y < svg.viewBox.baseVal.y + svg.viewBox.baseVal.height }; }));
       expect(iconBounds.filter((icon) => !icon.visible)).toEqual([]);
+      const metrics = await page.evaluate(() => Object.fromEntries(['body', '.cms-sidebar', '.sidebar-brand', '.sidebar-brand h1', '.sidebar-brand p', '.sidebar-nav', '.sidebar-link', '.sidebar-link span', '.avatar', '.account-row strong', '.logout-button', '.cms-topbar', '.topbar-search input', '.page-header h2', '.page-header p', '.page-actions button', '.stat-card', '.stat-value', '.panel-heading', '.data-table th', '.data-table td', '.pagination', '.tabs button', '.filters', '.dropzone', '.monitor-card', '.transcript-draft-note'].map(selector => {
+        const element = document.querySelector(selector); if (!element) return [selector, null];
+        const css = getComputedStyle(element), box = element.getBoundingClientRect();
+        return [selector, { text: element.textContent?.trim().slice(0, 60), x: box.x, y: box.y, width: box.width, height: box.height, fontSize: css.fontSize, fontWeight: css.fontWeight, lineHeight: css.lineHeight, padding: css.padding, gap: css.gap, margin: css.margin, borderRadius: css.borderRadius, color: css.color, background: css.backgroundColor }];
+      })));
+      writeFileSync(info.outputPath('layout-metrics.json'), JSON.stringify(metrics, null, 2));
       await page.screenshot({ path: info.outputPath(`${route.split('?')[0]}-${viewport.width}.png`), fullPage: true, animations: 'disabled' });
       expect(errors).toEqual([]);
     });

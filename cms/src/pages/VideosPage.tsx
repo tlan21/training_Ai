@@ -32,8 +32,8 @@ export default function VideosPage() {
     try { for (const id of ids) await apiClient.delete(`/api/cms/videos/${id}`); setSelected([]); toast.ok("Đã xóa video"); } catch (error) { toast.err(errorMessage(error)); } finally { await qc.invalidateQueries({ queryKey: ["videos"] }); await qc.invalidateQueries({ queryKey: ["clips"] }); }
   };
   const toggle = (id: string, checked: boolean) => setSelected((ids) => checked ? [...ids, id] : ids.filter((value) => value !== id));
-  return <div>
-    <div className="page-header"><div><h2>Danh sách Video</h2><p>Quản lý và theo dõi quy trình xử lý AI cho tất cả tài nguyên video.</p></div><Link className="btn-primary" to="/queue"><Icon name="cloud_upload" size={20} />Tải lên video</Link></div>
+  return <div className="videos-page">
+    <div className="page-header"><div><h2>Danh sách Video</h2><p>Quản lý và theo dõi quy trình xử lý AI cho tất cả tài nguyên video.</p></div><Link className="btn-primary" to="/queue"><Icon name="cloud_upload" />Tải lên video</Link></div>
     <div className="card filters">
       <label>DANH MỤC:<select className="input" value={category} onChange={(e) => setCategory(e.target.value)}><option value="">Tất cả video</option>{cats.data?.map((cat) => <option key={cat.id} value={cat.id}>{cat.name}</option>)}</select></label>
       <div className="status-chips"><span className="field-label">Trạng thái:</span>{[["", "Tất cả"], ["processed", "Đã duyệt"], ["processing", "Đang xử lý"], ["failed", "Lỗi AI"]].map(([value, label]) => <button key={value} className={status === value ? "is-active" : ""} aria-pressed={status === value} onClick={() => { setStatus(value); setPage(1); setSelected([]); }}>{label}</button>)}</div>

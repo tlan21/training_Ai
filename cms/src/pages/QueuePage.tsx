@@ -52,7 +52,7 @@ export default function QueuePage() {
     try { await apiClient.post(`/api/cms/jobs/${id}/${action}`); await qc.invalidateQueries({ queryKey: ["jobs"] }); await qc.invalidateQueries({ queryKey: ["videos"] }); toast.ok(action === "retry" ? "Đã yêu cầu xử lý lại" : "Đã hủy xử lý"); } catch (error) { toast.err(errorMessage(error)); } finally { setBusyId(null); }
   };
   const progress = upload.total ? Math.min(100, Math.round(upload.loaded / upload.total * 100)) : 0;
-  return <div>
+  return <div className="queue-page">
     <div className="upload-monitor">
       <div className={`dropzone ${dropzone.isDragActive ? "is-dragging" : ""}`} {...dropzone.getRootProps()}><input {...dropzone.getInputProps()} /><span className="upload-mark"><Icon name="upload_file" size={32} /></span><h3>Tải lên video mới</h3><p>Kéo và thả tệp video vào đây hoặc chọn từ máy tính. Hỗ trợ định dạng MP4, MKV (tối đa 2GB).</p><span className="btn-primary">Chọn video</span>{dropzone.error && <p role="alert" className="error-text">{dropzone.error}</p>}</div>
       <div className="monitor-grid">
