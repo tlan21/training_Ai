@@ -1,0 +1,47 @@
+[
+  {
+    "name": "video-ai-ai-mock-1",
+    "id": "767326f4c37e",
+    "image": "video-ai-gateway"
+  },
+  {
+    "name": "video-ai-milvus-1",
+    "id": "cd7878a1ed75",
+    "image": "milvusdb/milvus:v2.4.9"
+  },
+  {
+    "name": "video-ai-etcd-1",
+    "id": "2a7a3faf4e82",
+    "image": "quay.io/coreos/etcd:v3.5.14"
+  },
+  {
+    "name": "video-ai-minio-1",
+    "id": "1d4128cbc5c6",
+    "image": "video-ai-minio"
+  },
+  {
+    "name": "video-ai-kafka-1",
+    "id": "8482ecba8ac6",
+    "image": "apache/kafka:3.8.0"
+  },
+  {
+    "name": "video-ai-postgres-1",
+    "id": "0aaae3e5b2db",
+    "image": "postgres:16-alpine"
+  },
+  {
+    "name": "video-ai-redis-1",
+    "id": "1e8903575c9b",
+    "image": "redis:7-alpine"
+  },
+  {
+    "name": "video-ai-mongo-1",
+    "id": "cd1f54c42159",
+    "image": "mongo:7"
+  },
+  {
+    "name": "faktory_server",
+    "id": "acd6840d37c1",
+    "image": "contribsys/faktory:latest"
+  }
+]

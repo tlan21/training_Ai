@@ -1,6 +1,11 @@
 # SESSION — authoritative resume state (2026-10-28, product DB004 applied)
 
 ## Branch / task state
+- INT-23 build checkpoint: four tagged int23-7d2664a images ready. Initial clean gateway build failed offline APK/cache; preserved failed log.
+  Reused rollback runtimes with offline artifact overlays: Go Linux4binaries newly compiled, worker main updated with unchanged requirements/DSP hashes,
+  verified CMSdist packaged, Next lint/build/tsc re-run with gateway:8000 rewrite. No dependency/image download beyond initial67MB Go base attempt.
+  Recipes/artifact hashes recorded verification/INT-23-builds.json. Next: guarded env-preserving4service recreation then enhanced real video_flow +visual search.
+
 - Only INT-23 IN_PROGRESS: user approved Docker updates/recreate backend+CPUworker+CMS+Client and real metadata E2E.
   Preserve existing realAI URL/key/stub0 and datastore volumes; gateway already embeds orchestration/cutter, do not enable duplicate full-profile workers.
   Current gateway uses readonly gateway-int14 bind; CMS binds host cms/dist (host builds therefore already changed served CMS bundle).

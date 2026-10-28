@@ -1,0 +1,35 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 121B 0.0s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/video-ai-ingest-worker:rollback-int23
+#2 DONE 0.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.1s
+
+#4 [internal] load build context
+#4 transferring context: 6.34kB 0.1s done
+#4 DONE 0.2s
+
+#5 [1/2] FROM docker.io/library/video-ai-ingest-worker:rollback-int23@sha256:ed21674b559e233f4b6f4bd3600496ebf2c4da7d974db0f104822c6debebba0c
+#5 resolve docker.io/library/video-ai-ingest-worker:rollback-int23@sha256:ed21674b559e233f4b6f4bd3600496ebf2c4da7d974db0f104822c6debebba0c 0.1s done
+#5 DONE 0.3s
+
+#6 [2/2] COPY main.py /srv/ingest-worker/main.py
+#6 DONE 0.1s
+
+#7 exporting to image
+#7 exporting layers
+#7 exporting layers 0.2s done
+#7 exporting manifest sha256:063ae63665edb973d5ec4e91791b375d662ab5b1590ba3bc04b3cf9704d818ee 0.0s done
+#7 exporting config sha256:5178e6258fe9bfd3971e384e65d0d76c1c28cf5cadec294f0b79876d3548b0d4 0.0s done
+#7 exporting attestation manifest sha256:a6b92eac45ed0bf76213252dce53e5fa5c07d8f23196cd479b6e3273351519a5 0.0s done
+#7 exporting manifest list sha256:97d7bcb8174283e4b30afcf6064aa44360905a3c0f4004944a062707f3ecc6b8
+#7 exporting manifest list sha256:97d7bcb8174283e4b30afcf6064aa44360905a3c0f4004944a062707f3ecc6b8 0.0s done
+#7 naming to docker.io/library/video-ai-ingest-worker:int23-7d2664a done
+#7 unpacking to docker.io/library/video-ai-ingest-worker:int23-7d2664a 0.0s done
+#7 DONE 0.4s
