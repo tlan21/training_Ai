@@ -4,8 +4,8 @@
 -2026-10-28 user approved CMS planA: metadata width/height/fps, video title/description/editorial hashtags, category description;
  preserve soft-hide; defer priority/customAIrules/logo/undefinedmetrics/keyrotation. Client4library routes/forgot-link still unapproved.
  Release#4 received by `git merge master` without conflict; AI-APIv1.3 and active checkpoints unchanged. No Codex release/push authorized.
- Only INT-20 IN_PROGRESS: define contract and regenerate3types, commit before INT-21 implementation. INT-05 PARTIAL during this work.
- INT-21 TODO: additive migration/PG+memory repositories, CPU ingest metadata, guarded backend update, CMS mapping/deferred states,
+ INT-20 REVIEW: OpenAPI0.4.0 and3generatedtypes verified; embedded schema testPASS0.484s +CMS/Clienttsc PASS. Evidence verification/INT-20.md.
+ Only INT-21 IN_PROGRESS: additive migration/PG+memory repositories, CPU ingest metadata, guarded backend update, CMS mapping/deferred states,
  meaningful validation/persistence/worker/browser tests and builds; source/client contracts unchanged beyond additive fields.
 - E:/traning_ai-codex, codex/integration. Release#1/#2/#3 received; HEAD..master empty at session start. No master release/push authorized.
 - INT-06 PARTIAL: user-approved QA3100 completed2026-10-28. Existing production build CAT_3TF7GI5-2Dm5o3Y8f,

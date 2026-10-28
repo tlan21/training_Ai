@@ -994,7 +994,40 @@ export interface paths {
                 404: components["responses"]["NotFound"];
             };
         };
-        put?: never;
+        /**
+         * Lưu metadata biên tập video (admin/editor; phương án A)
+         * @description Thay thế cùng lúc title/description/hashtags; không đổi file, trạng thái hoặc kết quả AI. Hashtags biên tập lưu riêng với đề xuất AI và không bị inference ghi đè. description rỗng xóa mô tả; hashtags [] xóa toàn bộ thẻ biên tập. Không sửa video đã xóa mềm.
+         */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: components["parameters"]["PathId"];
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["VideoMetadataUpdate"];
+                };
+            };
+            responses: {
+                /** @description Metadata sau khi lưu (playback_url chỉ được cấp qua GET detail) */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["VideoDetail"];
+                    };
+                };
+                401: components["responses"]["Unauthorized"];
+                403: components["responses"]["Forbidden"];
+                404: components["responses"]["NotFound"];
+                422: components["responses"]["ValidationError"];
+            };
+        };
         post?: never;
         /** Xóa mềm + xóa vectors Milvus + ẩn clips */
         delete: {
@@ -1732,9 +1765,7 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": {
-                        name: string;
-                    };
+                    "application/json": components["schemas"]["CategoryWrite"];
                 };
             };
             responses: {
@@ -1775,9 +1806,7 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": {
-                        name: string;
-                    };
+                    "application/json": components["schemas"]["CategoryWrite"];
                 };
             };
             responses: {
@@ -1941,6 +1970,19 @@ export interface components {
         Category: {
             id?: string;
             name?: string;
+            description?: string | null;
+        };
+        CategoryWrite: {
+            name: string;
+            /** @description Omitted/null preserves existing description on update; empty string clears. Name-only callers remain supported. */
+            description?: string | null;
+        };
+        VideoMetadataUpdate: {
+            /** @description Nonblank Unicode text. */
+            title: string;
+            description: string;
+            /** @description Plain Unicode letter/digit/underscore tags, without leading hash or spaces; [] explicitly clears editorial tags. */
+            hashtags: string[];
         };
         Video: {
             id?: string;
@@ -1956,6 +1998,17 @@ export interface components {
             created_at?: string;
         };
         VideoDetail: components["schemas"]["Video"] & {
+            /** @description Encoded source width in pixels before ingest resizing; null until known, never inferred from thumbnails. */
+            readonly width?: number | null;
+            /** @description Encoded source height in pixels before ingest resizing; null until known. */
+            readonly height?: number | null;
+            /**
+             * Format: double
+             * @description Average source frames per second from CPU ingest; null when unavailable.
+             */
+            readonly fps?: number | null;
+            /** @description Saved editorial tags; null means no editorial override yet (AI suggestions remain in analysis). [] is an explicit empty override. */
+            hashtags?: string[] | null;
             /** @description URL MinIO presigned cho video gốc, hết hạn sau 1 giờ. Chỉ cấp trong GET detail: public chỉ video processed; CMS yêu cầu admin/editor và không cấp cho video deleted. Null khi chưa có file gốc. Không trả đường dẫn raw_file_path trong API. */
             playback_url?: string | null;
             clips?: components["schemas"]["Clip"][];

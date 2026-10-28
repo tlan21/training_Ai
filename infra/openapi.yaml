@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Video AI Platform — Public + CMS API
-  version: 0.3.2
+  version: 0.4.0
   description: >
     Contract-first (master plan §2). Nguồn sự thật cho gateway Go (oapi-codegen)
     và FE types (openapi-typescript). Điểm highlight thang 0–100; similarity/score 0–1.
@@ -487,6 +487,29 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/VideoDetail" }
         "404": { $ref: "#/components/responses/NotFound" }
+    put:
+      tags: [cms-videos]
+      summary: Lưu metadata biên tập video (admin/editor; phương án A)
+      description: >
+        Thay thế cùng lúc title/description/hashtags; không đổi file, trạng thái hoặc kết quả AI.
+        Hashtags biên tập lưu riêng với đề xuất AI và không bị inference ghi đè.
+        description rỗng xóa mô tả; hashtags [] xóa toàn bộ thẻ biên tập. Không sửa video đã xóa mềm.
+      parameters: [ { $ref: "#/components/parameters/PathId" } ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/VideoMetadataUpdate" }
+      responses:
+        "200":
+          description: Metadata sau khi lưu (playback_url chỉ được cấp qua GET detail)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/VideoDetail" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "422": { $ref: "#/components/responses/ValidationError" }
     delete:
       tags: [cms-videos]
       summary: Xóa mềm + xóa vectors Milvus + ẩn clips
@@ -769,10 +792,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required: [name]
-              properties:
-                name: { type: string }
+              $ref: "#/components/schemas/CategoryWrite"
       responses:
         "201":
           description: category
@@ -790,10 +810,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required: [name]
-              properties:
-                name: { type: string }
+              $ref: "#/components/schemas/CategoryWrite"
       responses:
         "200": { description: OK }
         "404": { $ref: "#/components/responses/NotFound" }
@@ -944,6 +961,33 @@ components:
       properties:
         id: { type: string }
         name: { type: string }
+        description: { type: string, nullable: true, maxLength: 2000 }
+
+    CategoryWrite:
+      type: object
+      additionalProperties: false
+      required: [name]
+      properties:
+        name: { type: string, minLength: 1, maxLength: 100 }
+        description:
+          type: string
+          nullable: true
+          maxLength: 2000
+          description: Omitted/null preserves existing description on update; empty string clears. Name-only callers remain supported.
+
+    VideoMetadataUpdate:
+      type: object
+      additionalProperties: false
+      required: [title, description, hashtags]
+      properties:
+        title: { type: string, minLength: 1, maxLength: 255, description: Nonblank Unicode text. }
+        description: { type: string, maxLength: 10000 }
+        hashtags:
+          type: array
+          maxItems: 30
+          uniqueItems: true
+          description: Plain Unicode letter/digit/underscore tags, without leading hash or spaces; [] explicitly clears editorial tags.
+          items: { type: string, minLength: 1, maxLength: 64, pattern: '^[\p{L}\p{N}_]+$' }
 
     Video:
       type: object
@@ -962,6 +1006,31 @@ components:
         - $ref: "#/components/schemas/Video"
         - type: object
           properties:
+            width:
+              type: integer
+              minimum: 1
+              nullable: true
+              readOnly: true
+              description: Encoded source width in pixels before ingest resizing; null until known, never inferred from thumbnails.
+            height:
+              type: integer
+              minimum: 1
+              nullable: true
+              readOnly: true
+              description: Encoded source height in pixels before ingest resizing; null until known.
+            fps:
+              type: number
+              format: double
+              minimum: 0
+              exclusiveMinimum: true
+              nullable: true
+              readOnly: true
+              description: Average source frames per second from CPU ingest; null when unavailable.
+            hashtags:
+              type: array
+              nullable: true
+              description: Saved editorial tags; null means no editorial override yet (AI suggestions remain in analysis). [] is an explicit empty override.
+              items: { type: string }
             playback_url:
               type: string
               nullable: true

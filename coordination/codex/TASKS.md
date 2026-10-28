@@ -28,8 +28,8 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-17 | INT-16 audit | Client framework security migration | REVIEW | Next16 deployed;53fixture+2live/audits0/build PASS |
 | INT-18 | INT-00/13 boot | Bounded dependency startup recovery | REVIEW | Go+delayed PG+8worker tests/image PASS |
 | INT-19 | INT-14 pagination | Clarify public cursor/error contract | REVIEW | existing feed/catalog endpoints; no AI dependency |
-| INT-20 | INT-05 planA | CMS metadata/editorial/category contract | IN_PROGRESS | user approved2026-10-28; AI contract unchanged |
-| INT-21 | INT-20 | Persist/map approved CMS planA | TODO | INT-20 contract/types committed |
+| INT-20 | INT-05 planA | CMS metadata/editorial/category contract | REVIEW | OpenAPI0.4.0/3types/schema+FEtsc PASS |
+| INT-21 | INT-20 | Persist/map approved CMS planA | IN_PROGRESS | INT-20 contract/types checkpoint |
 
 Hoàn thành trước tách làn (bằng chứng INVENTORY mục 5): T0.1–T0.4, T2.1–T2.4, T4.1, T4.2 = DONE (VERIFIED-HIST, build VERIFIED-NOW);
 T2.5, T3.1, T3.2 = PARTIAL.
@@ -313,14 +313,15 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Checkpoint: Lane codex / Changed OpenAPI+3generated types / Verified bothTS+Go+schema PASS / Contract public0.3.2 / Next INT-14 pagination.
 
 ### INT-20 — Approved CMS planA contract
-- Owner: CODEX | Status: IN_PROGRESS (2026-10-28)
+- Owner: CODEX | Status: REVIEW (2026-10-28)
 - Dependency: explicit user approval2026-10-28; Release#4 received, AIv1.3 unchanged.
 - Acceptance: define source metadata/editorial overwrite/category-description semantics and validation; regenerate Go/CMS/Client types; validate embedded spec and FE typechecks; commit before implementation.
 - Changed planned: infra/openapi.yaml, backend/internal/gen/api.gen.go, cms/src/api-types.ts, client/src/api-types.ts, owned coordination.
-- Commits/Evidence: pending | Next action: OpenAPI0.4.0 additive CMS extension; no AI endpoint/Client library extension.
+- Evidence: verification/INT-20.md; embedded contract testPASS0.484s, CMS/Clienttsc PASS;3types regenerated. Commit: contract checkpoint in git history.
+- Next action: INT-21; no AI endpoint/Client library extension.
 
 ### INT-21 — Approved CMS planA implementation
-- Owner: CODEX | Status: TODO
+- Owner: CODEX | Status: IN_PROGRESS (2026-10-28)
 - Dependency: INT-20 contract/types committed.
 - Acceptance: additive/idempotent migration; nullable source metadata from real CPU worker; persistent editorial title/description/hashtags separated from AI proposals;
  category description create/update/backward compatibility; admin/editor guard+validation; CMS save/reload/error states; defer approved advanced fields;
