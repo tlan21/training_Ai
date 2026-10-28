@@ -1,9 +1,11 @@
-# SESSION — authoritative resume state (2026-10-27, pagination verified)
+# SESSION — authoritative resume state (2026-10-28, Client QA3100 approved)
 
 ## Branch / task state
 - E:/traning_ai-codex, codex/integration. Release#1/#2/#3 received; HEAD..master empty at session start. No master release/push authorized.
-- INT-06 PARTIAL pending production QA startup confirmation +library/forgot-link scope; code09f0611 +follow-up geometry source/final lint/build/tsc PASS.
-- Only INT-05 IN_PROGRESS: CMS original-video controls/bounded preview implemented and verified. Project skill cms_screen.md +plan03§7 CẮT-list.
+- Only INT-06 IN_PROGRESS: user explicitly approved starting QAClient3100 on2026-10-28. Start existing production build at127.0.0.1:3100,
+  run current65fixture/player/onboarding checks without weakening tracking assertions; fix scoped failures, stop owned QA server and record evidence.
+  Library/forgot-link decisions remain pending. LiveClient3000/gateway/AI are not replaced by this approval.
+- INT-05 PARTIAL while user prioritizes Client QA: CMS original-video controls/bounded preview implemented and verified. Project skill cms_screen.md +plan03§7 CẮT-list.
   Baseline18PASS24.5s; final full37browserPASS38.7s before radius fix; final3playerPASS10.3s after radius correction, manual seek cancellation/native-modal checks.
   CMS tsc/Vite production build +E2Etypes +diffcheck PASS. QA production Vite5174 PID22248 stopped after checking ownership; no active test/compiler/QA server.
   CMS5173 remains existing image; real gateway healthok and Claude stubfalse/6models/degraded[]/CPU rechecked. Source fixes not deployed.
@@ -13,16 +15,16 @@
   Final scoped5browserPASS11.7s +CMSbuild/tsc/E2Etypes/diffcheck PASS; final QA PID1636 also stopped. Paired current PNGs refreshed.
   All8CMS references x390/1440 captured16PASS57.0s with loaded original images; E2Etypes PASS after harness expansion.
   Comparison directory now36PNG/16JSON; report adds concrete remaining differences per screen and separates current contract gaps.
-  Next: remaining per-screen visual corrections listed in verification/INT-05.md. MissingCMSfields still require scope/contract decision; INT-05 remains IN_PROGRESS, not DONE.
+  Next after Client QA: remaining per-screen visual corrections listed in verification/INT-05.md. MissingCMSfields still require scope/contract decision; INT-05 remains PARTIAL, not DONE.
 - Client follow-up after09f0611: desktop register label cadence/header/footer/terms/checkbox sizes, login checkbox/type spacing,
   Discovery mobile49px header/flex search row and desktop nav action/avatar spacing aligned to actual reference source. New geometry tests pending production runtime;
   no pixel PASS inferred from source-only fixes. Latest final build/tsc/lint session67715 exited0; no active compiler or Client QA server.
 - INT-06 latest checkpoint: scoped UI source fixes ready (forms/header/onboarding/search/detail); paired8x2reference/baseline screenshots and metrics captured,
   final16reference captures with loaded images PASS36.8s. Targeted5PASS; dev full62PASS/1trackingFAIL3.3m (watch_time0 during effect cleanup), tracking source unchanged.
   E2E/Clienttypes, proper client-directorylint, finalNext production build/tsc PASS. No production full PASS or new Client deployment yet (current suite65 after geometry additions).
-- Automatic review rejected combined production QA startup at127.0.0.1:3100 with "blocked by policy". Build-only command passed afterwards.
-  User asked via async tool for exact `node node_modules/next/dist/bin/next start --hostname 127.0.0.1 --port 3100` then63tests/stop plan.
-  Do not bypass via alternate port/launcher/container/live Client replacement. Own dev server3100 stopped; production QA NOT running.
+- Automatic review previously rejected combined production QA startup at127.0.0.1:3100 with "blocked by policy". Build-only command passed afterwards.
+  User now explicitly approved the exact QA3100 action. Execute `node node_modules/next/dist/bin/next start --hostname 127.0.0.1 --port 3100`
+  from client, run current65tests and stop afterward. Initial port check has no listener; production buildID CAT_3TF7GI5-2Dm5o3Y8f exists.
 - Two other async decisions pending: concrete4library API routes vs disabled-MVP scope; login forgot link contact-admin vs preserved exception.
   No new endpoint/forgot-reset change authorized by elapsed time. Report verification/INT-06.md lists specific remaining pixel/API gaps, no full parityPASS.
 - New client/AGENTS.md is Next16-generated; source generate-agent-files.js verified and bundled CSS/Tailwind3 guides read. Include owned generated guide;
