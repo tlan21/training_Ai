@@ -3,7 +3,7 @@
 **Chỉ sửa trong release commit theo `coordination/README.md` mục 6** (user ra lệnh release cho đúng 1 làn) **hoặc khi user yêu cầu trực tiếp**.
 Ngoài ra: đọc trạng thái sống ở `coordination/claude/TASKS.md` và `coordination/codex/TASKS.md` (qua `git show`).
 
-Cập nhật lần cuối: 2026-10-26 · **release #3 (làn Claude, D20)** — `master` = commit release này.
+Cập nhật lần cuối: 2026-10-28 · **release #4 (làn Claude)** — `master` = commit release này.
 
 ## 1. Cổng nghiệm thu AI (AI-GATE — master plan §0)
 
@@ -27,12 +27,12 @@ AI-GATE **không chặn** làn Codex (master §0); chỉ chặn nghiệm thu cu�
 | AI-07 | runtime :8001 thật + UTF-8 Windows | DONE — :8001 UP (`run_local_8001.cmd`), UTF-8 sửa trong code |
 | AI-11 | HO-01: vision `video_id` + index data URI | DONE — RE:HO-01 |
 | AI-13 | recommendation không metadata giả + `recommendation_mode` | DONE — release #3 |
-| AI-12 | Two-Tower v2 (D18-B, gate D19) | IN_PROGRESS — 12a/12c DONE (data contract `ttv2-data-v1` + loader); chờ dữ liệu INT-13 |
+| AI-12 | Two-Tower v2 (D18-B, gate D19) | BLOCKED ⇐ dữ liệu INT-15 — code độc lập xong (contract `ttv2-data-v1.1`, nhãn v2, feature/harness/gate, verifier); bundle thật đầu tiên = `NO_DATA` |
 | AI-09 | Two-Tower v1 sandbox/artifact | DONE — baseline sandbox, không dùng cho product |
 | AI-09 | Two-Tower phía AI: embedding/schema/export/version, sandbox | TODO (⇐ HC-04 Codex: mapping ID + collection) — D14 |
-| AI-02 | T1.4 ASR domain | 02a TODO (Claude đề xuất) · 02b BLOCKED (user duyệt: 7/60, còn 53) · 02c BLOCKED |
-| AI-03 | T1.6 Mini-GPT | 03a TODO (Claude soạn 40 summary) · 03b BLOCKED (user duyệt) · 03c BLOCKED |
-| AI-04 | VRAM sơ bộ Kaggle T4 | TODO (⇐ AI-06) |
+| AI-02 | ASR domain (T1.4) | 02a DONE; 02b DONE (user duyệt lại: 51 xác nhận, 9 loại); 02c đang train trên Kaggle (domain replay v2, 81 clip) — chưa promote |
+| AI-03 | MiniGPT chất lượng (T1.6) | 03a/03b DONE (D22: Claude soạn+duyệt), 03c thí nghiệm xong — candidate KHÔNG promote (CLAUDE_JUDGE sạch 1.5→1.8, đường thật 1.0); cổng người ≥3/5 chưa đạt |
+| AI-04 | VRAM sơ bộ T4 | DONE PRELIMINARY_T4 (peak 347 MiB); nghiệm thu RTX 3060 còn mở |
 | AI-05 | T5.3 số liệu | TODO (⇐ AI-02/03/04) |
 | AI-08 | dọn dẹp an toàn (lặp lại) | TODO — sau mỗi đợt train / khi ổ đầy; manifest + user duyệt |
 
@@ -107,3 +107,4 @@ khi người duyệt từng mục (`HUMAN_VERIFIED`) và provenance ghi rõ ngu�
 | 4 | 2026-10-26 | claude (user yêu cầu, không release) | không đổi (`96ebc24`) | AI-06 DONE; AI-01 REVIEW (v1.0-rc1 DRAFT); thêm AI-09, AI-10; D14–D17 | mở HC-04; đính chính REL v1.0 → rc1 DRAFT | AI-06/AI-01 evidence: HTTP ladder 9/9, live smoke 6/6, inference 37 PASS/7 skip |
 | 5 | 2026-10-26 | claude — **release #2** | `96ebc24 →` commit release này (ff-only, user duyệt 2026-10-26; xem `git log -1 master`) | AI-01, AI-06, AI-07, AI-10, AI-11 DONE; AI-API v1.2 (6 API_READY, reco DRAFT); :8001 UP | đóng HC-05 (RE:HC-05 phương án b), HO-01 (RE:HO-01); mở HC-04 chờ RE sandbox | ai-core 285 PASS; inference 51 PASS/7 skip (chạy lại lúc release); smoke :8001 6/6 (media thật) + 401; 6 ckpt `stub_mode=false`, degraded [] |
 | 6 | 2026-10-26 | claude — **release #3** (D20) | `70bf011 →` commit release này (ff-only) | AI-09, AI-13 DONE; AI-12 IN_PROGRESS (12a/12c); D18–D21 | mở HC-06, HC-07 (Codex: INT-12, INT-13); RE:HO-02 | ai-core 297 PASS; inference 55 PASS/7 skip (gồm compatibility v1.2→v1.3); smoke :8001 6/6 + 401; health stub_mode=false, degraded [] |
+| 7 | 2026-10-28 | claude — **release #4** | `fee83b2 →` commit release này (ff-only) | AI-02a/b, AI-03a/b/c, AI-04 (PRELIMINARY_T4), AI-12 phần độc lập; D22 | HC-08…HC-11, RE:INT-15, RE:HO-03 | ai-core 314; inference 55/7 skip (compat v1.2 PASS); smoke :8001 6/6 + 401; tool tests 64; 6 ckpt SHA = contract; AI-API v1.3 không đổi |

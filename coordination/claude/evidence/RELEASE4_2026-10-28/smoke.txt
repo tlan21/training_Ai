@@ -1,0 +1,8 @@
+tests/test_live_smoke.py::test_health_real_and_auth PASSED               [ 16%]
+tests/test_live_smoke.py::test_vision_then_highlight PASSED              [ 33%]
+tests/test_live_smoke.py::test_asr PASSED                                [ 50%]
+tests/test_live_smoke.py::test_completions PASSED                        [ 66%]
+tests/test_live_smoke.py::test_search_needs_milvus PASSED                [ 83%]
+tests/test_live_smoke.py::test_recommendation_contract PASSED            [100%]
+============================== 6 passed in 9.76s ==============================
+no-bearer 401

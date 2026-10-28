@@ -245,3 +245,11 @@ Chia việc không chồng chéo (PROJECT_STATUS D18):
 - Sau start: container healthy, `/healthz` 200, `/api/feed` 401 không token (đúng), Client :3000 200, CMS :5173 200.
 - Đề xuất cho Codex (file của Codex, Claude không sửa): `depends_on: postgres: condition: service_healthy` và/hoặc `restart: on-failure` cho gateway;
   chuyển AI sang :8001 thật khi chốt HO-03 (:8001 đang UP, smoke 6/6).
+
+## 2026-10-28 REL #4 — làn AI lên `master` (AI-API **v1.3 không đổi**)
+- Không đổi API, schema, error code hay checkpoint active (6 SHA khớp contract). Codex không cần merge gấp; merge khi tiện.
+- Nội dung: verifier Two-Tower `NO_DATA` (RE:INT-15), data contract `ttv2-data-v1.1`/nhãn v2, code Two-Tower v2 (chưa có dữ liệu);
+  D22 (MiniGPT distillation có công bố — candidate không promote); AI-04 VRAM T4 sơ bộ 347 MiB; ASR: đề xuất + intake mở rộng + trang duyệt v3,
+  công thức domain replay v2 (đang train trên Kaggle, chưa promote).
+- Gate: ai-core 314; inference 55/7 skip (compat v1.2 PASS); smoke :8001 6/6 + 401; tool tests 64. Evidence `coordination/claude/evidence/RELEASE4_2026-10-28/`.
+- Nhắc lại việc phía Codex: HC-11 (gateway race Postgres), HO-03 (chuyển gateway từ ai-mock sang :8001 thật).
