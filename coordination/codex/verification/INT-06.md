@@ -1,5 +1,10 @@
 # INT-06 — Client Stitch parity checkpoint (2026-10-27)
 
+**Update2026-10-28:** user approved QA3100. Production run **65PASS1.6m**, including the unchanged tracking assertion
+and latest desktop/mobile geometry cases; owned QA server stopped afterward. See [current production evidence](INT-06-production-20261028.md).
+The pending production/startup statements below describe the historical2026-10-27 checkpoint and are superseded by this update.
+Full design/API/forgot-link scope is still unresolved; INT-06 remains PARTIAL. No app source/deployment change in the QA run.
+
 Owner CODEX. User approved Client→CMS parity work within current API, followed by release preparation tests; no master/push authorization.
 Project skill client_screen.md, required ui_design_review10items; UI/UX Pro Max targeted overflow/accessibility guidance +Ponytail full.
 Public0.3.2/AIv1.3 unchanged; real gateway/AI/Client3000 unchanged in this checkpoint.
@@ -76,7 +81,7 @@ Screen-specific remaining items:
 ## Pending decisions (async questions already sent)
 1. Approve concrete4library routes in CONTRACT_DECISIONS.md or accept current MVP-disabled actions. AGENTS§8 prohibits unapproved endpoints.
 2. Change only login forgot link to "Liên hệ quản trị viên" while retaining deferred routes, or preserve link as explicit parity exception.
-3. Approve exact production QA3100 startup rejected by automatic review. No elapsed time interpreted as approval.
+3. RESOLVED2026-10-28: user explicitly approved QA3100; exact production start +65checks PASS +owned stop completed. Other decisions unchanged.
 
 Status remains IN_PROGRESS/PARTIAL; no full Design Parity/production/deployment/release PASS claimed.
 

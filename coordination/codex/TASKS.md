@@ -13,8 +13,8 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-02 | T2.5 | Thay adapter memory → Postgres (interactions/history/likes/settings) | REVIEW | INT-00 (DB); không phụ thuộc AI |
 | INT-03 | T2.5, T1.7 | Two-Tower: sandbox/ID mapping; product vectors + feed | BLOCKED | product v2 AI-12 production gate; AI-09 MovieLens sandbox only |
 | INT-04 | T3.1, T3.2 | Contract nguồn phát video gốc (OpenAPI) + nối UI | PARTIAL | INT-00 (runtime); contract có thể làm độc lập |
-| INT-05 | T3.1 | CMS Design Parity FULL | PARTIAL | scoped CMS checks passed; resume after Client QA |
-| INT-06 | T3.2 | Client Design Parity FULL | IN_PROGRESS | QA3100 approved2026-10-28; API scope decisions pending |
+| INT-05 | T3.1 | CMS Design Parity FULL | IN_PROGRESS | scoped CMS checks passed; existing-API visual work remains |
+| INT-06 | T3.2 | Client Design Parity FULL | PARTIAL | production65PASS2026-10-28; API/design scope remains |
 | INT-07 | T5.1 | Load test 50 video dồn hàng đợi | BLOCKED | AI-04 (GPU); bản CPU chạy trước được |
 | INT-08 | T5.2 | Soak test 48 h | BLOCKED | INT-07 |
 | INT-09 | T5.3 | Docs bàn giao hệ thống | TODO | INT-05..08 |
@@ -106,7 +106,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Checkpoint: Lane codex / Changed contract+players / Verified playback PASS, parity PARTIAL / Contract yes OpenAPI v0.2.0 / Next resource+scope.
 
 ### INT-05 — CMS Design Parity FULL
-- T gốc: T3.1 | Owner: CODEX | Status: PARTIAL (2026-10-28; scoped checks passed; user prioritizes Client QA)
+- T gốc: T3.1 | Owner: CODEX | Status: IN_PROGRESS (2026-10-28; next safe work after Client QA completed)
 - Depends on: INT-02; INT-04 functional playback PASS; full parity còn cần scope/resource
 - Gap (HIST `docs/T3.1_cms_design_parity.md`): nguồn phát video gốc, metadata/analytics/rules/editor fields chưa có API, Settings chưa persist.
 - NOW: settings/interactions persistence và nguồn phát đã có; original-video center controls +bounded proposal preview verified; metadata/analytics/rules/editor contract gaps còn mở.
@@ -125,7 +125,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
   verification/INT-05.md records concrete per-screen spacing/font/toolbar gaps and contract blockers. No full parityPASS inferred from screenshots; next action is the listed existing-API corrections.
 
 ### INT-06 — Client Design Parity FULL
-- T gốc: T3.2 | Owner: CODEX | Status: IN_PROGRESS (2026-10-28; user approved production QA3100)
+- T gốc: T3.2 | Owner: CODEX | Status: PARTIAL (2026-10-28; approved production QA65PASS; scope/design gaps remain)
 - Depends on: INT-02; INT-04 functional playback PASS; full parity còn cần scope/resource
 - Gap (HIST `docs/T3.2_client_design_parity.md`): URL video gốc, saved-list/playlist, DELETE likes/history, analytics count; preferences/history/likes memory.
   NOW: source/history/likes/settings đã có; preference source đã sửa nhưng runtime restart pending. Saved-list/delete/playlist/count còn scope decision.
@@ -141,8 +141,10 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Current checkpoint: 09f0611 scoped forms/header/onboarding/search/detail fixes; follow-up desktop form/search geometry source ready, final lint/build/tsc PASS.
  16loaded-image reference captures PASS, baseline16PASS, targeted5PASS; dev62/63 with tracking cleanup failure (not production PASS).
  Production QA3100 startup was rejected by automatic review "blocked by policy"; user explicitly approved starting QAClient3100 on2026-10-28.
- Current action: start existing Next production build at127.0.0.1:3100; run65fixture/player/onboarding checks, fix scoped failures if any, stop owned server.
- Library4routes/forgot-link decisions still pending. This approval does not authorize new API scope or liveClient3000 replacement.
+ Completed: existing Next production build at127.0.0.1:3100,65fixture/player/onboarding checks PASS1.6m with unchanged assertions, owned PID19872 stopped and port closed.
+ Evidence: verification/INT-06-production-20261028.md/.log;16production PNG/metrics +2original-player PNG added to comparison index. Start/progress commit b82a75c.
+ Previous dev tracking failure not reproduced in production; latest auth/header/discovery geometry passed. No app source/test assertion/dependency change.
+ Library4routes/forgot-link and full per-screen design decisions remain pending; no full parityDONE, realAI E2E/deployment/master/push claim. Next safe task INT-05.
 
 ### INT-07 — Load test 50 video (T5.1)
 - T gốc: T5.1 | Owner: codex | Status: BLOCKED

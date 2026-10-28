@@ -3,144 +3,176 @@
     "route": "login",
     "width": 390,
     "stitch_html": "stitch_ai_video_platform_vietnamese/login_mobile/code.html",
-    "stage": "dev iteration before final card-color correction; production QA pending",
+    "stage": "production verified2026-10-28; dev iteration retained as historical",
     "stitch": "login-390-stitch.png",
     "before": "login-390-before.png",
-    "dev-iteration": "login-390-dev-iteration.png"
+    "dev-iteration": "login-390-dev-iteration.png",
+    "production": "login-390-production-20261028.png",
+    "production_metrics": "login-390-production-20261028.json"
   },
   {
     "route": "register",
     "width": 390,
     "stitch_html": "stitch_ai_video_platform_vietnamese/ng_k_mobile/code.html",
-    "stage": "dev iteration before final card-color correction; production QA pending",
+    "stage": "production verified2026-10-28; dev iteration retained as historical",
     "stitch": "register-390-stitch.png",
     "before": "register-390-before.png",
-    "dev-iteration": "register-390-dev-iteration.png"
+    "dev-iteration": "register-390-dev-iteration.png",
+    "production": "register-390-production-20261028.png",
+    "production_metrics": "register-390-production-20261028.json"
   },
   {
     "route": "onboarding",
     "width": 390,
     "stitch_html": "stitch_ai_video_platform_vietnamese/interest_onboarding_mobile/code.html",
-    "stage": "dev iteration before final card-color correction; production QA pending",
+    "stage": "production verified2026-10-28; dev iteration retained as historical",
     "stitch": "onboarding-390-stitch.png",
     "before": "onboarding-390-before.png",
-    "dev-iteration": "onboarding-390-dev-iteration.png"
+    "dev-iteration": "onboarding-390-dev-iteration.png",
+    "production": "onboarding-390-production-20261028.png",
+    "production_metrics": "onboarding-390-production-20261028.json"
   },
   {
     "route": "feed",
     "width": 390,
     "stitch_html": "stitch_ai_video_platform_vietnamese/short_video_feed_mobile/code.html",
-    "stage": "dev iteration before final card-color correction; production QA pending",
+    "stage": "production verified2026-10-28; dev iteration retained as historical",
     "stitch": "feed-390-stitch.png",
     "before": "feed-390-before.png",
-    "dev-iteration": "feed-390-dev-iteration.png"
+    "dev-iteration": "feed-390-dev-iteration.png",
+    "production": "feed-390-production-20261028.png",
+    "production_metrics": "feed-390-production-20261028.json"
   },
   {
     "route": "discover",
     "width": 390,
     "stitch_html": "stitch_ai_video_platform_vietnamese/discovery_mobile/code.html",
-    "stage": "dev iteration before final card-color correction; production QA pending",
+    "stage": "production verified2026-10-28; dev iteration retained as historical",
     "stitch": "discover-390-stitch.png",
     "before": "discover-390-before.png",
-    "dev-iteration": "discover-390-dev-iteration.png"
+    "dev-iteration": "discover-390-dev-iteration.png",
+    "production": "discover-390-production-20261028.png",
+    "production_metrics": "discover-390-production-20261028.json"
   },
   {
     "route": "search",
     "width": 390,
     "stitch_html": "stitch_ai_video_platform_vietnamese/multimodal_search_mobile/code.html",
-    "stage": "dev iteration before final card-color correction; production QA pending",
+    "stage": "production verified2026-10-28; dev iteration retained as historical",
     "stitch": "search-390-stitch.png",
     "before": "search-390-before.png",
-    "dev-iteration": "search-390-dev-iteration.png"
+    "dev-iteration": "search-390-dev-iteration.png",
+    "production": "search-390-production-20261028.png",
+    "production_metrics": "search-390-production-20261028.json"
   },
   {
     "route": "profile",
     "width": 390,
     "stitch_html": "stitch_ai_video_platform_vietnamese/personal_library_mobile/code.html",
-    "stage": "dev iteration before final card-color correction; production QA pending",
+    "stage": "production verified2026-10-28; dev iteration retained as historical",
     "stitch": "profile-390-stitch.png",
     "before": "profile-390-before.png",
-    "dev-iteration": "profile-390-dev-iteration.png"
+    "dev-iteration": "profile-390-dev-iteration.png",
+    "production": "profile-390-production-20261028.png",
+    "production_metrics": "profile-390-production-20261028.json"
   },
   {
     "route": "videos-vid_ui1",
     "width": 390,
     "stitch_html": "stitch_ai_video_platform_vietnamese/video_detail_ai_player_animated_mobile/code.html",
-    "stage": "dev iteration before final card-color correction; production QA pending",
+    "stage": "production verified2026-10-28; dev iteration retained as historical",
     "stitch": "videos-vid_ui1-390-stitch.png",
     "before": "videos-vid_ui1-390-before.png",
-    "dev-iteration": "videos-vid_ui1-390-dev-iteration.png"
+    "dev-iteration": "videos-vid_ui1-390-dev-iteration.png",
+    "production": "videos-vid_ui1-390-production-20261028.png",
+    "production_metrics": "videos-vid_ui1-390-production-20261028.json"
   },
   {
     "route": "login",
     "width": 1440,
     "stitch_html": "stitch_ai_video_platform_vietnamese/login_desktop/code.html",
-    "stage": "dev iteration before final card-color correction; production QA pending",
+    "stage": "production verified2026-10-28; dev iteration retained as historical",
     "stitch": "login-1440-stitch.png",
     "before": "login-1440-before.png",
-    "dev-iteration": "login-1440-dev-iteration.png"
+    "dev-iteration": "login-1440-dev-iteration.png",
+    "production": "login-1440-production-20261028.png",
+    "production_metrics": "login-1440-production-20261028.json"
   },
   {
     "route": "register",
     "width": 1440,
     "stitch_html": "stitch_ai_video_platform_vietnamese/ng_k_desktop/code.html",
-    "stage": "dev iteration before final card-color correction; production QA pending",
+    "stage": "production verified2026-10-28; dev iteration retained as historical",
     "stitch": "register-1440-stitch.png",
     "before": "register-1440-before.png",
-    "dev-iteration": "register-1440-dev-iteration.png"
+    "dev-iteration": "register-1440-dev-iteration.png",
+    "production": "register-1440-production-20261028.png",
+    "production_metrics": "register-1440-production-20261028.json"
   },
   {
     "route": "onboarding",
     "width": 1440,
     "stitch_html": "stitch_ai_video_platform_vietnamese/interest_onboarding_desktop/code.html",
-    "stage": "dev iteration before final card-color correction; production QA pending",
+    "stage": "production verified2026-10-28; dev iteration retained as historical",
     "stitch": "onboarding-1440-stitch.png",
     "before": "onboarding-1440-before.png",
-    "dev-iteration": "onboarding-1440-dev-iteration.png"
+    "dev-iteration": "onboarding-1440-dev-iteration.png",
+    "production": "onboarding-1440-production-20261028.png",
+    "production_metrics": "onboarding-1440-production-20261028.json"
   },
   {
     "route": "feed",
     "width": 1440,
     "stitch_html": "stitch_ai_video_platform_vietnamese/short_video_feed_desktop/code.html",
-    "stage": "dev iteration before final card-color correction; production QA pending",
+    "stage": "production verified2026-10-28; dev iteration retained as historical",
     "stitch": "feed-1440-stitch.png",
     "before": "feed-1440-before.png",
-    "dev-iteration": "feed-1440-dev-iteration.png"
+    "dev-iteration": "feed-1440-dev-iteration.png",
+    "production": "feed-1440-production-20261028.png",
+    "production_metrics": "feed-1440-production-20261028.json"
   },
   {
     "route": "discover",
     "width": 1440,
     "stitch_html": "stitch_ai_video_platform_vietnamese/discovery_desktop/code.html",
-    "stage": "dev iteration before final card-color correction; production QA pending",
+    "stage": "production verified2026-10-28; dev iteration retained as historical",
     "stitch": "discover-1440-stitch.png",
     "before": "discover-1440-before.png",
-    "dev-iteration": "discover-1440-dev-iteration.png"
+    "dev-iteration": "discover-1440-dev-iteration.png",
+    "production": "discover-1440-production-20261028.png",
+    "production_metrics": "discover-1440-production-20261028.json"
   },
   {
     "route": "search",
     "width": 1440,
     "stitch_html": "stitch_ai_video_platform_vietnamese/multimodal_search_desktop/code.html",
-    "stage": "dev iteration before final card-color correction; production QA pending",
+    "stage": "production verified2026-10-28; dev iteration retained as historical",
     "stitch": "search-1440-stitch.png",
     "before": "search-1440-before.png",
-    "dev-iteration": "search-1440-dev-iteration.png"
+    "dev-iteration": "search-1440-dev-iteration.png",
+    "production": "search-1440-production-20261028.png",
+    "production_metrics": "search-1440-production-20261028.json"
   },
   {
     "route": "profile",
     "width": 1440,
     "stitch_html": "stitch_ai_video_platform_vietnamese/personal_library_desktop/code.html",
-    "stage": "dev iteration before final card-color correction; production QA pending",
+    "stage": "production verified2026-10-28; dev iteration retained as historical",
     "stitch": "profile-1440-stitch.png",
     "before": "profile-1440-before.png",
-    "dev-iteration": "profile-1440-dev-iteration.png"
+    "dev-iteration": "profile-1440-dev-iteration.png",
+    "production": "profile-1440-production-20261028.png",
+    "production_metrics": "profile-1440-production-20261028.json"
   },
   {
     "route": "videos-vid_ui1",
     "width": 1440,
     "stitch_html": "stitch_ai_video_platform_vietnamese/video_detail_ai_player_animated_desktop/code.html",
-    "stage": "dev iteration before final card-color correction; production QA pending",
+    "stage": "production verified2026-10-28; dev iteration retained as historical",
     "stitch": "videos-vid_ui1-1440-stitch.png",
     "before": "videos-vid_ui1-1440-before.png",
-    "dev-iteration": "videos-vid_ui1-1440-dev-iteration.png"
+    "dev-iteration": "videos-vid_ui1-1440-dev-iteration.png",
+    "production": "videos-vid_ui1-1440-production-20261028.png",
+    "production_metrics": "videos-vid_ui1-1440-production-20261028.json"
   }
 ]

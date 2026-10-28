@@ -1,11 +1,13 @@
-# SESSION — authoritative resume state (2026-10-28, Client QA3100 approved)
+# SESSION — authoritative resume state (2026-10-28, Client production65PASS)
 
 ## Branch / task state
 - E:/traning_ai-codex, codex/integration. Release#1/#2/#3 received; HEAD..master empty at session start. No master release/push authorized.
-- Only INT-06 IN_PROGRESS: user explicitly approved starting QAClient3100 on2026-10-28. Start existing production build at127.0.0.1:3100,
-  run current65fixture/player/onboarding checks without weakening tracking assertions; fix scoped failures, stop owned QA server and record evidence.
-  Library/forgot-link decisions remain pending. LiveClient3000/gateway/AI are not replaced by this approval.
-- INT-05 PARTIAL while user prioritizes Client QA: CMS original-video controls/bounded preview implemented and verified. Project skill cms_screen.md +plan03§7 CẮT-list.
+- INT-06 PARTIAL: user-approved QA3100 completed2026-10-28. Existing production build CAT_3TF7GI5-2Dm5o3Y8f,
+ 65fixture/player/onboarding checks PASS1.6m without source/assertion changes. Tracking single-watch/seek/hidden-time/dedup, latest geometry all PASS.
+ Evidence verification/INT-06-production-20261028.md/.log;16production layout PNG+16metrics JSON+2original-player PNG in comparison index.
+ Owned Next PID19872 stopped after identity/listener checks; port3100 closed. QA login200, APIproxy401UNAUTHORIZED; gatewayhealthok/liveClient3000login200.
+ Library/forgot-link and full design decisions remain pending. No app source/dependency/runtime deployment/master/push/realAI acceptance change.
+- Only INT-05 IN_PROGRESS (next safe work): CMS original-video controls/bounded preview implemented and verified. Project skill cms_screen.md +plan03§7 CẮT-list.
   Baseline18PASS24.5s; final full37browserPASS38.7s before radius fix; final3playerPASS10.3s after radius correction, manual seek cancellation/native-modal checks.
   CMS tsc/Vite production build +E2Etypes +diffcheck PASS. QA production Vite5174 PID22248 stopped after checking ownership; no active test/compiler/QA server.
   CMS5173 remains existing image; real gateway healthok and Claude stubfalse/6models/degraded[]/CPU rechecked. Source fixes not deployed.
@@ -15,21 +17,21 @@
   Final scoped5browserPASS11.7s +CMSbuild/tsc/E2Etypes/diffcheck PASS; final QA PID1636 also stopped. Paired current PNGs refreshed.
   All8CMS references x390/1440 captured16PASS57.0s with loaded original images; E2Etypes PASS after harness expansion.
   Comparison directory now36PNG/16JSON; report adds concrete remaining differences per screen and separates current contract gaps.
-  Next after Client QA: remaining per-screen visual corrections listed in verification/INT-05.md. MissingCMSfields still require scope/contract decision; INT-05 remains PARTIAL, not DONE.
+  Next: remaining per-screen visual corrections listed in verification/INT-05.md. MissingCMSfields still require scope/contract decision; INT-05 remains IN_PROGRESS, not DONE.
 - Client follow-up after09f0611: desktop register label cadence/header/footer/terms/checkbox sizes, login checkbox/type spacing,
-  Discovery mobile49px header/flex search row and desktop nav action/avatar spacing aligned to actual reference source. New geometry tests pending production runtime;
-  no pixel PASS inferred from source-only fixes. Latest final build/tsc/lint session67715 exited0; no active compiler or Client QA server.
+  Discovery mobile49px header/flex search row and desktop nav action/avatar spacing aligned to actual reference source. New geometry tests productionPASS2026-10-28;
+  only asserted scope is verified, not full pixel parity. Latest build/tsc/lint2026-10-27PASS; no active compiler or Client QA server.
 - INT-06 latest checkpoint: scoped UI source fixes ready (forms/header/onboarding/search/detail); paired8x2reference/baseline screenshots and metrics captured,
   final16reference captures with loaded images PASS36.8s. Targeted5PASS; dev full62PASS/1trackingFAIL3.3m (watch_time0 during effect cleanup), tracking source unchanged.
-  E2E/Clienttypes, proper client-directorylint, finalNext production build/tsc PASS. No production full PASS or new Client deployment yet (current suite65 after geometry additions).
+  E2E/Clienttypes, proper client-directorylint, finalNext production build/tsc PASS historically. Current production65checks PASS2026-10-28; no new Client deployment.
 - Automatic review previously rejected combined production QA startup at127.0.0.1:3100 with "blocked by policy". Build-only command passed afterwards.
-  User now explicitly approved the exact QA3100 action. Execute `node node_modules/next/dist/bin/next start --hostname 127.0.0.1 --port 3100`
-  from client, run current65tests and stop afterward. Initial port check has no listener; production buildID CAT_3TF7GI5-2Dm5o3Y8f exists.
+  User explicitly approved the exact QA3100 action2026-10-28. Executed `node node_modules/next/dist/bin/next start --hostname 127.0.0.1 --port 3100`
+  from client,65tests PASS and stopped afterward. Startup approval blocker resolved; other scope decisions unchanged.
 - Two other async decisions pending: concrete4library API routes vs disabled-MVP scope; login forgot link contact-admin vs preserved exception.
   No new endpoint/forgot-reset change authorized by elapsed time. Report verification/INT-06.md lists specific remaining pixel/API gaps, no full parityPASS.
 - New client/AGENTS.md is Next16-generated; source generate-agent-files.js verified and bundled CSS/Tailwind3 guides read. Include owned generated guide;
   next-env returned production imports after build, test-generated tsbuildinfo should not be included. No framework/dependency change.
-- Current next step: capture baseline8screen groups x390/1440 with paired Stitch references, then fix only proven existing-API UI gaps.
+- Current next step: INT-05 remaining existing-API visual corrections; INT-06 production captures now preserved, full API/design scope still open.
   Project skill client_screen.md +required ui_design_review checklist; UI/UX Pro Max targeted accessibility guidance, Ponytail full.
   No runtime/service changes yet; real gateway/AI preserved. No new API/deferred forgot-password scope approval inferred.
 - INT-01/11/13/17/18 REVIEW; real HTTP integration retained. Project skill backend_endpoint.md +Ponytail full. No subagents.
@@ -96,7 +98,7 @@
 - Release only at user request: full Go/CMS/Client gates +relevant real matrix E2E, shared status/masterplan updates only in that release flow; no push inferred.
 
 Lane: codex
-Changed: public0.3.2+3generatedtypes; cursor/ports/PG/mocks/handlers/tests/liveE2E; gateway-only readonly binary transition; owned evidence/tracking
-Verified: Go vet/test/build, realPG3scenarios/no skips,4real E2E PASS1.6m,FE/E2Etypes/embeddedSpec,finalhealthyreal/cleanup
-Contract touched: yes public0.3.2; AI-APIv1.3 consumed unchanged
-Next safe task: INT-06 existing API/Stitch parity; release only on explicit user instruction
+Changed: Client QA evidence/captures/index +ownedSESSION/TASKS; app source unchanged
+Verified: Next production3100 start;65fixture/helper checks PASS1.6m;proxy401;owned stop/closed3100
+Contract touched: no (public0.3.2/AI-APIv1.3 unchanged)
+Next safe task: INT-05 existing-API visual corrections; release only on explicit user instruction
