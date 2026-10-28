@@ -1,0 +1,56 @@
+[
+  {
+    "name": "video-ai-ai-mock-1",
+    "unchanged": true,
+    "status": "running",
+    "container_id": "767326f4c37e1d7ac8badebbc09d9d32079fa2e6893089a336116fa6d4e9274d"
+  },
+  {
+    "name": "video-ai-milvus-1",
+    "unchanged": true,
+    "status": "running",
+    "container_id": "cd7878a1ed75d890acea61c02b95ab309d406eea0e5d1fcd4afc83d5c9150c96"
+  },
+  {
+    "name": "video-ai-etcd-1",
+    "unchanged": true,
+    "status": "running",
+    "container_id": "2a7a3faf4e82baf4059f8ad7e859f42aab2f3e99eeccb22cf4dea77e763a762b"
+  },
+  {
+    "name": "video-ai-minio-1",
+    "unchanged": true,
+    "status": "running",
+    "container_id": "1d4128cbc5c6b79d0d0ef28f98bc0c75ba02bdd620ba4148af9bca52df2a33cc"
+  },
+  {
+    "name": "video-ai-kafka-1",
+    "unchanged": true,
+    "status": "running",
+    "container_id": "8482ecba8ac6fb6c8d62a37b9ae072954646e2789d4c2407e12964f036ee774d"
+  },
+  {
+    "name": "video-ai-postgres-1",
+    "unchanged": true,
+    "status": "running",
+    "container_id": "0aaae3e5b2db82e7da88b57db9450ffd043045d56295ae89ec97db6179cbf2fc"
+  },
+  {
+    "name": "video-ai-redis-1",
+    "unchanged": true,
+    "status": "running",
+    "container_id": "1e8903575c9bcb196487d6a7ce9a0ed6f7cd0d4bd009ee7453b555a118ee943d"
+  },
+  {
+    "name": "video-ai-mongo-1",
+    "unchanged": true,
+    "status": "running",
+    "container_id": "cd1f54c421593613f610112d749e53e69717015cbc17ab309035788607dc81b4"
+  },
+  {
+    "name": "faktory_server",
+    "unchanged": true,
+    "status": "running",
+    "container_id": "acd6840d37c11c5e979ae7bfe1d67ed7008fa59b542358d5ff7e956703bda9bc"
+  }
+]

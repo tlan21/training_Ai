@@ -1,6 +1,10 @@
 # SESSION — authoritative resume state (2026-10-28, product DB004 applied)
 
 ## Branch / task state
+- INT-23 first rollout healthy, real video_flow caught missing width/height/fps: gateway audio relay re-marshaled an old event struct.
+  fa8a382 adds three optional relay fields; existing orchestrator/storage/worker were correct. First real run1FAIL2PASS48.3s kept in INT-23-real-e2e.log.
+  Test-created uploads cleaned by existing finally; no original videos edited. Building gateway int23-fa8a382 then redeploy/retest; NOT DONE.
+
 - INT-23 build checkpoint: four tagged int23-7d2664a images ready. Initial clean gateway build failed offline APK/cache; preserved failed log.
   Reused rollback runtimes with offline artifact overlays: Go Linux4binaries newly compiled, worker main updated with unchanged requirements/DSP hashes,
   verified CMSdist packaged, Next lint/build/tsc re-run with gateway:8000 rewrite. No dependency/image download beyond initial67MB Go base attempt.
