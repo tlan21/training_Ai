@@ -1,6 +1,12 @@
 # SESSION — authoritative resume state (2026-10-28, product DB004 applied)
 
 ## Branch / task state
+- Only INT-23 IN_PROGRESS: user approved Docker updates/recreate backend+CPUworker+CMS+Client and real metadata E2E.
+  Preserve existing realAI URL/key/stub0 and datastore volumes; gateway already embeds orchestration/cutter, do not enable duplicate full-profile workers.
+  Current gateway uses readonly gateway-int14 bind; CMS binds host cms/dist (host builds therefore already changed served CMS bundle).
+  Correct earlier no-CMS-rollout assumption: remove these development binds with image-based rollout. Pin/tag rollback images before recreation.
+  C~3.08GiB/E~0.88GiB: exclude private backups/.tmp/bin from context; use cached builds, no large dependency/image downloads or prune.
+  INT-22 DONE DBmigration; no master release/push, AI/checkpoint/source edit or old-video backfill inferred.
 - INT-22 DONE2026-10-28: user-approved004 applied to product Postgres video_ai/public via existing container; evidence commit f8d82b8.
   Private ignored full backup backend/.tmp/db-backups/int22-20261028T095827Z-before.dump retained; metadata/hash in verification/INT-22-backup.json.
   Guarded transaction +repeat COMMIT;79videos/10categories ordered row fingerprints unchanged;5nullable columns/5validated checks correct.
