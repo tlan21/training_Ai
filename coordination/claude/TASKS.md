@@ -73,7 +73,7 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   ```
 
 ### AI-02 — ASR domain adaptation (T1.4 follow-up)
-- T gốc: T1.4 | Owner: claude | Status: 02a DONE · 02b DONE (user duyệt 51/60, 2026-10-28) · 02c DONE — thí nghiệm xong, guard loại mọi bước, KHÔNG promote
+- T gốc: T1.4 | Owner: claude | Status: 02a DONE · 02b DONE (user duyệt 51/60, 2026-10-28) · 02c DONE — guard loại, KHÔNG promote · **D23: dừng cải thiện cho MVP** (sau MVP: thu thêm audio domain có người duyệt)
 - Tiến độ duyệt (ghi 2026-10-26): **7/60 đã duyệt, 53/60 còn phải kiểm tra** — số 7/60 là tiến độ trang review hiển thị
   (lưu localStorage Chrome, `http://127.0.0.1:8891/asr_review_v2/index.html`); **chưa có file JSON export** nào
   (Downloads không có `asr_expansion_review_v2*.json`) → bằng chứng file hiện là 0/60. Gói dữ liệu:
@@ -102,7 +102,7 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - Checkpoint: Next safe task = AI-02a (không phụ thuộc user); 02b chờ user.
 
 ### AI-03 — Mini-GPT human quality gate (T1.6)
-- T gốc: T1.6 | Owner: claude | Status: 03a DONE · 03b DONE theo D22 (Claude duyệt, 2026-10-27) · 03c DONE — thí nghiệm xong, KHÔNG promote; cổng người ≥3/5 chưa đạt
+- T gốc: T1.6 | Owner: claude | Status: 03a DONE · 03b DONE theo D22 (Claude duyệt, 2026-10-27) · 03c DONE — KHÔNG promote; cổng người ≥3/5 chưa đạt · **D23: dừng cho MVP, tóm tắt = bản nháp admin duyệt**
 - Nguồn 40 clip real-domain (30 train / 10 val, ngoài frozen30): `data/manifests/minigpt_real_domain.json`; transcript user đã rà
   (export SHA `860f8068d0bd…`, 40 transcript/39 sửa) — `docs/T1.6_whisper_review_intake.md`.
 - **AI-03a — Claude soạn summary 40 clip (TODO, theo quyết định user 2026-10-26):** soạn từ transcript user đã rà; mỗi mục lưu

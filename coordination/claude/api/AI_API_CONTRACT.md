@@ -97,6 +97,10 @@ media thật 6/6 + synthetic 6/6; `/health` → `stub_mode=false`, 6 model, `deg
 
 ## 2. Endpoints
 
+> **Chất lượng (D23, 2026-10-28):** output `/v1/asr/completions` (phụ đề) và `/v1/completions` (tóm tắt) là **bản nháp máy**: trên video thật
+> ASR có WER ~84–91%, tóm tắt từ input đó thường sai nội dung. Phía sản phẩm phải để admin sửa/duyệt (CMS `summary_status`, `summary/approve`,
+> `subtitles`) trước khi hiển thị cho client; không tự xuất bản. Schema không đổi (v1.3).
+
 Ví dụ thật cho mỗi endpoint: `examples/<name>.request.json`, `<name>.response.json`, `<name>.error_request.json`, `<name>.error.json`
 (file response/error có dạng `{"http_status": int, "body": <JSON trả về>}`).
 

@@ -253,3 +253,11 @@ Chia việc không chồng chéo (PROJECT_STATUS D18):
   công thức domain replay v2 (đang train trên Kaggle, chưa promote).
 - Gate: ai-core 314; inference 55/7 skip (compat v1.2 PASS); smoke :8001 6/6 + 401; tool tests 64. Evidence `coordination/claude/evidence/RELEASE4_2026-10-28/`.
 - Nhắc lại việc phía Codex: HC-11 (gateway race Postgres), HO-03 (chuyển gateway từ ai-mock sang :8001 thật).
+
+## 2026-10-28 HC-12 — D23: phụ đề + tóm tắt AI là bản nháp, admin duyệt trước khi lên client (Codex xác nhận RE:HC-12)
+- User quyết D23 sau AI-02c (ASR domain replay v2 bị guard loại; WER video thật ~84%): dừng cải thiện ASR/MiniGPT cho MVP, checkpoint active giữ nguyên.
+- Đề nghị Codex kiểm/bảo đảm (file Codex, Claude không sửa):
+  1. Tóm tắt AI không tự hiển thị cho client khi `summary_status` chưa được admin duyệt (`/api/cms/videos/{id}/summary/approve`).
+  2. Phụ đề AI có nhãn "bản nháp máy"/cho admin sửa qua `/api/cms/videos/{id}/subtitles` trước khi coi là phụ đề chính thức (hoặc ẩn ở client tới khi duyệt).
+  3. CMS hiển thị rõ đây là gợi ý AI cần kiểm tra.
+- Không đổi API/contract schema (v1.3); contract §2 thêm ghi chú chất lượng. Nếu luồng hiện tại đã đúng, chỉ cần ghi bằng chứng trong RE:HC-12.
