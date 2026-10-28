@@ -13,7 +13,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-02 | T2.5 | Thay adapter memory → Postgres (interactions/history/likes/settings) | REVIEW | INT-00 (DB); không phụ thuộc AI |
 | INT-03 | T2.5, T1.7 | Two-Tower: sandbox/ID mapping; product vectors + feed | BLOCKED | product v2 AI-12 production gate; AI-09 MovieLens sandbox only |
 | INT-04 | T3.1, T3.2 | Contract nguồn phát video gốc (OpenAPI) + nối UI | PARTIAL | INT-00 (runtime); contract có thể làm độc lập |
-| INT-05 | T3.1 | CMS Design Parity FULL | IN_PROGRESS | scoped CMS checks passed; existing-API visual work remains |
+| INT-05 | T3.1 | CMS Design Parity FULL | PARTIAL | approved CMS planA tracked in INT-20/21 |
 | INT-06 | T3.2 | Client Design Parity FULL | PARTIAL | production65PASS2026-10-28; API/design scope remains |
 | INT-07 | T5.1 | Load test 50 video dồn hàng đợi | BLOCKED | AI-04 (GPU); bản CPU chạy trước được |
 | INT-08 | T5.2 | Soak test 48 h | BLOCKED | INT-07 |
@@ -28,6 +28,8 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-17 | INT-16 audit | Client framework security migration | REVIEW | Next16 deployed;53fixture+2live/audits0/build PASS |
 | INT-18 | INT-00/13 boot | Bounded dependency startup recovery | REVIEW | Go+delayed PG+8worker tests/image PASS |
 | INT-19 | INT-14 pagination | Clarify public cursor/error contract | REVIEW | existing feed/catalog endpoints; no AI dependency |
+| INT-20 | INT-05 planA | CMS metadata/editorial/category contract | IN_PROGRESS | user approved2026-10-28; AI contract unchanged |
+| INT-21 | INT-20 | Persist/map approved CMS planA | TODO | INT-20 contract/types committed |
 
 Hoàn thành trước tách làn (bằng chứng INVENTORY mục 5): T0.1–T0.4, T2.1–T2.4, T4.1, T4.2 = DONE (VERIFIED-HIST, build VERIFIED-NOW);
 T2.5, T3.1, T3.2 = PARTIAL.
@@ -106,7 +108,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Checkpoint: Lane codex / Changed contract+players / Verified playback PASS, parity PARTIAL / Contract yes OpenAPI v0.2.0 / Next resource+scope.
 
 ### INT-05 — CMS Design Parity FULL
-- T gốc: T3.1 | Owner: CODEX | Status: IN_PROGRESS (2026-10-28; next safe work after Client QA completed)
+- T gốc: T3.1 | Owner: CODEX | Status: PARTIAL (2026-10-28; approved planA proceeds via INT-20/21)
 - Depends on: INT-02; INT-04 functional playback PASS; full parity còn cần scope/resource
 - Gap (HIST `docs/T3.1_cms_design_parity.md`): nguồn phát video gốc, metadata/analytics/rules/editor fields chưa có API, Settings chưa persist.
 - NOW: settings/interactions persistence và nguồn phát đã có; original-video center controls +bounded proposal preview verified; metadata/analytics/rules/editor contract gaps còn mở.
@@ -309,3 +311,19 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Changed planned: infra/openapi.yaml; generated3types; Codex trackers/evidence.
 - Commits: b08f2be taskstart; 213aaa9 contract acceptance | Evidence: verification/INT-19.md; bothTS/generatedGo/embeddedSchema checks PASS | Next action: INT-14 pagination implementation.
 - Checkpoint: Lane codex / Changed OpenAPI+3generated types / Verified bothTS+Go+schema PASS / Contract public0.3.2 / Next INT-14 pagination.
+
+### INT-20 — Approved CMS planA contract
+- Owner: CODEX | Status: IN_PROGRESS (2026-10-28)
+- Dependency: explicit user approval2026-10-28; Release#4 received, AIv1.3 unchanged.
+- Acceptance: define source metadata/editorial overwrite/category-description semantics and validation; regenerate Go/CMS/Client types; validate embedded spec and FE typechecks; commit before implementation.
+- Changed planned: infra/openapi.yaml, backend/internal/gen/api.gen.go, cms/src/api-types.ts, client/src/api-types.ts, owned coordination.
+- Commits/Evidence: pending | Next action: OpenAPI0.4.0 additive CMS extension; no AI endpoint/Client library extension.
+
+### INT-21 — Approved CMS planA implementation
+- Owner: CODEX | Status: TODO
+- Dependency: INT-20 contract/types committed.
+- Acceptance: additive/idempotent migration; nullable source metadata from real CPU worker; persistent editorial title/description/hashtags separated from AI proposals;
+ category description create/update/backward compatibility; admin/editor guard+validation; CMS save/reload/error states; defer approved advanced fields;
+ Go vet/test/build, worker tests, CMS/Client typechecks/build and targeted browser+persistence evidence.
+- Changed planned: backend domain/ports/PG/memory/handlers/orchestrator/ingest-worker/tests; infra migration; CMS hooks/pages/tests; owned plans/docs/evidence.
+- Commits/Evidence: pending | Next action: implement after INT-20, never overwrite product/AI data or alter AI API.

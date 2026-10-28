@@ -1,7 +1,25 @@
 # Public contract decisions needed for complete Stitch parity
 
-2026-10-26, CODEX. Proposal only: no new endpoint below has been added to OpenAPI/master/source.
+2026-10-26, CODEX. Original proposal below; latest scoped decision2026-10-28 takes precedence.
 AGENTS §8 prohibits endpoints outside master §2 without a scope decision. Existing code, Stitch and historical parity reports confirm these gaps.
+
+## Approved2026-10-28 — CMS planA (INT-20 contract, INT-21 implementation)
+
+User approved planA after clarification that this is the CMS/business API, not model APIs.
+Authorized: source width/height/fps from CPU ingest; persist video title/description/editorial hashtags;
+category description; preserve soft-hide. Add PUT /api/cms/videos/{id} for admin/editor metadata and extend existing category routes.
+No AI request/schema/checkpoint changes. Original filename/uploader/statistics are not implicitly added.
+
+Definitions: width/height are encoded source pixels before224px preprocessing; fps is average source frame rate;
+unknown/unavailable values remain null. Editorial hashtags live in Postgres separately from Mongo AI proposals,
+so later inference cannot overwrite saved edits. Explicit empty tags clear editorial tags; null response means no editorial override yet.
+Video metadata save replaces title/description/hashtags together with validated required fields; it never rewrites file/status/AI outputs.
+Category description is optional for old name-only callers; omitted/null preserves on update, empty string clears.
+
+Defer this release: scheduling priority, custom category AI rules/status workflow, logo insertion/proposals,
+undefined accuracy/online/render/storage/view metrics and AI key rotation. Hide/disable with clear copy; no fabricated values.
+The four Client library routes below, playlists and forgot-link/INT-10 decisions remain UNAPPROVED: the latest planA was CMS-only.
+Contract/types must be committed before implementation. Full historical Stitch acceptance is limited by these approved deferrals.
 
 ## Smallest useful extension (recommended)
 

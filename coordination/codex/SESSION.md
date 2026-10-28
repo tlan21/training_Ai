@@ -1,13 +1,19 @@
 # SESSION — authoritative resume state (2026-10-28, Client production65PASS)
 
 ## Branch / task state
+-2026-10-28 user approved CMS planA: metadata width/height/fps, video title/description/editorial hashtags, category description;
+ preserve soft-hide; defer priority/customAIrules/logo/undefinedmetrics/keyrotation. Client4library routes/forgot-link still unapproved.
+ Release#4 received by `git merge master` without conflict; AI-APIv1.3 and active checkpoints unchanged. No Codex release/push authorized.
+ Only INT-20 IN_PROGRESS: define contract and regenerate3types, commit before INT-21 implementation. INT-05 PARTIAL during this work.
+ INT-21 TODO: additive migration/PG+memory repositories, CPU ingest metadata, guarded backend update, CMS mapping/deferred states,
+ meaningful validation/persistence/worker/browser tests and builds; source/client contracts unchanged beyond additive fields.
 - E:/traning_ai-codex, codex/integration. Release#1/#2/#3 received; HEAD..master empty at session start. No master release/push authorized.
 - INT-06 PARTIAL: user-approved QA3100 completed2026-10-28. Existing production build CAT_3TF7GI5-2Dm5o3Y8f,
  65fixture/player/onboarding checks PASS1.6m without source/assertion changes. Tracking single-watch/seek/hidden-time/dedup, latest geometry all PASS.
  Evidence verification/INT-06-production-20261028.md/.log;16production layout PNG+16metrics JSON+2original-player PNG in comparison index.
  Owned Next PID19872 stopped after identity/listener checks; port3100 closed. QA login200, APIproxy401UNAUTHORIZED; gatewayhealthok/liveClient3000login200.
  Library/forgot-link and full design decisions remain pending. No app source/dependency/runtime deployment/master/push/realAI acceptance change.
-- Only INT-05 IN_PROGRESS (next safe work): CMS original-video controls/bounded preview implemented and verified. Project skill cms_screen.md +plan03§7 CẮT-list.
+- INT-05 PARTIAL: CMS original-video controls/bounded preview implemented and verified. Project skill cms_screen.md +plan03§7 CẮT-list.
   Baseline18PASS24.5s; final full37browserPASS38.7s before radius fix; final3playerPASS10.3s after radius correction, manual seek cancellation/native-modal checks.
   CMS tsc/Vite production build +E2Etypes +diffcheck PASS. QA production Vite5174 PID22248 stopped after checking ownership; no active test/compiler/QA server.
   CMS5173 remains existing image; real gateway healthok and Claude stubfalse/6models/degraded[]/CPU rechecked. Source fixes not deployed.
