@@ -90,3 +90,6 @@ Changed: Docker context/files/compose; gateway metadata relay; real E2E; owned t
 Verified: offline images4; Go gates; Client gates; real E2E3PASS40s; 79/10 fingerprints; final health/infra9 unchanged
 Contract touched: no (public0.4.0 consumed; AI-APIv1.3 unchanged)
 Next safe task: INT-05 visual parity
+
+Commits: 96a54d8 task start; 7d2664a Docker config; 256e542 builds/test prep; fa8a382 relay fix; ad80f8f final verified deployment.
+Build staging remains in ignored backend/.tmp/int23-build: automated approval review rejected optional cleanup with 'blocked by policy'; no cleanup deletion was performed. E:~0.69GiB free. Host client/.next currently has Docker rewrite; rebuild before host QA3100.

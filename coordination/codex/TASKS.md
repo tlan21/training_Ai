@@ -31,7 +31,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-20 | INT-05 planA | CMS metadata/editorial/category contract | REVIEW | OpenAPI0.4.0/3types/schema+FEtsc PASS |
 | INT-21 | INT-20 | Persist/map approved CMS planA | REVIEW | realPG/worker/UI/build gates PASS; not deployed |
 | INT-22 | INT-21 | Apply004 to product Postgres | DONE | live apply/repeat/data/schema/health PASS; f8d82b8 |
-| INT-23 | INT-21/22 | Deploy planA Docker services +real E2E | IN_PROGRESS | explicit user deployment approval; DB004 applied |
+| INT-23 | INT-21/22 | Deploy planA Docker services +real E2E | DONE | explicit user deployment approval; DB004 applied |
 
 Hoàn thành trước tách làn (bằng chứng INVENTORY mục 5): T0.1–T0.4, T2.1–T2.4, T4.1, T4.2 = DONE (VERIFIED-HIST, build VERIFIED-NOW);
 T2.5, T3.1, T3.2 = PARTIAL.
@@ -346,9 +346,16 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Changed: product DBschema, owned runner/evidence/session/tasks. Next action: INT-05 visuals; new service deployment remains separate.
 
 ### INT-23 — Deploy approved CMS planA Docker stack
-- Owner: CODEX | Status: IN_PROGRESS (2026-10-28)
-- Dependency: user explicitly approved Docker update/recreate +real E2E; INT-21 aad0c75 and DB004 INT-22 f8d82b8 verified.
-- Acceptance: bounded disk/context check; immutable current/rollback image identity; preserve runtime env/AI key/real URL/stub0 and shared named volumes;
- build updated gateway/CPUworker/CMS/Client, remove dev binds, recreate only those4services; real upload→metadata→edit/category→reload→Client +role/error smoke PASS.
-- Changed planned: Dockerfile/compose/dockerignore only as required; real E2E; Codex-owned SESSION/TASKS/verification.
-- Commit/Evidence: pending. Next action: snapshot, context hygiene, cached builds; no datastore down/volume removal, AI model/runtime edit, master or push.
+- Owner: CODEX | Status: DONE (2026-10-28; deployed and verified)
+- Dependency: explicit user approval for Docker update/recreate+real E2E; INT-21 aad0c75 and DB004 INT-22 f8d82b8 verified.
+- Acceptance: bounded disk/context; immutable old/rollback image identity; preserve runtime env/AI key/real URL/stub0 and shared volumes;
+ build gateway/CPUworker/CMS/Client, remove dev binds, recreate only4apps; real upload→metadata→edit/category→reload→Client +role/error smoke.
+- Changed: .dockerignore,3applicationDockerfiles,docker-compose.yml; backend/cmd/gateway/pipeline.go; e2e/video_flow.spec.ts;
+ Codex SESSION/TASKS and verification/INT-23*.
+- Commits:96a54d8 taskstart;7d2664a Docker config;256e542 artifact/test prep;fa8a382 metadata relay fix;ad80f8f final deployment evidence.
+- Evidence: verification/INT-23.md, exact runtime/build/snapshot manifests, failed+final logs, preserved-data fingerprints, inspected CMS/Client PNGs.
+- Verified: offline images4, Go vet/test/build, Client lint/build/tsc, E2Etypes/diffcheck PASS; actual video_flow+visual_search3PASS40s/no retries.
+ Gateway/CMS/Client healthy, worker real pipeline PASS; AIstubfalse6models/degraded[]; infra9IDs unchanged;79originalvideos/10categories fingerprints match.
+- Limits: clean Docker dependency rebuild not verified (first offlineAPK failure retained); staged artifacts retained after automated cleanup rejection.
+ No AI/source/checkpoint/model/runtime/contract change, old-video backfill, datastoredown/volume deletion, master/shared-status edit or push.
+- Next action: INT-05 remaining approved visual parity; INT-06 library/forgot-link decisions remain pending.

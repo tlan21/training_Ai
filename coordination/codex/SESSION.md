@@ -1,21 +1,22 @@
-# SESSION — authoritative resume state (2026-10-28, product DB004 applied)
+# SESSION — authoritative resume state (2026-10-28, INT-23 Docker update verified)
 
 ## Branch / task state
-- INT-23 first rollout healthy, real video_flow caught missing width/height/fps: gateway audio relay re-marshaled an old event struct.
-  fa8a382 adds three optional relay fields; existing orchestrator/storage/worker were correct. First real run1FAIL2PASS48.3s kept in INT-23-real-e2e.log.
-  Test-created uploads cleaned by existing finally; no original videos edited. Building gateway int23-fa8a382 then redeploy/retest; NOT DONE.
-
-- INT-23 build checkpoint: four tagged int23-7d2664a images ready. Initial clean gateway build failed offline APK/cache; preserved failed log.
-  Reused rollback runtimes with offline artifact overlays: Go Linux4binaries newly compiled, worker main updated with unchanged requirements/DSP hashes,
-  verified CMSdist packaged, Next lint/build/tsc re-run with gateway:8000 rewrite. No dependency/image download beyond initial67MB Go base attempt.
-  Recipes/artifact hashes recorded verification/INT-23-builds.json. Next: guarded env-preserving4service recreation then enhanced real video_flow +visual search.
-
-- Only INT-23 IN_PROGRESS: user approved Docker updates/recreate backend+CPUworker+CMS+Client and real metadata E2E.
-  Preserve existing realAI URL/key/stub0 and datastore volumes; gateway already embeds orchestration/cutter, do not enable duplicate full-profile workers.
-  Current gateway uses readonly gateway-int14 bind; CMS binds host cms/dist (host builds therefore already changed served CMS bundle).
-  Correct earlier no-CMS-rollout assumption: remove these development binds with image-based rollout. Pin/tag rollback images before recreation.
-  C~3.08GiB/E~0.88GiB: exclude private backups/.tmp/bin from context; use cached builds, no large dependency/image downloads or prune.
-  INT-22 DONE DBmigration; no master release/push, AI/checkpoint/source edit or old-video backfill inferred.
+- INT-23 DONE: user-authorized gateway/CPUworker/CMS/Client Docker update and real E2E completed. Evidence ad80f8f; fix fa8a382.
+  All4 live images int23-fa8a382, local latest tags point to verified images; rollback-int23 images retained. No code/dist binds now.
+  Gateway/CMS/Client healthy, worker running and real-pipeline exercised; original ingest_work volume preserved.
+  Root Compose only, no-deps/no-build/pullnever, real URL/key/stub0 environment compared unchanged in memory; infra9 container IDs unchanged.
+  Initial E2E found relay dropping source metadata; fixed three optional fields in cmd/gateway/pipeline.go. Actual fixture160x90/10fps now persists.
+  Final Go vet/test/build, Client lint/build/tsc, E2Etypes/diffcheck PASS. Final actual video_flow+visual_search **3PASS40.0s/no retries**.
+  Covers upload/AI/metadata roles401+403/422/editorial save+reload/category create+edit+reload/publish/media/Client tags +invalid privacy/search cache.
+  Preserved79predeployment videos fingerprint caaadd6588f7f8f4a2da381f51577b9a and10categories fingerprint2279cd784f346ec1e52ce40605752c91 exactly.
+  All own new videos softdeleted/test clips rejected/test categories removed; activejobs0. Test accounts/media retained with test provenance.
+  Evidence verification/INT-23.md +logs/manifests/health/snapshots/2inspectedPNGs. Prior failures retained, never counted PASS.
+  C~3.1GiB/E~0.69GiB: no further large downloads. Standard clean gateway Docker build failed uncached APK offline;
+  deployed4images built offline on captured existing runtimes with unchanged dependencies. Artifact recipes/hashes in INT-23-builds.json.
+  Automated review rejected cleanup of own backend/.tmp/int23-build with "blocked by policy"; staging remains, no recursive delete performed.
+  Host client/.next was rebuilt for Docker gateway:8000; rebuild for127.0.0.1:8000 before future host QA3100. No active QA server.
+  No AI source/checkpoint/model/runtime changes, old-video backfill, master/shared-status edit or push. Full INT-05/06 parity still PARTIAL.
+- Next safe work: INT-05 remaining visual parity against Stitch/CAT-list. Four Client library routes/forgot-link decisions stay pending.
 - INT-22 DONE2026-10-28: user-approved004 applied to product Postgres video_ai/public via existing container; evidence commit f8d82b8.
   Private ignored full backup backend/.tmp/db-backups/int22-20261028T095827Z-before.dump retained; metadata/hash in verification/INT-22-backup.json.
   Guarded transaction +repeat COMMIT;79videos/10categories ordered row fingerprints unchanged;5nullable columns/5validated checks correct.
@@ -30,7 +31,7 @@
  Evidence verification/INT-21.md: final Go vet/test/buildPASS; realPG protected HTTP/migration/source/editorial/category +existing paginationPASS;
  8workerPASS1.016s; CMS39PASS45.9s +final7PASS9.7s; Client71PASS1.2m; CMS/Client/E2Etypes +CMSbuild/Clientlint/build PASS.
  Final CMS index-B8Z5jrXZ.js; Client build0jpAiC3YO74qVW4EcxQDJ. Owned QA3100/5174 stopped and PG/tmp test artifacts removed.
- Live product DB004 now migrated under INT-22; gateway/orchestrator/worker/CMS5173/Client3000 still NOT replaced. New binaries can follow when deployment is instructed.
+ Live DB004 migrated INT-22; approved application deployment now completed INT-23 (see current state above).
  Old source metadata remains null until obtained; no automatic reprocessing/backfill. No master/shared-status publication/push.
 - E:/traning_ai-codex, codex/integration. Release#1/#2/#3/#4 received; normal master merge without conflict. No master release/push authorized.
 - INT-06 PARTIAL: user-approved QA3100 completed2026-10-28. Existing production build CAT_3TF7GI5-2Dm5o3Y8f,
@@ -70,24 +71,20 @@
 - Latest source: contract213aaa9, pagination e476005. Original real switch approved by user/eaca064; prior3realE2E ff0494f/cea8a94.
 - No shared/Claude/AI/model/checkpoint edits, push/reset/clean/stash or product volume deletion.
 
-## Live runtime — real AI; current gateway binary changed
-- Gateway healthy, AI_BASE_URL=http://host.docker.internal:8001, AI_ALLOW_STUB=0, shared Bearer key unchanged.
-  Key read from existing gateway env into process memory only, never printed/persisted in tracked files. Never print full inspect env/Compose JSON.
-- Current readonly binary mount backend/bin/gateway-int14 →/usr/local/bin/gateway (replaces earlier gateway-int18 mount):
-  SHA256 c5284c5c2fe00f5f2c20fe9faab0dfecb3fec1bfb62bc085ff5a1f0ab45c8d81, sourcee476005.
-- Local ignored backend/.tmp/docker-real-int14.yml +root Compose describes current real gateway mount; key required from processenv.
-  Guarded backend/.tmp/apply-pagination.ps1 compared every configured gateway env unchanged, used no-deps/no-build/pullnever;
-  rollback real-int18 was available but NOT needed. Script finished success; no running E2E/Go sessions.
-- Do not run old mock override or old real-direct.yml over this binary accidentally. Root Compose defaults real; rebuilding a full gateway image is a later release action.
-- Claude host8001 real/stubfalse/6models/degradedempty/visual_indexok, devicecpu; missing recommendation collection expected. AI-APIv1.3 unchanged.
-- Product feed remains primary PGpopularity; personalized disabled/DRAFT/AI-12 NO_DATA. Six API_READY matrix rows stay INTEGRATED_REAL.
-- Existing own ingest ed21674b/only ingest_work, Next16 Client4fcf2410, CMS/infra running; no other service recreated, legacy Docker inference stopped.
-  Faktory untouched. No AI source/checkpoint bind/mount/copy or runtime change.
-- Direct daemon pid193 last verified. After external restart refresh PID; CLI:
-  wsl -d docker-desktop -- /mnt/host/wsl/docker-desktop/cli-tools/usr/bin/docker -H unix:///proc/193/root/run/docker.raw.sock ps
-  Compose/buildx under same cli-tools/usr/local/lib/docker/cli-plugins/. Windows named pipes previously hung.
-- Last disk C:~5.9GiB/E:~1.0GiB; check before large install/build/pull. Go GOMAXPROCS1/TMP/TEMP/GOTMPDIR backend/.tmp.
-
+## Live runtime — INT-23 updated images, real AI preserved
+- Gateway/CMS/Client/CPUworker images video-ai-<service>:int23-fa8a382; image IDs/mounts in verification/INT-23-after-final.json.
+  Gateway binary SHA25615d87d90aee7a94360dede79b7eb2e73b4d4ad2395425fdbf60bcc4d68e48b1a, sourcefa8a382.
+  CMS bundleindex-B8Z5jrXZ.js, ClientbuildGDlD_B05A4hk6gQkPj679; CMS5173/Client3000HTTP200, restartunless-stopped.
+  No gateway binary/CMSdist binds; root compose preserved named ingest_work. Gateway embeds orchestration/cutter: do not enable full-profile duplicates.
+- AI_BASE_URL=http://host.docker.internal:8001 / AI_ALLOW_STUB=0, existing Bearer key unchanged; never print full inspect/env/Compose JSON.
+  Claude host8001 stubfalse/6models/degradedempty, CPU. Public0.4.0 consumed; AI-APIv1.3 unchanged.
+  Primary PGpopularity remains; recommendationDRAFT/NO_DATA. Six existing real matrix rows retained; no GPU/model-quality acceptance.
+- Old verified images tagged rollback-int23, old real binds/commands in INT-23-before.json. Guarded local runner backend/.tmp/apply-int23.ps1.
+  Restore actual prior app runtime only with snapshot binds+old images+sameenv; do not down/restore productDB or touch AI.
+- Daemon pid193 last verified; refresh after restart. DockerCLI /mnt/host/wsl/docker-desktop/cli-tools/usr/bin/docker
+  with -H unix:///proc/193/root/run/docker.raw.sock through wsl -d docker-desktop --exec.
+  Compose/buildx plugins under cli-tools/usr/local/lib/docker/cli-plugins; normal plugin discovery/Windows named pipes previously broken.
+  Use --exec to preserve arguments; AI key inherited via process WSLENV, never stored in tracked files. No active tests/build sessions.
 ## INT-19 contract checkpoint — do not redo
 - Public0.3.2 clarifies existing feed/catalog opaque cursor/filter/snapshot/exhaustion/422; no endpoint/body/response field added.
 - Regenerated Go/CMS/Client types with cached oapi-codegen2.8.0/openapi-typescript7.13.0; bothFEtsc PASS, generatedGo/embeddedSpec validation/version/422 PASS.
@@ -130,7 +127,7 @@
 - Release only at user request: full Go/CMS/Client gates +relevant real matrix E2E, shared status/masterplan updates only in that release flow; no push inferred.
 
 Lane: codex
-Changed: live product DB004 schema +owned evidence/session/tracker
-Verified: private backup;guarded apply/repeat COMMIT;79/10row checksums;5columns/checks;live health
-Contract touched: no (public0.4.0/AI-APIv1.3 unchanged)
-Next safe task: INT-05 visuals; application deployment/master release only on instruction
+Changed: Docker files/compose/context; gateway source metadata relay; live E2E; owned evidence/session/tracker
+Verified: Go/Client gates; offline images4; real3PASS40s; 79/10row fingerprints; runtime health/infra9 unchanged
+Contract touched: no (public0.4.0 consumed; AI-APIv1.3 unchanged)
+Next safe task: INT-05 remaining visual parity
