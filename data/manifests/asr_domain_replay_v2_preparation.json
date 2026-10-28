@@ -1,0 +1,123 @@
+{
+  "status": "PACKED_NOT_UPLOADED_OR_TRAINED",
+  "packet": "D:\\data_training_ai\\asr_domain_replay_v2_20261028\\kaggle_dataset",
+  "recipe": {
+    "id": "asr-domain-replay-v2",
+    "seed": 1337,
+    "steps": 500,
+    "eval_every": 100,
+    "sampling_probabilities": {
+      "vivos": 0.4,
+      "fleurs": 0.3,
+      "minilibrispeech": 0.2,
+      "real_domain_user_review": 0.1
+    },
+    "initial_checkpoint_sha256": "d03ef0a962220618e90e5ff478a2fbab5ff35dd68deb539a4933eb7c15a4f3de",
+    "vocab_sha256": "f6278933f12b9cf9456397d57d367876e88f249f16af1395a39a7e146cd960b7",
+    "manifest_sha256": "bf27e6aade46482d5ba11acf636b8eb39aeac9fa007a0d6355896d0a67637d11",
+    "data_identity_sha256": "bee1779d5baeede8b8042d41f74938bf7b5428231a7f83578d2ef9b7827e2103",
+    "frozen_validation_sha256": "25b34fb687b01965028cc5b7a796246dcabd8dfc821dbc35fd2fa2e5d605cfa3",
+    "domain_validation_identity_sha256": "6108d9efb8fedaea2489b51e279cde32491088f5bc0ffbdf4011b226a5c87978",
+    "selection": "all-domain-wer-cer-nonregression-and-domain-wer-cer-improvement"
+  },
+  "domain_train_clips": {
+    "v1_verbatim": 30,
+    "expansion_reviewed": 51
+  },
+  "domain_val_clips": 10,
+  "expansion_pending": [
+    {
+      "sample_id": "ext2__9FWeRZBOSQ_6",
+      "exclude_reason": "chưa thể xác minh vì không có tiếng và lời thoại"
+    },
+    {
+      "sample_id": "ext2_TeE0V-91_OU_1",
+      "exclude_reason": "không có lời thoại"
+    },
+    {
+      "sample_id": "ext2_TeE0V-91_OU_2",
+      "exclude_reason": "không có lời thoại"
+    },
+    {
+      "sample_id": "ext2_TeE0V-91_OU_3",
+      "exclude_reason": "không có lời thoại"
+    },
+    {
+      "sample_id": "ext2_TeE0V-91_OU_4",
+      "exclude_reason": "không có lời thoại"
+    },
+    {
+      "sample_id": "ext2_TeE0V-91_OU_5",
+      "exclude_reason": "không có thoại"
+    },
+    {
+      "sample_id": "ext2_TeE0V-91_OU_6",
+      "exclude_reason": "không có thoại"
+    },
+    {
+      "sample_id": "ext2_TeE0V-91_OU_7",
+      "exclude_reason": "không có thoại"
+    },
+    {
+      "sample_id": "ext2_TeE0V-91_OU_8",
+      "exclude_reason": "không có thoại"
+    }
+  ],
+  "new_chars": [
+    "(",
+    ")",
+    "?"
+  ],
+  "vocab_size_with_blank": 136,
+  "ctc_retained_training": 15157,
+  "exclusions": [
+    {
+      "path": "vivos_waves/VIVOSSPK23/VIVOSSPK23_001.wav",
+      "reason": "original audio too short for CTC alignment",
+      "available_steps": 67,
+      "required_steps": 75
+    },
+    {
+      "path": "vivos_waves/VIVOSSPK26/VIVOSSPK26_300.wav",
+      "reason": "original audio too short for CTC alignment",
+      "available_steps": 76,
+      "required_steps": 104
+    },
+    {
+      "path": "vivos_waves/VIVOSSPK43/VIVOSSPK43_063.wav",
+      "reason": "original audio too short for CTC alignment",
+      "available_steps": 64,
+      "required_steps": 66
+    },
+    {
+      "path": "vivos_waves/VIVOSSPK43/VIVOSSPK43_112.wav",
+      "reason": "original audio too short for CTC alignment",
+      "available_steps": 55,
+      "required_steps": 56
+    }
+  ],
+  "source_sampling_counts": {
+    "vivos": 10563,
+    "fleurs": 2994,
+    "minilibrispeech": 1519,
+    "real_domain_user_review": 81
+  },
+  "packet_hashes": {
+    "ai_core.zip": "0e0d161cb29daab4dd06bf06480ed095162130b8e072811143a98bad8c26f2b1",
+    "asr_domain_manifest.json": "bf27e6aade46482d5ba11acf636b8eb39aeac9fa007a0d6355896d0a67637d11",
+    "code_manifest.json": "f31aafa01b728c29f510c0ea4bef95cbcd2da4989afc0409f42529e4fa75c61b",
+    "dataset-metadata.json": "2ecd4bccdfac274d9659a9a91156b9fb00235f774f56731ea7d6aca342844881",
+    "domain_audio.zip": "9cf14b7e05ba868871abb68fe961303bd1024f128dbb59ef57eca539ead92f56",
+    "frozen_validation.json": "25b34fb687b01965028cc5b7a796246dcabd8dfc821dbc35fd2fa2e5d605cfa3",
+    "recipe.json": "970adbebc41dadb0aaa848e6702155c91377ce2ce37a5efac200c5ce0a3ba661",
+    "robust_vocab.json": "f6278933f12b9cf9456397d57d367876e88f249f16af1395a39a7e146cd960b7",
+    "source_asr.pt": "d03ef0a962220618e90e5ff478a2fbab5ff35dd68deb539a4933eb7c15a4f3de"
+  },
+  "training_started": false,
+  "checkpoint_deployed": false,
+  "limitations": [
+    "Expansion labels: reviewer-corrected WhisperWeb drafts (v2 page, no audio-play gate); not an independent audit.",
+    "Domain val is the same fixed 10 clips as v1 (development data); no independent domain test."
+  ],
+  "code_rebuilt_after": "check_domain_vocab generalisation (v2 appends '(', ')', '?')"
+}

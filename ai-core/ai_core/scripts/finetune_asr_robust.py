@@ -25,6 +25,8 @@ from ai_core.training.trainer import Trainer, set_seed
 
 THREE_SOURCES = ('vivos', 'fleurs', 'minilibrispeech')
 DOMAIN_SOURCE = 'real_domain_user_review'
+# Domain-replay recipes: identical budget/sampling/guard; v2 (AI-02c) only adds 51 reviewed expansion train clips.
+DOMAIN_TRAIN_CLIPS = {'asr-domain-replay-v1': 30, 'asr-domain-replay-v2': 81}
 
 
 def data_identity(payload):
@@ -34,7 +36,7 @@ def data_identity(payload):
 
 
 def validate_recipe(recipe, payload, vocab_sha, initial_sha, steps):
-    domain = recipe['id'] == 'asr-domain-replay-v1'
+    domain = recipe['id'] in DOMAIN_TRAIN_CLIPS
     assert domain or recipe['id'] == 'asr-three-source-v1'
     sources = THREE_SOURCES + (DOMAIN_SOURCE,) if domain else THREE_SOURCES
     assert recipe['seed'] == 1337 and recipe['steps'] == steps == (500 if domain else 2000)
@@ -53,7 +55,7 @@ def validate_recipe(recipe, payload, vocab_sha, initial_sha, steps):
         assert {r['extra']['source'] for r in rows if r['split'] == split} == set(expected_sources)
     if domain:
         domain_rows = [r for r in rows if r['extra']['source'] == DOMAIN_SOURCE]
-        assert collections.Counter(r['split'] for r in domain_rows) == {'train': 30, 'val': 10}
+        assert collections.Counter(r['split'] for r in domain_rows) == {'train': DOMAIN_TRAIN_CLIPS[recipe['id']], 'val': 10}
         assert all(r['extra']['label_origin'] == 'human_reviewed_external_asr'
                    and r['extra']['draft_origin'] == 'EXTERNAL_ASR_DRAFT_UNVERIFIED'
                    and r['extra']['annotator'].strip() for r in domain_rows), 'missing domain attestation/provenance'
@@ -72,6 +74,13 @@ def validate_recipe(recipe, payload, vocab_sha, initial_sha, steps):
             def values(split):
                 return {r[key] if key == 'group' else r['extra'][key] for r in rows if r['split'] == split}
             assert not values(a) & values(b), f'{key} leakage across {a}/{b}'
+
+
+def check_domain_vocab(recipe_id, source_itos, vocab_itos):
+    """Parent133 symbols keep their IDs; new train-only symbols may only be appended (v1 added exactly '?')."""
+    assert len(source_itos) == 133 and list(vocab_itos[:133]) == list(source_itos) and len(vocab_itos) > 133
+    if recipe_id == 'asr-domain-replay-v1':
+        assert list(vocab_itos[133:]) == ['?']
 
 
 def sampling_weights(items, probabilities):
@@ -212,7 +221,7 @@ def main():
     assert not (output / 'asr_ctc/best.pt').exists(), 'refusing to replace candidate run'
     payload = json.loads(args.manifest.read_text(encoding='utf-8'))
     recipe = json.loads(args.recipe.read_text(encoding='utf-8')) if args.recipe else None
-    domain = recipe is not None and recipe['id'] == 'asr-domain-replay-v1'
+    domain = recipe is not None and recipe['id'] in DOMAIN_TRAIN_CLIPS
     sources = THREE_SOURCES + (DOMAIN_SOURCE,) if domain else THREE_SOURCES if recipe else ('vivos', 'fleurs')
     assert {i['extra']['source'] for i in payload['items']} == set(sources)
     expected = payload['meta']['source_checkpoint_sha256']
@@ -228,7 +237,7 @@ def main():
     vocab = CharVocab(json.loads(args.vocab.read_text(encoding='utf-8'))['chars'])
     source_vocab = CharVocab((saved.get('char_vocab') or saved['metadata']['char_vocab'])[1:])
     if domain:
-        assert source_vocab.size == 133 and vocab.size == 134 and vocab.itos[:-1] == source_vocab.itos and vocab.itos[-1] == '?'
+        check_domain_vocab(recipe['id'], source_vocab.itos, vocab.itos)
     elif recipe:
         assert vocab.itos == source_vocab.itos and vocab.size == 133, 'three-source run must preserve candidate133 head'
     source_model = build_model('asr_ctc', ModelConfig(**saved['config']))

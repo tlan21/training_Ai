@@ -224,3 +224,28 @@ def test_main_reports_and_loads_selected_vocabulary_after_expansion(tmp_path, mo
     if not accept:
         selected = load_checkpoint(str(output / 'asr_ctc/best.pt'))
         assert all(torch.equal(v, selected['state_dict'][k]) for k, v in source.state_dict().items())
+
+
+def test_domain_replay_v2_requires_exactly_81_train_clips_same_val_and_budget():
+    """AI-02c: v2 = v1 recipe + 51 reviewed expansion clips; only the train count changes."""
+    payload, recipe = domain_bundle()
+    recipe['id'] = 'asr-domain-replay-v2'
+    with pytest.raises(AssertionError):
+        validate_recipe(recipe, payload, 'vocab', 'parent', 500)          # still 30 train clips
+    template = next(r for r in reversed(payload['items']) if r['extra']['source'] == DOMAIN_SOURCE and r['split'] == 'train')
+    for i in range(51):
+        payload['items'].append({**copy.deepcopy(template), 'path': f'expansion_audio/x_{i}.wav'})
+        payload['items'][-1]['extra'].update(audio_sha256=f'x_{i}', video_id=f'x{i}')
+    recipe['data_identity_sha256'] = data_identity(payload)
+    validate_recipe(recipe, payload, 'vocab', 'parent', 500)
+
+
+def test_domain_vocab_only_appends_after_parent133():
+    from ai_core.scripts.finetune_asr_robust import check_domain_vocab
+    parent = [chr(0x4E00 + i) for i in range(133)]
+    check_domain_vocab('asr-domain-replay-v1', parent, parent + ['?'])
+    check_domain_vocab('asr-domain-replay-v2', parent, parent + ['(', ')', '?'])
+    for rid, new in (('asr-domain-replay-v1', parent + ['(', '?']), ('asr-domain-replay-v2', parent),
+                     ('asr-domain-replay-v2', ['?'] + parent), ('asr-domain-replay-v2', parent[:-1] + ['?'])):
+        with pytest.raises(AssertionError):
+            check_domain_vocab(rid, parent, new)
