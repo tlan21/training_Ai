@@ -38,10 +38,13 @@ func wirePipeline(videos ports.VideoRepository, jobs ports.JobRepository, clips 
 	consume("video.uploaded", "gateway-uploaded", runner.HandleUploaded)
 	consume("video.preprocessed", "gateway-preprocessed", func(ctx context.Context, payload []byte) error {
 		var prep struct {
-			VideoID       string  `json:"video_id"`
-			KeyframesPath string  `json:"keyframes_path"`
-			AudioPath     string  `json:"audio_path"`
-			Duration      float64 `json:"duration"`
+			VideoID       string   `json:"video_id"`
+			KeyframesPath string   `json:"keyframes_path"`
+			AudioPath     string   `json:"audio_path"`
+			Duration      float64  `json:"duration"`
+			Width         *int     `json:"width,omitempty"`
+			Height        *int     `json:"height,omitempty"`
+			FPS           *float64 `json:"fps,omitempty"`
 		}
 		if err := json.Unmarshal(payload, &prep); err != nil {
 			return err

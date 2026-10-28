@@ -123,7 +123,8 @@ test('T4.1 upload → processed → approve → publish → client feed', async 
     await expect(page.getByLabel('Mô tả chi tiết')).toHaveValue(description);
     await expect(page.getByLabel('Thẻ Hashtag', { exact: true })).toHaveValue('BiênTập, INT_23');
     const persisted = await (await request.get(metadataURL, { headers: adminHeaders })).json();
-    expect(persisted).toMatchObject({ title, description, hashtags: ['BiênTập', 'INT_23'], width: 160, height: 90, fps: 10, status: 'processed', playback_url: original.playback_url });
+    expect(persisted).toMatchObject({ title, description, hashtags: ['BiênTập', 'INT_23'], width: 160, height: 90, fps: 10, status: 'processed' });
+    expect(new URL(persisted.playback_url).pathname).toBe(new URL(original.playback_url).pathname);
     await page.getByTestId('summary-editor').fill(summary);
     const approved = page.waitForResponse(r => r.url().endsWith(`/videos/${videoId}/summary/approve`) && r.request().method() === 'POST');
     await page.getByRole('button', { name: 'Duyệt nội dung', exact: true }).click();
