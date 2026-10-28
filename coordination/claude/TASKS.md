@@ -73,7 +73,7 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   ```
 
 ### AI-02 — ASR domain adaptation (T1.4 follow-up)
-- T gốc: T1.4 | Owner: claude | Status: 02a DONE · 02b IN_PROGRESS (user duyệt lại v3, 2026-10-27) · 02c BLOCKED ⇐ 02b
+- T gốc: T1.4 | Owner: claude | Status: 02a DONE · 02b DONE (user duyệt 51/60, 2026-10-28) · 02c DONE — thí nghiệm xong, guard loại mọi bước, KHÔNG promote
 - Tiến độ duyệt (ghi 2026-10-26): **7/60 đã duyệt, 53/60 còn phải kiểm tra** — số 7/60 là tiến độ trang review hiển thị
   (lưu localStorage Chrome, `http://127.0.0.1:8891/asr_review_v2/index.html`); **chưa có file JSON export** nào
   (Downloads không có `asr_expansion_review_v2*.json`) → bằng chứng file hiện là 0/60. Gói dữ liệu:
@@ -89,6 +89,9 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   (gồm 10 câu ảo giác 'Để không bỏ lỡ…'/'Đi nào?', chuỗi lặp, lỗi chính tả rõ) → nhãn = Whisper, vi phạm §0. User chọn duyệt lại bản gọn.
   Trang v3 `asr_review_v3` (`prepare_expansion_review_v3.py`, test 10 passed + kiểm trình duyệt): 57 clip xếp ưu tiên 11/26/20, điền sẵn gợi ý Claude,
   **chỉ cho xác nhận sau khi audio phát hết** (`audio_played_full` trong export). 3 clip user đã sửa giữ từ v2. Intake 02c sẽ yêu cầu `audio_played_full=true`.
+- **AI-02b/02c (VERIFIED-NOW 2026-10-28, `docs/T1.4_asr_domain_replay_v2.md`):** export `86f0ce11…` 51 xác nhận / 9 loại (không lời); intake chặt 13 test;
+  domain replay v2 (81 clip) trên Kaggle T4: domain WER 91.26→83.71, VIVOS hết hồi quy (28.75→28.55) nhưng FLEURS kém ~2 điểm → guard loại mọi bước,
+  parent133 giữ nguyên, ASR active không đổi. Evidence `evidence/AI-02_2026-10-28/`. Commits 72405c9, 2bc1785, (commit kết quả).
 - **AI-02b — người duyệt (gốc):** user nghe/sửa/xác nhận hoặc loại từng clip, xuất JSON thật. Chỉ mục user xác nhận
   mới là `HUMAN_VERIFIED`. Claude **không** tự gán.
 - **AI-02c — intake + train (BLOCKED ⇐ 02b):** strict intake giữ machine-assisted provenance/coverage/train-only vocab/CTC/split guard;

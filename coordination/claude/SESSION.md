@@ -3,7 +3,7 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
-- Task: AI-02c IN_PROGRESS (2026-10-28) — Kaggle `asr-domain-replay-guarded-v2` (81 clip domain). Release #4 lên master 2026-10-28.
+- Task: — AI-02c DONE (2026-10-28): guard loại mọi bước (FLEURS +2 WER), không promote. Release #4 trên master 26c2346.
   :8001 UP lại 2026-10-27 (PID 26848) sau khi user bật Docker; smoke 6/6 + 401. Gateway :8000 DOWN (Codex).
 - Trước đó: (2026-10-27) AI-02a DONE (60 đề xuất ASR CLAUDE_PROPOSED), AI-03a DONE, AI-04 DONE (PRELIMINARY_T4). Verify bundle INT-15 → NO_DATA.
   Còn mở đều chờ người/dữ liệu: AI-02b, AI-03b (user duyệt), AI-12 (tương tác thật INT-15), AI-04 nghiệm thu RTX 3060.
