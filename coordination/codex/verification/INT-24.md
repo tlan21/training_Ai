@@ -30,3 +30,5 @@ NOT VERIFIED / BLOCKER:
 
 Changed: CMS subtitles/styles; Client Transcript/detail overlay/styles; three E2E files; two owned UI plans; task/session/handoff/evidence.
 Next: finish Client QA when external3100 is running; then RE:HC-12 with final evidence. INT-05 independent CMS work can proceed now.
+
+Source commit3a2adf3. Final runtime/data preservation evidence c7c3982: original79video/10category hashes unchanged, actual AI6real/gatewayok/productUIs200. Owned CMS QA5174 stopped; ClientQA3100 still closed. No Docker deployment.

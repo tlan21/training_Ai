@@ -129,7 +129,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Comparison checkpoint: all8Stitch screens x2viewports16reference captures PASS57.0s;36paired/baseline/current PNG +16metrics JSON preserved.
   verification/INT-05.md records concrete per-screen spacing/font/toolbar gaps and contract blockers. No full parityPASS inferred from screenshots; next action is the listed existing-API corrections.
 
-- 2026-10-28 current checkpoint: verification/INT-05-20261028.md;480/480selected reference style properties match (before356),
+- 2026-10-28 current checkpoint c7c3982: verification/INT-05-20261028.md;480/480selected reference style properties match (before356),
  fullCMS41PASS56.8s +afterlastcategory4PASS6.3s +final18layoutcapturesPASS20.5s; CMSbuild/tsc/E2Etypes PASS.
  Source-only scoped classes/styles across8Stitch screens;36before/afterPNG+36metrics. Product images remain INT-23, not recreated.
  Remaining: full widget/action/icon/hover/focus comparisons, subtitle footer and queue result-action geometry; undefined API fields outside approved scope.
@@ -372,5 +372,6 @@ T2.5, T3.1, T3.2 = PARTIAL.
  Client transcript and downloaded text identify drafts without implying official approval; existing API/types/media unchanged;
  CMS/Client builds/types, targeted 390x844/1440x900 UI/state checks and real approval/edit evidence; RE:HC-12 handoff.
 - Scope: ui_design_review.md +Ponytail full; approved D23 copy override, no new subtitle approval endpoint/status, AI/model or contract schema.
+- Commits: b497a34 start;3a2adf3 source+CMS/real verification; c7c3982 runtime/data preservation evidence.
 - Changed planned: CMS subtitles, shared Client Transcript/styles, fixture/live E2E, owned plans/SESSION/TASKS/HANDOFF/evidence.
 - Evidence: verification/INT-24.md; CMS3PASS17.3s, real edit/approval1PASS38s, CMS/Client builds+types PASS. New Client browser checks pending QA3100 external startup; automatic review rejected despite prior authorization. Next action: independent INT-05 while waiting.

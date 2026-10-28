@@ -1,13 +1,26 @@
 # SESSION — authoritative resume state (2026-10-28, INT-23 Docker update verified)
 
 ## Branch / task state
-- INT-05 IN_PROGRESS: user-approved remaining CMS visual corrections. Selected cms_screen.md; use existing Stitch references and10item design check.
-  No new metric/editor/uploader/rules fields or AI/model changes. CMSQA5174 owned execsession99670 running; ClientQA3100 not started.
-- INT-24 BLOCKED only on new Client browser verification: exact authorized QA3100 startup rejected by automatic review 'blocked by policy'.
-  User asked asynchronously to start external command; do not retry/bypass rejection. Source explicit draft labels+downloads implemented.
-  CMS3PASS17.3s, real CMSedit/summaryapproval1PASS38s, CMS/Clientbuilds+types PASS; evidence verification/INT-24.md.
-  Actual Client3000/CMS5173 remain INT-23 images, no new-label deployment. Pending Client tests need E2E_CLIENT_UI_URL=http://127.0.0.1:3100.
-  Host client/.next now rewritten for127.0.0.1:8000 after build; current HC12 code not deployed. One active tracker task only INT-05.
+- Current checkpoint2026-10-28: INT-05 PARTIAL, INT-24 BLOCKED; no task IN_PROGRESS and no owned QA/test/build process running.
+  User approved HC-12 first, then INT-05. HC12source3a2adf3; CMSmeasuredbatch c7c3982. No master release/push authorized.
+- INT-24 HC-12 BLOCKED only on new Client browser QA: explicit machine-draft notices in CMS/Client transcript, Client subtitle overlay,
+  draftTXT header+filename and SRTfilename implemented; no new subtitle approval state/API. CMS3PASS17.3s +actual realAI/CMS edit+approval1PASS38s.
+  Client eslint/Nextbuild/tsc PASS, CMSbuild/types PASS, E2Etypes PASS. Existing summary hidden before approval; editorial caption cache/readback verified.
+  Exact previously authorized QAClient3100 startup rejected by automatic approval review 'blocked by policy'. User asked asynchronously to start
+  `cd E:/traning_ai-codex/client; $env:GATEWAY_INTERNAL_URL='http://127.0.0.1:8000'; node node_modules/next/dist/bin/next start --hostname 127.0.0.1 --port 3100`.
+  No retry/bypass. Port3100 last checked CLOSED; pending new Client tests use E2E_CLIENT_UI_URL=http://127.0.0.1:3100.
+  Host client/.next currently built for127.0.0.1:8000, ready for this approved host QA. Source not deployed to product Client3000/CMS5173.
+  Evidence verification/INT-24.md +runtime/data logs; RE:HC-12 partial appended HANDOFF_OUT, not full ACK/DONE.
+- INT-05 current PARTIAL batch verified:480/480selected font/line-height/padding/radius properties match8Stitch refs (before356).
+  Full CMS41PASS56.8s +finalcategory4PASS6.3s +finalcapture18PASS20.5s; CMS/E2Etypes and final CMSbuild PASS.
+  Final bundle index-CvW7kL6Y.js / index-MHetgcec.css. Existing-api page styles/classes only; no new data fields or dependencies.
+  Evidence verification/INT-05-20261028.md +72before/afterPNG/metricJSON +source/style-diffJSON; ten-item review explicitly leaves full-widget/state parity OPEN.
+  Remaining review: heatmap/header widget geometry, subtitle footer grouping, queue result-action wrapping, published status/action composition,
+  every hover/focus/icon/color and source mobile-desktop adaptation. Unapproved filename/uploader/timings/analytics fields stay outside scope.
+  Do not redo480matched style properties or already deployed planA APIs. Next safe work: remaining widgets; Client QA once external3100 available.
+- Final live gatewayok, CMS5173/Client3000HTTP200, realAIstubfalse/6models.79original video and10category fingerprints still match INT-22 exactly.
+  C~3.1GiB/E~0.69GiB; no dependency/image download/prune/AI change. Owned ViteQA5174 PID20248 stopped after command-line/listener identity check;
+  ports5174/3100 CLOSED. No Docker recreation; live four apps remain int23-fa8a382 and old rollback tags/volumes preserved.
 - INT-23 DONE: user-authorized gateway/CPUworker/CMS/Client Docker update and real E2E completed. Evidence ad80f8f; fix fa8a382.
   All4 live images int23-fa8a382, local latest tags point to verified images; rollback-int23 images retained. No code/dist binds now.
   Gateway/CMS/Client healthy, worker running and real-pipeline exercised; original ingest_work volume preserved.
@@ -134,7 +147,7 @@
 - Release only at user request: full Go/CMS/Client gates +relevant real matrix E2E, shared status/masterplan updates only in that release flow; no push inferred.
 
 Lane: codex
-Changed: Docker files/compose/context; gateway source metadata relay; live E2E; owned evidence/session/tracker
-Verified: Go/Client gates; offline images4; real3PASS40s; 79/10row fingerprints; runtime health/infra9 unchanged
-Contract touched: no (public0.4.0 consumed; AI-APIv1.3 unchanged)
-Next safe task: INT-05 remaining visual parity
+Changed: HC-12 CMS/Client draft labels/downloads +CMS measured typography/spacing; tests; owned plans/handoff/evidence
+Verified: CMS41PASS+4category+18captures;480/480selected style values; real edit/approval1PASS38s; CMS/Client builds/types
+Contract touched: no (public0.4.0 and AI-APIv1.3 unchanged)
+Next safe task: INT-24 ClientQA when externally started3100; INT-05 remaining widget review
