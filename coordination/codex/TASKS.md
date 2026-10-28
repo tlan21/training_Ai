@@ -32,6 +32,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-21 | INT-20 | Persist/map approved CMS planA | REVIEW | realPG/worker/UI/build gates PASS; not deployed |
 | INT-22 | INT-21 | Apply004 to product Postgres | DONE | live apply/repeat/data/schema/health PASS; f8d82b8 |
 | INT-23 | INT-21/22 | Deploy planA Docker services +real E2E | DONE | explicit user deployment approval; DB004 applied |
+| INT-24 | HC-12/D23 | Explicit draft subtitles +approval evidence | IN_PROGRESS | user approved HC-12 first, then INT-05 |
 
 Hoàn thành trước tách làn (bằng chứng INVENTORY mục 5): T0.1–T0.4, T2.1–T2.4, T4.1, T4.2 = DONE (VERIFIED-HIST, build VERIFIED-NOW);
 T2.5, T3.1, T3.2 = PARTIAL.
@@ -359,3 +360,12 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Limits: clean Docker dependency rebuild not verified (first offlineAPK failure retained); staged artifacts retained after automated cleanup rejection.
  No AI/source/checkpoint/model/runtime/contract change, old-video backfill, datastoredown/volume deletion, master/shared-status edit or push.
 - Next action: INT-05 remaining approved visual parity; INT-06 library/forgot-link decisions remain pending.
+### INT-24 — HC-12: machine subtitle drafts and summary approval
+- Owner: CODEX | Status: IN_PROGRESS (2026-10-28)
+- Dependency: user accepted proposed HC-12 then INT-05; current public0.4.0/AI-APIv1.3 unchanged; Release#4 received.
+- Acceptance: public summary remains hidden before approval; CMS clearly identifies machine subtitle drafts with edit/save/reload;
+ Client transcript and downloaded text identify drafts without implying official approval; existing API/types/media unchanged;
+ CMS/Client builds/types, targeted 390x844/1440x900 UI/state checks and real approval/edit evidence; RE:HC-12 handoff.
+- Scope: ui_design_review.md +Ponytail full; approved D23 copy override, no new subtitle approval endpoint/status, AI/model or contract schema.
+- Changed planned: CMS subtitles, shared Client Transcript/styles, fixture/live E2E, owned plans/SESSION/TASKS/HANDOFF/evidence.
+- Evidence/commits: pending. Next action: add minimal draft disclosure; verify existing summary gate/subtitle edit persistence; then INT-05.

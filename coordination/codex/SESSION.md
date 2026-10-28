@@ -1,6 +1,11 @@
 # SESSION — authoritative resume state (2026-10-28, INT-23 Docker update verified)
 
 ## Branch / task state
+- INT-24 IN_PROGRESS: user approved HC-12 first, then INT-05. Only this task active.
+  Summary approval already has existing backend/live evidence; subtitle UI lacks explicit draft label.
+  Add CMS/Client/download draft disclosure using existing API, no approval status/endpoint or AI change; verify responsive/states +real edit/approval; append RE:HC-12.
+  Skill ui_design_review.md, Ponytail full and targeted UI/UX accessibility guidance. Current Docker images remain INT-23 until separately recorded rollout.
+
 - INT-23 DONE: user-authorized gateway/CPUworker/CMS/Client Docker update and real E2E completed. Evidence ad80f8f; fix fa8a382.
   All4 live images int23-fa8a382, local latest tags point to verified images; rollback-int23 images retained. No code/dist binds now.
   Gateway/CMS/Client healthy, worker running and real-pipeline exercised; original ingest_work volume preserved.
