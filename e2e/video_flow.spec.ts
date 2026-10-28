@@ -135,14 +135,14 @@ test('T4.1 upload → processed → approve → publish → client feed', async 
     await page.goto(`${cms}/categories`);
     await page.getByRole('button', { name: 'Thêm danh mục mới', exact: true }).click();
     await page.getByLabel('Tên danh mục', { exact: true }).fill(name);
-    await page.getByLabel('Mô tả danh mục', { exact: true }).fill(description);
+    await page.getByRole('textbox', { name: 'Mô tả danh mục', exact: true }).fill(description);
     const categoryCreated = page.waitForResponse(r => r.url().endsWith('/api/cms/categories') && r.request().method() === 'POST');
     await page.getByRole('button', { name: 'Lưu', exact: true }).click();
     const categoryResponse = await categoryCreated;
     expect(categoryResponse.status()).toBe(201);
     categoryId = (await categoryResponse.json()).id;
     await page.getByRole('button', { name: `Sửa danh mục ${name}`, exact: true }).click();
-    await page.getByLabel('Mô tả danh mục', { exact: true }).fill(`${description} đã sửa`);
+    await page.getByRole('textbox', { name: 'Mô tả danh mục', exact: true }).fill(`${description} đã sửa`);
     const categorySaved = page.waitForResponse(r => r.url().endsWith(`/api/cms/categories/${categoryId}`) && r.request().method() === 'PUT');
     await page.getByRole('button', { name: 'Lưu', exact: true }).click();
     expect((await categorySaved).status()).toBe(200);
@@ -211,7 +211,7 @@ test('T4.1 upload → processed → approve → publish → client feed', async 
     await detailPlayer.evaluate((element) => (element as HTMLVideoElement).play());
     await expect.poll(() => detailPlayer.evaluate((element) => (element as HTMLVideoElement).currentTime)).toBeGreaterThan(1.2);
     await expect(viewerPage.getByText(summary, { exact: true })).toBeVisible();
-    await expect(viewerPage.getByRole('heading', { name: title, exact: true })).toBeVisible();
+    await expect(viewerPage.getByRole('heading', { level: 1, name: title, exact: true })).toBeVisible();
     await expect(viewerPage.locator('.summary-hashtags span')).toHaveText(['#BiênTập', '#INT_23']);
     await viewerPage.screenshot({ path: info.outputPath('client-detail-player.png') });
     await info.attach('flow-ids', { body: JSON.stringify({ videoId, clipId, title, jobId: upload.job.id }), contentType: 'application/json' });

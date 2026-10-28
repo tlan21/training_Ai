@@ -1,0 +1,62 @@
+[
+  {
+    "service": "gateway",
+    "image_id": "sha256:9fecc4dfbaf4721ab19722cfaad60a04ca38f1c72732c90263d04581643e29eb",
+    "restart": "unless-stopped",
+    "health": "healthy",
+    "container_id": "78c8a9b7b71dba63653725a1255d4745e22389982051426b12d4c402fcb09981",
+    "mounts": [
+      {
+        "Type": "volume",
+        "Name": "video-ai_ingest_work",
+        "Source": "/var/lib/docker/volumes/video-ai_ingest_work/_data",
+        "Destination": "/srv/work",
+        "RW": true
+      }
+    ],
+    "image": "video-ai-gateway:int23-fa8a382",
+    "started_at": "2026-10-28T10:25:38.832155132Z",
+    "status": "running"
+  },
+  {
+    "service": "ingest-worker",
+    "image_id": "sha256:97d7bcb8174283e4b30afcf6064aa44360905a3c0f4004944a062707f3ecc6b8",
+    "restart": "unless-stopped",
+    "health": null,
+    "container_id": "709433eefc6f7d141eb7d13f500adbda6a69d96f8bc24a81816821da3253b3fd",
+    "mounts": [
+      {
+        "Type": "volume",
+        "Name": "video-ai_ingest_work",
+        "Source": "/var/lib/docker/volumes/video-ai_ingest_work/_data",
+        "Destination": "/srv/work",
+        "RW": true
+      }
+    ],
+    "image": "video-ai-ingest-worker:int23-fa8a382",
+    "started_at": "2026-10-28T10:25:38.843467531Z",
+    "status": "running"
+  },
+  {
+    "service": "cms",
+    "image_id": "sha256:4af1fc713083055618bf9e21ecc82ef75d609b04f4a60f6f743b1e63d86c0979",
+    "restart": "unless-stopped",
+    "health": "healthy",
+    "container_id": "ea8f35ed0e668e126a68709633cb652fb97bbb5f91bb8cbb6c6085a254873519",
+    "mounts": [],
+    "image": "video-ai-cms:int23-fa8a382",
+    "started_at": "2026-10-28T10:25:49.676655828Z",
+    "status": "running"
+  },
+  {
+    "service": "client",
+    "image_id": "sha256:b8b9ad21bfa364fb40f0ccb2f093a494c3a2fffaf8911870b0314bf9a154b751",
+    "restart": "unless-stopped",
+    "health": "healthy",
+    "container_id": "dc090234825b5fec9544e53f4b1b64ce4facaf00670689863ec1770c6892635e",
+    "mounts": [],
+    "image": "video-ai-client:int23-fa8a382",
+    "started_at": "2026-10-28T10:25:49.684147254Z",
+    "status": "running"
+  }
+]

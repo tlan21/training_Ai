@@ -1,0 +1,52 @@
+
+Running 1 test using 1 worker
+
+(node:15052) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 e2e\video_flow.spec.ts:11:5 › T4.1 upload → processed → approve → publish → client feed (25.0s)
+
+
+  1) e2e\video_flow.spec.ts:11:5 › T4.1 upload → processed → approve → publish → client feed ───────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Biên tập e2e-1793183358544', exact: true })
+    Expected: visible
+    Error: strict mode violation: getByRole('heading', { name: 'Biên tập e2e-1793183358544', exact: true }) resolved to 2 elements:
+        1) <h1>Biên tập e2e-1793183358544</h1> aka locator('h1')
+        2) <h3 class="line-clamp-2">Biên tập e2e-1793183358544</h3> aka getByRole('button', { name: '00:05 Biên tập e2e-' })
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading', { name: 'Biên tập e2e-1793183358544', exact: true }) with timeout 10000ms
+      - waiting for getByRole('heading', { name: 'Biên tập e2e-1793183358544', exact: true })
+
+
+      212 |     await expect.poll(() => detailPlayer.evaluate((element) => (element as HTMLVideoElement).currentTime)).toBeGreaterThan(1.2);
+      213 |     await expect(viewerPage.getByText(summary, { exact: true })).toBeVisible();
+    > 214 |     await expect(viewerPage.getByRole('heading', { name: title, exact: true })).toBeVisible();
+          |                                                                                 ^
+      215 |     await expect(viewerPage.locator('.summary-hashtags span')).toHaveText(['#BiênTập', '#INT_23']);
+      216 |     await viewerPage.screenshot({ path: info.outputPath('client-detail-player.png') });
+      217 |     await info.attach('flow-ids', { body: JSON.stringify({ videoId, clipId, title, jobId: upload.job.id }), contentType: 'application/json' });
+        at E:\traning_ai-codex\e2e\video_flow.spec.ts:214:81
+
+    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\video_flow-T4-1-upload-→-p-68fde-ove-→-publish-→-client-feed\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #4: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\video_flow-T4-1-upload-→-p-68fde-ove-→-publish-→-client-feed\test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\video_flow-T4-1-upload-→-p-68fde-ove-→-publish-→-client-feed\error-context.md
+
+    attachment #6: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\video_flow-T4-1-upload-→-p-68fde-ove-→-publish-→-client-feed\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\video_flow-T4-1-upload-→-p-68fde-ove-→-publish-→-client-feed\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    e2e\video_flow.spec.ts:11:5 › T4.1 upload → processed → approve → publish → client feed ────────

@@ -5,24 +5,24 @@
   "gateway_go_version": "go version go1.25.1 windows/amd64",
   "gateway_artifacts": [
     {
-      "bytes": 21135522,
       "name": "ai-mock",
-      "sha256": "57D2B427A71D16DF98E42BAD1BFF0D8AAC9FD685CC05E6E07F2D1B2C97EDF9E0"
+      "sha256": "57D2B427A71D16DF98E42BAD1BFF0D8AAC9FD685CC05E6E07F2D1B2C97EDF9E0",
+      "bytes": 21135522
     },
     {
-      "bytes": 12288162,
       "name": "ffmpeg-cutter",
-      "sha256": "9970D5AE73634DFC50DFCEB31967ADC11A83C8F9B642DE4E50B2AD9570454A2B"
+      "sha256": "9970D5AE73634DFC50DFCEB31967ADC11A83C8F9B642DE4E50B2AD9570454A2B",
+      "bytes": 12288162
     },
     {
-      "bytes": 43798690,
       "name": "gateway",
-      "sha256": "DDA6053BD0D069DDF5DA3CF96AAFB88256C98EC7FF4D55A20BDC2117363EDB3B"
+      "sha256": "15D87D90AEE7A94360DEDE79B7EB2E73B4D4AD2395425FDBF60BCC4D68E48B1A",
+      "bytes": 43798690
     },
     {
-      "bytes": 12152994,
       "name": "orchestrator",
-      "sha256": "415E520B35F5C08CEE6F24E29DF554CCCA7B8085B2A2448FBB918D95CC1EDB76"
+      "sha256": "415E520B35F5C08CEE6F24E29DF554CCCA7B8085B2A2448FBB918D95CC1EDB76",
+      "bytes": 12152994
     }
   ],
   "worker_main_sha256": "D44B4BD51DDA04E99491D1BAEA1EB3FABAC03526404863A099E038A94E95F181",
@@ -36,5 +36,8 @@
     "client": "FROM video-ai-client:rollback-int23\nCOPY .next/ /src/.next/\nCOPY next.config.mjs /src/next.config.mjs\nENV GATEWAY_INTERNAL_URL=http://gateway:8000\r\n",
     "cms": "FROM video-ai-cms:rollback-int23\nCOPY dist/ /usr/share/nginx/html/\nCOPY nginx.conf /etc/nginx/conf.d/default.conf\r\n",
     "worker": "FROM video-ai-ingest-worker:rollback-int23\nCOPY main.py /srv/ingest-worker/main.py\r\n"
-  }
+  },
+  "final_source": "fa8a382",
+  "final_tag": "int23-fa8a382",
+  "gateway_artifact_toolchain": "go1.26.0 linux/amd64 CGO_ENABLED=0 -ldflags=-s -w"
 }
