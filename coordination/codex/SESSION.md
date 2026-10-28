@@ -1,7 +1,7 @@
 # SESSION — authoritative resume state (2026-10-28, product DB004 applied)
 
 ## Branch / task state
-- INT-22 runtime operation complete2026-10-28: user-approved004 applied to product Postgres video_ai/public via existing container.
+- INT-22 DONE2026-10-28: user-approved004 applied to product Postgres video_ai/public via existing container; evidence commit f8d82b8.
   Private ignored full backup backend/.tmp/db-backups/int22-20261028T095827Z-before.dump retained; metadata/hash in verification/INT-22-backup.json.
   Guarded transaction +repeat COMMIT;79videos/10categories ordered row fingerprints unchanged;5nullable columns/5validated checks correct.
   New fields remain NULL; gatewayhealthok/CMS5173+Client3000HTTP200. Evidence verification/INT-22.md +logs/JSON; no app rollout/AI/backfill/master/push.

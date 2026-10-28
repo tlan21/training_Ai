@@ -1,6 +1,7 @@
 # INT-22 — product database migration004, 2026-10-28
 
 Owner CODEX. User explicitly requested applying migration to product DB; approval/start commit f7fcc0e.
+Status DONE; runtime/schema/data/health evidence committed as f8d82b8.
 Target: existing video-ai-postgres-1, PostgreSQL16.15, database video_ai, owner app, public.videos/public.categories.
 Migration source: infra/postgres/migrations/004_cms_metadata.sql from aad0c75.
 SHA256 A47CE01255010990B82C3C0293E06447CB447CC961444F0D887171BA3CBAD7D5.
