@@ -1,4 +1,4 @@
-# Docker build context — chỉ giữ code + checkpoint (nếu có sẵn trên disk).
+# Docker build context — application sources only; no checkpoint or private runtime artifacts.
 # .gitignore KHÔNG ảnh hưởng docker; phải khai báo riêng ở đây.
 
 # Môi trường ảo (cài lại trong image)
@@ -6,15 +6,17 @@
 **/.venv/
 venv/
 **/node_modules/
+backend/.tmp/
+backend/bin/
+**/*.tsbuildinfo
 client/.next/
 cms/dist/
 playwright-report/
 test-results/
 
 # Dataset thô — inference KHÔNG cần, rất nặng
-data/raw/
-data/processed/
-data/labels/
+data/
+dist/kaggle/
 
 # Log train
 ai-core/checkpoints/
@@ -36,8 +38,12 @@ stitch_ai_video_cms/
 stitch_ai_video_platform_vietnamese/
 my-agent/
 .claude/
+coordination/
+.agents/
 
 # Secrets (đặt qua -e / env server, không bake vào image)
 **/.env
+**/.env.*
+!**/.env.example
 
-# Checkpoints are mounted read-only by compose, not copied into images.
+# Claude owns checkpoint/runtime management outside this build context.

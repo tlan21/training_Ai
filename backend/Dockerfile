@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1
 FROM golang:1.26-alpine AS builder
+ENV GOMAXPROCS=1
 WORKDIR /src
 COPY backend/go.mod backend/go.sum ./backend/
 RUN --mount=type=cache,target=/go/pkg/mod cd backend && go mod download
