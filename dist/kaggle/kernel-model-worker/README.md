@@ -16,9 +16,10 @@ Chạy thử local (CPU, không tunnel): xem docstring `run_model_worker.py`.
 
 ## Dùng
 
-1. Mở kernel trên Kaggle (GPU + Internet bật). Tùy chọn: Add-ons → Secrets → `MODEL_WORKER_KEY` (≥24 ký tự) để key không in ra log;
+1. Mở kernel trên Kaggle: Settings → Accelerator → **GPU T4**, Internet **On** (quên bật GPU → script dừng ngay với hướng dẫn, không chạy CPU âm thầm). Tùy chọn: Add-ons → Secrets → `MODEL_WORKER_KEY` (≥24 ký tự) để key không in ra log;
    không có secret → kernel sinh key ngẫu nhiên và in **một lần** trong log riêng tư.
-2. Đọc log: `MODEL_WORKER_URL=https://<random>.trycloudflare.com`, `MODEL_WORKER_KEY=...`.
+2. Log đầu phiên in GPU (`nvidia-smi`: tên, VRAM, % dùng) + phiên bản torch/CUDA; trong phiên cứ 10 phút in lại GPU + VRAM torch đang giữ.
+   Đọc log: `MODEL_WORKER_URL=https://<random>.trycloudflare.com`, `MODEL_WORKER_KEY=...`.
 3. Facade: đặt `MODEL_WORKER_URL`, `MODEL_WORKER_KEY` (env tiến trình, **không** ghi vào file commit), khởi động lại :8001;
    `/health` phải có `dependencies.model_worker = "ok"`, `device = "cuda"`.
 4. Xong việc: dừng phiên trên Kaggle (tiết kiệm quota), xóa 2 biến ở facade → quay về worker cùng tiến trình.

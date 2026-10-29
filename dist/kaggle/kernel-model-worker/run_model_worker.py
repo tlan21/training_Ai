@@ -60,6 +60,15 @@ def wait_info(url, key, seconds):
             time.sleep(3)
 
 
+def gpu_line():
+    """One nvidia-smi line (name, VRAM used/total, utilisation) for the Kaggle log; '' when there is no NVIDIA driver."""
+    try:
+        return subprocess.run(["nvidia-smi", "--query-gpu=name,memory.used,memory.total,utilization.gpu", "--format=csv,noheader"],
+                              capture_output=True, text=True, timeout=20).stdout.strip()
+    except (OSError, subprocess.SubprocessError):
+        return ""
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--input", default=None)
@@ -98,6 +107,13 @@ def main():
             __import__(mod)
         except ImportError:
             subprocess.run([sys.executable, "-m", "pip", "install", "-q", pkg], check=True)
+
+    if args.device == "cuda":
+        # Fail fast with the fix instead of the worker's generic "requires all 6 checkpoints" when the GPU is off.
+        import torch
+        if not torch.cuda.is_available() or not gpu_line():
+            raise SystemExit("No GPU: Kaggle → Settings → Accelerator → GPU T4 (and Internet on), then run again")
+        print("gpu:", gpu_line(), "| torch", torch.__version__, "cuda", torch.version.cuda, flush=True)
 
     key, key_source = worker_key()
     env = dict(os.environ, MODEL_WORKER_KEY=key, CHECKPOINT_DIR=ckpt, INFER_DEVICE=args.device, FORCE_STUB="0",
@@ -141,9 +157,16 @@ def main():
         json.dump({"started": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "url": url, "key_source": key_source,
                    "device": status["device"], "models_loaded": status["models_loaded"], "manifest_ok": True}, f, indent=1)
 
-    deadline = time.time() + args.minutes * 60
+    deadline, next_report = time.time() + args.minutes * 60, 0.0
     try:
         while time.time() < deadline and worker.poll() is None and (tunnel is None or tunnel.poll() is None):
+            if args.device == "cuda" and time.time() >= next_report:      # GPU usage in the log every 10 min
+                try:
+                    vram = f'{info(local, key)["gpu_vram_used"]:.0f} MiB'
+                except (urllib.error.URLError, OSError) as e:      # a monitoring hiccup must not end the session
+                    vram = type(e).__name__
+                print(time.strftime("%H:%M:%SZ", time.gmtime()), "gpu:", gpu_line(), "| torch allocated", vram, flush=True)
+                next_report = time.time() + 600
             time.sleep(30)
     finally:
         for proc in (tunnel, worker):
