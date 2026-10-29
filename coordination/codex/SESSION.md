@@ -1,3 +1,5 @@
+INT-31 IN_PROGRESS: explicit user requests inference-service Docker +realE2E. Deploy unmodified Claude478052e on cachedruntime, existingexactreadonlycheckpointmount (matches hostactive.env path), internalnetwork8001, preserve hostPID15852/:8001 andsinglecomposeproject. No AI source/checkpoint copies/edits or downloads. Next sourceexport/offlinebuild/containerhealth then gatewaycutover.
+
 # SESSION — authoritative resume state (2026-10-29, INT-30 Docker mock removal complete)
 
 - Branchcodex/integration, startupclean/noHEAD..master commits. INT-30 DONE source/runtime/evidencec99443e; no activeIN_PROGRESS.

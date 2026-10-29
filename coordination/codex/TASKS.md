@@ -448,3 +448,14 @@ T2.5, T3.1, T3.2 = PARTIAL.
  gateway200/minio+milvusok/CMS+Client200. No applicationbuild/pull needed, currentverifiedimageIDs/env matched beforeapply.
 - Checkpoint: Lane codex /DockerdefaultrealAI/no runtime mock /contractsunchanged /Verified liveE2E+preservation PASS.
 - Next action: none for Docker removal; await Claudev2API_READY release for INT-28 matrixpromotion. No push/master/sharedfile edit.
+
+### INT-31 — User-requested real inference Docker runtime
+- Owner: CODEX | Status: IN_PROGRESS (2026-10-29)
+- Depends on: explicit latest user request to start inference-service in Docker and run real E2E; Claude source pinned478052e/v2DRAFT.
+- Scope: deployment-only exception for requested AI container; no AI source/model/checkpoint edits or copies. Reuse existing exact read-only checkpoint mount.
+ HostClaude PID15852/:8001 remains untouched; new Docker service internal8001, gateway connects directly over video-ai network, no new hostport/secondstack.
+- Acceptance: unmodifiedClaude code in cachedimage overlay/no large downloads; Dockerhealthstubfalse6/degradedempty and/v2;
+ sameactivecheckpointSHAs, gatewayrealDockerendpoint/stub0, actualupload/search/speech/deleteE2E PASS, data/hostAI/othercontainers preserved.
+- Changed: planned owned infraDockerrecipe/explicitcomposeoverride, integrationtest healthURL support ifneeded, ownedcoordination/evidence.
+- Commits/Evidence: startup checkpoint, pending build/live verification. No stopping hostAI, no training/AI contract changes, no push.
+- Next action: export pinnedtrackedsource only, build offline overlay on existing inference image, start internal-only container and check health before gateway switch.
