@@ -1,5 +1,7 @@
 # SESSION — authoritative resume state (2026-10-29, INT-33 thumbnails deployed)
 
+INT-34 IN_PROGRESS: user requested one combined AI highlight video. Contract first (existing POST /api/cms/clips gains auto_highlights; Clip gains source_segments); then INT-35 implementation. CMS action will automatically merge/order AI proposals, create one draft MP4, preview and explicitly publish. Preserve original video/legacy clips; no AI changes. Skill backend_endpoint + Ponytail. Branch correct, clean, no master release pending; latest HC-14/host Fusion5 handoff read, current Docker mode remains unchanged.
+
 - INT-33 DONE. Source **40b8bdc**, startup **a5663df**; final verification commit follows this checkpoint.
 - Gateway resolves existing private first-frame JPEGs for processed videos with NULL thumbnail metadata. CMS/public video responses and clip responses sign private references; future clips persist the canonical key. No migration, metadata rewrite, image regeneration, AI call or frontend change.
 - Deployed only gateway: `video-ai-gateway:int33-40b8bdc` (also latest), binary SHA256 `91d008ef5960041ba7bc5aa46a93a3ee0dd91fcc4048ffae2d11540a981e3554`. Healthz 200; runtime environment unchanged, rollback-int33 retained.

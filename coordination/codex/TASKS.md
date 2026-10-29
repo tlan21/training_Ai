@@ -492,3 +492,17 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Commits: **a5663df** start; **40b8bdc** source/tests; final evidence commit follows. No schema/migration/AI edits, no object writes/backfill.
 - Checkpoint: Lane codex / Changed backend thumbnail mapping + tests / Verified Go, real PG and real CMS / Contract touched no / Next safe task remaining INT-05/06 scope. No master/push or full design parity claim.
 - Next action: user refresh CMS; no remaining implementation for this bug. Deleted rows intentionally retain placeholders.
+
+### INT-34 — Compilation clip product contract
+- Owner: CODEX | Status: IN_PROGRESS (2026-10-29)
+- Depends on: user explicitly requested one combined highlight video; existing clip create/publish API.
+- Acceptance: additive OpenAPI describes auto_highlights creation and persisted source_segments/output timeline, empty-AI validation; regenerate Go/CMS/Client types; schema test PASS. No new endpoint or AI contract change.
+- Changed: planned infra/openapi.yaml, generated types, contract test and owned coordination.
+- Commits: startup checkpoint follows. Evidence: pending. Next action: define and generate contract before implementation.
+
+### INT-35 — Generate, review and publish one AI highlight compilation
+- Owner: CODEX | Status: TODO
+- Depends on: INT-34 contract; existing AI analysis and video/clip storage.
+- Acceptance: CMS action automatically orders/merges AI ranges and creates one accurately cut MP4 with audio; persisted source ranges and weighted score; processing→draft→explicit publish; CMS preview plus Client subtitle/timeline mapping; empty AI is a useful error, original/legacy clips preserved; unit, real FFmpeg/PG/API/browser verification and scoped UI review.
+- Changed: planned backend clip domain/PG/cutter/CMS handler, additive migration, CMS action/preview, Client time mapping, tests and owned evidence.
+- Commits: pending. Evidence: pending. Next action: implement after contract checkpoint; no AI code/model/runtime changes or automatic publishing.
