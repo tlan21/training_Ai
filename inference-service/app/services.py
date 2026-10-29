@@ -212,10 +212,14 @@ def _fetch_audio(audio_url: str):
 
 
 def _real_asr(req: schemas.ASRRequest):
+    return _transcribe(_audio_chunks(req.audio_url))
+
+
+def _transcribe(chunks):
     texts, segments = [], []
     offset = 0.0
     # Bound attention to 20 seconds; preserve absolute timestamps across windows.
-    for chunk in _audio_chunks(req.audio_url):
+    for chunk in chunks:
         duration = chunk.numel() / 16000
         if chunk.numel() < 400 or float(chunk.abs().max()) < 1e-4:
             offset += duration
@@ -232,9 +236,7 @@ def _real_asr(req: schemas.ASRRequest):
 
 
 def _audio_chunks(audio_url):
-    import numpy as np
     import soundfile as sf
-    import torch
     if audio_url.startswith(("http://", "https://")):
         # shortcut: direct HTTP audio loads whole; upload ingest uses streaming shared WAV paths.
         try:
@@ -248,6 +250,13 @@ def _audio_chunks(audio_url):
         audio = sf.SoundFile(audio_url)
     except Exception as e:
         raise InvalidInput(f"audio_url không đọc được: {type(e).__name__}: {e}") from e
+    yield from _read_chunks(audio)
+
+
+def _read_chunks(audio):
+    """Open soundfile.SoundFile → 20 s float32 mono 16 kHz tensors (streamed, never the whole file)."""
+    import numpy as np
+    import torch
     with audio:
         while True:
             data = audio.read(20*audio.samplerate, dtype="float32")
@@ -415,7 +424,7 @@ def _real_vision(req: schemas.VisionRequest):
         images = [visual_index._image_bytes(ref) for ref in req.keyframes]
     except (OSError, ValueError, binascii.Error) as e:
         raise InvalidInput(f"keyframe không đọc được (JPEG/PNG/WebP ≤20 MP): {type(e).__name__}: {e}") from e
-    category, embeddings = worker_client.call("vision", images=images)
+    category, embeddings, _ = worker_client.call("vision", images=images)
     registry.degraded.discard("vit")
     if not settings.force_stub:
         try:

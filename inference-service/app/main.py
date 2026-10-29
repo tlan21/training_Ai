@@ -8,7 +8,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from . import schemas, services, worker_client
+from . import schemas, services, v2, worker_client
 from .auth import require_bearer
 from .config import settings
 from .gpu_queue import gpu_queue
@@ -41,6 +41,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="AI Inference Service", version="0.1.0", lifespan=lifespan)
+app.include_router(v2.router)   # AI-API v2.0 DRAFT (D24): compute-only, runs alongside /v1
 
 
 # ---- error envelope {"error":{"code","message"}} (master plan §2.6) ----

@@ -31,7 +31,7 @@ def decode_image(data: bytes, img_size: int = 224):
 
 
 def vision(images: list[bytes]):
-    """ViT → [category, 256-d embedding per frame]."""
+    """ViT → [category, 256-d embedding per frame, {class: summed logit}] (sums add up across batches of one video)."""
     import torch
     model = registry.models["vit"]
     if not images:
@@ -46,8 +46,8 @@ def vision(images: list[bytes]):
             embeddings.extend(emb.float().cpu().tolist())
     idx = int(total_logits.argmax().item())
     classes = registry.vit_classes
-    category = classes[idx] if classes and idx < len(classes) else f"class_{idx}"
-    return [category, embeddings]
+    names = [classes[i] if classes and i < len(classes) else f"class_{i}" for i in range(len(total_logits))]
+    return [names[idx], embeddings, {name: float(x) for name, x in zip(names, total_logits)}]
 
 
 def siamese(images: list[bytes]) -> list[list[float]]:

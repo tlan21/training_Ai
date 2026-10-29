@@ -60,8 +60,9 @@ def test_worker_never_imports_data_clients():
 
 
 def test_worker_ops_take_bytes_and_vectors(fake_models):
-    category, emb = worker.vision([png(), png()])
+    category, emb, logit_sums = worker.vision([png(), png()])
     assert category == "ca_nhac" and len(emb) == 2 and len(emb[0]) == 256
+    assert logit_sums == {"bong_da": 0.0, "the_thao": 0.0, "ca_nhac": 2.0, "tin_tuc": 0.0}
     vectors = worker.siamese([png()])
     assert len(vectors[0]) == 128 and sum(x * x for x in vectors[0]) == pytest.approx(1)
     assert worker.highlight([[0.0] * 256] * 2, [[0.0] * 64] * 2) == [50.0, 50.0]
