@@ -1,0 +1,16 @@
+{
+  "id": "traininghighlight/ai-core-fusion-r6",
+  "title": "ai-core-fusion-r6",
+  "code_file": "run_fusion_r6.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": false,
+  "dataset_sources": [
+    "traininghighlight/ai-core",
+    "traininghighlight/soccernet-highlight-features-140"
+  ],
+  "competition_sources": [],
+  "kernel_sources": []
+}

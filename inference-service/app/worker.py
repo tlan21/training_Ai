@@ -114,8 +114,11 @@ def highlight(vision: list[list[float]], audio: list[list[float]]) -> dict:
                 a = torch.tensor([audio[start:start+window]], device=registry.device, dtype=dt)
                 scores.extend(round(float(x) * 100, 1) for x in model(v, a)[0])
             return {"scores": scores, "clip_rules": dict(_LEGACY_CLIP_RULES)}
-        v = torch.tensor(vision, device=registry.device, dtype=dt)
-        a = torch.tensor(audio, device=registry.device, dtype=dt)
+        v, a = torch.tensor(vision), torch.tensor(audio)
+        if recipe.get("feature_norm") == "per_video":   # AI-17: the request is the whole video, as at training
+            from ai_core.training.datasets.highlight_dataset import normalize_per_video
+            v, a = normalize_per_video(v), normalize_per_video(a)
+        v, a = v.to(device=registry.device, dtype=dt), a.to(device=registry.device, dtype=dt)
         mean = torch.stack([_window_scores(m, v, a, window, recipe["stride"]) for m in registry.highlight_members]).mean(0)
         k = recipe["smooth_k"]
         if k > 1:                                 # eval_highlight.smooth: replicate edges, moving average

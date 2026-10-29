@@ -39,6 +39,18 @@ def test_recipe_is_exactly_the_evaluated_dod_pipeline(recipe, n):
     assert out["clip_rules"] == {"threshold": 51.0, "merge_gap_seconds": 2, "min_clip_seconds": 3}
 
 
+def test_feature_norm_recipe_matches_pipeline_on_normalised_features(recipe):
+    from ai_core.training.datasets.highlight_dataset import normalize_per_video
+    members, rules = recipe
+    rules["feature_norm"] = "per_video"
+    torch.manual_seed(7)
+    v, a = torch.randn(200, 256) * 4 + 2, torch.randn(200, 64) * 3
+    with torch.no_grad():
+        sample = {"vision": normalize_per_video(v), "audio": normalize_per_video(a)}
+        expected = smooth(torch.stack([model_scores_overlap(m, sample, 120, 30) for m in members]).mean(0), 9)
+    assert worker.highlight(v.tolist(), a.tolist())["scores"] == [round(float(x) * 100, 1) for x in expected]
+
+
 def test_no_recipe_keeps_legacy_scoring(monkeypatch):
     model = tiny_fusion(1)
     monkeypatch.setattr(registry, "models", {"highlight_fusion": model})

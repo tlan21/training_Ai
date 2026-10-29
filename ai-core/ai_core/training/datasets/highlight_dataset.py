@@ -14,12 +14,39 @@ WINDOW = 120
 STRIDE = 60
 
 
+def normalize_per_video(x: torch.Tensor) -> torch.Tensor:
+    """(n_sec, d) → z-score per dimension over THIS video (AI-17). Removes level differences between videos
+    (loudness, colour, camera) so the model sees relative changes. Same call at training and inference."""
+    x = x.float()
+    return (x - x.mean(0, keepdim=True)) / x.std(0, keepdim=True, unbiased=False).clamp_min(1e-5)
+
+
+def augment_window(v: torch.Tensor, a: torch.Tensor, n: int) -> tuple[torch.Tensor, torch.Tensor]:
+    """Train-only anti-memorisation on the first `n` real seconds (padding untouched), labels unchanged (AI-17):
+    noise 0.1×std per dim, 2 time masks ≤10 s per stream (→ window mean), drop one stream with p=0.1 (→ its mean)."""
+    v, a = v.clone(), a.clone()
+    for x in (v, a):
+        real = x[:n]
+        mean, std = real.mean(0), real.std(0, unbiased=False)
+        real += 0.1 * std * torch.randn_like(real)
+        for _ in range(2):
+            w = int(torch.randint(0, 11, ()))
+            if 0 < w < n:
+                s0 = int(torch.randint(0, n - w + 1, ()))
+                real[s0:s0 + w] = mean
+    if float(torch.rand(())) < 0.1:
+        x = v if float(torch.rand(())) < 0.5 else a
+        x[:n] = x[:n].mean(0)
+    return v, a
+
+
 class HighlightWindowDataset(Dataset):
     """Mỗi item: (vision (WINDOW,256), audio (WINDOW,64), label (WINDOW,) ∈ {0,1,IGNORE})."""
 
-    def __init__(self, samples: list[dict], window: int = WINDOW, stride: int = STRIDE):
+    def __init__(self, samples: list[dict], window: int = WINDOW, stride: int = STRIDE, augment: bool = False):
         """samples: [{vision: Tensor(n_sec,256), audio: Tensor(n_sec,64), labels: Tensor(n_sec,)}]."""
         self.window = window
+        self.augment = augment
         self.windows = []
         for s in samples:
             n = s["vision"].shape[0]
@@ -35,6 +62,8 @@ class HighlightWindowDataset(Dataset):
         v = _pad_window(s["vision"][start:end], self.window)
         a = _pad_window(s["audio"][start:end], self.window)
         y = s["labels"][start:end]
+        if self.augment:
+            v, a = augment_window(v, a, end - start)
         if y.shape[0] < self.window:
             y = torch.cat([y, torch.full((self.window - y.shape[0],), IGNORE, dtype=torch.long)])
         return v, a, y
