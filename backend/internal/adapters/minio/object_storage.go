@@ -2,6 +2,7 @@ package minio
 
 import (
 	"context"
+	"fmt"
 	miniosdk "github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
 	"io"
@@ -22,7 +23,7 @@ func New(ctx context.Context, endpoint, publicEndpoint, access, secret string) (
 	if err != nil {
 		return nil, err
 	}
-	for _, bucket := range []string{"raw-videos", "clips"} {
+	for _, bucket := range []string{"raw-videos", "clips", "thumbnails"} {
 		if err := startup.Wait(ctx, "MinIO "+bucket, func(probe context.Context) error {
 			exists, err := internal.BucketExists(probe, bucket)
 			if err != nil || exists {
@@ -62,4 +63,28 @@ func (c *Client) GetObject(ctx context.Context, bucket, key string) (io.ReadClos
 }
 func (c *Client) Delete(ctx context.Context, bucket, key string) error {
 	return c.internal.RemoveObject(ctx, bucket, key, miniosdk.RemoveObjectOptions{})
+}
+
+func (c *Client) DeletePrefix(ctx context.Context, bucket, prefix string) error {
+	for item := range c.internal.ListObjects(ctx, bucket, miniosdk.ListObjectsOptions{Prefix: prefix, Recursive: true}) {
+		if item.Err != nil {
+			return item.Err
+		}
+		if err := c.Delete(ctx, bucket, item.Key); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (c *Client) Health(ctx context.Context) error {
+	for _, bucket := range []string{"raw-videos", "clips", "thumbnails"} {
+		exists, err := c.internal.BucketExists(ctx, bucket)
+		if err != nil {
+			return err
+		}
+		if !exists {
+			return fmt.Errorf("Missing MinIO bucket %s", bucket)
+		}
+	}
+	return nil
 }

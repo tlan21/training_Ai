@@ -29,10 +29,11 @@ type SearchHandlers struct {
 	ai      ports.AIClient
 	clips   ports.ClipRepository
 	storage ports.ObjectStorage
+	vectors ports.VectorStore
 }
 
-func NewSearchHandlers(videos ports.VideoRepository, subs ports.SubtitleStore, cache ports.Cache, ai ports.AIClient, clips ports.ClipRepository, storage ports.ObjectStorage) *SearchHandlers {
-	return &SearchHandlers{videos: videos, subs: subs, cache: cache, ai: ai, clips: clips, storage: storage}
+func NewSearchHandlers(videos ports.VideoRepository, subs ports.SubtitleStore, cache ports.Cache, ai ports.AIClient, clips ports.ClipRepository, storage ports.ObjectStorage, vectors ports.VectorStore) *SearchHandlers {
+	return &SearchHandlers{videos: videos, subs: subs, cache: cache, ai: ai, clips: clips, storage: storage, vectors: vectors}
 }
 
 // POST /api/search/visual — multipart image ≤5MB → base64 → AI Search → filter min_similarity
@@ -88,7 +89,7 @@ func (h *SearchHandlers) Visual(c *gin.Context) {
 	if h.cache != nil {
 		revision, _, _ = h.cache.Get(ctx, "feed:revision")
 	}
-	cacheKey := fmt.Sprintf("search:visual:%s:%x:%g", revision, sha256.Sum256(buf), threshold)
+	cacheKey := fmt.Sprintf("search:visual:v2:%s:%x:%g", revision, sha256.Sum256(buf), threshold)
 	var res domain.SearchResult
 	hit := false
 	if h.cache != nil {
@@ -98,12 +99,17 @@ func (h *SearchHandlers) Visual(c *gin.Context) {
 	}
 	if !hit {
 		// shortcut: filter the best 100 frames after search; move visibility into the index when private frames crowd out public hits.
-		fresh, err := h.ai.Search(ctx, base64.StdEncoding.EncodeToString(buf), 100, threshold)
+		vector, err := h.ai.SearchEmbedding(ctx, base64.StdEncoding.EncodeToString(buf))
 		if err != nil {
 			handleDomainErr(c, err)
 			return
 		}
-		res = *fresh
+		hits, err := h.vectors.SearchFrames(ctx, vector, 100, threshold)
+		if err != nil {
+			ErrorEnvelope(c, 503, "SERVICE_UNAVAILABLE", "Visual index unavailable")
+			return
+		}
+		res.Hits = hits
 		if h.cache != nil {
 			if value, err := json.Marshal(res); err == nil {
 				_ = h.cache.Set(ctx, cacheKey, string(value), 120*time.Second)

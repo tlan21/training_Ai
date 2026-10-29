@@ -138,5 +138,6 @@ func NewAIHTTP(key string) http.Handler {
 		res["usage"] = gin.H{"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}
 		c.JSON(200, res)
 	})
+	registerV2(r, key)
 	return r
 }

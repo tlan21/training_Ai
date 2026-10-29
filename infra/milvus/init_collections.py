@@ -33,9 +33,7 @@ def _video_frame_embeddings() -> None:
     fields = [
         FieldSchema(name="id", dtype=DataType.INT64, is_primary=True, auto_id=True),
         FieldSchema(name="vector", dtype=DataType.FLOAT_VECTOR, dim=DIM),
-        FieldSchema(name="video_id", dtype=DataType.VARCHAR, max_length=50),
-        FieldSchema(name="timestamp", dtype=DataType.FLOAT),
-        FieldSchema(name="thumbnail_url", dtype=DataType.VARCHAR, max_length=512),
+        FieldSchema(name="payload", dtype=DataType.JSON),
     ]
     col = Collection(name, CollectionSchema(fields, description="Visual Search frame embeddings"))
     col.create_index("vector", {
@@ -70,7 +68,7 @@ def main() -> None:
     connections.connect(alias="default", host=HOST, port=PORT)
     print(f"[milvus] kết nối {HOST}:{PORT}")
     _video_frame_embeddings()
-    _user_recommendation_embeddings()
+    # D24/AI-12: do not create a recommendation collection before the real v2 checkpoint.
     print("[milvus] init xong:", utility.list_collections())
 
 

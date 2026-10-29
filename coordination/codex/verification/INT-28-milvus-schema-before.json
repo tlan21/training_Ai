@@ -1,0 +1,59 @@
+{
+  "code": 0,
+  "data": {
+    "aliases": [],
+    "autoId": true,
+    "collectionID": 469752598629451124,
+    "collectionName": "video_frame_embeddings",
+    "consistencyLevel": "Strong",
+    "description": "",
+    "enableDynamicField": false,
+    "fields": [
+      {
+        "autoId": true,
+        "description": "",
+        "id": 100,
+        "name": "id",
+        "partitionKey": false,
+        "primaryKey": true,
+        "type": "Int64"
+      },
+      {
+        "autoId": false,
+        "description": "",
+        "id": 101,
+        "name": "vector",
+        "params": [
+          {
+            "key": "dim",
+            "value": "128"
+          }
+        ],
+        "partitionKey": false,
+        "primaryKey": false,
+        "type": "FloatVector"
+      },
+      {
+        "autoId": false,
+        "description": "",
+        "id": 102,
+        "name": "payload",
+        "partitionKey": false,
+        "primaryKey": false,
+        "type": "JSON"
+      }
+    ],
+    "indexes": [
+      {
+        "fieldName": "vector",
+        "indexName": "vector",
+        "metricType": "COSINE"
+      }
+    ],
+    "load": "LoadStateLoaded",
+    "partitionsNum": 1,
+    "properties": [],
+    "shardsNum": 1
+  },
+  "message": ""
+}

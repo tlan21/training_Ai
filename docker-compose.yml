@@ -182,6 +182,7 @@ services:
       AI_ALLOW_STUB: ${AI_ALLOW_STUB:-0}
       PRODUCT_DATA_ORIGIN: ${PRODUCT_DATA_ORIGIN:-unknown}
     depends_on:
+      milvus: { condition: service_healthy }
       postgres: { condition: service_healthy }
       mongo: { condition: service_healthy }
       redis: { condition: service_healthy }
@@ -204,6 +205,8 @@ services:
       POSTGRES_DSN: postgres://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-123456}@postgres:5432/${POSTGRES_DB:-video_ai}?sslmode=disable
       MONGO_URI: mongodb://${MONGO_USER:-app}:${MONGO_PASSWORD:-123456}@mongo:27017
       KAFKA_BROKERS: kafka:9092
+      MILVUS_HOST: milvus
+      MILVUS_PORT: "19530"
       MINIO_ENDPOINT: minio:9000
       MINIO_ACCESS_KEY: minioadmin
       MINIO_SECRET_KEY: "12345678"
@@ -212,6 +215,7 @@ services:
       AI_ALLOW_STUB: ${AI_ALLOW_STUB:-0}
       AI_SERVICE_KEY: ${AI_SERVICE_KEY:-sk-local-dev-key-change-me}
     depends_on:
+      milvus: { condition: service_healthy }
       gateway: { condition: service_healthy }
   ffmpeg-cutter:
     profiles: ["full"]

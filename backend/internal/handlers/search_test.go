@@ -51,7 +51,7 @@ func visualRequest(t *testing.T, router *gin.Engine, data []byte, threshold stri
 func TestVisualValidationBeforeAI(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	r := gin.New()
-	r.POST("/api/search/visual", NewSearchHandlers(nil, nil, nil, nil, nil, nil).Visual)
+	r.POST("/api/search/visual", NewSearchHandlers(nil, nil, nil, nil, nil, nil, nil).Visual)
 	for _, threshold := range []string{"-0.1", "1.01", "NaN", "+Inf", "abc"} {
 		t.Run(threshold, func(t *testing.T) {
 			res := visualRequest(t, r, searchImage(t), threshold)
@@ -80,19 +80,16 @@ func TestVisualCacheRechecksPublicationAndDeletion(t *testing.T) {
 	}
 	_ = clips.Create(ctx, &domain.Clip{ID: "clp_public", VideoID: "vid_public", Status: domain.ClipPublished})
 	calls := 0
-	ai := &mocks.AIClientMem{SearchFn: func(_ string, k int, threshold float64) (*domain.SearchResult, error) {
-		calls++
-		if k != 100 || threshold != 0.75 {
-			t.Fatalf("AI args: %d %g", k, threshold)
-		}
-		return &domain.SearchResult{Hits: []domain.FrameHit{
-			{VideoID: "vid_draft", SimilarityScore: 0.99}, {VideoID: "vid_processing", SimilarityScore: 0.99},
-			{VideoID: "vid_public", SimilarityScore: 0.9, ThumbnailURL: "thumbnails/vid_public/0.jpg"},
-			{VideoID: "vid_public", SimilarityScore: 0.7},
-		}}, nil
-	}}
+	ai := &mocks.AIClientMem{SearchEmbeddingFn: func(_ string) ([]float32, error) { calls++; v := make([]float32, 128); v[0] = 1; return v, nil }}
+	vectors := mocks.NewVectorStoreMem()
+	for _, id := range []string{"vid_draft", "vid_processing", "vid_public"} {
+		v := make([]float32, 128)
+		v[0] = 1
+		_ = vectors.UpsertFrames(ctx, id, []domain.FrameEmbedding{{VideoID: id, Vector: v, ThumbnailURL: "thumbnails/" + id + "/0.jpg"}})
+	}
+
 	r := gin.New()
-	r.POST("/api/search/visual", NewSearchHandlers(videos, nil, cache, ai, clips, nil).Visual)
+	r.POST("/api/search/visual", NewSearchHandlers(videos, nil, cache, ai, clips, nil, vectors).Visual)
 	data := searchImage(t)
 	for i := 0; i < 2; i++ {
 		res := visualRequest(t, r, data, "0.75")

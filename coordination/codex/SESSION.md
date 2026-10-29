@@ -1,3 +1,5 @@
+INT-28 current checkpoint: implementation+mock/unit gates PASS; source checkpoint commit. INT-29 REVIEW ef8162b. Next build gateway+ai-mock+frame-backfill Linux offline overlay on int23-fa8a382, gateway-only recreate, backfill+real E2E then preservation inventory. Precutover evidence INT-28.md/411vectors49videos/95PGrows/MinIO95,47,460. No runtime change yet.
+
 Current: INT-29 REVIEW, contract0.4.1 generated+schema+both FE tsc PASS. INT-28 IN_PROGRESS; focused Go PASS; runtime still old v1. Next full Go gate, build owned gateway/mock/backfill image without downloads, preserve infra and AI.
 
 Active sub-checkpoint: INT-29 IN_PROGRESS, INT-28 BLOCKED on contract clarification for safe deletion409/storage503. Mock/client/focused Go tests passed; full Go gate running. Runtime untouched.

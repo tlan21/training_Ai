@@ -14,6 +14,7 @@ type EventBus interface {
 }
 
 type ObjectStorage interface {
+	DeletePrefix(ctx context.Context, bucket, prefix string) error
 	PutStream(ctx context.Context, bucket, key string, r io.Reader, size int64, contentType string) (string, error)
 	GetPresigned(ctx context.Context, bucket, key string, ttl time.Duration) (string, error)
 	GetObject(ctx context.Context, bucket, key string) (io.ReadCloser, error)

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -153,27 +154,79 @@ func (h *VideoHandlers) Get(c *gin.Context) {
 
 func (h *VideoHandlers) Delete(c *gin.Context) {
 	id := c.Param("id")
-	if _, err := h.videos.Get(c.Request.Context(), id); err != nil {
-		handlers.ErrorEnvelope(c, http.StatusNotFound, "VIDEO_NOT_FOUND", "Video not found")
+	ctx := c.Request.Context()
+	video, err := h.videos.Get(ctx, id)
+	if err != nil {
+		handlers.ErrorEnvelope(c, 404, "VIDEO_NOT_FOUND", "Video not found")
 		return
 	}
-	if err := h.vecs.DeleteFrames(c.Request.Context(), id); err != nil {
-		handlers.ErrorEnvelope(c, 503, "AI_UNAVAILABLE", "Vector cleanup failed; retry deletion: "+err.Error())
-		return
+	if h.jobs != nil {
+		if job, err := h.jobs.GetByVideo(ctx, id); err == nil && (job.Status == domain.JobRunning || job.Status == domain.JobPending) {
+			handlers.ErrorEnvelope(c, 409, "CONFLICT", "Wait for the active job before deleting")
+			return
+		}
 	}
-	if err := h.videos.SoftDelete(c.Request.Context(), id); err != nil {
+	clips, err := h.clips.List(ctx, &id, nil)
+	if err != nil {
 		handlers.ErrorEnvelope(c, 500, "INTERNAL", err.Error())
 		return
 	}
-	if err := h.clips.HideByVideo(c.Request.Context(), id); err != nil {
+	for _, clip := range clips {
+		if clip.Status == domain.ClipProcessing {
+			handlers.ErrorEnvelope(c, 409, "CONFLICT", "Wait for clip processing before deleting")
+			return
+		}
+	}
+	if err := h.vecs.DeleteFrames(ctx, id); err != nil {
+		handlers.ErrorEnvelope(c, 503, "SERVICE_UNAVAILABLE", "Vector cleanup failed; retry deletion: "+err.Error())
+		return
+	}
+	if err := h.clips.HideByVideo(ctx, id); err != nil {
 		handlers.ErrorEnvelope(c, 500, "INTERNAL", err.Error())
 		return
 	}
-	_ = h.analyses.Delete(c.Request.Context(), id)
-	_ = h.subs.Delete(c.Request.Context(), id)
+	// All operations are idempotent. Keep the row retryable if a storage deletion fails.
+	cleanup := func() error {
+		if video.RawFilePath != "" {
+			key := strings.TrimPrefix(video.RawFilePath, "raw-videos/")
+			if err := h.storage.Delete(ctx, "raw-videos", key); err != nil {
+				return err
+			}
+		}
+		if err := h.storage.Delete(ctx, "raw-videos", "audio/"+id+".wav"); err != nil {
+			return err
+		}
+		if err := h.storage.DeletePrefix(ctx, "thumbnails", id+"/"); err != nil {
+			return err
+		}
+		for _, clip := range clips {
+			if clip.ClipFilePath != nil && *clip.ClipFilePath != "" {
+				if err := h.storage.Delete(ctx, "clips", strings.TrimPrefix(*clip.ClipFilePath, "clips/")); err != nil {
+					return err
+				}
+			}
+		}
+		if err := h.analyses.Delete(ctx, id); err != nil {
+			return err
+		}
+		if err := h.subs.Delete(ctx, id); err != nil {
+			return err
+		}
+		return nil
+	}
+	if err := cleanup(); err != nil {
+		handlers.ErrorEnvelope(c, 503, "SERVICE_UNAVAILABLE", "Storage cleanup failed; retry deletion: "+err.Error())
+		return
+	}
+	if video.Status != domain.VideoDeleted {
+		if err := h.videos.SoftDelete(ctx, id); err != nil {
+			handlers.ErrorEnvelope(c, 500, "INTERNAL", err.Error())
+			return
+		}
+	}
 	if h.cache != nil {
-		_ = h.cache.Delete(c.Request.Context(), "subs:"+id)
-		_ = h.cache.Set(c.Request.Context(), "feed:revision", newID(), 24*time.Hour)
+		_ = h.cache.Delete(ctx, "subs:"+id)
+		_ = h.cache.Set(ctx, "feed:revision", newID(), 24*time.Hour)
 	}
 	c.Status(http.StatusNoContent)
 }

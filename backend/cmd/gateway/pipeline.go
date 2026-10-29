@@ -16,8 +16,9 @@ import (
 )
 
 // Run Go consumers in the gateway process; repositories/events/files are shared persistent adapters.
-func wirePipeline(videos ports.VideoRepository, jobs ports.JobRepository, clips ports.ClipRepository, analyses ports.AnalysisStore, subs ports.SubtitleStore, ai ports.AIClient, bus ports.EventBus, storage ports.ObjectStorage) {
+func wirePipeline(videos ports.VideoRepository, jobs ports.JobRepository, clips ports.ClipRepository, analyses ports.AnalysisStore, subs ports.SubtitleStore, ai ports.AIClient, bus ports.EventBus, storage ports.ObjectStorage, vectors ports.VectorStore) {
 	runner := orchestrator.New(videos, jobs, analyses, subs, ai, bus)
+	runner.WithStorage(storage, vectors)
 	cut := cutter.New(clips, videos, storage, bus, "raw-videos", "clips")
 	consume := func(topic, group string, handler func(context.Context, []byte) error) {
 		go func() {
@@ -51,7 +52,7 @@ func wirePipeline(videos ports.VideoRepository, jobs ports.JobRepository, clips 
 		}
 		// Only ingest-owned directories may be read/removed, never an event-provided arbitrary path.
 		expected := filepath.Join("/srv/work", prep.VideoID)
-		if !strings.HasPrefix(prep.VideoID, "vid_") || strings.ContainsAny(prep.VideoID, "/\\") || prep.KeyframesPath != expected {
+		if !strings.HasPrefix(prep.VideoID, "vid_") || strings.ContainsAny(prep.VideoID, "/\\") || prep.KeyframesPath != expected || (prep.Duration > 0 && prep.AudioPath != filepath.Join(expected, "audio.wav")) {
 			return domain.ErrValidation
 		}
 		defer os.RemoveAll(expected)

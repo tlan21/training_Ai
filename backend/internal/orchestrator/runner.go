@@ -5,10 +5,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"math"
 	"math/rand"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"traning_ai/backend/internal/domain"
@@ -36,6 +38,8 @@ type stageDone struct {
 
 // Runner chain 5 stage (Go, 1 goroutine/video — §5).
 type Runner struct {
+	storage  ports.ObjectStorage
+	vectors  ports.VectorStore
 	videos   ports.VideoRepository
 	jobs     ports.JobRepository
 	analysis ports.AnalysisStore
@@ -48,6 +52,11 @@ type Runner struct {
 
 func New(videos ports.VideoRepository, jobs ports.JobRepository, analysis ports.AnalysisStore, subs ports.SubtitleStore, ai ports.AIClient, bus ports.EventBus) *Runner {
 	return &Runner{videos: videos, jobs: jobs, analysis: analysis, subs: subs, ai: ai, bus: bus, sleep: time.Sleep}
+}
+
+func (r *Runner) WithStorage(storage ports.ObjectStorage, vectors ports.VectorStore) {
+	r.storage = storage
+	r.vectors = vectors
 }
 
 func (r *Runner) WithSleep(fn func(time.Duration)) { r.sleep = fn }
@@ -196,7 +205,13 @@ func (r *Runner) retry(ctx context.Context, stage string, fn func(context.Contex
 }
 
 func (r *Runner) doVision(ctx context.Context, videoID, keyframesPath string) ([][]float32, error) {
-	res, err := r.ai.Vision(ctx, []string{keyframesPath})
+	var res *domain.VisionResult
+	var err error
+	if r.storage != nil && r.vectors != nil {
+		res, err = IndexVideoFrames(ctx, r.ai, r.storage, r.vectors, videoID, keyframesPath)
+	} else {
+		res, err = r.ai.VisionV2(ctx, []string{keyframesPath})
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -209,12 +224,36 @@ func (r *Runner) doVision(ctx context.Context, videoID, keyframesPath string) ([
 	if err := r.analysis.Put(ctx, videoID, nil, nil, catPtr); err != nil {
 		return nil, err
 	}
-	// ViT's 256-d features feed Fusion; Siamese 128-d indexing belongs to T4.2.
+	// Fusion still consumes the 256-d features; backend persists the separate Siamese vectors.
 	return res.Embeddings256, nil
 }
 
 func (r *Runner) doASR(ctx context.Context, videoID, audioPath string) error {
-	res, err := r.ai.ASR(ctx, audioPath, "vi")
+	if r.storage != nil {
+		if !strings.HasPrefix(audioPath, "raw-videos/audio/"+videoID+".") {
+			return domain.ErrValidation
+		}
+		object, err := r.storage.GetObject(ctx, "raw-videos", strings.TrimPrefix(audioPath, "raw-videos/"))
+		if err != nil {
+			return err
+		}
+		defer object.Close()
+		file, err := os.CreateTemp("", "asr-source-*.wav")
+		if err != nil {
+			return err
+		}
+		defer os.Remove(file.Name())
+		_, copyErr := io.Copy(file, object)
+		closeErr := file.Close()
+		if copyErr != nil {
+			return copyErr
+		}
+		if closeErr != nil {
+			return closeErr
+		}
+		audioPath = file.Name()
+	}
+	res, err := r.ai.ASRV2(ctx, audioPath, "vi")
 	if err != nil {
 		return err
 	}

@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -39,23 +40,14 @@ func (c *Client) request(ctx context.Context, path string, input, output any) er
 	}
 	req.Header.Set("Authorization", "Bearer "+c.apiKey)
 	req.Header.Set("Content-Type", "application/json")
+	log.Printf("AI HTTP %s %s", method, path)
 	response, err := c.http.Do(req)
 	if err != nil {
 		return err
 	}
 	defer response.Body.Close()
 	if response.StatusCode != http.StatusOK {
-		var envelope struct {
-			Error struct {
-				Message string `json:"message"`
-			} `json:"error"`
-		}
-		_ = json.NewDecoder(response.Body).Decode(&envelope)
-		status := response.StatusCode
-		if status >= 500 {
-			status = http.StatusServiceUnavailable
-		}
-		return domain.NewError("AI_UNAVAILABLE", fmt.Sprintf("%s: HTTP %d: %s", path, response.StatusCode, envelope.Error.Message), status)
+		return aiHTTPError(path, response)
 	}
 	return json.NewDecoder(response.Body).Decode(output)
 }

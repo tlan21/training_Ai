@@ -21,14 +21,14 @@ func (s *audioStorage) GetPresigned(ctx context.Context, bucket, key string, ttl
 	return s.ObjectStorageMem.GetPresigned(ctx, bucket, key, ttl)
 }
 
-func TestUploadAIAudioStreamsBytesAndPresignsForJobLifetime(t *testing.T) {
+func TestUploadAIAudioStoresBytesWithoutPresigning(t *testing.T) {
 	storage := &audioStorage{ObjectStorageMem: mocks.NewObjectStorageMem()}
 	file := filepath.Join(t.TempDir(), "audio.wav")
 	if err := os.WriteFile(file, []byte("WAV fixture"), 0600); err != nil {
 		t.Fatal(err)
 	}
 	url, err := uploadAIAudio(context.Background(), storage, file, "audio/vid_test.wav")
-	if err != nil || url != "https://storage.local/audio/vid_test.wav" || storage.ttl != 2*time.Hour {
+	if err != nil || url != "raw-videos/audio/vid_test.wav" || storage.ttl != 0 {
 		t.Fatalf("bad remote audio reference: %q %v", url, err)
 	}
 	object, err := storage.GetObject(context.Background(), "raw-videos", "audio/vid_test.wav")

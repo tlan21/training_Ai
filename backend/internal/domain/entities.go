@@ -192,8 +192,41 @@ type VideoHit struct {
 // --- AI results (inference-service :8001) ---
 
 type VisionResult struct {
-	CategorySuggestion string      `json:"category_suggestion" bson:"category_suggestion"`
-	Embeddings256      [][]float32 `json:"embeddings_256" bson:"embeddings_256"`
+	CategoryLogitSums  map[string]float64 `json:"category_logit_sums"`
+	SiameseVectors     [][]float32        `json:"siamese_vectors"`
+	CategorySuggestion string             `json:"category_suggestion" bson:"category_suggestion"`
+	Embeddings256      [][]float32        `json:"embeddings_256" bson:"embeddings_256"`
+}
+
+// AI-API v2.0 compute-only Two-Tower features; no ANN or storage in inference.
+type RecommendationVideo struct {
+	VideoID             string    `json:"video_id"`
+	CategoryID          *string   `json:"category_id"`
+	ContentEmbedding256 []float32 `json:"content_embedding_256"`
+	PositiveCount       int       `json:"positive_count"`
+}
+type RecommendationUser struct {
+	UserID               string   `json:"user_id"`
+	PreferredCategoryIDs []string `json:"preferred_category_ids"`
+	PositiveVideoIDs     []string `json:"positive_video_ids"`
+}
+type RecommendationFeatures struct {
+	Videos []RecommendationVideo `json:"videos"`
+	Users  []RecommendationUser  `json:"users"`
+}
+type RecommendationEmbeddings struct {
+	FeatureVersion string `json:"feature_version"`
+	Dim            int    `json:"dim"`
+	Metric         string `json:"metric"`
+	Normalized     bool   `json:"normalized"`
+	Videos         []struct {
+		VideoID string    `json:"video_id"`
+		Vector  []float32 `json:"vector"`
+	} `json:"videos"`
+	Users []struct {
+		UserID string    `json:"user_id"`
+		Vector []float32 `json:"vector"`
+	} `json:"users"`
 }
 
 type ASRResult struct {

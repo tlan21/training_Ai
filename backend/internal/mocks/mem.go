@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"io"
+	"strings"
 	"sync"
 	"time"
 
@@ -943,13 +944,14 @@ func (c *CacheMem) Delete(_ context.Context, keys ...string) error {
 }
 
 type AIClientMem struct {
-	VisionFn         func([]string) (*domain.VisionResult, error)
-	ASRFn            func(string, string) (*domain.ASRResult, error)
-	HighlightFn      func(string, [][]float32, [][]float32) (*domain.HighlightResult, error)
-	SearchFn         func(string, int, float64) (*domain.SearchResult, error)
-	RecommendationFn func(string, int, map[string]string) (*domain.RecResult, error)
-	SummarizeFn      func(string, int) (*domain.SummaryResult, error)
-	HealthFn         func() (*domain.AIHealth, error)
+	SearchEmbeddingFn func(string) ([]float32, error)
+	VisionFn          func([]string) (*domain.VisionResult, error)
+	ASRFn             func(string, string) (*domain.ASRResult, error)
+	HighlightFn       func(string, [][]float32, [][]float32) (*domain.HighlightResult, error)
+	SearchFn          func(string, int, float64) (*domain.SearchResult, error)
+	RecommendationFn  func(string, int, map[string]string) (*domain.RecResult, error)
+	SummarizeFn       func(string, int) (*domain.SummaryResult, error)
+	HealthFn          func() (*domain.AIHealth, error)
 }
 
 func (m *AIClientMem) Vision(_ context.Context, paths []string) (*domain.VisionResult, error) {
@@ -993,4 +995,15 @@ func (m *AIClientMem) Health(_ context.Context) (*domain.AIHealth, error) {
 		return m.HealthFn()
 	}
 	return &domain.AIHealth{GpuVramUsed: 100, GpuUtil: 10, ModelsLoaded: []string{"vit"}, StubMode: false}, nil
+}
+
+func (s *ObjectStorageMem) DeletePrefix(_ context.Context, bucket, prefix string) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	for key := range s.Objs {
+		if strings.HasPrefix(key, bucket+"/"+prefix) {
+			delete(s.Objs, key)
+		}
+	}
+	return nil
 }

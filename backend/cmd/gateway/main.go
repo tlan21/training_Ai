@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 
@@ -67,14 +68,14 @@ func main() {
 	}); err != nil {
 		log.Fatal(err)
 	}
-	wirePipeline(videoRepo, jobRepo, clipRepo, analysisStore, subtitleStore, aiClient, eventBus, objectStorage)
+	wirePipeline(videoRepo, jobRepo, clipRepo, analysisStore, subtitleStore, aiClient, eventBus, objectStorage, vectorStore)
 
 	resetRepo := mocks.NewPasswordResetRepoMem()
 	authSvc := auth.NewWithResets(userRepo, sessionRepo, resetRepo, jwtSvc)
 	authH := handlers.NewAuthHandlers(authSvc, userRepo, &pg.PreferenceRepo{DB: db}, categoryRepo, interactionRepo, objectStorage)
 	// D18: use product popularity for MVP; enable the recommender after the v2 production gate.
 	contentH := handlers.NewContentHandlers(videoRepo, clipRepo, categoryRepo, interactionRepo, analysisStore, subtitleStore, cache, nil, objectStorage)
-	searchH := handlers.NewSearchHandlers(videoRepo, subtitleStore, cache, aiClient, clipRepo, objectStorage)
+	searchH := handlers.NewSearchHandlers(videoRepo, subtitleStore, cache, aiClient, clipRepo, objectStorage, vectorStore)
 	interH := handlers.NewInteractionHandlers(interactionRepo)
 
 	videoCMS := cms.NewVideoHandlers(videoRepo, jobRepo, analysisStore, subtitleStore, vectorStore, cache, eventBus, objectStorage, aiClient, clipRepo)
@@ -88,7 +89,26 @@ func main() {
 	r.Use(gin.Recovery(), handlers.CORS())
 	r.NoRoute(handlers.NotFound())
 
-	r.GET("/healthz", func(c *gin.Context) { c.JSON(http.StatusOK, gin.H{"status": "ok"}) })
+	r.GET("/healthz", func(c *gin.Context) {
+		ctx, cancel := context.WithTimeout(c.Request.Context(), 5*time.Second)
+		defer cancel()
+		deps := gin.H{}
+		status := http.StatusOK
+		for name, probe := range map[string]func(context.Context) error{"milvus": vectorStore.Health, "minio": objectStorage.Health} {
+			if err := probe(ctx); err != nil {
+				deps[name] = "unavailable"
+				status = 503
+				log.Printf("health %s: %v", name, err)
+			} else {
+				deps[name] = "ok"
+			}
+		}
+		state := "ok"
+		if status != 200 {
+			state = "degraded"
+		}
+		c.JSON(status, gin.H{"status": state, "dependencies": deps})
+	})
 	r.GET("/openapi.json", func(c *gin.Context) {
 		swagger, err := gen.GetSwagger()
 		if err != nil {
