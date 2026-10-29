@@ -1,0 +1,107 @@
+[services] Milvus chưa có collection user_recommendation_embeddings
+INFO:     127.0.0.1:53128 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53134 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59028 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51434 - "GET /health HTTP/1.1" 200 OK
+[services] Milvus chưa có collection user_recommendation_embeddings
+INFO:     127.0.0.1:38244 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53694 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37298 - "GET /health HTTP/1.1" 200 OK
+[services] Milvus chưa có collection user_recommendation_embeddings
+INFO:     127.0.0.1:39626 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37238 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39966 - "GET /health HTTP/1.1" 200 OK
+[services] Milvus chưa có collection user_recommendation_embeddings
+INFO:     127.0.0.1:57194 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57094 - "GET /health HTTP/1.1" 200 OK
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+/srv/inference-service/app/worker.py:30: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at /__w/pytorch/pytorch/torch/csrc/utils/tensor_numpy.cpp:213.)
+  return torch.from_numpy(np.asarray(img)).float().div(255.0).permute(2, 0, 1)
+INFO:     Application startup complete.
+INFO:     127.0.0.1:38364 - "GET /health HTTP/1.1" 200 OK
+[services] Milvus chưa có collection user_recommendation_embeddings
+INFO:     127.0.0.1:55276 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57520 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48308 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.22.0.11:42880 - "GET /health HTTP/1.1" 200 OK
+[services] Milvus chưa có collection user_recommendation_embeddings
+INFO:     127.0.0.1:39240 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58938 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58554 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59106 - "GET /health HTTP/1.1" 200 OK
+[services] Milvus chưa có collection user_recommendation_embeddings
+INFO:     127.0.0.1:59110 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.22.0.11:59016 - "POST /v2/vision/completions HTTP/1.1" 200 OK
+INFO:     172.22.0.11:59016 - "POST /v2/asr/completions HTTP/1.1" 200 OK
+INFO:     172.22.0.11:59016 - "POST /v1/highlight/completions HTTP/1.1" 200 OK
+INFO:     Uvicorn running on http://0.0.0.0:8001 (Press CTRL+C to quit)
+INFO:     172.22.0.11:59016 - "POST /v1/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50806 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.22.0.11:45076 - "POST /v2/search/embeddings HTTP/1.1" 200 OK
+INFO:     172.22.0.11:45076 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.22.0.11:45076 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.22.0.11:45076 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50892 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.22.0.11:45076 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.22.0.11:45076 - "POST /v2/vision/completions HTTP/1.1" 200 OK
+[services] Milvus chưa có collection user_recommendation_embeddings
+INFO:     172.22.0.11:45076 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54684 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.22.0.11:45076 - "POST /v2/asr/completions HTTP/1.1" 200 OK
+INFO:     172.22.0.11:45076 - "POST /v1/highlight/completions HTTP/1.1" 200 OK
+INFO:     172.22.0.11:45076 - "POST /v1/completions HTTP/1.1" 200 OK
+INFO:     172.22.0.11:45076 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.22.0.11:45076 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.22.0.11:45076 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.22.0.11:45076 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.22.0.11:45076 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.22.0.11:45076 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.22.0.11:45076 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.22.0.11:45076 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53842 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.22.0.11:45076 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.22.0.11:47222 - "POST /v2/vision/completions HTTP/1.1" 200 OK
+INFO:     172.22.0.11:47222 - "POST /v2/asr/completions HTTP/1.1" 200 OK
+INFO:     172.22.0.11:47222 - "POST /v1/highlight/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33312 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.22.0.11:47222 - "POST /v1/completions HTTP/1.1" 200 OK
+INFO:     172.22.0.11:47222 - "POST /v2/search/embeddings HTTP/1.1" 200 OK
+INFO:     172.22.0.11:47222 - "POST /v2/search/embeddings HTTP/1.1" 200 OK
+INFO:     172.22.0.11:47222 - "POST /v2/search/embeddings HTTP/1.1" 200 OK
+INFO:     172.22.0.11:47222 - "POST /v2/search/embeddings HTTP/1.1" 200 OK
+INFO:     172.22.0.11:47222 - "POST /v2/search/embeddings HTTP/1.1" 200 OK
+INFO:     172.22.0.11:47222 - "POST /v2/search/embeddings HTTP/1.1" 200 OK
+INFO:     172.22.0.11:47222 - "POST /v2/search/embeddings HTTP/1.1" 200 OK
+INFO:     172.22.0.11:47222 - "POST /v2/search/embeddings HTTP/1.1" 200 OK
+INFO:     172.22.0.11:47222 - "POST /v2/search/embeddings HTTP/1.1" 200 OK
+INFO:     172.22.0.11:47222 - "POST /v2/search/embeddings HTTP/1.1" 200 OK
+INFO:     172.22.0.11:47222 - "POST /v2/search/embeddings HTTP/1.1" 200 OK
+INFO:     172.22.0.11:47222 - "POST /v2/search/embeddings HTTP/1.1" 200 OK
+INFO:     172.22.0.11:47222 - "POST /v2/search/embeddings HTTP/1.1" 200 OK
+INFO:     172.22.0.11:47222 - "POST /v2/search/embeddings HTTP/1.1" 200 OK
+INFO:     172.22.0.11:47222 - "POST /v2/search/embeddings HTTP/1.1" 200 OK
+INFO:     172.22.0.11:47222 - "POST /v2/search/embeddings HTTP/1.1" 200 OK
+INFO:     172.22.0.11:47222 - "POST /v2/search/embeddings HTTP/1.1" 200 OK
+INFO:     172.22.0.11:47222 - "POST /v2/search/embeddings HTTP/1.1" 200 OK
+INFO:     172.22.0.11:47222 - "POST /v2/search/embeddings HTTP/1.1" 200 OK
+INFO:     172.22.0.11:47222 - "POST /v2/search/embeddings HTTP/1.1" 200 OK
+INFO:     172.22.0.11:47222 - "POST /v2/search/embeddings HTTP/1.1" 200 OK
+INFO:     172.22.0.11:47222 - "POST /v2/search/embeddings HTTP/1.1" 200 OK
+[services] Milvus chưa có collection user_recommendation_embeddings
+INFO:     127.0.0.1:33948 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.22.0.11:47222 - "POST /v2/search/embeddings HTTP/1.1" 200 OK
+INFO:     172.22.0.11:47222 - "POST /v2/search/embeddings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41412 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41734 - "GET /health HTTP/1.1" 200 OK
+[services] Milvus chưa có collection user_recommendation_embeddings
+INFO:     127.0.0.1:34590 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47302 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47280 - "GET /health HTTP/1.1" 200 OK
+[services] Milvus chưa có collection user_recommendation_embeddings
+INFO:     127.0.0.1:51662 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51140 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60094 - "GET /health HTTP/1.1" 200 OK
+[services] Milvus chưa có collection user_recommendation_embeddings
+INFO:     127.0.0.1:37312 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60068 - "GET /health HTTP/1.1" 200 OK

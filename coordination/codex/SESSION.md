@@ -1,6 +1,24 @@
-INT-31 checkpoint: Docker inference ai-v2-478052e HEALTHY stubfalse/6models/degradedempty;139unmodifiedsource filehashes and6read-onlycheckpoint hashes match pinnedClaude478052e/activehost. No download/hoststop. Internal-only Docker8001; gateway still host8001 until next guardedcutover. Next recreate gateway with explicitoverride then realE2E Dockerhealthsource.
+# SESSION — authoritative resume state (2026-10-29, INT-31 real Docker inference verified)
 
-INT-31 IN_PROGRESS: explicit user requests inference-service Docker +realE2E. Deploy unmodified Claude478052e on cachedruntime, existingexactreadonlycheckpointmount (matches hostactive.env path), internalnetwork8001, preserve hostPID15852/:8001 andsinglecomposeproject. No AI source/checkpoint copies/edits or downloads. Next sourceexport/offlinebuild/containerhealth then gatewaycutover.
+- codex/integration; INT-31 DONE deploymentacceptance, sourcef1ad77c +finalevidencecheckpoint. No activeIN_PROGRESS; no release/push/sharedfile edits.
+- Explicituserrequested inferenceDocker+realtest: deploy unmodifiedClaude478052e overcached454MBbase,139sourcefilehashes matchGit;
+ preserveexactexistingread-onlycheckpointmount,6best.ptSHAs matchhostbefore/after. No AI source/weights edits/copies/training/downloads.
+- ActiveDockerAI video-ai-inference:ai-v2-478052e, container video-ai-inference-service-1 healthy/stubfalse6CPU/degradedempty.
+ InternalDocker8001 only(no hostport); gateway latestalias stillint28binary, nowAI_BASE_URL=http://inference-service:8001/AI_ALLOW_STUB0.
+ Explicit docker-compose.inference.yml required for thismode; root-onlyCompose intentionallyhostAI mode. Currentkey onlymemory, no envfile edits.
+- HostClaude PID15852/:8001 remainsuntouched/healthyreal6; userrequest fulfilled without stopping it. ReplacedonlylegacyexitedDockerAI+gateway;
+ other14containers IDs/images/start/mounts preserved. AIwarmMilvus compatibility remainspendingClauderelease/dependencyremoval, no AI codepatched.
+- Dockerhealth-sourced strictcontent +video_flow+visual_search **4PASS1.2m**:10backendvectors/thumbs,3ASRsegments,240charsdraft,
+ ca_nhac,ownTOP1.99206525/feedpopularity/repeatdeleteclean. ActualDockerlogs /v2vision/asr/search200,retainedv1highlight/text200,
+ no4retired/v1gatewaycalls; auth401; rec503MODEL_NOT_READY. Go/FE unchanged, E2Etypes/PSsyntax/diffcheck/read-onlyDockerpreflight13servicesPASS.
+- Original100PGrows hash42a7d5f45e2b974b7b724b1a3d8bd91c and10cats hash2279cd784f346ec1e52ce40605752c91 unchanged;
+ original411vectors49videos andMinIO95/47/460keys+values preserved. Fournewtestuploadssoftdeleted,activejobs0;6checkpointSHAsunchanged.
+- Evidence verification/INT-31.md +allbuild/source/hash/health/E2E/log/runtime/storage/preservation/preflightfiles; runtimehandoff appended.
+ C1.64GiB/E1.31GiB, avoidbigdownloads; ignoredsourcebuildcontext retained, no cleanup/prune/volume deletion. No mockcontainer returned.
+- INT-28/29 remain REVIEW /v2DRAFT untilClaude releaseAPI_READY. Nextsafeaction: Claude release then startupmerge/matrixpromotion;
+ no unnecessary rebuild/testrepeat or hostAI/weights changes. CPUonly/no GPU/soak/modelquality/fullcoldreboot/freshdependencyimage claim.
+
+## Prior INT-30 checkpoint (historical; primarygatewaytarget nowDocker above)
 
 # SESSION — authoritative resume state (2026-10-29, INT-30 Docker mock removal complete)
 

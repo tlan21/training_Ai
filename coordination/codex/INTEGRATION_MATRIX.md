@@ -66,3 +66,9 @@ Retained v1highlight/text +health API_READY remain INTEGRATED_REAL, refreshed by
 Four legacy v1 clients retained for compatibility tests only; no primaryruntime calls aftercutover.
 V2mocktested and actualrealcheckpoint E2E passed, but **not INTEGRATED_REAL/DONE** until Claude releases API_READY onmaster.
 Backendhealth nowowns MinIO/Milvus; AI dependencies can be removed by Claude afterrelease. No AI contract/checkpoint change byCodex.
+
+
+Runtime update2026-10-29 INT-31: user-requested realDockerAI nowprimary viahttp://inference-service:8001;
+ unmodifiedClaude478052e,6checkpointSHAs unchanged, Dockerstubfalse6CPU/degradedempty, strictDockerhealth +4realE2E PASS1.2m.
+ Evidence verification/INT-31.md/counts/runtime/log/preservation. HostClaude8001 untouched, no runtime mock.
+ /v2 rows remainREAL_PENDING awaitingClaudeAPI_READY release; retainedv1highlight/text refreshed onDocker. No AI contract/quality promotion.

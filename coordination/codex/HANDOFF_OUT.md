@@ -363,3 +363,23 @@ Mẫu HO:
  gatewayhealth200MinIO/Milvusok,CMS/Client200. No AI source/runtime/checkpoint change or volume/image/prune action.
 - Evidence coordination/codex/verification/INT-30.md and config/apply/removal/preflight/E2E/counts/preservation/before-after logs.
  INT-28 stillREVIEW pendingClaude/v2API_READY release, no falsematrixpromotion; no master/push/sharedstatus changes.
+
+
+## 2026-10-29 Runtime INT-31 — user requested inference-service Docker, real E2E PASS
+- User explicitly requested DockerAI startup/testing after INT-30 mockremoval. Deployment-only: unmodifiedClaude **478052e** packaged oncachedexistingbase;
+ source/deploymentcommit **f1ad77c**. 139sourcefilehashes matchGit,6mountedcheckpointSHAs matchactivehost andunchangedafterE2E.
+ Exactexistingcheckpointbind read-only retained, nevercopied/baked/edited. No training/AI contract/source edits or package/model download.
+- Docker image **video-ai-inference:ai-v2-478052e**, containerhealthy/stubfalse6CPU/degradedempty.
+ Onlyinternal8001; hostClaude PID15852/:8001 untouched/healthy. Gateway now **http://inference-service:8001 /AI_ALLOW_STUB0**.
+ Composemode: root +owned docker-compose.inference.yml; oldexitedDockerAI replaced, then gateway-onlyrecreate afterhealth/hash/idle guards.
+ Other14containers/volumes andhostAI preserved. Root-onlyCompose stillhostmode; coldutility nowdetectsDocker13services/read-onlypreflightPASS.
+- `node node_modules/@playwright/test/cli.js test e2e/ai_v2_live.spec.ts e2e/video_flow.spec.ts e2e/visual_search.spec.ts ...` with
+ E2E_AI_DOCKER_CONTAINER=video-ai-inference-service-1 +E2E_DOCKER_HOST socket: **4PASS1.2m**.
+ Stricttest readsDockerhealth ratherthanhost:processed/10backendvectors+thumbs/3ASR/240charsdraftsummary/ca_nhac/TOP1 **.99206525**,
+ feedpopularity/repeateddeleteclean; CMSreview/publish/Clientplayback/invalidprivacy/ANNcache+latency+privacy regressionsPASS.
+- Dockeraccesslogconfirms200/v2vision/asr/search andretained/v1highlight/text. No4retiredv1gatewaycalls. Bearerauth401PASS;
+ /v2recommendation503MODEL_NOT_READY expectedAI-12. ExistingNumPyread-onlytensorwarning logged atstartup; no AI codeedited, no failure/degraded.
+- Original100PGrows/10categories hashesunchanged;411vectors49videos allIDs/values/payloadsame;MinIO95/47/460keys/ETagsame;
+ fourtestuploadssoftdeleted/activejobs0. Sixcheckpointfilesunchanged. Evidence verification/INT-31.md +source/hash/build/config/runtime/health/E2E/log/storage/preservation/preflight.
+- Runtime ready forClaude's/v2API_READY release; no endpointstatuspromotion byCodex whileDRAFT. Keep Docker/source/activecheckpoint release coordinated;
+ hostprocess intentionallyremainsforClaude. No master/push/sharedstatus edit, no GPU/load/soak/freshdependencybuild claim.

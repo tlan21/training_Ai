@@ -1,0 +1,13 @@
+{
+  "ai_base_url": "http://inference-service:8001",
+  "ai_allow_stub": "0",
+  "same_gateway_image": true,
+  "other_env_unchanged": true,
+  "health": {
+    "dependencies": {
+      "milvus": "ok",
+      "minio": "ok"
+    },
+    "status": "ok"
+  }
+}

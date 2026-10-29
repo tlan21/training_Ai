@@ -450,12 +450,18 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Next action: none for Docker removal; await Claudev2API_READY release for INT-28 matrixpromotion. No push/master/sharedfile edit.
 
 ### INT-31 — User-requested real inference Docker runtime
-- Owner: CODEX | Status: IN_PROGRESS (2026-10-29)
-- Depends on: explicit latest user request to start inference-service in Docker and run real E2E; Claude source pinned478052e/v2DRAFT.
-- Scope: deployment-only exception for requested AI container; no AI source/model/checkpoint edits or copies. Reuse existing exact read-only checkpoint mount.
- HostClaude PID15852/:8001 remains untouched; new Docker service internal8001, gateway connects directly over video-ai network, no new hostport/secondstack.
-- Acceptance: unmodifiedClaude code in cachedimage overlay/no large downloads; Dockerhealthstubfalse6/degradedempty and/v2;
- sameactivecheckpointSHAs, gatewayrealDockerendpoint/stub0, actualupload/search/speech/deleteE2E PASS, data/hostAI/othercontainers preserved.
-- Changed: planned owned infraDockerrecipe/explicitcomposeoverride, integrationtest healthURL support ifneeded, ownedcoordination/evidence.
-- Commits/Evidence: startup checkpoint, pending build/live verification. No stopping hostAI, no training/AI contract changes, no push.
-- Next action: export pinnedtrackedsource only, build offline overlay on existing inference image, start internal-only container and check health before gateway switch.
+- Owner: CODEX | Status: DONE (2026-10-29, deployment/live E2E acceptance; AIv2 endpoint release remains pending)
+- Depends on: explicit user DockerAI startup/test request; unmodified Claude478052e and current6checkpoints read-only.
+- Acceptance: Dockerhealthstubfalse6/no degraded +v2; samecheckpointSHAs; gatewayinternalDockerAI/stub0;
+ realupload/search/speech/deleteE2E PASS, data/hostAI/othercontainers preserved; no AI source/weights modification or large download.
+- Changed: infra/inference/Dockerfile.runtime, docker-compose.inference.yml, rootCompose/envcomments,
+ infra/verify_cold_start.ps1 mode support, e2e/ai_v2_live.spec.ts Dockerhealthsource andownedcoordination/evidence.
+- Commits: 26e2847 start; **f1ad77c** pinnedruntime/sourceintegrity. Final liveacceptancecheckpoint follows.
+- Evidence: verification/INT-31.md +source/hash/build/config/runtime/health/E2E/log/preservation/storage/preflight files;
+ **4PASS1.2m** realDocker:10vectors/3ASR/240charsdraft/TOP1.99206525/deleteclean/popularity.
+ Dockerstubfalse6CPU/degradedempty, auth401/rec503MODEL_NOT_READY; primary/v2logs+retainedv1highlight/text only.
+- Preservation:139sourcehashes match pinnedClaude;6checkpointSHAs unchanged;100originalPGrows/10categories hash unchanged;
+411vectors49videos +MinIO95/47/460 unchanged;14othercontainers/hostAI15852 unchanged; activejobs0.
+- Checkpoint: Lane codex /DockerAIai-v2-478052e healthy/internal8001/gatewayhttp://inference-service:8001 /no publicAIport /contractsunchanged.
+- Next action: manage Docker mode with explicitinferenceoverride; await Claudev2API_READY release for INT-28 promotion.
+ CPUonly, no fullcoldreboot/GPU/soak/freshdependencybuild/modelquality claims. HostClaude8001 untouched, no checkpoint copies/AI code edits/push.
