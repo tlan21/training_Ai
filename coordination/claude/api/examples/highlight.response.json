@@ -1,9 +1,9 @@
 {
  "http_status": 200,
  "body": {
-  "id": "hl-primitive-51c59d9abfca",
+  "id": "hl-primitive-6526dde97ea5",
   "object": "highlight_completion",
-  "created": 1793267102,
+  "created": 1793268925,
   "model": "primitive-seq2seq-highlighter",
   "video_id": "vid_ai01example",
   "timeline_scores": [
@@ -20,6 +20,7 @@
     "score": 56.2
    }
   ],
-  "recommended_clips": []
+  "recommended_clips": [],
+  "clip_threshold": 50.0
  }
 }

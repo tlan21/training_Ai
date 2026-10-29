@@ -94,3 +94,12 @@ def test_merge_gap_min_length_and_sentence_snap():
     assert [(c.start_time, c.end_time) for c in snapped] == [(0.0, 7.5), (10.5, 16.0)]  # end → sentence end; start → sentence start
     far = [schemas.SpeechSpan(start_time=4.0, end_time=9.0)]                               # sentence ends 4 s after the clip: too far
     assert services._peaks_to_clips(scores, 51.0, 1, 3, far)[0].end_time == 5.0
+
+
+def test_response_reports_the_clip_threshold_used(recipe, monkeypatch):
+    req = schemas.HighlightRequest(video_id="vid_t", features=schemas.HighlightFeatures(
+        vision_embeddings=[[0.0] * 256] * 10, audio_spectrogram_features=[[0.0] * 64] * 10))
+    assert services.run_highlight(req).clip_threshold == 51.0                 # recipe tau 0.51
+    monkeypatch.setattr(registry, "highlight_postproc", {})
+    monkeypatch.setattr(registry, "highlight_members", [])
+    assert services.run_highlight(req).clip_threshold == 75.0                 # legacy

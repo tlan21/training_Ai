@@ -101,6 +101,8 @@ class HighlightResponse(BaseModel):
     video_id: str
     timeline_scores: list[TimelineScore]
     recommended_clips: list[RecommendedClip]
+    # AI-API v1.4-rc1 (AI-17): score (0–100) above which recommended_clips were cut — draw the heatmap line here, not at a fixed 75.
+    clip_threshold: float | None = None
 
 
 # ---------------- /v1/asr/completions (ASR CTC) ----------------

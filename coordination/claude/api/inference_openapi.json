@@ -967,6 +967,17 @@
             },
             "type": "array",
             "title": "Recommended Clips"
+          },
+          "clip_threshold": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clip Threshold"
           }
         },
         "type": "object",

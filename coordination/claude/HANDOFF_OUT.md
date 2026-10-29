@@ -343,3 +343,19 @@ job queue) sở hữu toàn bộ dữ liệu. AI phía Claude đã xong (REL tr�
 - Codex cần biết: (1) orchestrator phải gửi đặc trưng của **cả video trong một request** (như hiện tại) — chuẩn hóa tính trên toàn request;
   (2) video rất ngắn (< ~2 phút, vd fixture 8–10 s) nằm ngoài phân bố train: điểm không có ý nghĩa, thường 0 clip vì < 5 s; E2E nên chấp nhận 0 clip.
 - Smoke 9/9 sau kích hoạt; `examples/highlight.response.json` sinh lại. Rollback: Claude chép lại `ai-core/checkpoints/_archive/highlight_fusion_round5_34199b68/`.
+
+## 2026-10-29 HC-15 — CMS sau Fusion vòng 6: vạch ngưỡng heatmap, ô ngưỡng Settings, trạng thái 0 clip, ghi chú phạm vi (file Codex — Claude không sửa)
+- Phía AI đã có (:8001 PID 12252, v1.4-rc1 DRAFT, chỉ thêm field): `/v1/highlight/completions` trả thêm `clip_threshold` (vòng 6 = **50**).
+  Ví dụ thật `coordination/claude/api/examples/highlight.response.json`; OpenAPI `inference_openapi.json`. Các HC-13/HC-14 vẫn mở.
+1. **Vạch ngưỡng heatmap** (`cms/src/pages/HighlightPage.tsx:34` đang `settings.highlight_threshold ?? 75`): lưu `clip_threshold` của AI vào analysis
+   (Mongo `video_analyses`) và vẽ vạch theo nó. Hiện vạch 75 trong khi clip cắt ở 50 → admin thấy clip bắt đầu dưới vạch.
+2. **Ô "Ngưỡng gợi ý AI"** (`SettingsPage.tsx`, seed `system_settings.highlight_threshold = 75`): hiện không ảnh hưởng clip. Chọn một:
+   (a) backend tự cắt lại clip từ `timeline_scores` theo ngưỡng admin (score > ngưỡng, bỏ đoạn < 5 s), mặc định = `clip_threshold` của AI; hoặc
+   (b) ẩn ô / ghi rõ "chỉ hiển thị". Khuyến nghị (a) nếu kịp, không thì (b). Dù chọn gì: đổi seed/mặc định 75 → 50.
+3. **Trạng thái 0 clip** trên màn duyệt highlight: `recommended_clips` rỗng là hợp lệ (video không phải bóng đá, video ngắn) → hiện
+   "AI không đề xuất clip cho video này — có thể cắt tay", không hiển thị như lỗi; luồng duyệt/xuất bản vẫn dùng được với clip cắt tay.
+4. **Ghi chú phạm vi** (user chọn mức "tham khảo", không tắt AI): khi `category_suggestion != "bong_da"` hoặc video < 120 s, dưới heatmap hiện
+   "Điểm AI chỉ để tham khảo — model highlight huấn luyện trên bóng đá". Tiêu đề "Cường độ trận đấu" có thể đổi thành "Điểm highlight AI" cho thể loại khác.
+- Client: không cần sửa (heatmap không có vạch ngưỡng; feed đã có trạng thái rỗng).
+- Nghiệm thu đề xuất: CMS 390/1440 — vạch heatmap ở 50 với video bóng đá thật; video tin tức/ngắn hiện thông báo 0 clip + ghi chú; đổi ngưỡng Settings
+  → (a) danh sách clip đổi hoặc (b) ô bị ẩn/ghi rõ; `go test` + CMS `tsc`/build + Playwright màn highlight PASS. Phản hồi RE:HC-15.

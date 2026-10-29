@@ -141,7 +141,7 @@ def run_highlight(req: schemas.HighlightRequest) -> schemas.HighlightResponse:
     clips = _peaks_to_clips(scores, rules["threshold"], rules["merge_gap_seconds"], rules["min_clip_seconds"], req.asr_segments)
     return schemas.HighlightResponse(
         id=_rid("hl-primitive"), created=_now(), model=req.model, video_id=req.video_id,
-        timeline_scores=timeline, recommended_clips=clips,
+        timeline_scores=timeline, recommended_clips=clips, clip_threshold=rules["threshold"],
     )
 
 
