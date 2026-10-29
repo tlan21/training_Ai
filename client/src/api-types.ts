@@ -1598,7 +1598,7 @@ export interface paths {
             };
         };
         put?: never;
-        /** Tạo clip (draft→processing) + Kafka clip.cut.requested */
+        /** Tạo clip đơn hoặc video tổng hợp AI (processing→draft) + Kafka clip.cut.requested */
         post: {
             parameters: {
                 query?: never;
@@ -1611,10 +1611,12 @@ export interface paths {
                     "application/json": {
                         video_id: string;
                         title: string;
+                        /** @default false */
+                        auto_highlights?: boolean;
                         /** Format: float */
-                        start_time: number;
+                        start_time?: number;
                         /** Format: float */
-                        end_time: number;
+                        end_time?: number;
                     };
                 };
             };
@@ -1629,6 +1631,7 @@ export interface paths {
                     };
                 };
                 403: components["responses"]["Forbidden"];
+                422: components["responses"]["ValidationError"];
             };
         };
         delete?: never;
@@ -2034,6 +2037,12 @@ export interface components {
             playback_url?: string | null;
             clips?: components["schemas"]["Clip"][];
         };
+        ClipSourceSegment: {
+            /** Format: double */
+            start_time: number;
+            /** Format: double */
+            end_time: number;
+        };
         Clip: {
             id?: string;
             video_id?: string;
@@ -2042,6 +2051,8 @@ export interface components {
             start_time?: number;
             /** Format: float */
             end_time?: number;
+            /** @description Đoạn nguồn của bản tổng hợp, tăng theo thời gian, không trùng. Bỏ trống với clip đơn; mốc phát bản tổng hợp bắt đầu từ 0. */
+            source_segments?: components["schemas"]["ClipSourceSegment"][];
             /** Format: float */
             average_score?: number;
             thumbnail_url?: string | null;

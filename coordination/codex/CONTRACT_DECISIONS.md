@@ -53,3 +53,8 @@ Decision options:
 3. Request full remaining Stitch scope; schedule a separate contract/metric/playlist design before implementation.
 
 Until decision: INT-05/06 stay PARTIAL, missing API actions disabled; no new endpoint or arbitrary data.
+
+## 2026-10-29 — User-authorized AI highlight compilation (INT-34/35)
+
+User requested one combined video containing the notable situations from a source video, and explicitly instructed implementation.
+OpenAPI 0.5.0 extends existing POST /api/cms/clips with optional auto_highlights=true; backend uses stored AI proposals, merges overlaps, orders chronologically and creates one draft MP4. Empty proposals return 422. Legacy explicit start/end requests are unchanged. Clip.source_segments preserves source intervals; compilation start/end describe output 0..total duration, allowing correct playback/subtitle mapping. Existing review/publish endpoints are reused, no automatic publishing or AI contract change. A CMS action/preview using existing components is authorized by this feature request; broader Stitch parity remains separate.

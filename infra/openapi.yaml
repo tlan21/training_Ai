@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Video AI Platform — Public + CMS API
-  version: 0.4.1
+  version: 0.5.0
   description: >
     Contract-first (master plan §2). Nguồn sự thật cho gateway Go (oapi-codegen)
     và FE types (openapi-typescript). Điểm highlight thang 0–100; similarity/score 0–1.
@@ -713,17 +713,23 @@ paths:
   /api/cms/clips:
     post:
       tags: [cms-clips]
-      summary: Tạo clip (draft→processing) + Kafka clip.cut.requested
+      summary: Tạo clip đơn hoặc video tổng hợp AI (processing→draft) + Kafka clip.cut.requested
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
-              required: [video_id, title, start_time, end_time]
+              required: [video_id, title]
+              description: >
+                auto_highlights=true tự lấy các đoạn AI đã lưu, gộp phần trùng và xếp theo thời gian nguồn.
+                Không có đoạn hợp lệ trả 422. Kết quả là một file MP4 nháp, không tự xuất bản.
+                Clip tổng hợp dùng start_time=0 và end_time=tổng thời lượng các đoạn; source_segments giữ mốc video gốc.
+                Khi auto_highlights=false hoặc bỏ trống, bắt buộc gửi start_time và end_time như trước.
               properties:
                 video_id: { type: string }
                 title: { type: string }
+                auto_highlights: { type: boolean, default: false }
                 start_time: { type: number, format: float }
                 end_time: { type: number, format: float }
       responses:
@@ -733,6 +739,7 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/Clip" }
         "403": { $ref: "#/components/responses/Forbidden" }
+        "422": { $ref: "#/components/responses/ValidationError" }
     get:
       tags: [cms-clips]
       summary: Danh sách clip theo video/status
@@ -1061,6 +1068,13 @@ components:
               type: array
               items: { $ref: "#/components/schemas/Clip" }
 
+    ClipSourceSegment:
+      type: object
+      required: [start_time, end_time]
+      properties:
+        start_time: { type: number, format: double, minimum: 0 }
+        end_time: { type: number, format: double, exclusiveMinimum: true, minimum: 0 }
+
     Clip:
       type: object
       properties:
@@ -1069,6 +1083,11 @@ components:
         title: { type: string }
         start_time: { type: number, format: float }
         end_time: { type: number, format: float }
+        source_segments:
+          type: array
+          maxItems: 100
+          description: Đoạn nguồn của bản tổng hợp, tăng theo thời gian, không trùng. Bỏ trống với clip đơn; mốc phát bản tổng hợp bắt đầu từ 0.
+          items: { $ref: "#/components/schemas/ClipSourceSegment" }
         average_score: { type: number, format: float, minimum: 0, maximum: 100 }
         thumbnail_url: { type: string, nullable: true }
         playback_url: { type: string, nullable: true, description: MinIO presigned URL }

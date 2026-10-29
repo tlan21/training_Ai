@@ -13,7 +13,7 @@ func TestCMSPlanAContract(t *testing.T) {
 	if err := spec.Validate(context.Background()); err != nil {
 		t.Fatal(err)
 	}
-	if spec.Info.Version != "0.4.1" {
+	if spec.Info.Version != "0.5.0" {
 		t.Fatalf("version %s", spec.Info.Version)
 	}
 	put := spec.Paths.Find("/api/cms/videos/{id}").Put
@@ -34,6 +34,21 @@ func TestCMSPlanAContract(t *testing.T) {
 		if spec.Components.Schemas["VideoDetail"].Value.AllOf[1].Value.Properties[name] == nil {
 			t.Fatalf("missing %s", name)
 		}
+	}
+}
+
+func TestCompilationContract(t *testing.T) {
+	spec, err := GetSwagger()
+	if err != nil {
+		t.Fatal(err)
+	}
+	post := spec.Paths.Find("/api/cms/clips").Post
+	body := post.RequestBody.Value.Content["application/json"].Schema.Value
+	if body.Properties["auto_highlights"] == nil || len(body.Required) != 2 || post.Responses.Status(422) == nil {
+		t.Fatal("missing compilation create/validation contract")
+	}
+	if spec.Components.Schemas["Clip"].Value.Properties["source_segments"] == nil {
+		t.Fatal("missing persisted source timeline")
 	}
 }
 
