@@ -232,6 +232,7 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   smoke worker từ xa (worker :8002 + facade :8001 `MODEL_WORKER_URL`) 6/6 + 401, response trùng in-process, health chỉ thêm `model_worker`;
   worker chết → 503 + `model_worker: unavailable`, không degraded; :8001 khôi phục in-process (PID 16292) 6/6; kernel Kaggle dry-run local OK.
 - Kaggle (user 2026-10-29: chỉ upload dataset): `traininghighlight/ai-model-worker-v1` private, status ready (manifest SHA = contract §1; Kaggle tự giải nén zip).
+  Version 2 (2026-10-29, sau AI-15): code worker mới (`inference_service.zip` 8b098b0d…), checkpoint không đổi. Kernel thêm kiểm GPU fail-fast + log nvidia-smi 10 phút (tham khảo video user gửi, 8d1e0e8).
   Kernel `traininghighlight/ai-model-worker` **chưa push** — push = mở phiên GPU; user tự Run khi cần.
 - Commits: 7465f2b (task), 8086067 (code + test), 178d9fe (docs/evidence) | Checkpoint:
   ```

@@ -13,6 +13,8 @@ cd D:/tmp/ai14_20261029/ds && kaggle datasets create -p .        # lần sau: ka
 cd E:/traning_ai/dist/kaggle/kernel-model-worker && kaggle kernels push -p .   # push = bắt đầu 1 phiên GPU
 ```
 Chạy thử local (CPU, không tunnel): xem docstring `run_model_worker.py`.
+**Mỗi lần đổi code worker (`inference-service/app/worker*.py`, `registry.py`) phải build lại + `datasets version`** — facade và worker phải cùng
+giao thức (vd AI-15: `vision` trả thêm `category_logit_sums`; worker từ dataset cũ làm facade mới lỗi).
 
 ## Dùng
 
