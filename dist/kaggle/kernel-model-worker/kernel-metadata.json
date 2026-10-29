@@ -1,0 +1,15 @@
+{
+  "id": "traininghighlight/ai-model-worker",
+  "title": "ai-model-worker",
+  "code_file": "run_model_worker.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "dataset_sources": [
+    "traininghighlight/ai-model-worker-v1"
+  ],
+  "competition_sources": [],
+  "kernel_sources": []
+}

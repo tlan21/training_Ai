@@ -1,0 +1,10 @@
+.............................ssssss..s................................   [100%]
+=========================== short test summary info ===========================
+SKIPPED [1] tests\test_live_smoke.py:84: set INFERENCE_LIVE_URL to smoke a running real service
+SKIPPED [1] tests\test_live_smoke.py:92: set INFERENCE_LIVE_URL to smoke a running real service
+SKIPPED [1] tests\test_live_smoke.py:118: set INFERENCE_LIVE_URL to smoke a running real service
+SKIPPED [1] tests\test_live_smoke.py:128: set INFERENCE_LIVE_URL to smoke a running real service
+SKIPPED [1] tests\test_live_smoke.py:136: set INFERENCE_LIVE_URL to smoke a running real service
+SKIPPED [1] tests\test_live_smoke.py:146: set INFERENCE_LIVE_URL to smoke a running real service
+SKIPPED [1] \srv\inference-service\tests\test_milvus_integration.py:13: requires real Milvus corpus
+63 passed, 7 skipped in 15.91s

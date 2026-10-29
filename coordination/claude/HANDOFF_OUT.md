@@ -261,3 +261,12 @@ Chia việc không chồng chéo (PROJECT_STATUS D18):
   2. Phụ đề AI có nhãn "bản nháp máy"/cho admin sửa qua `/api/cms/videos/{id}/subtitles` trước khi coi là phụ đề chính thức (hoặc ẩn ở client tới khi duyệt).
   3. CMS hiển thị rõ đây là gợi ý AI cần kiểm tra.
 - Không đổi API/contract schema (v1.3); contract §2 thêm ghi chú chất lượng. Nếu luồng hiện tại đã đúng, chỉ cần ghi bằng chứng trong RE:HC-12.
+
+## 2026-10-29 NOTE AI-14 — D24 bước 1: inference-service tách facade/worker (AI-API **v1.3 không đổi**, chỉ trên `claude/ai-core`)
+- User quyết D24 (2026-10-29): đích là AI service chỉ tính toán, Backend sở hữu MinIO/Milvus/Postgres/Mongo; làm tuần tự bước 1 → bước 2.
+- Bước 1 (xong, không cần Codex làm gì): bên trong inference-service, worker thuần (6 model) tách khỏi facade (7 endpoint + MinIO/Milvus như cũ).
+  OpenAPI trùng v1.3, smoke :8001 6/6 + 401. Runtime :8001 vẫn worker cùng tiến trình (PID 16292). Contract §1d.
+- Tùy chọn mới (nội bộ Claude): `MODEL_WORKER_URL`/`MODEL_WORKER_KEY` cho worker GPU từ xa (Kaggle). Khi bật, `/health.dependencies` có thêm `model_worker`.
+- Bước 2 (sắp tới, AI-15): AI-API v2.0 DRAFT — vision trả vector Siamese, search trả vector, ASR nhận bytes audio, recommendation encode → Backend tự ghi/tìm Milvus.
+  Sẽ gửi HC riêng với lộ trình chi tiết; v1.3 chạy song song tới khi Codex chuyển xong.
+

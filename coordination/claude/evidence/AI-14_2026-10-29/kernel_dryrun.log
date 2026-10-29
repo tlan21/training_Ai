@@ -1,0 +1,7 @@
+worker ready: {"models_loaded": ["asr_ctc", "highlight_fusion", "minigpt", "siamese", "two_tower", "vit"], "device": "cpu", "stub_mode": false, "load_error": null, "gpu_vram_used": 0.0, "gpu_util": 0.0}
+========================================================================
+MODEL_WORKER_URL=http://127.0.0.1:8002
+MODEL_WORKER_KEY=<redacted>
+device=cpu models=asr_ctc,highlight_fusion,minigpt,siamese,two_tower,vit — URL changes every session
+========================================================================
+session ended

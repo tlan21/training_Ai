@@ -1,0 +1,2 @@
+{"error":{"code":"AI_UNAVAILABLE","message":"highlight: DependencyError: URLError: <urlopen error [WinError 10061] No connection could be made because the target machine actively refused it>"}} <- highlight, worker down: 503
+{"status":"ok","gpu_vram_used":0.0,"gpu_util":0.0,"models_loaded":["asr_ctc","highlight_fusion","minigpt","siamese","two_tower","vit"],"degraded":[],"dependencies":{"model_worker":"unavailable","recommendation_index":"missing_collection","visual_index":"ok"},"queue_depth":0,"device":"cpu","stub_mode":false,"load_error":null}

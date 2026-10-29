@@ -95,6 +95,18 @@ media thật 6/6 + synthetic 6/6; `/health` → `stub_mode=false`, 6 model, `deg
 - HC-05 đã chốt phương án (b) (RE:HC-05): gateway gửi data URI + `video_id` cho vision, URL MinIO presigned `localhost:9000` cho asr; không dùng `/srv/work`.
   Runtime cần `MINIO_ENDPOINT/ACCESS_KEY/SECRET_KEY` trong `inference-service/.env` (local) để index frame — đã đặt theo default compose.
 
+## 1d. Kiến trúc facade / model worker (D24 bước 1, AI-14, 2026-10-29) — ghi chú, API **không đổi**
+
+- Bên trong inference-service: **facade** (`app/main.py` + `services.py` + `visual_index.py`: 7 endpoint, Bearer, validation, error code,
+  I/O MinIO/Milvus/audio y như v1.3) gọi **model worker thuần** (`app/worker.py`: 6 model, nhận ảnh bytes / PCM / vector / text → nhãn / vector / text,
+  không import minio/pymilvus) qua `app/worker_client.py`.
+- `MODEL_WORKER_URL` trống (mặc định, runtime :8001 hiện tại) = worker chạy cùng tiến trình. Có URL = worker từ xa `app/worker_app.py`
+  (vd Kaggle GPU, `dist/kaggle/kernel-model-worker/`) với Bearer riêng `MODEL_WORKER_KEY` — giao thức nội bộ, **không** phải API cho Codex.
+- Khác biệt quan sát được duy nhất: ở chế độ worker từ xa, `/health.dependencies` có thêm key `model_worker` (`ok`|`unavailable`);
+  worker không tới được → endpoint 503 `AI_UNAVAILABLE` như lỗi dependency khác, model không bị đánh `degraded`.
+- Kiểm chứng: OpenAPI export trùng `inference_openapi.json`; smoke 6/6 + 401 ở cả hai chế độ, output trùng (`coordination/claude/evidence/AI-14_2026-10-29/`).
+- Đích D24 (bước 2, AI-API v2.0 DRAFT, chưa hiệu lực): MinIO/Milvus chuyển hẳn sang Backend; inference-service chỉ tính toán.
+
 ## 2. Endpoints
 
 > **Chất lượng (D23, 2026-10-28):** output `/v1/asr/completions` (phụ đề) và `/v1/completions` (tóm tắt) là **bản nháp máy**: trên video thật
@@ -164,10 +176,13 @@ Resp: `{"status":"ok","gpu_vram_used": MB,"gpu_util": %,"models_loaded":[...],"d
   và lỗi dependency **không** tính. Tự gỡ khi model chạy thành công lần sau.
 - `dependencies` (mới ở v1.1, mặc định `{}` → client cũ bỏ qua được): trạng thái hạ tầng sau từng capability, không phải lỗi model.
   Key: `visual_index` (Milvus `video_frame_embeddings` + MinIO thumbnail; dùng cho search và index frame của vision),
-  `recommendation_index` (Milvus `user_recommendation_embeddings`). Giá trị: `ok` | `unavailable` | `missing_collection`.
+  `recommendation_index` (Milvus `user_recommendation_embeddings`), `model_worker` (chỉ khi `MODEL_WORKER_URL` đặt, mục 1d).
+  Giá trị: `ok` | `unavailable` | `missing_collection`.
   `/health` tự thử lại dependency chưa `ok` tối đa mỗi 30 s → trạng thái tự phục hồi khi Milvus/collection được sửa. `FORCE_STUB=1` → `{}`.
 
 ## 3. Changelog
+- **v1.3 — ghi chú 2026-10-29 (AI-14, D24 bước 1)** — không đổi version/schema/status code: tách facade/worker nội bộ (mục 1d), thêm key
+  `dependencies.model_worker` chỉ ở chế độ worker từ xa (dict đã mở từ v1.1).
 - **v0 (2026-10-26)** — DRAFT, ghi lại API hiện có tại baseline `15976b3`. Không đổi code.
 - **v0.1 (2026-10-26)** — DRAFT, chỉ tài liệu: thêm thang sẵn sàng (1b) và quyền runtime :8001 thuộc Claude, Codex chỉ HTTP/mock (1c). Schema không đổi.
 - **v0.2 (2026-10-26)** — DRAFT, chỉ tài liệu (AI-06): nguồn checkpoint canonical, thang sẵn sàng có bằng chứng HTTP thật (1b); ghi rõ startup thật cần Milvus và `PYTHONUTF8=1` trên Windows. Schema không đổi.

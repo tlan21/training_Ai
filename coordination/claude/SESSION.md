@@ -3,11 +3,11 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
-- Task: **AI-14 IN_PROGRESS (2026-10-29)** — D24 bước 1: tách facade/worker trong inference-service, contract v1.3 không đổi.
-  Sau đó AI-15 (bước 2, contract v2.0, hai làn). Runtime :8001 UP PID 26848 (6 ckpt thật, CPU); gateway Codex đã trỏ :8001 thật (RE:HO-03).
-- Bước đã xong: startup (branch đúng, master không mới, HO không mới).
-- Bước kế: worker.py / worker_client.py / worker_app.py + test → suite → smoke :8001 in-process → smoke worker từ xa (local cổng khác) → kernel Kaggle.
-- File đang sửa: inference-service/app/{services,visual_index,main,config}.py + worker*.py
+- Task: **AI-14 REVIEW (2026-10-29)** — D24 bước 1 xong trên branch (facade/worker, MODEL_WORKER_URL, kernel Kaggle dry-run). Chờ user: push kernel Kaggle?
+  Kế: AI-15 (bước 2, contract v2.0 DRAFT, hai làn). **Runtime :8001 UP PID 16292** (in-process worker, code AI-14); gateway Codex đã trỏ :8001 thật.
+- Bước đã xong: code + test (8086067); smoke in-process + remote; contract §1d; evidence `coordination/claude/evidence/AI-14_2026-10-29/`.
+- Bước kế: AI-15 — contract v2.0 DRAFT → endpoint v2 thuần → HC-xx cho Codex.
+- File đang sửa: —
 - Lệnh verify dở: —
 - Trước đó (2026-10-28): D23 ASR/MiniGPT dừng cải thiện cho MVP; HC-12. AI-12 ⇐ INT-15; AI-04 nghiệm thu ⇐ RTX 3060.
 
