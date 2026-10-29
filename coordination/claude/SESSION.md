@@ -4,6 +4,7 @@ Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên 
 
 ## Phiên đang chạy
 - Task: **AI-16 REVIEW (2026-10-29)** — highlight vòng 5 ACTIVE trên :8001 (PID 14896); chờ release. Rollback: `_archive/highlight_fusion_round3_becbd378/`.
+- **AI-17 IN_PROGRESS (2026-10-29):** Fusion vòng 6 đang train trên Kaggle `traininghighlight/ai-core-fusion-r6` (v1, push 2026-10-29). Kế: tải output về D:, chấm local theo evaluation_plan §2.1 Vòng 6.
   **Runtime :8001 UP PID 15852** (code AI-15: /v1 + /v2, worker cùng tiến trình); gateway Codex trỏ :8001 thật. Dataset Kaggle `ai-model-worker-v1` uploaded, kernel chưa push.
 - Bước kế: đọc RE:HC-13 → release (user duyệt) → /v2 API_READY, /v1 DEPRECATED → gỡ minio/pymilvus. Release cũng là lúc ghi D24 + sơ đồ đích vào
   PROJECT_STATUS / master plan / kien_truc_va_thuat_toan_ai.md (file chung, theo yêu cầu user 2026-10-29).
