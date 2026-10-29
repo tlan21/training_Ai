@@ -5,6 +5,206 @@
     "version": "0.1.0"
   },
   "paths": {
+    "/v2/vision/completions": {
+      "post": {
+        "summary": "Vision",
+        "operationId": "vision_v2_vision_completions_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VisionV2Request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VisionV2Response"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/search/embeddings": {
+      "post": {
+        "summary": "Search Embedding",
+        "operationId": "search_embedding_v2_search_embeddings_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchEmbeddingRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchEmbeddingResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/asr/completions": {
+      "post": {
+        "summary": "Asr",
+        "operationId": "asr_v2_asr_completions_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_asr_v2_asr_completions_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ASRResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/recommendation/embeddings": {
+      "post": {
+        "summary": "Reco Embeddings",
+        "operationId": "reco_embeddings_v2_recommendation_embeddings_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecoEmbeddingRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecoEmbeddingResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/completions": {
       "post": {
         "summary": "Completions",
@@ -434,6 +634,38 @@
         ],
         "title": "ASRSegment"
       },
+      "Body_asr_v2_asr_completions_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "File",
+            "description": "WAV/FLAC/OGG; khuyến nghị 16 kHz mono PCM16"
+          },
+          "language": {
+            "type": "string",
+            "title": "Language",
+            "default": "vi"
+          },
+          "model": {
+            "type": "string",
+            "title": "Model",
+            "default": "primitive-asr-transformer"
+          },
+          "offset_seconds": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Offset Seconds",
+            "description": "cộng vào mọi timestamp khi backend chia file dài",
+            "default": 0.0
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_asr_v2_asr_completions_post"
+      },
       "CompletionChoice": {
         "properties": {
           "text": {
@@ -734,6 +966,171 @@
         ],
         "title": "HighlightResponse"
       },
+      "RecoEmbeddingRequest": {
+        "properties": {
+          "model": {
+            "type": "string",
+            "title": "Model",
+            "default": "primitive-two-tower-recommender"
+          },
+          "videos": {
+            "items": {
+              "$ref": "#/components/schemas/RecoVideoFeatures"
+            },
+            "type": "array",
+            "maxItems": 1000,
+            "title": "Videos"
+          },
+          "users": {
+            "items": {
+              "$ref": "#/components/schemas/RecoUserFeatures"
+            },
+            "type": "array",
+            "maxItems": 1000,
+            "title": "Users"
+          }
+        },
+        "type": "object",
+        "title": "RecoEmbeddingRequest"
+      },
+      "RecoEmbeddingResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "object": {
+            "type": "string",
+            "title": "Object",
+            "default": "recommendation_embeddings"
+          },
+          "created": {
+            "type": "integer",
+            "title": "Created"
+          },
+          "model": {
+            "type": "string",
+            "title": "Model"
+          },
+          "feature_version": {
+            "type": "string",
+            "title": "Feature Version",
+            "default": "ttv2-features-v1"
+          },
+          "dim": {
+            "type": "integer",
+            "title": "Dim",
+            "default": 128
+          },
+          "metric": {
+            "type": "string",
+            "title": "Metric",
+            "default": "IP"
+          },
+          "normalized": {
+            "type": "boolean",
+            "title": "Normalized",
+            "default": true
+          },
+          "videos": {
+            "items": {
+              "$ref": "#/components/schemas/VideoVector"
+            },
+            "type": "array",
+            "title": "Videos"
+          },
+          "users": {
+            "items": {
+              "$ref": "#/components/schemas/UserVector"
+            },
+            "type": "array",
+            "title": "Users"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "created",
+          "model",
+          "videos",
+          "users"
+        ],
+        "title": "RecoEmbeddingResponse"
+      },
+      "RecoUserFeatures": {
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "title": "User Id"
+          },
+          "preferred_category_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Preferred Category Ids"
+          },
+          "positive_video_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Positive Video Ids",
+            "description": "mỗi id phải có trong `videos` của cùng request"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id"
+        ],
+        "title": "RecoUserFeatures"
+      },
+      "RecoVideoFeatures": {
+        "properties": {
+          "video_id": {
+            "type": "string",
+            "title": "Video Id"
+          },
+          "category_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category Id"
+          },
+          "content_embedding_256": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "number"
+                },
+                "type": "array",
+                "maxItems": 256,
+                "minItems": 256
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Content Embedding 256"
+          },
+          "positive_count": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Positive Count",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "required": [
+          "video_id"
+        ],
+        "title": "RecoVideoFeatures"
+      },
       "Recommendation": {
         "properties": {
           "video_id": {
@@ -870,6 +1267,76 @@
           "average_score"
         ],
         "title": "RecommendedClip"
+      },
+      "SearchEmbeddingRequest": {
+        "properties": {
+          "model": {
+            "type": "string",
+            "title": "Model",
+            "default": "primitive-siamese-vit"
+          },
+          "image": {
+            "type": "string",
+            "title": "Image",
+            "description": "data URI hoặc base64 JPEG/PNG/WebP (≤20 MP); không nhận path"
+          }
+        },
+        "type": "object",
+        "required": [
+          "image"
+        ],
+        "title": "SearchEmbeddingRequest"
+      },
+      "SearchEmbeddingResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "object": {
+            "type": "string",
+            "title": "Object",
+            "default": "search_embedding"
+          },
+          "created": {
+            "type": "integer",
+            "title": "Created"
+          },
+          "model": {
+            "type": "string",
+            "title": "Model"
+          },
+          "vector": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "title": "Vector"
+          },
+          "dim": {
+            "type": "integer",
+            "title": "Dim",
+            "default": 128
+          },
+          "metric": {
+            "type": "string",
+            "title": "Metric",
+            "default": "COSINE"
+          },
+          "normalized": {
+            "type": "boolean",
+            "title": "Normalized",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "created",
+          "model",
+          "vector"
+        ],
+        "title": "SearchEmbeddingResponse"
       },
       "SearchRequest": {
         "properties": {
@@ -1015,6 +1482,27 @@
         ],
         "title": "Usage"
       },
+      "UserVector": {
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "title": "User Id"
+          },
+          "vector": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "title": "Vector"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id",
+          "vector"
+        ],
+        "title": "UserVector"
+      },
       "ValidationError": {
         "properties": {
           "loc": {
@@ -1054,6 +1542,27 @@
           "type"
         ],
         "title": "ValidationError"
+      },
+      "VideoVector": {
+        "properties": {
+          "video_id": {
+            "type": "string",
+            "title": "Video Id"
+          },
+          "vector": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "title": "Vector"
+          }
+        },
+        "type": "object",
+        "required": [
+          "video_id",
+          "vector"
+        ],
+        "title": "VideoVector"
       },
       "VisionRequest": {
         "properties": {
@@ -1132,6 +1641,93 @@
           "embeddings_256"
         ],
         "title": "VisionResponse"
+      },
+      "VisionV2Request": {
+        "properties": {
+          "model": {
+            "type": "string",
+            "title": "Model",
+            "default": "primitive-vit-classifier"
+          },
+          "keyframes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 600,
+            "minItems": 1,
+            "title": "Keyframes",
+            "description": "data URI hoặc base64 JPEG/PNG/WebP (≤20 MP); không nhận path; nhiều hơn 600 frame → chia lô"
+          }
+        },
+        "type": "object",
+        "required": [
+          "keyframes"
+        ],
+        "title": "VisionV2Request"
+      },
+      "VisionV2Response": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "object": {
+            "type": "string",
+            "title": "Object",
+            "default": "vision_completion"
+          },
+          "created": {
+            "type": "integer",
+            "title": "Created"
+          },
+          "model": {
+            "type": "string",
+            "title": "Model"
+          },
+          "category_suggestion": {
+            "type": "string",
+            "title": "Category Suggestion"
+          },
+          "category_logit_sums": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Category Logit Sums"
+          },
+          "embeddings_256": {
+            "items": {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            "type": "array",
+            "title": "Embeddings 256"
+          },
+          "siamese_vectors": {
+            "items": {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            "type": "array",
+            "title": "Siamese Vectors"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "created",
+          "model",
+          "category_suggestion",
+          "category_logit_sums",
+          "embeddings_256",
+          "siamese_vectors"
+        ],
+        "title": "VisionV2Response"
       }
     }
   }

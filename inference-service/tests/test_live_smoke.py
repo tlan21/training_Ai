@@ -152,3 +152,58 @@ def test_recommendation_contract():
     health = _call("GET", "/health", auth=False)[1]
     assert health["dependencies"]["recommendation_index"] in {"ok", "missing_collection", "unavailable"}
     assert "two_tower" not in health["degraded"]
+
+
+# ---- AI-API v2.0 (AI-15, DRAFT): compute-only; same models as v1, minus storage ----
+
+def _multipart(path, fields, audio, auth=True):
+    boundary = "ai15boundary"
+    parts = [f'--{boundary}\r\nContent-Disposition: form-data; name="{k}"\r\n\r\n{v}\r\n'.encode() for k, v in fields.items()]
+    parts.append(f'--{boundary}\r\nContent-Disposition: form-data; name="file"; filename="clip.wav"\r\nContent-Type: audio/wav\r\n\r\n'.encode()
+                 + audio + f"\r\n--{boundary}--\r\n".encode())
+    headers = {"Content-Type": f"multipart/form-data; boundary={boundary}"}
+    if auth:
+        headers["Authorization"] = f"Bearer {KEY}"
+    req = urllib.request.Request(URL + path, method="POST", headers=headers, data=b"".join(parts))
+    try:
+        with urllib.request.urlopen(req, timeout=600) as r:
+            return r.status, json.loads(r.read())
+    except urllib.error.HTTPError as e:
+        return e.code, json.loads(e.read())
+
+
+def test_v2_vision_and_search_match_v1(media):
+    frames, _ = media
+    body = {"keyframes": [_data_uri(f) for f in frames]}
+    status, out = _example("v2_vision", "POST", "/v2/vision/completions", body)
+    vis = schemas.VisionV2Response.model_validate(out)
+    assert status == 200 and len(vis.siamese_vectors) == len(frames) and all(len(v) == 128 for v in vis.siamese_vectors)
+    _, v1 = _call("POST", "/v1/vision/completions", body)          # no video_id → v1 does not index either
+    assert vis.category_suggestion == v1["category_suggestion"] and vis.embeddings_256 == v1["embeddings_256"]
+    status, out = _example("v2_search", "POST", "/v2/search/embeddings", {"image": _data_uri(frames[0])})
+    emb = schemas.SearchEmbeddingResponse.model_validate(out)
+    assert status == 200 and max(abs(a - b) for a, b in zip(emb.vector, vis.siamese_vectors[0])) < 1e-5
+    status, out = _example("v2_search", "POST", "/v2/search/embeddings", {"image": "not base64!"}, kind="error")
+    assert status == 422 and out["error"]["code"] == "VALIDATION_ERROR"
+
+
+def test_v2_asr_bytes_match_v1_path(media):
+    _, wav = media
+    fields = {"language": "vi", "offset_seconds": "0"}
+    status, out = _multipart("/v2/asr/completions", fields, Path(wav).read_bytes())
+    _save("v2_asr", "request", {"multipart": {**fields, "file": f"<{Path(wav).name}, {Path(wav).stat().st_size} bytes>"}})
+    _save("v2_asr", "response", {"http_status": status, "body": out})
+    asr = schemas.ASRResponse.model_validate(out)
+    _, v1 = _call("POST", "/v1/asr/completions", {"audio_url": wav, "language": "vi"})
+    assert status == 200 and asr.full_transcript == v1["full_transcript"] and len(asr.segments) == len(v1["segments"])
+    status, out = _multipart("/v2/asr/completions", fields, b"not audio")
+    _save("v2_asr", "error_request", {"multipart": {**fields, "file": "<9 bytes: 'not audio'>"}})
+    _save("v2_asr", "error", {"http_status": status, "body": out})
+    assert status == 422 and "asr_ctc" not in _call("GET", "/health", auth=False)[1]["degraded"]
+
+
+def test_v2_recommendation_encode_not_ready():
+    body = {"videos": [{"video_id": "vid_ai15example", "category_id": "cat_bong_da", "positive_count": 3}],
+            "users": [{"user_id": "usr_ai15example", "preferred_category_ids": ["cat_bong_da"], "positive_video_ids": ["vid_ai15example"]}]}
+    status, out = _example("v2_recommendation", "POST", "/v2/recommendation/embeddings", body, kind="error")
+    assert status == 503 and out["error"]["code"] == "MODEL_NOT_READY"      # until AI-12 promotes Two-Tower v2

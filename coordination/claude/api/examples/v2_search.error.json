@@ -1,0 +1,9 @@
+{
+ "http_status": 422,
+ "body": {
+  "error": {
+   "code": "VALIDATION_ERROR",
+   "message": "image is not data URI/base64: Error"
+  }
+ }
+}
