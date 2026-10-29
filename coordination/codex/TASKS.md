@@ -480,3 +480,12 @@ T2.5, T3.1, T3.2 = PARTIAL.
  no mediauploads byUItests, no DB/AI/API changes. OwnQA22188stopped/3100closed; rollback-int32 retained, no downloads/push/master.
 - Checkpoint: Lane codex /Client3000latestint32-16bfad7 healthy /buildIDeqhNJmAsXQNOLhmwmgMGu /contractsunchanged /Verifiedsource+deployedUI PASS.
 - Next action: userrefresh3000/feed; no more work for thisbug. GlobalINT-06parity andCMSsettingsauto-togglewiring remainseparate, not claimedDONE.
+
+### INT-33 — Resolve private video thumbnails in CMS/public API
+- Owner: CODEX | Status: IN_PROGRESS (2026-10-29)
+- Depends on: user screenshotmissingthumbnail; INT-28 backend already stores thumbnails/{vid}/00000000.jpg.
+- Acceptance: processedCMS/public video list/detail return usable signedimageURLs; all3existingactivevideos work without modifyingmetadata or reindexing;
+ deletedrows retainplaceholder; futureclip thumbnail refs use sameprivatebucket signing; auth/privacy unchanged; Go/liveAPI/browser testsPASS.
+- Changed: planned sharedbackendthumbnail response mapping, CMS/public DTOcallers/clipcreation, regressiontests, ownedcoordination/evidence.
+- Evidence: initialAPI3processed thumbnailnull; sampleMinIOJPEGexists14290bytes. No migration/newAPI/AI changes required.
+- Commits: startupcheckpoint. Next: sharedresolver for existingexplicitrefs or canonicalprocessedfirstframe, privatepresign; no publicbucketpolicy/databackfill.

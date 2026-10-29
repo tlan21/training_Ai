@@ -1,3 +1,5 @@
+INT-33 IN_PROGRESS: userCMSthumbnailbug. Initial3processedAPI/PG thumbnailnull althoughsampleJPEGexistsinMinIO14290bytes. Backendmappingfix viaexistingcanonicalfirstframe+signedURLs; no DBmetadata rewrite/reindex/AIchanges/newcontract. Next traceallDTOcallers/tests, implementsharedresolver andverifyexisting3/livebrowser, gateway-onlydeploy.
+
 # SESSION — authoritative resume state (2026-10-29, INT-32 feed CSS deployed)
 
 - Branchcodex/integration, startupclean/noHEAD..master; INT-32 DONE scopedfeedbugfix source16bfad7 +finaldeployevidencecheckpoint.
