@@ -383,3 +383,14 @@ Mẫu HO:
  fourtestuploadssoftdeleted/activejobs0. Sixcheckpointfilesunchanged. Evidence verification/INT-31.md +source/hash/build/config/runtime/health/E2E/log/storage/preservation/preflight.
 - Runtime ready forClaude's/v2API_READY release; no endpointstatuspromotion byCodex whileDRAFT. Keep Docker/source/activecheckpoint release coordinated;
  hostprocess intentionallyremainsforClaude. No master/push/sharedstatus edit, no GPU/load/soak/freshdependencybuild claim.
+
+
+## 2026-10-29 INT-32 — Feed CSS screenshot regression fixed/deployed
+- Source16bfad7: CSSonly shares9:16desktopframe forloaded/empty/loading/error, centersstatus+CTA, mobilefullheight.
+ Before3testsFAIL reproduced7columnblackpanel/leftCTA; after12layout+71existing+2originalStitchreference PASS.
+ Scoped10pointdesignreview/screenshots/bounds; no fullINT-06paritypromotion or settingsbehavior change.
+- Clientonly imageint32-16bfad7 deployed/latestalias +rollback-int32, buildIDeqhNJmAsXQNOLhmwmgMGu verified.
+ ActualClient3000 realAPI/browser(no mocks)3sizesPASS; emptyfeed0/popularity; desktop438.75x780/mobile390x788/centeredCTA.
+ Other15containers/hostAI15852/DockerAI6real/datahashes unchanged; exactQA22188stopped/3100closed. No API/AI/model/weights/DB modifications.
+- Evidence coordination/codex/verification/INT-32.md, layout/regression/reference/build/live/preservation logs+INT-32-screens.
+ Clientalsohas approvedHC12draftlabels fromcurrentSource, CMSimageunchanged. No master/push/sharedstatus edit.

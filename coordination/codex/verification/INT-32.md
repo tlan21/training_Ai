@@ -52,3 +52,38 @@ Changed: ClientfeedCSS +focusedlayouttest +ownedcoordination
 Verified: fixedbuild/types/lint,12newUI+71regression+2originalreference testsPASS; live deployment pending
 Contract touched: no
 Next safe task: offlineClientimagebuild/client-onlyrecreate then actualClient3000 emptyfeed verification/stopownedQA
+
+## Final Client3000 deployment — PASS
+
+Source **16bfad7**, rebuilt productionartifacteqhNJmAsXQNOLhmwmgMGu (Dockerrewritegateway8000).
+Offline image `video-ai-client:int32-16bfad7` built from cachedint23-fa8a382 +3.29MB .next; --network=none/--pull=false,
+ no package/image download. Latestalias nownewimage, rollback-int32 retained.
+
+ActualWSL commands used existingDockerDesktop socket unix:///proc/193/root/run/docker.raw.sock, docker CLI
+/mnt/host/wsl/docker-desktop/cli-tools/usr/bin/docker and Compose
+/mnt/host/wsl/docker-desktop/cli-tools/usr/local/lib/docker/cli-plugins/docker-compose.
+Compose `-p video-ai --project-directory /mnt/host/e/traning_ai-codex -f /mnt/host/e/traning_ai-codex/docker-compose.yml
+ -f /mnt/host/e/traning_ai-codex/docker-compose.inference.yml up -d --no-deps --no-build --pull never --force-recreate client` PASS.
+CurrentDockerAI key/bind onlymemory forrequiredComposeinterpolation, unchanged/restored; no secrets printed orstored.
+OnlyClientrecreated; buildIDincontainer matcheshost exactly, ClientHTTP200/healthy.
+
+Realbrowser+API verification at **localhost3000** (no routemocks): adminlogin/refresh/feed200,
+ actualfeed0published/popularity; realemptyframes measured1440/1877x900 and390x844 exactlymatchQA.
+ Desktop438.75x780/y92, wideX491.984375, mobile390x788; CTAcenter/nooverflow PASS.
+ Live screenshots live-1440/1877/390 saved anddesktopvisuallyinspected, alongsidebefore/after/reference captures.
+ No productvideo/clip creation orpublishaction performed bytheseUI tests; currentemptyfeed isactualAPIstate.
+
+Preservation: other15containers IDs/images/start/state/mounts unchanged; DockerAIstubfalse6real andhostPID15852 unchanged.
+ Original105video rows fingerprintba617c6dcef5d5c4471684ad534c3214 +10categoryfingerprint2279cd784f346ec1e52ce40605752c91
+ unchanged acrossdeploy, activejobs0. Gateway/AI/CMS/DB not restarted; no weights/models/inferencecode changes.
+ ExactownedQA PID22188 identity+creationUTCticks verified beforestop, port3100closed. No othernodeprocess stopped.
+ Logs normalized trailingwhitespace only; no testoutput/content changes.
+
+Includes alreadyapproved HC12Clientdraftlabels fromcurrentSource; full71testregressioncovers them. CMS5173 stilloldimage,
+ INT-24/INT-05/06globalstatuses unchanged. No settingspipeline behavior addressed inthisCSS-onlytask.
+
+Lane: codex
+Changed: ClientfeedCSS,12-state layouttest, ownedcoordination/evidence; ClientDockerimageonly
+Verified: build/types/lint,12newUI+71regression+2Stitchreferences PASS, actualClient3000 API/browser3sizesPASS, preservation/QAstopPASS
+Contract touched: no (public0.4.1/AIv2DRAFT unchanged)
+Next safe task: none forfeedbug; globalparity/settingsfunctional gaps remainseparate; no push/master release

@@ -467,10 +467,16 @@ T2.5, T3.1, T3.2 = PARTIAL.
  CPUonly, no fullcoldreboot/GPU/soak/freshdependencybuild/modelquality claims. HostClaude8001 untouched, no checkpoint copies/AI code edits/push.
 
 ### INT-32 — Feed empty/loading/error layout regression
-- Owner: CODEX | Status: IN_PROGRESS (2026-10-29)
-- Depends on: user screenshot atlocalhost3000/feed; existing Stitchfeed desktop/mobile +INT-06 source/QA.
-- Acceptance: empty/loading/error use same portrait desktop frame as loadedfeed; text/action centered and visible;
- correctviewportbounds/nextpanel, no horizontaloverflow at390x844,1440x900 and1877x900; loadedfeed/playback/mobile unaffected.
-- Changed: planned ClientfeedCSS and focusedlayoutregression test; build/runtimeClient only if needed to makefixvisible; ownedcoordination/evidence.
-- Commits/Evidence: startupcheckpoint; pending visualbefore/after/targetedtests/build.
-- Next action: capture currentlive empty bounds, share frame sizing acrossstates, verifyStitch10items anddeployClientonly afterchecks.
+- Owner: CODEX | Status: DONE (2026-10-29; scopedbugfix, not fullINT-06 parity)
+- Depends on: user screenshotlocalhost3000/feed; originalStitchfeed desktop/mobile andexistingClientQA.
+- Acceptance: sameportraitdesktopframe for empty/loading/error/loaded; centeredstatus/CTA; mobilefullscreen;
+ viewportbounds/nextpanel/nooverflow at390x844,1440x900,1877x900; loadedplayback/mobile/tracking unaffected; actualClient3000updated.
+- Changed: client/src/app/globals.css; e2e/feed_layout.spec.ts; ownedcoordination/evidence. ImageClientint32-16bfad7 only.
+- Commits: 11b74e2 start; **16bfad7** CSS/test/sourceQA. Finaldeployment/evidence checkpoint follows.
+- Evidence: verification/INT-32.md +before3FAILreproduction; fixedbuild/types/lintPASS; **12layoutPASS25.5s +71regressionPASS1.4m +2StitchreferencePASS5.9s**;
+ scoped10pointcheck/beforeafterreference screenshots/bounds. DeployedClientbuildIDeqhNJmAsXQNOLhmwmgMGu matchesartifact;
+ actualClientAPI/browser(no mocks)3sizesPASS andscreenshotlive*. Desktop438.75x780/y92, mobile390x788, CTAcenter/nooverflow.
+- Preservation: onlyClientrecreated, other15containers/AIhost15852/DockerAI6real unchanged; original105video/10categoryhashes unchanged/activejobs0;
+ no mediauploads byUItests, no DB/AI/API changes. OwnQA22188stopped/3100closed; rollback-int32 retained, no downloads/push/master.
+- Checkpoint: Lane codex /Client3000latestint32-16bfad7 healthy /buildIDeqhNJmAsXQNOLhmwmgMGu /contractsunchanged /Verifiedsource+deployedUI PASS.
+- Next action: userrefresh3000/feed; no more work for thisbug. GlobalINT-06parity andCMSsettingsauto-togglewiring remainseparate, not claimedDONE.

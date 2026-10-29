@@ -1,0 +1,8 @@
+{
+  "tag": "int32-16bfad7",
+  "latest_verified": true,
+  "build_id": "eqhNJmAsXQNOLhmwmgMGu",
+  "rollback": "video-ai-client:rollback-int32",
+  "only_client_recreated": true,
+  "client_http": 200
+}

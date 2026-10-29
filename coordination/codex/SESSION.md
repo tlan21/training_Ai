@@ -1,6 +1,24 @@
-INT-32 checkpoint: CSSfix+12layout/71regression/2originalStitchreference testsPASS; fixedClientbuild eqhNJmAsXQNOLhmwmgMGu +tsc/lint/E2EtypesPASS. QA3100PID22188 owned, stillrunning. Before3testsFAIL reproducedemptyframe/CTA. Sourcecheckpointnow; nextbuild3.29MBofflineClientoverlay, Client-onlydeploy thenactualfeedverify/stopQA. No API/AI/datachanges.
+# SESSION — authoritative resume state (2026-10-29, INT-32 feed CSS deployed)
 
-INT-32 IN_PROGRESS: screenshotfeedemptyCSS regression. Branchclean/noHEAD..master. Skillsclient_screen +ui_design_review/UIUXresponsive/Ponytail. Needsharedportraitframe for loading/error/empty vsloaded, centerstateCTA, verify390/1440/1877 anddeployClientonly. No API/data/AI changes.
+- Branchcodex/integration, startupclean/noHEAD..master; INT-32 DONE scopedfeedbugfix source16bfad7 +finaldeployevidencecheckpoint.
+- Userfeedemptyscreenshot: desktopempty expanded7columns, mobilecollapsed198px andCTAleft. CSSnowshares9:16frame acrossstates,
+ centersstatus/CTA, mobilefullremainingheight. No Reactlogic/API/data/AI changes.
+- Before3emptylayoutFAIL reproduced. FixedbuildDockerrewritegateway8000/buildIDeqhNJmAsXQNOLhmwmgMGu;
+ Clienttypes/lint/E2Etypes PASS. QA3100 exactapprovedNodecommand, **12layoutPASS25.5s/71existingPASS1.4m/2originalStitchrefsPASS5.9s**;
+ screenshots at390/1440/1877 andscopeddesign10check. FullINT-06parity stillPARTIAL, no unrelatedforgot/library expansion.
+- DeployedClientonly `video-ai-client:int32-16bfad7`, latestalias verified, oldrollback-int32 retained. Offline3.29MBartifactoverlay oncachedint23;
+ no package/image downloads. DockercontainerbuildIDmatches, HTTP200/healthy. ActualClient3000 API/browserwithoutmocks PASS3sizes,
+ emptyfeedreal0/popularity; desktop438.75x780/y92, mobile390x788, CTAcenter/nooverflow. Userrefresh3000/feed tosee.
+- Other15containers IDs/images/start/mounts unchanged; DockerAIstubfalse6CPU andhostClaude15852 untouched;
+ gatewaystillDockerAIhttp://inference-service:8001/stub0. Original105video/10categoryhashes unchanged/activejobs0. No video uploads byUIQA.
+- ExactQA22188identity verified/stopped,3100closed. Ignored .next/buildstaging retained; initialwrongcwd/build/type-race corrected,
+ onlyfixedbuildcountsPASS. Trackedcompiler cache restored onlyourgeneratedchange. No cleanup/prune/weights edit, master/push/sharedstatus edit.
+- Evidence verification/INT-32.md/logs/bounds/deploy/live/preservation andINT-32-screens(before/after/Stitch/live).
+- Clientbuildalsoincludes previouslyapprovedHC12Clientdraftlabels verifiedby71tests; CMS5173imageunchanged. INT-24sourceQA remainsREVIEW;
+ no falsewholeUIdeployment/parityclaim. CMSsettingspersistence isreal butauto-highlight/subtitle switches notyetwired intoorchestrator (read-onlyfinding), untouchedhere.
+- Nextsafeaction: no furtherwork forfeedbug; awaitClaudev2API_READY forINT-28promotion; settingsfunctional gap/fullUIparity remainseparate.
+
+## Prior INT-31 checkpoint (historical; Clientimage superseded above)
 
 # SESSION — authoritative resume state (2026-10-29, INT-31 real Docker inference verified)
 
