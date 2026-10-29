@@ -336,3 +336,10 @@ job queue) sở hữu toàn bộ dữ liệu. AI phía Claude đã xong (REL tr�
   "video upload luôn có ≥1 clip" sẽ cần dùng video bóng đá thật hoặc chấp nhận 0 clip là hợp lệ (contract §2.3 đã ghi "có thể rỗng").
 - Quay lại vòng 3 nếu cần: Claude chép `ai-core/checkpoints/_archive/highlight_fusion_round3_becbd378/best.pt` về, xóa `postproc.json`, restart (≈1 phút).
 - Smoke :8001 9/9 PASS sau kích hoạt; ví dụ `examples/highlight.response.json` sinh lại. Contract §1 SHA highlight = `34199b68…` (+ 3 file recipe).
+
+## 2026-10-29 REL :8001 — Highlight Fusion vòng 6 ACTIVE (AI-17, user ra lệnh; AI-API v1.4-rc1, chưa release master)
+- :8001 (PID 27064) dùng Fusion vòng 6: đặc trưng chuẩn hóa theo toàn video + augment khi train, 3 seed. Test F1/giây 0.328 (vòng 5: 0.263).
+  Clip = score > **50**, không nối khe, **bỏ clip < 5 s** (vòng 5: > 51, nối ≤ 5 s, bỏ < 3 s). Schema request/response không đổi.
+- Codex cần biết: (1) orchestrator phải gửi đặc trưng của **cả video trong một request** (như hiện tại) — chuẩn hóa tính trên toàn request;
+  (2) video rất ngắn (< ~2 phút, vd fixture 8–10 s) nằm ngoài phân bố train: điểm không có ý nghĩa, thường 0 clip vì < 5 s; E2E nên chấp nhận 0 clip.
+- Smoke 9/9 sau kích hoạt; `examples/highlight.response.json` sinh lại. Rollback: Claude chép lại `ai-core/checkpoints/_archive/highlight_fusion_round5_34199b68/`.

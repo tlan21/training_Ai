@@ -51,12 +51,16 @@ thành công thật; Codex được dùng mock, chưa được đánh `INTEGRATE
 | `vit` | `/v1/vision/completions` | `primitive-vit-classifier` | `192d90e4fad893cec1542c5630715cc3bc22197e8cd8ba22a6fb84a64a88ad7f` |
 | `siamese` | `/v1/search/completions` (+ index frame) | `primitive-siamese-vit` | `b4ded465b8eea134a01652811008656b9e0c59716431136bb161216310bbcebb` |
 | `asr_ctc` | `/v1/asr/completions` | `primitive-asr-transformer` | `8f87986781cfb3d4716691f2051e5798187693e2452f9f41b28ca4a753ea5531` |
-| `highlight_fusion` | `/v1/highlight/completions` | `primitive-seq2seq-highlighter` | `34199b6890daf3513f639b7234e9e4bd846cd51cd28798c3ae486cebbc494553` |
+| `highlight_fusion` | `/v1/highlight/completions` | `primitive-seq2seq-highlighter` | `9b59a7b06d592ea8bf74b33a286cc15fe2722ea65bc030c556d1f9a5edb0be23` |
 | `minigpt` | `/v1/completions` | `primitive-gpt-summarizer` | `cf9cfa7141d40f9d40b0065ae68855ff39ffe750260ee7b42c7c0eac719330ac` |
 | `two_tower` | `/v1/recommendation/completions` | `primitive-two-tower-recommender` | `f28c37943ec499d168f43b5281879273af326a97ee47e571100c93dee0c91695` |
 
 Nguồn canonical: `E:/traning_ai/ai-core/checkpoints` (AI-06). Claude chỉ thay `best.pt` active khi phát hành AI API version mới.
-- **highlight_fusion từ 2026-10-29 (AI-16, user ra lệnh kích hoạt; v1.4-rc1, chờ release):** Fusion vòng 5 (DoD T1.5 đạt) = 3 file seed + recipe:
+- **highlight_fusion từ 2026-10-29 (AI-17, user ra lệnh kích hoạt; v1.4-rc1, chờ release): Fusion vòng 6** = chuẩn hóa đặc trưng theo từng video
+  + augment, 3 seed + recipe (k 9, τ 0.50, bỏ clip < 5 s): `best.pt` `9b59a7b0…` · `seed1338.pt` `970cc06819009d1f97e6e784d24cb163d7ed85634bed4ce1d11f46f82d445411` ·
+  `seed1339.pt` `931d26c616a76b8c3e584eb0710ab4df7fd69b4764ee2b043c62ddf7b0119ab3` · `postproc.json` `cdb501d94395a193efcfe607cf0f3643bd9b6c182e555e3a908fabcc2ff4a9b7`.
+  Test F1/giây 0.328 (vòng 5: 0.263). Vòng 5 lưu tại `ai-core/checkpoints/_archive/highlight_fusion_round5_34199b68/`.
+- Trước đó (AI-16, cùng ngày) — Fusion vòng 5 (DoD T1.5 đạt) = 3 file seed + recipe:
   `best.pt` (seed 1337) `34199b68…` · `seed1338.pt` `9678110e0cc8ad0ab9eb854133468cc4446d103d863ed6032309bc171aaa0844` ·
   `seed1339.pt` `3e837fd1f1492e37daa5c864f454a1331ff8b3cb63b5570021f2f34191ed04d0` · `postproc.json` `8b327e2e78e12a54d6e414cdc35beeb08f3f60d911fc5128b945ae870ad4a5ff`.
   Bản cũ (vòng 3, `becbd378…`) giữ tại `ai-core/checkpoints/_archive/highlight_fusion_round3_becbd378/best.pt` để quay lại.
@@ -80,7 +84,7 @@ media thật 6/6 + synthetic 6/6; `/health` → `stub_mode=false`, 6 model, `deg
 |---|---|---|---|---|---|---|
 | vit | ✓ | ✓ `192d90e4…` | ✓ | ✓ | ✓ | |
 | asr_ctc | ✓ | ✓ `8f879867…` | ✓ | ✓ | ✓ | chất lượng video thật kém (transcript nhiễu, AI-02) |
-| highlight_fusion | ✓ | ✓ `34199b68…` (vòng 5, 3 seed) | ✓ | ✓ | ✓ | |
+| highlight_fusion | ✓ | ✓ `9b59a7b0…` (vòng 6, 3 seed) | ✓ | ✓ | ✓ | |
 | minigpt | ✓ | ✓ `cf9cfa71…` | ✓ | ✓ | ✓ | chất lượng human 1.6/5 (AI-03), chỉ dùng làm draft cho admin |
 | siamese | ✓ | ✓ `b4ded465…` | ✓ | ✓ | ✓ | Milvus `video_frame_embeddings` 280 vector, HNSW/COSINE/M16/efC200; index qua `video_id` + data URI (AI-11) |
 | two_tower | ✓ | ✓ `f28c3794…` | ✓ | ✗ | ✗ | collection `user_recommendation_embeddings` chưa có → 503 |
@@ -150,7 +154,10 @@ Resp: `{"id","object":"highlight_completion","created","model","video_id","timel
   - Req thêm tùy chọn `"asr_segments": [{"start_time","end_time"}, ...]` (segment `/v1/asr` của cùng video; field thừa bị bỏ qua) →
     biên clip nằm giữa câu được đẩy ra mép câu nếu cách ≤ 3 s. Không gửi = như cũ.
   - Checkpoint **active từ 2026-10-29**: Fusion vòng 5 (bản đạt DoD T1.5) = gộp 3 seed + cửa sổ chồng stride 30 + làm mượt 9 s,
-    clip = score > **51**, nối khe ≤ 5 s, bỏ clip < 3 s (`highlight_fusion/postproc.json`). **Đã kích hoạt trên :8001 ngày 2026-10-29** (user ra lệnh); vòng 3 lưu trữ.
+    clip = score > **51**, nối khe ≤ 5 s, bỏ clip < 3 s (`highlight_fusion/postproc.json`). Kích hoạt 2026-10-29, rồi thay bằng vòng 6 cùng ngày.
+  - **Active (AI-17): Fusion vòng 6** — đặc trưng chuẩn hóa theo TOÀN video trong request, clip = score > **50**, không nối khe, bỏ clip < **5 s**.
+    Phạm vi: train trên hiệp bóng đá ~45 phút. Video rất ngắn (< ~2 phút) và thể loại khác nằm NGOÀI phân bố train — điểm không đáng tin
+    (vd 3 s: điểm ~57, 0 clip vì < 5 s). Request phải gửi đặc trưng của cả video (như hiện tại), không cắt lẻ từng đoạn.
     Đo qua code service trên tập test đã khóa: F1/giây 0.2628 (DoD 0.2632); ngưỡng 75 trên cùng model chỉ 0.168. Schema response không đổi.
 
 ### 2.4 `POST /v1/search/completions` — Siamese + Milvus — API_READY
