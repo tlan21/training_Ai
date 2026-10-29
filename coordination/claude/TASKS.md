@@ -17,7 +17,8 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | AI-14 | T1.8 | D24 bước 1: tách facade/worker trong inference-service (contract v1.3 không đổi) + worker từ xa (MODEL_WORKER_URL) + kernel Kaggle worker GPU | REVIEW (2026-10-29; chờ release; dataset Kaggle uploaded, kernel chưa push) | D24 (user 2026-10-29) |
 | AI-15 | T1.8 | D24 bước 2: AI-API v2.0 (DRAFT) — AI trả vector/kết quả, Backend sở hữu MinIO/Milvus; v1.3 chạy song song; HC cho Codex | BLOCKED ⇐ RE:HC-13 E2E (phần AI xong 2026-10-29: v2.0 DRAFT, :8001 phục vụ /v1 + /v2) | AI-14; Codex (HC) cho phần backend |
 | AI-16 | T1.5 / T1.8 | Highlight: (B) đối chiếu checkpoint active với vòng đạt DoD; (A) hậu xử lý đúng như lúc chấm (làm mượt k, τ); (C) luật clip (độ dài, nối, biên câu) | REVIEW (2026-10-29; vòng 5 ACTIVE trên :8001 theo lệnh user; chờ release) | user 2026-10-29 |
-| AI-17 | T1.5 | Fusion vòng 6: chuẩn hóa theo từng video + augment chống overfit; thay vòng 5 chỉ khi val ≥ 0.2750 và gap train−val < 0.205 | REVIEW (2026-10-29; vòng 6 ĐẠT quy tắc, ứng viên chờ user duyệt kích hoạt) | AI-16; user 2026-10-29 |
+| AI-17 | T1.5 | Fusion vòng 6: chuẩn hóa theo từng video + augment chống overfit; thay vòng 5 chỉ khi val ≥ 0.2750 và gap train−val < 0.205 | REVIEW (2026-10-29; vòng 6 ACTIVE trên :8001; chờ release) | AI-16; user 2026-10-29 |
+| AI-18 | T1.5 | Fusion vòng 7: giảm overfit bằng lr/weight decay/lịch ngắn; thay vòng 6 chỉ khi val ≥ 0.3053, gap < 0.1692, val loss < 1.2136 | IN_PROGRESS (2026-10-29) | AI-17 |
 | AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | BLOCKED ⇐ bundle INT-13 (phần độc lập xong 2026-10-26) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | DONE (2026-10-26; sandbox + artifact; product → AI-12 theo D18) | HC-04 (sandbox READY) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a DONE (2026-10-27) · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
@@ -199,8 +200,17 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   Next safe task: release #2 (user duyệt push)
   ```
 
+### AI-18 — Fusion vòng 7: giảm overfit (learning rate / weight decay / lịch ngắn)
+- T gốc: T1.5 | Owner: claude | Status: IN_PROGRESS (2026-10-29)
+- Depends on: AI-17 (vòng 6 active; val loss đáy step 500–1100 rồi tăng) | Blocks: —
+- Quy tắc: đăng ký trước `.claude/evaluation_plan.md` §2.1 "Vòng 7". Kernel mới `traininghighlight/ai-core-fusion-r7` (giữ output vòng 6).
+- Acceptance: sweep 4 biến thể + (nếu thắng mốc) 3 seed; chấm local; quyết bằng val + gap + val loss; test 1 lần sau quyết; đạt → đề xuất kích hoạt.
+- Evidence: — | Commits: — | Checkpoint: —
+
 ### AI-17 — Fusion vòng 6: giảm overfit (chuẩn hóa theo video + augment)
-- T gốc: T1.5 | Owner: claude | Status: REVIEW (2026-10-29) — vòng 6 đạt quy tắc đăng ký; ứng viên `D:/tmp/ai17_20261029/candidate/` chờ user duyệt kích hoạt
+- T gốc: T1.5 | Owner: claude | Status: REVIEW (2026-10-29) — vòng 6 đạt quy tắc; **ACTIVE** trên :8001 (user ra lệnh), chờ release
+- Kích hoạt (VERIFIED-NOW 2026-10-29): vòng 5 sao lưu `ai-core/checkpoints/_archive/highlight_fusion_round5_34199b68/`; validate 6/6; :8001 PID 27064 smoke 9/9;
+  contract §1 SHA `9b59a7b0…`; dataset Kaggle worker version mới ready (dry-run nạp đủ 6, feature_norm). Giới hạn: video < ~2 phút ngoài phân bố train.
 - Depends on: AI-16 (đo overfit: train 0.480 / val 0.275 / test 0.263) | Blocks: —
 - Quy tắc chọn: đăng ký trước trong `.claude/evaluation_plan.md` §2.1 (vòng 6). Kernel Kaggle MỚI (không ghi đè output vòng 5).
 - Acceptance: 4 biến thể sweep + 3 seed trên Kaggle; chấm local quy trình DoD; quyết bằng val + gap; test báo cáo 1 lần; nếu đạt → đề xuất kích hoạt (user duyệt).

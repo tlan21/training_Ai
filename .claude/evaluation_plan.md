@@ -38,6 +38,12 @@
   Chấm local đúng quy trình DoD (stride 30, gộp seed, k+τ chọn trên val). **Thay vòng 5 chỉ khi cả hai:** val F1 ensemble ≥ 0.2750 **và**
   khoảng cách train − val < 0.205. Quyết định bằng val + train; test chỉ chấm sau khi quyết, báo cáo kèm số lần đã xem tập test này
   (vòng 5: 1 lần chấm DoD + 3 lần đo lại 2026-10-29 không dùng để chọn gì).
+- **Vòng 7 — đăng ký trước khi train (2026-10-29, AI-18):** nền = vòng 6 thắng (chuẩn hóa theo video + augment, d128/p0.3), cùng split.
+  Mục tiêu: giảm overfit (vòng 6: val loss đáy step 500–1100 rồi tăng 57–69%). Sweep seed 1337 trên val 4 biến thể tối ưu hóa:
+  lr 1e-4/wd 0.1/4000 step · lr 3e-4/wd 0.3/4000 · lr 1e-4/wd 0.3/4000 · lr 3e-4/wd 0.1/**1500** step; mốc so = vòng 6 n1_a1 (lr 3e-4/wd 0.1/4000, val F1 thô 0.2300).
+  Biến thể val F1 thô cao nhất, nếu > 0.2300 → thêm seed 1338, 1339; nếu không biến thể nào > 0.2300 → giữ vòng 6.
+  **Thay vòng 6 chỉ khi cả ba:** val F1 ensemble ≥ 0.3053; khoảng cách train − val < 0.1692; val loss trung bình tại 3 checkpoint được chọn
+  < 1.2136 (vòng 6). Quyết bằng val + train; test chấm sau khi quyết.
 - **Báo cáo chất lượng weak label:** alignment coverage toàn 50 trận + số trận bị loại (< 60% coverage) + Cohen's kappa của 2 người gán test — bảng riêng trong chương thực nghiệm.
 - **Đánh giá cấp đoạn (sát nghiệp vụ):** ghép giây liên tiếp > τ thành đoạn; đoạn đúng khi IoU ≥ 0.5 với đoạn nhãn người → precision/recall cấp đoạn.
 - **Đánh giá cảm quan:** CMS hiển thị heatmap → biên tập viên chấm "dùng được/không" cho 20 video — số liệu human-in-the-loop đưa vào luận án.
