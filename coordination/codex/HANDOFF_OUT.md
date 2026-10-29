@@ -351,3 +351,15 @@ Mẫu HO:
 - Ready for **Claude release /v2 API_READY + four/v1 paths DEPRECATED**, then removal of AI MinIO/pymilvus per D24.
   Current/v2 stillDRAFT on Claude branch: matrix REAL_PENDING (liveverified, waitingrelease), not INTEGRATED_REAL/DONE.
   No master/sharedstatus/release/push by Codex. RealASRlong>600s not run; split verified with synthetic600.1s;0missingbackfill is an actual measured no-op.
+
+
+## 2026-10-29 Runtime checkpoint — INT-30 Docker mock removal DONE (user authorized)
+- Commitc99443e: reapplied currentverifiedreal4appCompose withoutrecreate/build/pull; gatewayint28-7b1e458 remainsreal8001/stub0.
+ Exactvideo-ai-ai-mock-1 stopped/removed(no-v), no mockcontainers or18001listener. Mock code/explicitCIoverride retained onlyfor tests.
+ Root/localCompose realAI andexplicitCI config validationPASS; ignoredlocalphantom mockentryremoved locally(notforceadded).
+ Coldbootutility nowchecks optionaloutsiders onlywhenpresent andvalidates mixedimageversions using imageIDs; readonlypreflightPASS, no fullstackrestart.
+- Post-removal real/v2 E2E1PASS20.7s:10vectors/3ASR/145charsdraft/TOP1.9920652/popularity/deleteclean.
+ Other16containers IDs/images/start/mounts and hostAI15852/stubfalse6unchanged; original99video/10categoryhashes unchanged,activejobs0;
+ gatewayhealth200MinIO/Milvusok,CMS/Client200. No AI source/runtime/checkpoint change or volume/image/prune action.
+- Evidence coordination/codex/verification/INT-30.md and config/apply/removal/preflight/E2E/counts/preservation/before-after logs.
+ INT-28 stillREVIEW pendingClaude/v2API_READY release, no falsematrixpromotion; no master/push/sharedstatus changes.

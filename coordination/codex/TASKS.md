@@ -435,11 +435,16 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Evidence: verification/INT-29.md/log; generation+schema204/409/503+both FE tsc PASS. Commit: ef8162b. Next: INT-28 live acceptance complete; waiting Claude v2 release.
 
 ### INT-30 — Docker real-AI runtime and remove running mock
-- Owner: CODEX | Status: IN_PROGRESS (2026-10-29)
-- Depends on: user explicitly authorizes Docker update/removal of running ai-mock; INT-28 real v2 gateway verified.
-- Acceptance: root/local real-AI Compose valid; gateway canonical8001/stub0/current verifiedimage; only ai-mock container stopped/removed;
- no volume/image/data removal; all remaining containers and hostAI preserved; gateway/storage/UI healthy after mock removal.
-- Changed: docker-compose.local.yml/rootcomments; cold-start utility optional outsider handling; owned coordination/evidence.
-- Commits/Evidence: startup checkpoint; pending config/runtime verification.
-- Next action: inventory container identities/mounts/data; fix localoverride phantom mock; apply current verified images without recreate;
- remove exact project ai-mock container only, validate realAI and no remaining mock listener/container.
+- Owner: CODEX | Status: DONE (2026-10-29)
+- Depends on: explicit user Docker/mock-removal authorization; INT-28 verified real/v2 gateway. Blocks: none.
+- Acceptance: root/local real-AI Compose valid; canonical8001/stub0/verifiedimage; only ai-mock stopped/removed;
+ no volume/image/data deletion; allremainingcontainers/hostAI preserved; healthyrealruntime and liveE2E afterremoval.
+- Changed: docker-compose.yml, docker-compose.mock.yml, .env.example, infra/verify_cold_start.ps1 andownedcoordination/evidence;
+ ignored existingdocker-compose.local.yml fixed locally, intentionally not force-added.
+- Commits: 50c8a5d start; **c99443e** source/runtime/evidence. Final taskcheckpoint follows.
+- Evidence: verification/INT-30.md +3Composeconfigs/read-onlycoldpreflight12services/2optionaloutsiders;
+ exactmockstop+rm(no-v),0mockcontainers/18001closed; realE2E1PASS20.7s/10vectors/3ASR/145charsdraft/TOP1.9920652/deleteclean.
+ Original99video/10categoryhashes unchanged/activejobs0; other16containerIDs/images/start/mounts andAI15852/stubfalse6unchanged;
+ gateway200/minio+milvusok/CMS+Client200. No applicationbuild/pull needed, currentverifiedimageIDs/env matched beforeapply.
+- Checkpoint: Lane codex /DockerdefaultrealAI/no runtime mock /contractsunchanged /Verified liveE2E+preservation PASS.
+- Next action: none for Docker removal; await Claudev2API_READY release for INT-28 matrixpromotion. No push/master/sharedfile edit.

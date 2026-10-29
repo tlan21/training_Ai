@@ -1,6 +1,21 @@
-INT-30 runtime acceptance PASS: orphanmock stopped/removed, port18001closed, realE2E1PASS20.7s/TOP1.9920652;16othercontainers/AI15852/data unchanged. Config root+local+CI valid, currentverifiedimages reapplied withoutrecreate/build/pull. Source/evidence checkpoint; final taskstatus next.
+# SESSION — authoritative resume state (2026-10-29, INT-30 Docker mock removal complete)
 
-INT-30 IN_PROGRESS: user authorizes Docker runtime update and removal of running orphan ai-mock. INT-28/29 remain REVIEW. Branch correct/clean/no missingmaster. Next inventory, fix local phantom mock and optional coldboot outsider, validate config and preserve every nonmock container/data/hostAI.
+- Branchcodex/integration, startupclean/noHEAD..master commits. INT-30 DONE source/runtime/evidencec99443e; no activeIN_PROGRESS.
+- ExplicituserDockerupdate/mockremoval: currentverified4appimages/env reapplied with --no-deps --no-build --no-recreate --pullnever.
+ Exactvideo-ai-ai-mock-1 stopped/removed without-v/imageprune;0mockcontainers andport18001closed. Test/CI mocksource/override retained, not started.
+- Root/local realAI Compose valid; localphantom mockvolumes entryremoved (ignoredlocalfile retained, notforceadded).
+ ExplicitCIoverride valid/versionedimage; coldstartutility readonlypreflight12services/2optionaloutsiders PASS, supports mixedcurrentimageversions viaIDs.
+ No fullcoldboot/redundantbuild/packageorimagepull. Backend currentgatewayint28-7b1e458 healthycanonicalhost8001/stub0, latestalias verified.
+- Aftermockremoval realE2E1PASS20.7s:processed/10backendvectors+thumbs/3ASRsegments/145charsdraft/TOP1.9920652/popularity/repeatdeleteclean.
+ Original99video hashdb747ed8a7b3c6580a546b844559b309 and10categoryhash2279cd784f346ec1e52ce40605752c91 unchanged, activejobs0;
+ oneowntestuploadsoftdeleted. Other16containerIDs/images/start/state/mounts unchanged; hostAI15852 unchanged/stubfalse6/degradedempty;
+ gatewayhealth200minio+milvusok;CMS5173/Client3000 HTTP200. Legacy stoppedinferencecontainer untouched.
+- Evidence verification/INT-30.md +before/after/health/config/apply/removal/preflight/E2E/counts/preservation/data.
+ No secretprinted/committed, volume/data/image deletion, Claude source/runtime/checkpoint edit or master/push.
+- INT-28/29 remain REVIEW, /v2 stillDRAFT pendingClaudereleaseAPI_READY. No INTEGRATED_REAL promotion from this Docker task.
+ Nextsafeaction: Claudev2release then normalstartupmerge/matrixpromotion; Dockerremoval complete, do not redo tests/unrelatedUI.
+
+## Prior HC-13 checkpoint (historical; orphanmock removed above)
 
 # SESSION — authoritative resume state (2026-10-29, HC-13 / D24 live cutover complete)
 
