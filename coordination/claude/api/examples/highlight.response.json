@@ -1,26 +1,26 @@
 {
  "http_status": 200,
  "body": {
-  "id": "hl-primitive-6526dde97ea5",
+  "id": "hl-primitive-24cc8359a5a5",
   "object": "highlight_completion",
-  "created": 1793268925,
+  "created": 1793270137,
   "model": "primitive-seq2seq-highlighter",
   "video_id": "vid_ai01example",
   "timeline_scores": [
    {
     "second": 0,
-    "score": 58.7
+    "score": 61.4
    },
    {
     "second": 1,
-    "score": 57.4
+    "score": 58.8
    },
    {
     "second": 2,
-    "score": 56.2
+    "score": 56.3
    }
   ],
   "recommended_clips": [],
-  "clip_threshold": 50.0
+  "clip_threshold": 51.0
  }
 }

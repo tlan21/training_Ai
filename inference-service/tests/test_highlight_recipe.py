@@ -36,7 +36,7 @@ def test_recipe_is_exactly_the_evaluated_dod_pipeline(recipe, n):
         expected = smooth(torch.stack([model_scores_overlap(m, sample, 120, 30) for m in members]).mean(0), 9)
     out = worker.highlight(sample["vision"].tolist(), sample["audio"].tolist())
     assert out["scores"] == [round(float(x) * 100, 1) for x in expected]
-    assert out["clip_rules"] == {"threshold": 51.0, "merge_gap_seconds": 2, "min_clip_seconds": 3}
+    assert out["clip_rules"] == {"threshold": 51.0, "merge_gap_seconds": 2, "min_clip_seconds": 3, "min_video_seconds": 0}
 
 
 def test_feature_norm_recipe_matches_pipeline_on_normalised_features(recipe):
@@ -103,3 +103,13 @@ def test_response_reports_the_clip_threshold_used(recipe, monkeypatch):
     monkeypatch.setattr(registry, "highlight_postproc", {})
     monkeypatch.setattr(registry, "highlight_members", [])
     assert services.run_highlight(req).clip_threshold == 75.0                 # legacy
+
+
+def test_short_video_gets_scores_but_no_clips(monkeypatch):
+    monkeypatch.setattr(services, "_real_highlight", lambda req: {"scores": [90.0] * 10, "clip_rules": {
+        "threshold": 50.0, "merge_gap_seconds": 0, "min_clip_seconds": 3, "min_video_seconds": 120}})
+    monkeypatch.setattr(services.worker_client, "is_real", lambda name: True)
+    req = schemas.HighlightRequest(video_id="vid_t", features=schemas.HighlightFeatures(
+        vision_embeddings=[[0.0] * 256] * 10, audio_spectrogram_features=[[0.0] * 64] * 10))
+    out = services.run_highlight(req)
+    assert len(out.timeline_scores) == 10 and out.recommended_clips == []

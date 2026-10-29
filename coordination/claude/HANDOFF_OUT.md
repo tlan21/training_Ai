@@ -359,3 +359,9 @@ job queue) sở hữu toàn bộ dữ liệu. AI phía Claude đã xong (REL tr�
 - Client: không cần sửa (heatmap không có vạch ngưỡng; feed đã có trạng thái rỗng).
 - Nghiệm thu đề xuất: CMS 390/1440 — vạch heatmap ở 50 với video bóng đá thật; video tin tức/ngắn hiện thông báo 0 clip + ghi chú; đổi ngưỡng Settings
   → (a) danh sách clip đổi hoặc (b) ô bị ẩn/ghi rõ; `go test` + CMS `tsc`/build + Playwright màn highlight PASS. Phản hồi RE:HC-15.
+
+## 2026-10-29 REL :8001 — Highlight Fusion vòng 7 ACTIVE (AI-18, user ra lệnh; v1.4-rc1, chưa release master)
+- :8001 (PID 14736): Fusion vòng 7 (vòng 6 + weight decay 0.3). Test F1/giây 0.330 (vòng 6 0.328). `clip_threshold` = **51** (vòng 6: 50),
+  bỏ clip < **3 s** (vòng 6: 5 s). **Mới:** video < 120 s → `timeline_scores` vẫn có, `recommended_clips` luôn rỗng (ngoài phân bố train; trước đó
+  fixture 3 s ra 1 clip trọn video). HC-15 không đổi nội dung — CMS đọc `clip_threshold`, không hardcode 50.
+- Schema không đổi. Rollback: Claude chép lại `ai-core/checkpoints/_archive/highlight_fusion_round6_9b59a7b0/`.

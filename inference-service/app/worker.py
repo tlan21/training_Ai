@@ -66,7 +66,7 @@ def siamese(images: list[bytes]) -> list[list[float]]:
     return vectors.tolist()
 
 
-_LEGACY_CLIP_RULES = {"threshold": 75.0, "merge_gap_seconds": 0, "min_clip_seconds": 1}
+_LEGACY_CLIP_RULES = {"threshold": 75.0, "merge_gap_seconds": 0, "min_clip_seconds": 1, "min_video_seconds": 0}
 
 
 def _window_scores(model, v, a, window: int, stride: int):
@@ -125,7 +125,8 @@ def highlight(vision: list[list[float]], audio: list[list[float]]) -> dict:
             mean = F.avg_pool1d(F.pad(mean[None, None], (k // 2, k // 2), mode="replicate"), k, stride=1)[0, 0]
     return {"scores": [round(float(x) * 100, 1) for x in mean.cpu()],
             "clip_rules": {"threshold": recipe["tau"] * 100, "merge_gap_seconds": recipe.get("merge_gap_seconds", 0),
-                           "min_clip_seconds": recipe.get("min_clip_seconds", 1)}}
+                           "min_clip_seconds": recipe.get("min_clip_seconds", 1),
+                           "min_video_seconds": recipe.get("min_video_seconds", 0)}}
 
 
 def asr(pcm: bytes):

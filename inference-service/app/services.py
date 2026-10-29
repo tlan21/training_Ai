@@ -134,11 +134,13 @@ def run_highlight(req: schemas.HighlightRequest) -> schemas.HighlightResponse:
         # stub: điểm dao động mượt theo index, thang 0–100
         scores = [round(50 + 40 * ((i * 37) % 100 - 50) / 50, 1) for i in range(n)]
         out = {"scores": [max(0.0, min(100.0, s)) for s in scores],
-               "clip_rules": {"threshold": 75.0, "merge_gap_seconds": 0, "min_clip_seconds": 1}}
+               "clip_rules": {"threshold": 75.0, "merge_gap_seconds": 0, "min_clip_seconds": 1, "min_video_seconds": 0}}
     scores, rules = out["scores"], out["clip_rules"]
 
     timeline = [schemas.TimelineScore(second=i, score=s) for i, s in enumerate(scores)]
-    clips = _peaks_to_clips(scores, rules["threshold"], rules["merge_gap_seconds"], rules["min_clip_seconds"], req.asr_segments)
+    # Videos shorter than the recipe's minimum are outside the training distribution (~45 min halves): scores only, no clips.
+    clips = [] if len(scores) < rules.get("min_video_seconds", 0) else _peaks_to_clips(
+        scores, rules["threshold"], rules["merge_gap_seconds"], rules["min_clip_seconds"], req.asr_segments)
     return schemas.HighlightResponse(
         id=_rid("hl-primitive"), created=_now(), model=req.model, video_id=req.video_id,
         timeline_scores=timeline, recommended_clips=clips, clip_threshold=rules["threshold"],
