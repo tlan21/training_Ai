@@ -3,6 +3,7 @@
 Kernel MOI (khong dung ai-core-fusion-140): Kaggle chi giu output ban moi nhat moi kernel, output vong 5 phai con.
 Dang ky truoc: .claude/evaluation_plan.md §2.1 "Vong 6". Cung split vong 5 (218/28/27), d_model 128 / dropout 0.3 / 4000 step.
 Sweep seed 1337 tren VAL: {norm 0/1} x {aug 0/1}; bien the val F1 tho cao nhat -> them seed 1338, 1339.
+v2: Trainer ghi val_loss + train loss trung binh + lr moi lan eval -> <ckpt>/highlight_fusion/history.json (theo doi overfit).
 TAP TEST KHONG XUAT HIEN O DAY. Cham local (stride 30, gop seed, k+tau tren val), test sau khi quyet.
 """
 
@@ -67,7 +68,7 @@ def run(norm, aug, seed, ckpt_dir, d_model=128, dropout=0.3, steps=4000):
                        vision_dim=VDIM, audio_dim=ADIM, window_seconds=WIN)
     tcfg = TrainConfig(model='highlight_fusion', lr=3e-4, weight_decay=0.1, batch_size=32,
                        max_steps=steps, warmup_ratio=0.05, precision='bf16', seed=seed,
-                       eval_every=100, metric_name='f1', ckpt_dir=ckpt_dir, log_dir='')
+                       eval_every=100, metric_name='f1', ckpt_dir=ckpt_dir, log_dir='', val_loss=True)
     Trainer(build_model('highlight_fusion', mcfg), *loaders, tcfg, loss_fn=LOSS_FNS['highlight_fusion'],
             model_cfg=mcfg, compute_metric=_highlight_metric).train()
     return load_checkpoint(ckpt_dir + '/highlight_fusion/best.pt')['metrics']

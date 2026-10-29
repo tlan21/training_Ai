@@ -94,6 +94,8 @@ class Trainer:
         t_start = time.time()
         # ~20 dòng tiến độ mỗi lần train: đủ để thấy tốc độ và ETA, không làm ngập log Kaggle.
         log_every = max(1, min(200, self.cfg.max_steps // 20))
+        # AI-17: one batch's loss is noise; report the mean since the last eval/print, and keep every point.
+        win_loss, win_n, self.history = 0.0, 0, []
 
         while step < self.cfg.max_steps:
             lr = self._set_lr(step)
@@ -118,20 +120,27 @@ class Trainer:
                 self._writer.add_scalar("train/lr", lr, step)
 
             step += 1
+            win_loss, win_n = win_loss + total_loss, win_n + 1
             # In tiến độ ra stdout. Trước đây Trainer im lặng đến khi train() trả về, nên job Kaggle
             # bị huỷ giữa đường để lại log dừng ở dòng "tham số:" — không phân biệt được CHẠY CHẬM
             # với TREO, cũng không biết đã tới step nào. Đã cắn thật ở T1.4 (kernel v28).
             if step == 1 or step % log_every == 0:
                 dt = max(time.time() - t_start, 1e-9)
-                print(f"[train] step {step}/{self.cfg.max_steps} | loss {total_loss:.4f} "
+                print(f"[train] step {step}/{self.cfg.max_steps} | loss {total_loss:.4f} (mean {win_loss / win_n:.4f}) "
                       f"| lr {lr:.2e} | {step / dt:.2f} step/s "
                       f"| còn ~{(self.cfg.max_steps - step) * dt / step / 60:.0f} phút", flush=True)
 
             if self.cfg.eval_every and step % self.cfg.eval_every == 0:
                 t_eval = time.time()
                 metric = self._evaluate()
+                val_loss = self._val_loss() if self.cfg.val_loss else None
+                train_mean = win_loss / max(1, win_n)
+                self.history.append({"step": step, "lr": lr, "train_loss_mean": train_mean, "val_loss": val_loss,
+                                     self.cfg.metric_name or "metric": metric})
+                win_loss, win_n = 0.0, 0
                 if metric is not None:
-                    print(f"[eval ] step {step} | {self.cfg.metric_name or 'metric'} {metric:.4f}"
+                    vl = f" | val_loss {val_loss:.4f} | train_loss {train_mean:.4f}" if val_loss is not None else ""
+                    print(f"[eval ] step {step} | {self.cfg.metric_name or 'metric'} {metric:.4f}{vl}"
                           f" | {time.time() - t_eval:.0f}s", flush=True)
                     if self.model_cfg is not None:
                         new_best = self._maybe_save_best(metric, best_metric, step)
@@ -153,9 +162,27 @@ class Trainer:
                     self.model, self.model_cfg, metrics, self.bpe_vocab,
                     self.metadata, train_cfg=self.cfg,
                 )
+        if self.history and self.cfg.ckpt_dir:
+            import json
+            os.makedirs(os.path.join(self.cfg.ckpt_dir, self.cfg.model), exist_ok=True)
+            with open(os.path.join(self.cfg.ckpt_dir, self.cfg.model, "history.json"), "w", encoding="utf-8") as f:
+                json.dump(self.history, f, indent=1)
         if self._writer is not None:
             self._writer.close()
         return metrics
+
+    @torch.no_grad()
+    def _val_loss(self):
+        """Mean loss_fn over the val loader (same loss as training, no augmentation) — rising while train loss falls = overfit."""
+        if self.val_loader is None:
+            return None
+        self.model.eval()
+        total, n = 0.0, 0
+        for batch in self.val_loader:
+            total += float(self._forward_loss(_to_device(batch, self.device)))
+            n += 1
+        self.model.train()
+        return total / max(1, n)
 
     @torch.no_grad()
     def _evaluate(self):
