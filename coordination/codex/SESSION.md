@@ -1,3 +1,5 @@
+INT-32 checkpoint: CSSfix+12layout/71regression/2originalStitchreference testsPASS; fixedClientbuild eqhNJmAsXQNOLhmwmgMGu +tsc/lint/E2EtypesPASS. QA3100PID22188 owned, stillrunning. Before3testsFAIL reproducedemptyframe/CTA. Sourcecheckpointnow; nextbuild3.29MBofflineClientoverlay, Client-onlydeploy thenactualfeedverify/stopQA. No API/AI/datachanges.
+
 INT-32 IN_PROGRESS: screenshotfeedemptyCSS regression. Branchclean/noHEAD..master. Skillsclient_screen +ui_design_review/UIUXresponsive/Ponytail. Needsharedportraitframe for loading/error/empty vsloaded, centerstateCTA, verify390/1440/1877 anddeployClientonly. No API/data/AI changes.
 
 # SESSION — authoritative resume state (2026-10-29, INT-31 real Docker inference verified)

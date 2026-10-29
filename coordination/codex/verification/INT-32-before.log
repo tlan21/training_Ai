@@ -1,0 +1,116 @@
+
+Running 3 tests using 1 worker
+
+(node:9700) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 e2e\feed_layout.spec.ts:9:7 › feed 390 empty keeps frame and content within viewport (9.3s)
+(node:19060) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  2 e2e\feed_layout.spec.ts:9:7 › feed 1440 empty keeps frame and content within viewport (1.4s)
+(node:18320) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  3 e2e\feed_layout.spec.ts:9:7 › feed 1877 empty keeps frame and content within viewport (1.0s)
+
+
+  1) e2e\feed_layout.spec.ts:9:7 › feed 390 empty keeps frame and content within viewport ──────────
+
+    Error: expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    87.953125
+
+      60 |         expect(Math.abs(content.y + (groupBottom - content.y) / 2 - (box.y + box.height / 2))).toBeLessThanOrEqual(1);
+      61 |         expect(content.x).toBeGreaterThanOrEqual(box.x); expect(content.x + content.width).toBeLessThanOrEqual(box.x + box.width + 1);
+    > 62 |         if (action) expect(Math.abs(action.x + action.width / 2 - (box.x + box.width / 2))).toBeLessThanOrEqual(1);
+         |                                                                                             ^
+      63 |       }
+      64 |     } finally { release(); }
+      65 |   });
+        at E:\traning_ai-codex\e2e\feed_layout.spec.ts:62:93
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    backend\.tmp\int32-before\feed_layout-feed-390-empty-de03f-and-content-within-viewport\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: backend\.tmp\int32-before\feed_layout-feed-390-empty-de03f-and-content-within-viewport\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    backend\.tmp\int32-before\feed_layout-feed-390-empty-de03f-and-content-within-viewport\trace.zip
+    Usage:
+
+        npx playwright show-trace backend\.tmp\int32-before\feed_layout-feed-390-empty-de03f-and-content-within-viewport\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) e2e\feed_layout.spec.ts:9:7 › feed 1440 empty keeps frame and content within viewport ─────────
+
+    Error: expect(received).toBeCloseTo(expected, precision)
+
+    Expected: 0.5625
+    Received: 0.9763681592039801
+
+    Expected precision:    2
+    Expected difference: < 0.005
+    Received difference:   0.4138681592039801
+
+      47 |       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+      48 |       if (width >= 1024) {
+    > 49 |         expect(box.width / box.height).toBeCloseTo(9 / 16, 2);
+         |                                        ^
+      50 |         expect(box.height).toBeLessThanOrEqual(height - 120 + 1);
+      51 |         expect(upnext!.x).toBeGreaterThan(box.x + box.width);
+      52 |         expect(upnext!.y + upnext!.height).toBeLessThanOrEqual(height + 1);
+        at E:\traning_ai-codex\e2e\feed_layout.spec.ts:49:40
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    backend\.tmp\int32-before\feed_layout-feed-1440-empt-970bc-and-content-within-viewport\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: backend\.tmp\int32-before\feed_layout-feed-1440-empt-970bc-and-content-within-viewport\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    backend\.tmp\int32-before\feed_layout-feed-1440-empt-970bc-and-content-within-viewport\trace.zip
+    Usage:
+
+        npx playwright show-trace backend\.tmp\int32-before\feed_layout-feed-1440-empt-970bc-and-content-within-viewport\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) e2e\feed_layout.spec.ts:9:7 › feed 1877 empty keeps frame and content within viewport ─────────
+
+    Error: expect(received).toBeCloseTo(expected, precision)
+
+    Expected: 0.5625
+    Received: 1.2934351679104477
+
+    Expected precision:    2
+    Expected difference: < 0.005
+    Received difference:   0.7309351679104477
+
+      47 |       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+      48 |       if (width >= 1024) {
+    > 49 |         expect(box.width / box.height).toBeCloseTo(9 / 16, 2);
+         |                                        ^
+      50 |         expect(box.height).toBeLessThanOrEqual(height - 120 + 1);
+      51 |         expect(upnext!.x).toBeGreaterThan(box.x + box.width);
+      52 |         expect(upnext!.y + upnext!.height).toBeLessThanOrEqual(height + 1);
+        at E:\traning_ai-codex\e2e\feed_layout.spec.ts:49:40
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    backend\.tmp\int32-before\feed_layout-feed-1877-empt-5248f-and-content-within-viewport\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: backend\.tmp\int32-before\feed_layout-feed-1877-empt-5248f-and-content-within-viewport\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    backend\.tmp\int32-before\feed_layout-feed-1877-empt-5248f-and-content-within-viewport\trace.zip
+    Usage:
+
+        npx playwright show-trace backend\.tmp\int32-before\feed_layout-feed-1877-empt-5248f-and-content-within-viewport\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3 failed
+    e2e\feed_layout.spec.ts:9:7 › feed 390 empty keeps frame and content within viewport ───────────
+    e2e\feed_layout.spec.ts:9:7 › feed 1440 empty keeps frame and content within viewport ──────────
+    e2e\feed_layout.spec.ts:9:7 › feed 1877 empty keeps frame and content within viewport ──────────
