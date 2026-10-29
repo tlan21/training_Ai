@@ -34,6 +34,10 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-23 | INT-21/22 | Deploy planA Docker services +real E2E | DONE | explicit user deployment approval; DB004 applied |
 | INT-24 | HC-12/D23 | Explicit draft subtitles +approval evidence | BLOCKED | user approved HC-12 first, then INT-05 |
 
+| INT-25 | HO-03 | Revalidate real gateway/key/pipeline and popularity | IN_PROGRESS | explicit user instruction2026-10-29 |
+| INT-26 | INT-24/06 | Production QA3100 and HC-12 Client evidence | TODO | INT-25; explicit exact-command approval renewed |
+| INT-27 | HC-11 | Verify cold Compose startup with existing dependencies | TODO | INT-26; owned stack stop/up approved, preserve volumes/AI |
+
 Hoàn thành trước tách làn (bằng chứng INVENTORY mục 5): T0.1–T0.4, T2.1–T2.4, T4.1, T4.2 = DONE (VERIFIED-HIST, build VERIFIED-NOW);
 T2.5, T3.1, T3.2 = PARTIAL.
 
@@ -375,3 +379,26 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Commits: b497a34 start;3a2adf3 source+CMS/real verification; c7c3982 runtime/data preservation evidence.
 - Changed planned: CMS subtitles, shared Client Transcript/styles, fixture/live E2E, owned plans/SESSION/TASKS/HANDOFF/evidence.
 - Evidence: verification/INT-24.md; CMS3PASS17.3s, real edit/approval1PASS38s, CMS/Client builds+types PASS. New Client browser checks pending QA3100 external startup; automatic review rejected despite prior authorization. Next action: independent INT-05 while waiting.
+### INT-25 — HO-03 real runtime acceptance refresh
+- Owner: CODEX | Status: IN_PROGRESS (2026-10-29)
+- Dependency: explicit user instruction; AI-APIv1.3 on master26c2346; existing INT-11/23 real integration evidence retained.
+- Acceptance: compare gateway Bearer to read-only Claude env without disclosure; canonical real URL/stub0; health200/startup banner;
+ actual short-video pipeline with nonempty original AI category/timeline/subtitles/summary; real recommendation503 +truthful popularity mode.
+- Changed planned: strengthen existing live E2E assertions; owned tracker/session/HANDOFF/evidence. Recreate only gateway if current config differs.
+- Evidence/commits: pending. Next action: existing configuration already real and key matches; verify flow without repeating completed switch.
+
+### INT-26 — Approved Client production QA3100 +HC-12
+- Owner: CODEX | Status: TODO
+- Dependency: INT-25; user explicitly renewed exact Node Next startup approval2026-10-29.
+- Acceptance: check build freshness; exact production command on127.0.0.1:3100; current71-test superset of original63 passes;
+ draft transcript/overlay/download checks +summary hidden before approval; stop owned exactPID, preserve Client3000; update RE:HC-12.
+- Changed planned: only fixes if actual failure; owned evidence/session/tracker/handoff. Commits/evidence pending.
+- Next action: start existing fresh build once INT-25 checkpoint committed.
+
+### INT-27 — HC-11 cold stack startup acceptance
+- Owner: CODEX | Status: TODO
+- Dependency: INT-26; explicit cold Compose stop/up authorization; no active processing jobs; preserve existing configuration/images/volumes.
+- Acceptance: validate existing healthy DB dependencies/restart policy; actual Compose up from owned-stack stopped state ->gateway healthy automatically;
+ preserve :8001 PID/checkpoints, test current stack readiness, persistent data/volume identity and restore services after test; RE:HC-11 evidence.
+- Changed planned: Compose only if required; guarded startup verification/evidence/session/tracker/handoff. Commits/evidence pending.
+- Next action: snapshot/select owned services and safe stop/up plan after QA; no down/delete, no AI process or unrelated Faktory action.

@@ -1,6 +1,11 @@
 # SESSION — authoritative resume state (2026-10-28, INT-23 Docker update verified)
 
 ## Branch / task state
+- 2026-10-29 explicit3work authorization: only INT-25 IN_PROGRESS (HO03 real acceptance), then INT-26 exactQA3100, then INT-27 cold stack HC11.
+  Branch correct/clean, master26c2346 already received. AIhealthreal6/stubfalse/PID26848; gatewayalreadycanonicalhost/stub0/keymatchesClaude.env/restartunless-stopped.
+  No initial switch/recreate needed unless mismatch; no Claude process/checkpoint/source changes. Clientbuild28Oct newer than source; original63suite now71, run fullsuperset.
+  New exact startup approval supersedes prior QAblock; do not use alternate launcher/port/container after any new rejection.
+
 - Current checkpoint2026-10-28: INT-05 PARTIAL, INT-24 BLOCKED; no task IN_PROGRESS and no owned QA/test/build process running.
   User approved HC-12 first, then INT-05. HC12source3a2adf3; CMSmeasuredbatch c7c3982. No master release/push authorized.
 - INT-24 HC-12 BLOCKED only on new Client browser QA: explicit machine-draft notices in CMS/Client transcript, Client subtitle overlay,
