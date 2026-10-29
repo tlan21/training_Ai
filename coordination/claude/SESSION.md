@@ -3,20 +3,13 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
-- Task: — D23 (2026-10-28): ASR/MiniGPT dừng cải thiện cho MVP; HC-12 gửi Codex. Không còn task AI nào không bị chặn:
-  AI-12 ⇐ dữ liệu tương tác thật (INT-15); AI-04 nghiệm thu ⇐ RTX 3060; AI-02/03 sau MVP. Runtime :8001 UP (PID 26848).
-  :8001 UP lại 2026-10-27 (PID 26848) sau khi user bật Docker; smoke 6/6 + 401. Gateway :8000 DOWN (Codex).
-- Trước đó: (2026-10-27) AI-02a DONE (60 đề xuất ASR CLAUDE_PROPOSED), AI-03a DONE, AI-04 DONE (PRELIMINARY_T4). Verify bundle INT-15 → NO_DATA.
-  Còn mở đều chờ người/dữ liệu: AI-02b, AI-03b (user duyệt), AI-12 (tương tác thật INT-15), AI-04 nghiệm thu RTX 3060.
-  AI-12 BLOCKED ⇐ bundle INT-13 (phần độc lập xong). Runtime :8001 UP PID 16808 (restart AI-13).
-- Release #2 đã lên `master` 70bf011 (user duyệt 2026-10-26). AI-API v1.2: 6 endpoint API_READY, recommendation DRAFT.
-- Kế an toàn: AI-09 (đặc tả embedding/schema/version; chờ Codex báo sandbox UP), AI-04 (VRAM T4 sơ bộ), AI-03a, AI-02a.
-- **Runtime :8001: UP từ 2026-10-26 (restart cho AI-11), PID 21520** (`inference-service/run_local_8001.cmd`, log `D:/tmp/ai07_runtime/inference_8001.log`).
-  Dừng: `taskkill //PID <pid> //F` (pid từ `netstat -ano | grep :8001`). Khởi lại: contract §1c.
-- Bước đã xong: —
-- Bước kế: —
-- File đang sửa: —
+- Task: **AI-14 IN_PROGRESS (2026-10-29)** — D24 bước 1: tách facade/worker trong inference-service, contract v1.3 không đổi.
+  Sau đó AI-15 (bước 2, contract v2.0, hai làn). Runtime :8001 UP PID 26848 (6 ckpt thật, CPU); gateway Codex đã trỏ :8001 thật (RE:HO-03).
+- Bước đã xong: startup (branch đúng, master không mới, HO không mới).
+- Bước kế: worker.py / worker_client.py / worker_app.py + test → suite → smoke :8001 in-process → smoke worker từ xa (local cổng khác) → kernel Kaggle.
+- File đang sửa: inference-service/app/{services,visual_index,main,config}.py + worker*.py
 - Lệnh verify dở: —
+- Trước đó (2026-10-28): D23 ASR/MiniGPT dừng cải thiện cho MVP; HC-12. AI-12 ⇐ INT-15; AI-04 nghiệm thu ⇐ RTX 3060.
 
 ## Task kế an toàn
 AI-10 (health/degraded, D15) → AI-07 (:8001 thật + UTF-8, D16) → chuẩn bị release, user duyệt push → công bố API_READY. Chờ: AI-09 (⇐ HC-04).

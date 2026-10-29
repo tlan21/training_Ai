@@ -14,6 +14,7 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | AI-07 | T1.8 | Vận hành runtime :8001 thật cho Codex gọi HTTP (+ sửa UTF-8 Windows) | DONE (2026-10-26; :8001 UP; ingest path ⇐ HC-05) | AI-10; Milvus stack Codex (UP) |
 | AI-11 | T1.8 / T4.2 | HO-01: `video_id` tùy chọn cho Vision + index frame từ data URI 1 fps (contract minor) | DONE (2026-10-26) | HO-01 (Codex chọn HTTP media) |
 | AI-13 | T1.7 / T1.8 | D18: recommendation inference không trả metadata giả + `recommendation_mode` | DONE (2026-10-26; release #3) | D18 |
+| AI-14 | T1.8 | D24 bước 1: tách facade/worker trong inference-service (contract v1.3 không đổi) + worker từ xa (MODEL_WORKER_URL) + kernel Kaggle worker GPU | IN_PROGRESS (2026-10-29) | D24 (user 2026-10-29) |
 | AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | BLOCKED ⇐ bundle INT-13 (phần độc lập xong 2026-10-26) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | DONE (2026-10-26; sandbox + artifact; product → AI-12 theo D18) | HC-04 (sandbox READY) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a DONE (2026-10-27) · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
@@ -194,6 +195,17 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   Contract touched: yes (v1.2-rc1, chỉ thêm VisionRequest.video_id)
   Next safe task: release #2 (user duyệt push)
   ```
+
+### AI-14 — D24 bước 1: tách facade/worker trong inference-service
+- T gốc: T1.8 | Owner: claude | Status: IN_PROGRESS (2026-10-29)
+- Depends on: D24 (user 2026-10-29: AI service chỉ tính toán, backend sở hữu dữ liệu; làm tuần tự bước 1 → bước 2) | Blocks: AI-15 (bước 2, contract v2.0)
+- Việc: `app/worker.py` = lớp worker thuần (6 model; nhận ảnh bytes / PCM bytes / vector / text → nhãn / vector / text; không import minio/pymilvus);
+  facade (`main.py`, `services.py`, `visual_index.py`) giữ nguyên 7 endpoint, Bearer, validation, error code và toàn bộ I/O MinIO/Milvus.
+  `MODEL_WORKER_URL` trống = worker cùng tiến trình (mặc định, y hệt hiện nay); có URL = facade gọi worker HTTP nội bộ, Bearer riêng `MODEL_WORKER_KEY`
+  (không commit; cấm `sk-local-dev-key`). Kernel Kaggle `dist/kaggle/kernel-model-worker/` (worker GPU + cloudflared quick tunnel, không dữ liệu người dùng).
+- Acceptance: ai-core suite + inference suite (gồm `test_contract_compat.py`) PASS; unit test worker không cần Milvus/MinIO; smoke :8001 6/6 + 401 (worker in-process);
+  1 smoke worker từ xa (process local khác cổng hoặc Kaggle) cùng schema; contract giữ v1.3 (chỉ thêm ghi chú kiến trúc).
+- Evidence: — | Commits: — | Checkpoint: —
 
 ### AI-13 — Recommendation inference: không metadata giả + recommendation_mode (D18 mục 6–7)
 - T gốc: T1.7 / T1.8 | Owner: claude | Status: DONE (2026-10-26)
