@@ -1,0 +1,58 @@
+{
+  "checked_at": "2026-10-29T02:35:13.3376364Z",
+  "ai_health": {
+    "status": "ok",
+    "gpu_vram_used": 0.0,
+    "gpu_util": 0.0,
+    "models_loaded": [
+      "asr_ctc",
+      "highlight_fusion",
+      "minigpt",
+      "siamese",
+      "two_tower",
+      "vit"
+    ],
+    "degraded": [],
+    "dependencies": {
+      "recommendation_index": "missing_collection",
+      "visual_index": "ok"
+    },
+    "queue_depth": 0,
+    "device": "cpu",
+    "stub_mode": false,
+    "load_error": null
+  },
+  "ai_pids": [
+    26848
+  ],
+  "qa3100_closed": true,
+  "gateway": {
+    "status": "ok"
+  },
+  "cms_http": 200,
+  "client_http": 200,
+  "containers": [
+    {
+      "restart": "unless-stopped",
+      "image": "video-ai-gateway:int23-fa8a382",
+      "name": "/video-ai-gateway-1",
+      "health": "healthy",
+      "id": "78c8a9b7b71dba63653725a1255d4745e22389982051426b12d4c402fcb09981"
+    },
+    {
+      "restart": "unless-stopped",
+      "image": "video-ai-client:int23-fa8a382",
+      "name": "/video-ai-client-1",
+      "health": "healthy",
+      "id": "dc090234825b5fec9544e53f4b1b64ce4facaf00670689863ec1770c6892635e"
+    },
+    {
+      "restart": "unless-stopped",
+      "image": "video-ai-cms:int23-fa8a382",
+      "name": "/video-ai-cms-1",
+      "health": "healthy",
+      "id": "ea8f35ed0e668e126a68709633cb652fb97bbb5f91bb8cbb6c6085a254873519"
+    }
+  ],
+  "new_ui_deployed": false
+}

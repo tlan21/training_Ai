@@ -1,0 +1,54 @@
+
+Running 1 test using 1 worker
+
+(node:22852) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 e2e\ai_content_live.spec.ts:11:5 › HO-03 natural-speech video has nonempty original real AI outputs (7.5s)
+
+
+  1) e2e\ai_content_live.spec.ts:11:5 › HO-03 natural-speech video has nonempty original real AI outputs 
+
+    Error: Original AI summary must contain text
+
+    expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      54 |     expect(evidence.timeline_seconds).toBeGreaterThan(0);
+      55 |     expect(evidence.summary_status).toBe('draft');
+    > 56 |     expect.soft(evidence.summary_chars, 'Original AI summary must contain text').toBeGreaterThan(0);
+         |                                                                                  ^
+      57 |     expect.soft(evidence.nonempty_subtitle_segments, 'Original ASR must contain text').toBeGreaterThan(0);
+      58 |   } finally {
+      59 |     if (videoId) expect((await request.delete(`${gateway}/api/cms/videos/${videoId}`, { headers })).status()).toBe(204);
+        at E:\traning_ai-codex\e2e\ai_content_live.spec.ts:56:82
+
+    Error: Original ASR must contain text
+
+    expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      55 |     expect(evidence.summary_status).toBe('draft');
+      56 |     expect.soft(evidence.summary_chars, 'Original AI summary must contain text').toBeGreaterThan(0);
+    > 57 |     expect.soft(evidence.nonempty_subtitle_segments, 'Original ASR must contain text').toBeGreaterThan(0);
+         |                                                                                        ^
+      58 |   } finally {
+      59 |     if (videoId) expect((await request.delete(`${gateway}/api/cms/videos/${videoId}`, { headers })).status()).toBe(204);
+      60 |   }
+        at E:\traning_ai-codex\e2e\ai_content_live.spec.ts:57:88
+
+    Error Context: backend\.tmp\int25-content\ai_content_live-HO-03-natu-d1e34-ty-original-real-AI-outputs\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    backend\.tmp\int25-content\ai_content_live-HO-03-natu-d1e34-ty-original-real-AI-outputs\trace.zip
+    Usage:
+
+        npx playwright show-trace backend\.tmp\int25-content\ai_content_live-HO-03-natu-d1e34-ty-original-real-AI-outputs\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    e2e\ai_content_live.spec.ts:11:5 › HO-03 natural-speech video has nonempty original real AI outputs 

@@ -1,0 +1,41 @@
+=== RUN   TestFeedModeMetadataLimitAndCachedVisibility
+=== RUN   TestFeedModeMetadataLimitAndCachedVisibility/primary_popularity
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /feed                     --> traning_ai/backend/internal/handlers.(*ContentHandlers).Feed-fm (1 handlers)
+=== RUN   TestFeedModeMetadataLimitAndCachedVisibility/AI_unavailable
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /feed                     --> traning_ai/backend/internal/handlers.(*ContentHandlers).Feed-fm (1 handlers)
+2026/10/29 09:34:43 recommendation unavailable: AI timeout
+2026/10/29 09:34:43 recommendation unavailable: AI timeout
+=== RUN   TestFeedModeMetadataLimitAndCachedVisibility/stub_never_personalized
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /feed                     --> traning_ai/backend/internal/handlers.(*ContentHandlers).Feed-fm (1 handlers)
+=== RUN   TestFeedModeMetadataLimitAndCachedVisibility/legacy_missing_mode
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /feed                     --> traning_ai/backend/internal/handlers.(*ContentHandlers).Feed-fm (1 handlers)
+=== RUN   TestFeedModeMetadataLimitAndCachedVisibility/verified_personalized
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /feed                     --> traning_ai/backend/internal/handlers.(*ContentHandlers).Feed-fm (1 handlers)
+--- PASS: TestFeedModeMetadataLimitAndCachedVisibility (0.00s)
+    --- PASS: TestFeedModeMetadataLimitAndCachedVisibility/primary_popularity (0.00s)
+    --- PASS: TestFeedModeMetadataLimitAndCachedVisibility/AI_unavailable (0.00s)
+    --- PASS: TestFeedModeMetadataLimitAndCachedVisibility/stub_never_personalized (0.00s)
+    --- PASS: TestFeedModeMetadataLimitAndCachedVisibility/legacy_missing_mode (0.00s)
+    --- PASS: TestFeedModeMetadataLimitAndCachedVisibility/verified_personalized (0.00s)
+PASS
+ok  	traning_ai/backend/internal/handlers	1.091s

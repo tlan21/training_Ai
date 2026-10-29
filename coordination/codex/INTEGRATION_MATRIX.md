@@ -43,3 +43,12 @@ Evidence verification/INT-14-pagination-real-e2e.log +INT-14-pagination-runtime.
   Both Windows Desktop named pipes also hang; direct daemon Linux CLI works. HO-03/user Desktop restart decision pending.
 - Gateway restored explicit mock health200. Real upload/search E2E NOT_RUN (preflight blocked), no new INTEGRATED_REAL entry.
   Evidence verification/INT-11-real-health.json + INT-11-real-blocker.json.
+
+## 2026-10-29 verification refresh — no API/model-quality status inflation
+- Canonical gateway/key matched read-only Claude env; realAIstubfalse6/degraded[] and startup realURL verified; no repeated switch/recreate.
+- Real10.08s existing user-media content gate1PASS24.6s before ANY editor writes: categoryca_nhac,10timeline seconds, summary123chars/draft,
+  ASR3nonempty segments. Evidence verification/INT-25.md /INT-25-user-content-counts.json /INT-25-user-content-final.log.
+  Synthetic nonspeech content failures retained separately; they do not invalidate successful protocol HTTP responses or count as contentPASS.
+- Actual protocol/publish/Client flow1PASS42.9s after cold startup. Search keeps its existing historical real evidence; not separately rerun today.
+- Real recommendation503 and live feedprimarypopularity verified separately; optional fallback modes5unit subcases PASS, not a live personalized-ready claim.
+- Existing six API_READY INTEGRATED_REAL rows remain supported; recommendation staysDRAFT/REAL_PENDING. Human review/modelquality gates unchanged (D23).

@@ -1,0 +1,8 @@
+{
+  "checked_at": "2026-10-29T02:12:05.7515901Z",
+  "gateway_http": 200,
+  "recommendation_mode": "popularity",
+  "item_count": 0,
+  "sample": [],
+  "note": "MVP explicitly uses primary Postgres popularity; real AI recommendation503 checked separately, production personalization disabled"
+}
