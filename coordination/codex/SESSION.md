@@ -1,6 +1,9 @@
 # SESSION — authoritative resume state (2026-10-28, INT-23 Docker update verified)
 
 ## Branch / task state
+- 2026-10-29 latest: INT-27 DONE coldboot12services PASS44.92s; IDs/volumes/91+10rowhashes/AI26848/outsiders unchanged. Evidence verification/INT-27.md.
+  No current IN_PROGRESS after coldboot; INT-25 PARTIAL awaiting natural-speech media path. Separate strict content gate being retained without changing baseline HTTP protocol contract.
+
 - 2026-10-29 latest: INT-26 DONE71productionQA PASS1.3m, exactQA27160stopped/3100closed, Client3000unchanged. INT-24 REVIEW; policyblock resolved.
   Only INT-27 IN_PROGRESS now: owned cold stackstop/up approved, noactivejobs precheck/preserveimages+volumes+ClaudePID/Faktory. INT-25 PARTIAL needs natural-speech media; asyncpathquestion pending.
 

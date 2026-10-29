@@ -1,0 +1,302 @@
+{
+  "checked_at": "2026-10-29T02:05:49.1461034Z",
+  "services": [
+    {
+      "service": "client",
+      "id": "dc090234825b5fec9544e53f4b1b64ce4facaf00670689863ec1770c6892635e",
+      "image": "video-ai-client:int23-fa8a382",
+      "status": "running",
+      "health": "healthy",
+      "exit_code": 0,
+      "started": "2026-10-29T02:03:37.521019118Z",
+      "restart": "unless-stopped",
+      "volumes": []
+    },
+    {
+      "service": "cms",
+      "id": "ea8f35ed0e668e126a68709633cb652fb97bbb5f91bb8cbb6c6085a254873519",
+      "image": "video-ai-cms:int23-fa8a382",
+      "status": "running",
+      "health": "healthy",
+      "exit_code": 0,
+      "started": "2026-10-29T02:03:37.518565835Z",
+      "restart": "unless-stopped",
+      "volumes": []
+    },
+    {
+      "service": "etcd",
+      "id": "2a7a3faf4e82baf4059f8ad7e859f42aab2f3e99eeccb22cf4dea77e763a762b",
+      "image": "quay.io/coreos/etcd:v3.5.14",
+      "status": "running",
+      "health": "healthy",
+      "exit_code": 0,
+      "started": "2026-10-29T02:03:02.155643783Z",
+      "restart": "no",
+      "volumes": [
+        {
+          "Type": "volume",
+          "Name": "video-ai_etcd_data",
+          "Destination": "/etcd",
+          "RW": true
+        }
+      ]
+    },
+    {
+      "service": "gateway",
+      "id": "78c8a9b7b71dba63653725a1255d4745e22389982051426b12d4c402fcb09981",
+      "image": "video-ai-gateway:int23-fa8a382",
+      "status": "running",
+      "health": "healthy",
+      "exit_code": 0,
+      "started": "2026-10-29T02:03:26.636847375Z",
+      "restart": "unless-stopped",
+      "volumes": [
+        {
+          "Type": "volume",
+          "Name": "video-ai_ingest_work",
+          "Destination": "/srv/work",
+          "RW": true
+        }
+      ]
+    },
+    {
+      "service": "ingest-worker",
+      "id": "709433eefc6f7d141eb7d13f500adbda6a69d96f8bc24a81816821da3253b3fd",
+      "image": "video-ai-ingest-worker:int23-fa8a382",
+      "status": "running",
+      "health": null,
+      "exit_code": 0,
+      "started": "2026-10-29T02:03:26.640073183Z",
+      "restart": "unless-stopped",
+      "volumes": [
+        {
+          "Type": "volume",
+          "Name": "video-ai_ingest_work",
+          "Destination": "/srv/work",
+          "RW": true
+        }
+      ]
+    },
+    {
+      "service": "kafka",
+      "id": "8482ecba8ac6fb6c8d62a37b9ae072954646e2789d4c2407e12964f036ee774d",
+      "image": "apache/kafka:3.8.0",
+      "status": "running",
+      "health": "healthy",
+      "exit_code": 0,
+      "started": "2026-10-29T02:03:02.149821586Z",
+      "restart": "no",
+      "volumes": [
+        {
+          "Type": "volume",
+          "Name": "41f23f9d81d62ce4a401498dc97fbb6c04a2a05af1d6fbbbeaa76b910d7dd731",
+          "Destination": "/etc/kafka/secrets",
+          "RW": true
+        },
+        {
+          "Type": "volume",
+          "Name": "abd9a1f4187c49ecc86670b5e2be21f0dc247d71c186ff5f426f903422f9f979",
+          "Destination": "/mnt/shared/config",
+          "RW": true
+        },
+        {
+          "Type": "volume",
+          "Name": "video-ai_kafka_data",
+          "Destination": "/var/lib/kafka/data",
+          "RW": true
+        }
+      ]
+    },
+    {
+      "service": "kafka-init",
+      "id": "c29af099bef8bef8c0db73021d039e9090c2de44341ee7450a13b9cf7d2cb0ff",
+      "image": "apache/kafka:3.8.0",
+      "status": "exited",
+      "health": null,
+      "exit_code": 0,
+      "started": "2026-10-29T02:03:58.433522536Z",
+      "restart": "no",
+      "volumes": [
+        {
+          "Type": "volume",
+          "Name": "eecfd76c3923de485dacea3e8e2f741b46ab705719257fd9d10e7c2b3668ac12",
+          "Destination": "/etc/kafka/secrets",
+          "RW": true
+        },
+        {
+          "Type": "volume",
+          "Name": "58057ec95b50e50aa23d5476faedf8d90682ab5e11dc3f42ab4a512d10c85dac",
+          "Destination": "/mnt/shared/config",
+          "RW": true
+        },
+        {
+          "Type": "volume",
+          "Name": "8e8d2b7a29db0a7ee6aef69c57de84885a60286aaf3bb2da417b381c3d4c2326",
+          "Destination": "/var/lib/kafka/data",
+          "RW": true
+        }
+      ]
+    },
+    {
+      "service": "milvus",
+      "id": "cd7878a1ed75d890acea61c02b95ab309d406eea0e5d1fcd4afc83d5c9150c96",
+      "image": "milvusdb/milvus:v2.4.9",
+      "status": "running",
+      "health": "healthy",
+      "exit_code": 0,
+      "started": "2026-10-29T02:03:12.966084429Z",
+      "restart": "no",
+      "volumes": [
+        {
+          "Type": "volume",
+          "Name": "video-ai_milvus_data",
+          "Destination": "/var/lib/milvus",
+          "RW": true
+        }
+      ]
+    },
+    {
+      "service": "minio",
+      "id": "1d4128cbc5c6b79d0d0ef28f98bc0c75ba02bdd620ba4148af9bca52df2a33cc",
+      "image": "video-ai-minio",
+      "status": "running",
+      "health": "healthy",
+      "exit_code": 0,
+      "started": "2026-10-29T02:03:02.14281703Z",
+      "restart": "no",
+      "volumes": [
+        {
+          "Type": "volume",
+          "Name": "video-ai_minio_data",
+          "Destination": "/data",
+          "RW": true
+        }
+      ]
+    },
+    {
+      "service": "mongo",
+      "id": "cd1f54c421593613f610112d749e53e69717015cbc17ab309035788607dc81b4",
+      "image": "mongo:7",
+      "status": "running",
+      "health": "healthy",
+      "exit_code": 0,
+      "started": "2026-10-29T02:03:02.145921788Z",
+      "restart": "no",
+      "volumes": [
+        {
+          "Type": "bind",
+          "Name": null,
+          "Destination": "/docker-entrypoint-initdb.d",
+          "RW": false
+        },
+        {
+          "Type": "volume",
+          "Name": "5f960d3c0431c54d375e8b8b6b27ed63fdd5924d06e7a2d98824b5ec2eec932c",
+          "Destination": "/data/configdb",
+          "RW": true
+        },
+        {
+          "Type": "volume",
+          "Name": "video-ai_mongo_data",
+          "Destination": "/data/db",
+          "RW": true
+        }
+      ]
+    },
+    {
+      "service": "postgres",
+      "id": "0aaae3e5b2db82e7da88b57db9450ffd043045d56295ae89ec97db6179cbf2fc",
+      "image": "postgres:16-alpine",
+      "status": "running",
+      "health": "healthy",
+      "exit_code": 0,
+      "started": "2026-10-29T02:03:02.158016903Z",
+      "restart": "no",
+      "volumes": [
+        {
+          "Type": "bind",
+          "Name": null,
+          "Destination": "/docker-entrypoint-initdb.d",
+          "RW": false
+        },
+        {
+          "Type": "volume",
+          "Name": "video-ai_pg_data",
+          "Destination": "/var/lib/postgresql/data",
+          "RW": true
+        }
+      ]
+    },
+    {
+      "service": "redis",
+      "id": "1e8903575c9bcb196487d6a7ce9a0ed6f7cd0d4bd009ee7453b555a118ee943d",
+      "image": "redis:7-alpine",
+      "status": "running",
+      "health": "healthy",
+      "exit_code": 0,
+      "started": "2026-10-29T02:03:02.142178697Z",
+      "restart": "no",
+      "volumes": [
+        {
+          "Type": "volume",
+          "Name": "video-ai_redis_data",
+          "Destination": "/data",
+          "RW": true
+        }
+      ]
+    }
+  ],
+  "ai_pids": [
+    26848
+  ],
+  "untouched": [
+    {
+      "started": "2026-10-27T03:53:14.553429746Z",
+      "id": "767326f4c37e1d7ac8badebbc09d9d32079fa2e6893089a336116fa6d4e9274d",
+      "name": "video-ai-ai-mock-1",
+      "status": "running"
+    },
+    {
+      "started": "2026-10-27T03:53:14.489632883Z",
+      "id": "58bce0ac7f239ffe3a92483fd5f0cb6ae2896a85e02a93458eee23e1e3ebd83a",
+      "name": "video-ai-inference-service-1",
+      "status": "exited"
+    },
+    {
+      "started": "2026-10-27T02:33:46.031536952Z",
+      "id": "acd6840d37c11c5e979ae7bfe1d67ed7008fa59b542358d5ff7e956703bda9bc",
+      "name": "faktory_server",
+      "status": "running"
+    }
+  ],
+  "data": [
+    "videos|91|53d51b7127725a3b6446ac6a791711a0",
+    "categories|10|2279cd784f346ec1e52ce40605752c91"
+  ],
+  "gateway_dependencies": {
+    "kafka": {
+      "condition": "service_healthy",
+      "required": true
+    },
+    "kafka-init": {
+      "condition": "service_completed_successfully",
+      "required": true
+    },
+    "minio": {
+      "condition": "service_healthy",
+      "required": true
+    },
+    "mongo": {
+      "condition": "service_healthy",
+      "required": true
+    },
+    "postgres": {
+      "condition": "service_healthy",
+      "required": true
+    },
+    "redis": {
+      "condition": "service_healthy",
+      "required": true
+    }
+  }
+}

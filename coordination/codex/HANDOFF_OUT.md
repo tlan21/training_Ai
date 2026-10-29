@@ -281,3 +281,13 @@ Mẫu HO:
 - Exact QA PID27160 stopped after identity checks;3100 closed. ProductClient3000 samecontainer/StartedAt/image, HTTP200. No Client3000 replacement,
   no AI/contract/DB/master/push change. Source/QA labels not yet deployed to productClient/CMS; user asked to preserve Client3000.
 - Evidence verification/INT-26.md +production.log/runtime-before/runtime-after +transcript390/1440PNGs. INT-24 REVIEW; prior startup policy blocker resolved.
+
+## 2026-10-29 RE:HC-11 — actual cold Compose startup PASS (INT-27)
+- Existing source already has healthy postgres/mongo/redis/kafka/minio dependencies, completed kafka-init and gateway restartunless-stopped;
+  bounded57P03 startup recovery previously verified INT-18. No repeated config rewrite required.
+- `& infra/verify_cold_start.ps1`: stopped12default services, captured all exited, then rootCompose up -d --no-build --no-recreate --pullnever.
+  **PASS44.92s** final run: gateway automaticallyhealthy/healthz200; DB/infrahealthy, worker running, CMS/Client200; no manual gateway start.
+- All12containerIDs/images/mount identities preserved;91video/10category fingerprints unchanged. No down/volume delete, no image pull/build.
+  AI PID26848/model checkpoints untouched, stubfalse6/degraded[]/visual_indexok; mock/legacy inference/Faktory IDs/StartedAt/status unchanged.
+- Initial guard failure was Docker mount ordering, not actual identity/data change; sorted guard and reran actual cold cycle; initial log retained.
+  Evidence verification/INT-27.md/-before.json/-stopped.json/-after.json/-cold-start.log and initial records. No master/shared docs/push change.

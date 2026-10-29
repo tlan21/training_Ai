@@ -36,7 +36,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 
 | INT-25 | HO-03 | Revalidate real gateway/key/pipeline and popularity | PARTIAL | explicit user instruction2026-10-29 |
 | INT-26 | INT-24/06 | Production QA3100 and HC-12 Client evidence | DONE | INT-25; explicit exact-command approval renewed |
-| INT-27 | HC-11 | Verify cold Compose startup with existing dependencies | IN_PROGRESS | INT-26; owned stack stop/up approved, preserve volumes/AI |
+| INT-27 | HC-11 | Verify cold Compose startup with existing dependencies | DONE | INT-26; owned stack stop/up approved, preserve volumes/AI |
 
 Hoàn thành trước tách làn (bằng chứng INVENTORY mục 5): T0.1–T0.4, T2.1–T2.4, T4.1, T4.2 = DONE (VERIFIED-HIST, build VERIFIED-NOW);
 T2.5, T3.1, T3.2 = PARTIAL.
@@ -396,10 +396,12 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Next action: start existing fresh build once INT-25 checkpoint committed.
 
 ### INT-27 — HC-11 cold stack startup acceptance
-- Owner: CODEX | Status: IN_PROGRESS (2026-10-29)
+- Owner: CODEX | Status: DONE (2026-10-29; actual cold Compose up automatically healthy)
 - Dependency: INT-26; explicit cold Compose stop/up authorization; no active processing jobs; preserve existing configuration/images/volumes.
 - Acceptance: validate existing healthy DB dependencies/restart policy; actual Compose up from owned-stack stopped state ->gateway healthy automatically;
  preserve :8001 PID/checkpoints, test current stack readiness, persistent data/volume identity and restore services after test; RE:HC-11 evidence.
 - Changed planned: Compose only if required; guarded startup verification/evidence/session/tracker/handoff. Commits/evidence pending.
 - Next action: snapshot/select owned services and safe stop/up plan after QA; no down/delete, no AI process or unrelated Faktory action.
 - INT-26 verified evidence: verification/INT-26.md,71PASS1.3m, before/after snapshots and2inspected transcript PNGs; productClient untouched. INT-24 QA blocker resolved; source pending authorized release/deployment.
+
+- INT-27 evidence: verification/INT-27.md +before/stopped/after/log; actual12service stop/up PASS44.92s, originalIDs/volumes/91+10rowhashes/AI26848/outsiders unchanged. Existing compose correct; no application/AI source change.
