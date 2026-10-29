@@ -513,8 +513,13 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Next action: CMS → processed video → Highlight → Tạo video tổng hợp AI → review draft → publish. AI can return0proposals; no invented highlights. HC-14 sentence-boundary snapping/model rollout remain independent, no inference/checkpoint edit.
 
 ### INT-36 — Bound discovery image frames to the Stitch layout
-- Owner: CODEX | Status: IN_PROGRESS (2026-10-29)
+- Owner: CODEX | Status: DONE (2026-10-29; scoped discovery sizing bug)
 - Depends on: user screenshot oversized discovery hero after real thumbnails became available; existing discovery mobile/desktop Stitch.
 - Acceptance: desktop hero and both side cards fit the intended520px grid at1440/1903, no overlap with following sections; square/portrait/landscape loaded images cannot expand grid tracks; mobile390 preserves existing card ratios/no body overflow; links/filter/states unchanged; build/types/lint + meaningful browser checks and real Client3000 verification; client-only deployment, other services/data preserved.
-- Changed: planned scoped client CSS + layout regression test + owned coordination/evidence.
-- Commits: startup checkpoint follows. Evidence: pending. Next action: reproduce with loaded intrinsic-size images, fix sizing at the layout root, verify and deploy Client only.
+- Changed: client/src/app/globals.css; e2e/client_design.spec.ts; e2e/discovery_live.spec.ts; owned coordination and verification/INT-36-* logs/metrics/screens.
+- Commits: **22dcc32** start; **c4de07e** CSS/tests/source checkpoint; final evidence commit follows.
+- Evidence: verification/INT-36.md. Before4FAIL/5PASS reproduces square914.7px/portrait2696.1px overflow. Fixed9image-layout+2originalStitch references **11PASS14.1s**, **72Client/player/timeline regression PASS1.2m**, actual real-API/MinIO Client3000 **3PASS15.0s** at390/1440/1903. Build/types/lint/E2Etypes PASS; scoped10pointreview/screens inspected.
+- Runtime: only Client recreated, image int36-c4de07e/latest, BUILD_ID a9opFtacvy3Uyx55aFH6d matches artifact. Main520px/side248px, mobile ratios unchanged, no overlap/body overflow. Existing Dockerfile/Compose reused, offline image/no downloads; rollback-int36 retained. Own QA8704 stopped/3100closed.
+- Preservation: original106video/58clip hashes unchanged, jobs0; other15containers and hostAI27064 unchanged; DockerAIreal6, no model/source/data/contract edits. No master/shared status/push; global INT-06 remains PARTIAL.
+- Checkpoint: Lane codex / Changed discovery grid sizing + meaningful image regression tests / Verified source, reference, actual deployed UI, runtime/data / Contract touched no / Next safe task remaining assigned INT-05/06 scope.
+- Next action: user Ctrl+F5 localhost3000/discover; no further implementation for this screenshot bug.

@@ -1,0 +1,49 @@
+{
+  "host_ai_pids": [
+    27064
+  ],
+  "active_jobs": "0",
+  "services": [
+    {
+      "health": "healthy",
+      "name": "/video-ai-client-1",
+      "image": "video-ai-client:int36-c4de07e"
+    },
+    {
+      "health": "healthy",
+      "name": "/video-ai-cms-1",
+      "image": "video-ai-cms:int35-fbeeb50"
+    },
+    {
+      "health": "healthy",
+      "name": "/video-ai-gateway-1",
+      "image": "video-ai-gateway:int35-fbeeb50"
+    }
+  ],
+  "original_clip_rows_and_hash": "clips|58|9186844a706846cea3a6c3b8a17a6a67",
+  "original_video_rows_and_hash": "videos|106|41e538d83f6b7f6d73faa03ae214c62e",
+  "other_15_containers_unchanged": true,
+  "docker_ai": {
+    "status": "ok",
+    "gpu_vram_used": 0.0,
+    "gpu_util": 0.0,
+    "models_loaded": [
+      "asr_ctc",
+      "highlight_fusion",
+      "minigpt",
+      "siamese",
+      "two_tower",
+      "vit"
+    ],
+    "degraded": [],
+    "dependencies": {
+      "recommendation_index": "missing_collection",
+      "visual_index": "ok"
+    },
+    "queue_depth": 0,
+    "device": "cpu",
+    "stub_mode": false,
+    "load_error": null
+  },
+  "qa8704_stopped_port3100_closed": true
+}
