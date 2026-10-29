@@ -1,0 +1,4 @@
+ok  	traning_ai/backend/internal/handlers/cms	1.088s
+ok  	traning_ai/backend/internal/cutter	1.379s
+ok  	traning_ai/backend/internal/domain	0.629s
+ok  	traning_ai/backend/internal/adapters/pg	1.840s

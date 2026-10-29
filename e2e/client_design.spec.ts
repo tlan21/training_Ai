@@ -42,7 +42,7 @@ test('INT-35 compilation title, output timeline and available source notice', as
  await page.route('**/api/videos/vid_ui1',r=>r.fulfill({json:{...videos[0],playback_url:'/ui-fixture.mp4',clips:[compiled]}}));
  await page.route('**/api/clips/clp_compiled_ui',r=>r.fulfill({json:compiled}));
  await page.goto(client+'/videos/vid_ui1?clip=clp_compiled_ui');
- await expect(page.getByRole('heading',{name:'Bản tổng hợp UI',exact:true})).toBeVisible();
+ await expect(page.getByRole('heading',{name:'Bản tổng hợp UI',exact:true,level:1})).toBeVisible();
  await expect(page.locator('.notice')).toContainText('Đang xem video tổng hợp đã xuất bản');
  await expect(page.locator('.notice')).not.toContainText('Video gốc chưa có nguồn phát');
  await expect(page.getByLabel('Vị trí phát video')).toHaveAttribute('max','4');

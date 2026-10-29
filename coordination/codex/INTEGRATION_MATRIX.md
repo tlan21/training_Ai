@@ -6,6 +6,8 @@ Chỉ `INTEGRATED_REAL` với endpoint `API_READY` trên `master` mới được
 
 Bản đầu do Claude khởi tạo 2026-10-26 từ INVENTORY; từ đây Codex tự cập nhật.
 
+2026-10-29 INT-34/35: product compilation uses existing stored highlight proposals; no additional AI request/contract/status change. Real backend/CMS/Client acceptance 1PASS36.4s (60s source→9 intervals→one34s MP4, draft/preview/publish/playback/own-test rejection), verification/INT-35.md. Docker runtime remains ai-v2-478052e, host Fusion5 separate. This does not promote /v2 DRAFT or model-quality acceptance.
+
 | AI endpoint | Contract | Nơi gọi (Go) | Màn/flow | Trạng thái | Bằng chứng |
 |---|---|---|---|---|---|
 | `POST /v1/vision/completions` | v1.3 API_READY | Legacy HTTP client only; gateway runtime removed under INT-28 | Upload → category suggestion (CMS Highlight/Video) | HIST — retired from runtime (Claude deprecation pending) | 2026-10-27 T4.1 real upload/category PASS; `verification/INT-11-real-e2e.log` |

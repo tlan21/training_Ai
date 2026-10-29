@@ -1,0 +1,39 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 105B 0.0s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/video-ai-cms:int23-fa8a382
+#2 DONE 0.3s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 0.0s
+#3 transferring context: 2B 0.0s done
+#3 DONE 0.2s
+
+#4 [internal] load build context
+#4 ...
+
+#5 [1/2] FROM docker.io/library/video-ai-cms:int23-fa8a382@sha256:4af1fc713083055618bf9e21ecc82ef75d609b04f4a60f6f743b1e63d86c0979
+#5 resolve docker.io/library/video-ai-cms:int23-fa8a382@sha256:4af1fc713083055618bf9e21ecc82ef75d609b04f4a60f6f743b1e63d86c0979 0.1s done
+#5 DONE 0.2s
+
+#4 [internal] load build context
+#4 transferring context: 2.25MB 0.8s done
+#4 DONE 0.8s
+
+#6 [2/2] COPY dist/ /usr/share/nginx/html/
+#6 DONE 8.0s
+
+#7 exporting to image
+#7 exporting layers
+#7 exporting layers 0.3s done
+#7 exporting manifest sha256:e8716443d93938e58f07675d15a697fc0d80ce670abc17beb5b18b5d943fb12c 0.0s done
+#7 exporting config sha256:5b98c115701b1bd5ae5435c7b1dd5df78d408e43a1751ca60a984233bdf1ce19 0.0s done
+#7 exporting attestation manifest sha256:bf375b8531cc5b89a708854ccd55272bd5a3242319e02e2125d59d3d32403493 0.1s done
+#7 exporting manifest list sha256:3f3106abc0f3ec9468ebadd0f2ccd75f22d074bcf41b523cd68875a25ef51981
+#7 exporting manifest list sha256:3f3106abc0f3ec9468ebadd0f2ccd75f22d074bcf41b523cd68875a25ef51981 0.0s done
+#7 naming to docker.io/library/video-ai-cms:int35-fbeeb50 done
+#7 unpacking to docker.io/library/video-ai-cms:int35-fbeeb50 0.1s done
+#7 DONE 0.7s

@@ -1,4 +1,16 @@
-# SESSION — authoritative resume state (2026-10-29, INT-33 thumbnails deployed)
+# SESSION — authoritative resume state (2026-10-29, INT-35 compilation deployed)
+
+- INT-34/35 DONE (scoped compilation feature), public contract **0.5.0** source **6e1e6ad**; implementation **fbeeb50**, final playback labels **8918060**. Final evidence/test-selector checkpoint follows.
+- CMS processed video → Highlight → **Tạo video tổng hợp AI**: stored AI proposals ordered/overlap-merged into one H.264/AAC MP4 draft; source map persisted. Existing clip creation/publish routes reused. No automatic publication. Original source media and legacy clips remain intact.
+- CMS can select/review compiled drafts after reload. Client remaps subtitles/heatmap/key moments to output time; feed maps playback back to source for subtitles. Empty AI proposals return422; no fake moments/forced minimum. No new AI calls or model changes are needed for compilation creation.
+- Runtime: gateway/CMS `int35-fbeeb50`, Client `int35-8918060`, all latest aliases +rollback tags, Docker AI unchanged `ai-v2-478052e` at internal8001. Final Client buildID `jBLHEZwKfzQvS7Jxe2jdX`, gateway SHA `4f0b9a627ef59bf4dbdfab9451b02e4a9507c74c44163931ed95d0f6c5a855a6`. All apps/AI healthy, no ai-mock.
+- Migration005 applied twice/additive/idempotent: clips.source_segments JSONB default[]; fresh schema + owned schema/plan notes updated. Never run a schema reset. Compose/Dockerfile changes unnecessary: existing services/dependencies/runtime config reused, offline artifact overlay images deployed with no-deps/no-build/pull-never.
+- Evidence `verification/INT-35.md`: Go vet/test/build, actual PG TEMP persistence/feed/catalog, real FFmpeg audio/silent/frame/duration, FE types/build/lint all PASS. **112 regression PASS4.3m**, real E2E **1PASS36.4s**, final UI/timeline **2PASS2.4s**. Actual60s sample→9 intervals→one34s video; private draft, preview1440+390, reload/select, explicit publish and Client playback passed.
+- Own test compilation `clp_dmh7dapvqjn1` rejected/public404 after acceptance; one MP4 kept for traceability, no source video uploaded/deleted. Original106video/56clip hashes unchanged; other13containers and host AI PID14896 unchanged, Dockerreal6/degradedempty, activejobs0. Earlier INT-33 PID15852 is historical; Claude changed host before this task, never by Codex.
+- Scoped UI additions user-authorized in CONTRACT_DECISIONS/plan03, original regions unchanged; global INT-05/06 parity remains PARTIAL. HC-14 ASR sentence snapping and host Fusion5/Docker rollout remain independent; do not claim model quality or /v2API_READY release. No AI/source/checkpoint/shared status/master/push changes.
+- Next safe work: remaining assigned INT-05/06 scope; no outstanding implementation for this compilation request.
+
+## Prior checkpoints (historical; final state above takes precedence)
 
 INT-34 DONE, INT-35 IN_PROGRESS: OpenAPI 0.5.0 extends existing POST /api/cms/clips with auto_highlights and Clip.source_segments, no new endpoint. Go/CMS/Client regenerated; embedded spec test and both FE typechecks PASS. First anyOf generation required an extra runtime dependency, avoided by descriptive conditional validation instead; no dependencies added. Next implement backend range normalization/persistence/FFmpeg concat, CMS action/preview and Client timeline remapping. Preserve original media/legacy clips, current Docker AI unchanged. User explicitly authorized combined highlight video; skill backend_endpoint + Ponytail.
 

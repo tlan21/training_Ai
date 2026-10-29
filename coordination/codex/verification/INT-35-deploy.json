@@ -1,0 +1,20 @@
+{
+  "image_tag": "int35-fbeeb50",
+  "services_recreated": [
+    "gateway",
+    "cms",
+    "client"
+  ],
+  "gateway_environment_unchanged": true,
+  "gateway_binary_sha256": "4f0b9a627ef59bf4dbdfab9451b02e4a9507c74c44163931ed95d0f6c5a855a6",
+  "client_build_id": "bfuGPf_PH_veFAHHaFepS",
+  "gateway_health": {
+    "dependencies": {
+      "milvus": "ok",
+      "minio": "ok"
+    },
+    "status": "ok"
+  },
+  "cms_http": 200,
+  "client_http": 200
+}

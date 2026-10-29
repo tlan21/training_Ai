@@ -497,12 +497,17 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Owner: CODEX | Status: DONE (2026-10-29)
 - Depends on: user explicitly requested one combined highlight video; existing clip create/publish API.
 - Acceptance: additive OpenAPI describes auto_highlights creation and persisted source_segments/output timeline, empty-AI validation; regenerate Go/CMS/Client types; schema test PASS. No new endpoint or AI contract change.
-- Changed: planned infra/openapi.yaml, generated types, contract test and owned coordination.
-- Commits: aeecf7d start; contract commit follows. Evidence: verification/INT-34.md and contract/types logs, all PASS. Next action: INT-35.
+- Changed: infra/openapi.yaml, backend/internal/gen/{api.gen.go,spec_test.go}, cms/src/api-types.ts, client/src/api-types.ts, owned coordination.
+- Commits: aeecf7d start; **6e1e6ad** contract. Evidence: verification/INT-34.md and contract/types logs, all PASS. Next action: INT-35.
 
 ### INT-35 — Generate, review and publish one AI highlight compilation
-- Owner: CODEX | Status: IN_PROGRESS (2026-10-29)
+- Owner: CODEX | Status: DONE (2026-10-29; scoped compilation feature)
 - Depends on: INT-34 contract; existing AI analysis and video/clip storage.
 - Acceptance: CMS action automatically orders/merges AI ranges and creates one accurately cut MP4 with audio; persisted source ranges and weighted score; processing→draft→explicit publish; CMS preview plus Client subtitle/timeline mapping; empty AI is a useful error, original/legacy clips preserved; unit, real FFmpeg/PG/API/browser verification and scoped UI review.
-- Changed: planned backend clip domain/PG/cutter/CMS handler, additive migration, CMS action/preview, Client time mapping, tests and owned evidence.
-- Commits: pending. Evidence: pending. Next action: implement after contract checkpoint; no AI code/model/runtime changes or automatic publishing.
+- Changed: backend/internal/domain/{entities.go,compilation.go,compilation_test.go}; adapters/pg/{repositories.go,content_pages.go,interactions.go,thumbnail_test.go}; cutter/{cutter.go,compilation.go,compilation_test.go}; handlers/{content.go,cms/clips.go,cms/clips_test.go}; infra/postgres/init/001_schema.sql and migrations/005_clip_compilation.sql; CMS HighlightPage/styles; Client clipTimeline/feed/detail; E2E compilation live/timeline + client_design; owned schema/plan/coordination/evidence.
+- Commits: **fbeeb50** implementation; **8918060** playback labels/schema/plan notes; final evidence checkpoint includes corrected test heading selector.
+- Evidence: verification/INT-35.md and INT-35-* logs/screens. Go vet/test/build PASS; real FFmpeg audio+silent exact 2s/frame comparisons PASS2.53s; real PG source persistence/feed/catalog PASS; migration005 twice/idempotent PASS. CMS/Client types/build, Client lint, E2E types PASS. **112 regression PASS4.3m**, **1 real E2E PASS36.4s**, **2 final UI/timeline PASS2.4s**.
+- Real acceptance: existing60s sample→9 stored real-AI ranges→one34.000s MP4; private draft404, CMS preview/reload/select1440+390/no body overflow, explicit publish, actual Client playback, own test clip rejected/public404 after test. No new video upload/deletion. Preserved original106videos/56clips hashes and other13 containers; hostAI14896 unchanged/DockerAIreal6; jobs0.
+- Runtime: gateway/CMS int35-fbeeb50, Client int35-8918060; latest aliases updated, rollback tags kept. Gateway binary and final Client BUILD_ID jBLHEZwKfzQvS7Jxe2jdX match artifacts; all healthy. Only these 3 apps recreated.
+- Checkpoint: Lane codex / Verified source + real PG/FFmpeg/API/UI + scoped10pointreview / Contract touched public0.5.0 only / Next safe task remaining INT-05/06 scope. No master/shared-status/push or global Stitch/AI quality promotion.
+- Next action: CMS → processed video → Highlight → Tạo video tổng hợp AI → review draft → publish. AI can return0proposals; no invented highlights. HC-14 sentence-boundary snapping/model rollout remain independent, no inference/checkpoint edit.
