@@ -34,7 +34,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-23 | INT-21/22 | Deploy planA Docker services +real E2E | DONE | explicit user deployment approval; DB004 applied |
 | INT-24 | HC-12/D23 | Explicit draft subtitles +approval evidence | REVIEW | user approved HC-12 first, then INT-05 |
 
-| INT-25 | HO-03 | Revalidate real gateway/key/pipeline and popularity | PARTIAL | explicit user instruction2026-10-29 |
+| INT-25 | HO-03 | Revalidate real gateway/key/pipeline and popularity | IN_PROGRESS | explicit user instruction2026-10-29 |
 | INT-26 | INT-24/06 | Production QA3100 and HC-12 Client evidence | DONE | INT-25; explicit exact-command approval renewed |
 | INT-27 | HC-11 | Verify cold Compose startup with existing dependencies | DONE | INT-26; owned stack stop/up approved, preserve volumes/AI |
 
@@ -380,7 +380,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Changed planned: CMS subtitles, shared Client Transcript/styles, fixture/live E2E, owned plans/SESSION/TASKS/HANDOFF/evidence.
 - Evidence: verification/INT-24.md; CMS3PASS17.3s, real edit/approval1PASS38s, CMS/Client builds+types PASS. New Client browser checks pending QA3100 external startup; automatic review rejected despite prior authorization. Next action: independent INT-05 while waiting.
 ### INT-25 — HO-03 real runtime acceptance refresh
-- Owner: CODEX | Status: PARTIAL (2026-10-29; real config correct, nonempty summary acceptance failed)
+- Owner: CODEX | Status: IN_PROGRESS (2026-10-29; separate protocol/content gates, natural media pending)
 - Dependency: explicit user instruction; AI-APIv1.3 on master26c2346; existing INT-11/23 real integration evidence retained.
 - Acceptance: compare gateway Bearer to read-only Claude env without disclosure; canonical real URL/stub0; health200/startup banner;
  actual short-video pipeline with nonempty original AI category/timeline/subtitles/summary; real recommendation503 +truthful popularity mode.

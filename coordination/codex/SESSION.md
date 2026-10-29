@@ -1,6 +1,9 @@
 # SESSION — authoritative resume state (2026-10-28, INT-23 Docker update verified)
 
 ## Branch / task state
+- INT-25 IN_PROGRESS final protocol/content separation after coldboot62149d3; strict content test takes explicitE2E_AI_CONTENT_VIDEO, captures counts before assertion, never substitutes editorial text.
+  Re-run protocol using existing contract (empty drafts permitted) and strict content on synthetic fixture to preserve explicit failure; real natural-media gate still requires user input.
+
 - 2026-10-29 latest: INT-27 DONE coldboot12services PASS44.92s; IDs/volumes/91+10rowhashes/AI26848/outsiders unchanged. Evidence verification/INT-27.md.
   No current IN_PROGRESS after coldboot; INT-25 PARTIAL awaiting natural-speech media path. Separate strict content gate being retained without changing baseline HTTP protocol contract.
 
