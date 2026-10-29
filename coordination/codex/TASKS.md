@@ -433,3 +433,13 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Acceptance: document existing DELETE route's idempotent MinIO/Milvus/Mongo cleanup, active writer409 and storage503; regenerate Go/CMS/Client types; embedded schema validation PASS.
 - Changed: infra/openapi.yaml, generated Go/FE types, contract test, owned coordination.
 - Evidence: verification/INT-29.md/log; generation+schema204/409/503+both FE tsc PASS. Commit: ef8162b. Next: INT-28 live acceptance complete; waiting Claude v2 release.
+
+### INT-30 — Docker real-AI runtime and remove running mock
+- Owner: CODEX | Status: IN_PROGRESS (2026-10-29)
+- Depends on: user explicitly authorizes Docker update/removal of running ai-mock; INT-28 real v2 gateway verified.
+- Acceptance: root/local real-AI Compose valid; gateway canonical8001/stub0/current verifiedimage; only ai-mock container stopped/removed;
+ no volume/image/data removal; all remaining containers and hostAI preserved; gateway/storage/UI healthy after mock removal.
+- Changed: docker-compose.local.yml/rootcomments; cold-start utility optional outsider handling; owned coordination/evidence.
+- Commits/Evidence: startup checkpoint; pending config/runtime verification.
+- Next action: inventory container identities/mounts/data; fix localoverride phantom mock; apply current verified images without recreate;
+ remove exact project ai-mock container only, validate realAI and no remaining mock listener/container.

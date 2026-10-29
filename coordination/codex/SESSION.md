@@ -1,3 +1,5 @@
+INT-30 IN_PROGRESS: user authorizes Docker runtime update and removal of running orphan ai-mock. INT-28/29 remain REVIEW. Branch correct/clean/no missingmaster. Next inventory, fix local phantom mock and optional coldboot outsider, validate config and preserve every nonmock container/data/hostAI.
+
 # SESSION — authoritative resume state (2026-10-29, HC-13 / D24 live cutover complete)
 
 - Branch codex/integration; master26c2346 received, startupclean/noHEAD..master commits. No release/push/shareddocs or Claude source/runtime/checkpoint change.
