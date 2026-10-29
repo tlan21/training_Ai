@@ -94,7 +94,9 @@ CREATE TABLE clips (
     start_time NUMERIC(10, 2) NOT NULL,
     end_time NUMERIC(10, 2) NOT NULL,
     average_score NUMERIC(5, 2) NOT NULL CHECK (average_score >= 0.00 AND average_score <= 100.00),
-    clip_file_path VARCHAR(512), -- Video segment (.mp4) đã cắt và xuất bản
+    source_segments JSONB NOT NULL DEFAULT '[]'::jsonb CHECK (jsonb_typeof(source_segments) = 'array' AND jsonb_array_length(source_segments) <= 100),
+    -- []: clip đơn, start/end là mốc nguồn. Có đoạn: video tổng hợp, start=0/end=tổng thời lượng; JSON giữ mốc nguồn.
+    clip_file_path VARCHAR(512), -- Video segment hoặc video tổng hợp (.mp4), nháp trước khi xuất bản
     thumbnail_url VARCHAR(512), -- Thumbnail/feed card; nếu NULL backend dùng thumbnail video gốc
     status VARCHAR(20) NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'processing', 'published', 'rejected')),
     created_by VARCHAR(50) REFERENCES users(id) ON DELETE SET NULL, -- Admin/Editor hoặc hệ thống AI

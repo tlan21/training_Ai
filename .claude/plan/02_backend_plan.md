@@ -3,6 +3,8 @@
 
 > Quy ước thang điểm (bất biến từ @architecture.md): điểm highlight `timeline_scores`/`average_score` thang **0–100**; `similarity_score` (Visual Search) và `score` (Recommendation) thang **0–1**.
 
+> INT-34/35 (user yêu cầu 2026-10-29): OpenAPI 0.5.0 mở rộng POST /api/cms/clips với auto_highlights=true, không thêm route/topic/AI field. Backend lấy gợi ý AI đã lưu, gộp khoảng trùng, xếp thời gian, trim+concat FFmpeg thành một MP4 nháp. clips.source_segments JSONB lưu mốc nguồn; start/end của bản tổng hợp = 0/tổng thời lượng. Event clip.cut.requested giữ payload cũ, cutter đọc source map từ ClipRepository. CMS duyệt/xuất bản như clip đơn; Client ánh xạ lại phụ đề/heatmap. Migration 005 additive, clip/video cũ giữ nguyên.
+
 ---
 
 ## 0. RANH GIỚI NGÔN NGỮ (Python chỉ nơi dính AI)

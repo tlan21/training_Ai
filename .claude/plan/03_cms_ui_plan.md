@@ -577,6 +577,9 @@ Audit 2 chiều Stitch export ↔ AI core đã chốt. Quy tắc: **HTML trong `
 | Storage Provider AWS/GCS/Azure (Settings) | Chỉ MinIO (đọc từ env, hiển thị read-only) |
 
 ### 7.3. Task bổ sung
+
+User bổ sung 2026-10-29 (INT-34/35): màn Highlight thêm nút “Tạo video tổng hợp AI” trong nhóm hành động hiện có, cùng khối chọn/xem trước các bản tổng hợp đã tạo. Tự chọn và ghép toàn bộ gợi ý AI hợp lệ theo thời gian thành một bản nháp, không tự xuất bản. Dùng lại component/token/flow hiện có; đây là phần bổ sung được user yêu cầu ngoài Stitch gốc, không đổi phần còn lại hay CẮT-list.
+
 | # | Sub-task | ≤ | DoD |
 |---|---|---|---|
 | T3.1.15 | Màn 11 Settings: hooks settings, form 2 toggle + slider + key masked | 0.5d | PUT stub ok; slider đổi 75→80 thì heatmap/clip panel dùng 80 (đọc settings, bỏ hằng số) |
