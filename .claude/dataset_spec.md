@@ -114,3 +114,11 @@ Vấn đề: chấm điểm kịch tính từng giây cần nhãn từng giây �
 - Cấu trúc: `data/raw/`, `data/processed/`, `data/labels/`; mỗi dataset 1 manifest JSON (đường dẫn, split, checksum, license).
 - Split cố định bằng seed ghi trong manifest — mọi thí nghiệm dùng chung split để so sánh được.
 - Tool gán nhãn: 1 trang web nội bộ đơn giản (chọn danh mục cho video; kéo vùng highlight trên timeline) — ~2 ngày công dev, tái dùng UI heatmap của CMS.
+
+## Highlight — dữ liệu tin tức (AI-19, quyết định user 2026-10-29)
+- Nguồn: 10 video tin tức tiếng Việt CC BY, đầy đủ, `D:/data_training_ai/minigpt_real_video_20261015/raw/youtube` (133 phút, provenance `sources.json`).
+  30 đoạn `evaluation/` là tập chấm MiniGPT (T1.6) — KHÔNG dùng cho training. Dùng nguồn này cho Fusion không ảnh hưởng tính hợp lệ của chấm MiniGPT
+  (model khác), nhưng từ đó 10 nguồn này không được làm tập test highlight.
+- Đặc trưng: đúng đường production — `backend/ingest-worker` `preprocess()` (1 fps 224×224, WAV 16 kHz, audio 64-d) + `app.worker.vision` (backbone Siamese).
+- Nhãn: AI đề xuất (CLAUDE_PROPOSED, không phải nhãn) → người sửa/duyệt từng video (`label_news.html`) → file export HUMAN_VERIFIED là nguồn duy nhất của nhãn.
+

@@ -18,7 +18,8 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | AI-15 | T1.8 | D24 bước 2: AI-API v2.0 (DRAFT) — AI trả vector/kết quả, Backend sở hữu MinIO/Milvus; v1.3 chạy song song; HC cho Codex | BLOCKED ⇐ RE:HC-13 E2E (phần AI xong 2026-10-29: v2.0 DRAFT, :8001 phục vụ /v1 + /v2) | AI-14; Codex (HC) cho phần backend |
 | AI-16 | T1.5 / T1.8 | Highlight: (B) đối chiếu checkpoint active với vòng đạt DoD; (A) hậu xử lý đúng như lúc chấm (làm mượt k, τ); (C) luật clip (độ dài, nối, biên câu) | REVIEW (2026-10-29; vòng 5 ACTIVE trên :8001 theo lệnh user; chờ release) | user 2026-10-29 |
 | AI-17 | T1.5 | Fusion vòng 6: chuẩn hóa theo từng video + augment chống overfit; thay vòng 5 chỉ khi val ≥ 0.2750 và gap train−val < 0.205 | REVIEW (2026-10-29; vòng 6 ACTIVE trên :8001; chờ release) | AI-16; user 2026-10-29 |
-| AI-18 | T1.5 | Fusion vòng 7: giảm overfit bằng lr/weight decay/lịch ngắn; thay vòng 6 chỉ khi val ≥ 0.3053, gap < 0.1692, val loss < 1.2136 | REVIEW (2026-10-29; đạt quy tắc, cải thiện rất nhỏ; chờ user quyết kích hoạt) | AI-17 |
+| AI-18 | T1.5 | Fusion vòng 7: giảm overfit bằng lr/weight decay/lịch ngắn; thay vòng 6 chỉ khi val ≥ 0.3053, gap < 0.1692, val loss < 1.2136 | REVIEW (2026-10-29; vòng 7 ACTIVE theo lệnh user; chờ release) | AI-17 |
+| AI-19 | T1.5 | (a) SỬA lỗi đặc trưng vision cho highlight (serve ViT ≠ train Siamese backbone); (b) dữ liệu tin tức 10 video gốc: feature + đề xuất + trang gán nhãn người → vòng 8 | IN_PROGRESS (2026-10-29) | user 2026-10-29 |
 | AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | BLOCKED ⇐ bundle INT-13 (phần độc lập xong 2026-10-26) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | DONE (2026-10-26; sandbox + artifact; product → AI-12 theo D18) | HC-04 (sandbox READY) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a DONE (2026-10-27) · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
@@ -200,8 +201,18 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   Next safe task: release #2 (user duyệt push)
   ```
 
+### AI-19 — Highlight: sửa đặc trưng vision + dữ liệu tin tức có nhãn người
+- T gốc: T1.5 | Owner: claude | Status: IN_PROGRESS (2026-10-29)
+- Depends on: AI-18 (vòng 7 active); quyết định user 2026-10-29 | Blocks: vòng 8 (cần file nhãn HUMAN_VERIFIED)
+- (a) DONE 2026-10-29 (1b5e211): `embeddings_256` = backbone Siamese (đặc trưng Fusion đã train; trước là ViT phân loại, cosine 0.03–0.13);
+  `tests/test_feature_parity.py` khóa với checkpoint thật; :8001 PID 30580 smoke 9/9; REL cho Codex (video cũ cần chạy lại highlight).
+- (b) Quyết định user (2026-10-29): dùng 10 video tin tức GỐC `D:/data_training_ai/minigpt_real_video_20261015/raw/youtube` cho train highlight;
+  30 đoạn `evaluation/` (tập chấm MiniGPT) giữ nguyên, không dùng. Sau khi dùng, 10 nguồn này KHÔNG được làm test highlight.
+  Nhãn: AI đề xuất (CLAUDE_PROPOSED) → user sửa/duyệt trên `label_news.html` → export HUMAN_VERIFIED → intake → vòng 8.
+- Evidence: — | Commits: — | Checkpoint: —
+
 ### AI-18 — Fusion vòng 7: giảm overfit (learning rate / weight decay / lịch ngắn)
-- T gốc: T1.5 | Owner: claude | Status: REVIEW (2026-10-29) — đạt cả 3 điều kiện; test 0.3298 vs 0.3280 (rất nhỏ); chờ user quyết kích hoạt
+- T gốc: T1.5 | Owner: claude | Status: REVIEW (2026-10-29) — đạt cả 3 điều kiện; **ACTIVE** trên :8001 (user ra lệnh); recipe τ 0.51, bỏ clip < 3 s, video < 120 s không clip; vòng 6 lưu `_archive/highlight_fusion_round6_9b59a7b0/`
 - Depends on: AI-17 (vòng 6 active; val loss đáy step 500–1100 rồi tăng) | Blocks: —
 - Quy tắc: đăng ký trước `.claude/evaluation_plan.md` §2.1 "Vòng 7". Kernel mới `traininghighlight/ai-core-fusion-r7` (giữ output vòng 6).
 - Acceptance: sweep 4 biến thể + (nếu thắng mốc) 3 seed; chấm local; quyết bằng val + gap + val loss; test 1 lần sau quyết; đạt → đề xuất kích hoạt.
