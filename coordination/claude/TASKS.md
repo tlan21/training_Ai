@@ -17,6 +17,7 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | AI-14 | T1.8 | D24 bước 1: tách facade/worker trong inference-service (contract v1.3 không đổi) + worker từ xa (MODEL_WORKER_URL) + kernel Kaggle worker GPU | REVIEW (2026-10-29; chờ release; dataset Kaggle uploaded, kernel chưa push) | D24 (user 2026-10-29) |
 | AI-15 | T1.8 | D24 bước 2: AI-API v2.0 (DRAFT) — AI trả vector/kết quả, Backend sở hữu MinIO/Milvus; v1.3 chạy song song; HC cho Codex | BLOCKED ⇐ RE:HC-13 E2E (phần AI xong 2026-10-29: v2.0 DRAFT, :8001 phục vụ /v1 + /v2) | AI-14; Codex (HC) cho phần backend |
 | AI-16 | T1.5 / T1.8 | Highlight: (B) đối chiếu checkpoint active với vòng đạt DoD; (A) hậu xử lý đúng như lúc chấm (làm mượt k, τ); (C) luật clip (độ dài, nối, biên câu) | REVIEW (2026-10-29; vòng 5 ACTIVE trên :8001 theo lệnh user; chờ release) | user 2026-10-29 |
+| AI-17 | T1.5 | Fusion vòng 6: chuẩn hóa theo từng video + augment chống overfit; thay vòng 5 chỉ khi val ≥ 0.2750 và gap train−val < 0.205 | IN_PROGRESS (2026-10-29) | AI-16; user 2026-10-29 |
 | AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | BLOCKED ⇐ bundle INT-13 (phần độc lập xong 2026-10-26) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | DONE (2026-10-26; sandbox + artifact; product → AI-12 theo D18) | HC-04 (sandbox READY) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a DONE (2026-10-27) · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
@@ -197,6 +198,13 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   Contract touched: yes (v1.2-rc1, chỉ thêm VisionRequest.video_id)
   Next safe task: release #2 (user duyệt push)
   ```
+
+### AI-17 — Fusion vòng 6: giảm overfit (chuẩn hóa theo video + augment)
+- T gốc: T1.5 | Owner: claude | Status: IN_PROGRESS (2026-10-29)
+- Depends on: AI-16 (đo overfit: train 0.480 / val 0.275 / test 0.263) | Blocks: —
+- Quy tắc chọn: đăng ký trước trong `.claude/evaluation_plan.md` §2.1 (vòng 6). Kernel Kaggle MỚI (không ghi đè output vòng 5).
+- Acceptance: 4 biến thể sweep + 3 seed trên Kaggle; chấm local quy trình DoD; quyết bằng val + gap; test báo cáo 1 lần; nếu đạt → đề xuất kích hoạt (user duyệt).
+- Evidence: — | Commits: — | Checkpoint: —
 
 ### AI-16 — Highlight: checkpoint đúng vòng DoD + hậu xử lý như lúc chấm + luật clip
 - T gốc: T1.5 / T1.8 | Owner: claude | Status: REVIEW (2026-10-29) — B/A/C xong; **vòng 5 ACTIVE** trên :8001 (user: "hãy kích hoạt models training mới nhất"); chờ release
