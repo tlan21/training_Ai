@@ -511,3 +511,10 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Runtime: gateway/CMS int35-fbeeb50, Client int35-8918060; latest aliases updated, rollback tags kept. Gateway binary and final Client BUILD_ID jBLHEZwKfzQvS7Jxe2jdX match artifacts; all healthy. Only these 3 apps recreated.
 - Checkpoint: Lane codex / Verified source + real PG/FFmpeg/API/UI + scoped10pointreview / Contract touched public0.5.0 only / Next safe task remaining INT-05/06 scope. No master/shared-status/push or global Stitch/AI quality promotion.
 - Next action: CMS → processed video → Highlight → Tạo video tổng hợp AI → review draft → publish. AI can return0proposals; no invented highlights. HC-14 sentence-boundary snapping/model rollout remain independent, no inference/checkpoint edit.
+
+### INT-36 — Bound discovery image frames to the Stitch layout
+- Owner: CODEX | Status: IN_PROGRESS (2026-10-29)
+- Depends on: user screenshot oversized discovery hero after real thumbnails became available; existing discovery mobile/desktop Stitch.
+- Acceptance: desktop hero and both side cards fit the intended520px grid at1440/1903, no overlap with following sections; square/portrait/landscape loaded images cannot expand grid tracks; mobile390 preserves existing card ratios/no body overflow; links/filter/states unchanged; build/types/lint + meaningful browser checks and real Client3000 verification; client-only deployment, other services/data preserved.
+- Changed: planned scoped client CSS + layout regression test + owned coordination/evidence.
+- Commits: startup checkpoint follows. Evidence: pending. Next action: reproduce with loaded intrinsic-size images, fix sizing at the layout root, verify and deploy Client only.

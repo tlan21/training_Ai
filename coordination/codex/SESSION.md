@@ -1,5 +1,7 @@
 # SESSION — authoritative resume state (2026-10-29, INT-35 compilation deployed)
 
+INT-36 IN_PROGRESS: user discovery screenshot has oversized hero/side cards and overlap. Correct branch, clean/no master delta; current coordination/Claude handoff read (host Fusion6 now PID27064, do not change it). Skill client_screen + UI/UX Pro Max + Ponytail; original discovery mobile/desktop and CẮT-list referenced. Suspected grid auto min-content tracks grow with real intrinsic-size images despite520px container. Next loaded-image regression reproduction then scoped CSS sizing fix, build/browser/live deployment Client only. No API/data/AI edits.
+
 - INT-34/35 DONE (scoped compilation feature), public contract **0.5.0** source **6e1e6ad**; implementation **fbeeb50**, final playback labels **8918060**. Final evidence/test-selector checkpoint follows.
 - CMS processed video → Highlight → **Tạo video tổng hợp AI**: stored AI proposals ordered/overlap-merged into one H.264/AAC MP4 draft; source map persisted. Existing clip creation/publish routes reused. No automatic publication. Original source media and legacy clips remain intact.
 - CMS can select/review compiled drafts after reload. Client remaps subtitles/heatmap/key moments to output time; feed maps playback back to source for subtitles. Empty AI proposals return422; no fake moments/forced minimum. No new AI calls or model changes are needed for compilation creation.
