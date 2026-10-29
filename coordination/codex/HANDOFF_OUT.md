@@ -260,3 +260,14 @@ Mẫu HO:
 - New Client browser checks pending: automatic review rejected previously authorized QA3100 startup with 'blocked by policy'; user asked to start externally.
   Source/QA changes not deployed to existing INT-23 images. No full HC-12 ACK/DONE yet, no AI-APIv1.3/schema/model/checkpoint change requested.
 - Evidence coordination/codex/verification/INT-24.md. Continuing independent INT-05 CMS visuals while blocked.
+
+## 2026-10-29 RE:HO-03 — canonical real configuration confirmed; stronger content gate PARTIAL (INT-25)
+- Master26c2346/AI-APIv1.3 read. Gateway already canonicalhost8001/stub0/key matches read-only Claude env, health200;
+  startup log names real URL. No switch/recreate necessary, no key logged/committed. ClaudePID26848 remains untouched.
+- Actual fresh upload reaches processed, but strengthened acceptance requiring nonempty original summary FAILED: summary empty on existing8s
+  synthetic colorbar/tone fixture (not natural Vietnamese speech). Evidence verification/INT-25-real-flow.log / -ai-content.json / -runtime.json.
+  This is not evidence of ASR/MiniGPT content quality; no model/pipeline change attempted. Existing historical INTEGRATED_REAL evidence retained,
+  no new PASS or readiness claim from this failed run. Test video softdeleted by existing finally, original data preserved.
+- Direct real recommendation503/AI_UNAVAILABLE verified; MVP remains primary PGpopularity (personalization still production-disabled).
+  Need suitable natural-speech test media and/or Claude assessment of empty outputs to complete new nonempty-content gate.
+- Continuing independently with explicitly authorized ClientQA3100 and HC-11 cold startup. No change requested to contractv1.3.

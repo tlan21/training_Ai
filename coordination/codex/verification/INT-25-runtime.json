@@ -1,0 +1,47 @@
+{
+  "checked_at": "2026-10-29T01:52:15.4554642Z",
+  "master": "26c2346",
+  "contract": "AI-APIv1.3",
+  "gateway_id": "78c8a9b7b71dba63653725a1255d4745e22389982051426b12d4c402fcb09981",
+  "image": "video-ai-gateway:int23-fa8a382",
+  "ai_base_url": "http://host.docker.internal:8001",
+  "ai_allow_stub": "0",
+  "bearer_matches_claude_env": true,
+  "gateway_health": {
+    "status": "ok"
+  },
+  "startup_banner": [
+    "2026/10/28 10:25:39 gateway :8000 (PostgreSQL/Mongo/MinIO/Kafka/Redis) → AI http://host.docker.internal:8001"
+  ],
+  "recommendation_http": 503,
+  "recommendation_error": {
+    "code": "AI_UNAVAILABLE",
+    "message": "Recommendation index unavailable; gateway uses popularity fallback"
+  },
+  "ai_health": {
+    "status": "ok",
+    "gpu_vram_used": 0.0,
+    "gpu_util": 0.0,
+    "models_loaded": [
+      "asr_ctc",
+      "highlight_fusion",
+      "minigpt",
+      "siamese",
+      "two_tower",
+      "vit"
+    ],
+    "degraded": [],
+    "dependencies": {
+      "recommendation_index": "missing_collection",
+      "visual_index": "ok"
+    },
+    "queue_depth": 0,
+    "device": "cpu",
+    "stub_mode": false,
+    "load_error": null
+  },
+  "ai_host_pid": [
+    26848
+  ],
+  "recreated_gateway": false
+}

@@ -99,10 +99,15 @@ test('T4.1 upload → processed → approve → publish → client feed', async 
     const analysis = await draft.json();
     expect(analysis.summary_status).toBe('draft');
     expect(analysis.timeline_scores.length).toBeGreaterThan(0);
+    expect(analysis.summary?.trim().length).toBeGreaterThan(0);
     expect(analysis.summary ?? '').not.toContain('stub');
     expect(analysis.category_suggestion).toMatch(/^(bong_da|the_thao|ca_nhac|tin_tuc)$/);
     const subtitles = await request.get(`${gateway}/api/videos/${videoId}/subtitles`, { headers: viewerHeaders });
-    expect(JSON.stringify(await subtitles.json())).not.toContain('giả lập');
+    const originalSubtitles = await subtitles.json();
+    expect(originalSubtitles.segments.length).toBeGreaterThan(0);
+    expect(originalSubtitles.segments.some((segment: components['schemas']['SubtitleSegment']) => !!segment.text?.trim())).toBe(true);
+    expect(JSON.stringify(originalSubtitles)).not.toContain('giả lập');
+    await info.attach('original-real-ai-output', { body: JSON.stringify({ videoId, jobId: upload.job.id, category: analysis.category_suggestion, timeline_seconds: analysis.timeline_scores.length, summary: analysis.summary, subtitles: originalSubtitles }), contentType: 'application/json' });
 
     const loadedAnalysis = page.waitForResponse(r => r.url().endsWith(`/videos/${videoId}/analysis`));
     await page.goto(`${cms}/subtitles?video_id=${videoId}`);
@@ -189,7 +194,9 @@ test('T4.1 upload → processed → approve → publish → client feed', async 
     await page.getByRole('button', { name: 'Xuất bản clip', exact: true }).click();
     expect((await published).status()).toBe(200);
     const feed = await request.get(`${gateway}/api/feed`, { headers: viewerHeaders });
-    const feedItems: Clip[] = (await feed.json()).items;
+    const feedPage = await feed.json();
+    expect(feedPage.recommendation_mode).toBe('popularity');
+    const feedItems: Clip[] = feedPage.items;
     expect(feedItems).toContainEqual(expect.objectContaining({ id: clipId, video_id: videoId, title, status: 'published' }));
     const playback = feedItems.find(clip => clip.id === clipId)?.playback_url;
     expect(playback).toContain('localhost:9000');

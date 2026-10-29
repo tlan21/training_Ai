@@ -1,6 +1,10 @@
 # SESSION — authoritative resume state (2026-10-28, INT-23 Docker update verified)
 
 ## Branch / task state
+- 2026-10-29 checkpoint: INT-25 PARTIAL (fresh synthetic8s pipeline processed but raw summary empty; strict nonempty assertion FAIL).
+  Realkeymatches/canonicalURL/stub0/banner/health/realrecommend503 PASS; no gateway recreation or AI change. RE:HO03 evidence appended.
+  Only INT-26 IN_PROGRESS now: explicit exact production QA3100 command newly approved; build fresh, full current suite71superset63.
+
 - 2026-10-29 explicit3work authorization: only INT-25 IN_PROGRESS (HO03 real acceptance), then INT-26 exactQA3100, then INT-27 cold stack HC11.
   Branch correct/clean, master26c2346 already received. AIhealthreal6/stubfalse/PID26848; gatewayalreadycanonicalhost/stub0/keymatchesClaude.env/restartunless-stopped.
   No initial switch/recreate needed unless mismatch; no Claude process/checkpoint/source changes. Clientbuild28Oct newer than source; original63suite now71, run fullsuperset.
