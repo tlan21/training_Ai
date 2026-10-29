@@ -1,0 +1,38 @@
+{
+  "ai_pids": [
+    15852
+  ],
+  "ai_health": {
+    "status": "ok",
+    "gpu_vram_used": 0.0,
+    "gpu_util": 0.0,
+    "models_loaded": [
+      "asr_ctc",
+      "highlight_fusion",
+      "minigpt",
+      "siamese",
+      "two_tower",
+      "vit"
+    ],
+    "degraded": [],
+    "dependencies": {
+      "recommendation_index": "missing_collection",
+      "visual_index": "ok"
+    },
+    "queue_depth": 0,
+    "device": "cpu",
+    "stub_mode": false,
+    "load_error": null
+  },
+  "gateway_health": {
+    "dependencies": {
+      "milvus": "ok",
+      "minio": "ok"
+    },
+    "status": "ok"
+  },
+  "cms_http": 200,
+  "client_http": 200,
+  "mock_containers": 0,
+  "mock_port_18001_closed": true
+}

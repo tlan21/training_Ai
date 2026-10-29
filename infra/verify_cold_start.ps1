@@ -32,14 +32,15 @@ try {
     $key=($line -split '=',2)[1].Trim().Trim([char]34).Trim([char]39)
     if(-not $key -or $key -cne $currentEnv.AI_SERVICE_KEY){throw 'Canonical AI key mismatch; no stop'}
     if($currentEnv.AI_BASE_URL -ne 'http://host.docker.internal:8001' -or $currentEnv.AI_ALLOW_STUB -ne '0'){throw 'Wrong AI runtime; no stop'}
-    $env:AI_SERVICE_KEY=$key; $env:APP_IMAGE_TAG=$gateway.Config.Image.Split(':')[-1]; $env:WSLENV='AI_SERVICE_KEY:APP_IMAGE_TAG'
+    $env:AI_SERVICE_KEY=$key; $env:APP_IMAGE_TAG='latest'; $env:WSLENV='AI_SERVICE_KEY:APP_IMAGE_TAG'
     $raw=Invoke-Compose @('config','--format','json');if($LASTEXITCODE -ne 0){throw 'Compose validation failed'}
     $config=$raw|ConvertFrom-Json
     $services=@($config.services.PSObject.Properties|Where-Object {-not $_.Value.profiles}|Select-Object -ExpandProperty Name)
     if($services.Count -ne 12 -or 'gateway' -notin $services -or $config.services.gateway.depends_on.postgres.condition -ne 'service_healthy'){throw 'Unexpected cold-start scope/dependency'}
     foreach($service in $services){
         $c=Inspect-Container "video-ai-$service-1"
-        if($c.Config.Image -cne $config.services.$service.image){throw "Image mismatch: $service"}
+        $configuredImage=& wsl -d docker-desktop --exec $docker -H $socket image inspect --format '{{.Id}}' $config.services.$service.image
+        if($LASTEXITCODE -ne 0 -or $c.Image -cne $configuredImage){throw "Image mismatch: $service"}
         $values=@{};foreach($entry in $c.Config.Env){$pair=$entry.Split('=',2);$values[$pair[0]]=$pair[1]}
         foreach($entry in $config.services.$service.environment.PSObject.Properties){
             if(-not $values.ContainsKey($entry.Name) -or [string]$entry.Value -cne $values[$entry.Name]){throw "Environment mismatch: $service/$($entry.Name)"}
@@ -48,7 +49,9 @@ try {
     $active=& wsl -d docker-desktop --exec $docker -H $socket exec video-ai-postgres-1 psql -X -U app -d video_ai -At -c "select count(*) from video_processing_jobs where status not in ('completed','failed','cancelled');"
     if($LASTEXITCODE -ne 0 -or [int]$active -ne 0){throw 'Processing active/query failed; no stop'}
     $aiPids=@(Get-NetTCPConnection -State Listen -LocalPort 8001|Select-Object -ExpandProperty OwningProcess -Unique)
-    $outsiders=@('video-ai-ai-mock-1','video-ai-inference-service-1','faktory_server')|ForEach-Object {$c=Inspect-Container $_;@{name=$_;id=$c.Id;status=$c.State.Status;started=$c.State.StartedAt}}
+    $containerNames=@(& wsl -d docker-desktop --exec $docker -H $socket ps -a --format '{{.Names}}')
+    if($LASTEXITCODE -ne 0){throw 'Cannot inventory optional outsider containers'}
+    $outsiders=@('video-ai-ai-mock-1','video-ai-inference-service-1','faktory_server')|Where-Object {$_ -in $containerNames}|ForEach-Object {$c=Inspect-Container $_;@{name=$_;id=$c.Id;status=$c.State.Status;started=$c.State.StartedAt}}
     $before=@(Snapshot $services);$fingerprint=Data-Fingerprint
     [ordered]@{checked_at=[DateTime]::UtcNow.ToString('o');services=$before;ai_pids=$aiPids;untouched=$outsiders;data=$fingerprint;gateway_dependencies=$config.services.gateway.depends_on}|ConvertTo-Json -Depth 8|Set-Content coordination/codex/verification/INT-27-before.json
     $stopped=$true

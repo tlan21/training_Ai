@@ -1,7 +1,8 @@
 name: video-ai
 
 # Full src: postgres/mongo/redis/minio/etcd/milvus/kafka + gateway/orchestrator/ffmpeg-cutter + cms (nginx proxies /api → gateway:8000)
-# Real AI: Claude owns host :8001; set AI_BASE_URL, AI_ALLOW_STUB=0.
+# Real AI (default): Claude owns host :8001; AI_BASE_URL targets host.docker.internal, AI_ALLOW_STUB=0.
+# No ai-mock service in this runtime; legacy mock containers can be stopped/removed individually.
 # Mock: docker compose -f docker-compose.yml -f docker-compose.mock.yml up -d --build gateway cms client ingest-worker
 # Check: curl http://localhost:8000/healthz ; open http://localhost:5173
 # Log:   docker compose logs -f gateway orchestrator ffmpeg-cutter cms

@@ -1,3 +1,5 @@
+INT-30 runtime acceptance PASS: orphanmock stopped/removed, port18001closed, realE2E1PASS20.7s/TOP1.9920652;16othercontainers/AI15852/data unchanged. Config root+local+CI valid, currentverifiedimages reapplied withoutrecreate/build/pull. Source/evidence checkpoint; final taskstatus next.
+
 INT-30 IN_PROGRESS: user authorizes Docker runtime update and removal of running orphan ai-mock. INT-28/29 remain REVIEW. Branch correct/clean/no missingmaster. Next inventory, fix local phantom mock and optional coldboot outsider, validate config and preserve every nonmock container/data/hostAI.
 
 # SESSION — authoritative resume state (2026-10-29, HC-13 / D24 live cutover complete)

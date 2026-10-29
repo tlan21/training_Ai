@@ -1,8 +1,9 @@
-# Development only. Never count this stack as real AI integration.
+# Explicit test/CI override only; do not include in the local real-AI runtime.
+# Removing a running mock container does not remove this test fixture.
 services:
   ai-mock:
     build: { context: ., dockerfile: backend/Dockerfile }
-    image: video-ai-gateway
+    image: video-ai-gateway:${APP_IMAGE_TAG:-latest}
     command: ["ai-mock"]
     environment:
       AI_SERVICE_KEY: ${AI_SERVICE_KEY:-sk-local-dev-key-change-me}

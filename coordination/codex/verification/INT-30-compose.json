@@ -1,0 +1,10 @@
+{
+  "root_valid": true,
+  "local_valid": true,
+  "explicit_ci_mock_valid": true,
+  "default_mock_absent": true,
+  "local_mock_absent": true,
+  "current4_images_env_unchanged": true,
+  "runtime_ai_base_url": "http://host.docker.internal:8001",
+  "runtime_allow_stub": "0"
+}

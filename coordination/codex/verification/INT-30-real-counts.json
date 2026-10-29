@@ -1,0 +1,17 @@
+{
+  "ai_stub_mode": false,
+  "ai_models": 6,
+  "video_id": "vid_dmh1uaq812wk",
+  "vectors": 10,
+  "subtitles": 3,
+  "category": "ca_nhac",
+  "summary_chars": 145,
+  "top1_score": 0.9920652,
+  "feed_mode": "popularity",
+  "cleanup": {
+    "repeated_delete": 204,
+    "vectors": 0,
+    "media_urls_404": 3,
+    "mongo_analysis_empty": true
+  }
+}
