@@ -17,3 +17,14 @@ VERIFIED-NOW 2026-10-29, CPU local.
 Chưa làm (cần user duyệt): kích hoạt ứng viên (đổi checkpoint active, contract §1 SHA, release); build lại dataset Kaggle worker
 (giao thức `highlight` đổi: trả `{scores, clip_rules}`).
 Giới hạn: chọn/đo trên SoccerNet (bóng đá) — chưa có nhãn highlight cho thể loại khác; snap theo câu không đo được bằng nhãn SoccerNet (không có transcript).
+
+## Overfitting check (2026-10-29, user hỏi) — Fusion vòng 5 ensemble, recipe service
+| tập | hiệp | F1/giây | điểm TB giây dương | điểm TB giây âm |
+|---|---|---|---|---|
+| train (60 hiệp đầu) | 60 | **0.480** | 0.667 | 0.211 |
+| val | 28 | 0.275 | 0.401 | 0.169 |
+| test | 27 | 0.263 | 0.426 | 0.190 |
+- Khoảng cách train − val ≈ 0.21 → model **có học thuộc** trận train. Val ≈ test (0.275 vs 0.263; split theo TRẬN) → mức tổng quát hóa sang trận bóng đá mới ổn định.
+- Val F1 theo step (log kernel `ai-core-fusion-140`): tăng tới ~900–2100 rồi đi ngang/dao động 0.17–0.20, không sụp → early stopping theo val giữ được; overfit không làm val tụt mạnh.
+- Video ngoài bóng đá: lệch chủ yếu do **lệch miền** (không có thể loại đó trong train), overfit làm nặng thêm vì model bám tín hiệu hẹp của trận train.
+- Script `overfit_check.py` (cùng code service; feature `highlight_features_140.pt`).
