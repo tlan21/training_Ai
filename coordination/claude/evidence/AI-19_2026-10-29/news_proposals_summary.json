@@ -1,0 +1,88 @@
+{
+ "videos": 10,
+ "total_seconds": 7997,
+ "proposed_segments": 4,
+ "model_best_sha256": "550909dedaac",
+ "per_video": [
+  {
+   "video_id": "JgqIdGgo948",
+   "seconds": 1191,
+   "category": "tin_tuc",
+   "proposed": 0,
+   "max_score": 48.7,
+   "mean_score": 11.9
+  },
+  {
+   "video_id": "oA0w-t5xVgg",
+   "seconds": 634,
+   "category": "tin_tuc",
+   "proposed": 1,
+   "max_score": 77.9,
+   "mean_score": 13.2
+  },
+  {
+   "video_id": "ObICsjyzHhU",
+   "seconds": 847,
+   "category": "tin_tuc",
+   "proposed": 0,
+   "max_score": 27.7,
+   "mean_score": 9.3
+  },
+  {
+   "video_id": "qc1mZSHcvB0",
+   "seconds": 852,
+   "category": "tin_tuc",
+   "proposed": 2,
+   "max_score": 69.8,
+   "mean_score": 11.8
+  },
+  {
+   "video_id": "QwKr8x7kfuo",
+   "seconds": 366,
+   "category": "tin_tuc",
+   "proposed": 0,
+   "max_score": 27.0,
+   "mean_score": 7.9
+  },
+  {
+   "video_id": "TvUBN0XbMBA",
+   "seconds": 590,
+   "category": "tin_tuc",
+   "proposed": 0,
+   "max_score": 37.3,
+   "mean_score": 7.4
+  },
+  {
+   "video_id": "uV0sdwHCBtw",
+   "seconds": 924,
+   "category": "tin_tuc",
+   "proposed": 0,
+   "max_score": 30.4,
+   "mean_score": 7.9
+  },
+  {
+   "video_id": "UZH4d1_NlI8",
+   "seconds": 854,
+   "category": "tin_tuc",
+   "proposed": 0,
+   "max_score": 53.3,
+   "mean_score": 12.6
+  },
+  {
+   "video_id": "y9_TESYEbmA",
+   "seconds": 958,
+   "category": "tin_tuc",
+   "proposed": 0,
+   "max_score": 35.0,
+   "mean_score": 9.8
+  },
+  {
+   "video_id": "yAu3Zc3UNxQ",
+   "seconds": 781,
+   "category": "tin_tuc",
+   "proposed": 1,
+   "max_score": 74.8,
+   "mean_score": 13.5
+  }
+ ]
+}
