@@ -1,0 +1,27 @@
+{
+  "unchanged_other_containers": 16,
+  "names": [
+    "/video-ai-client-1",
+    "/video-ai-cms-1",
+    "/video-ai-ingest-worker-1",
+    "/video-ai-ai-mock-1",
+    "/video-ai-inference-service-1",
+    "/video-ai-milvus-1",
+    "/video-ai-etcd-1",
+    "/video-ai-kafka-init-1",
+    "/video-ai-minio-1",
+    "/video-ai-kafka-1",
+    "/video-ai-postgres-1",
+    "/video-ai-redis-1",
+    "/video-ai-mongo-1",
+    "/kafka-ui",
+    "/kafka",
+    "/faktory_server"
+  ],
+  "ai_pid": [
+    15852
+  ],
+  "ai_real_models": 6,
+  "gateway_only_recreated": true,
+  "mount_identity_unchanged": true
+}

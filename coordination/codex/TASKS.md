@@ -412,23 +412,24 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Evidence: verification/INT-27.md +before/stopped/after/log; initial false failure from mount ordering retained; sorted identity guard, actual second runPASS.
 - Commit:62149d3. Next action: retain current rootCompose/real configuration; no manual gateway start/down/volume deletion, AI or source app replacement.
 ### INT-28 — D24 compute-only AI-API v2 migration (HC-13)
-- Owner: CODEX | Status: IN_PROGRESS (2026-10-29)
-- Depends on: user D24; Claude AI-15 v2.0 DRAFT runtime; master26c2346 already received. No Claude edits.
-- Acceptance / ordered checkpoints (HC-13): (1) four v2 mock routes; (2) Go v2 client/batches/logit aggregation/multipart offsets/error codes;
- (3) Milvus REST insert/search/delete and JSON schema; (4) backend thumbnails; (5) orchestrator v2 + backend persistence;
- (6) backend ANN search with publication/privacy recheck; (7) PCM16 mono16k WAV split600s sequential ASR;
- (8) popularity until AI-12, no fake recommendation vectors; (9) count+5payload before/after, preserve existing collection, backfill missing processed videos;
- (10) idempotent unified video cleanup; (11) gateway storage health + writer-only compose config; (12) real upload/search>0.95/nonempty speech/delete E2E.
-- Scope/callers: AI port/domain/http+memory/mock/tests; Milvus/MinIO ports+adapters; runner/pipeline/search/CMS delete/health;
- init schema/compose; focused E2E and owned coordination. Public product API response unchanged; consume Claude v2 contract read-only.
-- Data safety: no drop/copy collection, no checkpoint/runtime changes, no invented recommendation collection. Snapshot before mutations.
-- Changed: pending implementation; commits: startup checkpoint (this commit).
-- Evidence: pending; DRAFT must not be marked INTEGRATED_REAL until Claude releases API_READY on master.
-- Next action: inventory Milvus/MinIO/Postgres, implement mock/client first, then storage and pipeline; validate with existing natural speech source.
+- Owner: CODEX | Status: REVIEW (2026-10-29; live E2E PASS, Claude API_READY release pending)
+- Depends on: userD24/HC-13, AI-15v2.0DRAFT real runtime; INT-29ef8162b. Blocks: Claudev2release/deprecate4v1paths/storage dependency removal.
+- Acceptance: all12HC-13 steps implemented: mock/client/JSONMilvus/thumbnail/orchestration/backendANN/ASRbytes/popularity/
+ missing-onlybackfill/unifiedcleanup/health+writercompose/realE2E with data preservation.
+- Changed: backend ports/domain/http+mock+Milvus/MinIO adapters/tests; runner/sharedframeindex; gatewaypipeline/search/cleanup/health;
+ frame-backfill command; backendDockerfile/compose/init schema; e2e/ai_v2_live.spec.ts; ownedcoordination. Full list in verification/INT-28-files.log.
+- Commits: b54d00b startup; dbf9ecb contractgate; ef8162b(INT-29); **7b1e458** implementation. Final evidence/schema-load checkpoint in current commit.
+- Evidence: verification/INT-28.md +Go/type/schema/boundary logs, real-e2e1PASS14.8s +regression3PASS43.3s;
+ backend10vectors,3ASRsegments,279charsdraft, ownTOP1score0.9920652; repeatdelete204/vector0/media404/Mongo0/feedpopularity.
+ Compatibilitysame48hits/maxdelta9.754e-9; v2rec503MODEL_NOT_READY. MainHTTPno4retiredv1calls, retainedv1highlight/text only.
+- Preservation:411vectors/49videos allIDs/values/payload equal; MinIO95/47/460key/size/ETag equal; original95PGhash equal;
+ activejobs0; other16containerIDs/images/start/mounts and externalAI15852 unchanged. No drop/reindex originals; backfillmissing0.
+- Checkpoint: Lane codex /runtimegatewayint28-7b1e458 /public0.4.1 /AIv2DRAFT consumed read-only /all required live gates PASS.
+- Next action: Claude releasev2API_READY onmaster; then startupmerge and matrixpromotion only with valid release. No master/push, no UI/GPU/soak/modelquality claim.
 
 ### INT-29 — HC-13 deletion contract clarification
 - Owner: CODEX | Status: REVIEW (2026-10-29)
 - Depends on: D24 explicit unified cleanup. Blocks: INT-28 cleanup activation.
 - Acceptance: document existing DELETE route's idempotent MinIO/Milvus/Mongo cleanup, active writer409 and storage503; regenerate Go/CMS/Client types; embedded schema validation PASS.
 - Changed: infra/openapi.yaml, generated Go/FE types, contract test, owned coordination.
-- Evidence: verification/INT-29.md/log; generation+schema204/409/503+both FE tsc PASS. Commit: this contract checkpoint. Next: INT-28 runtime implementation.
+- Evidence: verification/INT-29.md/log; generation+schema204/409/503+both FE tsc PASS. Commit: ef8162b. Next: INT-28 live acceptance complete; waiting Claude v2 release.

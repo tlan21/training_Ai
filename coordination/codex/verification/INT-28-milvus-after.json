@@ -1,0 +1,33 @@
+{
+  "live_vectors": 411,
+  "videos": 49,
+  "all_original_ids_vectors_payload_unchanged": true,
+  "after_all_four_real_e2e": true,
+  "samples": [
+    {
+      "video_id": "vid_dm3nf6fi23us",
+      "timestamp": 0.0,
+      "thumbnail_url": "thumbnails/vid_dm3nf6fi23us/00000000.jpg"
+    },
+    {
+      "video_id": "vid_dm3nf6fi23us",
+      "timestamp": 1.0,
+      "thumbnail_url": "thumbnails/vid_dm3nf6fi23us/00000001.jpg"
+    },
+    {
+      "video_id": "vid_dm3nf6fi23us",
+      "timestamp": 2.0,
+      "thumbnail_url": "thumbnails/vid_dm3nf6fi23us/00000002.jpg"
+    },
+    {
+      "video_id": "vid_dm3nf6fi23us",
+      "timestamp": 3.0,
+      "thumbnail_url": "thumbnails/vid_dm3nf6fi23us/00000003.jpg"
+    },
+    {
+      "video_id": "vid_dm3nf6fi23us",
+      "timestamp": 4.0,
+      "thumbnail_url": "thumbnails/vid_dm3nf6fi23us/00000004.jpg"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "source": "7b1e458",
+  "tag": "int28-7b1e458",
+  "latest_alias_verified": true,
+  "rollback": "int23-fa8a382 / rollback-int28",
+  "strategy": "offline artifact overlay on existing locked runtime; --network none --pull false",
+  "recipe": "FROM video-ai-gateway:int23-fa8a382\nCOPY gateway orchestrator ffmpeg-cutter ai-mock frame-backfill /usr/local/bin/\r\n",
+  "artifacts": [
+    {
+      "name": "ai-mock",
+      "bytes": 21160098,
+      "sha256": "924A3C981C32238C4C9FA01A8D2C600FFC2654156A18E0F9299922CDF4ACE103"
+    },
+    {
+      "name": "ffmpeg-cutter",
+      "bytes": 12288162,
+      "sha256": "5F9D8A152E64322A1400B72C602E2B8C0B89A4D36E55BC3945CFE6DAD0508159"
+    },
+    {
+      "name": "frame-backfill",
+      "bytes": 12013730,
+      "sha256": "32770C253AFB87437EE1782839CD606611B9C9955E3C60853BFB111F98065B1D"
+    },
+    {
+      "name": "gateway",
+      "bytes": 43847842,
+      "sha256": "CD741E3FE2AC4D68794A5C36F989D2CFFE729DC133D111C0FC8901EED8A68D85"
+    },
+    {
+      "name": "orchestrator",
+      "bytes": 12259490,
+      "sha256": "DD1C9B19D392DAF0519E21C60C5B44F26E98FD8DD10AF242FAF4E864E8A6C9B1"
+    }
+  ],
+  "runtime_binary_matches": true,
+  "legacy_main_calls": 0
+}

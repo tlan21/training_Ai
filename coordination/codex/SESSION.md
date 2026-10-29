@@ -1,12 +1,29 @@
-INT-28 current checkpoint: implementation+mock/unit gates PASS; source checkpoint commit. INT-29 REVIEW ef8162b. Next build gateway+ai-mock+frame-backfill Linux offline overlay on int23-fa8a382, gateway-only recreate, backfill+real E2E then preservation inventory. Precutover evidence INT-28.md/411vectors49videos/95PGrows/MinIO95,47,460. No runtime change yet.
+# SESSION — authoritative resume state (2026-10-29, HC-13 / D24 live cutover complete)
 
-Current: INT-29 REVIEW, contract0.4.1 generated+schema+both FE tsc PASS. INT-28 IN_PROGRESS; focused Go PASS; runtime still old v1. Next full Go gate, build owned gateway/mock/backfill image without downloads, preserve infra and AI.
+- Branch codex/integration; master26c2346 received, startupclean/noHEAD..master commits. No release/push/shareddocs or Claude source/runtime/checkpoint change.
+- INT-28 REVIEW: code7b1e458 +public0.4.1contractef8162b(INT-29 REVIEW); all12HC-13 steps implemented and live acceptance PASS.
+- Gateway only replaced by int28-7b1e458 (latestalias verified; oldint23-fa8a382/rollback-int28 retained). Envallunchanged,
+ realhost.docker.internal8001/stub0/keymatch onlymemory; health200 minio/milvusok. No bindings or appdependency installs/imagepulls.
+- Runtime primarycalls/v2vision,/v2asr(multipartbytes),/v2search; backend owns MinIOthumbnail/vectorJSONMilvus/ANN/cleanup;
+ retained/v1highlight/text only. Go v2mock/client600frame logits+ASR600s exactPCM16chunks/offsets/recembeddings verified.
+- Realnatural10.08s ownedhuecopy:1PASS14.8s, backend10vectors/thumbnails,3nonemptyASRsegments,279charsdraftsummary,
+ categoryca_nhac, ownvideoTOP1score0.9920652, repeatdelete204/vector0/rawclipthumb404/Mongoanalysis+subs0, popularityfeed.
+ Existingvideo_flow+visual_search3PASS43.3s. Go vet/test/build PASS; FE/E2Etypes PASS; exact600s boundary from48k +schemaunit PASS.
+- Final411vectors/49videos IDs/values/payload identical; MinIO95raw/47clips/460thumbs keys/size/ETags identical;
+ original95PGrows hashbbcbd9556b3aab1625c2705069565907 unchanged;10categories hash2279cd784f346ec1e52ce40605752c91;
+ new4testvideos softdeleted/testorigin, total99(97deleted/2processed), activejobs0. Backfill --apply measured0missing/0backfilled.
+- Other16containers includingClient3000/CMS5173/CPUworker/infra/orphanmock/legacyinference/Faktory unchanged IDs/images/start/mounts;
+ AI PID15852 unchanged/stubfalse6/degradedempty. No recommendation collection (onlyframes+sandbox); rec/v2real503MODEL_NOT_READY.
+- Independentread-onlycompatibilitycall completed04:02:36Z: one intentional/v1search request outsidegatewaymain;
+ same48hits vs/v2embedding+RESTANN/maxdelta9.754e-9. Gateway mainlogzero4retiredv1calls.
+- Evidence/handoff: verification/INT-28.md +alllogs/snapshots/counts/preservation/artifacts; RE:HC-13 appendedHANDOFF_OUT.
+ Fullprivatevector backup/MinIOinventories/ownednaturalinput/buildstaging/Playwrighttraces retained ignored; no secret logged/committed.
+- Next safe task: Claude releases/v2API_READY onmaster and/v1fourpathsDEPRECATED, then Codexstartupmerge +matrixpromotion.
+ Currentv2DRAFT => REAL_PENDING(livePASS/waitingrelease), never INTEGRATED_REAL/DONE yet. Do not redo proven INT-25/26/27 or reindexoriginals.
+- INT-24 sourceQA REVIEW/newdraftlabels not deployed toproductUI; globalINT-05/06parityPARTIAL; recommendationAI-12/GPU/load/soak unchanged.
+ RealASRlongnatural>600s nottested; synthetic600.1s split tested. Backfillfound0missing; no secondfreshstack/bootstrap, initializerunitonly.
 
-Active sub-checkpoint: INT-29 IN_PROGRESS, INT-28 BLOCKED on contract clarification for safe deletion409/storage503. Mock/client/focused Go tests passed; full Go gate running. Runtime untouched.
-
-# Active checkpoint — 2026-10-29 HC-13 / D24
-
-INT-28 IN_PROGRESS. Startup branch correct, clean, no missing master release. Read HC-13 and AI-API v2.0 DRAFT; execute 12 ordered checkpoints in TASKS. Preserve existing JSON payload collection/data. No Claude runtime/source edit, no master/push. Next inventory then mock/client tests. Use backend_endpoint + Ponytail. Public API unchanged.
+## Prior accepted checkpoint (historical, runtime image/PID superseded above)
 
 # SESSION — authoritative resume state (2026-10-29, requested3work verification complete)
 

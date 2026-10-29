@@ -323,3 +323,31 @@ Mẫu HO:
 - Evidence verification/INT-26.md/-client-production.log/-runtime-before/-runtime-after +INT-26-transcript390/1440PNGs; evidence commit7bd6c99.
   HC-12 sourceQA accepted on Codex branch; new labels NOT rolled to productClient3000/CMS5173 images, honoring request to keep existing Client.
   No AI/public API schema change, no full INT-05/06 visual/model-quality claim, no master/push.
+
+## 2026-10-29 RE:HC-13 — D24 v2 cutover E2E PASS (INT-28 REVIEW, INT-29 REVIEW)
+- Source commit **7b1e458**; public deletion contract0.4.1/types **ef8162b**. Implemented all12HC-13 steps without Claude-owned edits.
+  Mock4/v2 routes; Go VisionV2 batching600/logit sums/SearchEmbedding/multipartASRV2 offsets600/RecommendationEmbeddings;
+  backend MinIO+JSONMilvus insert/delete/searchCOSINE/HNSWef>=64; orchestration/search/cleanup/health; missing-only backfill.
+  init keeps collection/data, fixes JSONpayload and loads newlycreated collection; recommendation collection deliberately absent untilAI-12.
+- Runtime `video-ai-gateway:int28-7b1e458` healthy, latestalias verified and rollback-int28 retained.
+  Exact apply: `docker compose -p video-ai -f docker-compose.yml up -d --no-deps --no-build --pull never --force-recreate gateway`
+  (actual WSL client/socket/project args in verification/INT-28.md). Allgatewayenv unchanged; host.docker.internal8001/stub0/keymatch checked onlymemory.
+  Health200 dependenciesminio/milvusok. Other16containers/volumes/Client3000/CMS5173 unchanged; AI PID15852 untouched/stubfalse6/degradedempty.
+- `docker exec video-ai-gateway-1 frame-backfill --apply`: PASS, processed2alreadyindexed; missing0/backfilled0, no unnecessary write.
+  OriginalMilvus **411live/49videos**, identical IDs+vectors+payload before/after all4realE2E; JSON collection never dropped/copied.
+  Fivepayload samples+fullprivatebackup compare. MinIO **95raw/47clips/460thumbs** allkeys/size/ETag identical; original95PGrowhash unchanged, activejobs0.
+- `E2E_AI_V2_VIDEO=.../int28-natural.mp4 E2E_AI_V2_FRAME=.../int28-query.jpg node node_modules/@playwright/test/cli.js test e2e/ai_v2_live.spec.ts ...`:
+  **1PASS14.8s** — natural speechuploadprocessed, backend10vectors/thumbnails, ASR3segments, summarydraft279chars, categoryca_nhac;
+  ownvideoTOP1 **0.9920652**. Repeateddelete204; ownvectors0, raw/clip/thumbGET404, bothMongocollections0. Feedpopularity.
+- `node node_modules/@playwright/test/cli.js test e2e/video_flow.spec.ts e2e/visual_search.spec.ts ...`: **3PASS43.3s**.
+  RealCMSreview/publish/Clientplayback; invalidvideo private; visualprivacy/cache/latency/Client. Go vet/test/build PASS;
+  exact600sPCM16boundary from48k input +offset/concat IDs PASS, mockedfreshJSONinit1PASS, bothFEtypes/E2Etypes PASS.
+- Main gateway requestlog has **zero /v1/vision|search|asr|recommendation**; only/v2vision/asr/search and retained/v1highlight/text.
+  Separate read-only compatibility check04:02:36Z intentionally called/v1search once: same48hits as/v2embedding+backendANN, maxdelta9.754e-9.
+  Real/v2recommendation503 **MODEL_NOT_READY**; D18 primarypopularity remains, no fake collection/vector. That one comparison is outside mainpipeline.
+- Evidence: `coordination/codex/verification/INT-28.md`, real-e2e/regression/counts/ai-requests-final/compatibility/backfill,
+  milvus-before/schema-before/after, minio-after/postgres-final/mongo-cleanup/preservation/runtimebefore-after/artifacts/build/health.
+  Ownednaturalinput/trace/fullvector+object backups ignored, no key/model/checkpoint committed. OnlyGo gateway replaced; newUIlabels remain separate INT-24.
+- Ready for **Claude release /v2 API_READY + four/v1 paths DEPRECATED**, then removal of AI MinIO/pymilvus per D24.
+  Current/v2 stillDRAFT on Claude branch: matrix REAL_PENDING (liveverified, waitingrelease), not INTEGRATED_REAL/DONE.
+  No master/sharedstatus/release/push by Codex. RealASRlong>600s not run; split verified with synthetic600.1s;0missingbackfill is an actual measured no-op.

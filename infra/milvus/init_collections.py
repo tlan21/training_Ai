@@ -1,4 +1,4 @@
-"""init_collections.py — tạo 2 collection Milvus (database_schema §4). T0.1b.
+"""init_collections.py — tạo collection frame Milvus (D24; recommendation chờ AI-12) (database_schema §4). T0.1b.
 
 Chạy sau khi milvus healthy:
     pip install pymilvus
@@ -41,7 +41,8 @@ def _video_frame_embeddings() -> None:
         "metric_type": "COSINE",
         "params": {"M": 16, "efConstruction": 200},
     })
-    print(f"[ok] tạo {name} (HNSW/COSINE)")
+    col.load()
+    print(f"[ok] tạo + load {name} (JSON payload, HNSW/COSINE)")
 
 
 def _user_recommendation_embeddings() -> None:
