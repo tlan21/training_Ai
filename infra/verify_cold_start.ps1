@@ -4,10 +4,14 @@ Set-Location E:/traning_ai-codex
 $docker='/mnt/host/wsl/docker-desktop/cli-tools/usr/bin/docker'
 $compose='/mnt/host/wsl/docker-desktop/cli-tools/usr/local/lib/docker/cli-plugins/docker-compose'
 $socket='unix:///proc/193/root/run/docker.raw.sock'
+$dockerAI=$false
+$priorBind=$env:AI_CHECKPOINT_BIND
 $priorKey=$env:AI_SERVICE_KEY; $priorTag=$env:APP_IMAGE_TAG; $priorWSL=$env:WSLENV
 $stopped=$false; $verified=$false
 function Invoke-Compose([string[]]$Arguments) {
-    & wsl -d docker-desktop --exec env "DOCKER_HOST=$socket" $compose -p video-ai --project-directory /mnt/host/e/traning_ai-codex -f /mnt/host/e/traning_ai-codex/docker-compose.yml @Arguments
+    $files=@('-f','/mnt/host/e/traning_ai-codex/docker-compose.yml')
+    if($dockerAI){$files+=@('-f','/mnt/host/e/traning_ai-codex/docker-compose.inference.yml')}
+    & wsl -d docker-desktop --exec env "DOCKER_HOST=$socket" $compose -p video-ai --project-directory /mnt/host/e/traning_ai-codex @files @Arguments
 }
 function Inspect-Container([string]$Name) {
     $raw=& wsl -d docker-desktop --exec $docker -H $socket inspect $Name
@@ -31,12 +35,14 @@ try {
     $line=[IO.File]::ReadLines('E:/traning_ai/inference-service/.env')|Where-Object {$_ -match '^\s*AI_SERVICE_KEY\s*='}|Select-Object -First 1
     $key=($line -split '=',2)[1].Trim().Trim([char]34).Trim([char]39)
     if(-not $key -or $key -cne $currentEnv.AI_SERVICE_KEY){throw 'Canonical AI key mismatch; no stop'}
-    if($currentEnv.AI_BASE_URL -ne 'http://host.docker.internal:8001' -or $currentEnv.AI_ALLOW_STUB -ne '0'){throw 'Wrong AI runtime; no stop'}
-    $env:AI_SERVICE_KEY=$key; $env:APP_IMAGE_TAG='latest'; $env:WSLENV='AI_SERVICE_KEY:APP_IMAGE_TAG'
+    $dockerAI=$currentEnv.AI_BASE_URL -eq 'http://inference-service:8001'
+    if(($currentEnv.AI_BASE_URL -notin @('http://host.docker.internal:8001','http://inference-service:8001')) -or $currentEnv.AI_ALLOW_STUB -ne '0'){throw 'Wrong AI runtime; no stop'}
+    if($dockerAI){$inference=Inspect-Container 'video-ai-inference-service-1';$mount=$inference.Mounts|Where-Object Destination -eq '/srv/ai-core/checkpoints';if(-not $mount -or $mount.RW){throw 'Inference checkpoint mount must be read-only'};$env:AI_CHECKPOINT_BIND=$mount.Source}
+    $env:AI_SERVICE_KEY=$key; $env:APP_IMAGE_TAG='latest'; $env:WSLENV='AI_SERVICE_KEY:APP_IMAGE_TAG:AI_CHECKPOINT_BIND'
     $raw=Invoke-Compose @('config','--format','json');if($LASTEXITCODE -ne 0){throw 'Compose validation failed'}
     $config=$raw|ConvertFrom-Json
     $services=@($config.services.PSObject.Properties|Where-Object {-not $_.Value.profiles}|Select-Object -ExpandProperty Name)
-    if($services.Count -ne 12 -or 'gateway' -notin $services -or $config.services.gateway.depends_on.postgres.condition -ne 'service_healthy'){throw 'Unexpected cold-start scope/dependency'}
+    if($services.Count -ne $(if($dockerAI){13}else{12}) -or 'gateway' -notin $services -or $config.services.gateway.depends_on.postgres.condition -ne 'service_healthy'){throw 'Unexpected cold-start scope/dependency'}
     foreach($service in $services){
         $c=Inspect-Container "video-ai-$service-1"
         $configuredImage=& wsl -d docker-desktop --exec $docker -H $socket image inspect --format '{{.Id}}' $config.services.$service.image
@@ -51,14 +57,14 @@ try {
     $aiPids=@(Get-NetTCPConnection -State Listen -LocalPort 8001|Select-Object -ExpandProperty OwningProcess -Unique)
     $containerNames=@(& wsl -d docker-desktop --exec $docker -H $socket ps -a --format '{{.Names}}')
     if($LASTEXITCODE -ne 0){throw 'Cannot inventory optional outsider containers'}
-    $outsiders=@('video-ai-ai-mock-1','video-ai-inference-service-1','faktory_server')|Where-Object {$_ -in $containerNames}|ForEach-Object {$c=Inspect-Container $_;@{name=$_;id=$c.Id;status=$c.State.Status;started=$c.State.StartedAt}}
+    $outsiders=@('video-ai-ai-mock-1','video-ai-inference-service-1','faktory_server')|Where-Object {$_ -in $containerNames -and $_ -notin @($services|ForEach-Object {"video-ai-$_-1"})}|ForEach-Object {$c=Inspect-Container $_;@{name=$_;id=$c.Id;status=$c.State.Status;started=$c.State.StartedAt}}
     $before=@(Snapshot $services);$fingerprint=Data-Fingerprint
     [ordered]@{checked_at=[DateTime]::UtcNow.ToString('o');services=$before;ai_pids=$aiPids;untouched=$outsiders;data=$fingerprint;gateway_dependencies=$config.services.gateway.depends_on}|ConvertTo-Json -Depth 8|Set-Content coordination/codex/verification/INT-27-before.json
     $stopped=$true
     Invoke-Compose (@('stop','--timeout','60')+$services);if($LASTEXITCODE -ne 0){throw 'Compose stop failed'}
     $down=@(Snapshot $services);$down|ConvertTo-Json -Depth 6|Set-Content coordination/codex/verification/INT-27-stopped.json
     if(@($down|Where-Object status -ne 'exited').Count -gt 0){throw 'Owned services not fully stopped'}
-    Write-Output 'ALL_12_DEFAULT_COMPOSE_SERVICES_STOPPED_NO_VOLUME_REMOVAL'
+    Write-Output "ALL_$($services.Count)_COMPOSE_SERVICES_STOPPED_NO_VOLUME_REMOVAL"
     $timer=[Diagnostics.Stopwatch]::StartNew()
     Invoke-Compose @('up','-d','--no-build','--no-recreate','--pull','never');if($LASTEXITCODE -ne 0){throw 'Compose up failed'}
     do {
@@ -77,12 +83,12 @@ try {
     $nowPids=@(Get-NetTCPConnection -State Listen -LocalPort 8001|Select-Object -ExpandProperty OwningProcess -Unique)
     if(($nowPids -join ',') -cne ($aiPids -join ',')){throw 'AI PID changed externally'}
     $currentData=Data-Fingerprint;if(($fingerprint -join "`n") -cne ($currentData -join "`n")){throw 'Persistent data fingerprint changed'}
-    $health=Invoke-RestMethod http://127.0.0.1:8001/health -TimeoutSec 10
+    if($dockerAI){$rawHealth=& wsl -d docker-desktop --exec $docker -H $socket exec video-ai-inference-service-1 python -c "import urllib.request;print(urllib.request.urlopen('http://127.0.0.1:8001/health',timeout=5).read().decode())";if($LASTEXITCODE -ne 0){throw 'Docker AI health failed'};$health=$rawHealth|ConvertFrom-Json}else{$health=Invoke-RestMethod http://127.0.0.1:8001/health -TimeoutSec 10}
     if($health.stub_mode -or $health.models_loaded.Count -ne 6 -or @($health.degraded).Count -gt 0){throw 'AI health failed after dependency recovery'}
     [ordered]@{verified_at=[DateTime]::UtcNow.ToString('o');elapsed_seconds=[math]::Round($timer.Elapsed.TotalSeconds,2);services=$after;ai_pids=$nowPids;ai_health=$health;data=$currentData;container_ids_preserved=$true;named_volumes_preserved=$true;outsiders_unchanged=$true;gateway=(Invoke-RestMethod http://127.0.0.1:8000/healthz);cms_http=(Invoke-WebRequest http://127.0.0.1:5173/ -TimeoutSec 10).StatusCode;client_http=(Invoke-WebRequest http://127.0.0.1:3000/login -TimeoutSec 10).StatusCode}|ConvertTo-Json -Depth 8|Set-Content coordination/codex/verification/INT-27-after.json
     $verified=$true
     Write-Output 'COLD_COMPOSE_START_VERIFIED_NO_MANUAL_GATEWAY_START'
 } finally {
     if($stopped -and -not $verified){Write-Output 'Restoring approved default stack with Compose up';Invoke-Compose @('up','-d','--no-build','--no-recreate','--pull','never')}
-    $env:AI_SERVICE_KEY=$priorKey;$env:APP_IMAGE_TAG=$priorTag;$env:WSLENV=$priorWSL
+    $env:AI_SERVICE_KEY=$priorKey;$env:APP_IMAGE_TAG=$priorTag;$env:AI_CHECKPOINT_BIND=$priorBind;$env:WSLENV=$priorWSL
 }

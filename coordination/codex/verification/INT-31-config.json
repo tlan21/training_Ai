@@ -1,0 +1,10 @@
+{
+  "ai_image": "video-ai-inference:ai-v2-478052e",
+  "internal_only": true,
+  "force_stub": "0",
+  "device": "cpu",
+  "checkpoint_read_only": true,
+  "existing_checkpoint_source_preserved": true,
+  "gateway_target": "http://inference-service:8001",
+  "milvus_healthy_dependency": "service_healthy"
+}

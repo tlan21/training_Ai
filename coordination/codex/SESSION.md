@@ -1,3 +1,5 @@
+INT-31 checkpoint: Docker inference ai-v2-478052e HEALTHY stubfalse/6models/degradedempty;139unmodifiedsource filehashes and6read-onlycheckpoint hashes match pinnedClaude478052e/activehost. No download/hoststop. Internal-only Docker8001; gateway still host8001 until next guardedcutover. Next recreate gateway with explicitoverride then realE2E Dockerhealthsource.
+
 INT-31 IN_PROGRESS: explicit user requests inference-service Docker +realE2E. Deploy unmodified Claude478052e on cachedruntime, existingexactreadonlycheckpointmount (matches hostactive.env path), internalnetwork8001, preserve hostPID15852/:8001 andsinglecomposeproject. No AI source/checkpoint copies/edits or downloads. Next sourceexport/offlinebuild/containerhealth then gatewaycutover.
 
 # SESSION — authoritative resume state (2026-10-29, INT-30 Docker mock removal complete)

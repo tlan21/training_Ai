@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
 import type { components } from '../cms/src/api-types';
 const gateway = process.env.E2E_GATEWAY_URL ?? 'http://127.0.0.1:8000';
@@ -6,13 +7,19 @@ const milvus = process.env.E2E_MILVUS_URL ?? 'http://127.0.0.1:19530';
 test('HC-13 real v2 backend storage, ANN search, speech and unified deletion', async ({ request }, info) => {
   test.skip(!process.env.E2E_AI_V2_VIDEO || !process.env.E2E_AI_V2_FRAME, 'Explicit natural-speech video and query frame required.');
   test.setTimeout(240_000);
-  const health = await (await request.get('http://127.0.0.1:8001/health')).json();
+  const dockerAI = process.env.E2E_AI_DOCKER_CONTAINER;
+  if (dockerAI) expect(dockerAI).toMatch(/^[a-zA-Z0-9][a-zA-Z0-9_.-]+$/);
+  const health = dockerAI
+    ? JSON.parse(execFileSync('wsl', ['-d', 'docker-desktop', '--exec', '/mnt/host/wsl/docker-desktop/cli-tools/usr/bin/docker',
+      ...(process.env.E2E_DOCKER_HOST ? ['-H', process.env.E2E_DOCKER_HOST] : []), 'exec', dockerAI, 'python', '-c',
+      "import urllib.request;print(urllib.request.urlopen('http://127.0.0.1:8001/health',timeout=5).read().decode())"], { encoding: 'utf8', timeout: 10_000 }))
+    : await (await request.get(`${process.env.E2E_AI_URL ?? 'http://127.0.0.1:8001'}/health`)).json();
   expect(health.stub_mode).toBe(false); expect(health.models_loaded).toHaveLength(6);
   const login = await request.post(`${gateway}/api/auth/login`, { data: { email: 'admin@local', password: 'admin123' } });
   expect(login.status()).toBe(200);
   const headers = { Authorization: `Bearer ${(await login.json()).access_token}` };
   let videoId: string | undefined;
-  const evidence: Record<string, unknown> = { ai_stub_mode: health.stub_mode, ai_models: health.models_loaded.length };
+  const evidence: Record<string, unknown> = { ai_stub_mode: health.stub_mode, ai_models: health.models_loaded.length, ai_health_source: dockerAI ?? "host_http" };
   const mediaURLs: string[] = [];
   const frames = async (id: string) => {
     expect(id).toMatch(/^vid_[a-z0-9]+$/);

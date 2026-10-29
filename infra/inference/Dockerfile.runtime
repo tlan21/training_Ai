@@ -1,0 +1,8 @@
+# Deployment packaging only: unmodified Claude source exported from the recorded Git commit.
+# Build context: backend/.tmp/int31-image (source only; never weights or .env).
+FROM video-ai-inference:base-int31
+COPY source/ai-core/ai_core /srv/ai-core/ai_core
+COPY source/inference-service/app /srv/inference-service/app
+ENV PYTHONPATH=/srv/ai-core
+WORKDIR /srv/inference-service
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001"]
