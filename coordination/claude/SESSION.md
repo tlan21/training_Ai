@@ -3,11 +3,12 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
-- Task: **AI-14 REVIEW (2026-10-29)** — D24 bước 1 xong trên branch (facade/worker, MODEL_WORKER_URL, kernel Kaggle dry-run). Chờ user: push kernel Kaggle?
-  Kế: AI-15 (bước 2, contract v2.0 DRAFT, hai làn). **Runtime :8001 UP PID 16292** (in-process worker, code AI-14); gateway Codex đã trỏ :8001 thật.
-- Bước đã xong: code + test (8086067); smoke in-process + remote; contract §1d; evidence `coordination/claude/evidence/AI-14_2026-10-29/`.
-- Bước kế: AI-15 — contract v2.0 DRAFT → endpoint v2 thuần → HC-xx cho Codex.
-- File đang sửa: —
+- Task: **AI-15 IN_PROGRESS (2026-10-29)** — D24 bước 2: contract v2.0 DRAFT + endpoint v2 thuần + HC cho Codex.
+  AI-14 REVIEW (bước 1 xong; dataset Kaggle `ai-model-worker-v1` uploaded, kernel chưa push theo user).
+  **Runtime :8001 UP PID 16292** (in-process worker, code AI-14); gateway Codex đã trỏ :8001 thật.
+- Bước đã xong: —
+- Bước kế: đọc Two-Tower inputs → soạn contract v2.0 → code /v2 + test → smoke → examples → HC.
+- File đang sửa: inference-service/app/{main,services,schemas}.py, coordination/claude/api/**
 - Lệnh verify dở: —
 - Trước đó (2026-10-28): D23 ASR/MiniGPT dừng cải thiện cho MVP; HC-12. AI-12 ⇐ INT-15; AI-04 nghiệm thu ⇐ RTX 3060.
 

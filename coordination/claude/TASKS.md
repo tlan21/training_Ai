@@ -14,7 +14,8 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | AI-07 | T1.8 | Vận hành runtime :8001 thật cho Codex gọi HTTP (+ sửa UTF-8 Windows) | DONE (2026-10-26; :8001 UP; ingest path ⇐ HC-05) | AI-10; Milvus stack Codex (UP) |
 | AI-11 | T1.8 / T4.2 | HO-01: `video_id` tùy chọn cho Vision + index frame từ data URI 1 fps (contract minor) | DONE (2026-10-26) | HO-01 (Codex chọn HTTP media) |
 | AI-13 | T1.7 / T1.8 | D18: recommendation inference không trả metadata giả + `recommendation_mode` | DONE (2026-10-26; release #3) | D18 |
-| AI-14 | T1.8 | D24 bước 1: tách facade/worker trong inference-service (contract v1.3 không đổi) + worker từ xa (MODEL_WORKER_URL) + kernel Kaggle worker GPU | REVIEW (2026-10-29; chờ release; kernel Kaggle chưa push) | D24 (user 2026-10-29) |
+| AI-14 | T1.8 | D24 bước 1: tách facade/worker trong inference-service (contract v1.3 không đổi) + worker từ xa (MODEL_WORKER_URL) + kernel Kaggle worker GPU | REVIEW (2026-10-29; chờ release; dataset Kaggle uploaded, kernel chưa push) | D24 (user 2026-10-29) |
+| AI-15 | T1.8 | D24 bước 2: AI-API v2.0 (DRAFT) — AI trả vector/kết quả, Backend sở hữu MinIO/Milvus; v1.3 chạy song song; HC cho Codex | IN_PROGRESS (2026-10-29) | AI-14; Codex (HC) cho phần backend |
 | AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | BLOCKED ⇐ bundle INT-13 (phần độc lập xong 2026-10-26) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | DONE (2026-10-26; sandbox + artifact; product → AI-12 theo D18) | HC-04 (sandbox READY) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a DONE (2026-10-27) · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
@@ -196,6 +197,16 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   Next safe task: release #2 (user duyệt push)
   ```
 
+### AI-15 — D24 bước 2: AI-API v2.0 — inference-service chỉ tính toán, Backend sở hữu dữ liệu
+- T gốc: T1.8 | Owner: claude | Status: IN_PROGRESS (2026-10-29)
+- Depends on: AI-14 (worker thuần) | Blocks: gỡ minio/pymilvus khỏi inference-service (sau khi Codex E2E PASS); INT-xx phía Codex
+- Việc (phía AI): contract v2.0 DRAFT (vision trả thêm `siamese_vectors`, không ghi MinIO/Milvus; search nhận ảnh → vector 128; ASR nhận bytes audio multipart,
+  chia đoạn; recommendation encode → vector 128 khớp Two-Tower; highlight/completions giữ nguyên) + `inference_openapi.json` + examples thật + error codes
+  + bảng di chuyển v1.3→v2.0; hiện thực endpoint v2 thuần (qua worker AI-14), v1.3 không vỡ; HC cho Codex (Milvus Go, MinIO thumbnail, audio bytes,
+  ingest gọi API mới, recommendation tra Milvus, migrate 280 vector, xóa video đồng bộ, E2E). Sau Codex E2E PASS: release → gỡ minio/pymilvus, v1.3 DEPRECATED.
+- Acceptance (phần AI): endpoint v2 không import/gọi MinIO/Milvus (test khóa); suite inference + compat v1.2 PASS; smoke v1.3 6/6 + v2 thật trên :8001; contract v2.0 DRAFT + REL + HC.
+- Evidence: — | Commits: — | Checkpoint: —
+
 ### AI-14 — D24 bước 1: tách facade/worker trong inference-service
 - T gốc: T1.8 | Owner: claude | Status: REVIEW (2026-10-29) — đạt Acceptance trên `claude/ai-core`, chờ release; kernel Kaggle dựng + dry-run local, chưa push (chờ user)
 - Depends on: D24 (user 2026-10-29: AI service chỉ tính toán, backend sở hữu dữ liệu; làm tuần tự bước 1 → bước 2) | Blocks: AI-15 (bước 2, contract v2.0)
@@ -209,7 +220,9 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   ai-core 314 passed; OpenAPI == `inference_openapi.json` v1.3; smoke :8001 in-process 6/6 + 401, response trùng examples công bố (trừ search do Milvus có thêm vid_ai11probe);
   smoke worker từ xa (worker :8002 + facade :8001 `MODEL_WORKER_URL`) 6/6 + 401, response trùng in-process, health chỉ thêm `model_worker`;
   worker chết → 503 + `model_worker: unavailable`, không degraded; :8001 khôi phục in-process (PID 16292) 6/6; kernel Kaggle dry-run local OK.
-- Commits: 7465f2b (task), 8086067 (code + test), (docs/evidence: commit này) | Checkpoint:
+- Kaggle (user 2026-10-29: chỉ upload dataset): `traininghighlight/ai-model-worker-v1` private, status ready (manifest SHA = contract §1; Kaggle tự giải nén zip).
+  Kernel `traininghighlight/ai-model-worker` **chưa push** — push = mở phiên GPU; user tự Run khi cần.
+- Commits: 7465f2b (task), 8086067 (code + test), 178d9fe (docs/evidence) | Checkpoint:
   ```
   Lane: claude
   Changed: inference-service/app/{worker,worker_client,worker_app}.py (mới), {services,visual_index,main,config}.py, tests/{test_worker (mới),test_health_status,test_visual_search}.py, README, .env.example; dist/kaggle/kernel-model-worker/**; contract §1d/§2.7/changelog (v1.3 không đổi)
