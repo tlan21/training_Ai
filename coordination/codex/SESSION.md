@@ -1,3 +1,5 @@
+Current: INT-29 REVIEW, contract0.4.1 generated+schema+both FE tsc PASS. INT-28 IN_PROGRESS; focused Go PASS; runtime still old v1. Next full Go gate, build owned gateway/mock/backfill image without downloads, preserve infra and AI.
+
 Active sub-checkpoint: INT-29 IN_PROGRESS, INT-28 BLOCKED on contract clarification for safe deletion409/storage503. Mock/client/focused Go tests passed; full Go gate running. Runtime untouched.
 
 # Active checkpoint — 2026-10-29 HC-13 / D24

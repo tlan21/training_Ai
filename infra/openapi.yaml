@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Video AI Platform — Public + CMS API
-  version: 0.4.0
+  version: 0.4.1
   description: >
     Contract-first (master plan §2). Nguồn sự thật cho gateway Go (oapi-codegen)
     và FE types (openapi-typescript). Điểm highlight thang 0–100; similarity/score 0–1.
@@ -512,12 +512,23 @@ paths:
         "422": { $ref: "#/components/responses/ValidationError" }
     delete:
       tags: [cms-videos]
-      summary: Xóa mềm + xóa vectors Milvus + ẩn clips
+      summary: Xóa mềm và dọn dữ liệu video (D24)
+      description: >
+        Idempotent; xóa vector Milvus, raw/audio/thumbnail/clip MinIO, analysis/subtitle Mongo và ẩn clips.
+        Từ chối khi job hoặc clip đang xử lý để tránh ghi lại dữ liệu sau xóa. Lỗi storage trả 503;
+        gọi lại DELETE để hoàn tất cleanup. Không xóa collection, bucket hoặc dữ liệu video khác.
       parameters: [ { $ref: "#/components/parameters/PathId" } ]
       responses:
         "204": { description: Đã xóa mềm }
         "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
+
+        "409": { $ref: "#/components/responses/Conflict" }
+        "503":
+          description: Backend storage unavailable; retry deletion.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
 
   /api/cms/videos/{id}/analysis:
     get:

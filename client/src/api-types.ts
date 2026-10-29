@@ -1029,7 +1029,10 @@ export interface paths {
             };
         };
         post?: never;
-        /** Xóa mềm + xóa vectors Milvus + ẩn clips */
+        /**
+         * Xóa mềm và dọn dữ liệu video (D24)
+         * @description Idempotent; xóa vector Milvus, raw/audio/thumbnail/clip MinIO, analysis/subtitle Mongo và ẩn clips. Từ chối khi job hoặc clip đang xử lý để tránh ghi lại dữ liệu sau xóa. Lỗi storage trả 503; gọi lại DELETE để hoàn tất cleanup. Không xóa collection, bucket hoặc dữ liệu video khác.
+         */
         delete: {
             parameters: {
                 query?: never;
@@ -1050,6 +1053,16 @@ export interface paths {
                 };
                 403: components["responses"]["Forbidden"];
                 404: components["responses"]["NotFound"];
+                409: components["responses"]["Conflict"];
+                /** @description Backend storage unavailable; retry deletion. */
+                503: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
             };
         };
         options?: never;

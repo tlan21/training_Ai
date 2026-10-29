@@ -13,7 +13,7 @@ func TestCMSPlanAContract(t *testing.T) {
 	if err := spec.Validate(context.Background()); err != nil {
 		t.Fatal(err)
 	}
-	if spec.Info.Version != "0.4.0" {
+	if spec.Info.Version != "0.4.1" {
 		t.Fatalf("version %s", spec.Info.Version)
 	}
 	put := spec.Paths.Find("/api/cms/videos/{id}").Put
@@ -33,6 +33,19 @@ func TestCMSPlanAContract(t *testing.T) {
 	for _, name := range []string{"width", "height", "fps", "hashtags"} {
 		if spec.Components.Schemas["VideoDetail"].Value.AllOf[1].Value.Properties[name] == nil {
 			t.Fatalf("missing %s", name)
+		}
+	}
+}
+
+func TestVideoDeletionStorageContract(t *testing.T) {
+	spec, err := GetSwagger()
+	if err != nil {
+		t.Fatal(err)
+	}
+	op := spec.Paths.Find("/api/cms/videos/{id}").Delete
+	for _, code := range []int{204, 409, 503} {
+		if op.Responses.Status(code) == nil {
+			t.Fatalf("missing delete %d", code)
 		}
 	}
 }
