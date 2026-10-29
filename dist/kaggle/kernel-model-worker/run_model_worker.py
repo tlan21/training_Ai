@@ -102,6 +102,9 @@ def main():
         os.makedirs(os.path.join(ckpt, name), exist_ok=True)
         shutil.copy2(os.path.join(root, f"ckpt_{name}.pt"), os.path.join(ckpt, name, "best.pt"))
     shutil.copy2(os.path.join(root, "ckpt_minigpt_bpe_vocab.json"), os.path.join(ckpt, "minigpt", "bpe_vocab.json"))
+    for extra in glob.glob(os.path.join(root, "ckpt_*__*")):          # AI-16: ensemble members + postproc.json
+        name, rel = os.path.basename(extra)[len("ckpt_"):].split("__", 1)
+        shutil.copy2(extra, os.path.join(ckpt, name, rel))
     for mod, pkg in (("fastapi", "fastapi"), ("uvicorn", "uvicorn"), ("soundfile", "soundfile")):
         try:
             __import__(mod)

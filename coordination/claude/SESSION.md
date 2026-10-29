@@ -3,7 +3,7 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
-- Task: **AI-16 REVIEW (2026-10-29)** — highlight B/A/C xong; chờ user duyệt kích hoạt ứng viên vòng 5 (`D:/tmp/ai16_20261029/candidate/`). Runtime :8001 PID 23292 (active cũ). AI-14 REVIEW (bước 1). AI-15 BLOCKED ⇐ RE:HC-13 (phần AI xong: contract v2.0 DRAFT, /v2 chạy thật, HC-13 gửi Codex).
+- Task: **AI-16 REVIEW (2026-10-29)** — highlight vòng 5 ACTIVE trên :8001 (PID 14896); chờ release. Rollback: `_archive/highlight_fusion_round3_becbd378/`.
   **Runtime :8001 UP PID 15852** (code AI-15: /v1 + /v2, worker cùng tiến trình); gateway Codex trỏ :8001 thật. Dataset Kaggle `ai-model-worker-v1` uploaded, kernel chưa push.
 - Bước kế: đọc RE:HC-13 → release (user duyệt) → /v2 API_READY, /v1 DEPRECATED → gỡ minio/pymilvus. Release cũng là lúc ghi D24 + sơ đồ đích vào
   PROJECT_STATUS / master plan / kien_truc_va_thuat_toan_ai.md (file chung, theo yêu cầu user 2026-10-29).

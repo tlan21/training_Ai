@@ -327,3 +327,12 @@ job queue) sở hữu toàn bộ dữ liệu. AI phía Claude đã xong (REL tr�
 3. ffmpeg-cutter (`cutter.go:168`): `-ss start -to end -i in -c copy` → điểm đầu bị kéo về keyframe (lệch tới vài giây). Đề xuất cắt chính xác:
    `-i in -ss start -to end -c:v libx264 -preset veryfast -c:a aac` (re-encode clip ngắn), hoặc chỉ re-encode GOP đầu.
 - Nghiệm thu đề xuất: clip từ video thật bắt đầu/kết thúc đúng mốc ±0.1 s (ffprobe), không cắt giữa câu khi có segment, đổi ngưỡng CMS → danh sách clip đổi.
+
+## 2026-10-29 REL :8001 — Highlight Fusion vòng 5 đã ACTIVE (AI-16, user ra lệnh kích hoạt; AI-API v1.4-rc1, chưa release master)
+- Runtime :8001 (PID 14896) từ 2026-10-29 dùng Fusion vòng 5 (bản đạt DoD T1.5): gộp 3 seed + cửa sổ chồng + làm mượt 9 s; clip = score > **51**
+  (trước: > 75), nối khe ≤ 5 s, bỏ clip < 3 s. Schema request/response **không đổi**; thêm field tùy chọn `asr_segments` (HC-14).
+- **Hành vi đổi Codex cần biết:** điểm timeline mượt hơn và hiệu chỉnh khác hẳn. Model train trên bóng đá (SoccerNet): với video không phải
+  bóng đá, điểm thường thấp và **có thể không có clip** (ví dụ AI-01 tin tức 3 s: cũ 74–75 → 1 clip; mới ~6 → 0 clip). E2E nào giả định
+  "video upload luôn có ≥1 clip" sẽ cần dùng video bóng đá thật hoặc chấp nhận 0 clip là hợp lệ (contract §2.3 đã ghi "có thể rỗng").
+- Quay lại vòng 3 nếu cần: Claude chép `ai-core/checkpoints/_archive/highlight_fusion_round3_becbd378/best.pt` về, xóa `postproc.json`, restart (≈1 phút).
+- Smoke :8001 9/9 PASS sau kích hoạt; ví dụ `examples/highlight.response.json` sinh lại. Contract §1 SHA highlight = `34199b68…` (+ 3 file recipe).

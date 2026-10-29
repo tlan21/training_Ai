@@ -48,6 +48,12 @@ def main(dst):
             raise SystemExit(f"{name}: checkpoint is not the active one (contract §1)")
         shutil.copy2(src, dst / f"ckpt_{name}.pt")
     shutil.copy2(root / "ai-core/checkpoints/minigpt/bpe_vocab.json", dst / "ckpt_minigpt_bpe_vocab.json")
+    # AI-16: highlight_fusion = seed ensemble + recipe; extra files travel as ckpt_<model>__<file>.
+    for name in MODELS:
+        recipe = root / "ai-core/checkpoints" / name / "postproc.json"
+        if recipe.exists():
+            for rel in ["postproc.json"] + json.loads(recipe.read_text(encoding="utf-8")).get("extra_members", []):
+                shutil.copy2(recipe.parent / rel, dst / f"ckpt_{name}__{rel}")
     zip_tree(dst / "ai_core.zip", root / "ai-core", "ai_core")
     zip_tree(dst / "inference_service.zip", root / "inference-service", "app")
     files = sorted(p for p in dst.iterdir() if p.is_file() and p.name not in ("manifest.json", "dataset-metadata.json"))

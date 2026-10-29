@@ -16,7 +16,7 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | AI-13 | T1.7 / T1.8 | D18: recommendation inference không trả metadata giả + `recommendation_mode` | DONE (2026-10-26; release #3) | D18 |
 | AI-14 | T1.8 | D24 bước 1: tách facade/worker trong inference-service (contract v1.3 không đổi) + worker từ xa (MODEL_WORKER_URL) + kernel Kaggle worker GPU | REVIEW (2026-10-29; chờ release; dataset Kaggle uploaded, kernel chưa push) | D24 (user 2026-10-29) |
 | AI-15 | T1.8 | D24 bước 2: AI-API v2.0 (DRAFT) — AI trả vector/kết quả, Backend sở hữu MinIO/Milvus; v1.3 chạy song song; HC cho Codex | BLOCKED ⇐ RE:HC-13 E2E (phần AI xong 2026-10-29: v2.0 DRAFT, :8001 phục vụ /v1 + /v2) | AI-14; Codex (HC) cho phần backend |
-| AI-16 | T1.5 / T1.8 | Highlight: (B) đối chiếu checkpoint active với vòng đạt DoD; (A) hậu xử lý đúng như lúc chấm (làm mượt k, τ); (C) luật clip (độ dài, nối, biên câu) | REVIEW (2026-10-29; code xong, ứng viên vòng 5 chờ user duyệt kích hoạt) | user 2026-10-29 |
+| AI-16 | T1.5 / T1.8 | Highlight: (B) đối chiếu checkpoint active với vòng đạt DoD; (A) hậu xử lý đúng như lúc chấm (làm mượt k, τ); (C) luật clip (độ dài, nối, biên câu) | REVIEW (2026-10-29; vòng 5 ACTIVE trên :8001 theo lệnh user; chờ release) | user 2026-10-29 |
 | AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | BLOCKED ⇐ bundle INT-13 (phần độc lập xong 2026-10-26) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | DONE (2026-10-26; sandbox + artifact; product → AI-12 theo D18) | HC-04 (sandbox READY) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a DONE (2026-10-27) · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
@@ -199,7 +199,10 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   ```
 
 ### AI-16 — Highlight: checkpoint đúng vòng DoD + hậu xử lý như lúc chấm + luật clip
-- T gốc: T1.5 / T1.8 | Owner: claude | Status: REVIEW (2026-10-29) — B/A/C xong trên branch; kích hoạt checkpoint vòng 5 chờ user duyệt
+- T gốc: T1.5 / T1.8 | Owner: claude | Status: REVIEW (2026-10-29) — B/A/C xong; **vòng 5 ACTIVE** trên :8001 (user: "hãy kích hoạt models training mới nhất"); chờ release
+- Kích hoạt (VERIFIED-NOW 2026-10-29): sao lưu vòng 3 → `ai-core/checkpoints/_archive/highlight_fusion_round3_becbd378/`; 4 file vòng 5 vào `highlight_fusion/`
+  (SHA khớp ứng viên); validate_artifacts 6/6; :8001 restart PID 14896, smoke 9/9 (`smoke_8001_round5_active.log`); contract §1 SHA `34199b68…`;
+  dataset Kaggle worker version mới (ensemble + code) ready, kernel dry-run nạp đủ 6. ASR 02c / MiniGPT 03c KHÔNG kích hoạt (trượt guard/cổng).
 - Depends on: user 2026-10-29 (B trước, rồi A + C) | Blocks: HC cho Codex (ngưỡng CMS, FFmpeg cắt chính xác)
 - Bối cảnh: DoD T1.5 đạt với gộp 3 seed + làm mượt k=9 + τ=0.51 (`docs/T1.5_bao_cao.md` §6g), nhưng service chạy 1 checkpoint, không làm mượt, ngưỡng cứng 75;
   `best.pt` active = d256/p0.3 seed 1337 (val F1 0.199 step 1300) trong khi vòng 5 chốt d128/p0.3.
