@@ -142,6 +142,12 @@ Req: `{"model"?: str, "video_id": str, "features": {"vision_embeddings": [[float
   Sai → 503 `AI_UNAVAILABLE` (không phải 422).
 Resp: `{"id","object":"highlight_completion","created","model","video_id","timeline_scores":[{"second":int,"score":0–100}],"recommended_clips":[{"clip_id","start_time","end_time","average_score":0–100}]}`
 - `second` bắt đầu từ 0, liên tục; clip đề xuất = đoạn liên tiếp có score > 75 (có thể rỗng).
+- **v1.4-rc1 (DRAFT, AI-16, 2026-10-29 — chưa hiệu lực cho tới release):**
+  - Req thêm tùy chọn `"asr_segments": [{"start_time","end_time"}, ...]` (segment `/v1/asr` của cùng video; field thừa bị bỏ qua) →
+    biên clip nằm giữa câu được đẩy ra mép câu nếu cách ≤ 3 s. Không gửi = như cũ.
+  - Checkpoint **đề xuất** (chờ user duyệt): Fusion vòng 5 (bản đạt DoD T1.5) = gộp 3 seed + cửa sổ chồng stride 30 + làm mượt 9 s,
+    clip = score > **51**, nối khe ≤ 5 s, bỏ clip < 3 s (`highlight_fusion/postproc.json`). Active hiện tại vẫn là vòng 3 (`becbd378…`, ngưỡng 75).
+    Đo qua code service trên tập test đã khóa: F1/giây 0.2628 (DoD 0.2632); ngưỡng 75 trên cùng model chỉ 0.168. Schema response không đổi.
 
 ### 2.4 `POST /v1/search/completions` — Siamese + Milvus — API_READY
 Req: `{"model"?: str, "image": str (data URI/base64/path), "top_k": 1–100 (mặc định 5), "threshold": 0–1 (mặc định 0.75)}`
@@ -182,6 +188,7 @@ Resp: `{"status":"ok","gpu_vram_used": MB,"gpu_util": %,"models_loaded":[...],"d
   `/health` tự thử lại dependency chưa `ok` tối đa mỗi 30 s → trạng thái tự phục hồi khi Milvus/collection được sửa. `FORCE_STUB=1` → `{}`.
 
 ## 3. Changelog
+- **v1.4-rc1 DRAFT (2026-10-29, AI-16)** — highlight: `asr_segments` tùy chọn; hỗ trợ recipe `postproc.json`; đề xuất đổi Fusion sang vòng 5 (chờ duyệt). Không đổi path/field bắt buộc.
 - **v2.0 DRAFT (2026-10-29, AI-15)** — tài liệu riêng `AI_API_CONTRACT_V2.md`; thêm path `/v2/*` vào `inference_openapi.json`, `/v1` không đổi (compat v1.2 + v1.3).
 - **v1.3 — ghi chú 2026-10-29 (AI-14, D24 bước 1)** — không đổi version/schema/status code: tách facade/worker nội bộ (mục 1d), thêm key
   `dependencies.model_worker` chỉ ở chế độ worker từ xa (dict đã mở từ v1.1).

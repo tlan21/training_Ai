@@ -16,7 +16,7 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | AI-13 | T1.7 / T1.8 | D18: recommendation inference không trả metadata giả + `recommendation_mode` | DONE (2026-10-26; release #3) | D18 |
 | AI-14 | T1.8 | D24 bước 1: tách facade/worker trong inference-service (contract v1.3 không đổi) + worker từ xa (MODEL_WORKER_URL) + kernel Kaggle worker GPU | REVIEW (2026-10-29; chờ release; dataset Kaggle uploaded, kernel chưa push) | D24 (user 2026-10-29) |
 | AI-15 | T1.8 | D24 bước 2: AI-API v2.0 (DRAFT) — AI trả vector/kết quả, Backend sở hữu MinIO/Milvus; v1.3 chạy song song; HC cho Codex | BLOCKED ⇐ RE:HC-13 E2E (phần AI xong 2026-10-29: v2.0 DRAFT, :8001 phục vụ /v1 + /v2) | AI-14; Codex (HC) cho phần backend |
-| AI-16 | T1.5 / T1.8 | Highlight: (B) đối chiếu checkpoint active với vòng đạt DoD; (A) hậu xử lý đúng như lúc chấm (làm mượt k, τ); (C) luật clip (độ dài, nối, biên câu) | IN_PROGRESS (2026-10-29) | user 2026-10-29 |
+| AI-16 | T1.5 / T1.8 | Highlight: (B) đối chiếu checkpoint active với vòng đạt DoD; (A) hậu xử lý đúng như lúc chấm (làm mượt k, τ); (C) luật clip (độ dài, nối, biên câu) | REVIEW (2026-10-29; code xong, ứng viên vòng 5 chờ user duyệt kích hoạt) | user 2026-10-29 |
 | AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | BLOCKED ⇐ bundle INT-13 (phần độc lập xong 2026-10-26) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | DONE (2026-10-26; sandbox + artifact; product → AI-12 theo D18) | HC-04 (sandbox READY) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a DONE (2026-10-27) · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
@@ -199,14 +199,24 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   ```
 
 ### AI-16 — Highlight: checkpoint đúng vòng DoD + hậu xử lý như lúc chấm + luật clip
-- T gốc: T1.5 / T1.8 | Owner: claude | Status: IN_PROGRESS (2026-10-29)
+- T gốc: T1.5 / T1.8 | Owner: claude | Status: REVIEW (2026-10-29) — B/A/C xong trên branch; kích hoạt checkpoint vòng 5 chờ user duyệt
 - Depends on: user 2026-10-29 (B trước, rồi A + C) | Blocks: HC cho Codex (ngưỡng CMS, FFmpeg cắt chính xác)
 - Bối cảnh: DoD T1.5 đạt với gộp 3 seed + làm mượt k=9 + τ=0.51 (`docs/T1.5_bao_cao.md` §6g), nhưng service chạy 1 checkpoint, không làm mượt, ngưỡng cứng 75;
   `best.pt` active = d256/p0.3 seed 1337 (val F1 0.199 step 1300) trong khi vòng 5 chốt d128/p0.3.
 - Việc: (B) chỉ đọc — xác định checkpoint active thuộc vòng nào, checkpoint vòng 5 còn không, SHA; (A) hậu xử lý đúng cấu hình đã chấm;
   (C) độ dài clip tối thiểu/tối đa, nối khe ngắn, biên theo câu ASR. Đổi checkpoint active = bump contract + release (user duyệt).
 - Acceptance: báo cáo B có bằng chứng; A/C có test + đo trên tập test đã khóa (không chọn tham số bằng test); contract cập nhật; suite + smoke PASS.
-- Evidence: — | Commits: — | Checkpoint: —
+- Evidence (VERIFIED-NOW 2026-10-29, `coordination/claude/evidence/AI-16_2026-10-29/`): active = vòng 3 (DoD không đạt); service path tái hiện vòng 5
+  test F1 0.2628 (DoD 0.2632); ngưỡng 75 cùng model 0.168; luật clip chọn trên val (gap 5/min 3) test F1 0.2624, clip < 3 s 97 → 0;
+  inference 77/10; :8001 restart PID 23292 smoke 9/9, highlight example SAME (active chưa đổi). Ứng viên `D:/tmp/ai16_20261029/candidate/highlight_fusion/`.
+- Commits: b26110b (task), 449bfd4 (B), b7ca117 (A+C code/test/evidence), (contract/HC-14: commit này) | Checkpoint:
+  ```
+  Lane: claude
+  Changed: inference-service/app/{registry,worker,services,schemas}.py, tests/{test_highlight_recipe (mới),test_worker}.py; api/{AI_API_CONTRACT.md,inference_openapi.json}; HANDOFF_OUT (HC-14); evidence AI-16
+  Verified: inference 77/10; recipe == eval pipeline; service F1 0.2628 on locked test; smoke :8001 9/9, active highlight unchanged
+  Contract touched: yes (v1.4-rc1 DRAFT: asr_segments tùy chọn; đổi checkpoint chờ duyệt)
+  Next safe task: user duyệt kích hoạt vòng 5 → contract §1 + release; Kaggle dataset rebuild
+  ```
 
 ### AI-15 — D24 bước 2: AI-API v2.0 — inference-service chỉ tính toán, Backend sở hữu dữ liệu
 - T gốc: T1.8 | Owner: claude | Status: BLOCKED ⇐ Codex RE:HC-13 (E2E backend dùng /v2) — phần AI xong 2026-10-29 (contract v2.0 DRAFT, endpoint thật, HC-13)

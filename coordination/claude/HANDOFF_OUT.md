@@ -317,3 +317,13 @@ job queue) sở hữu toàn bộ dữ liệu. AI phía Claude đã xong (REL tr�
     search bằng 1 frame của video → video đó top-1 score > 0.95; ASR bytes ra segment không rỗng trên giọng nói tự nhiên; xóa video → Milvus/MinIO sạch;
     log :8001 (`D:/tmp/ai07_runtime/inference_8001.log`, Claude đọc hộ nếu cần) không còn `/v1/vision|search|asr|recommendation` trong luồng chính.
 - Sau RE:HC-13 E2E PASS: Claude release (README mục 6) → `/v2` `API_READY`, 4 path `/v1` tương ứng `DEPRECATED`; release kế gỡ `minio`/`pymilvus`, lifespan bỏ Milvus.
+
+## 2026-10-29 HC-14 — Highlight AI-16: gửi `asr_segments`, ngưỡng CMS, FFmpeg cắt chính xác (đề xuất, file Codex — Claude không sửa)
+- Phía AI (v1.4-rc1 DRAFT, chưa hiệu lực): `/v1/highlight/completions` nhận tùy chọn `asr_segments` → biên clip đẩy ra mép câu (≤3 s).
+  Model Fusion đề xuất đổi sang bản đạt DoD (vòng 5, ngưỡng 51, nối khe 5 s, bỏ clip < 3 s) — chờ user duyệt; schema response không đổi.
+1. Orchestrator (`runner.go` `doHighlight`): ASR đã chạy trước highlight → gửi kèm `asr_segments` (lấy `segments` ASR của video, chỉ cần `start_time`/`end_time`).
+2. `highlight_threshold` (CMS Settings) hiện được lưu nhưng không ảnh hưởng clip (dùng nguyên `recommended_clips` của AI). Đề xuất: khi admin đổi ngưỡng,
+   backend tự cắt lại từ `timeline_scores` (điểm > ngưỡng, cùng luật nối/độ dài) — hoặc ẩn ô này. Khi model vòng 5 lên, mặc định nên là 51, không phải 75.
+3. ffmpeg-cutter (`cutter.go:168`): `-ss start -to end -i in -c copy` → điểm đầu bị kéo về keyframe (lệch tới vài giây). Đề xuất cắt chính xác:
+   `-i in -ss start -to end -c:v libx264 -preset veryfast -c:a aac` (re-encode clip ngắn), hoặc chỉ re-encode GOP đầu.
+- Nghiệm thu đề xuất: clip từ video thật bắt đầu/kết thúc đúng mốc ±0.1 s (ffprobe), không cắt giữa câu khi có segment, đổi ngưỡng CMS → danh sách clip đổi.
