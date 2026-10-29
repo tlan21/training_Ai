@@ -1,3 +1,7 @@
+# Active checkpoint — 2026-10-29 HC-13 / D24
+
+INT-28 IN_PROGRESS. Startup branch correct, clean, no missing master release. Read HC-13 and AI-API v2.0 DRAFT; execute 12 ordered checkpoints in TASKS. Preserve existing JSON payload collection/data. No Claude runtime/source edit, no master/push. Next inventory then mock/client tests. Use backend_endpoint + Ponytail. Public API unchanged.
+
 # SESSION — authoritative resume state (2026-10-29, requested3work verification complete)
 
 ## Branch / task state
