@@ -482,10 +482,13 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Next action: userrefresh3000/feed; no more work for thisbug. GlobalINT-06parity andCMSsettingsauto-togglewiring remainseparate, not claimedDONE.
 
 ### INT-33 — Resolve private video thumbnails in CMS/public API
-- Owner: CODEX | Status: IN_PROGRESS (2026-10-29)
+- Owner: CODEX | Status: DONE (2026-10-29; scoped backend thumbnail bug fix)
 - Depends on: user screenshotmissingthumbnail; INT-28 backend already stores thumbnails/{vid}/00000000.jpg.
 - Acceptance: processedCMS/public video list/detail return usable signedimageURLs; all3existingactivevideos work without modifyingmetadata or reindexing;
  deletedrows retainplaceholder; futureclip thumbnail refs use sameprivatebucket signing; auth/privacy unchanged; Go/liveAPI/browser testsPASS.
-- Changed: planned sharedbackendthumbnail response mapping, CMS/public DTOcallers/clipcreation, regressiontests, ownedcoordination/evidence.
-- Evidence: initialAPI3processed thumbnailnull; sampleMinIOJPEGexists14290bytes. No migration/newAPI/AI changes required.
-- Commits: startupcheckpoint. Next: sharedresolver for existingexplicitrefs or canonicalprocessedfirstframe, privatepresign; no publicbucketpolicy/databackfill.
+- Changed: backend/internal/handlers/{thumbnails.go,thumbnails_test.go,content.go}; cms/{videos.go,metadata.go,clips.go,clips_test.go,thumbnails_test.go}; adapters/pg/{repositories.go,thumbnail_test.go}; backend/cmd/gateway/main.go; e2e/thumbnails_live.spec.ts; owned coordination/evidence.
+- Evidence: verification/INT-33.md; Go vet/test/build PASS, real PG TEMP persistence PASS 0.07s, E2E types PASS, **2 real CMS tests PASS 23.7s** at 1440×900/390×844. All 4 current processed thumbnails GET 200 JPEG; sample naturalWidth 224; deleted rows placeholder. API list/detail/public verified, screenshots inspected.
+- Deployment: only gateway recreated, image int33-40b8bdc/latest, binary hash verified, healthz 200. Other 15 containers/environment/AI host PID unchanged. Original 106 videos/55 clips hashes unchanged; concurrent new draft preserved; no test media created, active jobs 0.
+- Commits: **a5663df** start; **40b8bdc** source/tests; final evidence commit follows. No schema/migration/AI edits, no object writes/backfill.
+- Checkpoint: Lane codex / Changed backend thumbnail mapping + tests / Verified Go, real PG and real CMS / Contract touched no / Next safe task remaining INT-05/06 scope. No master/push or full design parity claim.
+- Next action: user refresh CMS; no remaining implementation for this bug. Deleted rows intentionally retain placeholders.

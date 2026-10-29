@@ -394,3 +394,12 @@ Mẫu HO:
  Other15containers/hostAI15852/DockerAI6real/datahashes unchanged; exactQA22188stopped/3100closed. No API/AI/model/weights/DB modifications.
 - Evidence coordination/codex/verification/INT-32.md, layout/regression/reference/build/live/preservation logs+INT-32-screens.
  Clientalsohas approvedHC12draftlabels fromcurrentSource, CMSimageunchanged. No master/push/sharedstatus edit.
+
+## 2026-10-29 INT-33 — CMS thumbnails restored and deployed
+
+- Source **40b8bdc**, startup **a5663df**. Root cause: existing private MinIO JPEGs were not mapped when Postgres thumbnail_url was NULL. Backend now derives the processed video's canonical first frame and presigns it. CMS/public video and clip responses share signing; new clips persist the private reference. Deleted rows retain placeholders.
+- No AI code/contract, DB migration, object regeneration or frontend change. Only gateway recreated with offline image `video-ai-gateway:int33-40b8bdc`/latest; environment unchanged, binary SHA verified, healthz 200.
+- `go vet ./...`, `go test ./...`, `go build ./...` PASS; actual Postgres TEMP-table persistence **PASS 0.07s**; E2E types PASS.
+- `E2E_THUMBNAIL_VIDEO_ID=vid_dmh4b8ymqbtw node node_modules/@playwright/test/cli.js test e2e/thumbnails_live.spec.ts --reporter=list`: **2 PASS 23.7s**. Actual CMS at 1440×900/390×844, all 4 processed JPEGs HTTP 200, sample decoded at naturalWidth 224; CMS/public list/detail verified. No test upload, clip creation or publish.
+- Other 15 containers and host AI PID 15852 unchanged; Docker AI real six models, no degraded models. Original 106 video/55 clip hashes unchanged. One concurrently created draft clip preserved; no claim that full aggregate clip count stayed fixed. Public TEMP-test clip absent; active jobs 0.
+- Evidence: `verification/INT-33.md`, deploy/runtime/health/preservation/Go/real-PG/live logs and `INT-33-screens/`. Scoped backend fix DONE; full UI parity and AI v2 API_READY gates remain separate. No master/shared status/push.

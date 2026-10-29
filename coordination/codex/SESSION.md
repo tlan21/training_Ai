@@ -1,8 +1,14 @@
-INT-33 sourcecheckpoint: backendsharedthumbnailresolver +allCMS/publicvideoDTOs/clipDTOs; firstframefallbackforprocessedNULL/no metadatarewrite; cliprefs nowpersistprivatekey. Govet/test/buildPASS, realPostgresTEMPpersistence1PASS0.07s, E2EtypesPASS. Nextofflinegatewayimage/cutover/liveexisting3thumbs+CMS2viewports. No AI/model/data/object edits/newcontract.
+# SESSION — authoritative resume state (2026-10-29, INT-33 thumbnails deployed)
 
-INT-33 IN_PROGRESS: userCMSthumbnailbug. Initial3processedAPI/PG thumbnailnull althoughsampleJPEGexistsinMinIO14290bytes. Backendmappingfix viaexistingcanonicalfirstframe+signedURLs; no DBmetadata rewrite/reindex/AIchanges/newcontract. Next traceallDTOcallers/tests, implementsharedresolver andverifyexisting3/livebrowser, gateway-onlydeploy.
+- INT-33 DONE. Source **40b8bdc**, startup **a5663df**; final verification commit follows this checkpoint.
+- Gateway resolves existing private first-frame JPEGs for processed videos with NULL thumbnail metadata. CMS/public video responses and clip responses sign private references; future clips persist the canonical key. No migration, metadata rewrite, image regeneration, AI call or frontend change.
+- Deployed only gateway: `video-ai-gateway:int33-40b8bdc` (also latest), binary SHA256 `91d008ef5960041ba7bc5aa46a93a3ee0dd91fcc4048ffae2d11540a981e3554`. Healthz 200; runtime environment unchanged, rollback-int33 retained.
+- Go vet/test/build PASS; real Postgres TEMP-table persistence PASS 0.07s; E2E types PASS. Real CMS/browser **2 PASS 23.7s**, 1440×900 and 390×844: all **4** current processed thumbnail URLs GET 200 JPEG, sample image naturalWidth 224. List/detail/public mapping verified, deleted rows remain placeholders. Screenshots inspected.
+- Preservation: other 15 containers unchanged; host AI PID 15852 unchanged, Docker AI stub_mode=false/6 models. Original 106 videos and 55 clips hashes unchanged; one concurrently created draft `clp_dmh5oswbre9l` preserved (not created by the read-only browser test). Public TEMP-test clip absent; active jobs 0. No checkpoint/source changes in Claude lane.
+- Evidence: `verification/INT-33.md`, runtime/deploy/data/health logs and `INT-33-screens/`. Full UI parity remains INT-06; this backend bug fix does not promote AI v2 from DRAFT. No master/push.
+- Next safe work: existing INT-05/06 scope, or CMS settings orchestration under its own assigned task; no remaining action for this thumbnail bug.
 
-# SESSION — authoritative resume state (2026-10-29, INT-32 feed CSS deployed)
+## Previous INT-32 checkpoint (retained)
 
 - Branchcodex/integration, startupclean/noHEAD..master; INT-32 DONE scopedfeedbugfix source16bfad7 +finaldeployevidencecheckpoint.
 - Userfeedemptyscreenshot: desktopempty expanded7columns, mobilecollapsed198px andCTAleft. CSSnowshares9:16frame acrossstates,
