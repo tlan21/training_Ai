@@ -32,7 +32,7 @@ func (r *ClipRepo) ListPopularPage(ctx context.Context, cursor string, limit int
 	for rows.Next() {
 		var c domain.Clip
 		var rank int64
-		err := rows.Scan(&c.ID, &c.VideoID, &c.Title, &c.StartTime, &c.EndTime, &c.AverageScore, &c.ClipFilePath, &c.ThumbnailURL, &c.Status, &c.CreatedBy, &c.CategoryID, &c.CreatedAt, &c.UpdatedAt, &rank)
+		err := rows.Scan(&c.ID, &c.VideoID, &c.Title, &c.StartTime, &c.EndTime, &c.AverageScore, &c.ClipFilePath, &c.ThumbnailURL, &c.Status, &c.CreatedBy, &c.CategoryID, &c.CreatedAt, &c.UpdatedAt, &c.SourceSegments, &rank)
 		if err != nil {
 			return nil, nil, err
 		}

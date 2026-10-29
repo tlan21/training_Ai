@@ -9,6 +9,7 @@ import { Icon } from "@/components/Icon";
 import { PageState, Thumbnail } from "@/components/Media";
 import { useClipPage, formatTime, track, shareVideo, recommendationLabel, type RecommendationMode, type Clip } from "@/lib/content";
 import { apiClient, errorMessage } from "@/lib/apiClient";
+import { clipSourceTime, compilationScores } from "@/lib/clipTimeline";
 import { useWatchTime } from "@/lib/useWatchTime";
 function FeedClip({ clip, active, mode, onMessage }: {
     clip: Clip;
@@ -26,8 +27,9 @@ function FeedClip({ clip, active, mode, onMessage }: {
     const [mediaError, setMediaError] = useState(false);
     const subs = useQuery({ queryKey: ["subtitles", clip.video_id], enabled: active && !!clip.video_id, queryFn: async () => (await apiClient.get<components["schemas"]["Subtitles"]>(`/api/videos/${clip.video_id}/subtitles`)).data });
     const analysis = useQuery({ queryKey: ["analysis", clip.video_id], enabled: active && !!clip.video_id, queryFn: async () => (await apiClient.get<components["schemas"]["PublicAnalysis"]>(`/api/videos/${clip.video_id}/analysis`)).data });
-    const segment = subs.data?.segments?.find(s => time + (clip.start_time || 0) >= (s.start_time || 0) && time + (clip.start_time || 0) < (s.end_time || 0));
-    const scores = analysis.data?.timeline_scores?.filter(s => (s.second || 0) >= (clip.start_time || 0) && (s.second || 0) < (clip.end_time || 0)) || [];
+    const sourceTime = clipSourceTime(clip, time);
+    const segment = subs.data?.segments?.find(s => sourceTime >= (s.start_time || 0) && sourceTime < (s.end_time || 0));
+    const scores = compilationScores(analysis.data?.timeline_scores || [], clip.source_segments || []).filter(s => (s.second || 0) >= (clip.start_time || 0) && (s.second || 0) < (clip.end_time || 0)) || [];
     useEffect(() => {
         const el = ref.current;
         if (!el)

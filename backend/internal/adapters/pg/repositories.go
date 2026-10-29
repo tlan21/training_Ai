@@ -95,15 +95,15 @@ func (r *VideoRepo) SoftDelete(ctx context.Context, id string) error {
 	return update(ctx, r.DB, `UPDATE videos SET status='deleted',deleted_at=now(),updated_at=now() WHERE id=$1`, id)
 }
 
-const clipColumns = `id,video_id,title,start_time::float8,end_time::float8,average_score::float8,clip_file_path,thumbnail_url,status,created_by,category_id,created_at,updated_at`
+const clipColumns = `id,video_id,title,start_time::float8,end_time::float8,average_score::float8,clip_file_path,thumbnail_url,status,created_by,category_id,created_at,updated_at,source_segments`
 
 func scanClip(row pgx.Row) (*domain.Clip, error) {
 	var c domain.Clip
-	err := row.Scan(&c.ID, &c.VideoID, &c.Title, &c.StartTime, &c.EndTime, &c.AverageScore, &c.ClipFilePath, &c.ThumbnailURL, &c.Status, &c.CreatedBy, &c.CategoryID, &c.CreatedAt, &c.UpdatedAt)
+	err := row.Scan(&c.ID, &c.VideoID, &c.Title, &c.StartTime, &c.EndTime, &c.AverageScore, &c.ClipFilePath, &c.ThumbnailURL, &c.Status, &c.CreatedBy, &c.CategoryID, &c.CreatedAt, &c.UpdatedAt, &c.SourceSegments)
 	return &c, notFound(err, domain.ErrClipNotFound)
 }
 func (r *ClipRepo) Create(ctx context.Context, c *domain.Clip) error {
-	_, err := r.DB.Exec(ctx, `INSERT INTO clips(id,video_id,title,start_time,end_time,average_score,status,thumbnail_url) VALUES($1,$2,$3,$4,$5,$6,$7,$8)`, c.ID, c.VideoID, c.Title, c.StartTime, c.EndTime, c.AverageScore, c.Status, c.ThumbnailURL)
+	_, err := r.DB.Exec(ctx, `INSERT INTO clips(id,video_id,title,start_time,end_time,average_score,status,thumbnail_url,source_segments) VALUES($1,$2,$3,$4,$5,$6,$7,$8,coalesce($9::jsonb,'[]'::jsonb))`, c.ID, c.VideoID, c.Title, c.StartTime, c.EndTime, c.AverageScore, c.Status, c.ThumbnailURL, c.SourceSegments)
 	return err
 }
 func (r *ClipRepo) Get(ctx context.Context, id string) (*domain.Clip, error) {

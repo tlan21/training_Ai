@@ -72,6 +72,7 @@ CREATE TABLE clips (
     start_time NUMERIC(10, 2) NOT NULL,
     end_time NUMERIC(10, 2) NOT NULL,
     average_score NUMERIC(5, 2) NOT NULL CHECK (average_score >= 0.00 AND average_score <= 100.00),
+    source_segments JSONB NOT NULL DEFAULT '[]'::jsonb CHECK (jsonb_typeof(source_segments) = 'array' AND jsonb_array_length(source_segments) <= 100),
     clip_file_path VARCHAR(512),
     thumbnail_url VARCHAR(512),
     status VARCHAR(20) NOT NULL DEFAULT 'draft'

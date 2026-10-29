@@ -371,7 +371,8 @@ func toClipH(cl *domain.Clip, storage ports.ObjectStorage) gin.H {
 	return gin.H{
 		"id": cl.ID, "video_id": cl.VideoID, "title": cl.Title,
 		"start_time": cl.StartTime, "end_time": cl.EndTime, "average_score": cl.AverageScore,
-		"thumbnail_url": ThumbnailURL(cl.ThumbnailURL, storage), "playback_url": playback,
+		"source_segments": append([]domain.ClipSourceSegment{}, cl.SourceSegments...),
+		"thumbnail_url":   ThumbnailURL(cl.ThumbnailURL, storage), "playback_url": playback,
 		"status": string(cl.Status), "created_at": cl.CreatedAt.UTC().Format(time.RFC3339),
 	}
 }

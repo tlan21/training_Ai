@@ -75,7 +75,7 @@ func (r *InteractionRepo) list(ctx context.Context, userID string, cursor *strin
 		var id int64
 		c := &item.Clip
 		if err := rows.Scan(&c.ID, &c.VideoID, &c.Title, &c.StartTime, &c.EndTime, &c.AverageScore,
-			&c.ClipFilePath, &c.ThumbnailURL, &c.Status, &c.CreatedBy, &c.CategoryID, &c.CreatedAt, &c.UpdatedAt,
+			&c.ClipFilePath, &c.ThumbnailURL, &c.Status, &c.CreatedBy, &c.CategoryID, &c.CreatedAt, &c.UpdatedAt, &c.SourceSegments,
 			&id, &item.WatchedAt, &item.DurationWatched); err != nil {
 			return nil, nil, err
 		}

@@ -477,3 +477,6 @@ body:has(.settings-page) .account-row strong { font-size: 16px; font-weight: 400
   .filters .input { flex: 1; min-width: 0; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+
+.compilation-preview { padding: 16px; }
+.compilation-preview video { display: block; width: 100%; max-height: 360px; margin: 12px 0; background: #000; }

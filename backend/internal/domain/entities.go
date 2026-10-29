@@ -65,19 +65,25 @@ type ProcessingJob struct {
 }
 
 type Clip struct {
-	ID           string     `json:"id" bson:"id"`
-	VideoID      string     `json:"video_id" bson:"video_id"`
-	Title        string     `json:"title" bson:"title"`
-	StartTime    float64    `json:"start_time" bson:"start_time"`
-	EndTime      float64    `json:"end_time" bson:"end_time"`
-	AverageScore float64    `json:"average_score" bson:"average_score"`
-	ClipFilePath *string    `json:"clip_file_path" bson:"clip_file_path"`
-	ThumbnailURL *string    `json:"thumbnail_url" bson:"thumbnail_url"`
-	Status       ClipStatus `json:"status" bson:"status"`
-	CreatedBy    *string    `json:"created_by" bson:"created_by"`
-	CategoryID   *string    `json:"category_id" bson:"category_id"`
-	CreatedAt    time.Time  `json:"created_at" bson:"created_at"`
-	UpdatedAt    time.Time  `json:"updated_at" bson:"updated_at"`
+	SourceSegments []ClipSourceSegment `json:"source_segments,omitempty" bson:"source_segments,omitempty"`
+	ID             string              `json:"id" bson:"id"`
+	VideoID        string              `json:"video_id" bson:"video_id"`
+	Title          string              `json:"title" bson:"title"`
+	StartTime      float64             `json:"start_time" bson:"start_time"`
+	EndTime        float64             `json:"end_time" bson:"end_time"`
+	AverageScore   float64             `json:"average_score" bson:"average_score"`
+	ClipFilePath   *string             `json:"clip_file_path" bson:"clip_file_path"`
+	ThumbnailURL   *string             `json:"thumbnail_url" bson:"thumbnail_url"`
+	Status         ClipStatus          `json:"status" bson:"status"`
+	CreatedBy      *string             `json:"created_by" bson:"created_by"`
+	CategoryID     *string             `json:"category_id" bson:"category_id"`
+	CreatedAt      time.Time           `json:"created_at" bson:"created_at"`
+	UpdatedAt      time.Time           `json:"updated_at" bson:"updated_at"`
+}
+
+type ClipSourceSegment struct {
+	StartTime float64 `json:"start_time" bson:"start_time"`
+	EndTime   float64 `json:"end_time" bson:"end_time"`
 }
 
 type Category struct {
