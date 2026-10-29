@@ -66,9 +66,36 @@ def siamese(images: list[bytes]) -> list[list[float]]:
     return vectors.tolist()
 
 
-def highlight(vision: list[list[float]], audio: list[list[float]]) -> list[float]:
-    """Fusion → per-second score 0–100."""
+_LEGACY_CLIP_RULES = {"threshold": 75.0, "merge_gap_seconds": 0, "min_clip_seconds": 1}
+
+
+def _window_scores(model, v, a, window: int, stride: int):
+    """Same as ai_core.scripts.eval_highlight.model_scores_overlap (the DoD scoring), but on the model's device/dtype:
+    windows every `stride` s, last one flush with the end, each second = mean of the windows covering it."""
     import torch
+    n = v.shape[0]
+    if n <= window:                               # eval model_scores: zero-pad one window, drop the padding
+        pad = window - n
+        v, a = torch.cat([v, v.new_zeros(pad, v.shape[1])]), torch.cat([a, a.new_zeros(pad, a.shape[1])])
+        return model(v[None], a[None])[0, :n].float()
+    starts = list(range(0, n - window + 1, stride))
+    if starts[-1] + window < n:
+        starts.append(n - window)
+    acc = torch.zeros(n, device=v.device)
+    cnt = torch.zeros(n, device=v.device)
+    for s0 in starts:
+        acc[s0:s0 + window] += model(v[None, s0:s0 + window], a[None, s0:s0 + window])[0].float()
+        cnt[s0:s0 + window] += 1
+    return acc / cnt
+
+
+def highlight(vision: list[list[float]], audio: list[list[float]]) -> dict:
+    """Fusion → {"scores": per-second 0–100, "clip_rules": {threshold 0–100, merge_gap_seconds, min_clip_seconds}}.
+
+    With `highlight_fusion/postproc.json` (AI-16) this is exactly the evaluated DoD recipe: seed ensemble (mean),
+    overlapping windows, moving average k, τ. Without it: the legacy single-model path, unchanged."""
+    import torch
+    import torch.nn.functional as F
     model = registry.models["highlight_fusion"]
     dt = registry.model_dtype                     # khớp dtype model (half trên CUDA) để tránh mismatch
     if len(vision) != len(audio):
@@ -77,14 +104,25 @@ def highlight(vision: list[list[float]], audio: list[list[float]]) -> list[float
         raise InvalidInput("empty highlight features")
     if any(len(v) != 256 for v in vision) or any(len(a) != 64 for a in audio):
         raise InvalidInput("highlight features phải là vision 256-d và audio 64-d")
-    scores = []
     window = 120  # Same window length used to train the Fusion checkpoint.
+    recipe = registry.highlight_postproc
     with torch.no_grad():
-        for start in range(0, len(vision), window):
-            v = torch.tensor([vision[start:start+window]], device=registry.device, dtype=dt)
-            a = torch.tensor([audio[start:start+window]], device=registry.device, dtype=dt)
-            scores.extend(round(float(x) * 100, 1) for x in model(v, a)[0])
-    return scores
+        if not recipe:
+            scores = []
+            for start in range(0, len(vision), window):
+                v = torch.tensor([vision[start:start+window]], device=registry.device, dtype=dt)
+                a = torch.tensor([audio[start:start+window]], device=registry.device, dtype=dt)
+                scores.extend(round(float(x) * 100, 1) for x in model(v, a)[0])
+            return {"scores": scores, "clip_rules": dict(_LEGACY_CLIP_RULES)}
+        v = torch.tensor(vision, device=registry.device, dtype=dt)
+        a = torch.tensor(audio, device=registry.device, dtype=dt)
+        mean = torch.stack([_window_scores(m, v, a, window, recipe["stride"]) for m in registry.highlight_members]).mean(0)
+        k = recipe["smooth_k"]
+        if k > 1:                                 # eval_highlight.smooth: replicate edges, moving average
+            mean = F.avg_pool1d(F.pad(mean[None, None], (k // 2, k // 2), mode="replicate"), k, stride=1)[0, 0]
+    return {"scores": [round(float(x) * 100, 1) for x in mean.cpu()],
+            "clip_rules": {"threshold": recipe["tau"] * 100, "merge_gap_seconds": recipe.get("merge_gap_seconds", 0),
+                           "min_clip_seconds": recipe.get("min_clip_seconds", 1)}}
 
 
 def asr(pcm: bytes):

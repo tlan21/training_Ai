@@ -65,7 +65,7 @@ def test_worker_ops_take_bytes_and_vectors(fake_models):
     assert logit_sums == {"bong_da": 0.0, "the_thao": 0.0, "ca_nhac": 2.0, "tin_tuc": 0.0}
     vectors = worker.siamese([png()])
     assert len(vectors[0]) == 128 and sum(x * x for x in vectors[0]) == pytest.approx(1)
-    assert worker.highlight([[0.0] * 256] * 2, [[0.0] * 64] * 2) == [50.0, 50.0]
+    assert worker.highlight([[0.0] * 256] * 2, [[0.0] * 64] * 2)["scores"] == [50.0, 50.0]
     with pytest.raises(worker.InvalidInput):
         worker.siamese([b"not an image"])
     with pytest.raises(worker.InvalidInput):

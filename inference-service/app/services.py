@@ -123,46 +123,62 @@ def run_search(req: schemas.SearchRequest) -> schemas.SearchResponse:
 
 def run_highlight(req: schemas.HighlightRequest) -> schemas.HighlightResponse:
     n = len(req.features.vision_embeddings)
-    scores = None
+    out = None
     if worker_client.is_real("highlight_fusion"):
         try:
-            scores = _real_highlight(req)
+            out = _real_highlight(req)
             registry.degraded.discard("highlight_fusion")
         except Exception as e:  # noqa: BLE001
             _warn("highlight", "highlight_fusion", e)
-    if scores is None:
+    if out is None:
         # stub: điểm dao động mượt theo index, thang 0–100
         scores = [round(50 + 40 * ((i * 37) % 100 - 50) / 50, 1) for i in range(n)]
-        scores = [max(0.0, min(100.0, s)) for s in scores]
+        out = {"scores": [max(0.0, min(100.0, s)) for s in scores],
+               "clip_rules": {"threshold": 75.0, "merge_gap_seconds": 0, "min_clip_seconds": 1}}
+    scores, rules = out["scores"], out["clip_rules"]
 
     timeline = [schemas.TimelineScore(second=i, score=s) for i, s in enumerate(scores)]
-    clips = _peaks_to_clips(scores, threshold=75.0)
+    clips = _peaks_to_clips(scores, rules["threshold"], rules["merge_gap_seconds"], rules["min_clip_seconds"], req.asr_segments)
     return schemas.HighlightResponse(
         id=_rid("hl-primitive"), created=_now(), model=req.model, video_id=req.video_id,
         timeline_scores=timeline, recommended_clips=clips,
     )
 
 
-def _real_highlight(req: schemas.HighlightRequest) -> list[float]:
+def _real_highlight(req: schemas.HighlightRequest) -> dict:
     return worker_client.call("highlight", vision=req.features.vision_embeddings, audio=req.features.audio_spectrogram_features)
 
 
-def _peaks_to_clips(scores: list[float], threshold: float) -> list[schemas.RecommendedClip]:
-    clips, start = [], None
-    for i, s in enumerate(scores):
+_SNAP_SECONDS = 3.0  # ponytail: fixed reach; make it a recipe field if editors want tighter/looser cuts
+
+
+def _peaks_to_clips(scores: list[float], threshold: float, merge_gap: int = 0, min_len: int = 1,
+                    speech=None) -> list[schemas.RecommendedClip]:
+    """Seconds with score > threshold → runs; runs ≤ merge_gap s apart join (AI-16 C); runs < min_len s drop.
+    With ASR speech spans, a boundary inside a sentence moves to that sentence's edge if ≤ _SNAP_SECONDS away."""
+    runs, start = [], None
+    for i, s in enumerate(scores + [float("-inf")]):
         if s > threshold and start is None:
             start = i
         elif s <= threshold and start is not None:
-            seg = scores[start:i]
-            clips.append(schemas.RecommendedClip(
-                clip_id=f"clp_{start:04d}", start_time=float(start), end_time=float(i),
-                average_score=round(sum(seg) / len(seg), 1)))
+            if runs and start - runs[-1][1] <= merge_gap:
+                runs[-1][1] = i
+            else:
+                runs.append([start, i])
             start = None
-    if start is not None:
-        seg = scores[start:]
-        clips.append(schemas.RecommendedClip(
-            clip_id=f"clp_{start:04d}", start_time=float(start), end_time=float(len(scores)),
-            average_score=round(sum(seg) / len(seg), 1)))
+    clips = []
+    for a, b in runs:
+        if b - a < min_len:
+            continue
+        begin, end = float(a), float(b)
+        for span in speech or []:
+            if span.start_time < begin < span.end_time and begin - span.start_time <= _SNAP_SECONDS:
+                begin = span.start_time
+            if span.start_time < end < span.end_time and span.end_time - end <= _SNAP_SECONDS:
+                end = span.end_time
+        seg = scores[a:b]
+        clips.append(schemas.RecommendedClip(clip_id=f"clp_{a:04d}", start_time=max(0.0, begin), end_time=min(end, float(len(scores))),
+                                             average_score=round(sum(seg) / len(seg), 1)))
     return clips
 
 

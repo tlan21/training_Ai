@@ -68,10 +68,17 @@ class HighlightFeatures(BaseModel):
     audio_spectrogram_features: list[list[float]]
 
 
+class SpeechSpan(BaseModel):
+    start_time: float
+    end_time: float
+
+
 class HighlightRequest(BaseModel):
     model: str = "primitive-seq2seq-highlighter"
     video_id: str
     features: HighlightFeatures
+    # AI-16 (optional): ASR segments of the same video (extra fields ignored) → clip edges move to sentence edges ≤3 s away.
+    asr_segments: list[SpeechSpan] | None = None
 
 
 class TimelineScore(BaseModel):

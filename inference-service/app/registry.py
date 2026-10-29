@@ -27,6 +27,8 @@ class ModelRegistry:
         self.minigpt_metadata: dict = {}
         self.asr_vocab: list[str] | None = None   # char vocab cho ASR (index 0 = blank)
         self.vit_classes: list[str] | None = None # tên danh mục ViT (theo class index)
+        self.highlight_members: list = []         # AI-16: Fusion seed ensemble (postproc.json); [] = single model
+        self.highlight_postproc: dict = {}        # AI-16: evaluated scoring/clip recipe; {} = legacy (no smoothing, threshold 75)
         self.loaded: list[str] = []               # tên model nạp THẬT
         self.degraded: set[str] = set()           # model có lần inference lỗi thật, gỡ khi lần sau chạy được
         self.dependencies: dict[str, str] = {}    # visual_index / recommendation_index → ok|unavailable|missing_collection
@@ -70,10 +72,8 @@ class ModelRegistry:
             self.load_error = "stub forced or ai-core unavailable"
             return
         try:
-            import torch
-            from ai_core import build_model
-            from ai_core.config import ModelConfig
-            from ai_core.training.checkpoint import load_checkpoint
+            import torch  # noqa: F401
+            from ai_core import build_model  # noqa: F401
         except Exception:
             self.stub_mode = True
             self.load_error = "torch/ai-core import failed"
@@ -88,13 +88,7 @@ class ModelRegistry:
                 else:
                     continue
             try:
-                ckpt = load_checkpoint(path, map_location=self.device)
-                cfg = ModelConfig(**ckpt["config"])
-                model = build_model(cfg.name, cfg)
-                model.load_state_dict(ckpt["state_dict"])
-                model.eval().to(self.device)
-                if self.device == "cuda":
-                    model.half()
+                ckpt, model = self._build(path)
                 self.models[name] = model
                 self.loaded.append(name)
                 metadata = ckpt.get("metadata") or {}
@@ -108,11 +102,44 @@ class ModelRegistry:
                     self.vit_classes = ckpt.get("classes") or metadata.get("classes") or self._load_sidecar(rel, "classes.json")
             except Exception as e:  # noqa: BLE001
                 print(f"[registry] nạp {name} lỗi ({e}) → stub cho model này")
+        try:
+            self._load_highlight_postproc()
+        except Exception as e:  # noqa: BLE001 — a broken recipe must not silently fall back to legacy scoring
+            print(f"[registry] highlight postproc lỗi ({e}) → highlight_fusion không nạp")
+            self.models.pop("highlight_fusion", None)
+            self.loaded = [n for n in self.loaded if n != "highlight_fusion"]
 
         self.stub_mode = len(self.loaded) < len(_MODEL_FILES)
         if self.stub_mode:
             missing = sorted(set(_MODEL_FILES) - set(self.loaded))
             self.load_error = f"missing or invalid checkpoints: {', '.join(missing)}"
+
+    def _build(self, path: str):
+        from ai_core import build_model
+        from ai_core.config import ModelConfig
+        from ai_core.training.checkpoint import load_checkpoint
+        ckpt = load_checkpoint(path, map_location=self.device)
+        cfg = ModelConfig(**ckpt["config"])
+        model = build_model(cfg.name, cfg)
+        model.load_state_dict(ckpt["state_dict"])
+        model.eval().to(self.device)
+        if self.device == "cuda":
+            model.half()
+        return ckpt, model
+
+    def _load_highlight_postproc(self) -> None:
+        """AI-16: optional `highlight_fusion/postproc.json` = the recipe the DoD was measured with
+        (seed ensemble, overlapping windows, smoothing, τ, clip rules). Absent → legacy single-model scoring."""
+        import json
+        self.highlight_members, self.highlight_postproc = [], {}
+        root = os.path.join(settings.checkpoint_dir, "highlight_fusion")
+        path = os.path.join(root, "postproc.json")
+        if "highlight_fusion" not in self.models or not os.path.exists(path):
+            return
+        with open(path, encoding="utf-8") as f:
+            recipe = json.load(f)
+        members = [self.models["highlight_fusion"]] + [self._build(os.path.join(root, rel))[1] for rel in recipe.get("extra_members", [])]
+        self.highlight_members, self.highlight_postproc = members, recipe
 
     def _load_sidecar(self, model_rel: str, fname: str):
         """Đọc file JSON cạnh checkpoint (vd checkpoints/asr_ctc/vocab.json). None nếu không có."""

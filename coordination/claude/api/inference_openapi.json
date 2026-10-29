@@ -908,6 +908,20 @@
           },
           "features": {
             "$ref": "#/components/schemas/HighlightFeatures"
+          },
+          "asr_segments": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/SpeechSpan"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Asr Segments"
           }
         },
         "type": "object",
@@ -1440,6 +1454,24 @@
           "thumbnail_url"
         ],
         "title": "SearchResult"
+      },
+      "SpeechSpan": {
+        "properties": {
+          "start_time": {
+            "type": "number",
+            "title": "Start Time"
+          },
+          "end_time": {
+            "type": "number",
+            "title": "End Time"
+          }
+        },
+        "type": "object",
+        "required": [
+          "start_time",
+          "end_time"
+        ],
+        "title": "SpeechSpan"
       },
       "TimelineScore": {
         "properties": {
