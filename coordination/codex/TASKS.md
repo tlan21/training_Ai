@@ -412,7 +412,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Evidence: verification/INT-27.md +before/stopped/after/log; initial false failure from mount ordering retained; sorted identity guard, actual second runPASS.
 - Commit:62149d3. Next action: retain current rootCompose/real configuration; no manual gateway start/down/volume deletion, AI or source app replacement.
 ### INT-28 — D24 compute-only AI-API v2 migration (HC-13)
-- Owner: CODEX | Status: IN_PROGRESS (2026-10-29)
+- Owner: CODEX | Status: BLOCKED (2026-10-29)
 - Depends on: user D24; Claude AI-15 v2.0 DRAFT runtime; master26c2346 already received. No Claude edits.
 - Acceptance / ordered checkpoints (HC-13): (1) four v2 mock routes; (2) Go v2 client/batches/logit aggregation/multipart offsets/error codes;
  (3) Milvus REST insert/search/delete and JSON schema; (4) backend thumbnails; (5) orchestrator v2 + backend persistence;
@@ -425,3 +425,10 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Changed: pending implementation; commits: startup checkpoint (this commit).
 - Evidence: pending; DRAFT must not be marked INTEGRATED_REAL until Claude releases API_READY on master.
 - Next action: inventory Milvus/MinIO/Postgres, implement mock/client first, then storage and pipeline; validate with existing natural speech source.
+
+### INT-29 — HC-13 deletion contract clarification
+- Owner: CODEX | Status: IN_PROGRESS (2026-10-29)
+- Depends on: D24 explicit unified cleanup. Blocks: INT-28 cleanup activation.
+- Acceptance: document existing DELETE route's idempotent MinIO/Milvus/Mongo cleanup, active writer409 and storage503; regenerate Go/CMS/Client types; embedded schema validation PASS.
+- Changed: infra/openapi.yaml, generated Go/FE types, contract test, owned coordination.
+- Evidence/Commits: pending. Next: contract-only commit before INT-28 implementation commit.
