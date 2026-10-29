@@ -1,4 +1,5 @@
-"""Siamese frame index, database_schema §4.1; ViT/Fusion features stay 256d."""
+"""Siamese frame index, database_schema §4.1; ViT/Fusion features stay 256d.
+Facade side (D24): MinIO thumbnails + Milvus vectors live here; Siamese vectors come from the model worker."""
 import base64
 import io
 import json
@@ -7,8 +8,8 @@ from pathlib import Path
 import re
 from threading import Lock
 
+from . import worker_client
 from .config import settings
-from .registry import registry
 
 COLLECTION = "video_frame_embeddings"
 INDEX = {"index_type": "HNSW", "metric_type": "COSINE",
@@ -49,16 +50,9 @@ def collection():
         return col
 
 
-def encode(images):
-    import torch
-    if not registry.is_real("siamese"):
-        raise RuntimeError("Siamese checkpoint is not loaded")
-    with torch.inference_mode():
-        batch = torch.stack(images).to(device=registry.device, dtype=registry.model_dtype)
-        vectors = registry.models["siamese"].encode(batch).float().cpu()
-    if vectors.shape[1] != 128 or not torch.isfinite(vectors).all():
-        raise ValueError("Invalid Siamese embeddings")
-    return vectors.tolist()
+def encode(images: list[bytes]) -> list[list[float]]:
+    """Encoded images → Siamese 128-d vectors (worker)."""
+    return worker_client.call("siamese", images=images)
 
 
 def _image_bytes(ref):
@@ -73,7 +67,6 @@ def index_frames(paths, video_id=None):
     """Index one video's Siamese frames. Ingest/backfill files: seconds from `NNNNNNNN.jpg` names.
     HO-01: data URI/base64 keyframes + explicit video_id → request order is second 0, 1, 2… (1 fps)."""
     from minio import Minio
-    from .services import _load_keyframe
     if not paths:
         raise ValueError("No keyframes to index")
     if all(os.path.exists(ref) for ref in paths):
@@ -99,10 +92,10 @@ def index_frames(paths, video_id=None):
     col.delete(f'payload["video_id"] == {json.dumps(video_id)}', timeout=5)
     for start in range(0, len(paths), 16):
         batch = list(zip(paths[start:start+16], seconds[start:start+16]))
-        vectors = encode([_load_keyframe(str(ref)) for ref, _ in batch])
+        images = [_image_bytes(str(ref)) for ref, _ in batch]
+        vectors = encode(images)
         payloads = []
-        for ref, second in batch:
-            data = _image_bytes(str(ref))
+        for (_, second), data in zip(batch, images):
             key = f"{video_id}/{second:08d}.jpg"
             storage.put_object("thumbnails", key, io.BytesIO(data), len(data), content_type="image/jpeg")
             payloads.append({"video_id": video_id, "timestamp": float(second),

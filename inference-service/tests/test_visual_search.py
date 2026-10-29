@@ -47,8 +47,8 @@ def test_encode_is_batched_finite_128d_and_inference_only(monkeypatch):
             assert not torch.is_grad_enabled()
             assert batch.shape == (2, 3, 224, 224)
             return torch.ones(2, 128) / 128**.5
-    monkeypatch.setattr(visual_index.registry, "models", {"siamese": Siamese()})
-    rows = visual_index.encode([torch.zeros(3,224,224)]*2)
+    monkeypatch.setattr(services.registry, "models", {"siamese": Siamese()})
+    rows = visual_index.encode([base64.b64decode(query_image())]*2)   # facade → in-process worker
     assert len(rows) == 2 and len(rows[0]) == 128
     assert sum(x*x for x in rows[0]) == pytest.approx(1)
 

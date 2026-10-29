@@ -7,6 +7,23 @@
 - **STUB** (mặc định khi chưa có checkpoint hoặc `FORCE_STUB=1`): mọi endpoint trả đúng schema với dữ liệu mock → backend/UI code song song. `/health.load_error` giải thích vì sao chưa load đủ model.
 - **THẬT**: đặt `CHECKPOINT_DIR` trỏ `ai-core/checkpoints/`; `/health` báo `models_loaded` và `stub_mode`. `stub_mode` vẫn là `true` nếu thiếu bất kỳ checkpoint nào, nên AI-GATE không thể mở với model thiếu.
 
+## Facade / worker (D24, AI-14)
+
+- `app/worker.py` = lớp worker **thuần**: 6 model, nhận ảnh bytes / PCM float32 16 kHz / vector / text → nhãn / vector / text.
+  Không import `minio`/`pymilvus`, không HTTP (test `tests/test_worker.py` khóa điều này).
+- Facade = `main.py` (7 endpoint, Bearer, validation, error code) + `services.py` + `visual_index.py` (MinIO thumbnail, Milvus vector,
+  tải audio). Mọi suy luận đi qua `app/worker_client.py`.
+- `MODEL_WORKER_URL` trống (mặc định) = worker chạy cùng tiến trình, hành vi y hệt trước. Có URL = facade gọi `app/worker_app.py`
+  (`GET /info`, `POST /ops/{vision|siamese|highlight|asr|summarize}`) qua HTTP với Bearer riêng `MODEL_WORKER_KEY`
+  (≥24 ký tự, khác `sk-local-dev-key` và `AI_SERVICE_KEY`; không commit). `/health` thêm `dependencies.model_worker` chỉ ở chế độ này.
+
+```bash
+# worker (máy có GPU, hoặc Kaggle: dist/kaggle/kernel-model-worker/)
+MODEL_WORKER_KEY=<random> CHECKPOINT_DIR=... python -m uvicorn app.worker_app:app --host 127.0.0.1 --port 8002
+# facade (giữ MinIO/Milvus như cũ)
+MODEL_WORKER_URL=http://127.0.0.1:8002 MODEL_WORKER_KEY=<cùng key> python -m uvicorn app.main:app --port 8001
+```
+
 ## Env
 
 | Biến | Mặc định | Ý nghĩa |
@@ -15,6 +32,8 @@
 | `CHECKPOINT_DIR` | `../ai-core/checkpoints` | thư mục best.pt 6 model |
 | `INFER_DEVICE` | `auto` | `auto\|cpu\|cuda` |
 | `FORCE_STUB` | `0` | `1` ép stub kể cả có checkpoint |
+| `MODEL_WORKER_URL` | (trống) | trống = worker cùng tiến trình; URL = worker từ xa (D24) |
+| `MODEL_WORKER_KEY` | (trống) | Bearer riêng cho worker từ xa; không commit |
 
 ## Cấu hình .env
 

@@ -8,7 +8,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from . import schemas, services
+from . import schemas, services, worker_client
 from .auth import require_bearer
 from .config import settings
 from .gpu_queue import gpu_queue
@@ -17,14 +17,20 @@ from .registry import registry
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    registry.load_all()
+    if worker_client.remote() and not settings.force_stub:
+        worker_client.attach()          # D24: models live in the remote worker; this process is the facade only
+    else:
+        registry.load_all()
     if not settings.force_stub and registry.stub_mode:
         raise RuntimeError(f"Real inference requires all checkpoints: {registry.load_error}")
     if not settings.force_stub:
-        import torch
+        import io
+        from PIL import Image
         from . import visual_index
         visual_index.collection()
-        vector = visual_index.encode([torch.zeros(3, 224, 224)])[0]
+        black = io.BytesIO()
+        Image.new("RGB", (224, 224)).save(black, "PNG")
+        vector = visual_index.encode([black.getvalue()])[0]
         # First query after load exceeds the 1 s request budget (DEADLINE_EXCEEDED → 503); warm it here.
         visual_index.search(vector, 1, 0.0, timeout=60)
         registry.dependencies["visual_index"] = "ok"
@@ -95,7 +101,7 @@ async def recommendation(req: schemas.RecommendationRequest):
 @app.get("/health", response_model=schemas.HealthResponse)
 async def health():
     await asyncio.to_thread(services.refresh_dependencies)   # rate-limited re-probe → self-recovery
-    vram, util = registry.gpu_stats()
+    vram, util = await asyncio.to_thread(worker_client.gpu_stats)
     all_names = ["vit", "siamese", "asr_ctc", "highlight_fusion", "minigpt", "two_tower"]
     return schemas.HealthResponse(
         status="ok",
