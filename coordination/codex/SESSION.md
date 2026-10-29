@@ -1,6 +1,9 @@
 # SESSION — authoritative resume state (2026-10-28, INT-23 Docker update verified)
 
 ## Branch / task state
+- 2026-10-29 latest: INT-26 DONE71productionQA PASS1.3m, exactQA27160stopped/3100closed, Client3000unchanged. INT-24 REVIEW; policyblock resolved.
+  Only INT-27 IN_PROGRESS now: owned cold stackstop/up approved, noactivejobs precheck/preserveimages+volumes+ClaudePID/Faktory. INT-25 PARTIAL needs natural-speech media; asyncpathquestion pending.
+
 - 2026-10-29 checkpoint: INT-25 PARTIAL (fresh synthetic8s pipeline processed but raw summary empty; strict nonempty assertion FAIL).
   Realkeymatches/canonicalURL/stub0/banner/health/realrecommend503 PASS; no gateway recreation or AI change. RE:HO03 evidence appended.
   Only INT-26 IN_PROGRESS now: explicit exact production QA3100 command newly approved; build fresh, full current suite71superset63.

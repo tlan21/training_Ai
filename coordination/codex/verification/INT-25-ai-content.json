@@ -1,12 +1,12 @@
 {
   "video_id": "vid_dmgy2ypzw79z",
-  "test_title": "e2e-1793238737337.mp4",
-  "cleanup_status": "deleted",
-  "category": null,
-  "timeline_count": 0,
-  "summary": null,
-  "summary_status": null,
-  "source_fixture": "e2e/fixtures/video.mp4; synthetic color bars/tone, not natural Vietnamese speech",
-  "test_result": "FAIL nonempty summary assertion",
+  "evidence_source": "actual pre-cleanup HTTP response saved in Playwright trace",
+  "category": "tin_tuc",
+  "timeline_count": 8,
+  "summary": "",
+  "summary_status": "draft",
+  "test_result": "FAIL original nonempty summary assertion",
+  "cleanup_status": "test video softdeleted; postcleanup analysis is intentionally cleared",
+  "source_fixture": "synthetic colorbars/tone e2e/fixtures/video.mp4",
   "ai_change_made": false
 }

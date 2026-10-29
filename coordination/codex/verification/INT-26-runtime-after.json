@@ -1,0 +1,10 @@
+{
+  "qa_pid_stopped": 27160,
+  "qa_port_closed": true,
+  "product_client_id": "dc090234825b5fec9544e53f4b1b64ce4facaf00670689863ec1770c6892635e",
+  "product_client_started": "2026-10-28T10:25:49.684147254Z",
+  "product_client_unchanged": true,
+  "product_client_http": 200,
+  "tests_passed": 71,
+  "duration": "1.3m"
+}

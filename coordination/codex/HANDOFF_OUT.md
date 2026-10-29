@@ -271,3 +271,13 @@ Mẫu HO:
 - Direct real recommendation503/AI_UNAVAILABLE verified; MVP remains primary PGpopularity (personalization still production-disabled).
   Need suitable natural-speech test media and/or Claude assessment of empty outputs to complete new nonempty-content gate.
 - Continuing independently with explicitly authorized ClientQA3100 and HC-11 cold startup. No change requested to contractv1.3.
+
+## 2026-10-29 RE:HC-12 — source/production-QA acceptance PASS (INT-24/26)
+- Source3a2adf3: explicit BẢN NHÁP MÁY CMS/Client transcript, Client subtitle overlay and draftTXT/SRT identification; no subtitle approval state invented.
+- User renewed exact Next production QA3100 authorization. Existing fresh build started with exact command;71/71 current tests PASS1.3m/no retries
+  (superset of older63), including both viewport draft labels/overlay/download, pending summary hidden, actual player/keyboard/session/tracking behavior.
+- Existing real CMS editor/cache/summary approval proof INT-24-real-edit-approval.log1PASS38s; source/CMSbuild/types verified prior checkpoint.
+  Stronger original AI-content gate INT-25 failed synthetic-tone summaryempty separately; this UI run does not certify model quality or hide that failure.
+- Exact QA PID27160 stopped after identity checks;3100 closed. ProductClient3000 samecontainer/StartedAt/image, HTTP200. No Client3000 replacement,
+  no AI/contract/DB/master/push change. Source/QA labels not yet deployed to productClient/CMS; user asked to preserve Client3000.
+- Evidence verification/INT-26.md +production.log/runtime-before/runtime-after +transcript390/1440PNGs. INT-24 REVIEW; prior startup policy blocker resolved.

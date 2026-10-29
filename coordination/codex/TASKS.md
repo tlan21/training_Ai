@@ -32,11 +32,11 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-21 | INT-20 | Persist/map approved CMS planA | REVIEW | realPG/worker/UI/build gates PASS; deployed INT-23 |
 | INT-22 | INT-21 | Apply004 to product Postgres | DONE | live apply/repeat/data/schema/health PASS; f8d82b8 |
 | INT-23 | INT-21/22 | Deploy planA Docker services +real E2E | DONE | explicit user deployment approval; DB004 applied |
-| INT-24 | HC-12/D23 | Explicit draft subtitles +approval evidence | BLOCKED | user approved HC-12 first, then INT-05 |
+| INT-24 | HC-12/D23 | Explicit draft subtitles +approval evidence | REVIEW | user approved HC-12 first, then INT-05 |
 
 | INT-25 | HO-03 | Revalidate real gateway/key/pipeline and popularity | PARTIAL | explicit user instruction2026-10-29 |
-| INT-26 | INT-24/06 | Production QA3100 and HC-12 Client evidence | IN_PROGRESS | INT-25; explicit exact-command approval renewed |
-| INT-27 | HC-11 | Verify cold Compose startup with existing dependencies | TODO | INT-26; owned stack stop/up approved, preserve volumes/AI |
+| INT-26 | INT-24/06 | Production QA3100 and HC-12 Client evidence | DONE | INT-25; explicit exact-command approval renewed |
+| INT-27 | HC-11 | Verify cold Compose startup with existing dependencies | IN_PROGRESS | INT-26; owned stack stop/up approved, preserve volumes/AI |
 
 Hoàn thành trước tách làn (bằng chứng INVENTORY mục 5): T0.1–T0.4, T2.1–T2.4, T4.1, T4.2 = DONE (VERIFIED-HIST, build VERIFIED-NOW);
 T2.5, T3.1, T3.2 = PARTIAL.
@@ -370,7 +370,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
  No AI/source/checkpoint/model/runtime/contract change, old-video backfill, datastoredown/volume deletion, master/shared-status edit or push.
 - Next action: INT-05 remaining approved visual parity; INT-06 library/forgot-link decisions remain pending.
 ### INT-24 — HC-12: machine subtitle drafts and summary approval
-- Owner: CODEX | Status: BLOCKED (2026-10-28; Client QA3100 automatic review rejected)
+- Owner: CODEX | Status: REVIEW (2026-10-29; renewed authorization, Client71productionQA PASS)
 - Dependency: user accepted proposed HC-12 then INT-05; current public0.4.0/AI-APIv1.3 unchanged; Release#4 received.
 - Acceptance: public summary remains hidden before approval; CMS clearly identifies machine subtitle drafts with edit/save/reload;
  Client transcript and downloaded text identify drafts without implying official approval; existing API/types/media unchanged;
@@ -388,7 +388,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Evidence/commits: pending. Next action: existing configuration already real and key matches; verify flow without repeating completed switch.
 
 ### INT-26 — Approved Client production QA3100 +HC-12
-- Owner: CODEX | Status: IN_PROGRESS (2026-10-29)
+- Owner: CODEX | Status: DONE (2026-10-29;71productionQA PASS, ownedPID stopped)
 - Dependency: INT-25; user explicitly renewed exact Node Next startup approval2026-10-29.
 - Acceptance: check build freshness; exact production command on127.0.0.1:3100; current71-test superset of original63 passes;
  draft transcript/overlay/download checks +summary hidden before approval; stop owned exactPID, preserve Client3000; update RE:HC-12.
@@ -396,9 +396,10 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Next action: start existing fresh build once INT-25 checkpoint committed.
 
 ### INT-27 — HC-11 cold stack startup acceptance
-- Owner: CODEX | Status: TODO
+- Owner: CODEX | Status: IN_PROGRESS (2026-10-29)
 - Dependency: INT-26; explicit cold Compose stop/up authorization; no active processing jobs; preserve existing configuration/images/volumes.
 - Acceptance: validate existing healthy DB dependencies/restart policy; actual Compose up from owned-stack stopped state ->gateway healthy automatically;
  preserve :8001 PID/checkpoints, test current stack readiness, persistent data/volume identity and restore services after test; RE:HC-11 evidence.
 - Changed planned: Compose only if required; guarded startup verification/evidence/session/tracker/handoff. Commits/evidence pending.
 - Next action: snapshot/select owned services and safe stop/up plan after QA; no down/delete, no AI process or unrelated Faktory action.
+- INT-26 verified evidence: verification/INT-26.md,71PASS1.3m, before/after snapshots and2inspected transcript PNGs; productClient untouched. INT-24 QA blocker resolved; source pending authorized release/deployment.
