@@ -109,7 +109,7 @@ func (h *VideoHandlers) Create(c *gin.Context) {
 		handlers.ErrorEnvelope(c, 503, "INTERNAL", err.Error())
 		return
 	}
-	c.JSON(http.StatusCreated, gin.H{"video": toVideoCMS(v), "job": toJobCMS(job)})
+	c.JSON(http.StatusCreated, gin.H{"video": toVideoCMS(v, h.storage), "job": toJobCMS(job)})
 }
 
 // GET /api/cms/videos?status&page
@@ -127,7 +127,7 @@ func (h *VideoHandlers) List(c *gin.Context) {
 	items, total, _ := h.videos.List(c.Request.Context(), statusPtr, page, size)
 	out := make([]gin.H, 0, len(items))
 	for i := range items {
-		out = append(out, toVideoCMS(&items[i]))
+		out = append(out, toVideoCMS(&items[i], h.storage))
 	}
 	c.JSON(http.StatusOK, gin.H{"items": out, "total": total, "page": page})
 }
@@ -139,7 +139,7 @@ func (h *VideoHandlers) Get(c *gin.Context) {
 		handlers.ErrorEnvelope(c, http.StatusNotFound, "VIDEO_NOT_FOUND", "Video not found")
 		return
 	}
-	result := toVideoDetailCMS(v)
+	result := toVideoDetailCMS(v, h.storage)
 	result["playback_url"] = nil
 	if v.Status != domain.VideoDeleted && v.RawFilePath != "" {
 		url, err := h.storage.GetPresigned(c.Request.Context(), "raw-videos", v.RawFilePath, time.Hour)
@@ -344,10 +344,10 @@ func (h *VideoHandlers) UpdateSubtitles(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
-func toVideoCMS(v *domain.Video) gin.H {
+func toVideoCMS(v *domain.Video, storage ports.ObjectStorage) gin.H {
 	result := gin.H{
 		"id": v.ID, "title": v.Title, "description": v.Description,
-		"thumbnail_url": v.ThumbnailURL, "duration_seconds": v.DurationSeconds,
+		"thumbnail_url": handlers.ThumbnailURL(handlers.VideoThumbnailReference(v), storage), "duration_seconds": v.DurationSeconds,
 		"status": string(v.Status), "created_at": v.CreatedAt.UTC().Format(time.RFC3339),
 	}
 	if v.CategoryID != nil {

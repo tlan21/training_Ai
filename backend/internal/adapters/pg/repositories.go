@@ -103,7 +103,7 @@ func scanClip(row pgx.Row) (*domain.Clip, error) {
 	return &c, notFound(err, domain.ErrClipNotFound)
 }
 func (r *ClipRepo) Create(ctx context.Context, c *domain.Clip) error {
-	_, err := r.DB.Exec(ctx, `INSERT INTO clips(id,video_id,title,start_time,end_time,average_score,status) VALUES($1,$2,$3,$4,$5,$6,$7)`, c.ID, c.VideoID, c.Title, c.StartTime, c.EndTime, c.AverageScore, c.Status)
+	_, err := r.DB.Exec(ctx, `INSERT INTO clips(id,video_id,title,start_time,end_time,average_score,status,thumbnail_url) VALUES($1,$2,$3,$4,$5,$6,$7,$8)`, c.ID, c.VideoID, c.Title, c.StartTime, c.EndTime, c.AverageScore, c.Status, c.ThumbnailURL)
 	return err
 }
 func (r *ClipRepo) Get(ctx context.Context, id string) (*domain.Clip, error) {

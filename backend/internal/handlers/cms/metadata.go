@@ -12,6 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"traning_ai/backend/internal/domain"
 	"traning_ai/backend/internal/handlers"
+	"traning_ai/backend/internal/ports"
 )
 
 func readMetadataJSON(c *gin.Context, target any) bool {
@@ -64,11 +65,11 @@ func (h *VideoHandlers) UpdateMetadata(c *gin.Context) {
 		handlers.ErrorEnvelope(c, 500, "INTERNAL", "Unable to save video metadata")
 		return
 	}
-	c.JSON(http.StatusOK, toVideoDetailCMS(v))
+	c.JSON(http.StatusOK, toVideoDetailCMS(v, h.storage))
 }
 
-func toVideoDetailCMS(v *domain.Video) gin.H {
-	result := toVideoCMS(v)
+func toVideoDetailCMS(v *domain.Video, storage ports.ObjectStorage) gin.H {
+	result := toVideoCMS(v, storage)
 	result["width"], result["height"], result["fps"], result["hashtags"] = v.Width, v.Height, v.FPS, v.Hashtags
 	return result
 }

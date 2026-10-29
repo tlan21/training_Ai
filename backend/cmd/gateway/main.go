@@ -80,7 +80,7 @@ func main() {
 
 	videoCMS := cms.NewVideoHandlers(videoRepo, jobRepo, analysisStore, subtitleStore, vectorStore, cache, eventBus, objectStorage, aiClient, clipRepo)
 	jobCMS := cms.NewJobHandlers(jobRepo, eventBus, videoRepo)
-	clipCMS := cms.NewClipHandlers(clipRepo, videoRepo, eventBus, cache, analysisStore)
+	clipCMS := cms.NewClipHandlers(clipRepo, videoRepo, eventBus, cache, analysisStore, objectStorage)
 	catCMS := cms.NewCategoryHandlers(categoryRepo, cache)
 	userCMS := cms.NewUserHandlers(userRepo)
 	sysCMS := cms.NewSystemHandlers(aiClient, &pg.SettingsRepo{DB: db})

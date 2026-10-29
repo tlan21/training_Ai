@@ -170,7 +170,7 @@ func (h *ContentHandlers) ListVideos(c *gin.Context) {
 	}
 	items := make([]gin.H, 0, len(vids))
 	for i := range vids {
-		items = append(items, toVideoH(&vids[i], h.categories))
+		items = append(items, toVideoH(&vids[i], h.categories, h.storage))
 	}
 	c.JSON(http.StatusOK, gin.H{"items": items, "next_cursor": next})
 }
@@ -208,7 +208,7 @@ func (h *ContentHandlers) GetVideo(c *gin.Context) {
 	for i := range cls {
 		clipHs = append(clipHs, toClipH(&cls[i], h.storage))
 	}
-	vh := toVideoH(v, h.categories)
+	vh := toVideoH(v, h.categories, h.storage)
 	vh["width"], vh["height"], vh["fps"], vh["hashtags"] = v.Width, v.Height, v.FPS, v.Hashtags
 	vh["playback_url"] = nil
 	if v.RawFilePath != "" {
@@ -334,7 +334,7 @@ func (h *ContentHandlers) ListCategories(c *gin.Context) {
 	c.JSON(http.StatusOK, out)
 }
 
-func toVideoH(v *domain.Video, catRepo ports.CategoryRepository) gin.H {
+func toVideoH(v *domain.Video, catRepo ports.CategoryRepository, storage ports.ObjectStorage) gin.H {
 	var cat any
 	if v.CategoryID != nil {
 		cat = gin.H{"id": *v.CategoryID, "name": *v.CategoryID}
@@ -352,7 +352,7 @@ func toVideoH(v *domain.Video, catRepo ports.CategoryRepository) gin.H {
 	}
 	return gin.H{
 		"id": v.ID, "title": v.Title, "description": v.Description,
-		"thumbnail_url": v.ThumbnailURL, "duration_seconds": v.DurationSeconds,
+		"thumbnail_url": ThumbnailURL(VideoThumbnailReference(v), storage), "duration_seconds": v.DurationSeconds,
 		"status": string(v.Status), "category": cat, "created_at": v.CreatedAt.UTC().Format(time.RFC3339),
 	}
 }
@@ -371,7 +371,7 @@ func toClipH(cl *domain.Clip, storage ports.ObjectStorage) gin.H {
 	return gin.H{
 		"id": cl.ID, "video_id": cl.VideoID, "title": cl.Title,
 		"start_time": cl.StartTime, "end_time": cl.EndTime, "average_score": cl.AverageScore,
-		"thumbnail_url": cl.ThumbnailURL, "playback_url": playback,
+		"thumbnail_url": ThumbnailURL(cl.ThumbnailURL, storage), "playback_url": playback,
 		"status": string(cl.Status), "created_at": cl.CreatedAt.UTC().Format(time.RFC3339),
 	}
 }

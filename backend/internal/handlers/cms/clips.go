@@ -13,6 +13,7 @@ import (
 )
 
 type ClipHandlers struct {
+	storage  ports.ObjectStorage
 	clips    ports.ClipRepository
 	videos   ports.VideoRepository
 	bus      ports.EventBus
@@ -20,8 +21,8 @@ type ClipHandlers struct {
 	analyses ports.AnalysisStore
 }
 
-func NewClipHandlers(clips ports.ClipRepository, videos ports.VideoRepository, bus ports.EventBus, cache ports.Cache, analyses ports.AnalysisStore) *ClipHandlers {
-	return &ClipHandlers{clips: clips, videos: videos, bus: bus, cache: cache, analyses: analyses}
+func NewClipHandlers(clips ports.ClipRepository, videos ports.VideoRepository, bus ports.EventBus, cache ports.Cache, analyses ports.AnalysisStore, storage ports.ObjectStorage) *ClipHandlers {
+	return &ClipHandlers{clips: clips, videos: videos, bus: bus, cache: cache, analyses: analyses, storage: storage}
 }
 
 // POST /api/cms/clips — {video_id,title,start_time,end_time} → draft→processing + Kafka clip.cut.requested
@@ -54,7 +55,7 @@ func (h *ClipHandlers) Create(c *gin.Context) {
 		return
 	}
 	cl := &domain.Clip{
-		ID: `clp_` + newID(), VideoID: req.VideoID, Title: req.Title,
+		ID: `clp_` + newID(), VideoID: req.VideoID, Title: req.Title, ThumbnailURL: handlers.VideoThumbnailReference(v),
 		StartTime: req.StartTime, EndTime: req.EndTime,
 		AverageScore: 0, Status: domain.ClipProcessing,
 		CreatedAt: time.Now(), UpdatedAt: time.Now(),
@@ -84,7 +85,7 @@ func (h *ClipHandlers) Create(c *gin.Context) {
 		handlers.ErrorEnvelope(c, 503, "INTERNAL", err.Error())
 		return
 	}
-	c.JSON(http.StatusCreated, toClipCMS(cl))
+	c.JSON(http.StatusCreated, toClipCMS(cl, h.storage))
 }
 
 // GET /api/cms/clips?video_id&status
@@ -101,7 +102,7 @@ func (h *ClipHandlers) List(c *gin.Context) {
 	items, _ := h.clips.List(c.Request.Context(), vp, sp)
 	out := make([]gin.H, 0, len(items))
 	for i := range items {
-		out = append(out, toClipCMS(&items[i]))
+		out = append(out, toClipCMS(&items[i], h.storage))
 	}
 	c.JSON(http.StatusOK, out)
 }
@@ -134,7 +135,7 @@ func (h *ClipHandlers) Update(c *gin.Context) {
 	if req.CategoryID != nil {
 		updated.CategoryID = req.CategoryID
 	}
-	c.JSON(http.StatusOK, toClipCMS(updated))
+	c.JSON(http.StatusOK, toClipCMS(updated, h.storage))
 }
 
 func (h *ClipHandlers) Delete(c *gin.Context) {
@@ -180,10 +181,11 @@ func (h *ClipHandlers) invalidateFeed(c *gin.Context) {
 	}
 }
 
-func toClipCMS(cl *domain.Clip) gin.H {
+func toClipCMS(cl *domain.Clip, storage ports.ObjectStorage) gin.H {
 	return gin.H{
 		"id": cl.ID, "video_id": cl.VideoID, "title": cl.Title,
 		"start_time": cl.StartTime, "end_time": cl.EndTime, "average_score": cl.AverageScore,
-		"status": string(cl.Status), "created_at": cl.CreatedAt.UTC().Format(time.RFC3339),
+		"thumbnail_url": handlers.ThumbnailURL(cl.ThumbnailURL, storage),
+		"status":        string(cl.Status), "created_at": cl.CreatedAt.UTC().Format(time.RFC3339),
 	}
 }

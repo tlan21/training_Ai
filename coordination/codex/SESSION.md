@@ -1,3 +1,5 @@
+INT-33 sourcecheckpoint: backendsharedthumbnailresolver +allCMS/publicvideoDTOs/clipDTOs; firstframefallbackforprocessedNULL/no metadatarewrite; cliprefs nowpersistprivatekey. Govet/test/buildPASS, realPostgresTEMPpersistence1PASS0.07s, E2EtypesPASS. Nextofflinegatewayimage/cutover/liveexisting3thumbs+CMS2viewports. No AI/model/data/object edits/newcontract.
+
 INT-33 IN_PROGRESS: userCMSthumbnailbug. Initial3processedAPI/PG thumbnailnull althoughsampleJPEGexistsinMinIO14290bytes. Backendmappingfix viaexistingcanonicalfirstframe+signedURLs; no DBmetadata rewrite/reindex/AIchanges/newcontract. Next traceallDTOcallers/tests, implementsharedresolver andverifyexisting3/livebrowser, gateway-onlydeploy.
 
 # SESSION — authoritative resume state (2026-10-29, INT-32 feed CSS deployed)

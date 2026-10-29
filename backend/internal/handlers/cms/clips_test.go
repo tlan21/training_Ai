@@ -17,7 +17,7 @@ func TestCreateClip_AveragesActualScoresForFractionalRange(t *testing.T) {
 	analyses := mocks.NewAnalysisStoreMem()
 	_ = videos.Create(context.Background(), &domain.Video{ID: "vid_score", Status: domain.VideoProcessed, DurationSeconds: 2})
 	_ = analyses.Put(context.Background(), "vid_score", []domain.SecondScore{{Second: 0, Score: 80}, {Second: 1, Score: 90}}, nil, nil)
-	handler := NewClipHandlers(mocks.NewClipRepoMem(), videos, mocks.NewEventBusMem(), mocks.NewCacheMem(), analyses)
+	handler := NewClipHandlers(mocks.NewClipRepoMem(), videos, mocks.NewEventBusMem(), mocks.NewCacheMem(), analyses, mocks.NewObjectStorageMem())
 	router := gin.New()
 	router.POST("/api/cms/clips", handler.Create)
 	request := httptest.NewRequest("POST", "/api/cms/clips", strings.NewReader(`{"video_id":"vid_score","title":"test","start_time":0.5,"end_time":1.5}`))
@@ -26,9 +26,10 @@ func TestCreateClip_AveragesActualScoresForFractionalRange(t *testing.T) {
 	router.ServeHTTP(recorder, request)
 	var result struct {
 		AverageScore float64 `json:"average_score"`
+		ThumbnailURL string  `json:"thumbnail_url"`
 	}
 	_ = json.Unmarshal(recorder.Body.Bytes(), &result)
-	if recorder.Code != 201 || result.AverageScore != 85 {
+	if recorder.Code != 201 || result.AverageScore != 85 || result.ThumbnailURL != "https://storage.local/vid_score/00000000.jpg" {
 		t.Fatalf("wrong actual clip score: %d %s", recorder.Code, recorder.Body.String())
 	}
 }
