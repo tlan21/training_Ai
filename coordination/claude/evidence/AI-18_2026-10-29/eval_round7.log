@@ -1,0 +1,14 @@
+lr1e4_wd01_4000: F1 peak 0.2104@2800 (lr 3.0e-05) | val loss min 0.9729@900 final 1.0343 (+6%) | train loss 0.983→0.857
+lr3e4_wd03_4000: F1 peak 0.2303@1800 (lr 2.0e-04) | val loss min 0.9705@600 final 1.4701 (+51%) | train loss 0.925→0.679 | OVERFIT SIGNAL
+lr1e4_wd03_4000: F1 peak 0.2089@2800 (lr 3.0e-05) | val loss min 0.9675@900 final 1.0073 (+4%) | train loss 0.988→0.864
+lr3e4_wd01_1500: F1 peak 0.2150@1300 (lr 4.3e-05) | val loss min 0.9636@900 final 0.9849 (+2%) | train loss 1.014→0.896
+best_s1337: F1 peak 0.2303@1800 (lr 2.0e-04) | val loss min 0.9705@600 final 1.4701 (+51%) | train loss 0.925→0.679 | OVERFIT SIGNAL
+best_s1338: F1 peak 0.2197@2000 (lr 1.8e-04) | val loss min 0.9683@1200 final 1.5199 (+57%) | train loss 0.926→0.676 | OVERFIT SIGNAL
+best_s1339: F1 peak 0.2222@2400 (lr 1.3e-04) | val loss min 0.9655@1000 final 1.5867 (+64%) | train loss 0.922→0.676 | OVERFIT SIGNAL
+round6: k=9 tau=0.50 val 0.3053 train60 0.4744 gap 0.1692
+round7: k=9 tau=0.51 val 0.3151 train60 0.4756 gap 0.1606
+round7 mean val loss at selected checkpoints 1.1477 (registered < 1.2136)
+DECISION (val + gap + val loss only): ACCEPT round 7
+round6 test F1 0.3280
+round7 test F1 0.3298
+exit 0
