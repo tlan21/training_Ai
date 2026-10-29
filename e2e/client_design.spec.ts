@@ -48,6 +48,36 @@ test('INT-35 compilation title, output timeline and available source notice', as
  await expect(page.getByLabel('Vị trí phát video')).toHaveAttribute('max','4');
 });
 
+for (const width of [390,1440,1903]) for (const [shape,w,h] of [['square',224,224],['portrait',300,900],['landscape',1600,400]] as const) {
+ test(`INT-36 discovery loaded ${shape} images stay inside frames ${width}`,async({page},info)=>{
+  await page.setViewportSize({width,height:width===390?844:900});await setup(page);
+  await page.route('**/stitch/**',r=>r.fulfill({contentType:'image/svg+xml',body:`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}"><rect width="100%" height="100%" fill="#73549e"/></svg>`}));
+  await page.goto(client+'/discover');
+  const area=page.locator(width>=1024?'.discovery-hero':'.mobile-discovery .bento-grid');
+  await expect(area).toBeVisible();await expect(area.locator('.thumbnail img')).toHaveCount(3);
+  await expect.poll(()=>area.locator('img').evaluateAll(images=>images.every(img=>(img as HTMLImageElement).complete&&(img as HTMLImageElement).naturalWidth>0))).toBe(true);
+  const bounds=await area.evaluate(el=>{const rect=(n:Element)=>{const r=n.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height,bottom:r.bottom,right:r.right}};return {grid:rect(el),frames:Array.from(el.querySelectorAll('.media-frame')).map(rect),images:Array.from(el.querySelectorAll('.thumbnail img')).map(rect)}});
+  writeFileSync(info.outputPath('bounds.json'),JSON.stringify({width,shape,...bounds},null,2));
+  await page.screenshot({path:info.outputPath(`discovery-${width}-${shape}.png`)});
+  await noOverflow(page);
+  for(let i=0;i<bounds.frames.length;i++){
+   const frame=bounds.frames[i],image=bounds.images[i];
+   expect(image.height).toBeLessThanOrEqual(frame.height+1);expect(image.width).toBeLessThanOrEqual(frame.width+1);
+   expect(frame.bottom).toBeLessThanOrEqual(bounds.grid.bottom+1);
+  }
+  if(width>=1024){
+   expect(bounds.grid.height).toBe(520);
+   expect(bounds.frames[0].height).toBeLessThanOrEqual(521);
+   for(const side of bounds.frames.slice(1))expect(side.height).toBeLessThanOrEqual(249);
+   const next=(await page.locator('.desktop-discovery>.discovery-section').nth(1).boundingBox())!;
+   expect(next.y).toBeGreaterThanOrEqual(Math.max(...bounds.frames.map(f=>f.bottom)));
+  }else{
+   expect(Math.abs(bounds.frames[0].height-bounds.frames[0].width*9/16)).toBeLessThan(1);
+   for(const side of bounds.frames.slice(1))expect(Math.abs(side.height-side.width)).toBeLessThan(1);
+  }
+ });
+}
+
 async function setup(page:Page,{empty=false,fail='',prefs=user.preferences,role=user.role}: {empty?:boolean;fail?:string;prefs?:string[];role?:components['schemas']['UserMe']['role']}={}){
  const interactions:Interaction[]=[];const requests:string[]=[];
  await page.route('**/ui-fixture.mp4',route=>{

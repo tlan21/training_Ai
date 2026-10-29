@@ -3529,7 +3529,13 @@ input[type=checkbox] {
   }
   .discovery-hero {
     height: 520px;
+    grid-template-columns: minmax(0,2fr) minmax(0,1fr);
+    grid-template-rows: minmax(0,1fr);
     gap: 24px;
+  }
+  .discovery-hero-main,.discovery-hero-side,.discovery-hero-side>a {
+    min-width: 0;
+    min-height: 0;
   }
   .discovery-hero-main>.media-frame {
     height: 100%;
@@ -3537,6 +3543,7 @@ input[type=checkbox] {
     min-height: 0;
   }
   .discovery-hero-side {
+    grid-template-rows: repeat(2,minmax(0,1fr));
     gap: 24px;
   }
   .discovery-section {
