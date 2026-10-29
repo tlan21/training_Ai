@@ -465,3 +465,12 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Checkpoint: Lane codex /DockerAIai-v2-478052e healthy/internal8001/gatewayhttp://inference-service:8001 /no publicAIport /contractsunchanged.
 - Next action: manage Docker mode with explicitinferenceoverride; await Claudev2API_READY release for INT-28 promotion.
  CPUonly, no fullcoldreboot/GPU/soak/freshdependencybuild/modelquality claims. HostClaude8001 untouched, no checkpoint copies/AI code edits/push.
+
+### INT-32 — Feed empty/loading/error layout regression
+- Owner: CODEX | Status: IN_PROGRESS (2026-10-29)
+- Depends on: user screenshot atlocalhost3000/feed; existing Stitchfeed desktop/mobile +INT-06 source/QA.
+- Acceptance: empty/loading/error use same portrait desktop frame as loadedfeed; text/action centered and visible;
+ correctviewportbounds/nextpanel, no horizontaloverflow at390x844,1440x900 and1877x900; loadedfeed/playback/mobile unaffected.
+- Changed: planned ClientfeedCSS and focusedlayoutregression test; build/runtimeClient only if needed to makefixvisible; ownedcoordination/evidence.
+- Commits/Evidence: startupcheckpoint; pending visualbefore/after/targetedtests/build.
+- Next action: capture currentlive empty bounds, share frame sizing acrossstates, verifyStitch10items anddeployClientonly afterchecks.

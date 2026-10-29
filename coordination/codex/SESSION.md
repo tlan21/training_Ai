@@ -1,3 +1,5 @@
+INT-32 IN_PROGRESS: screenshotfeedemptyCSS regression. Branchclean/noHEAD..master. Skillsclient_screen +ui_design_review/UIUXresponsive/Ponytail. Needsharedportraitframe for loading/error/empty vsloaded, centerstateCTA, verify390/1440/1877 anddeployClientonly. No API/data/AI changes.
+
 # SESSION — authoritative resume state (2026-10-29, INT-31 real Docker inference verified)
 
 - codex/integration; INT-31 DONE deploymentacceptance, sourcef1ad77c +finalevidencecheckpoint. No activeIN_PROGRESS; no release/push/sharedfile edits.
