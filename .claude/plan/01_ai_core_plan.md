@@ -2,6 +2,8 @@
 *Plan con của @00_master_plan.md. Mọi hyperparameter khớp @model_spec.md, dữ liệu/nhãn khớp @dataset_spec.md, metric/test khớp @evaluation_plan.md, nền tảng @kien_truc_va_thuat_toan_ai.md. Xung đột → master_plan + model_spec thắng.*
 
 > Phạm vi: package Python thuần `ai-core/ai_core/` — thuật toán nguyên thủy, 6 model tự train, không dính web/DB. Checkpoint xuất ra cho `inference-service/` nạp (endpoint mục 2.4 master plan). CẤM pretrained mọi hình thức (@dataset_spec.md mục 0). Chỉ dùng PyTorch làm nền tensor + autograd.
+>
+> **D24 (user 2026-10-29):** inference-service chỉ tính toán — vector Siamese/Two-Tower, nhãn, text trả qua API; Backend ghi/tìm Milvus, lưu MinIO (`coordination/claude/api/AI_API_CONTRACT_V2.md`). Model worker thuần `inference-service/app/worker.py` (AI-14).
 
 ---
 

@@ -2,6 +2,7 @@
 
 **Version: AI-API v1.3 (2026-10-26) — release #3.** v1.3 chỉ đổi recommendation (vẫn `DRAFT`, D18/D20); 6 endpoint `API_READY` của v1.2 không đổi. Tương thích ngược được khóa bằng `inference-service/tests/test_contract_compat.py` (so với snapshot `inference_openapi_v1.2.json`). Owner: Claude. Codex chỉ đọc
 (`git show claude/ai-core:coordination/claude/api/AI_API_CONTRACT.md`, hoặc bản trên `master` sau release).
+**AI-API v2.0 `DRAFT` (D24, 2026-10-29):** `AI_API_CONTRACT_V2.md` — `/v2` chỉ tính toán, Backend sở hữu MinIO/Milvus; chạy song song, v1.3 dưới đây không đổi.
 Nguồn code: `inference-service/app/schemas.py`, `app/main.py`, `app/services.py`, `app/visual_index.py` trên `claude/ai-core` (AI-01).
 Đi kèm: `inference_openapi.json` (export `app.main:app.openapi()`, không sửa tay) và `examples/` (request/response/error sinh từ chạy thật, mục 4).
 
@@ -181,6 +182,7 @@ Resp: `{"status":"ok","gpu_vram_used": MB,"gpu_util": %,"models_loaded":[...],"d
   `/health` tự thử lại dependency chưa `ok` tối đa mỗi 30 s → trạng thái tự phục hồi khi Milvus/collection được sửa. `FORCE_STUB=1` → `{}`.
 
 ## 3. Changelog
+- **v2.0 DRAFT (2026-10-29, AI-15)** — tài liệu riêng `AI_API_CONTRACT_V2.md`; thêm path `/v2/*` vào `inference_openapi.json`, `/v1` không đổi (compat v1.2 + v1.3).
 - **v1.3 — ghi chú 2026-10-29 (AI-14, D24 bước 1)** — không đổi version/schema/status code: tách facade/worker nội bộ (mục 1d), thêm key
   `dependencies.model_worker` chỉ ở chế độ worker từ xa (dict đã mở từ v1.1).
 - **v0 (2026-10-26)** — DRAFT, ghi lại API hiện có tại baseline `15976b3`. Không đổi code.

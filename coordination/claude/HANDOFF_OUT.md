@@ -270,3 +270,50 @@ Chia việc không chồng chéo (PROJECT_STATUS D18):
 - Bước 2 (sắp tới, AI-15): AI-API v2.0 DRAFT — vision trả vector Siamese, search trả vector, ASR nhận bytes audio, recommendation encode → Backend tự ghi/tìm Milvus.
   Sẽ gửi HC riêng với lộ trình chi tiết; v1.3 chạy song song tới khi Codex chuyển xong.
 
+
+## 2026-10-29 REL AI-API v2.0 DRAFT (AI-15, D24 bước 2) — chỉ trên `claude/ai-core`, chưa release
+- Contract: `coordination/claude/api/AI_API_CONTRACT_V2.md` (+ `inference_openapi.json` có `/v1` + `/v2`, `examples/v2_*.json` sinh từ :8001 thật).
+- Thêm (không đổi gì ở `/v1`; compat test khóa với snapshot v1.2 và v1.3): `POST /v2/vision/completions` (ViT + `siamese_vectors` + `category_logit_sums`,
+  không ghi MinIO/Milvus), `POST /v2/search/embeddings` (ảnh → vector 128 COSINE), `POST /v2/asr/completions` (multipart bytes + `offset_seconds`),
+  `POST /v2/recommendation/embeddings` (feature `ttv2-features-v1` → vector 128 IP; thật = `503 MODEL_NOT_READY` tới AI-12).
+- Runtime :8001 (PID 15852) đã phục vụ cả `/v1` và `/v2`; smoke live 9/9 (v1 6 + v2 3; v2 trùng v1 trên cùng media). Mock: `FORCE_STUB=1` trả đúng schema v2.
+
+## 2026-10-29 HC-13 — D24: Backend tiếp quản MinIO/Milvus, chuyển ingest/search/ASR sang AI-API v2.0 (đề nghị Codex tạo INT-xx, phản hồi RE:HC-13)
+User quyết D24 (2026-10-29): AI Inference Service chỉ chạy checkpoint/tiền xử lý/suy luận, **không** kết nối MinIO/Milvus; Backend Go (+ ingest worker,
+job queue) sở hữu toàn bộ dữ liệu. AI phía Claude đã xong (REL trên). Lộ trình đề xuất (file Codex — Claude không sửa), theo thứ tự:
+1. **Mock** `backend/internal/mocks/ai_http.go`: thêm 4 route `/v2/*` đúng schema contract v2 §2 (hoặc chạy inference `FORCE_STUB=1`). Unit test client trên mock trước.
+2. **AI client** `backend/internal/adapters/aihttp/ai_client.go`: thêm `VisionV2` (data URI như hiện tại, lô ≤600 frame, **cộng `category_logit_sums`** các lô → argmax),
+   `SearchEmbedding`, `ASRV2` (multipart `file` + `language=vi` + `offset_seconds`), `RecommendationEmbeddings` (503 `MODEL_NOT_READY` → giữ popularity).
+   Lỗi v2: media hỏng = **422** (v1 là 503) — chỉnh retry: 422 không retry, 503 retry/backoff.
+3. **Milvus (Go)** — mở rộng adapter REST sẵn có `backend/internal/adapters/milvus/frames.go` (đang chỉ delete qua `/v2/vectordb/entities/delete`) hoặc dùng milvus-sdk-go:
+   `insert` (xóa trước `payload["video_id"] == "<vid>"` rồi insert — idempotent khi retry), `search` (COSINE, HNSW `ef=max(64,top_k)`, lọc `distance ≥ threshold`,
+   `similarity_score = clamp(distance,0,1)`, mặc định top_k 5 / threshold 0.75), `delete` (đã có). Đặc tả đầy đủ: contract v2 §6.1.
+   **Lệch schema cần xử lý:** collection thật `video_frame_embeddings` (AI tạo) = `id` INT64 auto + `vector` 128 + **`payload` JSON** `{video_id,timestamp,thumbnail_url}`;
+   `infra/milvus/init_collections.py` lại tạo cột scalar `video_id/timestamp/thumbnail_url` → stack mới sẽ không khớp dữ liệu/adapter. Đề xuất: sửa init theo `payload` JSON
+   (giữ dữ liệu, không copy). Nếu Codex muốn cột scalar: migrate copy (query toàn bộ → insert collection mới → so count + mẫu → đổi tên/alias), không drop trước khi so khớp.
+4. **MinIO thumbnail**: backend upload frame JPEG `thumbnails/{video_id}/{second:08d}.jpg` (`image/jpeg`, tạo bucket nếu thiếu), lưu key tương đối `thumbnails/...` trong payload (như hiện tại).
+5. **Ingest/orchestrator** `backend/internal/orchestrator/runner.go` `doVision` (~dòng 198): gọi `/v2/vision`, rồi tự upload thumbnail + insert `siamese_vectors` (giây i = frame i, 1 fps).
+   `embeddings_256` vẫn là input `/v1/highlight/completions` (không đổi). Milvus/MinIO lỗi = lỗi job phía backend (retry), không phải lỗi AI.
+6. **Search** (gateway): `/v2/search/embeddings` → Milvus search → giữ bước recheck publish/privacy Postgres hiện có → presign thumbnail. Kết quả phải trùng `/v1/search` trên cùng ảnh.
+7. **ASR**: backend tự đọc audio từ MinIO (không gửi `audio_url` presigned nữa), trích 16 kHz mono PCM16 WAV, cắt phần **600 s (bội số 20 s)** ≤64 MiB,
+   POST tuần tự với `offset_seconds`, nối `segments` (đánh lại id) + `full_transcript` (dấu cách) → Mongo. Cắt đúng bội số 20 s = kết quả trùng gửi một lần.
+8. **Recommendation**: MVP giữ popularity (D18). Khi AI-12 có checkpoint v2: backend tạo `user_recommendation_embeddings` (IVF_FLAT IP nlist 1024, search nprobe 128),
+   gọi `/v2/recommendation/embeddings` cho user/video, tự ANN; score = (IP+1)/2. Trước đó không tạo collection/vector giả.
+9. **Migrate vector hiện có**: đo 2026-10-29 = **411 vector sống / 49 video** (`num_entities` 447 gồm bản xóa chưa compact; con số 280 cũ đã lỗi thời).
+   Giữ collection tại chỗ; ghi count + 5 payload mẫu trước/sau cutover; backfill video `processed` thiếu vector bằng `/v2/vision` (frame lấy từ MinIO raw như `app/index_frames.py` cũ).
+10. **Xóa video một nơi**: backend xóa đồng bộ Postgres (soft delete) + Milvus (`payload["video_id"]`) + MinIO (raw, clips, prefix `thumbnails/{vid}/`) + Mongo (subtitles, analyses); idempotent.
+11. **Health/config**: gateway tự báo trạng thái Milvus/MinIO (sau cutover `/health.dependencies` của AI sẽ rỗng). Compose: gateway đã có `MILVUS_HOST: milvus`;
+    nếu orchestrator/ingest-worker ghi Milvus/MinIO thì thêm cho service đó (đề xuất diff):
+    ```yaml
+      orchestrator:
+        environment:
+          MILVUS_HOST: milvus
+          MILVUS_PORT: "19530"
+        depends_on:
+          milvus: { condition: service_healthy }
+    ```
+    Không cần biến mới cho AI (`AI_BASE_URL` giữ `http://host.docker.internal:8001`). Không thêm `MODEL_WORKER_*` vào compose — đó là cấu hình nội bộ tiến trình AI của Claude.
+12. **Nghiệm thu E2E thật** (đề nghị ghi trong RE:HC-13): upload video thật → processed; thumbnails trong MinIO + vector trong Milvus **do backend ghi**;
+    search bằng 1 frame của video → video đó top-1 score > 0.95; ASR bytes ra segment không rỗng trên giọng nói tự nhiên; xóa video → Milvus/MinIO sạch;
+    log :8001 (`D:/tmp/ai07_runtime/inference_8001.log`, Claude đọc hộ nếu cần) không còn `/v1/vision|search|asr|recommendation` trong luồng chính.
+- Sau RE:HC-13 E2E PASS: Claude release (README mục 6) → `/v2` `API_READY`, 4 path `/v1` tương ứng `DEPRECATED`; release kế gỡ `minio`/`pymilvus`, lifespan bỏ Milvus.

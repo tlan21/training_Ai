@@ -24,6 +24,12 @@ MODEL_WORKER_KEY=<random> CHECKPOINT_DIR=... python -m uvicorn app.worker_app:ap
 MODEL_WORKER_URL=http://127.0.0.1:8002 MODEL_WORKER_KEY=<cùng key> python -m uvicorn app.main:app --port 8001
 ```
 
+## AI-API v2.0 DRAFT (D24, AI-15)
+
+`app/v2.py`: `/v2/vision/completions`, `/v2/search/embeddings`, `/v2/asr/completions` (multipart), `/v2/recommendation/embeddings` — chỉ tính toán,
+không MinIO/Milvus/path server (test `tests/test_v2.py`). Chạy song song `/v1` (không đổi, compat v1.2 + v1.3). Đặc tả: `coordination/claude/api/AI_API_CONTRACT_V2.md`.
+Sau khi Codex chuyển xong (HC-13): `/v1` media/search/reco → DEPRECATED, rồi gỡ `minio`/`pymilvus` và Milvus khỏi lifespan.
+
 ## Env
 
 | Biến | Mặc định | Ý nghĩa |

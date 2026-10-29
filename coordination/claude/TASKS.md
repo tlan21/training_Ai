@@ -15,7 +15,7 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | AI-11 | T1.8 / T4.2 | HO-01: `video_id` tùy chọn cho Vision + index frame từ data URI 1 fps (contract minor) | DONE (2026-10-26) | HO-01 (Codex chọn HTTP media) |
 | AI-13 | T1.7 / T1.8 | D18: recommendation inference không trả metadata giả + `recommendation_mode` | DONE (2026-10-26; release #3) | D18 |
 | AI-14 | T1.8 | D24 bước 1: tách facade/worker trong inference-service (contract v1.3 không đổi) + worker từ xa (MODEL_WORKER_URL) + kernel Kaggle worker GPU | REVIEW (2026-10-29; chờ release; dataset Kaggle uploaded, kernel chưa push) | D24 (user 2026-10-29) |
-| AI-15 | T1.8 | D24 bước 2: AI-API v2.0 (DRAFT) — AI trả vector/kết quả, Backend sở hữu MinIO/Milvus; v1.3 chạy song song; HC cho Codex | IN_PROGRESS (2026-10-29) | AI-14; Codex (HC) cho phần backend |
+| AI-15 | T1.8 | D24 bước 2: AI-API v2.0 (DRAFT) — AI trả vector/kết quả, Backend sở hữu MinIO/Milvus; v1.3 chạy song song; HC cho Codex | BLOCKED ⇐ RE:HC-13 E2E (phần AI xong 2026-10-29: v2.0 DRAFT, :8001 phục vụ /v1 + /v2) | AI-14; Codex (HC) cho phần backend |
 | AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | BLOCKED ⇐ bundle INT-13 (phần độc lập xong 2026-10-26) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | DONE (2026-10-26; sandbox + artifact; product → AI-12 theo D18) | HC-04 (sandbox READY) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a DONE (2026-10-27) · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
@@ -198,14 +198,25 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   ```
 
 ### AI-15 — D24 bước 2: AI-API v2.0 — inference-service chỉ tính toán, Backend sở hữu dữ liệu
-- T gốc: T1.8 | Owner: claude | Status: IN_PROGRESS (2026-10-29)
+- T gốc: T1.8 | Owner: claude | Status: BLOCKED ⇐ Codex RE:HC-13 (E2E backend dùng /v2) — phần AI xong 2026-10-29 (contract v2.0 DRAFT, endpoint thật, HC-13)
 - Depends on: AI-14 (worker thuần) | Blocks: gỡ minio/pymilvus khỏi inference-service (sau khi Codex E2E PASS); INT-xx phía Codex
 - Việc (phía AI): contract v2.0 DRAFT (vision trả thêm `siamese_vectors`, không ghi MinIO/Milvus; search nhận ảnh → vector 128; ASR nhận bytes audio multipart,
   chia đoạn; recommendation encode → vector 128 khớp Two-Tower; highlight/completions giữ nguyên) + `inference_openapi.json` + examples thật + error codes
   + bảng di chuyển v1.3→v2.0; hiện thực endpoint v2 thuần (qua worker AI-14), v1.3 không vỡ; HC cho Codex (Milvus Go, MinIO thumbnail, audio bytes,
   ingest gọi API mới, recommendation tra Milvus, migrate 280 vector, xóa video đồng bộ, E2E). Sau Codex E2E PASS: release → gỡ minio/pymilvus, v1.3 DEPRECATED.
 - Acceptance (phần AI): endpoint v2 không import/gọi MinIO/Milvus (test khóa); suite inference + compat v1.2 PASS; smoke v1.3 6/6 + v2 thật trên :8001; contract v2.0 DRAFT + REL + HC.
-- Evidence: — | Commits: — | Checkpoint: —
+- Evidence (VERIFIED-NOW 2026-10-29, `coordination/claude/evidence/AI-15_2026-10-29/`): inference 71 passed / 10 skipped (compat v1.2 + v1.3);
+  smoke :8001 9/9 (v1 6/6 + 401, v2 3/3 trùng v1 trên media thật; reco v2 503 MODEL_NOT_READY); OpenAPI chỉ thêm; Milvus đo 411 vector / 49 video.
+  Còn lại (sau RE:HC-13): release → /v2 API_READY, /v1 media/search/reco DEPRECATED → gỡ minio/pymilvus + Milvus khỏi lifespan.
+- Commits: bfa4a40 (task), e307bf2 (code), deecc45 (smoke/examples/openapi), (contract/HC-13: commit này) | Checkpoint:
+  ```
+  Lane: claude
+  Changed: inference-service/app/{v2 (mới),schemas,main,services,worker}.py, tests/{test_v2 (mới),test_live_smoke,test_contract_compat,test_worker}.py, README;
+           coordination/claude/api/{AI_API_CONTRACT_V2.md (mới),AI_API_CONTRACT.md,inference_openapi.json,inference_openapi_v1.3.json,examples/v2_*}; HANDOFF_OUT (REL + HC-13); plan 01 (1 dòng D24)
+  Verified: inference 71/10; smoke :8001 9/9 (v1 + v2 thật); openapi additive
+  Contract touched: yes (AI-API v2.0 DRAFT thêm /v2; v1.3 không đổi)
+  Next safe task: chờ RE:HC-13; song song AI-12 khi có dữ liệu INT-15
+  ```
 
 ### AI-14 — D24 bước 1: tách facade/worker trong inference-service
 - T gốc: T1.8 | Owner: claude | Status: REVIEW (2026-10-29) — đạt Acceptance trên `claude/ai-core`, chờ release; kernel Kaggle dựng + dry-run local, chưa push (chờ user)

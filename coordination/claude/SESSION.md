@@ -3,12 +3,11 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
-- Task: **AI-15 IN_PROGRESS (2026-10-29)** — D24 bước 2: contract v2.0 DRAFT + endpoint v2 thuần + HC cho Codex.
-  AI-14 REVIEW (bước 1 xong; dataset Kaggle `ai-model-worker-v1` uploaded, kernel chưa push theo user).
-  **Runtime :8001 UP PID 16292** (in-process worker, code AI-14); gateway Codex đã trỏ :8001 thật.
-- Bước đã xong: —
-- Bước kế: đọc Two-Tower inputs → soạn contract v2.0 → code /v2 + test → smoke → examples → HC.
-- File đang sửa: inference-service/app/{main,services,schemas}.py, coordination/claude/api/**
+- Task: — (không IN_PROGRESS). AI-14 REVIEW (bước 1). AI-15 BLOCKED ⇐ RE:HC-13 (phần AI xong: contract v2.0 DRAFT, /v2 chạy thật, HC-13 gửi Codex).
+  **Runtime :8001 UP PID 15852** (code AI-15: /v1 + /v2, worker cùng tiến trình); gateway Codex trỏ :8001 thật. Dataset Kaggle `ai-model-worker-v1` uploaded, kernel chưa push.
+- Bước kế: đọc RE:HC-13 → release (user duyệt) → /v2 API_READY, /v1 DEPRECATED → gỡ minio/pymilvus. Release cũng là lúc ghi D24 + sơ đồ đích vào
+  PROJECT_STATUS / master plan / kien_truc_va_thuat_toan_ai.md (file chung, theo yêu cầu user 2026-10-29).
+- File đang sửa: —
 - Lệnh verify dở: —
 - Trước đó (2026-10-28): D23 ASR/MiniGPT dừng cải thiện cho MVP; HC-12. AI-12 ⇐ INT-15; AI-04 nghiệm thu ⇐ RTX 3060.
 
