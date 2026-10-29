@@ -32,6 +32,9 @@ class ViT:
 
 
 class Siamese:
+    def backbone(self, imgs, return_embedding):
+        return None, torch.full((len(imgs), 256), 0.75)
+
     def encode(self, batch):
         return torch.ones(len(batch), 128) / 128**.5
 
@@ -62,6 +65,7 @@ def test_worker_never_imports_data_clients():
 def test_worker_ops_take_bytes_and_vectors(fake_models):
     category, emb, logit_sums = worker.vision([png(), png()])
     assert category == "ca_nhac" and len(emb) == 2 and len(emb[0]) == 256
+    assert emb[0][0] == 0.75                                   # Fusion input = Siamese backbone, not the ViT classifier
     assert logit_sums == {"bong_da": 0.0, "the_thao": 0.0, "ca_nhac": 2.0, "tin_tuc": 0.0}
     vectors = worker.siamese([png()])
     assert len(vectors[0]) == 128 and sum(x * x for x in vectors[0]) == pytest.approx(1)

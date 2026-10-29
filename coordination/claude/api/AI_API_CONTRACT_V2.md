@@ -49,7 +49,7 @@ Resp 200:
 {"id":"vis-primitive-…","object":"vision_completion","created":1793243164,"model":"primitive-vit-classifier",
  "category_suggestion":"tin_tuc",
  "category_logit_sums":{"bong_da":-4.13,"ca_nhac":-4.63,"the_thao":-0.51,"tin_tuc":3.19},
- "embeddings_256":[[...256], ...],   // ViT, 1/keyframe → input Fusion (/v1/highlight)
+ "embeddings_256":[[...256], ...],   // backbone Siamese (đặc trưng Fusion đã train, AI-19), 1/keyframe → input /v1/highlight
  "siamese_vectors":[[...128], ...]}  // Siamese 1/keyframe → backend ghi Milvus video_frame_embeddings
 ```
 - Video > 600 frame: chia lô theo thứ tự, **cộng `category_logit_sums` của các lô**, lấy argmax = đúng nhãn của v1 khi gửi cả video một lần.

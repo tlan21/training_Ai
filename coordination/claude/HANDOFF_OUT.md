@@ -365,3 +365,11 @@ job queue) sở hữu toàn bộ dữ liệu. AI phía Claude đã xong (REL tr�
   bỏ clip < **3 s** (vòng 6: 5 s). **Mới:** video < 120 s → `timeline_scores` vẫn có, `recommended_clips` luôn rỗng (ngoài phân bố train; trước đó
   fixture 3 s ra 1 clip trọn video). HC-15 không đổi nội dung — CMS đọc `clip_threshold`, không hardcode 50.
 - Schema không đổi. Rollback: Claude chép lại `ai-core/checkpoints/_archive/highlight_fusion_round6_9b59a7b0/`.
+
+## 2026-10-29 REL :8001 — SỬA LỖI đặc trưng vision cho highlight (AI-19; v1.4-rc1; schema không đổi)
+- Phát hiện: Fusion được train trên embedding **backbone Siamese**, nhưng `/v1/vision.embeddings_256` (đầu vào orchestrator gửi sang `/v1/highlight`)
+  từ AI-01 tới nay là embedding **ViT phân loại** — hai không gian khác nhau (cosine 0.03–0.13). Highlight production chưa từng nhận đúng đặc trưng.
+- Đã sửa (:8001 PID 30580): `embeddings_256` = backbone Siamese (trùng feature train, test `tests/test_feature_parity.py`). `category_suggestion` không đổi.
+  Smoke 9/9; ví dụ `vision.*`, `highlight.*`, `v2_vision.*` sinh lại.
+- Codex: không đổi code. **Đặc trưng/điểm highlight đã lưu trước 2026-10-29 tính trên đặc trưng sai** — nếu muốn highlight đúng cho video cũ,
+  chạy lại vision + highlight (re-process) cho các video đó; `timeline_scores`/clip sẽ khác.

@@ -31,16 +31,22 @@ def decode_image(data: bytes, img_size: int = 224):
 
 
 def vision(images: list[bytes]):
-    """ViT → [category, 256-d embedding per frame, {class: summed logit}] (sums add up across batches of one video)."""
+    """ViT category + 256-d Fusion input per frame → [category, embeddings, {class: summed logit}] (sums add up across batches).
+
+    The 256-d embedding is the FROZEN SIAMESE BACKBONE's, not the ViT classifier's: Highlight Fusion was trained on
+    `extract_vit_embeddings --checkpoint siamese` features (T1.5, md5 9d2f670f = active siamese). Serving the classifier's
+    embedding (cosine ≈ 0.03–0.13 to the training features) fed Fusion a space it never saw (AI-19, 2026-10-29)."""
     import torch
     model = registry.models["vit"]
+    backbone = registry.models["siamese"].backbone
     if not images:
         raise InvalidInput("empty keyframes")
     embeddings, total_logits = [], None
     with torch.no_grad():
         for start in range(0, len(images), 16):
             imgs = torch.stack([decode_image(b) for b in images[start:start+16]]).to(device=registry.device, dtype=registry.model_dtype)
-            logits, emb = model(imgs, return_embedding=True)
+            logits, _ = model(imgs, return_embedding=True)
+            _, emb = backbone(imgs, return_embedding=True)
             summed = logits.float().sum(0)
             total_logits = summed if total_logits is None else total_logits + summed
             embeddings.extend(emb.float().cpu().tolist())

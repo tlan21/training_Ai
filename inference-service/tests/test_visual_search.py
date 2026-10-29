@@ -139,7 +139,10 @@ def test_vision_passes_video_id_and_bad_id_is_not_model_failure(monkeypatch):
     class ViT:
         def __call__(self, imgs, return_embedding):
             return torch.zeros(len(imgs), 4), torch.zeros(len(imgs), 256)
-    monkeypatch.setattr(services.registry, "models", {"vit": ViT()})
+    class Siamese:
+        def backbone(self, imgs, return_embedding):
+            return None, torch.zeros(len(imgs), 256)
+    monkeypatch.setattr(services.registry, "models", {"vit": ViT(), "siamese": Siamese()})
     monkeypatch.setattr(services.registry, "vit_classes", ["bong_da", "the_thao", "ca_nhac", "tin_tuc"])
 
     def index(refs, video_id=None):

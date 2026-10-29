@@ -205,6 +205,7 @@ Resp: `{"status":"ok","gpu_vram_used": MB,"gpu_util": %,"models_loaded":[...],"d
   `/health` tự thử lại dependency chưa `ok` tối đa mỗi 30 s → trạng thái tự phục hồi khi Milvus/collection được sửa. `FORCE_STUB=1` → `{}`.
 
 ## 3. Changelog
+- **v1.4-rc1 — sửa lỗi 2026-10-29 (AI-19):** `embeddings_256` của `/v1/vision` (và `/v2/vision`) giờ là embedding **backbone Siamese** — đúng đặc trưng Fusion đã được train (`extract_vit_embeddings` + siamese md5 `9d2f670f`). Trước đó là embedding ViT phân loại (cosine 0.03–0.13 với đặc trưng train) → highlight production nhận đầu vào lệch phân bố từ AI-01. Schema không đổi; giá trị đổi; `category_suggestion` không đổi.
 - **v1.4-rc1 DRAFT (2026-10-29, AI-17)** — highlight response thêm `clip_threshold` (chỉ thêm field).
 - **v1.4-rc1 DRAFT (2026-10-29, AI-16)** — highlight: `asr_segments` tùy chọn; hỗ trợ recipe `postproc.json`; đề xuất đổi Fusion sang vòng 5 (chờ duyệt). Không đổi path/field bắt buộc.
 - **v2.0 DRAFT (2026-10-29, AI-15)** — tài liệu riêng `AI_API_CONTRACT_V2.md`; thêm path `/v2/*` vào `inference_openapi.json`, `/v1` không đổi (compat v1.2 + v1.3).

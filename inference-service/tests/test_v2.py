@@ -81,6 +81,9 @@ class ViT:
 
 
 class Siamese:
+    def backbone(self, imgs, return_embedding):
+        return None, torch.zeros(len(imgs), 256)
+
     def encode(self, batch):
         return torch.ones(len(batch), 128) / 128**.5
 
