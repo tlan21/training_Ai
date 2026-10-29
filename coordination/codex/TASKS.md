@@ -370,15 +370,14 @@ T2.5, T3.1, T3.2 = PARTIAL.
  No AI/source/checkpoint/model/runtime/contract change, old-video backfill, datastoredown/volume deletion, master/shared-status edit or push.
 - Next action: INT-05 remaining approved visual parity; INT-06 library/forgot-link decisions remain pending.
 ### INT-24 — HC-12: machine subtitle drafts and summary approval
-- Owner: CODEX | Status: REVIEW (2026-10-29; renewed authorization, Client71productionQA PASS)
-- Dependency: user accepted proposed HC-12 then INT-05; current public0.4.0/AI-APIv1.3 unchanged; Release#4 received.
-- Acceptance: public summary remains hidden before approval; CMS clearly identifies machine subtitle drafts with edit/save/reload;
- Client transcript and downloaded text identify drafts without implying official approval; existing API/types/media unchanged;
- CMS/Client builds/types, targeted 390x844/1440x900 UI/state checks and real approval/edit evidence; RE:HC-12 handoff.
-- Scope: ui_design_review.md +Ponytail full; approved D23 copy override, no new subtitle approval endpoint/status, AI/model or contract schema.
-- Commits: b497a34 start;3a2adf3 source+CMS/real verification; c7c3982 runtime/data preservation evidence.
-- Changed planned: CMS subtitles, shared Client Transcript/styles, fixture/live E2E, owned plans/SESSION/TASKS/HANDOFF/evidence.
-- Evidence: verification/INT-24.md; CMS3PASS17.3s, real edit/approval1PASS38s, CMS/Client builds+types PASS. New Client browser checks pending QA3100 external startup; automatic review rejected despite prior authorization. Next action: independent INT-05 while waiting.
+- Owner: CODEX | Status: REVIEW (2026-10-29; source and production QA acceptance passed, not rolled to existing product UI images)
+- Dependency: HC-12/D23/user approval; current public0.4.0/AI-APIv1.3 unchanged; renewed exact QA3100 authorization resolved previous blocker.
+- Acceptance: summary hidden before admin approval; explicit CMS/Client machine subtitle draft notices and downloads; existing edit/save/reload;
+ no invented official subtitle approval status; builds/types and responsive browser/actual editorial approval evidence.
+- Changed: CMSSubtitles/ClientTranscript+overlay/styles, threeE2E files, twoownedUIplans, owned coordination/evidence. Source3a2adf3.
+- Verified: CMS3PASS17.3s, actual realCMSedit/summaryapproval1PASS38s; CMS/Clientbuilds+types PASS; new Client71productionQA PASS1.3m under INT-26.
+- Evidence: verification/INT-24.md and INT-26.md/log/snapshots/inspected390+1440draft screenshots. Commit7bd6c99 closes former QA block.
+- Next action: product UI deployment only when authorized to replace existing images; full INT-05/06 parity remains separate PARTIAL. No new API/model contract.
 ### INT-25 — HO-03 real runtime acceptance refresh
 - Owner: CODEX | Status: DONE (2026-10-29)
 - Dependency: explicit user instruction; master26c2346/AI-APIv1.3; existing real configuration/image already correct and matches Claude key.
@@ -388,7 +387,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Verified: real documented10.08s user-media1PASS24.6s (summary123chars,3nonemptyASR,10scores,categoryca_nhac); protocol1PASS42.9s;
  real503/feedpopularity;5mode regressionPASS; original79video/10category fingerprints unchanged; activejobs0, all test uploads cleaned.
 - Evidence: verification/INT-25.md plus content/protocol/runtime/source/provenance/failure/cleanup logs. Synthetic-tone failures retained, not countedPASS.
-- Commits: c9b3ce9 start;166e5eb initial key/content failure; c244072 final gate checkpoint; final evidence commit recorded in next SESSION/HANDOFF checkpoint.
+- Commits: c9b3ce9 start;166e5eb initial key/content failure; c244072 final gate checkpoint; 8dab8ff successful real-media content acceptance/evidence.
 - Next action: no repeat real switch; retain current runtime and D23 review. No AI/source/checkpoint/contract change or master/push.
 
 ### INT-26 — Approved Client production QA3100 +HC-12

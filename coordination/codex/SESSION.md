@@ -1,44 +1,33 @@
-# SESSION — authoritative resume state (2026-10-28, INT-23 Docker update verified)
+# SESSION — authoritative resume state (2026-10-29, requested3work verification complete)
 
 ## Branch / task state
-- INT-25 IN_PROGRESS final protocol/content separation after coldboot62149d3; strict content test takes explicitE2E_AI_CONTENT_VIDEO, captures counts before assertion, never substitutes editorial text.
-  Re-run protocol using existing contract (empty drafts permitted) and strict content on synthetic fixture to preserve explicit failure; real natural-media gate still requires user input.
+- Branch codex/integration, master26c2346 already received, clean initial tree. Three explicitly requested verification tasks completed; no active IN_PROGRESS.
+  INT-25 DONE realAI content/protocol8dab8ff; INT-26 DONE productionQA7bd6c99; INT-27 DONE coldboot62149d3. Final RE:HO03/HC11/HC12 appendedHANDOFF_OUT.
+- INT-25: gatewayALREADYcanonicalhost8001/stub0/keymatchesread-onlyClaude.env, banner+health200; no unnecessary recreate.
+  Nonspeech fixture strictcontentFAIL retained (ASRempty/summaryempty), not an AI workaround. Found documented user10.08s original in MinIO,
+  read-only own copy2504101bytes/SHA saved, original untouched. Strict real1PASS24.6s:categoryca_nhac/10scores/123charsdraft/3nonemptyASR before any edits.
+  Protocol upload/edit/approve/publish/Client1PASS42.9s aftercoldboot; realrecommend503/actualfeed200modepopularity; optionalfallback5unitcasesPASS.
+  ExistingMVPusesprimaryPGpopularity, not livepersonalized fallback invocation. RecommendationDRAFT/NO_DATA remains. No model-quality/GPU/soak claim.
+  New e2e/ai_content_live.spec.ts requires E2E_AI_CONTENT_VIDEO (<=20MiB); absentinputSKIP is nevercontentPASS. Current own source backend/.tmp/int25-user-source.mp4.
+  Evidence verification/INT-25.md/counts/provenance/protocol/runtime/failure/cleanup. User media-path question now resolved from documented existing original.
+- INT-26: exact approved `node node_modules/next/dist/bin/next start --hostname 127.0.0.1 --port 3100` succeeded with existing freshbuildGDlD_B05A4hk6gQkPj679.
+  Current71-test superset of original63 PASS1.3m/no retries; draft transcript/overlay/TXT/hidden summary at390+1440, allpriorauth/tracking/player checks.
+  ExactQA27160stopped,3100closed. ProductClientID/image/StartedAt unchanged duringQA. Previous automaticQA policy blocker RESOLVED, no bypass.
+  E2E_CLIENT_UI_URL=http://127.0.0.1:3100; tests3files/client_design/client_player/client_onboarding_layout. Evidence verification/INT-26.md/log/before-after/2PNG.
+- INT-27: rootCompose12servicesstop(timeout60) thenup --no-build --no-recreate --pullnever; all12capturedexited beforeup.
+  Gatewayautomaticallyhealthy, allDBhealthy/workerup/kafkainitexit0/CMS+Client200 in44.92s afterup. No manualgatewaystart.
+  All12IDs/images/volumes preserved;91video/10categoryhashes unchanged acrosscoldboot. AI26848unchanged/stubfalse6/degraded[]/visual_indexok;
+  orphanmock/legacyinference/Faktoryunchanged. Initial validator falsefailure from mountorder retained; sortedguard +secondactualcoldrunPASS.
+  Existing compose already healthyDBdeps/restartunless-stopped; no application config rewrite needed. Utility infra/verify_cold_start.ps1 and INT-27* evidence.
+- INT-24 REVIEW: source3a2adf3/CMSrealchecks +newClientproductionQA7bd6c99 satisfy D23 sourceQA. Explicitdraft labels/TXT/SRT; summarygateunchanged.
+  NewUIlabels NOT deployed to Client3000/CMS5173 images (userrequestedpreserveClient). Productrootfourapps remainint23-fa8a382; latercoldstop/start keptIDs/images.
+  No AI/checkpoint/inference-process edit, master/shared status update or remote push. Bearer onlymemory, neverprintfullinspect/env/ComposeJSON.
+- Finaloriginal79video/10category fingerprints unchanged; test uploadssoftdeleted/training_origintest, activejobs0. Runtimegateway/CMS/Clienthealthy,
+  AI6real/PID26848,3100closed. No package/image download or prune; C~3.2GiB/E~0.6GiB. Private staging/logs/media retained ignored.
+- INT-05/06 global visual parity still PARTIAL (480/480selected style values verified, not fullwidgets/state certification); no redoing completed API/migration/deploy tasks.
+  Next safe work only if user continues: remaining CMSwidgets/Clientscope decisions, or authorized HC12UI rollout. INT-03personalization and GPU/load/soak gates unchanged.
 
-- 2026-10-29 latest: INT-27 DONE coldboot12services PASS44.92s; IDs/volumes/91+10rowhashes/AI26848/outsiders unchanged. Evidence verification/INT-27.md.
-  No current IN_PROGRESS after coldboot; INT-25 PARTIAL awaiting natural-speech media path. Separate strict content gate being retained without changing baseline HTTP protocol contract.
-
-- 2026-10-29 latest: INT-26 DONE71productionQA PASS1.3m, exactQA27160stopped/3100closed, Client3000unchanged. INT-24 REVIEW; policyblock resolved.
-  Only INT-27 IN_PROGRESS now: owned cold stackstop/up approved, noactivejobs precheck/preserveimages+volumes+ClaudePID/Faktory. INT-25 PARTIAL needs natural-speech media; asyncpathquestion pending.
-
-- 2026-10-29 checkpoint: INT-25 PARTIAL (fresh synthetic8s pipeline processed but raw summary empty; strict nonempty assertion FAIL).
-  Realkeymatches/canonicalURL/stub0/banner/health/realrecommend503 PASS; no gateway recreation or AI change. RE:HO03 evidence appended.
-  Only INT-26 IN_PROGRESS now: explicit exact production QA3100 command newly approved; build fresh, full current suite71superset63.
-
-- 2026-10-29 explicit3work authorization: only INT-25 IN_PROGRESS (HO03 real acceptance), then INT-26 exactQA3100, then INT-27 cold stack HC11.
-  Branch correct/clean, master26c2346 already received. AIhealthreal6/stubfalse/PID26848; gatewayalreadycanonicalhost/stub0/keymatchesClaude.env/restartunless-stopped.
-  No initial switch/recreate needed unless mismatch; no Claude process/checkpoint/source changes. Clientbuild28Oct newer than source; original63suite now71, run fullsuperset.
-  New exact startup approval supersedes prior QAblock; do not use alternate launcher/port/container after any new rejection.
-
-- Current checkpoint2026-10-28: INT-05 PARTIAL, INT-24 BLOCKED; no task IN_PROGRESS and no owned QA/test/build process running.
-  User approved HC-12 first, then INT-05. HC12source3a2adf3; CMSmeasuredbatch c7c3982. No master release/push authorized.
-- INT-24 HC-12 BLOCKED only on new Client browser QA: explicit machine-draft notices in CMS/Client transcript, Client subtitle overlay,
-  draftTXT header+filename and SRTfilename implemented; no new subtitle approval state/API. CMS3PASS17.3s +actual realAI/CMS edit+approval1PASS38s.
-  Client eslint/Nextbuild/tsc PASS, CMSbuild/types PASS, E2Etypes PASS. Existing summary hidden before approval; editorial caption cache/readback verified.
-  Exact previously authorized QAClient3100 startup rejected by automatic approval review 'blocked by policy'. User asked asynchronously to start
-  `cd E:/traning_ai-codex/client; $env:GATEWAY_INTERNAL_URL='http://127.0.0.1:8000'; node node_modules/next/dist/bin/next start --hostname 127.0.0.1 --port 3100`.
-  No retry/bypass. Port3100 last checked CLOSED; pending new Client tests use E2E_CLIENT_UI_URL=http://127.0.0.1:3100.
-  Host client/.next currently built for127.0.0.1:8000, ready for this approved host QA. Source not deployed to product Client3000/CMS5173.
-  Evidence verification/INT-24.md +runtime/data logs; RE:HC-12 partial appended HANDOFF_OUT, not full ACK/DONE.
-- INT-05 current PARTIAL batch verified:480/480selected font/line-height/padding/radius properties match8Stitch refs (before356).
-  Full CMS41PASS56.8s +finalcategory4PASS6.3s +finalcapture18PASS20.5s; CMS/E2Etypes and final CMSbuild PASS.
-  Final bundle index-CvW7kL6Y.js / index-MHetgcec.css. Existing-api page styles/classes only; no new data fields or dependencies.
-  Evidence verification/INT-05-20261028.md +72before/afterPNG/metricJSON +source/style-diffJSON; ten-item review explicitly leaves full-widget/state parity OPEN.
-  Remaining review: heatmap/header widget geometry, subtitle footer grouping, queue result-action wrapping, published status/action composition,
-  every hover/focus/icon/color and source mobile-desktop adaptation. Unapproved filename/uploader/timings/analytics fields stay outside scope.
-  Do not redo480matched style properties or already deployed planA APIs. Next safe work: remaining widgets; Client QA once external3100 available.
-- Final live gatewayok, CMS5173/Client3000HTTP200, realAIstubfalse/6models.79original video and10category fingerprints still match INT-22 exactly.
-  C~3.1GiB/E~0.69GiB; no dependency/image download/prune/AI change. Owned ViteQA5174 PID20248 stopped after command-line/listener identity check;
-  ports5174/3100 CLOSED. No Docker recreation; live four apps remain int23-fa8a382 and old rollback tags/volumes preserved.
+## Earlier valid checkpoints (historical)
 - INT-23 DONE: user-authorized gateway/CPUworker/CMS/Client Docker update and real E2E completed. Evidence ad80f8f; fix fa8a382.
   All4 live images int23-fa8a382, local latest tags point to verified images; rollback-int23 images retained. No code/dist binds now.
   Gateway/CMS/Client healthy, worker running and real-pipeline exercised; original ingest_work volume preserved.
@@ -165,7 +154,7 @@
 - Release only at user request: full Go/CMS/Client gates +relevant real matrix E2E, shared status/masterplan updates only in that release flow; no push inferred.
 
 Lane: codex
-Changed: HC-12 CMS/Client draft labels/downloads +CMS measured typography/spacing; tests; owned plans/handoff/evidence
-Verified: CMS41PASS+4category+18captures;480/480selected style values; real edit/approval1PASS38s; CMS/Client builds/types
+Changed: dedicated real-content acceptance E2E, protocol evidence, cold-start verifier, owned tracker/matrix/handoff/reports
+Verified: realcontent1PASS24.6s/protocol1PASS42.9s; Client71PASS1.3m; coldstart44.92s; data/volume/AI identity checks
 Contract touched: no (public0.4.0 and AI-APIv1.3 unchanged)
-Next safe task: INT-24 ClientQA when externally started3100; INT-05 remaining widget review
+Next safe task: remaining INT-05/06 scope or user-authorized UI rollout; no outstanding work in INT-25/26/27

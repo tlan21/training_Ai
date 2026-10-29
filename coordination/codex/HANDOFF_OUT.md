@@ -291,3 +291,35 @@ Mẫu HO:
   AI PID26848/model checkpoints untouched, stubfalse6/degraded[]/visual_indexok; mock/legacy inference/Faktory IDs/StartedAt/status unchanged.
 - Initial guard failure was Docker mount ordering, not actual identity/data change; sorted guard and reran actual cold cycle; initial log retained.
   Evidence verification/INT-27.md/-before.json/-stopped.json/-after.json/-cold-start.log and initial records. No master/shared docs/push change.
+
+## 2026-10-29 RE:HO-03 — final PASS; prior synthetic-content blocker resolved (INT-25, commit8dab8ff)
+- Canonical real URL/stub0/key match/startup banner/health verified, already configured correctly; no repeat switch/recreate needed.
+  RealAI PID26848/6models/stubfalse/degraded[] unchanged. No model/checkpoint/inference source/process change.
+- Located existing documented original user video10.08s in owned MinIO (T4.3 source staging copy gone), downloaded READ-ONLY to Codex ignored staging,
+  validated2,504,101bytes/SHA256; original vid_dm46jsx30bah and all prior79video/10category fingerprints unchanged.
+- Dedicated strict original-output gate1PASS24.6s: processed, categoryca_nhac,10timeline seconds, summary123chars/draft,3nonemptyASRsegments;
+  saved counts BEFORE any editorial write. No seeded result/text, mock, test-vector promotion or model-quality acceptance.
+- Actual upload/editorial-review/publish/Client protocol flow1PASS42.9s after coldboot; real recommendation503/AI_UNAVAILABLE,
+  actual feed200/modepopularity. PrimaryMVP deliberately does not call recommender; optionalfallback5unitcasesPASS is separate evidence.
+- Synthetic colorbar/tone failures (emptyASR/summary) retained, never countedPASS. Proper real input resolved new content requirement;
+  protocol contract allows empty drafts, strict content test is separate explicit-input acceptance. Current recommendation staysDRAFT/NO_DATA.
+- Evidence verification/INT-25.md, -user-content-counts.json/-user-content-final.log/-source-provenance.json/-runtime.json/-feed-mode.json/-data-cleanup.log.
+  Source/evidence commit8dab8ff; initial discovery166e5eb retained. All own test uploads deleted/testorigin; source media/accounts retained.
+  No gateway/Client/CMS image replacement, master/shared status edit or remote push.
+
+## 2026-10-29 RE:HC-11 — final acceptance commit62149d3 (INT-27)
+- Existing compose health dependencies/restartunless-stopped and bounded startup already correct; actual full default12service cold stop/up
+  verified44.92s with automatic gatewayhealthy/healthz200, no manual start. Docker up used --no-build --no-recreate --pullnever.
+- All12IDs/images/volume identities preserved;91video/10category hashes equal across reboot; externalAI26848/6real/visual_indexok,
+  orphanmock/legacyinference/Faktory unchanged. Initial ordering-only validator error retained; sorted guard +second real cold runPASS.
+- Exact commands and safe snapshots: infra/verify_cold_start.ps1, verification/INT-27.md/-before/-stopped/-after/-cold-start.log. Commit62149d3.
+
+## 2026-10-29 RE:HC-12 — final source/production-QA PASS, commit7bd6c99 (INT-24 REVIEW, INT-26 DONE)
+- Source3a2adf3 retains summary approval gate and adds explicit machine-draft labels CMS/Client transcript/overlay +TXT/SRT disclosure.
+  Actual CMS edit/cache/readback/summary approval1PASS38s (INT-24) and renewed exact productionQA3100 full71PASS1.3m (INT-26) now verified.
+  Both390/1440 draft labels/overlay/download/hidden summary +auth/tracking/keyboard/player checks PASS, two transcript screenshots inspected.
+- Exact Node startup command authorized by user succeeded; exactPID27160 stopped after identity verification,3100closed; Client3000 unchanged during QA.
+  Later separately authorized cold stop/start preserves its same container/image. Old policy blocker resolved, no workaround used.
+- Evidence verification/INT-26.md/-client-production.log/-runtime-before/-runtime-after +INT-26-transcript390/1440PNGs; evidence commit7bd6c99.
+  HC-12 sourceQA accepted on Codex branch; new labels NOT rolled to productClient3000/CMS5173 images, honoring request to keep existing Client.
+  No AI/public API schema change, no full INT-05/06 visual/model-quality claim, no master/push.
