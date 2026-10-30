@@ -6,6 +6,28 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 
 ## Tổng quan
 
+### INT-46 — User scope change: simplify CMS account contract
+- Owner: CODEX | Status: IN_PROGRESS (2026-10-30)
+- Depends on: explicit user request to remove CMS password recovery/account deletion and role management; INT-40/45 audits. Account-delete CMS endpoint/implementation does not exist, verify no dormant action remains.
+- Acceptance: contract removes CMS role-write API; CMS management access is one capability for pre-provisioned CMS accounts, viewer accounts remain excluded. CMS recovery removed; shared Client recovery scope clarification pending, so do not break live Client consumers. Regenerate3types and validate contract before implementation. No existing account/data deletion.
+- Planned files: infra/openapi.yaml; backend/internal/gen/**; cms/src/api-types.ts; client/src/api-types.ts; owned scope docs/tracker.
+- Evidence/Commits: pending.
+- Next action: contract-first role API retirement, then INT-47 auth/UI/dead-code implementation; continue operational CMS fixes afterward.
+
+### INT-47 — Simplify CMS login/users and remove retired account features
+- Owner: CODEX | Status: TODO
+- Depends on: INT-46.
+- Acceptance: no CMS forgot/reset/account-delete link/page, no quick-login credentials, no role editor/role-write handler/port methods; all pre-provisioned CMS accounts share functionality, viewers denied. Users list/search/created timestamp read-only; login/refresh/logout preserved. Remove obsolete code/tests without deleting existing users or public Client functionality that still has consumers.
+- Planned files: cms/src/auth/router/users/hooks/sidebar, backend gateway/users/ports/repos/mocks/tests; shared recovery only after clarification; owned subplans/evidence.
+- Evidence/Commits: pending. Next action: implement after contract and verify backend/CMS/Client types and browser auth.
+
+### INT-48 — Operational CMS completion contract
+- Owner: CODEX | Status: TODO
+- Depends on: INT-46/47 and user-approved completion of8CMSscreens.
+- Acceptance: contract-first real dashboard/storage/activity metrics on existing health endpoint; global video/user/clip query filters and row metadata; category counts/rules and persisted proposal decisions/selected compilation ranges using existing endpoint families. No new AI contract/model or detection/translation features. Nullable unavailable metrics instead of fabricated values; Client privacy preserved.
+- Planned files: infra/openapi.yaml/generated3types; owned scope docs/evidence. Implementation task follows contract; existing41..44 remain planned until started.
+- Evidence/Commits: pending. Next action: define minimal read/write fields against real PG/Mongo/MinIO sources.
+
 ### INT-45 — Settings deep functional re-audit requested by user
 - Owner: CODEX | Status: DONE (2026-10-30; audit only, Settings remains PARTIAL)
 - Depends on: INT-40 findings, deployed CMS/gateway/AI; no other IN_PROGRESS task. User requests a deeper Settings audit, not implementation of INT-41.
