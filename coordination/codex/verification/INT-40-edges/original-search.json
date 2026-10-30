@@ -1,0 +1,6 @@
+{
+  "query": "INT40EDGE-1793336038649-library-delete",
+  "rows": 20,
+  "expected": 1,
+  "matchesOnlyQuery": false
+}

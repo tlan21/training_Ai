@@ -1,0 +1,46 @@
+
+Running 1 test using 1 worker
+
+(node:17060) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+{"audit_prefix":"INT40-1793335785078","observations":82,"verified":71,"failed_or_blocked":7,"browser_errors":0,"evidence":"E:\\traning_ai-codex\\coordination\\codex\\verification\\INT-40-live","no_response_mocks":true}
+  x  1 e2e\cms_audit_live.spec.ts:16:5 › INT-40 detailed CMS clicks against deployed services, without API mocks (1.7m)
+
+
+  1) e2e\cms_audit_live.spec.ts:16:5 › INT-40 detailed CMS clicks against deployed services, without API mocks
+
+    Error: Original data must be preserved
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "VERIFIED"
+    Received: "FAILED_OR_BLOCKED"
+
+      404 |   }
+      405 |   // An audit may correctly discover broken features. These are findings, never a blanket product PASS.
+    > 406 |   expect(entries.find(e => e.screen === 'preservation')?.outcome, 'Original data must be preserved').toBe('VERIFIED');
+          |                                                                                                      ^
+      407 | });
+      408 |
+        at E:\traning_ai-codex\e2e\cms_audit_live.spec.ts:406:102
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\int40-live-final\cms_audit_live-INT-40-deta-71f7c--services-without-API-mocks\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\int40-live-final\cms_audit_live-INT-40-deta-71f7c--services-without-API-mocks\test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\int40-live-final\cms_audit_live-INT-40-deta-71f7c--services-without-API-mocks\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\int40-live-final\cms_audit_live-INT-40-deta-71f7c--services-without-API-mocks\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\int40-live-final\cms_audit_live-INT-40-deta-71f7c--services-without-API-mocks\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    e2e\cms_audit_live.spec.ts:16:5 › INT-40 detailed CMS clicks against deployed services, without API mocks

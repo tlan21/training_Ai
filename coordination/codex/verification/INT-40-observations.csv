@@ -1,0 +1,137 @@
+"sequence","run","screen","action","outcome","detail"
+"1","live","login","Anonymous protected route redirects to login","VERIFIED",
+"2","live","login","Show/hide password, remember device, editor shortcut","VERIFIED",
+"3","live","login","Invalid credentials show real API error","VERIFIED",
+"4","live","login","Quick administrator login, HttpOnly refresh, reload restoration","VERIFIED",
+"5","live","shared","Health popover reads real six-model health; close button","VERIFIED",
+"6","live","shared","Notification and dashboard navigation links","VERIFIED",
+"7","live","sidebar","Navigate Tổng quan","VERIFIED",
+"8","live","sidebar","Navigate Video","VERIFIED",
+"9","live","sidebar","Navigate Hàng đợi xử lý","VERIFIED",
+"10","live","sidebar","Navigate Highlight AI","VERIFIED",
+"11","live","sidebar","Navigate Danh mục","VERIFIED",
+"12","live","sidebar","Navigate Phụ đề & Tóm tắt","VERIFIED",
+"13","live","sidebar","Navigate Nội dung đã xuất bản","VERIFIED",
+"14","live","sidebar","Navigate Cài đặt","VERIFIED",
+"15","live","sidebar","Navigate Người dùng","VERIFIED",
+"16","live","dashboard","1440px rendered control inventory / screenshot","VERIFIED",
+"17","live","videos","1440px rendered control inventory / screenshot","VERIFIED",
+"18","live","queue","1440px rendered control inventory / screenshot","VERIFIED",
+"19","live","highlight","1440px rendered control inventory / screenshot","VERIFIED",
+"20","live","categories","1440px rendered control inventory / screenshot","VERIFIED",
+"21","live","subtitles","1440px rendered control inventory / screenshot","VERIFIED",
+"22","live","published","1440px rendered control inventory / screenshot","VERIFIED",
+"23","live","settings","1440px rendered control inventory / screenshot","VERIFIED",
+"24","live","users","1440px rendered control inventory / screenshot","VERIFIED",
+"25","live","dashboard","390px rendered control inventory / screenshot","VERIFIED",
+"26","live","videos","390px rendered control inventory / screenshot","VERIFIED",
+"27","live","queue","390px rendered control inventory / screenshot","VERIFIED",
+"28","live","highlight","390px rendered control inventory / screenshot","VERIFIED",
+"29","live","categories","390px rendered control inventory / screenshot","VERIFIED",
+"30","live","subtitles","390px rendered control inventory / screenshot","VERIFIED",
+"31","live","published","390px rendered control inventory / screenshot","VERIFIED",
+"32","live","settings","390px rendered control inventory / screenshot","VERIFIED",
+"33","live","users","390px rendered control inventory / screenshot","VERIFIED",
+"34","live","shared","Mobile menu open, close button, backdrop, navigation, Escape","VERIFIED",
+"35","live","dashboard","Download actual JSON report; switch month and back","VERIFIED",
+"36","live","dashboard","Tải video mới","VERIFIED",
+"37","live","dashboard","Xem tất cả log","VERIFIED",
+"38","live","dashboard","Quản lý Highlight","VERIFIED",
+"39","live","dashboard","Tải thêm dữ liệu","VERIFIED",
+"40","live","dashboard","Phân tích video mới","VERIFIED",
+"41","live","videos","All status chips, date/category filters, clear and page navigation","VERIFIED",
+"42","live","videos","Search real current page and empty state; upload link","VERIFIED",
+"43","live","queue","File chooser, extension validation and remove selected file","VERIFIED",
+"44","live","categories","Create form cancel/Escape; create isolated category","VERIFIED",
+"45","live","categories","Edit/save description, search, recent refresh, disabled rule controls","VERIFIED",
+"46","live","queue","Upload own valid video and complete real AI pipeline","VERIFIED",
+"47","live","videos","Own row edit modal cancel; save category; open subtitle editor","VERIFIED",
+"48","live","queue","Status chips/select, sorting, completed result link, pagination and search","VERIFIED",
+"49","live","highlight","Video picker, real player play/pause and timeline keyboard/pointer/zoom","VERIFIED",
+"50","live","highlight","Validate manual bounds, cut isolated clip, draft privacy and publish gate","VERIFIED",
+"51","live","subtitles","Picker, playback, auto-scroll, reload and SRT export","VERIFIED",
+"52","live","subtitles","Edit/save own subtitle segment and discard local changes","VERIFIED",
+"53","live","subtitles","Draft metadata/title/category/hashtags/summary save and approve","VERIFIED",
+"54","live","subtitles","Copy summary and cancel unsaved navigation","VERIFIED",
+"55","live","subtitles","Thử tiêu đề khác semantics","PARTIAL","Button regenerates summary as well as suggested title; approved summary becomes draft. Real model output, not a mock."
+"56","live","subtitles","Regenerate actual AI draft through misleading title button; approval resets","VERIFIED",
+"57","live","published","All library tabs, pagination, advanced video filter and row selection","FAILED_OR_BLOCKED","TimeoutError: locator.selectOption: Timeout 8000ms exceeded.
+Call log:
+[2m  - waiting for getByLabel('VIDEO:', { exact: true })[22m
+"
+"58","live","published","Search own clip, edit/save/cancel, preview actual media and close","VERIFIED",
+"59","live","dashboard","Newest highlight edit and actual download link","VERIFIED",
+"60","live","published","Single hide confirmation cancel then accept; public privacy","VERIFIED",
+"61","live","queue","Invalid MP4 fails real ingest; error modal open/close and retry","VERIFIED",
+"62","live","users","Create isolated viewer, real users pagination, self-role disabled","FAILED_OR_BLOCKED","Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeDisabled[2m([22m[2m)[22m failed
+
+Locator: getByRole('row').filter({ hasText: 'Tài khoản của bạn' }).locator('select')
+Expected: disabled
+Timeout: 10000ms
+Error: element(s) not found
+
+Call log:
+[2m  - Expect ""toBeDisabled"" getByRole('row').filter({ hasText: 'Tài khoản của bạn' }).locator('select') with timeout 10000ms[22m
+[2m  - waiting for getByRole('row').filter({ hasText: 'Tài khoản của bạn' }).locator('select')[22m
+"
+"63","live","users","Change own audit viewer role to editor and verify reload persistence","VERIFIED",
+"64","live","users","Editor guard hides admin navigation and rejects direct admin APIs","FAILED_OR_BLOCKED","Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+Expected: [32m403[39m
+Received: [31m200[39m"
+"65","live","settings","Disabled tabs/read-only server config, cancel toggles, save/reload/restore","VERIFIED",
+"66","live","settings","Settings header notifications/user links","VERIFIED",
+"67","live","settings","AI toggles runtime execution","PARTIAL","Real PostgreSQL persistence verified. Runner is not wired to read these flags; this audit restores them immediately and does not expose other uploads to a changed configuration. PARTIAL, not an AI execution control."
+"68","live","highlight","Accept/dismiss persistence","PARTIAL","Accept only selects local trim bounds; dismiss only hides the local proposal. Neither writes an approval record; both reset on reload. No original analysis modified."
+"69","live","highlight","Existing real proposals: sort, preview exact stop, accept selects only, dismiss","VERIFIED",
+"70","live","published","Bulk hide audit-owned selection only","VERIFIED",
+"71","live","videos","Delete own failed video: cancel dialog, accept and verify deleted","FAILED_OR_BLOCKED","Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+Expected: [32m""[7mfail[27med""[39m
+Received: [31m""[7mupload[27med""[39m"
+"72","live","videos","Bulk delete own valid video; public results hidden","VERIFIED",
+"73","live","categories","Delete audit-owned unused category with confirmation","FAILED_OR_BLOCKED","Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+Expected: [32m204[39m
+Received: [31m404[39m"
+"74","live","login","Logout clears protected session","VERIFIED",
+"75","live","forgot-password","Reset delivery","DEV_ONLY","Development reset token returned directly by API; memory reset repository, no real email delivery. Deferred INT-10, not production-ready."
+"76","live","forgot-password","Existing deferred dev reset flow on own test account only","VERIFIED",
+"77","live","cleanup","Restore exact original settings","VERIFIED",
+"78","live","cleanup","Delete own video vid_dmhwhmvrl44a","VERIFIED",
+"79","live","cleanup","Delete own video vid_dmhwi3j1kdin","VERIFIED",
+"80","live","cleanup","Delete own category cat_5c529649d7de468f9273a87ca83eb597","FAILED_OR_BLOCKED","Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+Expected: [32m204[39m
+Received: [31m404[39m"
+"81","live","cleanup","Leave own audit account as client; no user-delete API","VERIFIED",
+"82","live","preservation","All original video/clip/category/settings/user API rows unchanged","FAILED_OR_BLOCKED","Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+[32m- Expected  - 1[39m
+[31m+ Received  + 1[39m
+
+[33m@@ -1,7 +1,7 @@[39m
+[2m  Object {[22m
+[32m-   ""categories"": ""37f68d83820975f7512afeb394568b55f4353f0c9e14539661d702b69f41f2c5"",[39m
+[31m+   ""categories"": ""e194d6128fc4fe2eac1d5eb1e312876cccd731872e918d168e3a37bec3c7f854"",[39m
+[2m    ""clipCount"": 58,[22m
+[2m    ""clips"": ""45ddc285b56ac103b6914e9c8a74d11bacfc1622218967aefb1b95ac9997bad1"",[22m
+[2m    ""settings"": ""3c0254ea79ca3d5f37ad05c0036557de16bf52204a07381b4d7f72177fed3a49"",[22m
+[2m    ""userCount"": 50,[22m
+[2m    ""users"": ""994f8d09bd33569c38beb365dc0071976b66ea61b41568559c3cee0fa6bbc1fb"",[22m"
+"83","edges","categories","Referenced category deletion: capture real error; reassign only own deleted video then delete through UI","VERIFIED",
+"84","edges","published","Advanced filter real request, toggle, tabs, pagination and selection (correct label locator)","VERIFIED",
+"85","edges","categories","System Highlight links and recent assignment navigation","VERIFIED",
+"86","edges","users","Self-role is disabled on its actual page, not necessarily page one","VERIFIED",
+"87","edges","users","Editor permissions: users403, settings GET200 masked, settings PUT403; UI guards","VERIFIED",
+"88","edges","highlight","Compile stored real proposals, own draft preview/selector/reload, timeline drag handles and original breadcrumb","VERIFIED",
+"89","edges","queue","Drag/drop real video and cancel only own queued/running job","VERIFIED",
+"90","edges","queue","Invalid ingest job failed while video status remains uploaded; delete via single-row UI","VERIFIED",
+"91","edges","queue","Cancel in-flight upload over real throttled network; no API mocking","VERIFIED",
+"92","edges","published","Bulk-delete own original through library Video goc tab","VERIFIED",
+"93","edges","auth","Login/forgot desktop and mobile screenshots, field validation and back navigation","VERIFIED",
+"94","edges","cleanup","Reject only own compiled clip clp_dmhwkls4s2s6","VERIFIED",
+"95","edges","cleanup","Delete only own edge video vid_dmhwkogh3el4","VERIFIED",
+"96","edges","cleanup","Delete only own edge video vid_dmhwkp7eqcsl","VERIFIED",
+"97","edges","cleanup","Delete only own edge video vid_dmhwkqgok0gt","VERIFIED",
+"98","edges","cleanup","Restore audit account to viewer","VERIFIED",

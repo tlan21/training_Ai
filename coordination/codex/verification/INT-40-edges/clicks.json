@@ -1,0 +1,82 @@
+[
+  {
+    "screen": "categories",
+    "action": "Referenced category deletion: capture real error; reassign only own deleted video then delete through UI",
+    "result": "VERIFIED"
+  },
+  {
+    "screen": "published",
+    "action": "Advanced filter real request, toggle, tabs, pagination and selection (correct label locator)",
+    "result": "VERIFIED"
+  },
+  {
+    "screen": "categories",
+    "action": "System Highlight links and recent assignment navigation",
+    "result": "VERIFIED"
+  },
+  {
+    "screen": "users",
+    "action": "Self-role is disabled on its actual page, not necessarily page one",
+    "result": "VERIFIED"
+  },
+  {
+    "screen": "users",
+    "action": "Editor permissions: users403, settings GET200 masked, settings PUT403; UI guards",
+    "result": "VERIFIED"
+  },
+  {
+    "screen": "highlight",
+    "action": "Compile stored real proposals, own draft preview/selector/reload, timeline drag handles and original breadcrumb",
+    "result": "VERIFIED"
+  },
+  {
+    "screen": "queue",
+    "action": "Drag/drop real video and cancel only own queued/running job",
+    "result": "VERIFIED"
+  },
+  {
+    "screen": "queue",
+    "action": "Invalid ingest job failed while video status remains uploaded; delete via single-row UI",
+    "result": "VERIFIED"
+  },
+  {
+    "screen": "queue",
+    "action": "Cancel in-flight upload over real throttled network; no API mocking",
+    "result": "VERIFIED"
+  },
+  {
+    "screen": "published",
+    "action": "Bulk-delete own original through library Video goc tab",
+    "result": "VERIFIED"
+  },
+  {
+    "screen": "auth",
+    "action": "Login/forgot desktop and mobile screenshots, field validation and back navigation",
+    "result": "VERIFIED"
+  },
+  {
+    "screen": "cleanup",
+    "action": "Reject only own compiled clip clp_dmhwkls4s2s6",
+    "result": "VERIFIED"
+  },
+  {
+    "screen": "cleanup",
+    "action": "Delete only own edge video vid_dmhwkogh3el4",
+    "result": "VERIFIED"
+  },
+  {
+    "screen": "cleanup",
+    "action": "Delete only own edge video vid_dmhwkp7eqcsl",
+    "result": "VERIFIED"
+  },
+  {
+    "screen": "cleanup",
+    "action": "Delete only own edge video vid_dmhwkqgok0gt",
+    "result": "VERIFIED"
+  },
+  {
+    "screen": "cleanup",
+    "action": "Restore audit account to viewer",
+    "result": "VERIFIED"
+  }
+]

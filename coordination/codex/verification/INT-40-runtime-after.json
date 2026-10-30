@@ -1,0 +1,220 @@
+[
+  {
+    "name": "/video-ai-gateway-1",
+    "id": "2645cec3e8fc59584547c0c02ae3890baf635844b290d436507bbe970bc8314e",
+    "image": "video-ai-gateway:int39-5ce29db",
+    "started": "2026-10-30T03:25:10.861730238Z",
+    "status": "running",
+    "health": "healthy",
+    "mounts": [
+      {
+        "Source": "/var/lib/docker/volumes/video-ai_ingest_work/_data",
+        "Destination": "/srv/work",
+        "RW": true
+      }
+    ]
+  },
+  {
+    "name": "/video-ai-cms-1",
+    "id": "d616aa4f0d1225dd02fe6294ec5e2a943dd11aa83f98ce73d087987df7003fcf",
+    "image": "video-ai-cms:int38-43e45a1",
+    "started": "2026-10-30T02:54:09.307363564Z",
+    "status": "running",
+    "health": "healthy",
+    "mounts": []
+  },
+  {
+    "name": "/video-ai-client-1",
+    "id": "5a6b4536e63d2e31505d03ec57a867ada5afcacce97a7cfbe00a7848ea29a859",
+    "image": "video-ai-client:int36-c4de07e",
+    "started": "2026-10-30T02:12:53.994805467Z",
+    "status": "running",
+    "health": "healthy",
+    "mounts": []
+  },
+  {
+    "name": "/video-ai-inference-service-1",
+    "id": "0bc8122d1e7bbe804a45e0412ddaea7f6cb8652f19a26fad6d4aba97d1b04016",
+    "image": "video-ai-inference:ai-v2-478052e",
+    "started": "2026-10-30T02:17:07.454417162Z",
+    "status": "running",
+    "health": "healthy",
+    "mounts": [
+      {
+        "Source": "/run/desktop/mnt/host/e/traning_ai/ai-core/checkpoints",
+        "Destination": "/srv/ai-core/checkpoints",
+        "RW": false
+      }
+    ]
+  },
+  {
+    "name": "/video-ai-ingest-worker-1",
+    "id": "709433eefc6f7d141eb7d13f500adbda6a69d96f8bc24a81816821da3253b3fd",
+    "image": "video-ai-ingest-worker:int23-fa8a382",
+    "started": "2026-10-30T02:17:09.348122789Z",
+    "status": "running",
+    "health": null,
+    "mounts": [
+      {
+        "Source": "/var/lib/docker/volumes/video-ai_ingest_work/_data",
+        "Destination": "/srv/work",
+        "RW": true
+      }
+    ]
+  },
+  {
+    "name": "/video-ai-milvus-1",
+    "id": "cd7878a1ed75d890acea61c02b95ab309d406eea0e5d1fcd4afc83d5c9150c96",
+    "image": "milvusdb/milvus:v2.4.9",
+    "started": "2026-10-30T02:16:03.898026425Z",
+    "status": "running",
+    "health": "healthy",
+    "mounts": [
+      {
+        "Source": "/var/lib/docker/volumes/video-ai_milvus_data/_data",
+        "Destination": "/var/lib/milvus",
+        "RW": true
+      }
+    ]
+  },
+  {
+    "name": "/video-ai-etcd-1",
+    "id": "2a7a3faf4e82baf4059f8ad7e859f42aab2f3e99eeccb22cf4dea77e763a762b",
+    "image": "quay.io/coreos/etcd:v3.5.14",
+    "started": "2026-10-30T02:16:04.013357585Z",
+    "status": "running",
+    "health": "healthy",
+    "mounts": [
+      {
+        "Source": "/var/lib/docker/volumes/video-ai_etcd_data/_data",
+        "Destination": "/etcd",
+        "RW": true
+      }
+    ]
+  },
+  {
+    "name": "/video-ai-kafka-init-1",
+    "id": "c29af099bef8bef8c0db73021d039e9090c2de44341ee7450a13b9cf7d2cb0ff",
+    "image": "apache/kafka:3.8.0",
+    "started": "2026-10-30T02:16:05.581476902Z",
+    "status": "exited",
+    "health": null,
+    "mounts": [
+      {
+        "Source": "/var/lib/docker/volumes/eecfd76c3923de485dacea3e8e2f741b46ab705719257fd9d10e7c2b3668ac12/_data",
+        "Destination": "/etc/kafka/secrets",
+        "RW": true
+      },
+      {
+        "Source": "/var/lib/docker/volumes/58057ec95b50e50aa23d5476faedf8d90682ab5e11dc3f42ab4a512d10c85dac/_data",
+        "Destination": "/mnt/shared/config",
+        "RW": true
+      },
+      {
+        "Source": "/var/lib/docker/volumes/8e8d2b7a29db0a7ee6aef69c57de84885a60286aaf3bb2da417b381c3d4c2326/_data",
+        "Destination": "/var/lib/kafka/data",
+        "RW": true
+      }
+    ]
+  },
+  {
+    "name": "/video-ai-minio-1",
+    "id": "1d4128cbc5c6b79d0d0ef28f98bc0c75ba02bdd620ba4148af9bca52df2a33cc",
+    "image": "video-ai-minio",
+    "started": "2026-10-30T02:16:06.453867454Z",
+    "status": "running",
+    "health": "healthy",
+    "mounts": [
+      {
+        "Source": "/var/lib/docker/volumes/video-ai_minio_data/_data",
+        "Destination": "/data",
+        "RW": true
+      }
+    ]
+  },
+  {
+    "name": "/video-ai-kafka-1",
+    "id": "8482ecba8ac6fb6c8d62a37b9ae072954646e2789d4c2407e12964f036ee774d",
+    "image": "apache/kafka:3.8.0",
+    "started": "2026-10-30T02:16:08.572147733Z",
+    "status": "running",
+    "health": "healthy",
+    "mounts": [
+      {
+        "Source": "/var/lib/docker/volumes/41f23f9d81d62ce4a401498dc97fbb6c04a2a05af1d6fbbbeaa76b910d7dd731/_data",
+        "Destination": "/etc/kafka/secrets",
+        "RW": true
+      },
+      {
+        "Source": "/var/lib/docker/volumes/abd9a1f4187c49ecc86670b5e2be21f0dc247d71c186ff5f426f903422f9f979/_data",
+        "Destination": "/mnt/shared/config",
+        "RW": true
+      },
+      {
+        "Source": "/var/lib/docker/volumes/video-ai_kafka_data/_data",
+        "Destination": "/var/lib/kafka/data",
+        "RW": true
+      }
+    ]
+  },
+  {
+    "name": "/video-ai-postgres-1",
+    "id": "0aaae3e5b2db82e7da88b57db9450ffd043045d56295ae89ec97db6179cbf2fc",
+    "image": "postgres:16-alpine",
+    "started": "2026-10-30T02:16:24.746083831Z",
+    "status": "running",
+    "health": "healthy",
+    "mounts": [
+      {
+        "Source": "/run/desktop/mnt/host/e/traning_ai/infra/postgres/init",
+        "Destination": "/docker-entrypoint-initdb.d",
+        "RW": false
+      },
+      {
+        "Source": "/var/lib/docker/volumes/video-ai_pg_data/_data",
+        "Destination": "/var/lib/postgresql/data",
+        "RW": true
+      }
+    ]
+  },
+  {
+    "name": "/video-ai-redis-1",
+    "id": "1e8903575c9bcb196487d6a7ce9a0ed6f7cd0d4bd009ee7453b555a118ee943d",
+    "image": "redis:7-alpine",
+    "started": "2026-10-30T02:16:25.01297052Z",
+    "status": "running",
+    "health": "healthy",
+    "mounts": [
+      {
+        "Source": "/var/lib/docker/volumes/video-ai_redis_data/_data",
+        "Destination": "/data",
+        "RW": true
+      }
+    ]
+  },
+  {
+    "name": "/video-ai-mongo-1",
+    "id": "cd1f54c421593613f610112d749e53e69717015cbc17ab309035788607dc81b4",
+    "image": "mongo:7",
+    "started": "2026-10-30T02:16:25.14762888Z",
+    "status": "running",
+    "health": "healthy",
+    "mounts": [
+      {
+        "Source": "/var/lib/docker/volumes/5f960d3c0431c54d375e8b8b6b27ed63fdd5924d06e7a2d98824b5ec2eec932c/_data",
+        "Destination": "/data/configdb",
+        "RW": true
+      },
+      {
+        "Source": "/var/lib/docker/volumes/video-ai_mongo_data/_data",
+        "Destination": "/data/db",
+        "RW": true
+      },
+      {
+        "Source": "/run/desktop/mnt/host/e/traning_ai/infra/mongo/init",
+        "Destination": "/docker-entrypoint-initdb.d",
+        "RW": false
+      }
+    ]
+  }
+]

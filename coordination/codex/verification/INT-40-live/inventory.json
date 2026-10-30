@@ -1,0 +1,6678 @@
+[
+  {
+    "screen": "dashboard",
+    "width": 1440,
+    "bounds": {
+      "viewport": 1440,
+      "body": 1440
+    },
+    "controls": [
+      {
+        "tag": "BUTTON",
+        "name": "Đóng menu CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": false
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Video",
+        "disabled": false,
+        "readonly": false,
+        "href": "/videos",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Hàng đợi xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Highlight AI",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Danh mục",
+        "disabled": false,
+        "readonly": false,
+        "href": "/categories",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Phụ đề & Tóm tắt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/subtitles",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Nội dung đã xuất bản",
+        "disabled": false,
+        "readonly": false,
+        "href": "/published",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Cài đặt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/settings",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Người dùng",
+        "disabled": false,
+        "readonly": false,
+        "href": "/users",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Đăng xuất",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Mở điều hướng",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": false
+      },
+      {
+        "tag": "INPUT",
+        "name": "Tìm kiếm CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trạng thái hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Cảnh báo hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue?status=failed",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Tải báo cáo",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Tải video mới",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Khoảng thời gian thống kê",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Lỗi xử lý videopreprocess: invalid video: [Errno 1094995529] Invalid data found when processing inpu",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue?status=failed",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Lỗi xử lý videopreprocess: invalid video: [Errno 1094995529] Invalid data found when processing inpu",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue?status=failed",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tất cả log",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Quản lý Highlight",
+        "disabled": false,
+        "readonly": false,
+        "href": "/published",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Biên tập highlight",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight?video_id=vid_dmh5o652juum",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Mở tải clip Tổng hợp — dom_-1Is0o2ZWk0_1.mp4",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Biên tập highlight",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight?video_id=vid_dmh4b8ymqbtw",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Mở tải clip Tổng hợp — sample_01.mp4",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Biên tập highlight",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight?video_id=vid_dmh4b8ymqbtw",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Mở tải clip Highlight — sample_01.mp4",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Biên tập highlight",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight?video_id=vid_dmh4b8ymqbtw",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Mở tải clip Highlight #1",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Biên tập highlight",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight?video_id=vid_dmh2bu9e6ops",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Mở tải clip t4-2-1793250724943",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Tải thêm dữ liệu",
+        "disabled": false,
+        "readonly": false,
+        "href": "/published",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Phân tích video mới",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      }
+    ]
+  },
+  {
+    "screen": "videos",
+    "width": 1440,
+    "bounds": {
+      "viewport": 1440,
+      "body": 1440
+    },
+    "controls": [
+      {
+        "tag": "BUTTON",
+        "name": "Đóng menu CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": false
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Video",
+        "disabled": false,
+        "readonly": false,
+        "href": "/videos",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Hàng đợi xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Highlight AI",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Danh mục",
+        "disabled": false,
+        "readonly": false,
+        "href": "/categories",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Phụ đề & Tóm tắt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/subtitles",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Nội dung đã xuất bản",
+        "disabled": false,
+        "readonly": false,
+        "href": "/published",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Cài đặt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/settings",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Người dùng",
+        "disabled": false,
+        "readonly": false,
+        "href": "/users",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Đăng xuất",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Mở điều hướng",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": false
+      },
+      {
+        "tag": "INPUT",
+        "name": "Tìm kiếm CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trạng thái hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Cảnh báo hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue?status=failed",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Tải lên video",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Tất cả videoGiáo dụcGameThể thaoTin tứcẨm thựcDu lịchGiải tríCông nghệCa nhạcBóng đá",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Tất cả",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Đã duyệt",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Đang xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lỗi AI",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Từ ngày",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Đến ngày",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa bộ lọc",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn tất cả video trên trang",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn dom_-1Is0o2ZWk0_1.mp4",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem highlight dom_-1Is0o2ZWk0_1.mp4",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight?video_id=vid_dmh5o652juum",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập dom_-1Is0o2ZWk0_1.mp4",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa dom_-1Is0o2ZWk0_1.mp4",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn sample_01.mp4",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem highlight sample_01.mp4",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight?video_id=vid_dmh4b8ymqbtw",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập sample_01.mp4",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa sample_01.mp4",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn t4-2-1793250724943",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập t4-2-1793250724943",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa t4-2-1793250724943",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn e2e-invalid-1793250722942",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập e2e-invalid-1793250722942",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa e2e-invalid-1793250722942",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn Biên tập e2e-1793250694773",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập Biên tập e2e-1793250694773",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa Biên tập e2e-1793250694773",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn e2e-int28-v2-1793250674238",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập e2e-int28-v2-1793250674238",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa e2e-int28-v2-1793250674238",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn e2e-int28-v2-1793249349559",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập e2e-int28-v2-1793249349559",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa e2e-int28-v2-1793249349559",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn t4-2-1793246625189",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập t4-2-1793246625189",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa t4-2-1793246625189",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn e2e-invalid-1793246623644",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập e2e-invalid-1793246623644",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa e2e-invalid-1793246623644",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn Biên tập e2e-1793246599318",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập Biên tập e2e-1793246599318",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa Biên tập e2e-1793246599318",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn e2e-int28-v2-1793246412778",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập e2e-int28-v2-1793246412778",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa e2e-int28-v2-1793246412778",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn e2e-int25-content-1793241125786",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập e2e-int25-content-1793241125786",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa e2e-int25-content-1793241125786",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn e2e-int25-content-1793240996627",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập e2e-int25-content-1793240996627",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa e2e-int25-content-1793240996627",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn e2e-int25-content-1793239917386",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập e2e-int25-content-1793239917386",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa e2e-int25-content-1793239917386",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn Biên tập e2e-1793239783021",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập Biên tập e2e-1793239783021",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa Biên tập e2e-1793239783021",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn e2e-1793238737337.mp4",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập e2e-1793238737337.mp4",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa e2e-1793238737337.mp4",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn Biên tập e2e-1793199801347",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập Biên tập e2e-1793199801347",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa Biên tập e2e-1793199801347",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn t4-2-1793183443822",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập t4-2-1793183443822",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa t4-2-1793183443822",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn e2e-invalid-1793183441561",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập e2e-invalid-1793183441561",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa e2e-invalid-1793183441561",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn Biên tập e2e-1793183417604",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập Biên tập e2e-1793183417604",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa Biên tập e2e-1793183417604",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trang trước",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trang 1",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trang sau",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      }
+    ]
+  },
+  {
+    "screen": "queue",
+    "width": 1440,
+    "bounds": {
+      "viewport": 1440,
+      "body": 1440
+    },
+    "controls": [
+      {
+        "tag": "BUTTON",
+        "name": "Đóng menu CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": false
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Video",
+        "disabled": false,
+        "readonly": false,
+        "href": "/videos",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Hàng đợi xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Highlight AI",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Danh mục",
+        "disabled": false,
+        "readonly": false,
+        "href": "/categories",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Phụ đề & Tóm tắt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/subtitles",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Nội dung đã xuất bản",
+        "disabled": false,
+        "readonly": false,
+        "href": "/published",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Cài đặt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/settings",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Người dùng",
+        "disabled": false,
+        "readonly": false,
+        "href": "/users",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Đăng xuất",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Mở điều hướng",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": false
+      },
+      {
+        "tag": "INPUT",
+        "name": "Tìm kiếm CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Tải lên",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Cảnh báo hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue?status=failed",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trạng thái hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "dz-input",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": false
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Tất cả",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Đang xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Đã xong",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lỗi",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Sắp xếp hàng đợi",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Bộ lọc trạng thái job",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem kết quả",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight?video_id=vid_dmh5o652juum",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem kết quả",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight?video_id=vid_dmh4b8ymqbtw",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem kết quả",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight?video_id=vid_dmh2bu9e6ops",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Thử lại xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xem log lỗi",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem kết quả",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight?video_id=vid_dmh2bj41ecij",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem kết quả",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight?video_id=vid_dmh2b70ee8l7",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem kết quả",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight?video_id=vid_dmh1uaq812wk",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem kết quả",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight?video_id=vid_dmh0viv345yi",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Thử lại xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xem log lỗi",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem kết quả",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight?video_id=vid_dmh0va8uxi87",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trang trước",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trang 1",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trang sau",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      }
+    ]
+  },
+  {
+    "screen": "highlight",
+    "width": 1440,
+    "bounds": {
+      "viewport": 1440,
+      "body": 1440
+    },
+    "controls": [
+      {
+        "tag": "BUTTON",
+        "name": "Đóng menu CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": false
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Video",
+        "disabled": false,
+        "readonly": false,
+        "href": "/videos",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Hàng đợi xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Highlight AI",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Danh mục",
+        "disabled": false,
+        "readonly": false,
+        "href": "/categories",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Phụ đề & Tóm tắt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/subtitles",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Nội dung đã xuất bản",
+        "disabled": false,
+        "readonly": false,
+        "href": "/published",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Cài đặt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/settings",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Người dùng",
+        "disabled": false,
+        "readonly": false,
+        "href": "/users",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Đăng xuất",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Mở điều hướng",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": false
+      },
+      {
+        "tag": "INPUT",
+        "name": "Tìm kiếm CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trạng thái hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Cảnh báo hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue?status=failed",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Dự án",
+        "disabled": false,
+        "readonly": false,
+        "href": "/videos",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Tạo video tổng hợp AI",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu bản nháp",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xuất bản clip",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Chọn video đã xử lýdom_-1Is0o2ZWk0_1.mp4sample_01.mp4Tạo video chiến đấu.mp4T4.1-REAL-AI-SMOKE",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Thu nhỏ timeline",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Phóng to timeline",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "CANVAS",
+        "name": "Timeline highlight",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Bắt đầu clip",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Kết thúc clip",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Tiêu đề",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Chọn video tổng hợp",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Sắp xếp theo: Score",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      }
+    ]
+  },
+  {
+    "screen": "categories",
+    "width": 1440,
+    "bounds": {
+      "viewport": 1440,
+      "body": 1440
+    },
+    "controls": [
+      {
+        "tag": "BUTTON",
+        "name": "Đóng menu CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": false
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Video",
+        "disabled": false,
+        "readonly": false,
+        "href": "/videos",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Hàng đợi xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Highlight AI",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Danh mục",
+        "disabled": false,
+        "readonly": false,
+        "href": "/categories",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Phụ đề & Tóm tắt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/subtitles",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Nội dung đã xuất bản",
+        "disabled": false,
+        "readonly": false,
+        "href": "/published",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Cài đặt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/settings",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Người dùng",
+        "disabled": false,
+        "readonly": false,
+        "href": "/users",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Đăng xuất",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Mở điều hướng",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": false
+      },
+      {
+        "tag": "INPUT",
+        "name": "Tìm kiếm CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trạng thái hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Cảnh báo hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue?status=failed",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Thêm danh mục mới",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Sửa danh mục Giáo dục",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa danh mục Giáo dục",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Sửa danh mục Game",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa danh mục Game",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Sửa danh mục Thể thao",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa danh mục Thể thao",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Sửa danh mục Tin tức",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa danh mục Tin tức",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Sửa danh mục Ẩm thực",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa danh mục Ẩm thực",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Sửa danh mục Du lịch",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa danh mục Du lịch",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Sửa danh mục Giải trí",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa danh mục Giải trí",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Sửa danh mục Công nghệ",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa danh mục Công nghệ",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Sửa danh mục Ca nhạc",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa danh mục Ca nhạc",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Sửa danh mục Bóng đá",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa danh mục Bóng đá",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Chỉnh sửa",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Gán theo từ khóa AI",
+        "disabled": true,
+        "readonly": true,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Tải lại video gần đây",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tất cả video",
+        "disabled": false,
+        "readonly": false,
+        "href": "/videos",
+        "visible": true
+      }
+    ]
+  },
+  {
+    "screen": "subtitles",
+    "width": 1440,
+    "bounds": {
+      "viewport": 1440,
+      "body": 1440
+    },
+    "controls": [
+      {
+        "tag": "BUTTON",
+        "name": "Đóng menu CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": false
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Video",
+        "disabled": false,
+        "readonly": false,
+        "href": "/videos",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Hàng đợi xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Highlight AI",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Danh mục",
+        "disabled": false,
+        "readonly": false,
+        "href": "/categories",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Phụ đề & Tóm tắt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/subtitles",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Nội dung đã xuất bản",
+        "disabled": false,
+        "readonly": false,
+        "href": "/published",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Cài đặt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/settings",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Người dùng",
+        "disabled": false,
+        "readonly": false,
+        "href": "/users",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Đăng xuất",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Mở điều hướng",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": false
+      },
+      {
+        "tag": "INPUT",
+        "name": "Tìm kiếm CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Cảnh báo hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue?status=failed",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trạng thái hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Chọn video đã xử lýdom_-1Is0o2ZWk0_1.mp4sample_01.mp4Tạo video chiến đấu.mp4T4.1-REAL-AI-SMOKE",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Tải lại phụ đề",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Tải phụ đề SRT",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Tự động cuộn theo video",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu thay đổi phụ đề",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "suggested-title",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Thử tiêu đề khác",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Chọn chuyên mụcGiáo dụcGameThể thaoTin tứcẨm thựcDu lịchGiải tríCông nghệCa nhạcBóng đá",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Đã hoãn",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "TEXTAREA",
+        "name": "video-description",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "TEXTAREA",
+        "name": "ai-summary",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Sao chép tóm tắt",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "VD: BongDa, Highlight",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Hủy thay đổi",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu bản nháp",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Duyệt nội dung",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      }
+    ]
+  },
+  {
+    "screen": "published",
+    "width": 1440,
+    "bounds": {
+      "viewport": 1440,
+      "body": 1440
+    },
+    "controls": [
+      {
+        "tag": "BUTTON",
+        "name": "Đóng menu CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": false
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Video",
+        "disabled": false,
+        "readonly": false,
+        "href": "/videos",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Hàng đợi xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Highlight AI",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Danh mục",
+        "disabled": false,
+        "readonly": false,
+        "href": "/categories",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Phụ đề & Tóm tắt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/subtitles",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Nội dung đã xuất bản",
+        "disabled": false,
+        "readonly": false,
+        "href": "/published",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Cài đặt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/settings",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Người dùng",
+        "disabled": false,
+        "readonly": false,
+        "href": "/users",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Đăng xuất",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Mở điều hướng",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": false
+      },
+      {
+        "tag": "INPUT",
+        "name": "Tìm kiếm CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Tải lên video",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Cảnh báo hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue?status=failed",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trạng thái hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Bộ lọc nâng cao",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa hàng loạt",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Đã xuất bản (1)",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Video gốc (106)",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Clip highlight (58)",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Bản nháp (7)",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Đã ẩn (50)",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn tất cả nội dung trên trang",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn Tổng hợp — dom_-1Is0o2ZWk0_1.mp4",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xem clip Tổng hợp — dom_-1Is0o2ZWk0_1.mp4",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Sửa clip Tổng hợp — dom_-1Is0o2ZWk0_1.mp4",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Ẩn clip Tổng hợp — dom_-1Is0o2ZWk0_1.mp4",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trang trước",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trang 1",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trang sau",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      }
+    ]
+  },
+  {
+    "screen": "settings",
+    "width": 1440,
+    "bounds": {
+      "viewport": 1440,
+      "body": 1440
+    },
+    "controls": [
+      {
+        "tag": "BUTTON",
+        "name": "Đóng menu CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": false
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Video",
+        "disabled": false,
+        "readonly": false,
+        "href": "/videos",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Hàng đợi xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Highlight AI",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Danh mục",
+        "disabled": false,
+        "readonly": false,
+        "href": "/categories",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Phụ đề & Tóm tắt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/subtitles",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Nội dung đã xuất bản",
+        "disabled": false,
+        "readonly": false,
+        "href": "/published",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Cài đặt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/settings",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Người dùng",
+        "disabled": false,
+        "readonly": false,
+        "href": "/users",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Đăng xuất",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Mở điều hướng",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": false
+      },
+      {
+        "tag": "INPUT",
+        "name": "Tìm kiếm CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": false
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trạng thái hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": false
+      },
+      {
+        "tag": "A",
+        "name": "Cảnh báo hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue?status=failed",
+        "visible": false
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": false
+      },
+      {
+        "tag": "A",
+        "name": "Thông báo hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue?status=failed",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Quản lý người dùng",
+        "disabled": false,
+        "readonly": false,
+        "href": "/users",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Cài đặt chung",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Cấu hình AI",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Thông báo",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Bảo mật",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Tự động đánh dấu (Auto-highlighting)",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Tạo phụ đề tự động",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Tiếng Việt",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "ai-service-key",
+        "disabled": false,
+        "readonly": true,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "MinIO",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "storage-buckets",
+        "disabled": false,
+        "readonly": true,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Hủy bỏ",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu thay đổi",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      }
+    ]
+  },
+  {
+    "screen": "users",
+    "width": 1440,
+    "bounds": {
+      "viewport": 1440,
+      "body": 1440
+    },
+    "controls": [
+      {
+        "tag": "BUTTON",
+        "name": "Đóng menu CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": false
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Video",
+        "disabled": false,
+        "readonly": false,
+        "href": "/videos",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Hàng đợi xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Highlight AI",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Danh mục",
+        "disabled": false,
+        "readonly": false,
+        "href": "/categories",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Phụ đề & Tóm tắt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/subtitles",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Nội dung đã xuất bản",
+        "disabled": false,
+        "readonly": false,
+        "href": "/published",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Cài đặt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/settings",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Người dùng",
+        "disabled": false,
+        "readonly": false,
+        "href": "/users",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Đăng xuất",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Mở điều hướng",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": false
+      },
+      {
+        "tag": "INPUT",
+        "name": "Tìm kiếm CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trạng thái hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Cảnh báo hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue?status=failed",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của khoa minh",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của e2e-1793250694773",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của e2e-1793246599318",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của e2e-1793239783021",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của e2e-1793238737337",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của e2e-1793199801347",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của e2e-1793183417604",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của e2e-1793183358544",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của e2e-1793183170748",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của e2e-1793182929851",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của e2e-1793108404239",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của e2e-1793076090577",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của e2e-int16-1793074384186-updated",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của e2e-int16-1793074378484-updated",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của int02-mock-1793074243335",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của int02-mock-1793074115012",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của int02-mock-1793014161099",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của e2e-int16-1793014072287-updated",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của e2e-int16-1793014069082-updated",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của e2e-int16-1793013128847-updated",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trang trước",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trang 1",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trang sau",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      }
+    ]
+  },
+  {
+    "screen": "dashboard",
+    "width": 390,
+    "bounds": {
+      "viewport": 390,
+      "body": 390
+    },
+    "controls": [
+      {
+        "tag": "BUTTON",
+        "name": "Đóng menu CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Video",
+        "disabled": false,
+        "readonly": false,
+        "href": "/videos",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Hàng đợi xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Highlight AI",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Danh mục",
+        "disabled": false,
+        "readonly": false,
+        "href": "/categories",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Phụ đề & Tóm tắt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/subtitles",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Nội dung đã xuất bản",
+        "disabled": false,
+        "readonly": false,
+        "href": "/published",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Cài đặt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/settings",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Người dùng",
+        "disabled": false,
+        "readonly": false,
+        "href": "/users",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Đăng xuất",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Mở điều hướng",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Tìm kiếm CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trạng thái hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Cảnh báo hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue?status=failed",
+        "visible": false
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": false
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Tải báo cáo",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Tải video mới",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Khoảng thời gian thống kê",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Lỗi xử lý videopreprocess: invalid video: [Errno 1094995529] Invalid data found when processing inpu",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue?status=failed",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Lỗi xử lý videopreprocess: invalid video: [Errno 1094995529] Invalid data found when processing inpu",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue?status=failed",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tất cả log",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Quản lý Highlight",
+        "disabled": false,
+        "readonly": false,
+        "href": "/published",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Biên tập highlight",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight?video_id=vid_dmh5o652juum",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Mở tải clip Tổng hợp — dom_-1Is0o2ZWk0_1.mp4",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Biên tập highlight",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight?video_id=vid_dmh4b8ymqbtw",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Mở tải clip Tổng hợp — sample_01.mp4",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Biên tập highlight",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight?video_id=vid_dmh4b8ymqbtw",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Mở tải clip Highlight — sample_01.mp4",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Biên tập highlight",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight?video_id=vid_dmh4b8ymqbtw",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Mở tải clip Highlight #1",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Biên tập highlight",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight?video_id=vid_dmh2bu9e6ops",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Mở tải clip t4-2-1793250724943",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Tải thêm dữ liệu",
+        "disabled": false,
+        "readonly": false,
+        "href": "/published",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Phân tích video mới",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      }
+    ]
+  },
+  {
+    "screen": "videos",
+    "width": 390,
+    "bounds": {
+      "viewport": 390,
+      "body": 390
+    },
+    "controls": [
+      {
+        "tag": "BUTTON",
+        "name": "Đóng menu CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Video",
+        "disabled": false,
+        "readonly": false,
+        "href": "/videos",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Hàng đợi xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Highlight AI",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Danh mục",
+        "disabled": false,
+        "readonly": false,
+        "href": "/categories",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Phụ đề & Tóm tắt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/subtitles",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Nội dung đã xuất bản",
+        "disabled": false,
+        "readonly": false,
+        "href": "/published",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Cài đặt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/settings",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Người dùng",
+        "disabled": false,
+        "readonly": false,
+        "href": "/users",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Đăng xuất",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Mở điều hướng",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Tìm kiếm CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trạng thái hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Cảnh báo hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue?status=failed",
+        "visible": false
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": false
+      },
+      {
+        "tag": "A",
+        "name": "Tải lên video",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Tất cả videoGiáo dụcGameThể thaoTin tứcẨm thựcDu lịchGiải tríCông nghệCa nhạcBóng đá",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Tất cả",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Đã duyệt",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Đang xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lỗi AI",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Từ ngày",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Đến ngày",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa bộ lọc",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn tất cả video trên trang",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn dom_-1Is0o2ZWk0_1.mp4",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem highlight dom_-1Is0o2ZWk0_1.mp4",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight?video_id=vid_dmh5o652juum",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập dom_-1Is0o2ZWk0_1.mp4",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa dom_-1Is0o2ZWk0_1.mp4",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn sample_01.mp4",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem highlight sample_01.mp4",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight?video_id=vid_dmh4b8ymqbtw",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập sample_01.mp4",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa sample_01.mp4",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn t4-2-1793250724943",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập t4-2-1793250724943",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa t4-2-1793250724943",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn e2e-invalid-1793250722942",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập e2e-invalid-1793250722942",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa e2e-invalid-1793250722942",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn Biên tập e2e-1793250694773",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập Biên tập e2e-1793250694773",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa Biên tập e2e-1793250694773",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn e2e-int28-v2-1793250674238",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập e2e-int28-v2-1793250674238",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa e2e-int28-v2-1793250674238",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn e2e-int28-v2-1793249349559",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập e2e-int28-v2-1793249349559",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa e2e-int28-v2-1793249349559",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn t4-2-1793246625189",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập t4-2-1793246625189",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa t4-2-1793246625189",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn e2e-invalid-1793246623644",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập e2e-invalid-1793246623644",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa e2e-invalid-1793246623644",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn Biên tập e2e-1793246599318",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập Biên tập e2e-1793246599318",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa Biên tập e2e-1793246599318",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn e2e-int28-v2-1793246412778",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập e2e-int28-v2-1793246412778",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa e2e-int28-v2-1793246412778",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn e2e-int25-content-1793241125786",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập e2e-int25-content-1793241125786",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa e2e-int25-content-1793241125786",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn e2e-int25-content-1793240996627",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập e2e-int25-content-1793240996627",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa e2e-int25-content-1793240996627",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn e2e-int25-content-1793239917386",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập e2e-int25-content-1793239917386",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa e2e-int25-content-1793239917386",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn Biên tập e2e-1793239783021",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập Biên tập e2e-1793239783021",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa Biên tập e2e-1793239783021",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn e2e-1793238737337.mp4",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập e2e-1793238737337.mp4",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa e2e-1793238737337.mp4",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn Biên tập e2e-1793199801347",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập Biên tập e2e-1793199801347",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa Biên tập e2e-1793199801347",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn t4-2-1793183443822",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập t4-2-1793183443822",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa t4-2-1793183443822",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn e2e-invalid-1793183441561",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập e2e-invalid-1793183441561",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa e2e-invalid-1793183441561",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn Biên tập e2e-1793183417604",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tiến trình xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Biên tập Biên tập e2e-1793183417604",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa Biên tập e2e-1793183417604",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trang trước",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trang 1",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trang sau",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      }
+    ]
+  },
+  {
+    "screen": "queue",
+    "width": 390,
+    "bounds": {
+      "viewport": 390,
+      "body": 390
+    },
+    "controls": [
+      {
+        "tag": "BUTTON",
+        "name": "Đóng menu CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Video",
+        "disabled": false,
+        "readonly": false,
+        "href": "/videos",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Hàng đợi xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Highlight AI",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Danh mục",
+        "disabled": false,
+        "readonly": false,
+        "href": "/categories",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Phụ đề & Tóm tắt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/subtitles",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Nội dung đã xuất bản",
+        "disabled": false,
+        "readonly": false,
+        "href": "/published",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Cài đặt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/settings",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Người dùng",
+        "disabled": false,
+        "readonly": false,
+        "href": "/users",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Đăng xuất",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Mở điều hướng",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Tìm kiếm CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Tải lên",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": false
+      },
+      {
+        "tag": "A",
+        "name": "Cảnh báo hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue?status=failed",
+        "visible": false
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": false
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trạng thái hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "dz-input",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": false
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Tất cả",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Đang xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Đã xong",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lỗi",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Sắp xếp hàng đợi",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Bộ lọc trạng thái job",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem kết quả",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight?video_id=vid_dmh5o652juum",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem kết quả",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight?video_id=vid_dmh4b8ymqbtw",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem kết quả",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight?video_id=vid_dmh2bu9e6ops",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Thử lại xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xem log lỗi",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem kết quả",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight?video_id=vid_dmh2bj41ecij",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem kết quả",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight?video_id=vid_dmh2b70ee8l7",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem kết quả",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight?video_id=vid_dmh1uaq812wk",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem kết quả",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight?video_id=vid_dmh0viv345yi",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Thử lại xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xem log lỗi",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem kết quả",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight?video_id=vid_dmh0va8uxi87",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trang trước",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trang 1",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trang sau",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      }
+    ]
+  },
+  {
+    "screen": "highlight",
+    "width": 390,
+    "bounds": {
+      "viewport": 390,
+      "body": 390
+    },
+    "controls": [
+      {
+        "tag": "BUTTON",
+        "name": "Đóng menu CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Video",
+        "disabled": false,
+        "readonly": false,
+        "href": "/videos",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Hàng đợi xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Highlight AI",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Danh mục",
+        "disabled": false,
+        "readonly": false,
+        "href": "/categories",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Phụ đề & Tóm tắt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/subtitles",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Nội dung đã xuất bản",
+        "disabled": false,
+        "readonly": false,
+        "href": "/published",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Cài đặt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/settings",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Người dùng",
+        "disabled": false,
+        "readonly": false,
+        "href": "/users",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Đăng xuất",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Mở điều hướng",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Tìm kiếm CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trạng thái hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Cảnh báo hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue?status=failed",
+        "visible": false
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": false
+      },
+      {
+        "tag": "A",
+        "name": "Dự án",
+        "disabled": false,
+        "readonly": false,
+        "href": "/videos",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Tạo video tổng hợp AI",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu bản nháp",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xuất bản clip",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Chọn video đã xử lýdom_-1Is0o2ZWk0_1.mp4sample_01.mp4Tạo video chiến đấu.mp4T4.1-REAL-AI-SMOKE",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Thu nhỏ timeline",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Phóng to timeline",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "CANVAS",
+        "name": "Timeline highlight",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Bắt đầu clip",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Kết thúc clip",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Tiêu đề",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Chọn video tổng hợp",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Sắp xếp theo: Score",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      }
+    ]
+  },
+  {
+    "screen": "categories",
+    "width": 390,
+    "bounds": {
+      "viewport": 390,
+      "body": 390
+    },
+    "controls": [
+      {
+        "tag": "BUTTON",
+        "name": "Đóng menu CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Video",
+        "disabled": false,
+        "readonly": false,
+        "href": "/videos",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Hàng đợi xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Highlight AI",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Danh mục",
+        "disabled": false,
+        "readonly": false,
+        "href": "/categories",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Phụ đề & Tóm tắt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/subtitles",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Nội dung đã xuất bản",
+        "disabled": false,
+        "readonly": false,
+        "href": "/published",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Cài đặt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/settings",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Người dùng",
+        "disabled": false,
+        "readonly": false,
+        "href": "/users",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Đăng xuất",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Mở điều hướng",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Tìm kiếm CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trạng thái hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Cảnh báo hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue?status=failed",
+        "visible": false
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": false
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Thêm danh mục mới",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Sửa danh mục Giáo dục",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa danh mục Giáo dục",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Sửa danh mục Game",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa danh mục Game",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Sửa danh mục Thể thao",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa danh mục Thể thao",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Sửa danh mục Tin tức",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa danh mục Tin tức",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Sửa danh mục Ẩm thực",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa danh mục Ẩm thực",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Sửa danh mục Du lịch",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa danh mục Du lịch",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Sửa danh mục Giải trí",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa danh mục Giải trí",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Sửa danh mục Công nghệ",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa danh mục Công nghệ",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Sửa danh mục Ca nhạc",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa danh mục Ca nhạc",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Sửa danh mục Bóng đá",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa danh mục Bóng đá",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Chỉnh sửa",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Gán theo từ khóa AI",
+        "disabled": true,
+        "readonly": true,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Tải lại video gần đây",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Xem tất cả video",
+        "disabled": false,
+        "readonly": false,
+        "href": "/videos",
+        "visible": true
+      }
+    ]
+  },
+  {
+    "screen": "subtitles",
+    "width": 390,
+    "bounds": {
+      "viewport": 390,
+      "body": 390
+    },
+    "controls": [
+      {
+        "tag": "BUTTON",
+        "name": "Đóng menu CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Video",
+        "disabled": false,
+        "readonly": false,
+        "href": "/videos",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Hàng đợi xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Highlight AI",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Danh mục",
+        "disabled": false,
+        "readonly": false,
+        "href": "/categories",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Phụ đề & Tóm tắt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/subtitles",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Nội dung đã xuất bản",
+        "disabled": false,
+        "readonly": false,
+        "href": "/published",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Cài đặt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/settings",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Người dùng",
+        "disabled": false,
+        "readonly": false,
+        "href": "/users",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Đăng xuất",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Mở điều hướng",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Tìm kiếm CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Cảnh báo hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue?status=failed",
+        "visible": false
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": false
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trạng thái hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Chọn video đã xử lýdom_-1Is0o2ZWk0_1.mp4sample_01.mp4Tạo video chiến đấu.mp4T4.1-REAL-AI-SMOKE",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Tải lại phụ đề",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Tải phụ đề SRT",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Tự động cuộn theo video",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu thay đổi phụ đề",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "suggested-title",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Thử tiêu đề khác",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Chọn chuyên mụcGiáo dụcGameThể thaoTin tứcẨm thựcDu lịchGiải tríCông nghệCa nhạcBóng đá",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Đã hoãn",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "TEXTAREA",
+        "name": "video-description",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "TEXTAREA",
+        "name": "ai-summary",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Sao chép tóm tắt",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "VD: BongDa, Highlight",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Hủy thay đổi",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu bản nháp",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Duyệt nội dung",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      }
+    ]
+  },
+  {
+    "screen": "published",
+    "width": 390,
+    "bounds": {
+      "viewport": 390,
+      "body": 390
+    },
+    "controls": [
+      {
+        "tag": "BUTTON",
+        "name": "Đóng menu CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Video",
+        "disabled": false,
+        "readonly": false,
+        "href": "/videos",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Hàng đợi xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Highlight AI",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Danh mục",
+        "disabled": false,
+        "readonly": false,
+        "href": "/categories",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Phụ đề & Tóm tắt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/subtitles",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Nội dung đã xuất bản",
+        "disabled": false,
+        "readonly": false,
+        "href": "/published",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Cài đặt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/settings",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Người dùng",
+        "disabled": false,
+        "readonly": false,
+        "href": "/users",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Đăng xuất",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Mở điều hướng",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Tìm kiếm CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Tải lên video",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": false
+      },
+      {
+        "tag": "A",
+        "name": "Cảnh báo hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue?status=failed",
+        "visible": false
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": false
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trạng thái hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Bộ lọc nâng cao",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xóa hàng loạt",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Đã xuất bản (1)",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Video gốc (106)",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Clip highlight (58)",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Bản nháp (7)",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Đã ẩn (50)",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn tất cả nội dung trên trang",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Chọn Tổng hợp — dom_-1Is0o2ZWk0_1.mp4",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Xem clip Tổng hợp — dom_-1Is0o2ZWk0_1.mp4",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Sửa clip Tổng hợp — dom_-1Is0o2ZWk0_1.mp4",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Ẩn clip Tổng hợp — dom_-1Is0o2ZWk0_1.mp4",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trang trước",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trang 1",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trang sau",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      }
+    ]
+  },
+  {
+    "screen": "settings",
+    "width": 390,
+    "bounds": {
+      "viewport": 390,
+      "body": 390
+    },
+    "controls": [
+      {
+        "tag": "BUTTON",
+        "name": "Đóng menu CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Video",
+        "disabled": false,
+        "readonly": false,
+        "href": "/videos",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Hàng đợi xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Highlight AI",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Danh mục",
+        "disabled": false,
+        "readonly": false,
+        "href": "/categories",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Phụ đề & Tóm tắt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/subtitles",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Nội dung đã xuất bản",
+        "disabled": false,
+        "readonly": false,
+        "href": "/published",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Cài đặt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/settings",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Người dùng",
+        "disabled": false,
+        "readonly": false,
+        "href": "/users",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Đăng xuất",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Mở điều hướng",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Tìm kiếm CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trạng thái hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Cảnh báo hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue?status=failed",
+        "visible": false
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": false
+      },
+      {
+        "tag": "A",
+        "name": "Thông báo hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue?status=failed",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Quản lý người dùng",
+        "disabled": false,
+        "readonly": false,
+        "href": "/users",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Cài đặt chung",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Cấu hình AI",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Thông báo",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Bảo mật",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Tự động đánh dấu (Auto-highlighting)",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Tạo phụ đề tự động",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Tiếng Việt",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "ai-service-key",
+        "disabled": false,
+        "readonly": true,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "MinIO",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "storage-buckets",
+        "disabled": false,
+        "readonly": true,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Hủy bỏ",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu thay đổi",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      }
+    ]
+  },
+  {
+    "screen": "users",
+    "width": 390,
+    "bounds": {
+      "viewport": 390,
+      "body": 390
+    },
+    "controls": [
+      {
+        "tag": "BUTTON",
+        "name": "Đóng menu CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Video",
+        "disabled": false,
+        "readonly": false,
+        "href": "/videos",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Hàng đợi xử lý",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Highlight AI",
+        "disabled": false,
+        "readonly": false,
+        "href": "/highlight",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Danh mục",
+        "disabled": false,
+        "readonly": false,
+        "href": "/categories",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Phụ đề & Tóm tắt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/subtitles",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Nội dung đã xuất bản",
+        "disabled": false,
+        "readonly": false,
+        "href": "/published",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Cài đặt",
+        "disabled": false,
+        "readonly": false,
+        "href": "/settings",
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Người dùng",
+        "disabled": false,
+        "readonly": false,
+        "href": "/users",
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Đăng xuất",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Mở điều hướng",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "INPUT",
+        "name": "Tìm kiếm CMS",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trạng thái hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "A",
+        "name": "Cảnh báo hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/queue?status=failed",
+        "visible": false
+      },
+      {
+        "tag": "A",
+        "name": "Tổng quan hệ thống",
+        "disabled": false,
+        "readonly": false,
+        "href": "/dashboard",
+        "visible": false
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của khoa minh",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của e2e-1793250694773",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của e2e-1793246599318",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của e2e-1793239783021",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của e2e-1793238737337",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của e2e-1793199801347",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của e2e-1793183417604",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của e2e-1793183358544",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của e2e-1793183170748",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của e2e-1793182929851",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của e2e-1793108404239",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của e2e-1793076090577",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của e2e-int16-1793074384186-updated",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của e2e-int16-1793074378484-updated",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của int02-mock-1793074243335",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của int02-mock-1793074115012",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của int02-mock-1793014161099",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của e2e-int16-1793014072287-updated",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của e2e-int16-1793014069082-updated",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "SELECT",
+        "name": "Vai trò của e2e-int16-1793013128847-updated",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Lưu",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trang trước",
+        "disabled": true,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trang 1",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      },
+      {
+        "tag": "BUTTON",
+        "name": "Trang sau",
+        "disabled": false,
+        "readonly": false,
+        "href": null,
+        "visible": true
+      }
+    ]
+  }
+]

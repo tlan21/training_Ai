@@ -8,14 +8,15 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 
 ### INT-40 — User-requested complete CMS click audit
 - Owner: CODEX
-- Status: IN_PROGRESS (2026-10-30)
+- Status: DONE (2026-10-30; audit complete, product findings remain open)
 - T gốc: INT-05 functional/widget audit; explicit user request to use Playwright across all CMS screens.
 - Depends on: deployed CMS/gateway/real inference available; INT-38/39 checkpoints.
 - Acceptance: inventory all 11 routes and shared controls; exercise reachable buttons/forms/filters/navigation against live APIs without response mocks; use only audit-owned artifacts for destructive/publish actions; preserve original content/settings/roles; distinguish working/partial/disabled/mock/failure/untested, with per-click evidence, desktop/mobile screenshots and network/error observations. A completed audit does not mark incomplete product features DONE.
-- Files: e2e/cms_audit_live.spec.ts; coordination/codex/verification/INT-40*; owned TASKS/SESSION/HANDOFF.
-- Commits: pending.
-- Evidence: pending live Playwright run and source-to-API corroboration.
-- Next action: inventory screen controls, capture runtime/data baseline, implement/run live audit and classify each result.
+- Files: e2e/cms_audit_live.spec.ts, cms_audit_edges_live.spec.ts, cms_audit_preservation.spec.ts; coordination/codex/verification/INT-40*; owned TASKS/SESSION/HANDOFF.
+- Commits: startup dd95c4e; audit source fde502c; report/evidence and closure recorded together in this checkpoint commit.
+- Evidence: verification/INT-40.md,177 browser click events/98 observations/49PNG. Main exploratory1FAILED retained (7failed/blocked incl3harness assumptions); supplemental16observations1PASS27.6s corrects assumptions/reproduces actual bugs; final preservation1PASS2.5s; E2EtypesPASS; separate62fixtureUI/authPASS1.3m +16StitchrefsPASS22.7s. Original106videos/58clips/50users/settings/categories unchanged,13containers unchanged/AIreal6stubfalse. Own5videos deleted/3clips rejected,1audit account client retained; own category removed safely. No app/model/deploy changes.
+- Checkpoint: audit complete; INT-05 full parity/readiness NOT promoted. Flags persistence-only, ingest status mismatch, original-library q ignored, category FK404/rawSQL and dev-only auth/reset documented.
+- Next action: scope INT-41; independently fix INT-42/43/44. Conditional AI-tags/system-Highlight category not live-reachable; no fake data used for acceptance.
 
 | ID | T gốc | Tên | Status | Depends on |
 |---|---|---|---|---|
@@ -24,7 +25,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 | INT-02 | T2.5 | Thay adapter memory → Postgres (interactions/history/likes/settings) | REVIEW | INT-00 (DB); không phụ thuộc AI |
 | INT-03 | T2.5, T1.7 | Two-Tower: sandbox/ID mapping; product vectors + feed | BLOCKED | product v2 AI-12 production gate; AI-09 MovieLens sandbox only |
 | INT-04 | T3.1, T3.2 | Contract nguồn phát video gốc (OpenAPI) + nối UI | PARTIAL | INT-00 (runtime); contract có thể làm độc lập |
-| INT-05 | T3.1 | CMS Design Parity FULL | PARTIAL | 480style properties match; full widget/state audit remains |
+| INT-05 | T3.1 | CMS Design Parity FULL | PARTIAL | INT-40 live click audit complete; fixes41..44 +full visual parity remain |
 | INT-06 | T3.2 | Client Design Parity FULL | PARTIAL | production65PASS2026-10-28; API/design scope remains |
 | INT-07 | T5.1 | Load test 50 video dồn hàng đợi | BLOCKED | AI-04 (GPU); bản CPU chạy trước được |
 | INT-08 | T5.2 | Soak test 48 h | BLOCKED | INT-07 |
@@ -126,10 +127,10 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Checkpoint: Lane codex / Changed contract+players / Verified playback PASS, parity PARTIAL / Contract yes OpenAPI v0.2.0 / Next resource+scope.
 
 ### INT-05 — CMS Design Parity FULL
-- T gốc: T3.1 | Owner: CODEX | Status: PARTIAL (2026-10-28; measured typography/spacing batch verified, full widget/state audit remains)
+- T gốc: T3.1 | Owner: CODEX | Status: PARTIAL (2026-10-30; measured style history +INT-40 live click audit complete; functional gaps/full visual parity remain)
 - Depends on: INT-02; INT-04 functional playback PASS; full parity còn cần scope/resource
 - Gap (HIST `docs/T3.1_cms_design_parity.md`): nguồn phát video gốc, metadata/analytics/rules/editor fields chưa có API, Settings chưa persist.
-- NOW: settings/interactions persistence và nguồn phát đã có; original-video center controls +bounded proposal preview verified; metadata/analytics/rules/editor contract gaps còn mở.
+- NOW: settings/interactions persistence, nguồn phát, planA metadata/editor (INT-21/23), draft disclosure và exact cuts đã có. INT-40 xác minh11route/177click với backend thật. Còn flags chưa điều khiển runner, ingest/video status, original-library search, category delete errors (INT-41..44), analytics/rules/priority/tab Settings thiếu/hoãn; không coi CMS hoàn chỉnh.
 - Acceptance: checklist 10 mục `my-agent/agent/skills/ui_design_review.md` PASS toàn bộ màn (390×844, 1440×900); Playwright PASS.
 - Evidence: HIST 30 Playwright PASS 2026-10-14 | Commits: `5bc0ccf`, `b8b6dbe`, `59e92ba`, `b3ab36c`, `8cc773f` | Checkpoint: —
 - Current scope: existing API/plan03§7 CẮT-list only; baseline9screen layouts x390/1440, compare reference HTML, correct proven UI/control gaps.
@@ -561,3 +562,35 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Runtime: only gateway recreated, image int39-5ce29db/latest; same environment and live binary SHA verified/health200. CMS remains int38-43e45a1, Clientint36-c4de07e; other15containers unchanged,106videos/58clips/4original analyses unchanged/jobs0. Rollback-int39 kept, no downloads/model/source/checkpoint/schema edits.
 - Checkpoint: Lane codex / Contract touched no / Verified source+real FFmpeg+deployed binary/health/data/container audits / Next safe task existing CMS auto-toggle execution gap or remaining assigned INT-05/06 audit. No master/shared status/push.
 - Next action: newly created clips use accurate re-encoding, existing files remain intact. ASR sentence snapping/AI runtime release stays HO-04/HC-14 dependency, not claimed complete.
+
+### INT-41 — Make persisted CMS AI flags control processing
+- Owner: CODEX | Status: TODO
+- Depends on: INT-40 findings; existing Settings contract and orchestrator. No Claude model change required; scope missing ASR/summary/highlight behavior before implementation.
+- Acceptance: saved auto_highlight_enabled/auto_subtitle_enabled affect new video processing with explicit skipped-stage semantics, completed jobs and compatible UI; tests cover on/off combinations, retries and settings persistence. No fake subtitles/summary/clips. Existing media/results preserved.
+- Planned files: backend/internal/orchestrator/**, backend/cmd/gateway/pipeline.go, existing ports/settings adapters as needed, CMS copy/tests, owned evidence. Contract changes, if needed, must precede implementation in a separate task.
+- Commits/Evidence: not implemented; source evidence INT-40.md Settings section. No PASS claim.
+- Next action: trace settings-to-runner dependencies and define minimal contract-compatible skip behavior.
+
+### INT-42 — Synchronize failed ingest job and video state
+- Owner: CODEX | Status: TODO
+- Depends on: INT-40 live reproduction; existing job/video lifecycle, no AI dependency.
+- Acceptance: failed ingest makes video failed and visible in Lỗi AI; retry/cancel/deletion preserve consistent terminal states and never revive deleted media; reproduce bug before fix, meaningful lifecycle tests and isolated real CMS verification.
+- Planned files: backend/internal/orchestrator/runner.go, backend/cmd/gateway/pipeline.go and lifecycle tests; e2e/ and owned evidence as needed.
+- Commits/Evidence: not implemented; INT-40-edges/failed-job-video-status.json proves failed job/uploaded video. No PASS claim.
+- Next action: write focused failing state-transition check and fix shared terminal error path.
+
+### INT-43 — Apply library search to original-video tab
+- Owner: CODEX | Status: TODO
+- Depends on: INT-40 reproduction; existing public/CMS API unchanged.
+- Acceptance: /published?q=... Video gốc filters current-page original titles, empty state and selection/bulk-delete remain correct; page scope disclosed, clip tabs unchanged; Playwright with real/fixture data verifies query with exactly one match and no match.
+- Planned files: cms/src/pages/ClipsPage.tsx, e2e/ relevant CMS tests, owned evidence.
+- Commits/Evidence: not implemented; INT-40-edges/original-search.json shows20rows for one-match query. No PASS claim.
+- Next action: apply existing title-filter rule to original rows before mapping; test selection safety with filtering.
+
+### INT-44 — Report referenced-category deletion errors truthfully
+- Owner: CODEX | Status: TODO
+- Depends on: INT-40 FK23503 reproduction; review OpenAPI error contract before implementation.
+- Acceptance: deleting a referenced category preserves data and yields a clear business error, not CATEGORY_NOT_FOUND/raw SQL; unused delete works; test active and soft-deleted references and actual CMS toast. New response schema/status, if needed, handled contract-first.
+- Planned files: backend/internal/adapters/pg/repositories.go, backend/internal/handlers/cms/categories.go and tests; OpenAPI/generated types only after a scoped contract task if needed; owned evidence.
+- Commits/Evidence: not implemented; INT-40-edges/category-delete-error.json. No PASS claim.
+- Next action: determine existing contract-compatible conflict response and implement precise error mapping.

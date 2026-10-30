@@ -1,0 +1,22 @@
+{
+  "video": "vid_dmh5o652juum",
+  "clip": "clp_dmhwkls4s2s6",
+  "segments": [
+    {
+      "start_time": 10,
+      "end_time": 11
+    },
+    {
+      "start_time": 21,
+      "end_time": 23
+    },
+    {
+      "start_time": 25,
+      "end_time": 30
+    }
+  ],
+  "seconds": 8,
+  "proposals": 3,
+  "draft_private": true,
+  "no_new_AI_analysis": true
+}

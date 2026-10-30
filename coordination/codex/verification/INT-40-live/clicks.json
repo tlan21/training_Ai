@@ -1,0 +1,505 @@
+[
+  {
+    "id": 1,
+    "screen": "login",
+    "action": "Anonymous protected route redirects to login",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 2,
+    "screen": "login",
+    "action": "Show/hide password, remember device, editor shortcut",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 3,
+    "screen": "login",
+    "action": "Invalid credentials show real API error",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 4,
+    "screen": "login",
+    "action": "Quick administrator login, HttpOnly refresh, reload restoration",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 5,
+    "screen": "shared",
+    "action": "Health popover reads real six-model health; close button",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 6,
+    "screen": "shared",
+    "action": "Notification and dashboard navigation links",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 7,
+    "screen": "sidebar",
+    "action": "Navigate Tổng quan",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 8,
+    "screen": "sidebar",
+    "action": "Navigate Video",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 9,
+    "screen": "sidebar",
+    "action": "Navigate Hàng đợi xử lý",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 10,
+    "screen": "sidebar",
+    "action": "Navigate Highlight AI",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 11,
+    "screen": "sidebar",
+    "action": "Navigate Danh mục",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 12,
+    "screen": "sidebar",
+    "action": "Navigate Phụ đề & Tóm tắt",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 13,
+    "screen": "sidebar",
+    "action": "Navigate Nội dung đã xuất bản",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 14,
+    "screen": "sidebar",
+    "action": "Navigate Cài đặt",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 15,
+    "screen": "sidebar",
+    "action": "Navigate Người dùng",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 16,
+    "screen": "dashboard",
+    "action": "1440px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 17,
+    "screen": "videos",
+    "action": "1440px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 18,
+    "screen": "queue",
+    "action": "1440px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 19,
+    "screen": "highlight",
+    "action": "1440px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 20,
+    "screen": "categories",
+    "action": "1440px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 21,
+    "screen": "subtitles",
+    "action": "1440px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 22,
+    "screen": "published",
+    "action": "1440px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 23,
+    "screen": "settings",
+    "action": "1440px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 24,
+    "screen": "users",
+    "action": "1440px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 25,
+    "screen": "dashboard",
+    "action": "390px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 26,
+    "screen": "videos",
+    "action": "390px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 27,
+    "screen": "queue",
+    "action": "390px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 28,
+    "screen": "highlight",
+    "action": "390px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 29,
+    "screen": "categories",
+    "action": "390px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 30,
+    "screen": "subtitles",
+    "action": "390px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 31,
+    "screen": "published",
+    "action": "390px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 32,
+    "screen": "settings",
+    "action": "390px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 33,
+    "screen": "users",
+    "action": "390px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 34,
+    "screen": "shared",
+    "action": "Mobile menu open, close button, backdrop, navigation, Escape",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 35,
+    "screen": "dashboard",
+    "action": "Download actual JSON report; switch month and back",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 36,
+    "screen": "dashboard",
+    "action": "Tải video mới",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 37,
+    "screen": "dashboard",
+    "action": "Xem tất cả log",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 38,
+    "screen": "dashboard",
+    "action": "Quản lý Highlight",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 39,
+    "screen": "dashboard",
+    "action": "Tải thêm dữ liệu",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 40,
+    "screen": "dashboard",
+    "action": "Phân tích video mới",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 41,
+    "screen": "videos",
+    "action": "All status chips, date/category filters, clear and page navigation",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 42,
+    "screen": "videos",
+    "action": "Search real current page and empty state; upload link",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 43,
+    "screen": "queue",
+    "action": "File chooser, extension validation and remove selected file",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 44,
+    "screen": "categories",
+    "action": "Create form cancel/Escape; create isolated category",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 45,
+    "screen": "categories",
+    "action": "Edit/save description, search, recent refresh, disabled rule controls",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 46,
+    "screen": "queue",
+    "action": "Upload own valid video and complete real AI pipeline",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 47,
+    "screen": "videos",
+    "action": "Own row edit modal cancel; save category; open subtitle editor",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 48,
+    "screen": "queue",
+    "action": "Status chips/select, sorting, completed result link, pagination and search",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 49,
+    "screen": "highlight",
+    "action": "Video picker, real player play/pause and timeline keyboard/pointer/zoom",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 50,
+    "screen": "highlight",
+    "action": "Validate manual bounds, cut isolated clip, draft privacy and publish gate",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 51,
+    "screen": "subtitles",
+    "action": "Picker, playback, auto-scroll, reload and SRT export",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 52,
+    "screen": "subtitles",
+    "action": "Edit/save own subtitle segment and discard local changes",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 53,
+    "screen": "subtitles",
+    "action": "Draft metadata/title/category/hashtags/summary save and approve",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 54,
+    "screen": "subtitles",
+    "action": "Copy summary and cancel unsaved navigation",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 55,
+    "screen": "subtitles",
+    "action": "Thử tiêu đề khác semantics",
+    "outcome": "PARTIAL",
+    "detail": "Button regenerates summary as well as suggested title; approved summary becomes draft. Real model output, not a mock."
+  },
+  {
+    "id": 55,
+    "screen": "subtitles",
+    "action": "Regenerate actual AI draft through misleading title button; approval resets",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 57,
+    "screen": "published",
+    "action": "All library tabs, pagination, advanced video filter and row selection",
+    "outcome": "FAILED_OR_BLOCKED",
+    "detail": "TimeoutError: locator.selectOption: Timeout 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByLabel('VIDEO:', { exact: true })\u001b[22m\n"
+  },
+  {
+    "id": 58,
+    "screen": "published",
+    "action": "Search own clip, edit/save/cancel, preview actual media and close",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 59,
+    "screen": "dashboard",
+    "action": "Newest highlight edit and actual download link",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 60,
+    "screen": "published",
+    "action": "Single hide confirmation cancel then accept; public privacy",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 61,
+    "screen": "queue",
+    "action": "Invalid MP4 fails real ingest; error modal open/close and retry",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 62,
+    "screen": "users",
+    "action": "Create isolated viewer, real users pagination, self-role disabled",
+    "outcome": "FAILED_OR_BLOCKED",
+    "detail": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeDisabled\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('row').filter({ hasText: 'Tài khoản của bạn' }).locator('select')\nExpected: disabled\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeDisabled\" getByRole('row').filter({ hasText: 'Tài khoản của bạn' }).locator('select') with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('row').filter({ hasText: 'Tài khoản của bạn' }).locator('select')\u001b[22m\n"
+  },
+  {
+    "id": 63,
+    "screen": "users",
+    "action": "Change own audit viewer role to editor and verify reload persistence",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 64,
+    "screen": "users",
+    "action": "Editor guard hides admin navigation and rejects direct admin APIs",
+    "outcome": "FAILED_OR_BLOCKED",
+    "detail": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m403\u001b[39m\nReceived: \u001b[31m200\u001b[39m"
+  },
+  {
+    "id": 65,
+    "screen": "settings",
+    "action": "Disabled tabs/read-only server config, cancel toggles, save/reload/restore",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 66,
+    "screen": "settings",
+    "action": "Settings header notifications/user links",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 67,
+    "screen": "settings",
+    "action": "AI toggles runtime execution",
+    "outcome": "PARTIAL",
+    "detail": "Real PostgreSQL persistence verified. Runner is not wired to read these flags; this audit restores them immediately and does not expose other uploads to a changed configuration. PARTIAL, not an AI execution control."
+  },
+  {
+    "id": 68,
+    "screen": "highlight",
+    "action": "Accept/dismiss persistence",
+    "outcome": "PARTIAL",
+    "detail": "Accept only selects local trim bounds; dismiss only hides the local proposal. Neither writes an approval record; both reset on reload. No original analysis modified."
+  },
+  {
+    "id": 68,
+    "screen": "highlight",
+    "action": "Existing real proposals: sort, preview exact stop, accept selects only, dismiss",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 70,
+    "screen": "published",
+    "action": "Bulk hide audit-owned selection only",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 71,
+    "screen": "videos",
+    "action": "Delete own failed video: cancel dialog, accept and verify deleted",
+    "outcome": "FAILED_OR_BLOCKED",
+    "detail": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"\u001b[7mfail\u001b[27med\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mupload\u001b[27med\"\u001b[39m"
+  },
+  {
+    "id": 72,
+    "screen": "videos",
+    "action": "Bulk delete own valid video; public results hidden",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 73,
+    "screen": "categories",
+    "action": "Delete audit-owned unused category with confirmation",
+    "outcome": "FAILED_OR_BLOCKED",
+    "detail": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m204\u001b[39m\nReceived: \u001b[31m404\u001b[39m"
+  },
+  {
+    "id": 74,
+    "screen": "login",
+    "action": "Logout clears protected session",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 75,
+    "screen": "forgot-password",
+    "action": "Reset delivery",
+    "outcome": "DEV_ONLY",
+    "detail": "Development reset token returned directly by API; memory reset repository, no real email delivery. Deferred INT-10, not production-ready."
+  },
+  {
+    "id": 75,
+    "screen": "forgot-password",
+    "action": "Existing deferred dev reset flow on own test account only",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 77,
+    "screen": "cleanup",
+    "action": "Restore exact original settings",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 78,
+    "screen": "cleanup",
+    "action": "Delete own video vid_dmhwhmvrl44a",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 79,
+    "screen": "cleanup",
+    "action": "Delete own video vid_dmhwi3j1kdin",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 80,
+    "screen": "cleanup",
+    "action": "Delete own category cat_5c529649d7de468f9273a87ca83eb597",
+    "outcome": "FAILED_OR_BLOCKED",
+    "detail": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m204\u001b[39m\nReceived: \u001b[31m404\u001b[39m"
+  },
+  {
+    "id": 81,
+    "screen": "cleanup",
+    "action": "Leave own audit account as client; no user-delete API",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 82,
+    "screen": "preservation",
+    "action": "All original video/clip/category/settings/user API rows unchanged",
+    "outcome": "FAILED_OR_BLOCKED",
+    "detail": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[33m@@ -1,7 +1,7 @@\u001b[39m\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"categories\": \"37f68d83820975f7512afeb394568b55f4353f0c9e14539661d702b69f41f2c5\",\u001b[39m\n\u001b[31m+   \"categories\": \"e194d6128fc4fe2eac1d5eb1e312876cccd731872e918d168e3a37bec3c7f854\",\u001b[39m\n\u001b[2m    \"clipCount\": 58,\u001b[22m\n\u001b[2m    \"clips\": \"45ddc285b56ac103b6914e9c8a74d11bacfc1622218967aefb1b95ac9997bad1\",\u001b[22m\n\u001b[2m    \"settings\": \"3c0254ea79ca3d5f37ad05c0036557de16bf52204a07381b4d7f72177fed3a49\",\u001b[22m\n\u001b[2m    \"userCount\": 50,\u001b[22m\n\u001b[2m    \"users\": \"994f8d09bd33569c38beb365dc0071976b66ea61b41568559c3cee0fa6bbc1fb\",\u001b[22m"
+  }
+]

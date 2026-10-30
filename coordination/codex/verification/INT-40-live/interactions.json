@@ -1,0 +1,878 @@
+[
+  {
+    "screen": "/login",
+    "tag": "BUTTON",
+    "control": "Hiện mật khẩu",
+    "type": "button"
+  },
+  {
+    "screen": "/login",
+    "tag": "BUTTON",
+    "control": "Ẩn mật khẩu",
+    "type": "button"
+  },
+  {
+    "screen": "/login",
+    "tag": "INPUT",
+    "control": "",
+    "type": "checkbox"
+  },
+  {
+    "screen": "/login",
+    "tag": "BUTTON",
+    "control": "Biên tập viên",
+    "type": null
+  },
+  {
+    "screen": "/login",
+    "tag": "BUTTON",
+    "control": "Đăng nhập",
+    "type": null
+  },
+  {
+    "screen": "/login",
+    "tag": "BUTTON",
+    "control": "Quản trị viên",
+    "type": null
+  },
+  {
+    "screen": "/dashboard",
+    "tag": "BUTTON",
+    "control": "Trạng thái hệ thống",
+    "type": null
+  },
+  {
+    "screen": "/dashboard",
+    "tag": "BUTTON",
+    "control": "Đóng",
+    "type": null
+  },
+  {
+    "screen": "/dashboard",
+    "tag": "A",
+    "control": "Cảnh báo hệ thống",
+    "type": null
+  },
+  {
+    "screen": "/queue",
+    "tag": "A",
+    "control": "Tổng quan hệ thống",
+    "type": null
+  },
+  {
+    "screen": "/dashboard",
+    "tag": "A",
+    "control": "Tổng quan",
+    "type": null
+  },
+  {
+    "screen": "/dashboard",
+    "tag": "A",
+    "control": "Video",
+    "type": null
+  },
+  {
+    "screen": "/videos",
+    "tag": "A",
+    "control": "Hàng đợi xử lý",
+    "type": null
+  },
+  {
+    "screen": "/queue",
+    "tag": "A",
+    "control": "Highlight AI",
+    "type": null
+  },
+  {
+    "screen": "/highlight",
+    "tag": "A",
+    "control": "Danh mục",
+    "type": null
+  },
+  {
+    "screen": "/categories",
+    "tag": "A",
+    "control": "Phụ đề & Tóm tắt",
+    "type": null
+  },
+  {
+    "screen": "/subtitles",
+    "tag": "A",
+    "control": "Nội dung đã xuất bản",
+    "type": null
+  },
+  {
+    "screen": "/published",
+    "tag": "A",
+    "control": "Cài đặt",
+    "type": null
+  },
+  {
+    "screen": "/settings",
+    "tag": "A",
+    "control": "Người dùng",
+    "type": null
+  },
+  {
+    "screen": "/users",
+    "tag": "BUTTON",
+    "control": "Mở điều hướng",
+    "type": null
+  },
+  {
+    "screen": "/users",
+    "tag": "BUTTON",
+    "control": "Đóng menu CMS",
+    "type": null
+  },
+  {
+    "screen": "/users",
+    "tag": "BUTTON",
+    "control": "Mở điều hướng",
+    "type": null
+  },
+  {
+    "screen": "/users",
+    "tag": "BUTTON",
+    "control": "Đóng điều hướng",
+    "type": null
+  },
+  {
+    "screen": "/users",
+    "tag": "BUTTON",
+    "control": "Mở điều hướng",
+    "type": null
+  },
+  {
+    "screen": "/users",
+    "tag": "A",
+    "control": "Video",
+    "type": null
+  },
+  {
+    "screen": "/videos",
+    "tag": "BUTTON",
+    "control": "Mở điều hướng",
+    "type": null
+  },
+  {
+    "screen": "/dashboard",
+    "tag": "BUTTON",
+    "control": "Tải báo cáo",
+    "type": null
+  },
+  {
+    "screen": "/dashboard",
+    "tag": "A",
+    "control": "Tải video mới",
+    "type": null
+  },
+  {
+    "screen": "/dashboard",
+    "tag": "A",
+    "control": "Xem tất cả log",
+    "type": null
+  },
+  {
+    "screen": "/dashboard",
+    "tag": "A",
+    "control": "Quản lý Highlight",
+    "type": null
+  },
+  {
+    "screen": "/dashboard",
+    "tag": "A",
+    "control": "Tải thêm dữ liệu",
+    "type": null
+  },
+  {
+    "screen": "/dashboard",
+    "tag": "A",
+    "control": "Phân tích video mới",
+    "type": null
+  },
+  {
+    "screen": "/videos",
+    "tag": "BUTTON",
+    "control": "Đã duyệt",
+    "type": null
+  },
+  {
+    "screen": "/videos",
+    "tag": "BUTTON",
+    "control": "Đang xử lý",
+    "type": null
+  },
+  {
+    "screen": "/videos",
+    "tag": "BUTTON",
+    "control": "Lỗi AI",
+    "type": null
+  },
+  {
+    "screen": "/videos",
+    "tag": "BUTTON",
+    "control": "Tất cả",
+    "type": null
+  },
+  {
+    "screen": "/videos",
+    "tag": "BUTTON",
+    "control": "Xóa bộ lọc",
+    "type": null
+  },
+  {
+    "screen": "/videos",
+    "tag": "BUTTON",
+    "control": "Trang sau",
+    "type": null
+  },
+  {
+    "screen": "/videos",
+    "tag": "BUTTON",
+    "control": "Trang trước",
+    "type": null
+  },
+  {
+    "screen": "/videos",
+    "tag": "INPUT",
+    "control": "Chọn tất cả video trên trang",
+    "type": "checkbox"
+  },
+  {
+    "screen": "/videos",
+    "tag": "INPUT",
+    "control": "Chọn tất cả video trên trang",
+    "type": "checkbox"
+  },
+  {
+    "screen": "/videos",
+    "tag": "A",
+    "control": "Tải lên video",
+    "type": null
+  },
+  {
+    "screen": "/queue",
+    "tag": "DIV",
+    "control": "Chọn hoặc kéo thả video",
+    "type": null
+  },
+  {
+    "screen": "/queue",
+    "tag": "INPUT",
+    "control": "dz-input",
+    "type": "file"
+  },
+  {
+    "screen": "/queue",
+    "tag": "BUTTON",
+    "control": "Bỏ tệp đã chọn",
+    "type": null
+  },
+  {
+    "screen": "/categories",
+    "tag": "BUTTON",
+    "control": "Thêm danh mục mới",
+    "type": null
+  },
+  {
+    "screen": "/categories",
+    "tag": "BUTTON",
+    "control": "Hủy",
+    "type": "button"
+  },
+  {
+    "screen": "/categories",
+    "tag": "BUTTON",
+    "control": "Thêm danh mục mới",
+    "type": null
+  },
+  {
+    "screen": "/categories",
+    "tag": "BUTTON",
+    "control": "Thêm danh mục mới",
+    "type": null
+  },
+  {
+    "screen": "/categories",
+    "tag": "BUTTON",
+    "control": "Lưu",
+    "type": null
+  },
+  {
+    "screen": "/categories",
+    "tag": "BUTTON",
+    "control": "Sửa danh mục INT40-1793335785078",
+    "type": null
+  },
+  {
+    "screen": "/categories",
+    "tag": "BUTTON",
+    "control": "Lưu",
+    "type": null
+  },
+  {
+    "screen": "/categories",
+    "tag": "BUTTON",
+    "control": "Tải lại video gần đây",
+    "type": null
+  },
+  {
+    "screen": "/queue",
+    "tag": "BUTTON",
+    "control": "Tải lên",
+    "type": null
+  },
+  {
+    "screen": "/videos",
+    "tag": "BUTTON",
+    "control": "Biên tập INT40-1793335785078-valid.mp4",
+    "type": null
+  },
+  {
+    "screen": "/videos",
+    "tag": "BUTTON",
+    "control": "Hủy",
+    "type": null
+  },
+  {
+    "screen": "/videos",
+    "tag": "BUTTON",
+    "control": "Biên tập INT40-1793335785078-valid.mp4",
+    "type": null
+  },
+  {
+    "screen": "/videos",
+    "tag": "BUTTON",
+    "control": "Xác nhận danh mục",
+    "type": null
+  },
+  {
+    "screen": "/videos",
+    "tag": "BUTTON",
+    "control": "Biên tập INT40-1793335785078-valid.mp4",
+    "type": null
+  },
+  {
+    "screen": "/videos",
+    "tag": "A",
+    "control": "Phụ đề & Tóm tắt",
+    "type": null
+  },
+  {
+    "screen": "/queue",
+    "tag": "BUTTON",
+    "control": "Đang xử lý",
+    "type": null
+  },
+  {
+    "screen": "/queue",
+    "tag": "BUTTON",
+    "control": "Đã xong",
+    "type": null
+  },
+  {
+    "screen": "/queue",
+    "tag": "BUTTON",
+    "control": "Lỗi",
+    "type": null
+  },
+  {
+    "screen": "/queue",
+    "tag": "BUTTON",
+    "control": "Tất cả",
+    "type": null
+  },
+  {
+    "screen": "/queue",
+    "tag": "BUTTON",
+    "control": "Trang sau",
+    "type": null
+  },
+  {
+    "screen": "/queue",
+    "tag": "BUTTON",
+    "control": "Trang trước",
+    "type": null
+  },
+  {
+    "screen": "/queue",
+    "tag": "A",
+    "control": "Xem kết quả",
+    "type": null
+  },
+  {
+    "screen": "/highlight",
+    "tag": "BUTTON",
+    "control": "Phát video",
+    "type": null
+  },
+  {
+    "screen": "/highlight",
+    "tag": "BUTTON",
+    "control": "Tạm dừng video",
+    "type": null
+  },
+  {
+    "screen": "/highlight",
+    "tag": "CANVAS",
+    "control": "Timeline highlight",
+    "type": null
+  },
+  {
+    "screen": "/highlight",
+    "tag": "BUTTON",
+    "control": "Phóng to timeline",
+    "type": null
+  },
+  {
+    "screen": "/highlight",
+    "tag": "BUTTON",
+    "control": "Thu nhỏ timeline",
+    "type": null
+  },
+  {
+    "screen": "/highlight",
+    "tag": "BUTTON",
+    "control": "Sắp xếp theo: Score",
+    "type": null
+  },
+  {
+    "screen": "/highlight",
+    "tag": "BUTTON",
+    "control": "Sắp xếp theo: Thời gian",
+    "type": null
+  },
+  {
+    "screen": "/highlight",
+    "tag": "BUTTON",
+    "control": "Lưu bản nháp",
+    "type": null
+  },
+  {
+    "screen": "/highlight",
+    "tag": "BUTTON",
+    "control": "Xuất bản clip",
+    "type": null
+  },
+  {
+    "screen": "/subtitles",
+    "tag": "BUTTON",
+    "control": "Phát video",
+    "type": null
+  },
+  {
+    "screen": "/subtitles",
+    "tag": "BUTTON",
+    "control": "Tạm dừng video",
+    "type": null
+  },
+  {
+    "screen": "/subtitles",
+    "tag": "INPUT",
+    "control": "Tự động cuộn theo video",
+    "type": "checkbox"
+  },
+  {
+    "screen": "/subtitles",
+    "tag": "INPUT",
+    "control": "Tự động cuộn theo video",
+    "type": "checkbox"
+  },
+  {
+    "screen": "/subtitles",
+    "tag": "BUTTON",
+    "control": "Tải lại phụ đề",
+    "type": null
+  },
+  {
+    "screen": "/subtitles",
+    "tag": "BUTTON",
+    "control": "Tải phụ đề SRT",
+    "type": null
+  },
+  {
+    "screen": "/subtitles",
+    "tag": "BUTTON",
+    "control": "00:00 – 00:08",
+    "type": null
+  },
+  {
+    "screen": "/subtitles",
+    "tag": "BUTTON",
+    "control": "Lưu thay đổi phụ đề",
+    "type": null
+  },
+  {
+    "screen": "/subtitles",
+    "tag": "BUTTON",
+    "control": "Hủy thay đổi",
+    "type": null
+  },
+  {
+    "screen": "/subtitles",
+    "tag": "BUTTON",
+    "control": "Lưu bản nháp",
+    "type": null
+  },
+  {
+    "screen": "/subtitles",
+    "tag": "BUTTON",
+    "control": "Duyệt nội dung",
+    "type": null
+  },
+  {
+    "screen": "/subtitles",
+    "tag": "BUTTON",
+    "control": "Sao chép tóm tắt",
+    "type": null
+  },
+  {
+    "screen": "/subtitles",
+    "tag": "A",
+    "control": "Video",
+    "type": null
+  },
+  {
+    "screen": "/subtitles",
+    "tag": "BUTTON",
+    "control": "Hủy thay đổi",
+    "type": null
+  },
+  {
+    "screen": "/subtitles",
+    "tag": "BUTTON",
+    "control": "Thử tiêu đề khác",
+    "type": null
+  },
+  {
+    "screen": "/published",
+    "tag": "BUTTON",
+    "control": "Video gốc (107)",
+    "type": null
+  },
+  {
+    "screen": "/published",
+    "tag": "BUTTON",
+    "control": "Clip highlight (59)",
+    "type": null
+  },
+  {
+    "screen": "/published",
+    "tag": "BUTTON",
+    "control": "Bản nháp (7)",
+    "type": null
+  },
+  {
+    "screen": "/published",
+    "tag": "BUTTON",
+    "control": "Đã ẩn (50)",
+    "type": null
+  },
+  {
+    "screen": "/published",
+    "tag": "BUTTON",
+    "control": "Đã xuất bản (2)",
+    "type": null
+  },
+  {
+    "screen": "/published",
+    "tag": "BUTTON",
+    "control": "Bộ lọc nâng cao",
+    "type": null
+  },
+  {
+    "screen": "/published",
+    "tag": "BUTTON",
+    "control": "Sửa clip INT40-1793335785078-clip",
+    "type": null
+  },
+  {
+    "screen": "/published",
+    "tag": "BUTTON",
+    "control": "Hủy",
+    "type": "button"
+  },
+  {
+    "screen": "/published",
+    "tag": "BUTTON",
+    "control": "Sửa clip INT40-1793335785078-clip",
+    "type": null
+  },
+  {
+    "screen": "/published",
+    "tag": "BUTTON",
+    "control": "Lưu",
+    "type": null
+  },
+  {
+    "screen": "/published",
+    "tag": "BUTTON",
+    "control": "Xem clip INT40-1793335785078-renamed",
+    "type": null
+  },
+  {
+    "screen": "/published",
+    "tag": "BUTTON",
+    "control": "Đóng",
+    "type": null
+  },
+  {
+    "screen": "/dashboard",
+    "tag": "BUTTON",
+    "control": "Mở tải clip INT40-1793335785078-renamed",
+    "type": null
+  },
+  {
+    "screen": "/dashboard",
+    "tag": "A",
+    "control": "Biên tập highlight",
+    "type": null
+  },
+  {
+    "screen": "/published",
+    "tag": "BUTTON",
+    "control": "Ẩn clip INT40-1793335785078-renamed",
+    "type": null
+  },
+  {
+    "screen": "/published",
+    "tag": "BUTTON",
+    "control": "Ẩn clip INT40-1793335785078-renamed",
+    "type": null
+  },
+  {
+    "screen": "/published",
+    "tag": "BUTTON",
+    "control": "Đã ẩn (51)",
+    "type": null
+  },
+  {
+    "screen": "/queue",
+    "tag": "BUTTON",
+    "control": "Tải lên",
+    "type": null
+  },
+  {
+    "screen": "/queue",
+    "tag": "BUTTON",
+    "control": "Xem log lỗi",
+    "type": null
+  },
+  {
+    "screen": "/queue",
+    "tag": "BUTTON",
+    "control": "Đóng",
+    "type": null
+  },
+  {
+    "screen": "/queue",
+    "tag": "BUTTON",
+    "control": "Thử lại xử lý",
+    "type": null
+  },
+  {
+    "screen": "/users",
+    "tag": "BUTTON",
+    "control": "Lưu",
+    "type": null
+  },
+  {
+    "screen": "/login",
+    "tag": "BUTTON",
+    "control": "Đăng nhập",
+    "type": null
+  },
+  {
+    "screen": "/settings",
+    "tag": "INPUT",
+    "control": "Tự động đánh dấu (Auto-highlighting)",
+    "type": "checkbox"
+  },
+  {
+    "screen": "/settings",
+    "tag": "INPUT",
+    "control": "Tạo phụ đề tự động",
+    "type": "checkbox"
+  },
+  {
+    "screen": "/settings",
+    "tag": "BUTTON",
+    "control": "Hủy bỏ",
+    "type": "button"
+  },
+  {
+    "screen": "/settings",
+    "tag": "INPUT",
+    "control": "Tự động đánh dấu (Auto-highlighting)",
+    "type": "checkbox"
+  },
+  {
+    "screen": "/settings",
+    "tag": "INPUT",
+    "control": "Tạo phụ đề tự động",
+    "type": "checkbox"
+  },
+  {
+    "screen": "/settings",
+    "tag": "BUTTON",
+    "control": "Lưu thay đổi",
+    "type": null
+  },
+  {
+    "screen": "/settings",
+    "tag": "INPUT",
+    "control": "Tự động đánh dấu (Auto-highlighting)",
+    "type": "checkbox"
+  },
+  {
+    "screen": "/settings",
+    "tag": "INPUT",
+    "control": "Tạo phụ đề tự động",
+    "type": "checkbox"
+  },
+  {
+    "screen": "/settings",
+    "tag": "BUTTON",
+    "control": "Lưu thay đổi",
+    "type": null
+  },
+  {
+    "screen": "/settings",
+    "tag": "A",
+    "control": "Thông báo hệ thống",
+    "type": null
+  },
+  {
+    "screen": "/settings",
+    "tag": "A",
+    "control": "Quản lý người dùng",
+    "type": null
+  },
+  {
+    "screen": "/highlight",
+    "tag": "BUTTON",
+    "control": "Sắp xếp theo: Score",
+    "type": null
+  },
+  {
+    "screen": "/highlight",
+    "tag": "BUTTON",
+    "control": "Sắp xếp theo: Thời gian",
+    "type": null
+  },
+  {
+    "screen": "/highlight",
+    "tag": "BUTTON",
+    "control": "Chấp nhận",
+    "type": null
+  },
+  {
+    "screen": "/highlight",
+    "tag": "BUTTON",
+    "control": "Xem trước",
+    "type": null
+  },
+  {
+    "screen": "/highlight",
+    "tag": "BUTTON",
+    "control": "Bỏ gợi ý 3",
+    "type": null
+  },
+  {
+    "screen": "/highlight",
+    "tag": "BUTTON",
+    "control": "Lưu bản nháp",
+    "type": null
+  },
+  {
+    "screen": "/published",
+    "tag": "BUTTON",
+    "control": "Bản nháp (8)",
+    "type": null
+  },
+  {
+    "screen": "/published",
+    "tag": "BUTTON",
+    "control": "Xuất bản INT40-1793335785078-bulk",
+    "type": null
+  },
+  {
+    "screen": "/published",
+    "tag": "BUTTON",
+    "control": "Đã xuất bản (2)",
+    "type": null
+  },
+  {
+    "screen": "/published",
+    "tag": "INPUT",
+    "control": "Chọn INT40-1793335785078-bulk",
+    "type": "checkbox"
+  },
+  {
+    "screen": "/published",
+    "tag": "BUTTON",
+    "control": "Xóa hàng loạt",
+    "type": null
+  },
+  {
+    "screen": "/videos",
+    "tag": "BUTTON",
+    "control": "Xóa INT40-1793335785078-invalid.mp4",
+    "type": null
+  },
+  {
+    "screen": "/videos",
+    "tag": "INPUT",
+    "control": "Chọn INT40-1793335785078-edited",
+    "type": "checkbox"
+  },
+  {
+    "screen": "/videos",
+    "tag": "BUTTON",
+    "control": "Xóa 1 video",
+    "type": null
+  },
+  {
+    "screen": "/categories",
+    "tag": "BUTTON",
+    "control": "Xóa danh mục INT40-1793335785078",
+    "type": null
+  },
+  {
+    "screen": "/categories",
+    "tag": "BUTTON",
+    "control": "Xóa danh mục INT40-1793335785078",
+    "type": null
+  },
+  {
+    "screen": "/categories",
+    "tag": "BUTTON",
+    "control": "Đăng xuất",
+    "type": null
+  },
+  {
+    "screen": "/login",
+    "tag": "A",
+    "control": "Quên mật khẩu?",
+    "type": null
+  },
+  {
+    "screen": "/forgot-password",
+    "tag": "BUTTON",
+    "control": "Gửi yêu cầu",
+    "type": null
+  },
+  {
+    "screen": "/forgot-password",
+    "tag": "BUTTON",
+    "control": "Đặt lại mật khẩu",
+    "type": null
+  },
+  {
+    "screen": "/forgot-password",
+    "tag": "A",
+    "control": "Quay lại đăng nhập",
+    "type": null
+  }
+]

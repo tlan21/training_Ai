@@ -1,0 +1,7 @@
+{
+  "status": 404,
+  "error": {
+    "code": "CATEGORY_NOT_FOUND",
+    "message": "ERROR: update or delete on table \"categories\" violates foreign key constraint \"videos_category_id_fkey\" on table \"videos\" (SQLSTATE 23503)"
+  }
+}
