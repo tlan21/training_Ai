@@ -1,0 +1,5 @@
+round7 {"k": 9, "tau": 0.51, "news_test_f1": 0.0238, "news_test_f1_new_channels": 0.0771, "news_test_f1_seen_channels": 0.0, "news_test_f1_own_tau_INFO": 0.2866, "news_own_tau_INFO": 0.03, "soccer_test_f1": 0.3298}
+round8_x10 {"k": 9, "tau": 0.51, "news_test_f1": 0.1205, "news_test_f1_new_channels": 0.0, "news_test_f1_seen_channels": 0.1667, "news_test_f1_own_tau_INFO": 0.3214, "news_own_tau_INFO": 0.05, "soccer_test_f1": 0.3222}
+bootstrap {"point": 0.09665379665379667, "ci95": [-0.05348615090735435, 0.23844731977818853], "p_delta_le_0": 0.1475, "p_delta_ge_0.05": 0.705}
+DECISION: SWITCH to round 8 x10
+exit 0

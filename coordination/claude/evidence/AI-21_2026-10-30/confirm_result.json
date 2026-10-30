@@ -1,0 +1,46 @@
+{
+ "registered": {
+  "news_gain_min": 0.05,
+  "soccer_drop_max": 0.01
+ },
+ "videos": {
+  "-NVYudDYCLQ": "seen_channel",
+  "c46Liq1aP1s": "new_channel",
+  "cMN-OAoQiCw": "seen_channel",
+  "UN2srxcqpa8": "new_channel",
+  "vAhqmmmqKHg": "seen_channel",
+  "ViEjwRu-j3o": "seen_channel",
+  "W0U-UheMYOk": "seen_channel",
+  "XMgP3vcO-C8": "seen_channel"
+ },
+ "round7": {
+  "k": 9,
+  "tau": 0.51,
+  "news_test_f1": 0.023809523809523808,
+  "news_test_f1_new_channels": 0.07713498622589533,
+  "news_test_f1_seen_channels": 0.0,
+  "news_test_f1_own_tau_INFO": 0.28656407603776024,
+  "news_own_tau_INFO": 0.03,
+  "soccer_test_f1": 0.3297942063179971
+ },
+ "round8_x10": {
+  "k": 9,
+  "tau": 0.51,
+  "news_test_f1": 0.12046332046332048,
+  "news_test_f1_new_channels": 0.0,
+  "news_test_f1_seen_channels": 0.16666666666666666,
+  "news_test_f1_own_tau_INFO": 0.3213961097982185,
+  "news_own_tau_INFO": 0.05,
+  "soccer_test_f1": 0.3222438076736279
+ },
+ "accept_x10": true,
+ "news_delta_bootstrap": {
+  "point": 0.09665379665379667,
+  "ci95": [
+   -0.05348615090735435,
+   0.23844731977818853
+  ],
+  "p_delta_le_0": 0.1475,
+  "p_delta_ge_0.05": 0.705
+ }
+}

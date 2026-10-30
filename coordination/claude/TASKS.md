@@ -21,7 +21,7 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | AI-18 | T1.5 | Fusion vòng 7: giảm overfit bằng lr/weight decay/lịch ngắn; thay vòng 6 chỉ khi val ≥ 0.3053, gap < 0.1692, val loss < 1.2136 | REVIEW (2026-10-29; vòng 7 ACTIVE theo lệnh user; chờ release) | AI-17 |
 | AI-19 | T1.5 | (a) SỬA lỗi đặc trưng vision cho highlight (serve ViT ≠ train Siamese backbone); (b) dữ liệu tin tức 10 video gốc: feature + đề xuất + trang gán nhãn người → vòng 8 | DONE (2026-10-30; fix vision + nhãn tin tức đã intake) | user 2026-10-29 |
 | AI-20 | T1.5 | Fusion vòng 8: bóng đá + tin tức (nhãn người), lặp tin tức ×1/×10/×30; thay vòng 7 chỉ khi val tin tức +0.05 và giữ bóng đá | DONE (2026-10-30; quy tắc → GIỮ vòng 7; ×10 hứa hẹn, cần dữ liệu tin tức độc lập) | AI-19 |
-| AI-21 | T1.5 | Xác nhận vòng 8 ×10 trên test tin tức độc lập (kênh mới, nhãn mù); đổi khi test tin tức +0.05 và bóng đá ≥ −0.01 | IN_PROGRESS (2026-10-30) | AI-20; user 2026-10-30 (hướng 1) |
+| AI-21 | T1.5 | Xác nhận vòng 8 ×10 trên test tin tức độc lập (kênh mới, nhãn mù); đổi khi test tin tức +0.05 và bóng đá ≥ −0.01 | REVIEW (2026-10-30; quy tắc → chuyển ×10; hiệu quả yếu, CI chứa 0; chờ user quyết kích hoạt) | AI-20; user 2026-10-30 (hướng 1) |
 | AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | BLOCKED ⇐ bundle INT-13 (phần độc lập xong 2026-10-26) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | DONE (2026-10-26; sandbox + artifact; product → AI-12 theo D18) | HC-04 (sandbox READY) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a DONE (2026-10-27) · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
@@ -204,11 +204,13 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   ```
 
 ### AI-21 — Xác nhận vòng 8 ×10 trên test tin tức độc lập
-- T gốc: T1.5 | Owner: claude | Status: IN_PROGRESS (2026-10-30)
+- T gốc: T1.5 | Owner: claude | Status: REVIEW (2026-10-30) — quy tắc đạt (tin tức +0.097, bóng đá −0.008) nhưng CI [−0.05, +0.24], dưới mốc đoán-bừa; chờ user
 - Depends on: AI-20 (×10 thỏa mọi ngưỡng riêng lẻ nhưng không được chọn theo quy tắc cũ) | user chọn hướng 1 (2026-10-30)
 - Quy tắc đăng ký trước: `.claude/evaluation_plan.md` §2.1 "Xác nhận vòng 8 ×10". Ứng viên cố định; nhãn test mù; test tin tức chấm 1 lần.
 - Việc: tìm + tải 6–10 video CC BY kênh mới (yt-dlp, giữ provenance/SHA) → feature đường production → trang gán nhãn MÙ → user gán → intake → chấm.
-- Evidence: — | Commits: — | Checkpoint: —
+- Evidence (VERIFIED-NOW 2026-10-30, `coordination/claude/evidence/AI-21_2026-10-30/`): test tin tức vòng 7 0.024 / ×10 0.121 (mốc đoán-bừa 0.281);
+  kênh mới ×10 0.0; bóng đá 0.3298 → 0.3222; bootstrap CI95 Δ [−0.053, +0.238]. Quy tắc → chuyển; hiệu quả chưa vững.
+- Commits: ad79d0d, 10a38d3, f95da24, b56a824, (kết quả: commit này) | Checkpoint: chờ user quyết kích hoạt ×10
 
 ### AI-20 — Fusion vòng 8: bóng đá + tin tức có nhãn người
 - T gốc: T1.5 | Owner: claude | Status: DONE (2026-10-30) — theo quy tắc đăng ký: GIỮ vòng 7 (thắng ×1 trượt gap 0.224 > 0.1706)
