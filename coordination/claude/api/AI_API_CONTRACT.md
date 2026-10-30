@@ -1,6 +1,6 @@
 # AI API Contract — inference-service :8001
 
-**Version: AI-API v1.3 (2026-10-26) — release #3.** v1.3 chỉ đổi recommendation (vẫn `DRAFT`, D18/D20); 6 endpoint `API_READY` của v1.2 không đổi. Tương thích ngược được khóa bằng `inference-service/tests/test_contract_compat.py` (so với snapshot `inference_openapi_v1.2.json`). Owner: Claude. Codex chỉ đọc
+**Version: AI-API v1.4 (2026-10-30) — release #5.** v1.4 chỉ THÊM field (highlight: `asr_segments` tùy chọn, `clip_threshold`) + sửa lỗi `embeddings_256` (backbone Siamese) + model highlight vòng 8 ×10; 6 endpoint `API_READY` không đổi path/field bắt buộc. Tương thích ngược khóa bằng `inference-service/tests/test_contract_compat.py` (snapshot v1.2 + v1.3). v2.0 `DRAFT` song song: `AI_API_CONTRACT_V2.md`. Owner: Claude. Codex chỉ đọc
 (`git show claude/ai-core:coordination/claude/api/AI_API_CONTRACT.md`, hoặc bản trên `master` sau release).
 **AI-API v2.0 `DRAFT` (D24, 2026-10-29):** `AI_API_CONTRACT_V2.md` — `/v2` chỉ tính toán, Backend sở hữu MinIO/Milvus; chạy song song, v1.3 dưới đây không đổi.
 Nguồn code: `inference-service/app/schemas.py`, `app/main.py`, `app/services.py`, `app/visual_index.py` trên `claude/ai-core` (AI-01).
@@ -159,7 +159,7 @@ Req: `{"model"?: str, "video_id": str, "features": {"vision_embeddings": [[float
   Sai → 503 `AI_UNAVAILABLE` (không phải 422).
 Resp: `{"id","object":"highlight_completion","created","model","video_id","timeline_scores":[{"second":int,"score":0–100}],"recommended_clips":[{"clip_id","start_time","end_time","average_score":0–100}]}`
 - `second` bắt đầu từ 0, liên tục; clip đề xuất = đoạn liên tiếp có score > 75 (có thể rỗng).
-- **v1.4-rc1 (DRAFT, AI-16, 2026-10-29 — chưa hiệu lực cho tới release):**
+- **v1.4 (AI-16…AI-21; release #5 2026-10-30):**
   - Resp thêm `"clip_threshold": float` (0–100) = ngưỡng AI đã dùng để cắt `recommended_clips` (vòng 6: 50; không recipe: 75). UI vẽ vạch ngưỡng heatmap theo giá trị này.
   - Req thêm tùy chọn `"asr_segments": [{"start_time","end_time"}, ...]` (segment `/v1/asr` của cùng video; field thừa bị bỏ qua) →
     biên clip nằm giữa câu được đẩy ra mép câu nếu cách ≤ 3 s. Không gửi = như cũ.
@@ -212,6 +212,7 @@ Resp: `{"status":"ok","gpu_vram_used": MB,"gpu_util": %,"models_loaded":[...],"d
   `/health` tự thử lại dependency chưa `ok` tối đa mỗi 30 s → trạng thái tự phục hồi khi Milvus/collection được sửa. `FORCE_STUB=1` → `{}`.
 
 ## 3. Changelog
+- **v1.4 (2026-10-30)** — release #5: gom các mục v1.4-rc1 bên dưới (AI-16…AI-21); recommendation vẫn DRAFT; v2.0 vẫn DRAFT (chờ RE:HC-13).
 - **v1.4-rc1 — sửa lỗi 2026-10-29 (AI-19):** `embeddings_256` của `/v1/vision` (và `/v2/vision`) giờ là embedding **backbone Siamese** — đúng đặc trưng Fusion đã được train (`extract_vit_embeddings` + siamese md5 `9d2f670f`). Trước đó là embedding ViT phân loại (cosine 0.03–0.13 với đặc trưng train) → highlight production nhận đầu vào lệch phân bố từ AI-01. Schema không đổi; giá trị đổi; `category_suggestion` không đổi.
 - **v1.4-rc1 DRAFT (2026-10-29, AI-17)** — highlight response thêm `clip_threshold` (chỉ thêm field).
 - **v1.4-rc1 DRAFT (2026-10-29, AI-16)** — highlight: `asr_segments` tùy chọn; hỗ trợ recipe `postproc.json`; đề xuất đổi Fusion sang vòng 5 (chờ duyệt). Không đổi path/field bắt buộc.

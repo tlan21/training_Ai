@@ -379,3 +379,11 @@ job queue) sở hữu toàn bộ dữ liệu. AI phía Claude đã xong (REL tr�
   Schema không đổi. Test bóng đá 0.322 (vòng 7 0.330). Tin tức: tốt hơn vòng 7 trên kênh quen, nhưng **video tin tức kênh mới gần như vẫn 0 clip**
   (giới hạn ghi trong contract §2.3) — E2E tiếp tục chấp nhận 0 clip; HC-15 (thông báo 0 clip + "chỉ tham khảo") càng cần.
 - Rollback: Claude chép lại `ai-core/checkpoints/_archive/highlight_fusion_round7_550909de/`.
+
+## 2026-10-30 REL #5 — làn AI lên `master` (AI-API **v1.4**; v2.0 DRAFT song song)
+- Contract v1.4 (chỉ thêm field: highlight `asr_segments` tùy chọn, `clip_threshold`); sửa lỗi `embeddings_256` = backbone Siamese; highlight = Fusion vòng 8 ×10
+  (`5aecd5c4…` + 3 file recipe, contract §1). 6 endpoint `/v1` `API_READY` không đổi path/field bắt buộc; recommendation DRAFT.
+- AI-API v2.0 DRAFT (`AI_API_CONTRACT_V2.md`) + facade/worker (D24 bước 1). Kiến trúc đích D24 ghi trong `PROJECT_STATUS.md` (D24–D26) và `kien_truc_va_thuat_toan_ai.md` §6.4.
+- Gate: ai-core 319; inference 81/10 skip (compat v1.2 + v1.3); smoke :8001 9/9 (v1 + v2, media thật) + 401; 6 checkpoint SHA = contract.
+- Việc Codex còn mở: HC-13 (chuyển sang /v2 + backend sở hữu MinIO/Milvus), HC-14 (`asr_segments`, FFmpeg cắt chính xác), HC-15 (CMS ngưỡng/0 clip/ghi chú),
+  chạy lại highlight cho video xử lý trước 2026-10-29. Codex `git merge master` khi tiện.

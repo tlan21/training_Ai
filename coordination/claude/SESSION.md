@@ -7,7 +7,7 @@ Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên 
 - **AI-17 REVIEW:** vòng 6 ACTIVE trên :8001 (PID 27064). Rollback `_archive/highlight_fusion_round5_34199b68/`.
 - **AI-18 REVIEW:** vòng 7 ACTIVE trên :8001 (rollback `_archive/highlight_fusion_round6_9b59a7b0/`).
 - **AI-19 DONE / AI-20 DONE (giữ vòng 7).** :8001 PID 19884 (vòng 7 active).
-- **AI-21 REVIEW (2026-10-30):** vòng 8 ×10 ACTIVE trên :8001 PID 19220 (rollback `_archive/highlight_fusion_round7_550909de/`). Chờ release.
+- **Release #5 (2026-10-30):** làn AI lên master (AI-API v1.4 + v2.0 DRAFT, D24–D26). :8001 PID 19220 = vòng 8 ×10. Còn mở: AI-15 ⇐ RE:HC-13; AI-12 ⇐ INT-15; AI-04 ⇐ RTX 3060; AI-05.
   mở `D:/data_training_ai/highlight_news_v1/label_news.html` → xuất `highlight_news_labels.json` → Claude chạy
   `dist/kaggle/kernel-fusion-r8/intake_news_labels.py` → đăng ký + train vòng 8 (bóng đá + tin tức).
   **Runtime :8001 UP PID 15852** (code AI-15: /v1 + /v2, worker cùng tiến trình); gateway Codex trỏ :8001 thật. Dataset Kaggle `ai-model-worker-v1` uploaded, kernel chưa push.
