@@ -474,6 +474,8 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - Đợt #1 (2026-10-26, user uỷ quyền tự quyết): **DONE** — xóa 6 mục REGENERABLE trên D:, giải phóng 5,530,226,688 byte
   (D: 1.22 → 6.75 GB); ai-core 285 PASS, inference 37 PASS/1 skip, SHA 6 checkpoint không đổi, server :8891 HTTP 200.
   Manifest + kết quả: `coordination/claude/cleanup/CLEANUP_2026-10-26.md`. Task vẫn TODO cho các đợt sau.
+- Đợt #2 (2026-10-30, user duyệt 4 nhóm): **DONE** — xóa 4 parquet gốc công khai có checksum (tin tức + FLEURS train/val) + 4 thư mục scratch
+  `D:/tmp`; D: 0.84 → 7.1 GB; ai-core 319, inference 81/10, 6 checkpoint SHA khớp, manifest path 0 thiếu. `coordination/claude/cleanup/CLEANUP_2026-10-30.md`.
 - Evidence: VERIFIED-NOW 2026-10-26 (đợt #1, xem manifest) | Commits: `a5f340f` (manifest trước khi xóa) + commit kết quả | Checkpoint: SESSION.md
 
 ### AI-06 — Xác minh nguồn checkpoint + thang sẵn sàng 6 model (ƯU TIÊN 1)
