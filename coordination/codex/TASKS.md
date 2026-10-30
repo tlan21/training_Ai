@@ -129,7 +129,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
   Original preview stops at proposal end; manual seek cancels boundary; center play/pause keyboard/404 errors tested. Production QA5174 stopped; CMS5173 not replaced.
 - Follow-up: player/proposal HH:MM:SS, subtitle media progress track/thumb, proposal header57px/action32px/pill spacing corrected.
   Final build/tsc/E2Etypes PASS; 5targeted browser checks PASS11.7s; paired current screenshots refreshed. Commits: f601958 +follow-up in git history.
-- Next action: remaining full-page10item comparison; full CMS parity and missing fields still need contract/scope decisions. Client QA confirmation remains pending.
+- Next action: remaining full-page10item comparison; full CMS parity and missing fields still need contract/scope decisions. Client production QA already verified in INT-26/32/35; do not repeat as an approval blocker.
 - Comparison checkpoint: all8Stitch screens x2viewports16reference captures PASS57.0s;36paired/baseline/current PNG +16metrics JSON preserved.
   verification/INT-05.md records concrete per-screen spacing/font/toolbar gaps and contract blockers. No full parityPASS inferred from screenshots; next action is the listed existing-API corrections.
 
@@ -241,7 +241,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
   live optional fallback then final primary popularity +restart/persistence/media/privacy PASS. Full-screen parity NOT_PASS (INT-06);
   live browser localhost8000 auth times out, IPv4/CMS proxy good (INT-16). No real personalized or AI pipeline claim.
 - Commits:0a86a14 contract;02001e0 implementation. INT-16 subsequently verified live Client proxy/session/feed.
-- Next action: INT-16 Client same-origin proxy, then liveClient mode/session verification; full parityINT-06. Existing single-page feed pagination remains unfinished.
+- Next action: Pagination and same-origin transport verified in INT-14 pagination checkpoint/INT-16 and subsequent live E2E; no remaining pagination implementation. Remaining task scope is full INT-06 parity.
 - Checkpoint: Lane codex / Changed MVP mode+metadata / Verified Go+PG+FE/mode+business checks / Contract public0.3 / Next INT-16.
 - Pagination acceptance: primary popularity feed and newest/trending category catalog return bounded Postgres cursor pages, stable tuple ordering/fixed ranking cutoff,
   no duplicates/skips on unchanged data, zero-interaction cold content remains reachable, current private/deleted content excluded, exhaustion null;
@@ -370,7 +370,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
  No AI/source/checkpoint/model/runtime/contract change, old-video backfill, datastoredown/volume deletion, master/shared-status edit or push.
 - Next action: INT-05 remaining approved visual parity; INT-06 library/forgot-link decisions remain pending.
 ### INT-24 — HC-12: machine subtitle drafts and summary approval
-- Owner: CODEX | Status: REVIEW (2026-10-29; source and production QA acceptance passed, not rolled to existing product UI images)
+- Owner: CODEX | Status: REVIEW (2026-10-29; source/production QA verified; Client/CMS subsequently deployed under INT-32/35 (historical deployment note reconciled 2026-10-30))
 - Dependency: HC-12/D23/user approval; current public0.4.0/AI-APIv1.3 unchanged; renewed exact QA3100 authorization resolved previous blocker.
 - Acceptance: summary hidden before admin approval; explicit CMS/Client machine subtitle draft notices and downloads; existing edit/save/reload;
  no invented official subtitle approval status; builds/types and responsive browser/actual editorial approval evidence.
@@ -523,3 +523,17 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Preservation: original106video/58clip hashes unchanged, jobs0; other15containers and hostAI27064 unchanged; DockerAIreal6, no model/source/data/contract edits. No master/shared status/push; global INT-06 remains PARTIAL.
 - Checkpoint: Lane codex / Changed discovery grid sizing + meaningful image regression tests / Verified source, reference, actual deployed UI, runtime/data / Contract touched no / Next safe task remaining assigned INT-05/06 scope.
 - Next action: user Ctrl+F5 localhost3000/discover; no further implementation for this screenshot bug.
+
+### INT-37 — HC-15 product threshold metadata contract
+- Owner: CODEX | Status: IN_PROGRESS (2026-10-30)
+- Depends on: Claude HC-15/AI-API v1.4-rc1 additive response clip_threshold (DRAFT); current public0.5.0 and existing CMS analysis/settings endpoints.
+- Acceptance: nullable reported clip_threshold in CmsAnalysis with0..100 bounds; legacy missing metadata remains unknown; clarify legacy Settings threshold not an AI control; regenerate Go/CMS/Client types and schema/type checks PASS. No new endpoint or AI contract edit.
+- Changed: planned infra/openapi.yaml, generated types/spec test, owned coordination.
+- Commits: startup follows. Evidence: pending. Next action: contract first, then INT-38.
+
+### INT-38 — HC-15 truthful CMS threshold, zero proposals and reference-only scope
+- Owner: CODEX | Status: TODO
+- Depends on: INT-37; existing AI client/analysis store, CMS highlight/settings. Real new-model rollout remains Claude release/runtime dependency.
+- Acceptance: persist reported AI threshold atomically with scores/clips, distinguish null/0, validate untrusted AI bounds; CMS heatmap uses reported threshold and labels legacy unknown; Settings HC-15(b) no misleading adjustable AI threshold; zero proposals is valid/manual save still works; notice for non-football/<120s. Go+Mongo roundtrip+CMS types/build+390/1440 Playwright, real deployed legacy compatibility; no forced model upgrade/reprocessing original videos.
+- Changed: planned backend domain/ports/AIHTTP/Mongo/mock/orchestrator/CMS DTO, CMS highlight/settings, tests and owned evidence.
+- Commits: pending. Evidence: pending. Next action: implement backward-compatible flow after contract checkpoint; new response field DRAFT cannot be promoted INTEGRATED_REAL before Claude/master release.

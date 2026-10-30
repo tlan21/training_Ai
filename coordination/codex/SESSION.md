@@ -1,5 +1,9 @@
 # SESSION — authoritative resume state (2026-10-29, INT-36 discovery frames deployed)
 
+2026-10-30 startup: branch codex/integration clean/no HEAD..master delta; Release#4/master26c2346 present (includes earlier releases). README/AGENTS, authoritative session/tasks, master/status and latest Claude handoff/AI contract read. INT-36 complete, not repeated. GPU/load/soak remain blocked; review/release gates are not TODO implementation. Latest HC-15 requests threshold metadata, truthful Settings, zero-clips and scope notice; AI-19 reports older vision features wrong. Do not upgrade Docker AI or overwrite old analysis/reprocess videos under this task.
+
+INT-37 IN_PROGRESS contract first (public CmsAnalysis.clip_threshold nullable0..100, clarify legacy Settings threshold), INT-38 TODO implementation. Choose explicit HC-15(b): model-owned threshold disclosure instead of a nonfunctional AI slider; do not hardcode50/51. New reported threshold optional/backward-compatible, existing analysis remains unknown. Skill backend_endpoint + Ponytail. Next generate/schema/type-check contract, then implement/persist/verify CMS and legacy real runtime compatibility. New v1.4 field DRAFT is not INTEGRATED_REAL until Claude release.
+
 - INT-36 DONE scoped discovery screenshot bug. Startup **22dcc32**, source **c4de07e**, final evidence checkpoint follows. CSS-only runtime change, no HTML/API/data/model edits.
 - Real square thumbnails expanded grid children beyond520px (914.7px; portrait2696.1px), overlapping following sections. Bounded minmax rows/columns +min-size0 restore main520px/side248px with24px gap; mobile16:9/square unchanged.
 - Verification: before4FAIL/5PASS; fixed9image shapes/viewports +2fresh Stitch references **11PASS14.1s**; existingClient/player/timeline **72PASS1.2m**; realAPI/MinIO deployedClient3000 **3PASS15.0s** (390/1440/1903), screenshots inspected. Client webpack build/types/lint and E2Etypes PASS.
