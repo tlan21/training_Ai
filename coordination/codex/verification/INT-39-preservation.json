@@ -1,0 +1,54 @@
+{
+  "docker_ai": {
+    "status": "ok",
+    "gpu_vram_used": 0.0,
+    "gpu_util": 0.0,
+    "models_loaded": [
+      "asr_ctc",
+      "highlight_fusion",
+      "minigpt",
+      "siamese",
+      "two_tower",
+      "vit"
+    ],
+    "degraded": [],
+    "dependencies": {
+      "recommendation_index": "missing_collection",
+      "visual_index": "ok"
+    },
+    "queue_depth": 0,
+    "device": "cpu",
+    "stub_mode": false,
+    "load_error": null
+  },
+  "qa5174_closed": true,
+  "other_15_containers_unchanged": true,
+  "host_ai_pids": [],
+  "active_jobs": "0",
+  "services": [
+    {
+      "name": "/video-ai-gateway-1",
+      "health": "healthy",
+      "image": "video-ai-gateway:int39-5ce29db"
+    },
+    {
+      "name": "/video-ai-cms-1",
+      "health": "healthy",
+      "image": "video-ai-cms:int38-43e45a1"
+    },
+    {
+      "name": "/video-ai-client-1",
+      "health": "healthy",
+      "image": "video-ai-client:int36-c4de07e"
+    },
+    {
+      "name": "/video-ai-inference-service-1",
+      "health": "healthy",
+      "image": "video-ai-inference:ai-v2-478052e"
+    }
+  ],
+  "original_clip_rows_hash": "clips|58|9186844a706846cea3a6c3b8a17a6a67",
+  "original_analyses_unchanged": 4,
+  "original_video_rows_hash": "videos|106|41e538d83f6b7f6d73faa03ae214c62e",
+  "no_mock_container": true
+}

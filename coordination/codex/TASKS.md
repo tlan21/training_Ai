@@ -541,8 +541,12 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Next action: wait Claude v1.4 release/current AI runtime feature parity for real reported-threshold verification (HO-04). DRAFT field tested with HTTP fixtures and real Mongo, existing product data remains unknown; no INTEGRATED_REAL/DONE promotion. Existing Settings auto-toggle execution wiring is separate/unresolved.
 
 ### INT-39 — HC-14 precise single-clip cutting
-- Owner: CODEX | Status: IN_PROGRESS (2026-10-30)
+- Owner: CODEX | Status: DONE (2026-10-30; backend cut precision only, not complete HC-14 sentence snapping)
 - Depends on: existing INT-35 exact trim/concat implementation; no model/AI field dependency. Start after INT-38 deployment checkpoint.
 - Acceptance: normal single-range clips accurately retain requested frame range/duration±0.1s with audio/silent input, reuse existing re-encode path, bound processing time; preserve source offsets, clip storage/status and original media. Native Go gates + actual gateway FFmpeg binary tests. ASR sentence snapping/AI rollout remains separate.
-- Changed: planned backend cutter + meaningful real FFmpeg test and owned evidence; no endpoint/DB schema/AI code edit.
-- Commits: pending. Evidence: pending. Next action: replace legacy stream-copy with existing precise trim path, verify actual frames/duration, deploy gateway only.
+- Changed: backend/internal/cutter/{cutter.go,compilation.go,compilation_test.go}; owned backend subplan, tracker/session/handoff/evidence.
+- Commits: **8979a49** start/checkpoint; **5ce29db** source/tests. Evidence: verification/INT-39.md +native gates, actual FFmpeg before/fixed logs, deployment/preservation JSON.
+- Verified: before testFAIL (requested1.840s, stream-copy2.040s); final Go vet/test/build PASS; actual gateway FFmpeg **4cases PASS3.58s**, single audio/silent1.840s, compilation audio/silent2.000s, retained RGB frames MAE<15, SAR4:3 preserved. Disposable generated media only, no product upload/clip creation/recut.
+- Runtime: only gateway recreated, image int39-5ce29db/latest; same environment and live binary SHA verified/health200. CMS remains int38-43e45a1, Clientint36-c4de07e; other15containers unchanged,106videos/58clips/4original analyses unchanged/jobs0. Rollback-int39 kept, no downloads/model/source/checkpoint/schema edits.
+- Checkpoint: Lane codex / Contract touched no / Verified source+real FFmpeg+deployed binary/health/data/container audits / Next safe task existing CMS auto-toggle execution gap or remaining assigned INT-05/06 audit. No master/shared status/push.
+- Next action: newly created clips use accurate re-encoding, existing files remain intact. ASR sentence snapping/AI runtime release stays HO-04/HC-14 dependency, not claimed complete.
