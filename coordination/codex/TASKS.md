@@ -7,12 +7,14 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 ## Tổng quan
 
 ### INT-45 — Settings deep functional re-audit requested by user
-- Owner: CODEX | Status: IN_PROGRESS (2026-10-30)
+- Owner: CODEX | Status: DONE (2026-10-30; audit only, Settings remains PARTIAL)
 - Depends on: INT-40 findings, deployed CMS/gateway/AI; no other IN_PROGRESS task. User requests a deeper Settings audit, not implementation of INT-41.
 - Acceptance: enumerate every Settings tab/control; real click/readonly/disabled/save/reset/unsaved-navigation/refresh/permission proof at390/1440; save all4AI flag combinations and process only owned short video under each combination while monitoring other active jobs; restore original settings/roles, remove own media, preserve originals/runtime. Separate real persistence, actual execution, static placeholders, unsupported tabs and untested failure paths. No response mocks, no model/AI source/deployment changes.
 - Planned files: e2e/cms_settings_deep_live.spec.ts; coordination/codex/verification/INT-45*; owned tracker/session/handoff.
-- Evidence/Commits: pending. INT-41 remains TODO, not implemented by an audit.
-- Next action: capture baseline and run detailed Settings UI/API/runtime matrix, then report exact capability of each control.
+- Files: e2e/cms_settings_deep_live.spec.ts, e2e/cms_settings_faults.spec.ts; coordination/codex/verification/INT-45*; owned tracker/session/handoff.
+- Evidence/Commits: startup12b6bcf/source51ebd0b; final evidence and closure committed with this checkpoint. verification/INT-45.md. Final1PASS53.6s/13livegroups +4browserGET/PUTfaultsPASS14.3s, E2EtypesPASS. All4flag combinations yield8scores/1ASRsegment;16DockerAIHTTP200calls prove vision/asr/highlight/completions still run when disabled. Settings flags held until processed, restored eachcase. First1FAILED due2harness assumptions archived, corrected/full rerunPASS; no product change.8ownedvideos across2runs all deleted, no newusers/clips; preexisting111videos/61clips/settingsvaluehashes/51userAPIrows/categories unchanged;13containers unchanged/real6stubfalse/queue0.
+- Checkpoint: detailed per-control report distinguishes3unsupportedtabs,2persist-onlyflags, readonlyserverkey, fixedbucketlist missingthumbnails, unsavedloss, pending/error/retry/permissions and desktophidden/mobilehealth. INT-41 remains TODO, not implemented by an audit.
+- Next action: implement INT-41 after compatible skipped-stage semantics are scoped; do not mark Settings functional or auto-add new tabs/providers/model controls.
 
 ### INT-40 — User-requested complete CMS click audit
 - Owner: CODEX
@@ -576,7 +578,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Depends on: INT-40 findings; existing Settings contract and orchestrator. No Claude model change required; scope missing ASR/summary/highlight behavior before implementation.
 - Acceptance: saved auto_highlight_enabled/auto_subtitle_enabled affect new video processing with explicit skipped-stage semantics, completed jobs and compatible UI; tests cover on/off combinations, retries and settings persistence. No fake subtitles/summary/clips. Existing media/results preserved.
 - Planned files: backend/internal/orchestrator/**, backend/cmd/gateway/pipeline.go, existing ports/settings adapters as needed, CMS copy/tests, owned evidence. Contract changes, if needed, must precede implementation in a separate task.
-- Commits/Evidence: not implemented; source evidence INT-40.md Settings section. No PASS claim.
+- Commits/Evidence: not implemented; INT-45 now proves actual runtime in4combinations: flagsfalse still invokes real highlight/ASR,8scores/1segment each;16HTTP200calls across4videos, flags held until processed. See verification/INT-45.md and INT-45-runtime-matrix-proof.json; earlier INT-40 persistence/source evidence retained. No implementation PASS claim.
 - Next action: trace settings-to-runner dependencies and define minimal contract-compatible skip behavior.
 
 ### INT-42 — Synchronize failed ingest job and video state

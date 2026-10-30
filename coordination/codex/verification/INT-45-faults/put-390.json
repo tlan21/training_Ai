@@ -1,0 +1,12 @@
+{
+  "operation": "PUT",
+  "width": 390,
+  "browserOnlyBlockedURL": true,
+  "responseMocking": false,
+  "serverStopped": false,
+  "transportFailures": [
+    "inspector"
+  ],
+  "originalSettingsUnchanged": true,
+  "recovery": "draft retained after failed save, reset locally without DB mutation"
+}

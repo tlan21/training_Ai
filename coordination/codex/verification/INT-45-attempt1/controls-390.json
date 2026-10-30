@@ -1,0 +1,100 @@
+[
+  {
+    "name": "Thông báo hệ thống",
+    "tag": "A",
+    "disabled": false,
+    "readOnly": false,
+    "title": null
+  },
+  {
+    "name": "Quản lý người dùng",
+    "tag": "A",
+    "disabled": false,
+    "readOnly": false,
+    "title": null
+  },
+  {
+    "name": "Cài đặt chung",
+    "tag": "BUTTON",
+    "disabled": true,
+    "readOnly": false,
+    "title": "Chưa hỗ trợ cấu hình mục này"
+  },
+  {
+    "name": "Cấu hình AI",
+    "tag": "BUTTON",
+    "disabled": false,
+    "readOnly": false,
+    "title": null
+  },
+  {
+    "name": "Thông báo",
+    "tag": "BUTTON",
+    "disabled": true,
+    "readOnly": false,
+    "title": "Chưa hỗ trợ cấu hình mục này"
+  },
+  {
+    "name": "Bảo mật",
+    "tag": "BUTTON",
+    "disabled": true,
+    "readOnly": false,
+    "title": "Chưa hỗ trợ cấu hình mục này"
+  },
+  {
+    "name": "Tự động đánh dấu (Auto-highlighting)",
+    "tag": "INPUT",
+    "disabled": false,
+    "readOnly": false,
+    "title": null
+  },
+  {
+    "name": "Tạo phụ đề tự động",
+    "tag": "INPUT",
+    "disabled": false,
+    "readOnly": false,
+    "title": null
+  },
+  {
+    "name": "subtitle-language",
+    "tag": "SELECT",
+    "disabled": true,
+    "readOnly": false,
+    "title": null
+  },
+  {
+    "name": "ai-service-key",
+    "tag": "INPUT",
+    "disabled": false,
+    "readOnly": true,
+    "title": "Key được cấu hình trên máy chủ"
+  },
+  {
+    "name": "storage-provider",
+    "tag": "SELECT",
+    "disabled": true,
+    "readOnly": false,
+    "title": null
+  },
+  {
+    "name": "storage-buckets",
+    "tag": "INPUT",
+    "disabled": false,
+    "readOnly": true,
+    "title": null
+  },
+  {
+    "name": "Hủy bỏ",
+    "tag": "BUTTON",
+    "disabled": false,
+    "readOnly": false,
+    "title": null
+  },
+  {
+    "name": "Lưu thay đổi",
+    "tag": "BUTTON",
+    "disabled": false,
+    "readOnly": false,
+    "title": null
+  }
+]

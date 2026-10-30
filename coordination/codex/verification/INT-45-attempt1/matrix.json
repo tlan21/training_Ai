@@ -1,0 +1,78 @@
+[
+  {
+    "video_id": "vid_dmhxiisg0uiw",
+    "started": "2026-10-30T05:38:22.014Z",
+    "completed": "2026-10-30T05:38:32.136Z",
+    "flagsHeldUntilProcessed": {
+      "auto_highlight_enabled": true,
+      "auto_subtitle_enabled": true
+    },
+    "timelineScores": 8,
+    "recommendedClips": 0,
+    "clip_threshold": null,
+    "subtitleSegments": 1,
+    "summaryCharacters": 0,
+    "summary_status": "draft",
+    "observedHighlightRan": true,
+    "observedASRRan": true,
+    "observedSummaryRan": false,
+    "fixture": "synthetic8s-tone-not-model-quality-evidence"
+  },
+  {
+    "video_id": "vid_dmhxinvp08ej",
+    "started": "2026-10-30T05:38:33.127Z",
+    "completed": "2026-10-30T05:38:42.162Z",
+    "flagsHeldUntilProcessed": {
+      "auto_highlight_enabled": false,
+      "auto_subtitle_enabled": true
+    },
+    "timelineScores": 8,
+    "recommendedClips": 0,
+    "clip_threshold": null,
+    "subtitleSegments": 1,
+    "summaryCharacters": 0,
+    "summary_status": "draft",
+    "observedHighlightRan": true,
+    "observedASRRan": true,
+    "observedSummaryRan": false,
+    "fixture": "synthetic8s-tone-not-model-quality-evidence"
+  },
+  {
+    "video_id": "vid_dmhxisbsuwea",
+    "started": "2026-10-30T05:38:42.859Z",
+    "completed": "2026-10-30T05:38:50.613Z",
+    "flagsHeldUntilProcessed": {
+      "auto_highlight_enabled": true,
+      "auto_subtitle_enabled": false
+    },
+    "timelineScores": 8,
+    "recommendedClips": 0,
+    "clip_threshold": null,
+    "subtitleSegments": 1,
+    "summaryCharacters": 0,
+    "summary_status": "draft",
+    "observedHighlightRan": true,
+    "observedASRRan": true,
+    "observedSummaryRan": false,
+    "fixture": "synthetic8s-tone-not-model-quality-evidence"
+  },
+  {
+    "video_id": "vid_dmhxiweewfzj",
+    "started": "2026-10-30T05:38:51.631Z",
+    "completed": "2026-10-30T05:39:00.520Z",
+    "flagsHeldUntilProcessed": {
+      "auto_highlight_enabled": false,
+      "auto_subtitle_enabled": false
+    },
+    "timelineScores": 8,
+    "recommendedClips": 0,
+    "clip_threshold": null,
+    "subtitleSegments": 1,
+    "summaryCharacters": 0,
+    "summary_status": "draft",
+    "observedHighlightRan": true,
+    "observedASRRan": true,
+    "observedSummaryRan": false,
+    "fixture": "synthetic8s-tone-not-model-quality-evidence"
+  }
+]

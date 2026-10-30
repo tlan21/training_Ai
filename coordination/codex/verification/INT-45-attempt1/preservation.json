@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "before": {
+    "videos": "bf7ced13d859ecd13d8d025430edd4d10330fbb3e83917a711dbd1ef69fcfa14",
+    "clips": "ec2fc586d4fd8e636f5738d33d477f90f39a4b9e793e2aa2e31279578afd0c09",
+    "users": "aeb867c8087380265c4ced418b6bcd8ed9d1c1bfdac698b02722a2d57eaac272",
+    "categories": "37f68d83820975f7512afeb394568b55f4353f0c9e14539661d702b69f41f2c5",
+    "settings": "3c0254ea79ca3d5f37ad05c0036557de16bf52204a07381b4d7f72177fed3a49",
+    "videoCount": 111,
+    "clipCount": 61,
+    "userCount": 51
+  },
+  "after": {
+    "videos": "bf7ced13d859ecd13d8d025430edd4d10330fbb3e83917a711dbd1ef69fcfa14",
+    "clips": "ec2fc586d4fd8e636f5738d33d477f90f39a4b9e793e2aa2e31279578afd0c09",
+    "users": "aeb867c8087380265c4ced418b6bcd8ed9d1c1bfdac698b02722a2d57eaac272",
+    "categories": "37f68d83820975f7512afeb394568b55f4353f0c9e14539661d702b69f41f2c5",
+    "settings": "3c0254ea79ca3d5f37ad05c0036557de16bf52204a07381b4d7f72177fed3a49",
+    "videoCount": 111,
+    "clipCount": 61,
+    "userCount": 51
+  },
+  "deletedAuditVideos": [
+    "vid_dmhxiisg0uiw",
+    "vid_dmhxinvp08ej",
+    "vid_dmhxisbsuwea",
+    "vid_dmhxiweewfzj"
+  ],
+  "noNewUserOrClip": true,
+  "settingsRestored": true
+}

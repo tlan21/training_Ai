@@ -1,0 +1,13 @@
+{
+  "gatewayImage": "video-ai-gateway:int39-5ce29db",
+  "inferenceImage": "video-ai-inference:ai-v2-478052e",
+  "gatewayKeyPresent": true,
+  "serviceKeysMatch": true,
+  "aiBase": [
+    "AI_BASE_URL=http://inference-service:8001"
+  ],
+  "allowStub": [
+    "AI_ALLOW_STUB=0"
+  ],
+  "secretsPrinted": false
+}

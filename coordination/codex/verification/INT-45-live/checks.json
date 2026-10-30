@@ -1,0 +1,54 @@
+[
+  {
+    "action": "1440px every tab, static/readonly field, button and explanatory text",
+    "result": "VERIFIED"
+  },
+  {
+    "action": "390px every tab, static/readonly field, button and explanatory text",
+    "result": "VERIFIED"
+  },
+  {
+    "action": "Unsaved toggles: Huy resets locally without PUT; reload loses unsaved edits",
+    "result": "VERIFIED"
+  },
+  {
+    "action": "Unsaved navigation: no confirmation and draft setting discarded",
+    "result": "VERIFIED"
+  },
+  {
+    "action": "Real pending PUT: saving spinner and both action buttons disabled, payload only2flags, reload persistence",
+    "result": "VERIFIED"
+  },
+  {
+    "action": "Actual runtime: highlight=true, subtitle=true",
+    "result": "VERIFIED"
+  },
+  {
+    "action": "Actual runtime: highlight=false, subtitle=true",
+    "result": "VERIFIED"
+  },
+  {
+    "action": "Actual runtime: highlight=true, subtitle=false",
+    "result": "VERIFIED"
+  },
+  {
+    "action": "Actual runtime: highlight=false, subtitle=false",
+    "result": "VERIFIED"
+  },
+  {
+    "action": "Settings header notification/user navigation and real health popover",
+    "result": "VERIFIED"
+  },
+  {
+    "action": "Editor/client permissions vs Settings tab; no new account and role restored",
+    "result": "VERIFIED"
+  },
+  {
+    "action": "Restore original settings, existing audit user role and terminal own media",
+    "result": "VERIFIED"
+  },
+  {
+    "action": "All pre-existing API rows/settings/categories/users preserved",
+    "result": "VERIFIED"
+  }
+]

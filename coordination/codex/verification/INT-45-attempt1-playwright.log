@@ -1,0 +1,70 @@
+
+Running 1 test using 1 worker
+
+(node:14904) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+{"checks":13,"failed":2,"matrixCases":4,"ownedVideos":4,"clicks":28,"noResponseMocks":true,"output":"E:\\traning_ai-codex\\coordination\\codex\\verification\\INT-45-live"}
+  x  1 e2e\cms_settings_deep_live.spec.ts:16:5 › INT-45 every Settings control and four actual AI execution combinations (1.1m)
+
+
+  1) e2e\cms_settings_deep_live.spec.ts:16:5 › INT-45 every Settings control and four actual AI execution combinations
+
+    Error: Audit observations and preservation must finish
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 18
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "action": "Settings header notification/user navigation and real health popover",
+    +     "detail": "TimeoutError: locator.click: Timeout 8000ms exceeded.
+    + Call log:
+    +   - waiting for getByRole('button', { name: 'Trạng thái hệ thống', exact: true })
+    + ",
+    +     "result": "FAILED_OR_BLOCKED",
+    +   },
+    +   Object {
+    +     "action": "Editor/client permissions vs Settings tab; no new account and role restored",
+    +     "detail": "TimeoutError: locator.fill: Timeout 8000ms exceeded.
+    + Call log:
+    +   - waiting for getByLabel('Tên đăng nhập hoặc Email')
+    + ",
+    +     "result": "FAILED_OR_BLOCKED",
+    +   },
+    + ]
+
+      167 |     save(); console.log(JSON.stringify({ checks: checks.length, failed: checks.filter(c => c.result !== 'VERIFIED').length, matrixCases: matrix.length, ownedVideos: own.videos.length, clicks: clicks.length, noResponseMocks: true, output }));
+      168 |   }
+    > 169 |   expect(checks.filter(c => c.result !== 'VERIFIED'), 'Audit observations and preservation must finish').toEqual([]); expect(matrix).toHaveLength(4);
+          |                                                                                                          ^
+      170 | });
+      171 |
+        at E:\traning_ai-codex\e2e\cms_settings_deep_live.spec.ts:169:106
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\int45-settings\cms_settings_deep_live-INT-d6da0-l-AI-execution-combinations\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\int45-settings\cms_settings_deep_live-INT-d6da0-l-AI-execution-combinations\test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\int45-settings\cms_settings_deep_live-INT-d6da0-l-AI-execution-combinations\test-failed-3.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\int45-settings\cms_settings_deep_live-INT-d6da0-l-AI-execution-combinations\error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\int45-settings\cms_settings_deep_live-INT-d6da0-l-AI-execution-combinations\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\int45-settings\cms_settings_deep_live-INT-d6da0-l-AI-execution-combinations\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    e2e\cms_settings_deep_live.spec.ts:16:5 › INT-45 every Settings control and four actual AI execution combinations

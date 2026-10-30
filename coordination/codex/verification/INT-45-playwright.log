@@ -1,0 +1,9 @@
+
+Running 1 test using 1 worker
+
+(node:18672) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+{"checks":13,"failed":0,"matrixCases":4,"ownedVideos":4,"clicks":30,"noResponseMocks":true,"output":"E:\\traning_ai-codex\\coordination\\codex\\verification\\INT-45-live"}
+  ok 1 e2e\cms_settings_deep_live.spec.ts:16:5 › INT-45 every Settings control and four actual AI execution combinations (51.6s)
+
+  1 passed (53.6s)
