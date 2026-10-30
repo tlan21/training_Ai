@@ -1,13 +1,11 @@
 package cutter
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
 	"io"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"time"
 
@@ -30,7 +28,7 @@ type cutCompleted struct {
 	Error        string `json:"error,omitempty"`
 }
 
-// Service consumes clip.cut.requested, cuts via ffmpeg -c copy, uploads to MinIO, publishes clip.cut.completed.
+// Service consumes clip.cut.requested, trims accurately, uploads to MinIO, and publishes clip.cut.completed.
 type Service struct {
 	clips   ports.ClipRepository
 	videos  ports.VideoRepository
@@ -102,11 +100,7 @@ func (s *Service) HandleOne(ctx context.Context, payload []byte) error {
 		return s.fail(ctx, clip.ID, fmt.Sprintf("fetch raw: %v", err))
 	}
 
-	timeout := 2 * time.Minute
-	if len(clip.SourceSegments) > 0 {
-		timeout = 15 * time.Minute
-	}
-	cutCtx, cancel := context.WithTimeout(ctx, timeout)
+	cutCtx, cancel := context.WithTimeout(ctx, 15*time.Minute)
 	defer cancel()
 	if len(clip.SourceSegments) > 0 {
 		err = realCompilation(cutCtx, tmpIn, tmpOut, clip.SourceSegments)
@@ -179,13 +173,5 @@ func splitBucketKey(p, fallbackBucket string) (string, string) {
 }
 
 func realExec(ctx context.Context, in, out string, start, end float64) error {
-	// ffmpeg -ss start -to end -i in -c copy out  (input seeking, fast)
-	args := []string{"-y", "-ss", fmt.Sprintf("%g", start), "-to", fmt.Sprintf("%g", end), "-i", in, "-c", "copy", out}
-	cmd := exec.CommandContext(ctx, "ffmpeg", args...)
-	var stderr bytes.Buffer
-	cmd.Stderr = &stderr
-	if err := cmd.Run(); err != nil {
-		return fmt.Errorf("%w: %s", err, stderr.String())
-	}
-	return nil
+	return realCompilation(ctx, in, out, []domain.ClipSourceSegment{{StartTime: start, EndTime: end}})
 }

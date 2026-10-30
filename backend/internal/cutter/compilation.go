@@ -48,7 +48,7 @@ func realCompilation(ctx context.Context, in, out string, ranges []domain.ClipSo
 		filters.WriteString(";")
 	}
 	for i, r := range ranges {
-		fmt.Fprintf(&filters, "[v%d]trim=start=%g:end=%g,setpts=PTS-STARTPTS,setsar=1[vc%d];", i, r.StartTime, r.EndTime, i)
+		fmt.Fprintf(&filters, "[v%d]trim=start=%g:end=%g,setpts=PTS-STARTPTS[vc%d];", i, r.StartTime, r.EndTime, i)
 		fmt.Fprintf(&inputs, "[vc%d]", i)
 		if audio {
 			fmt.Fprintf(&filters, "[a%d]atrim=start=%g:end=%g,asetpts=PTS-STARTPTS[ac%d];", i, r.StartTime, r.EndTime, i)
