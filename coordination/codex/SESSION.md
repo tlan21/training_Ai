@@ -1,5 +1,8 @@
 # SESSION — authoritative resume state (2026-10-30, INT-45 dedicated Settings audit)
 
+- INT-42 source608e330. INT-43 PARTIAL: global original/clipq and videoq/category/dates nowserverfiltered, generatedquerytypes/unusedhooksremoved, selectioncleared onq/filter/page andbulkvisible-IDguard; CMS tsc/buildPASS,2fixturePlaywright390/1440PASS6.9s, verification/INT-43-ui.log. FullStitch/liveacceptance pending. INT-50 IN_PROGRESS completesall8screens +backendeditorialvalidation/Settingsdirty/buckets then product006preservation/ownedrollout/realE2E/finalgates, closesrelatedPARTIALtasks whenactuallyverified. Do not stop at audit/source. QA3392:5174 preserved; AI/Client3000unchanged; sharedClientrecoveryawaitsoptionalanswer.
+
+
 - INT-41 source d98a4e9; INT-42 source PARTIAL: ingest failure repro FAIL before fix (uploadedvideo/failedjob), shared terminal failure/cancel/deleted guards and retry reset/policy preservation/monotonicprogress now3affectedpackagesPASS. New realPG reset assertion pending final adapter run. INT-43 IN_PROGRESS now original-library global search/selection safety via0.8 q API, then remaining8screens/backendvalidation; INT-44 backend409 alreadyfc5383a PARTIAL pendingactualtoast. Product006/deploy/E2E stillpending; original services+QA3392unchanged. Do not stop after source checkpoints.
 
 

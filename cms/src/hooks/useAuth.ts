@@ -23,20 +23,6 @@ export function useLogout() {
     mutationFn: logoutSession,
   });
 }
-export function useVideos(params: { status?: string; page?: number }) {
-  return useQuery({
-    queryKey: qk.videos(params),
-    queryFn: async () => (await apiClient.get("/api/cms/videos", { params })).data,
-  });
-}
-export function useJobs(params: { status?: string }) {
-  return useQuery({
-    queryKey: qk.jobs(params),
-    queryFn: async () => (await apiClient.get("/api/cms/jobs", { params })).data,
-    refetchInterval: 5000,
-    refetchIntervalInBackground: false,
-  });
-}
 export function useSystemHealth() {
   return useQuery({
     queryKey: qk.health(),

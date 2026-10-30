@@ -1,5 +1,5 @@
 import { Modal } from "../components/common/Modal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import type { components } from "../api-types";
@@ -14,19 +14,20 @@ import { fmtSec, fmtISO } from "../lib/time";
 
 export default function VideosPage() {
   const [params] = useSearchParams();
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState<NonNullable<components["schemas"]["Video"]["status"]> | "">("");
   const [page, setPage] = useState(1);
   const [category, setCategory] = useState("");
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [edit, setEdit] = useState<components["schemas"]["Video"] | null>(null);
   const [selected, setSelected] = useState<string[]>([]);
-  const list = useCmsVideos({ status: status || undefined, page });
+const search = params.get("q")?.trim() ?? "";
+  const list = useCmsVideos({ status: status || undefined, page, q: search || undefined, category_id: category || undefined, date_from: from || undefined, date_to: to || undefined });
+  useEffect(() => {setPage(1);setSelected([]);},[search,status,category,from,to]);
   const cats = useCategories();
   const qc = useQueryClient();
   const toast = useToast();
-  const search = params.get("q")?.toLocaleLowerCase("vi") ?? "";
-  const items = (list.data?.items ?? []).filter((video) => (!category || video.category?.id === category) && (!search || video.title?.toLocaleLowerCase("vi").includes(search)) && (!from || (video.created_at ?? "").slice(0, 10) >= from) && (!to || (video.created_at ?? "").slice(0, 10) <= to));
+  const items = list.data?.items ?? [];
   const remove = async (ids: string[]) => {
     if (!confirm(`Xóa ${ids.length} video đã chọn? Các clip tương ứng cũng sẽ bị ẩn.`)) return;
     try { for (const id of ids) await apiClient.delete(`/api/cms/videos/${id}`); setSelected([]); toast.ok("Đã xóa video"); } catch (error) { toast.err(errorMessage(error)); } finally { await qc.invalidateQueries({ queryKey: ["videos"] }); await qc.invalidateQueries({ queryKey: ["clips"] }); }
@@ -36,7 +37,7 @@ export default function VideosPage() {
     <div className="page-header"><div><h2>Danh sách Video</h2><p>Quản lý và theo dõi quy trình xử lý AI cho tất cả tài nguyên video.</p></div><Link className="btn-primary" to="/queue"><Icon name="cloud_upload" />Tải lên video</Link></div>
     <div className="card filters">
       <label>DANH MỤC:<select className="input" value={category} onChange={(e) => setCategory(e.target.value)}><option value="">Tất cả video</option>{cats.data?.map((cat) => <option key={cat.id} value={cat.id}>{cat.name}</option>)}</select></label>
-      <div className="status-chips"><span className="field-label">Trạng thái:</span>{[["", "Tất cả"], ["processed", "Đã duyệt"], ["processing", "Đang xử lý"], ["failed", "Lỗi AI"]].map(([value, label]) => <button key={value} className={status === value ? "is-active" : ""} aria-pressed={status === value} onClick={() => { setStatus(value); setPage(1); setSelected([]); }}>{label}</button>)}</div>
+      <div className="status-chips"><span className="field-label">Trạng thái:</span>{([["", "Tất cả"], ["processed", "Đã xử lý"], ["processing", "Đang xử lý"], ["failed", "Lỗi AI"], ["deleted", "Đã xóa"]] as const).map(([value, label]) => <button key={value} className={status === value ? "is-active" : ""} aria-pressed={status === value} onClick={() => { setStatus(value); setPage(1); setSelected([]); }}>{label}</button>)}</div>
       <label>KHOẢNG NGÀY:<input className="input" type="date" aria-label="Từ ngày" value={from} onChange={(e) => setFrom(e.target.value)} /><Icon name="arrow_forward" size={16} /><input className="input" type="date" aria-label="Đến ngày" value={to} min={from} onChange={(e) => setTo(e.target.value)} /></label>
       <button className="icon-button" aria-label="Xóa bộ lọc" onClick={() => { setCategory(""); setFrom(""); setTo(""); setStatus(""); setPage(1); }}><Icon name="filter_list" /></button>
       {(category || from || to || search) && <span className="micro">Bộ lọc tên, danh mục và ngày áp dụng trên trang hiện tại.</span>}

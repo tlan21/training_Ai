@@ -4,7 +4,7 @@ import { qk } from "../lib/queryKeys";
 import type { components, paths } from "../api-types";
 import { useUploadStore } from "../stores/uploadStore";
 
-export function useCmsVideos(p: { status?: string; page?: number }) {
+export function useCmsVideos(p: Parameters<typeof qk.videos>[0]) {
   return useQuery({ queryKey: qk.videos(p), queryFn: async () => (await apiClient.get<components["schemas"]["VideoTablePage"]>("/api/cms/videos", { params: p })).data });
 }
 export function useCmsVideo(id: string) {
@@ -16,13 +16,8 @@ export function useCmsAnalysis(id: string) {
 export function useSubtitles(id: string) {
   return useQuery({ queryKey: qk.subtitles(id), queryFn: async () => (await apiClient.get<components["schemas"]["Subtitles"]>(`/api/videos/${id}/subtitles`)).data, enabled: !!id });
 }
-export function useCmsJobs(p: { status?: string } = {}) {
+export function useCmsJobs(p: Parameters<typeof qk.jobs>[0] = {}) {
   return useQuery({ queryKey: qk.jobs(p), queryFn: async () => (await apiClient.get<components["schemas"]["Job"][]>("/api/cms/jobs", { params: p })).data, refetchInterval: 5000, refetchIntervalInBackground: false });
-}
-let _jobsHasProcessing = false;
-export function useJobsPollingAware(p: { status?: string } = {}) {
-  // keep polling only when needed — caller decides; helper for visibility-aware
-  return useCmsJobs(p);
 }
 export function useCmsJob(id: string) {
   return useQuery({ queryKey: qk.job(id), queryFn: async () => (await apiClient.get<components["schemas"]["Job"]>(`/api/cms/jobs/${id}`)).data, enabled: !!id });
@@ -37,7 +32,7 @@ export function useUploadVideo() {
     onSuccess: () => { qc.invalidateQueries({ queryKey: ["videos"] }); qc.invalidateQueries({ queryKey: ["jobs"] }); },
   });
 }
-export function useClips(p: { video_id?: string; status?: string } = {}) {
+export function useClips(p: Parameters<typeof qk.clips>[0] = {}) {
   return useQuery({ queryKey: qk.clips(p), queryFn: async () => (await apiClient.get<components["schemas"]["Clip"][]>("/api/cms/clips", { params: p })).data, refetchInterval: (query) => query.state.data?.some((clip) => clip.status === "processing") ? 3000 : false });
 }
 export function useCreateClip() {

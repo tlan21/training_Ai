@@ -30,6 +30,14 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 - Evidence/Commits: verification/INT-48.md, CMS_COMPLETION_SCOPE.md; public0.8.0/schemaPASS2.769s/3types/frontendcompatibilityPASS, source/evidence in this checkpoint. No AI schema changes or new endpoint families.
 - Next action: INT-49 real storage/read-model implementation,41..44 runtime fixes and8screen wiring.
 
+### INT-50 — Complete eight operational CMS screens and final real acceptance
+- Owner: CODEX | Status: IN_PROGRESS (2026-10-30)
+- Depends on: public0.8 INT-48; source checkpoints47/49/41/42/43. User explicitly requests all8business screens, no role assignment or new AI ownership.
+- Acceptance: Dashboard real metrics/chart/report; Videos server filters/errors/metadata; Queue real video metadata/policies/skips/CPU and navigation/retry/cancel; Highlight persisted proposal decisions/restoration/compilation/manual preview/publish; Subtitles draft/approval/regenerate/editorial validation; Published metadata/open counts/search/safe actions; Categories real counts/keywords/flags/conflicts; Users readonly provisioned CMS capability. Related Settings execute/display actual flags/buckets and dirty guard. Fix affected backend silent writes/validation; no AI contract/model change.
+- Planned files: existing CMS hooks/pages/components, related backend ports/adapters/handlers/tests, e2e tests, owned subplan/evidence/tracker. No new dependency or endpoint family.
+- Verification: Go gates, CMS/Client/E2E types/build as affected;8screens390/1440 and10item Stitch review, fixture faults, data-preserving006 product apply/idempotence, owned gateway/CMS rollout with other runtime preserved; real AI mixed policies/upload/process/review/compile/publish/draft/search/failure/retry/cancel/categoryCRUD. Restore settings, hide/remove only own QA artifacts. Stop own QA3392 at final checkpoint.
+- Evidence/commits: pending. Next action: remaining backend editorial writes/validation then UI metrics/metadata/rules/review.
+
 ### INT-49 — Real CMS persistence, read models and telemetry
 - Owner: CODEX | Status: PARTIAL (2026-10-30; source/adapters verified, product apply/deploy/E2E pending)
 - Depends on: INT-48 public0.8.0. See CMS_COMPLETION_SCOPE.md for scope definitions and preservation gates.
@@ -624,12 +632,13 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Next action: real PG reset test and invalid/retry/cancel live acceptance after final app rollout. Stage-bound cancellation, no hard-kill of model/ingest process.
 
 ### INT-43 — Apply library search to original-video tab
-- Owner: CODEX | Status: IN_PROGRESS (2026-10-30)
+- Owner: CODEX | Status: PARTIAL (2026-10-30; source and fixture UI verified, live final batch pending)
 - Depends on: INT-40 reproduction; existing public/CMS API unchanged.
-- Acceptance: /published?q=... Video gốc filters current-page original titles, empty state and selection/bulk-delete remain correct; page scope disclosed, clip tabs unchanged; Playwright with real/fixture data verifies query with exactly one match and no match.
+- Acceptance (superseded by INT-48 scope): /published?q=... Video gốc queries entire repository using public0.8 q, empty state and selection/bulk-delete remain correct. Clear selected IDs on search/filter/page changes; no stale hidden-row deletion. Video-list search/category/dates also server-side before pagination.
 - Planned files: cms/src/pages/ClipsPage.tsx, e2e/ relevant CMS tests, owned evidence.
 - Commits/Evidence: not implemented; INT-40-edges/original-search.json shows20rows for one-match query. No PASS claim.
-- Next action: apply existing title-filter rule to original rows before mapping; test selection safety with filtering.
+- Source/evidence: generated query parameter types in shared hooks/query keys, unused duplicate query hooks removed; original/clip q and video q/category/dates server-side, selection clearing and visible-ID bulk safety. CMS types/build PASS;2Playwright fixtures PASS6.9s at390/1440 (verification/INT-43-ui.log). No CSS changes, full10item Stitch check/live acceptance remains final CMS batch.
+- Next action: deploy final backend/CMS batch and verify real global search/pagination/bulk safety; no full CMS completion claim.
 
 ### INT-44 — Report referenced-category deletion errors truthfully
 - Owner: CODEX | Status: PARTIAL (2026-10-30; backend included in INT-49, actual toast acceptance pending)
