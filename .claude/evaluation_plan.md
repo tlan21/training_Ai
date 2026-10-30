@@ -51,6 +51,12 @@
   (một recipe production), F1 tin tức tính ở cùng k/τ. Chọn biến thể: trong các biến thể có val bóng đá ≥ 0.3051 (vòng 7 − 0.010), lấy val tin tức cao nhất.
   **Thay vòng 7 chỉ khi:** val tin tức ≥ val tin tức của vòng 7 (cùng quy trình) + 0.05 **và** gap train−val bóng đá ≤ 0.1706.
   Test bóng đá chấm sau quyết định. Tin tức KHÔNG có test (chỉ 10 video) — kết quả tin tức chỉ là val 3 video, ghi rõ giới hạn.
+- **Xác nhận vòng 8 ×10 trên test tin tức độc lập — đăng ký trước khi có dữ liệu (2026-10-30, AI-21).** Ứng viên CỐ ĐỊNH = vòng 8 ×10
+  (3 checkpoint đã train ở AI-20, không train lại, không chọn lại), so với vòng 7 active. Test tin tức: 6–10 video tin tức tiếng Việt **CC BY**,
+  **kênh khác** 6 kênh đã dùng, 5–25 phút/video, chọn theo truy vấn cố định trước khi chạy model; nhãn người gán **mù** (trang không hiện đề xuất
+  hay điểm AI). Recipe production: k + τ của từng model chọn trên val bóng đá (như AI-20). **Đổi sang ×10 khi cả hai:** F1/giây test tin tức(×10)
+  ≥ test tin tức(vòng 7) + 0.05 **và** test bóng đá(×10) ≥ test bóng đá(vòng 7) − 0.01. Báo kèm: F1 tin tức với τ riêng (tham khảo), CI bootstrap
+  theo video. Tập test tin tức chấm đúng MỘT lần; sau đó không dùng để chọn gì.
 - **Báo cáo chất lượng weak label:** alignment coverage toàn 50 trận + số trận bị loại (< 60% coverage) + Cohen's kappa của 2 người gán test — bảng riêng trong chương thực nghiệm.
 - **Đánh giá cấp đoạn (sát nghiệp vụ):** ghép giây liên tiếp > τ thành đoạn; đoạn đúng khi IoU ≥ 0.5 với đoạn nhãn người → precision/recall cấp đoạn.
 - **Đánh giá cảm quan:** CMS hiển thị heatmap → biên tập viên chấm "dùng được/không" cho 20 video — số liệu human-in-the-loop đưa vào luận án.
