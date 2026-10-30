@@ -373,3 +373,9 @@ job queue) sở hữu toàn bộ dữ liệu. AI phía Claude đã xong (REL tr�
   Smoke 9/9; ví dụ `vision.*`, `highlight.*`, `v2_vision.*` sinh lại.
 - Codex: không đổi code. **Đặc trưng/điểm highlight đã lưu trước 2026-10-29 tính trên đặc trưng sai** — nếu muốn highlight đúng cho video cũ,
   chạy lại vision + highlight (re-process) cho các video đó; `timeline_scores`/clip sẽ khác.
+
+## 2026-10-30 REL :8001 — Highlight Fusion vòng 8 ×10 ACTIVE (AI-21, user ra lệnh theo quy tắc đăng ký; v1.4-rc1, chưa release master)
+- :8001 (PID 19220): Fusion vòng 8 ×10 (bóng đá + tin tức có nhãn người). `clip_threshold` = 51 (không đổi), **nối khe ≤ 1 s**, bỏ clip < 3 s, video < 120 s không clip.
+  Schema không đổi. Test bóng đá 0.322 (vòng 7 0.330). Tin tức: tốt hơn vòng 7 trên kênh quen, nhưng **video tin tức kênh mới gần như vẫn 0 clip**
+  (giới hạn ghi trong contract §2.3) — E2E tiếp tục chấp nhận 0 clip; HC-15 (thông báo 0 clip + "chỉ tham khảo") càng cần.
+- Rollback: Claude chép lại `ai-core/checkpoints/_archive/highlight_fusion_round7_550909de/`.

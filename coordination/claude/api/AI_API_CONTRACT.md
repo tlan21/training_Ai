@@ -51,12 +51,17 @@ thành công thật; Codex được dùng mock, chưa được đánh `INTEGRATE
 | `vit` | `/v1/vision/completions` | `primitive-vit-classifier` | `192d90e4fad893cec1542c5630715cc3bc22197e8cd8ba22a6fb84a64a88ad7f` |
 | `siamese` | `/v1/search/completions` (+ index frame) | `primitive-siamese-vit` | `b4ded465b8eea134a01652811008656b9e0c59716431136bb161216310bbcebb` |
 | `asr_ctc` | `/v1/asr/completions` | `primitive-asr-transformer` | `8f87986781cfb3d4716691f2051e5798187693e2452f9f41b28ca4a753ea5531` |
-| `highlight_fusion` | `/v1/highlight/completions` | `primitive-seq2seq-highlighter` | `550909dedaacb0326b89f894f25ea8a7e0c088f93b36e1c6c639dd1297e42b3a` |
+| `highlight_fusion` | `/v1/highlight/completions` | `primitive-seq2seq-highlighter` | `5aecd5c4eecd37a25c8c5c2fd515f268700041987ce38df4ffbf01724fbd052e` |
 | `minigpt` | `/v1/completions` | `primitive-gpt-summarizer` | `cf9cfa7141d40f9d40b0065ae68855ff39ffe750260ee7b42c7c0eac719330ac` |
 | `two_tower` | `/v1/recommendation/completions` | `primitive-two-tower-recommender` | `f28c37943ec499d168f43b5281879273af326a97ee47e571100c93dee0c91695` |
 
 Nguồn canonical: `E:/traning_ai/ai-core/checkpoints` (AI-06). Claude chỉ thay `best.pt` active khi phát hành AI API version mới.
-- **highlight_fusion từ 2026-10-29 (AI-18, user ra lệnh kích hoạt; v1.4-rc1, chờ release): Fusion vòng 7** = công thức vòng 6 + weight decay 0.3,
+- **highlight_fusion từ 2026-10-30 (AI-21, user ra lệnh theo quy tắc đã đăng ký; v1.4-rc1, chờ release): Fusion vòng 8 ×10** = công thức vòng 7
+  + 7 video tin tức có nhãn người (lặp ×10), 3 seed + recipe (k 9, τ 0.51, nối khe ≤ 1 s, bỏ clip < 3 s, video < 120 s không clip):
+  `best.pt` `5aecd5c4…` · `seed1338.pt` `06e8f3a100bc0afed7a19253b76561d0f8ca3695dbc858461607cc1b564c8e62` ·
+  `seed1339.pt` `8086d75ed1e5e5e3d471422edf7bf96329bf768030018c8f5c7f92356342327a` · `postproc.json` `f54f62c00e37e2c1c74917da559c944850dd7c88d38fd1542d5de1addb8c0164`.
+  Test bóng đá 0.322 (vòng 7 0.330); test tin tức độc lập 0.121 (vòng 7 0.024; mốc đoán-bừa 0.281; CI Δ [−0.05, +0.24]). Vòng 7 lưu `_archive/highlight_fusion_round7_550909de/`.
+- Trước đó (AI-18): Fusion vòng 7 = công thức vòng 6 + weight decay 0.3,
   3 seed + recipe (k 9, τ 0.51, bỏ clip < 3 s, **video < 120 s: không đề xuất clip**): `best.pt` `550909de…` ·
   `seed1338.pt` `0cc89b6244f408103c62ee411fde82adfc19e91197bfd7352151931a0362b6b1` · `seed1339.pt` `56a4fe540a79f201c6c795909671f2db3820b3b37713bdc0fc3c39febd79fb87` ·
   `postproc.json` `6eb66cc10a1bf4182d13b59b6f21d12ea75f5642d92dc77d1a3f938229f4d2d4`. Test F1/giây 0.330 (vòng 6 0.328). Vòng 6 lưu `_archive/highlight_fusion_round6_9b59a7b0/`.
@@ -88,7 +93,7 @@ media thật 6/6 + synthetic 6/6; `/health` → `stub_mode=false`, 6 model, `deg
 |---|---|---|---|---|---|---|
 | vit | ✓ | ✓ `192d90e4…` | ✓ | ✓ | ✓ | |
 | asr_ctc | ✓ | ✓ `8f879867…` | ✓ | ✓ | ✓ | chất lượng video thật kém (transcript nhiễu, AI-02) |
-| highlight_fusion | ✓ | ✓ `550909de…` (vòng 7, 3 seed) | ✓ | ✓ | ✓ | |
+| highlight_fusion | ✓ | ✓ `5aecd5c4…` (vòng 8 ×10, 3 seed) | ✓ | ✓ | ✓ | |
 | minigpt | ✓ | ✓ `cf9cfa71…` | ✓ | ✓ | ✓ | chất lượng human 1.6/5 (AI-03), chỉ dùng làm draft cho admin |
 | siamese | ✓ | ✓ `b4ded465…` | ✓ | ✓ | ✓ | Milvus `video_frame_embeddings` 280 vector, HNSW/COSINE/M16/efC200; index qua `video_id` + data URI (AI-11) |
 | two_tower | ✓ | ✓ `f28c3794…` | ✓ | ✗ | ✗ | collection `user_recommendation_embeddings` chưa có → 503 |
@@ -160,7 +165,9 @@ Resp: `{"id","object":"highlight_completion","created","model","video_id","timel
     biên clip nằm giữa câu được đẩy ra mép câu nếu cách ≤ 3 s. Không gửi = như cũ.
   - Checkpoint **active từ 2026-10-29**: Fusion vòng 5 (bản đạt DoD T1.5) = gộp 3 seed + cửa sổ chồng stride 30 + làm mượt 9 s,
     clip = score > **51**, nối khe ≤ 5 s, bỏ clip < 3 s (`highlight_fusion/postproc.json`). Kích hoạt 2026-10-29, rồi thay bằng vòng 6 cùng ngày.
-  - **Active (AI-18): Fusion vòng 7** — đặc trưng chuẩn hóa theo TOÀN video trong request, clip = score > **51**, không nối khe, bỏ clip < **3 s**;
+  - **Active (AI-21): Fusion vòng 8 ×10** (bóng đá + tin tức) — clip = score > **51**, nối khe ≤ **1 s**, bỏ clip < **3 s**; video < 120 s không clip.
+    **Giới hạn đo được:** highlight tin tức trên video/kênh mới CHƯA giải (test độc lập dưới mốc đoán-bừa; kênh mới F1 0.0) — tin tức thường ra 0 clip.
+  - Trước (AI-18): Fusion vòng 7 — đặc trưng chuẩn hóa theo TOÀN video trong request, clip = score > **51**, không nối khe, bỏ clip < **3 s**;
     video < **120 s** → vẫn trả `timeline_scores` nhưng `recommended_clips` rỗng. (Vòng 6 trước đó: > 50, bỏ < 5 s.)
     Phạm vi: train trên hiệp bóng đá ~45 phút. Video rất ngắn (< ~2 phút) và thể loại khác nằm NGOÀI phân bố train — điểm không đáng tin
     (vd 3 s: điểm ~57, 0 clip vì < 5 s). Request phải gửi đặc trưng của cả video (như hiện tại), không cắt lẻ từng đoạn.
