@@ -525,14 +525,14 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Next action: user Ctrl+F5 localhost3000/discover; no further implementation for this screenshot bug.
 
 ### INT-37 — HC-15 product threshold metadata contract
-- Owner: CODEX | Status: IN_PROGRESS (2026-10-30)
+- Owner: CODEX | Status: DONE (2026-10-30)
 - Depends on: Claude HC-15/AI-API v1.4-rc1 additive response clip_threshold (DRAFT); current public0.5.0 and existing CMS analysis/settings endpoints.
 - Acceptance: nullable reported clip_threshold in CmsAnalysis with0..100 bounds; legacy missing metadata remains unknown; clarify legacy Settings threshold not an AI control; regenerate Go/CMS/Client types and schema/type checks PASS. No new endpoint or AI contract edit.
-- Changed: planned infra/openapi.yaml, generated types/spec test, owned coordination.
-- Commits: startup follows. Evidence: pending. Next action: contract first, then INT-38.
+- Changed: infra/openapi.yaml; backend/internal/gen/{api.gen.go,spec_test.go}; cms/src/api-types.ts; client/src/api-types.ts; owned coordination.
+- Commits: 7722f10 start; contract checkpoint follows. Evidence: verification/INT-37.md; schema test PASS0.600s, CMS/Client types PASS, cached generation/no downloads. Next action: INT-38.
 
 ### INT-38 — HC-15 truthful CMS threshold, zero proposals and reference-only scope
-- Owner: CODEX | Status: TODO
+- Owner: CODEX | Status: IN_PROGRESS (2026-10-30)
 - Depends on: INT-37; existing AI client/analysis store, CMS highlight/settings. Real new-model rollout remains Claude release/runtime dependency.
 - Acceptance: persist reported AI threshold atomically with scores/clips, distinguish null/0, validate untrusted AI bounds; CMS heatmap uses reported threshold and labels legacy unknown; Settings HC-15(b) no misleading adjustable AI threshold; zero proposals is valid/manual save still works; notice for non-football/<120s. Go+Mongo roundtrip+CMS types/build+390/1440 Playwright, real deployed legacy compatibility; no forced model upgrade/reprocessing original videos.
 - Changed: planned backend domain/ports/AIHTTP/Mongo/mock/orchestrator/CMS DTO, CMS highlight/settings, tests and owned evidence.

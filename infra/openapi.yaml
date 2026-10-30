@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Video AI Platform — Public + CMS API
-  version: 0.5.0
+  version: 0.6.0
   description: >
     Contract-first (master plan §2). Nguồn sự thật cho gateway Go (oapi-codegen)
     và FE types (openapi-typescript). Điểm highlight thang 0–100; similarity/score 0–1.
@@ -1176,6 +1176,13 @@ components:
     CmsAnalysis:
       type: object
       properties:
+        clip_threshold:
+          type: number
+          format: double
+          nullable: true
+          minimum: 0
+          maximum: 100
+          description: Ngưỡng AI báo đã dùng để đề xuất clip cho kết quả này. Null khi kết quả cũ hoặc AI chưa cung cấp; không suy từ Settings.
         timeline_scores:
           type: array
           items: { $ref: "#/components/schemas/TimelineScore" }
@@ -1229,7 +1236,7 @@ components:
     Settings:
       type: object
       properties:
-        highlight_threshold: { type: integer }
+        highlight_threshold: { type: integer, deprecated: true, description: Giá trị hiển thị cũ; không thay đổi ngưỡng model hoặc đề xuất AI. CMS đọc CmsAnalysis.clip_threshold theo từng video. }
         asr_warning_threshold: { type: integer }
         auto_highlight_enabled: { type: boolean }
         auto_subtitle_enabled: { type: boolean }
@@ -1239,7 +1246,7 @@ components:
     SettingsUpdate:
       type: object
       properties:
-        highlight_threshold: { type: integer, minimum: 0, maximum: 100 }
+        highlight_threshold: { type: integer, minimum: 0, maximum: 100, deprecated: true, description: Giữ tương thích client cũ; không điều khiển model hoặc tính lại clip. }
         asr_warning_threshold: { type: integer, minimum: 0, maximum: 100 }
         auto_highlight_enabled: { type: boolean }
         auto_subtitle_enabled: { type: boolean }

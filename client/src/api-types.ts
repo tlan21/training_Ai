@@ -2117,6 +2117,11 @@ export interface components {
             reason?: string;
         };
         CmsAnalysis: {
+            /**
+             * Format: double
+             * @description Ngưỡng AI báo đã dùng để đề xuất clip cho kết quả này. Null khi kết quả cũ hoặc AI chưa cung cấp; không suy từ Settings.
+             */
+            clip_threshold?: number | null;
             timeline_scores?: components["schemas"]["TimelineScore"][];
             ai_generated_clips?: components["schemas"]["AiGeneratedClip"][];
             category_suggestion?: string | null;
@@ -2158,6 +2163,10 @@ export interface components {
             matched_text?: string | null;
         };
         Settings: {
+            /**
+             * @deprecated
+             * @description Giá trị hiển thị cũ; không thay đổi ngưỡng model hoặc đề xuất AI. CMS đọc CmsAnalysis.clip_threshold theo từng video.
+             */
             highlight_threshold?: number;
             asr_warning_threshold?: number;
             auto_highlight_enabled?: boolean;
@@ -2167,6 +2176,10 @@ export interface components {
             ai_service_api_key?: string;
         };
         SettingsUpdate: {
+            /**
+             * @deprecated
+             * @description Giữ tương thích client cũ; không điều khiển model hoặc tính lại clip.
+             */
             highlight_threshold?: number;
             asr_warning_threshold?: number;
             auto_highlight_enabled?: boolean;

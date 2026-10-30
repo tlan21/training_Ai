@@ -13,7 +13,7 @@ func TestCMSPlanAContract(t *testing.T) {
 	if err := spec.Validate(context.Background()); err != nil {
 		t.Fatal(err)
 	}
-	if spec.Info.Version != "0.5.0" {
+	if spec.Info.Version != "0.6.0" {
 		t.Fatalf("version %s", spec.Info.Version)
 	}
 	put := spec.Paths.Find("/api/cms/videos/{id}").Put
@@ -34,6 +34,20 @@ func TestCMSPlanAContract(t *testing.T) {
 		if spec.Components.Schemas["VideoDetail"].Value.AllOf[1].Value.Properties[name] == nil {
 			t.Fatalf("missing %s", name)
 		}
+	}
+}
+
+func TestCMSReportedThresholdContract(t *testing.T) {
+	spec, err := GetSwagger()
+	if err != nil {
+		t.Fatal(err)
+	}
+	field := spec.Components.Schemas["CmsAnalysis"].Value.Properties["clip_threshold"].Value
+	if !field.Nullable || field.Min == nil || *field.Min != 0 || field.Max == nil || *field.Max != 100 {
+		t.Fatal("threshold must allow unknown and constrain reported values")
+	}
+	if !spec.Components.Schemas["SettingsUpdate"].Value.Properties["highlight_threshold"].Value.Deprecated {
+		t.Fatal("legacy setting must not claim AI control")
 	}
 }
 
