@@ -515,4 +515,3 @@ test('T3.1 wrong password stays on form with API error', async ({ page }) => {
   await expect(page.getByRole('alert')).toHaveText('Email hoặc mật khẩu không chính xác');
   await expect(page).toHaveURL(`${cms}/login`);
 });
-

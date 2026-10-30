@@ -23,11 +23,19 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 - Next action: verify against real deployed app after remaining CMS batch; original data preserved, no model changes. QApreviewPID3392 retained for subsequent build checks, must stop at final checkpoint.
 
 ### INT-48 — Operational CMS completion contract
-- Owner: CODEX | Status: IN_PROGRESS (2026-10-30)
+- Owner: CODEX | Status: DONE (2026-10-30)
 - Depends on: INT-46/47 and user-approved completion of8CMSscreens.
 - Acceptance: contract-first real dashboard/storage/activity metrics on existing health endpoint; global video/user/clip query filters and row metadata; category counts/rules and persisted proposal decisions/selected compilation ranges using existing endpoint families. No new AI contract/model or detection/translation features. Nullable unavailable metrics instead of fabricated values; Client privacy preserved.
 - Planned files: infra/openapi.yaml/generated3types; owned scope docs/evidence. Implementation task follows contract; existing41..44 remain planned until started.
-- Evidence/Commits: pending. Next action: define minimal read/write fields against real PG/Mongo/MinIO sources.
+- Evidence/Commits: verification/INT-48.md, CMS_COMPLETION_SCOPE.md; public0.8.0/schemaPASS2.769s/3types/frontendcompatibilityPASS, source/evidence in this checkpoint. No AI schema changes or new endpoint families.
+- Next action: INT-49 real storage/read-model implementation,41..44 runtime fixes and8screen wiring.
+
+### INT-49 — Real CMS persistence, read models and telemetry
+- Owner: CODEX | Status: IN_PROGRESS (2026-10-30)
+- Depends on: INT-48 public0.8.0. See CMS_COMPLETION_SCOPE.md for scope definitions and preservation gates.
+- Acceptance: additive006/no existing row/value rewrite, global video/clip filters, hydrated names/category counts/creator/open stats, actual PG overview and MinIO bytes/LinuxCPU; persist job options/skips/category keywords/editorial priority and Mongo proposal/category match fields. Explicit unavailable metrics; existing Client privacy unchanged. Go gates +real PG TEMP/migration idempotence and Mongo tests, final real E2E/deployment tracked across batch.
+- Planned files: backend domain/ports/PG/Mongo/MinIO/CMS handlers, migration006, matching tests, owned schema/subplans/coordination. No AI source/checkpoint or new library.
+- Evidence/Commits: pending. Next action: implement shared domain/repository storage and migration, then metrics/filters/handlers/tests.
 
 ### INT-45 — Settings deep functional re-audit requested by user
 - Owner: CODEX | Status: DONE (2026-10-30; audit only, Settings remains PARTIAL)

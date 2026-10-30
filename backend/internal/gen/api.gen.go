@@ -17,6 +17,24 @@ import (
 	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
+// Defines values for CategoryMatchSource.
+const (
+	Keyword CategoryMatchSource = "keyword"
+	Vision  CategoryMatchSource = "vision"
+)
+
+// Valid indicates whether the value is a known member of the CategoryMatchSource enum.
+func (e CategoryMatchSource) Valid() bool {
+	switch e {
+	case Keyword:
+		return true
+	case Vision:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ClipStatus.
 const (
 	ClipStatusDraft      ClipStatus = "draft"
@@ -110,6 +128,48 @@ func (e JobCurrentStage) Valid() bool {
 	}
 }
 
+// Defines values for JobEditorialPriority.
+const (
+	JobEditorialPriorityHigh   JobEditorialPriority = "high"
+	JobEditorialPriorityLow    JobEditorialPriority = "low"
+	JobEditorialPriorityNormal JobEditorialPriority = "normal"
+)
+
+// Valid indicates whether the value is a known member of the JobEditorialPriority enum.
+func (e JobEditorialPriority) Valid() bool {
+	switch e {
+	case JobEditorialPriorityHigh:
+		return true
+	case JobEditorialPriorityLow:
+		return true
+	case JobEditorialPriorityNormal:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for JobSkippedStages.
+const (
+	JobSkippedStagesAsrExtracting    JobSkippedStages = "asr_extracting"
+	JobSkippedStagesHighlightScoring JobSkippedStages = "highlight_scoring"
+	JobSkippedStagesSummarizing      JobSkippedStages = "summarizing"
+)
+
+// Valid indicates whether the value is a known member of the JobSkippedStages enum.
+func (e JobSkippedStages) Valid() bool {
+	switch e {
+	case JobSkippedStagesAsrExtracting:
+		return true
+	case JobSkippedStagesHighlightScoring:
+		return true
+	case JobSkippedStagesSummarizing:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for JobStatus.
 const (
 	JobStatusCompleted JobStatus = "completed"
@@ -128,6 +188,24 @@ func (e JobStatus) Valid() bool {
 	case JobStatusPending:
 		return true
 	case JobStatusRunning:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProposalDecisionStatus.
+const (
+	Accepted  ProposalDecisionStatus = "accepted"
+	Dismissed ProposalDecisionStatus = "dismissed"
+)
+
+// Valid indicates whether the value is a known member of the ProposalDecisionStatus enum.
+func (e ProposalDecisionStatus) Valid() bool {
+	switch e {
+	case Accepted:
+		return true
+	case Dismissed:
 		return true
 	default:
 		return false
@@ -194,6 +272,27 @@ func (e UserMeRole) Valid() bool {
 	}
 }
 
+// Defines values for VideoEditorialPriority.
+const (
+	VideoEditorialPriorityHigh   VideoEditorialPriority = "high"
+	VideoEditorialPriorityLow    VideoEditorialPriority = "low"
+	VideoEditorialPriorityNormal VideoEditorialPriority = "normal"
+)
+
+// Valid indicates whether the value is a known member of the VideoEditorialPriority enum.
+func (e VideoEditorialPriority) Valid() bool {
+	switch e {
+	case VideoEditorialPriorityHigh:
+		return true
+	case VideoEditorialPriorityLow:
+		return true
+	case VideoEditorialPriorityNormal:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for VideoStatus.
 const (
 	VideoStatusDeleted    VideoStatus = "deleted"
@@ -221,6 +320,27 @@ func (e VideoStatus) Valid() bool {
 	}
 }
 
+// Defines values for VideoDetailEditorialPriority.
+const (
+	VideoDetailEditorialPriorityHigh   VideoDetailEditorialPriority = "high"
+	VideoDetailEditorialPriorityLow    VideoDetailEditorialPriority = "low"
+	VideoDetailEditorialPriorityNormal VideoDetailEditorialPriority = "normal"
+)
+
+// Valid indicates whether the value is a known member of the VideoDetailEditorialPriority enum.
+func (e VideoDetailEditorialPriority) Valid() bool {
+	switch e {
+	case VideoDetailEditorialPriorityHigh:
+		return true
+	case VideoDetailEditorialPriorityLow:
+		return true
+	case VideoDetailEditorialPriorityNormal:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for VideoDetailStatus.
 const (
 	VideoDetailStatusDeleted    VideoDetailStatus = "deleted"
@@ -242,6 +362,27 @@ func (e VideoDetailStatus) Valid() bool {
 	case VideoDetailStatusProcessing:
 		return true
 	case VideoDetailStatusUploaded:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for VideoMetadataUpdateEditorialPriority.
+const (
+	VideoMetadataUpdateEditorialPriorityHigh   VideoMetadataUpdateEditorialPriority = "high"
+	VideoMetadataUpdateEditorialPriorityLow    VideoMetadataUpdateEditorialPriority = "low"
+	VideoMetadataUpdateEditorialPriorityNormal VideoMetadataUpdateEditorialPriority = "normal"
+)
+
+// Valid indicates whether the value is a known member of the VideoMetadataUpdateEditorialPriority enum.
+func (e VideoMetadataUpdateEditorialPriority) Valid() bool {
+	switch e {
+	case VideoMetadataUpdateEditorialPriorityHigh:
+		return true
+	case VideoMetadataUpdateEditorialPriorityLow:
+		return true
+	case VideoMetadataUpdateEditorialPriorityNormal:
 		return true
 	default:
 		return false
@@ -387,24 +528,44 @@ type AuthResponse struct {
 
 // Category defines model for Category.
 type Category struct {
-	Description *string `json:"description,omitempty"`
-	Id          *string `json:"id,omitempty"`
-	Name        *string `json:"name,omitempty"`
+	Description *string   `json:"description,omitempty"`
+	Id          *string   `json:"id,omitempty"`
+	Keywords    *[]string `json:"keywords,omitempty"`
+	Name        *string   `json:"name,omitempty"`
+
+	// VideoCount Confirmed non-deleted videos across the entire repository.
+	VideoCount *int `json:"video_count,omitempty"`
 }
+
+// CategoryMatch defines model for CategoryMatch.
+type CategoryMatch struct {
+	CategoryId string              `json:"category_id"`
+	Keyword    *string             `json:"keyword,omitempty"`
+	Name       string              `json:"name"`
+	Source     CategoryMatchSource `json:"source"`
+}
+
+// CategoryMatchSource defines model for CategoryMatch.Source.
+type CategoryMatchSource string
 
 // CategoryWrite defines model for CategoryWrite.
 type CategoryWrite struct {
 	// Description Omitted/null preserves existing description on update; empty string clears. Name-only callers remain supported.
 	Description *string `json:"description,omitempty"`
-	Name        string  `json:"name"`
+
+	// Keywords Omitted preserves existing keywords; empty clears. Backend rule suggestions only, editor confirms category.
+	Keywords *[]string `json:"keywords,omitempty"`
+	Name     string    `json:"name"`
 }
 
 // Clip defines model for Clip.
 type Clip struct {
-	AverageScore *float32   `json:"average_score,omitempty"`
-	CreatedAt    *time.Time `json:"created_at,omitempty"`
-	EndTime      *float32   `json:"end_time,omitempty"`
-	Id           *string    `json:"id,omitempty"`
+	AverageScore  *float32   `json:"average_score,omitempty"`
+	CategoryName  *string    `json:"category_name,omitempty"`
+	CreatedAt     *time.Time `json:"created_at,omitempty"`
+	CreatedByName *string    `json:"created_by_name,omitempty"`
+	EndTime       *float32   `json:"end_time,omitempty"`
+	Id            *string    `json:"id,omitempty"`
 
 	// PlaybackUrl MinIO presigned URL
 	PlaybackUrl *string `json:"playback_url,omitempty"`
@@ -415,7 +576,11 @@ type Clip struct {
 	Status         *ClipStatus          `json:"status,omitempty"`
 	ThumbnailUrl   *string              `json:"thumbnail_url,omitempty"`
 	Title          *string              `json:"title,omitempty"`
+	UpdatedAt      *time.Time           `json:"updated_at,omitempty"`
 	VideoId        *string              `json:"video_id,omitempty"`
+
+	// ViewCount Count of validated Client click/open events for this clip.
+	ViewCount *int `json:"view_count,omitempty"`
 }
 
 // ClipStatus defines model for Clip.Status.
@@ -436,20 +601,48 @@ type ClipSourceSegment struct {
 // CmsAnalysis defines model for CmsAnalysis.
 type CmsAnalysis struct {
 	AiGeneratedClips   *[]AiGeneratedClip `json:"ai_generated_clips,omitempty"`
+	CategoryMatch      *CategoryMatch     `json:"category_match,omitempty"`
 	CategorySuggestion *string            `json:"category_suggestion,omitempty"`
 
 	// ClipThreshold Ngưỡng AI báo đã dùng để đề xuất clip cho kết quả này. Null khi kết quả cũ hoặc AI chưa cung cấp; không suy từ Settings.
-	ClipThreshold  *float64                  `json:"clip_threshold,omitempty"`
-	Hashtags       *[]string                 `json:"hashtags,omitempty"`
-	KeyMoments     *[]KeyMoment              `json:"key_moments,omitempty"`
-	SuggestedTitle *string                   `json:"suggested_title,omitempty"`
-	Summary        *string                   `json:"summary,omitempty"`
-	SummaryStatus  *CmsAnalysisSummaryStatus `json:"summary_status,omitempty"`
-	TimelineScores *[]TimelineScore          `json:"timeline_scores,omitempty"`
+	ClipThreshold     *float64                  `json:"clip_threshold,omitempty"`
+	Hashtags          *[]string                 `json:"hashtags,omitempty"`
+	KeyMoments        *[]KeyMoment              `json:"key_moments,omitempty"`
+	ProposalDecisions *[]ProposalDecision       `json:"proposal_decisions,omitempty"`
+	SuggestedTitle    *string                   `json:"suggested_title,omitempty"`
+	Summary           *string                   `json:"summary,omitempty"`
+	SummaryStatus     *CmsAnalysisSummaryStatus `json:"summary_status,omitempty"`
+	TimelineScores    *[]TimelineScore          `json:"timeline_scores,omitempty"`
 }
 
 // CmsAnalysisSummaryStatus defines model for CmsAnalysis.SummaryStatus.
 type CmsAnalysisSummaryStatus string
+
+// CmsMetrics defines model for CmsMetrics.
+type CmsMetrics struct {
+	// ActiveUsers Distinct Client users with a validated interaction during the last15minutes.
+	ActiveUsers              *int     `json:"active_users,omitempty"`
+	AverageProcessingSeconds *float32 `json:"average_processing_seconds,omitempty"`
+	CompletedJobs            *int     `json:"completed_jobs,omitempty"`
+	DailyProcessing          *[]struct {
+		Count int                `json:"count"`
+		Date  openapi_types.Date `json:"date"`
+	} `json:"daily_processing,omitempty"`
+	DeletedVideos   *int     `json:"deleted_videos,omitempty"`
+	FailedJobs      *int     `json:"failed_jobs,omitempty"`
+	FailedVideos    *int     `json:"failed_videos,omitempty"`
+	PendingJobs     *int     `json:"pending_jobs,omitempty"`
+	ProcessedVideos *int     `json:"processed_videos,omitempty"`
+	PublishedClips  *int     `json:"published_clips,omitempty"`
+	RunningJobs     *int     `json:"running_jobs,omitempty"`
+	SuccessRate     *float32 `json:"success_rate,omitempty"`
+	TotalUsers      *int     `json:"total_users,omitempty"`
+	TotalVideos     *int     `json:"total_videos,omitempty"`
+	TotalViews      *int     `json:"total_views,omitempty"`
+
+	// ViewsMonth Validated click/open interactions in requested UTC month, not inferred AI quality.
+	ViewsMonth *int `json:"views_month,omitempty"`
+}
 
 // Error defines model for Error.
 type Error struct {
@@ -472,19 +665,39 @@ type FeedPage struct {
 // FeedPageRecommendationMode popularity khi xếp hạng từ dữ liệu sản phẩm; personalized chỉ khi AI trả vector sản phẩm thật, backend xác minh ID và hydrate metadata Postgres; fallback khi AI lỗi, timeout hoặc không có kết quả hợp lệ. Không suy diễn personalized từ HTTP 200. Chỉ trả clip published/video processed với metadata thật.
 type FeedPageRecommendationMode string
 
+// HighlightReviewUpdate defines model for HighlightReviewUpdate.
+type HighlightReviewUpdate struct {
+	ProposalDecisions []ProposalDecision `json:"proposal_decisions"`
+}
+
 // Job defines model for Job.
 type Job struct {
-	CurrentStage *JobCurrentStage `json:"current_stage,omitempty"`
-	ErrorLog     *string          `json:"error_log,omitempty"`
-	Id           *string          `json:"id,omitempty"`
-	Progress     *int             `json:"progress,omitempty"`
-	Status       *JobStatus       `json:"status,omitempty"`
-	UpdatedAt    *time.Time       `json:"updated_at,omitempty"`
-	VideoId      *string          `json:"video_id,omitempty"`
+	CurrentStage      *JobCurrentStage      `json:"current_stage,omitempty"`
+	DurationSeconds   *float32              `json:"duration_seconds,omitempty"`
+	EditorialPriority *JobEditorialPriority `json:"editorial_priority,omitempty"`
+	ErrorLog          *string               `json:"error_log,omitempty"`
+	Id                *string               `json:"id,omitempty"`
+
+	// ProcessingOptions Settings snapshot taken before upload is enqueued; changing settings does not rewrite existing jobs/results.
+	ProcessingOptions *ProcessingOptions  `json:"processing_options,omitempty"`
+	Progress          *int                `json:"progress,omitempty"`
+	SkippedStages     *[]JobSkippedStages `json:"skipped_stages,omitempty"`
+	Status            *JobStatus          `json:"status,omitempty"`
+	ThumbnailUrl      *string             `json:"thumbnail_url,omitempty"`
+	UpdatedAt         *time.Time          `json:"updated_at,omitempty"`
+	UploadedByName    *string             `json:"uploaded_by_name,omitempty"`
+	VideoId           *string             `json:"video_id,omitempty"`
+	VideoTitle        *string             `json:"video_title,omitempty"`
 }
 
 // JobCurrentStage defines model for Job.CurrentStage.
 type JobCurrentStage string
+
+// JobEditorialPriority defines model for Job.EditorialPriority.
+type JobEditorialPriority string
+
+// JobSkippedStages defines model for Job.SkippedStages.
+type JobSkippedStages string
 
 // JobStatus defines model for Job.Status.
 type JobStatus string
@@ -494,6 +707,21 @@ type KeyMoment struct {
 	Text      *string  `json:"text,omitempty"`
 	Timestamp *float32 `json:"timestamp,omitempty"`
 }
+
+// ProcessingOptions Settings snapshot taken before upload is enqueued; changing settings does not rewrite existing jobs/results.
+type ProcessingOptions struct {
+	AutoHighlightEnabled bool `json:"auto_highlight_enabled"`
+	AutoSubtitleEnabled  bool `json:"auto_subtitle_enabled"`
+}
+
+// ProposalDecision defines model for ProposalDecision.
+type ProposalDecision struct {
+	ProposalIndex int                    `json:"proposal_index"`
+	Status        ProposalDecisionStatus `json:"status"`
+}
+
+// ProposalDecisionStatus defines model for ProposalDecision.Status.
+type ProposalDecisionStatus string
 
 // PublicAnalysis defines model for PublicAnalysis.
 type PublicAnalysis struct {
@@ -510,7 +738,13 @@ type Settings struct {
 	AsrWarningThreshold  *int    `json:"asr_warning_threshold,omitempty"`
 	AutoHighlightEnabled *bool   `json:"auto_highlight_enabled,omitempty"`
 	AutoSubtitleEnabled  *bool   `json:"auto_subtitle_enabled,omitempty"`
-	DefaultSubtitleLang  *string `json:"default_subtitle_lang,omitempty"`
+
+	// CategoryKeywordEnabled Allow deterministic keyword rules to suggest a category before the AI class fallback.
+	CategoryKeywordEnabled *bool `json:"category_keyword_enabled,omitempty"`
+
+	// CategorySuggestionEnabled Enable mapping AI class output into an editorial category suggestion, not automatic publishing.
+	CategorySuggestionEnabled *bool   `json:"category_suggestion_enabled,omitempty"`
+	DefaultSubtitleLang       *string `json:"default_subtitle_lang,omitempty"`
 
 	// HighlightThreshold Giá trị hiển thị cũ; không thay đổi ngưỡng model hoặc đề xuất AI. CMS đọc CmsAnalysis.clip_threshold theo từng video.
 	// Deprecated: this property has been marked as deprecated upstream, but no `x-deprecated-reason` was set
@@ -519,14 +753,26 @@ type Settings struct {
 
 // SettingsUpdate defines model for SettingsUpdate.
 type SettingsUpdate struct {
-	AiServiceApiKey      *string `json:"ai_service_api_key,omitempty"`
-	AsrWarningThreshold  *int    `json:"asr_warning_threshold,omitempty"`
-	AutoHighlightEnabled *bool   `json:"auto_highlight_enabled,omitempty"`
-	AutoSubtitleEnabled  *bool   `json:"auto_subtitle_enabled,omitempty"`
+	AiServiceApiKey           *string `json:"ai_service_api_key,omitempty"`
+	AsrWarningThreshold       *int    `json:"asr_warning_threshold,omitempty"`
+	AutoHighlightEnabled      *bool   `json:"auto_highlight_enabled,omitempty"`
+	AutoSubtitleEnabled       *bool   `json:"auto_subtitle_enabled,omitempty"`
+	CategoryKeywordEnabled    *bool   `json:"category_keyword_enabled,omitempty"`
+	CategorySuggestionEnabled *bool   `json:"category_suggestion_enabled,omitempty"`
 
 	// HighlightThreshold Giữ tương thích client cũ; không điều khiển model hoặc tính lại clip.
 	// Deprecated: this property has been marked as deprecated upstream, but no `x-deprecated-reason` was set
 	HighlightThreshold *int `json:"highlight_threshold,omitempty"`
+}
+
+// StorageUsage defines model for StorageUsage.
+type StorageUsage struct {
+	Buckets []struct {
+		Bytes   int64  `json:"bytes"`
+		Name    string `json:"name"`
+		Objects int64  `json:"objects"`
+	} `json:"buckets"`
+	TotalBytes int64 `json:"total_bytes"`
 }
 
 // SubtitleSegment defines model for SubtitleSegment.
@@ -549,10 +795,20 @@ type Subtitles struct {
 
 // SystemHealth defines model for SystemHealth.
 type SystemHealth struct {
-	GpuUtil      *float32  `json:"gpu_util,omitempty"`
-	GpuVramUsed  *float32  `json:"gpu_vram_used,omitempty"`
-	ModelsLoaded *[]string `json:"models_loaded,omitempty"`
-	QueueDepth   *int      `json:"queue_depth,omitempty"`
+	AiAvailable *bool   `json:"ai_available,omitempty"`
+	AiError     *string `json:"ai_error,omitempty"`
+
+	// CpuUtil Docker host Linux CPU utilization sampled between reads; null until sampled or unavailable.
+	CpuUtil      *float32      `json:"cpu_util,omitempty"`
+	Device       *string       `json:"device,omitempty"`
+	GpuUtil      *float32      `json:"gpu_util,omitempty"`
+	GpuVramUsed  *float32      `json:"gpu_vram_used,omitempty"`
+	Metrics      *CmsMetrics   `json:"metrics,omitempty"`
+	MetricsError *string       `json:"metrics_error,omitempty"`
+	ModelsLoaded *[]string     `json:"models_loaded,omitempty"`
+	QueueDepth   *int          `json:"queue_depth,omitempty"`
+	Storage      *StorageUsage `json:"storage,omitempty"`
+	StorageError *string       `json:"storage_error,omitempty"`
 }
 
 // TextSearchResult defines model for TextSearchResult.
@@ -600,26 +856,33 @@ type UserMeRole string
 
 // Video defines model for Video.
 type Video struct {
-	Category        *Category    `json:"category,omitempty"`
-	CreatedAt       *time.Time   `json:"created_at,omitempty"`
-	Description     *string      `json:"description,omitempty"`
-	DurationSeconds *float32     `json:"duration_seconds,omitempty"`
-	Id              *string      `json:"id,omitempty"`
-	Status          *VideoStatus `json:"status,omitempty"`
-	ThumbnailUrl    *string      `json:"thumbnail_url,omitempty"`
-	Title           *string      `json:"title,omitempty"`
+	Category          *Category               `json:"category,omitempty"`
+	CreatedAt         *time.Time              `json:"created_at,omitempty"`
+	Description       *string                 `json:"description,omitempty"`
+	DurationSeconds   *float32                `json:"duration_seconds,omitempty"`
+	EditorialPriority *VideoEditorialPriority `json:"editorial_priority,omitempty"`
+	Id                *string                 `json:"id,omitempty"`
+	Status            *VideoStatus            `json:"status,omitempty"`
+	ThumbnailUrl      *string                 `json:"thumbnail_url,omitempty"`
+	Title             *string                 `json:"title,omitempty"`
+	UploadedBy        *string                 `json:"uploaded_by,omitempty"`
+	UploadedByName    *string                 `json:"uploaded_by_name,omitempty"`
 }
+
+// VideoEditorialPriority defines model for Video.EditorialPriority.
+type VideoEditorialPriority string
 
 // VideoStatus defines model for Video.Status.
 type VideoStatus string
 
 // VideoDetail defines model for VideoDetail.
 type VideoDetail struct {
-	Category        *Category  `json:"category,omitempty"`
-	Clips           *[]Clip    `json:"clips,omitempty"`
-	CreatedAt       *time.Time `json:"created_at,omitempty"`
-	Description     *string    `json:"description,omitempty"`
-	DurationSeconds *float32   `json:"duration_seconds,omitempty"`
+	Category          *Category                     `json:"category,omitempty"`
+	Clips             *[]Clip                       `json:"clips,omitempty"`
+	CreatedAt         *time.Time                    `json:"created_at,omitempty"`
+	Description       *string                       `json:"description,omitempty"`
+	DurationSeconds   *float32                      `json:"duration_seconds,omitempty"`
+	EditorialPriority *VideoDetailEditorialPriority `json:"editorial_priority,omitempty"`
 
 	// Fps Average source frames per second from CPU ingest; null when unavailable.
 	Fps *float64 `json:"fps,omitempty"`
@@ -632,14 +895,19 @@ type VideoDetail struct {
 	Id     *string `json:"id,omitempty"`
 
 	// PlaybackUrl URL MinIO presigned cho video gốc, hết hạn sau 1 giờ. Chỉ cấp trong GET detail: public chỉ video processed; CMS yêu cầu admin/editor và không cấp cho video deleted. Null khi chưa có file gốc. Không trả đường dẫn raw_file_path trong API.
-	PlaybackUrl  *string            `json:"playback_url,omitempty"`
-	Status       *VideoDetailStatus `json:"status,omitempty"`
-	ThumbnailUrl *string            `json:"thumbnail_url,omitempty"`
-	Title        *string            `json:"title,omitempty"`
+	PlaybackUrl    *string            `json:"playback_url,omitempty"`
+	Status         *VideoDetailStatus `json:"status,omitempty"`
+	ThumbnailUrl   *string            `json:"thumbnail_url,omitempty"`
+	Title          *string            `json:"title,omitempty"`
+	UploadedBy     *string            `json:"uploaded_by,omitempty"`
+	UploadedByName *string            `json:"uploaded_by_name,omitempty"`
 
 	// Width Encoded source width in pixels before ingest resizing; null until known, never inferred from thumbnails.
 	Width *int `json:"width,omitempty"`
 }
+
+// VideoDetailEditorialPriority defines model for VideoDetail.EditorialPriority.
+type VideoDetailEditorialPriority string
 
 // VideoDetailStatus defines model for VideoDetail.Status.
 type VideoDetailStatus string
@@ -648,12 +916,18 @@ type VideoDetailStatus string
 type VideoMetadataUpdate struct {
 	Description string `json:"description"`
 
+	// EditorialPriority Editorial flag only; does not claim to reorder Kafka or GPU scheduling.
+	EditorialPriority *VideoMetadataUpdateEditorialPriority `json:"editorial_priority,omitempty"`
+
 	// Hashtags Plain Unicode letter/digit/underscore tags, without leading hash or spaces; [] explicitly clears editorial tags.
 	Hashtags []string `json:"hashtags"`
 
 	// Title Nonblank Unicode text.
 	Title string `json:"title"`
 }
+
+// VideoMetadataUpdateEditorialPriority Editorial flag only; does not claim to reorder Kafka or GPU scheduling.
+type VideoMetadataUpdateEditorialPriority string
 
 // VideoTablePage defines model for VideoTablePage.
 type VideoTablePage struct {
@@ -725,6 +999,7 @@ type PostApiAuthResetPasswordJSONBody struct {
 type GetApiCmsClipsParams struct {
 	VideoId *string                     `form:"video_id,omitempty" json:"video_id,omitempty"`
 	Status  *GetApiCmsClipsParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+	Q       *string                     `form:"q,omitempty" json:"q,omitempty"`
 }
 
 // GetApiCmsClipsParamsStatus defines parameters for GetApiCmsClips.
@@ -747,11 +1022,21 @@ type PutApiCmsClipsIdJSONBody struct {
 
 // GetApiCmsJobsParams defines parameters for GetApiCmsJobs.
 type GetApiCmsJobsParams struct {
-	Status *GetApiCmsJobsParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+	Status  *GetApiCmsJobsParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+	Q       *string                    `form:"q,omitempty" json:"q,omitempty"`
+	VideoId *string                    `form:"video_id,omitempty" json:"video_id,omitempty"`
 }
 
 // GetApiCmsJobsParamsStatus defines parameters for GetApiCmsJobs.
 type GetApiCmsJobsParamsStatus string
+
+// GetApiCmsSystemHealthParams defines parameters for GetApiCmsSystemHealth.
+type GetApiCmsSystemHealthParams struct {
+	IncludeMetrics *bool `form:"include_metrics,omitempty" json:"include_metrics,omitempty"`
+
+	// Month UTC calendar month for metrics
+	Month *string `form:"month,omitempty" json:"month,omitempty"`
+}
 
 // GetApiCmsUsersParams defines parameters for GetApiCmsUsers.
 type GetApiCmsUsersParams struct {
@@ -763,8 +1048,15 @@ type GetApiCmsUsersParams struct {
 
 // GetApiCmsVideosParams defines parameters for GetApiCmsVideos.
 type GetApiCmsVideosParams struct {
-	Status *GetApiCmsVideosParamsStatus `form:"status,omitempty" json:"status,omitempty"`
-	Page   *Page                        `form:"page,omitempty" json:"page,omitempty"`
+	Status     *GetApiCmsVideosParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+	Q          *string                      `form:"q,omitempty" json:"q,omitempty"`
+	CategoryId *string                      `form:"category_id,omitempty" json:"category_id,omitempty"`
+	DateFrom   *openapi_types.Date          `form:"date_from,omitempty" json:"date_from,omitempty"`
+
+	// DateTo Inclusive UTC day
+	DateTo         *openapi_types.Date `form:"date_to,omitempty" json:"date_to,omitempty"`
+	IncludeDeleted *bool               `form:"include_deleted,omitempty" json:"include_deleted,omitempty"`
+	Page           *Page               `form:"page,omitempty" json:"page,omitempty"`
 }
 
 // GetApiCmsVideosParamsStatus defines parameters for GetApiCmsVideos.
@@ -886,6 +1178,9 @@ type PostApiCmsVideosMultipartRequestBody PostApiCmsVideosMultipartBody
 // PutApiCmsVideosIdJSONRequestBody defines body for PutApiCmsVideosId for application/json ContentType.
 type PutApiCmsVideosIdJSONRequestBody = VideoMetadataUpdate
 
+// PutApiCmsVideosIdAnalysisJSONRequestBody defines body for PutApiCmsVideosIdAnalysis for application/json ContentType.
+type PutApiCmsVideosIdAnalysisJSONRequestBody = HighlightReviewUpdate
+
 // PutApiCmsVideosIdCategoryJSONRequestBody defines body for PutApiCmsVideosIdCategory for application/json ContentType.
 type PutApiCmsVideosIdCategoryJSONRequestBody PutApiCmsVideosIdCategoryJSONBody
 
@@ -912,126 +1207,147 @@ type PutApiUsersMePreferencesJSONRequestBody PutApiUsersMePreferencesJSONBody
 // const string: with thousands of chunks the chained `+` fold is several
 // times slower for the Go compiler than parsing a slice literal.
 var swaggerSpec = []string{
-	"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",
-	"21b6xWzh4cF/BAAA//8=",
+	"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",
+	"UfnNdDuq/FhoGlEenPcCrTyxW9g//v8BAAD//w==",
 }
 
 // decodeSpec returns the embedded OpenAPI spec as raw JSON bytes,

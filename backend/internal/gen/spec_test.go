@@ -13,7 +13,7 @@ func TestCMSPlanAContract(t *testing.T) {
 	if err := spec.Validate(context.Background()); err != nil {
 		t.Fatal(err)
 	}
-	if spec.Info.Version != "0.7.0" {
+	if spec.Info.Version != "0.8.0" {
 		t.Fatalf("version %s", spec.Info.Version)
 	}
 	put := spec.Paths.Find("/api/cms/videos/{id}").Put
@@ -48,6 +48,29 @@ func TestSingleCMSCapabilityContract(t *testing.T) {
 	users := spec.Paths.Find("/api/cms/users").Get
 	if users == nil || len(users.Parameters) != 2 {
 		t.Fatal("missing read-only searchable user listing")
+	}
+}
+
+func TestCMSOperationalContract(t *testing.T) {
+	spec, err := GetSwagger()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if spec.Paths.Find("/api/cms/videos/{id}/analysis").Put == nil {
+		t.Fatal("missing persistent proposal review")
+	}
+	for _, key := range []string{"metrics", "storage", "ai_available", "cpu_util"} {
+		if spec.Components.Schemas["SystemHealth"].Value.Properties[key] == nil {
+			t.Fatal(key)
+		}
+	}
+	for _, key := range []string{"processing_options", "skipped_stages", "video_title"} {
+		if spec.Components.Schemas["Job"].Value.Properties[key] == nil {
+			t.Fatal(key)
+		}
+	}
+	if spec.Components.Schemas["CategoryWrite"].Value.Properties["keywords"] == nil {
+		t.Fatal("missing keyword rules")
 	}
 }
 

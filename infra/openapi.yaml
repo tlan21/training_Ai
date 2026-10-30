@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Video AI Platform — Public + CMS API
-  version: 0.7.0
+  version: 0.8.0
   description: >
     Contract-first (master plan §2). Nguồn sự thật cho gateway Go (oapi-codegen)
     và FE types (openapi-typescript). Điểm highlight thang 0–100; similarity/score 0–1.
@@ -463,9 +463,14 @@ paths:
         "403": { $ref: "#/components/responses/Forbidden" }
     get:
       tags: [cms-videos]
-      summary: Danh sách video mọi trạng thái (page-based)
+      summary: Danh sách video với tìm kiếm/lọc toàn kho; mặc định ẩn video đã xóa
       parameters:
         - { name: status, in: query, schema: { type: string, enum: [uploaded, processing, processed, failed, deleted] } }
+        - { name: q, in: query, schema: { type: string, maxLength: 200 } }
+        - { name: category_id, in: query, schema: { type: string } }
+        - { name: date_from, in: query, schema: { type: string, format: date } }
+        - { name: date_to, in: query, description: Inclusive UTC day, schema: { type: string, format: date } }
+        - { name: include_deleted, in: query, schema: { type: boolean, default: false } }
         - $ref: "#/components/parameters/Page"
       responses:
         "200":
@@ -531,6 +536,20 @@ paths:
               schema: { $ref: "#/components/schemas/Error" }
 
   /api/cms/videos/{id}/analysis:
+    put:
+      tags: [cms-videos]
+      summary: Lưu quyết định duyệt gợi ý highlight; không sửa output model
+      parameters: [ { $ref: "#/components/parameters/PathId" } ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/HighlightReviewUpdate" }
+      responses:
+        "200": { description: Review saved }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "409": { $ref: "#/components/responses/Conflict" }
+        "422": { $ref: "#/components/responses/ValidationError" }
     get:
       tags: [cms-videos]
       summary: Analysis đầy đủ (gồm ai_generated_clips, category_suggestion, summary_status)
@@ -559,6 +578,7 @@ paths:
                   summary: { type: string }
                   suggested_title: { type: string }
         "404": { $ref: "#/components/responses/NotFound" }
+        "422": { $ref: "#/components/responses/ValidationError" }
 
   /api/cms/videos/{id}/category:
     put:
@@ -632,6 +652,8 @@ paths:
       summary: Hàng đợi job + current_stage + progress
       parameters:
         - { name: status, in: query, schema: { type: string, enum: [pending, running, completed, failed] } }
+        - { name: q, in: query, schema: { type: string, maxLength: 200 } }
+        - { name: video_id, in: query, schema: { type: string } }
       responses:
         "200":
           description: list job
@@ -700,7 +722,10 @@ paths:
   /api/cms/system/health:
     get:
       tags: [cms-settings]
-      summary: Proxy GET :8001/health (số thật RTX 3060)
+      summary: Sức khỏe AI và CPU thực; tùy chọn thống kê CMS/MinIO, không giả telemetry khi dependency lỗi
+      parameters:
+        - { name: include_metrics, in: query, schema: { type: boolean, default: false } }
+        - { name: month, in: query, description: UTC calendar month for metrics, schema: { type: string, pattern: '^\d{4}-\d{2}$' } }
       responses:
         "200":
           description: health
@@ -722,7 +747,7 @@ paths:
               type: object
               required: [video_id, title]
               description: >
-                auto_highlights=true tự lấy các đoạn AI đã lưu, gộp phần trùng và xếp theo thời gian nguồn.
+                auto_highlights=true tự lấy các đoạn AI đã lưu chưa bị biên tập viên bỏ, gộp phần trùng và xếp theo thời gian nguồn.
                 Không có đoạn hợp lệ trả 422. Kết quả là một file MP4 nháp, không tự xuất bản.
                 Clip tổng hợp dùng start_time=0 và end_time=tổng thời lượng các đoạn; source_segments giữ mốc video gốc.
                 Khi auto_highlights=false hoặc bỏ trống, bắt buộc gửi start_time và end_time như trước.
@@ -746,6 +771,7 @@ paths:
       parameters:
         - { name: video_id, in: query, schema: { type: string } }
         - { name: status, in: query, schema: { type: string, enum: [draft, processing, published, rejected] } }
+        - { name: q, in: query, schema: { type: string, maxLength: 200 } }
       responses:
         "200":
           description: list
@@ -779,6 +805,7 @@ paths:
       responses:
         "204": { description: Đã xóa }
         "404": { $ref: "#/components/responses/NotFound" }
+        "409": { $ref: "#/components/responses/Conflict" }
 
   /api/cms/clips/{id}/publish:
     post:
@@ -847,6 +874,7 @@ paths:
       responses:
         "204": { description: Đã xóa }
         "404": { $ref: "#/components/responses/NotFound" }
+        "409": { $ref: "#/components/responses/Conflict" }
 
   # ---------------- 2.3 CMS users (admin) ----------------
   /api/cms/users:
@@ -968,12 +996,15 @@ components:
         id: { type: string }
         name: { type: string }
         description: { type: string, nullable: true, maxLength: 2000 }
+        keywords: { type: array, maxItems: 20, items: { type: string, minLength: 1, maxLength: 100 } }
+        video_count: { type: integer, minimum: 0, readOnly: true, description: Confirmed non-deleted videos across the entire repository. }
 
     CategoryWrite:
       type: object
       additionalProperties: false
       required: [name]
       properties:
+        keywords: { type: array, maxItems: 20, uniqueItems: true, description: "Omitted preserves existing keywords; empty clears. Backend rule suggestions only, editor confirms category.", items: { type: string, minLength: 1, maxLength: 100 } }
         name: { type: string, minLength: 1, maxLength: 100 }
         description:
           type: string
@@ -986,6 +1017,7 @@ components:
       additionalProperties: false
       required: [title, description, hashtags]
       properties:
+        editorial_priority: { type: string, enum: [low, normal, high], description: Editorial flag only; does not claim to reorder Kafka or GPU scheduling. }
         title: { type: string, minLength: 1, maxLength: 255, description: Nonblank Unicode text. }
         description: { type: string, maxLength: 10000 }
         hashtags:
@@ -1005,6 +1037,9 @@ components:
         duration_seconds: { type: number, format: float }
         status: { type: string, enum: [uploaded, processing, processed, failed, deleted] }
         category: { $ref: "#/components/schemas/Category" }
+        uploaded_by: { type: string, nullable: true }
+        uploaded_by_name: { type: string, nullable: true }
+        editorial_priority: { type: string, enum: [low, normal, high] }
         created_at: { type: string, format: date-time }
 
     VideoDetail:
@@ -1058,6 +1093,10 @@ components:
     Clip:
       type: object
       properties:
+        view_count: { type: integer, minimum: 0, readOnly: true, description: Count of validated Client click/open events for this clip. }
+        created_by_name: { type: string, nullable: true, readOnly: true }
+        category_name: { type: string, nullable: true, readOnly: true }
+        updated_at: { type: string, format: date-time, readOnly: true }
         id: { type: string }
         video_id: { type: string }
         title: { type: string }
@@ -1108,6 +1147,13 @@ components:
     Job:
       type: object
       properties:
+        video_title: { type: string }
+        thumbnail_url: { type: string, nullable: true }
+        duration_seconds: { type: number }
+        uploaded_by_name: { type: string, nullable: true }
+        editorial_priority: { type: string, enum: [low, normal, high] }
+        processing_options: { $ref: "#/components/schemas/ProcessingOptions" }
+        skipped_stages: { type: array, items: { type: string, enum: [asr_extracting, highlight_scoring, summarizing] } }
         id: { type: string }
         video_id: { type: string }
         status: { type: string, enum: [pending, running, completed, failed] }
@@ -1156,6 +1202,8 @@ components:
     CmsAnalysis:
       type: object
       properties:
+        proposal_decisions: { type: array, items: { $ref: "#/components/schemas/ProposalDecision" } }
+        category_match: { $ref: "#/components/schemas/CategoryMatch" }
         clip_threshold:
           type: number
           format: double
@@ -1216,6 +1264,8 @@ components:
     Settings:
       type: object
       properties:
+        category_suggestion_enabled: { type: boolean, description: "Enable mapping AI class output into an editorial category suggestion, not automatic publishing." }
+        category_keyword_enabled: { type: boolean, description: Allow deterministic keyword rules to suggest a category before the AI class fallback. }
         highlight_threshold: { type: integer, deprecated: true, description: Giá trị hiển thị cũ; không thay đổi ngưỡng model hoặc đề xuất AI. CMS đọc CmsAnalysis.clip_threshold theo từng video. }
         asr_warning_threshold: { type: integer }
         auto_highlight_enabled: { type: boolean }
@@ -1226,6 +1276,8 @@ components:
     SettingsUpdate:
       type: object
       properties:
+        category_suggestion_enabled: { type: boolean }
+        category_keyword_enabled: { type: boolean }
         highlight_threshold: { type: integer, minimum: 0, maximum: 100, deprecated: true, description: Giữ tương thích client cũ; không điều khiển model hoặc tính lại clip. }
         asr_warning_threshold: { type: integer, minimum: 0, maximum: 100 }
         auto_highlight_enabled: { type: boolean }
@@ -1235,9 +1287,91 @@ components:
     SystemHealth:
       type: object
       properties:
+        ai_available: { type: boolean }
+        ai_error: { type: string, nullable: true }
+        device: { type: string, nullable: true }
+        cpu_util: { type: number, nullable: true, minimum: 0, maximum: 100, description: Docker host Linux CPU utilization sampled between reads; null until sampled or unavailable. }
+        metrics: { $ref: "#/components/schemas/CmsMetrics" }
+        metrics_error: { type: string, nullable: true }
+        storage: { $ref: "#/components/schemas/StorageUsage" }
+        storage_error: { type: string, nullable: true }
         gpu_vram_used: { type: number, format: float }
         gpu_util: { type: number, format: float }
         models_loaded:
           type: array
           items: { type: string }
         queue_depth: { type: integer }
+
+    ProcessingOptions:
+      type: object
+      required: [auto_highlight_enabled, auto_subtitle_enabled]
+      description: Settings snapshot taken before upload is enqueued; changing settings does not rewrite existing jobs/results.
+      properties:
+        auto_highlight_enabled: { type: boolean }
+        auto_subtitle_enabled: { type: boolean }
+
+    ProposalDecision:
+      type: object
+      required: [proposal_index, status]
+      additionalProperties: false
+      properties:
+        proposal_index: { type: integer, minimum: 0 }
+        status: { type: string, enum: [accepted, dismissed] }
+
+    HighlightReviewUpdate:
+      type: object
+      required: [proposal_decisions]
+      additionalProperties: false
+      properties:
+        proposal_decisions: { type: array, maxItems: 100, items: { $ref: "#/components/schemas/ProposalDecision" } }
+
+    CategoryMatch:
+      type: object
+      required: [category_id, name, source]
+      properties:
+        category_id: { type: string }
+        name: { type: string }
+        source: { type: string, enum: [vision, keyword] }
+        keyword: { type: string, nullable: true }
+
+    StorageUsage:
+      type: object
+      required: [total_bytes, buckets]
+      properties:
+        total_bytes: { type: integer, format: int64, minimum: 0 }
+        buckets:
+          type: array
+          items:
+            type: object
+            required: [name, bytes, objects]
+            properties:
+              name: { type: string }
+              bytes: { type: integer, format: int64, minimum: 0 }
+              objects: { type: integer, format: int64, minimum: 0 }
+
+    CmsMetrics:
+      type: object
+      properties:
+        total_videos: { type: integer }
+        processed_videos: { type: integer }
+        failed_videos: { type: integer }
+        deleted_videos: { type: integer }
+        published_clips: { type: integer }
+        pending_jobs: { type: integer }
+        running_jobs: { type: integer }
+        completed_jobs: { type: integer }
+        failed_jobs: { type: integer }
+        total_users: { type: integer }
+        active_users: { type: integer, description: Distinct Client users with a validated interaction during the last15minutes. }
+        views_month: { type: integer, description: "Validated click/open interactions in requested UTC month, not inferred AI quality." }
+        total_views: { type: integer }
+        success_rate: { type: number, nullable: true, minimum: 0, maximum: 100 }
+        average_processing_seconds: { type: number, nullable: true, minimum: 0 }
+        daily_processing:
+          type: array
+          items:
+            type: object
+            required: [date, count]
+            properties:
+              date: { type: string, format: date }
+              count: { type: integer, minimum: 0 }
