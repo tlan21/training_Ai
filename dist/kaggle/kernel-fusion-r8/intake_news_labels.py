@@ -26,6 +26,19 @@ def per_second_labels(segments, n):
     return y
 
 
+def merge_overlaps(segments):
+    """Union of overlapping/touching human segments (reviewers chain the "+10 s" button over a long moment).
+    Keeps every marked second and adds none."""
+    merged = []
+    for s in sorted(segments, key=lambda s: s["start"]):
+        if merged and s["start"] <= merged[-1]["end"]:
+            merged[-1]["end"] = max(merged[-1]["end"], s["end"])
+            merged[-1]["n_merged"] += 1
+        else:
+            merged.append({"start": s["start"], "end": s["end"], "n_merged": 1})
+    return merged
+
+
 def validate(export, proposals):
     errors = []
     if export.get("schema") != "highlight-labels-v1":
@@ -47,6 +60,8 @@ def validate(export, proposals):
         if v.get("source_sha256") != p["source_sha256"]:
             errors.append(f"{vid}: source SHA-256 does not match the prepared video")
         segs = sorted(v.get("segments", []), key=lambda s: s["start"])
+        if v.get("_merged"):
+            segs = merge_overlaps(segs)
         for a, b in zip(segs, segs[1:]):
             if b["start"] < a["end"]:
                 errors.append(f"{vid}: segments overlap at {b['start']}")
@@ -56,10 +71,17 @@ def validate(export, proposals):
     return errors
 
 
-def main(out_dir, export_path):
+def main(out_dir, export_path, *flags):
     out = Path(out_dir)
     proposals = json.loads((out / "proposals.json").read_text(encoding="utf-8"))
     export = json.loads(Path(export_path).read_text(encoding="utf-8"))
+    merged_counts = {}
+    if "--merge-overlaps" in flags:                 # explicit, recorded in the report
+        for v in export["videos"]:
+            before = len(v["segments"])
+            v["segments"] = merge_overlaps(v["segments"])
+            v["_merged"] = True
+            merged_counts[v["video_id"]] = [before, len(v["segments"])]
     errors = validate(export, proposals)
     if errors:
         raise SystemExit("REJECTED:\n  " + "\n  ".join(errors))
@@ -76,11 +98,11 @@ def main(out_dir, export_path):
     report = {"rater": export["rater"], "exported_at": export["exported_at"], "videos": len(halves),
               "split": {k: [h["name"] for h in hs] for k, hs in data.items()},
               "positive_rate": {h["name"]: round(float((h["labels"] == 1).float().mean()), 4) for h in halves},
-              "human_edited_segments": sum(s.get("origin") == "HUMAN" for v in export["videos"] for s in v["segments"]),
-              "kept_ai_segments": sum(s.get("origin") == "CLAUDE_PROPOSED" for v in export["videos"] for s in v["segments"])}
+              "merge_overlaps": merged_counts or None,
+              "segment_seconds": {v["video_id"]: round(sum(s["end"] - s["start"] for s in v["segments"]), 1) for v in export["videos"]}}
     (out / "intake_report.json").write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
     print(json.dumps(report, ensure_ascii=False, indent=1))
 
 
 if __name__ == "__main__":
-    main(*sys.argv[1:3])
+    main(*sys.argv[1:])

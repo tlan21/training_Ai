@@ -43,3 +43,11 @@ def test_missing_rater_rejected():
     e = _export()
     e["rater"] = " "
     assert any("rater" in x for x in intake.validate(e, PROPOSALS))
+
+
+def test_merge_overlaps_keeps_every_marked_second_and_adds_none():
+    segs = [{"start": 79.8, "end": 89.8}, {"start": 87.2, "end": 97.2}, {"start": 119.3, "end": 129.3}, {"start": 129.3, "end": 139.3}]
+    merged = intake.merge_overlaps(segs)
+    assert [(m["start"], m["end"], m["n_merged"]) for m in merged] == [(79.8, 97.2, 2), (119.3, 139.3, 2)]
+    covered = lambda ss: {t / 10 for s in ss for t in range(int(s["start"] * 10), int(s["end"] * 10))}
+    assert covered(merged) == covered(segs)

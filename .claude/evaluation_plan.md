@@ -44,6 +44,13 @@
   Biến thể val F1 thô cao nhất, nếu > 0.2300 → thêm seed 1338, 1339; nếu không biến thể nào > 0.2300 → giữ vòng 6.
   **Thay vòng 6 chỉ khi cả ba:** val F1 ensemble ≥ 0.3053; khoảng cách train − val < 0.1692; val loss trung bình tại 3 checkpoint được chọn
   < 1.2136 (vòng 6). Quyết bằng val + train; test chấm sau khi quyết.
+- **Vòng 8 — đăng ký trước khi train (2026-10-30, AI-20): bóng đá + tin tức.** Dữ liệu: SoccerNet giữ nguyên split (218/28/27 hiệp) +
+  tin tức `highlight_news_labeled.pt` (nhãn người khoatm 2026-10-30, gộp đoạn chồng; train 7 / val 3 video theo video, seed 1337).
+  Công thức = vòng 7 (chuẩn hóa theo video + augment, d128/p0.3, lr 3e-4, wd 0.3, 4000 step). Biến thể: lặp video tin tức train ×1, ×10, ×30;
+  mỗi biến thể 3 seed. best.pt do Trainer chọn theo val gộp (bóng đá + tin tức). Chấm local: gộp 3 seed, stride 30, k+τ chọn trên **val bóng đá**
+  (một recipe production), F1 tin tức tính ở cùng k/τ. Chọn biến thể: trong các biến thể có val bóng đá ≥ 0.3051 (vòng 7 − 0.010), lấy val tin tức cao nhất.
+  **Thay vòng 7 chỉ khi:** val tin tức ≥ val tin tức của vòng 7 (cùng quy trình) + 0.05 **và** gap train−val bóng đá ≤ 0.1706.
+  Test bóng đá chấm sau quyết định. Tin tức KHÔNG có test (chỉ 10 video) — kết quả tin tức chỉ là val 3 video, ghi rõ giới hạn.
 - **Báo cáo chất lượng weak label:** alignment coverage toàn 50 trận + số trận bị loại (< 60% coverage) + Cohen's kappa của 2 người gán test — bảng riêng trong chương thực nghiệm.
 - **Đánh giá cấp đoạn (sát nghiệp vụ):** ghép giây liên tiếp > τ thành đoạn; đoạn đúng khi IoU ≥ 0.5 với đoạn nhãn người → precision/recall cấp đoạn.
 - **Đánh giá cảm quan:** CMS hiển thị heatmap → biên tập viên chấm "dùng được/không" cho 20 video — số liệu human-in-the-loop đưa vào luận án.

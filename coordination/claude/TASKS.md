@@ -19,7 +19,8 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | AI-16 | T1.5 / T1.8 | Highlight: (B) đối chiếu checkpoint active với vòng đạt DoD; (A) hậu xử lý đúng như lúc chấm (làm mượt k, τ); (C) luật clip (độ dài, nối, biên câu) | REVIEW (2026-10-29; vòng 5 ACTIVE trên :8001 theo lệnh user; chờ release) | user 2026-10-29 |
 | AI-17 | T1.5 | Fusion vòng 6: chuẩn hóa theo từng video + augment chống overfit; thay vòng 5 chỉ khi val ≥ 0.2750 và gap train−val < 0.205 | REVIEW (2026-10-29; vòng 6 ACTIVE trên :8001; chờ release) | AI-16; user 2026-10-29 |
 | AI-18 | T1.5 | Fusion vòng 7: giảm overfit bằng lr/weight decay/lịch ngắn; thay vòng 6 chỉ khi val ≥ 0.3053, gap < 0.1692, val loss < 1.2136 | REVIEW (2026-10-29; vòng 7 ACTIVE theo lệnh user; chờ release) | AI-17 |
-| AI-19 | T1.5 | (a) SỬA lỗi đặc trưng vision cho highlight (serve ViT ≠ train Siamese backbone); (b) dữ liệu tin tức 10 video gốc: feature + đề xuất + trang gán nhãn người → vòng 8 | IN_PROGRESS (2026-10-29) | user 2026-10-29 |
+| AI-19 | T1.5 | (a) SỬA lỗi đặc trưng vision cho highlight (serve ViT ≠ train Siamese backbone); (b) dữ liệu tin tức 10 video gốc: feature + đề xuất + trang gán nhãn người → vòng 8 | DONE (2026-10-30; fix vision + nhãn tin tức đã intake) | user 2026-10-29 |
+| AI-20 | T1.5 | Fusion vòng 8: bóng đá + tin tức (nhãn người), lặp tin tức ×1/×10/×30; thay vòng 7 chỉ khi val tin tức +0.05 và giữ bóng đá | IN_PROGRESS (2026-10-30) | AI-19 |
 | AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | BLOCKED ⇐ bundle INT-13 (phần độc lập xong 2026-10-26) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | DONE (2026-10-26; sandbox + artifact; product → AI-12 theo D18) | HC-04 (sandbox READY) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a DONE (2026-10-27) · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
@@ -201,8 +202,16 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   Next safe task: release #2 (user duyệt push)
   ```
 
+### AI-20 — Fusion vòng 8: bóng đá + tin tức có nhãn người
+- T gốc: T1.5 | Owner: claude | Status: IN_PROGRESS (2026-10-30)
+- Depends on: AI-19 (nhãn tin tức) | Blocks: —
+- Quy tắc: đăng ký trước `.claude/evaluation_plan.md` §2.1 "Vòng 8". Kernel mới `traininghighlight/ai-core-fusion-r8`; dataset private `traininghighlight/highlight-news-v1`
+  (chỉ đặc trưng + nhãn, không có video).
+- Acceptance: 3 biến thể × 3 seed; chấm local; quyết bằng val; test bóng đá sau quyết; đạt → đề xuất kích hoạt.
+- Evidence: — | Commits: — | Checkpoint: —
+
 ### AI-19 — Highlight: sửa đặc trưng vision + dữ liệu tin tức có nhãn người
-- T gốc: T1.5 | Owner: claude | Status: IN_PROGRESS (2026-10-29)
+- T gốc: T1.5 | Owner: claude | Status: DONE (2026-10-30) — (a) fix vision; (b) nhãn tin tức khoatm 10/10 video HUMAN_VERIFIED, intake với gộp đoạn chồng (`coordination/claude/evidence/AI-20_2026-10-30/news_intake_report.json`)
 - Depends on: AI-18 (vòng 7 active); quyết định user 2026-10-29 | Blocks: vòng 8 (cần file nhãn HUMAN_VERIFIED)
 - (a) DONE 2026-10-29 (1b5e211): `embeddings_256` = backbone Siamese (đặc trưng Fusion đã train; trước là ViT phân loại, cosine 0.03–0.13);
   `tests/test_feature_parity.py` khóa với checkpoint thật; :8001 PID 30580 smoke 9/9; REL cho Codex (video cũ cần chạy lại highlight).
