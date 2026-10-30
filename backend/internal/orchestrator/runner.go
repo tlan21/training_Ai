@@ -78,6 +78,9 @@ func (r *Runner) HandleUploaded(ctx context.Context, payload []byte) error {
 	if job.Status != domain.JobPending {
 		return nil
 	}
+	if err := r.videos.SetStatus(ctx, p.VideoID, domain.VideoProcessing); err != nil {
+		return err
+	}
 	if err := r.jobs.SetStatus(ctx, job.ID, domain.JobRunning, true, false); err != nil {
 		return err
 	}
@@ -85,7 +88,7 @@ func (r *Runner) HandleUploaded(ctx context.Context, payload []byte) error {
 }
 
 // HandlePreprocessed: consume video.preprocessed → source metadata → RunChain.
-func (r *Runner) HandlePreprocessed(ctx context.Context, payload []byte) error {
+func (r *Runner) HandlePreprocessed(ctx context.Context, payload []byte) (runErr error) {
 	var p preprocessed
 	if err := json.Unmarshal(payload, &p); err != nil {
 		return err
@@ -94,14 +97,17 @@ func (r *Runner) HandlePreprocessed(ctx context.Context, payload []byte) error {
 	if err != nil {
 		return err
 	}
-	if job.Status == domain.JobCompleted || (job.ErrorLog != nil && *job.ErrorLog == "canceled_by_user") {
+	if job.Status == domain.JobCompleted || job.Status == domain.JobFailed || (job.ErrorLog != nil && *job.ErrorLog == "canceled_by_user") {
 		return nil
 	}
+	defer func() {
+		if runErr != nil {
+			runErr = r.Fail(ctx, p.VideoID, runErr)
+		}
+	}()
 	if p.Duration <= 0 || math.IsNaN(p.Duration) || math.IsInf(p.Duration, 0) || (p.Width != nil && *p.Width <= 0) || (p.Height != nil && *p.Height <= 0) || (p.FPS != nil && (*p.FPS <= 0 || math.IsNaN(*p.FPS) || math.IsInf(*p.FPS, 0))) {
 		message, _ := os.ReadFile(filepath.Join(p.KeyframesPath, "error.txt"))
 		err := fmt.Errorf("preprocess: invalid video: %s", message)
-		_ = r.jobs.SetError(ctx, job.ID, err.Error())
-		_ = r.jobs.SetStatus(ctx, job.ID, domain.JobFailed, false, false)
 		return err
 	}
 	data, err := os.ReadFile(filepath.Join(p.KeyframesPath, "audio_features.json"))
@@ -118,7 +124,12 @@ func (r *Runner) HandlePreprocessed(ctx context.Context, payload []byte) error {
 }
 
 // RunChain chạy tuần tự embedding→asr→highlight→summarizing (mỗi stage retry 3, backoff 2s/4s/8s).
-func (r *Runner) RunChain(ctx context.Context, job *domain.ProcessingJob, prep preprocessed) error {
+func (r *Runner) RunChain(ctx context.Context, job *domain.ProcessingJob, prep preprocessed) (runErr error) {
+	defer func() {
+		if runErr != nil {
+			runErr = r.Fail(ctx, prep.VideoID, runErr)
+		}
+	}()
 	// ensure video is processing
 	if err := r.videos.SetStatus(ctx, prep.VideoID, domain.VideoProcessing); err != nil {
 		return err
@@ -172,15 +183,19 @@ func (r *Runner) RunChain(ctx context.Context, job *domain.ProcessingJob, prep p
 			return err
 		}
 		if err := r.retry(ctx, string(st.stage), st.fn); err != nil {
-			msg := fmt.Sprintf("stage=%s: %v", st.stage, err)
-			_ = r.jobs.SetError(ctx, job.ID, msg)
-			_ = r.jobs.SetStatus(ctx, job.ID, domain.JobFailed, false, false)
 			_ = r.bus.Publish(ctx, "ai.stage.completed", prep.VideoID, stageDone{VideoID: prep.VideoID, Stage: st.name, Ok: false, Error: err.Error()})
-			return err
+			return fmt.Errorf("stage=%s: %w", st.stage, err)
 		}
 		_ = r.bus.Publish(ctx, "ai.stage.completed", prep.VideoID, stageDone{VideoID: prep.VideoID, Stage: st.name, Ok: true})
 	}
 
+	current, err := r.jobs.Get(ctx, job.ID)
+	if err != nil {
+		return err
+	}
+	if current.ErrorLog != nil && *current.ErrorLog == "canceled_by_user" {
+		return context.Canceled
+	}
 	if err := r.suggestCategory(ctx, prep.VideoID); err != nil {
 		return err
 	}
@@ -305,4 +320,29 @@ func (r *Runner) doSummary(ctx context.Context, videoID string) error {
 		return err
 	}
 	return r.analysis.SetSummary(ctx, videoID, res.Text, "draft")
+}
+
+// Fail records one terminal meaning across ingest, AI and publication failures.
+func (r *Runner) Fail(ctx context.Context, videoID string, cause error) error {
+	cleanup, cancel := context.WithTimeout(context.WithoutCancel(ctx), 5*time.Second)
+	defer cancel()
+	job, err := r.jobs.GetByVideo(cleanup, videoID)
+	if err != nil {
+		return errors.Join(cause, err)
+	}
+	if job.Status == domain.JobCompleted {
+		return cause
+	}
+	var failures []error
+	if job.ErrorLog == nil || *job.ErrorLog != "canceled_by_user" {
+		failures = append(failures, r.jobs.SetError(cleanup, job.ID, cause.Error()))
+	}
+	failures = append(failures, r.jobs.SetStatus(cleanup, job.ID, domain.JobFailed, false, true))
+	video, err := r.videos.Get(cleanup, videoID)
+	if err != nil {
+		failures = append(failures, err)
+	} else if video.Status != domain.VideoDeleted {
+		failures = append(failures, r.videos.SetStatus(cleanup, videoID, domain.VideoFailed))
+	}
+	return errors.Join(append([]error{cause}, failures...)...)
 }

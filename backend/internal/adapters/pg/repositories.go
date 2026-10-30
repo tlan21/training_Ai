@@ -180,7 +180,7 @@ func (r *JobRepo) List(ctx context.Context, status *string) ([]domain.Processing
 	return items, rows.Err()
 }
 func (r *JobRepo) SetStatus(ctx context.Context, id string, status domain.JobStatus, started, completed bool) error {
-	return update(ctx, r.DB, `UPDATE video_processing_jobs SET status=$2::varchar,started_at=CASE WHEN $3 THEN now() ELSE started_at END,completed_at=CASE WHEN $4 THEN now() ELSE completed_at END,error_log=CASE WHEN $2::varchar='pending' THEN NULL ELSE error_log END,updated_at=now() WHERE id=$1`, id, status, started, completed)
+	return update(ctx, r.DB, `UPDATE video_processing_jobs SET status=$2::varchar,started_at=CASE WHEN $2::varchar='pending' THEN NULL WHEN $3 THEN coalesce(started_at,now()) ELSE started_at END,completed_at=CASE WHEN $2::varchar='pending' THEN NULL WHEN $4 THEN now() ELSE completed_at END,current_stage=CASE WHEN $2::varchar='pending' THEN NULL ELSE current_stage END,progress=CASE WHEN $2::varchar='pending' THEN 0 ELSE progress END,error_log=CASE WHEN $2::varchar='pending' THEN NULL ELSE error_log END,updated_at=now() WHERE id=$1`, id, status, started, completed)
 }
 func (r *JobRepo) SetStage(ctx context.Context, id string, stage domain.Stage) error {
 	return update(ctx, r.DB, `UPDATE video_processing_jobs SET current_stage=$2,progress=$3,updated_at=now() WHERE id=$1`, id, stage, domain.StageProgress[stage])

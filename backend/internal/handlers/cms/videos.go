@@ -112,6 +112,7 @@ func (h *VideoHandlers) Create(c *gin.Context) {
 	}
 	job, err := h.jobs.Create(c.Request.Context(), v.ID)
 	if err != nil {
+		_ = h.videos.SetStatus(c.Request.Context(), v.ID, domain.VideoFailed)
 		handlers.ErrorEnvelope(c, 500, "INTERNAL", err.Error())
 		return
 	}
@@ -126,7 +127,8 @@ func (h *VideoHandlers) Create(c *gin.Context) {
 	job.SkippedStages = options.SkippedStages()
 	if err := h.bus.Publish(c.Request.Context(), "video.uploaded", v.ID, gin.H{"video_id": v.ID, "raw_file_path": path}); err != nil {
 		_ = h.jobs.SetError(c.Request.Context(), job.ID, err.Error())
-		_ = h.jobs.SetStatus(c.Request.Context(), job.ID, domain.JobFailed, false, false)
+		_ = h.jobs.SetStatus(c.Request.Context(), job.ID, domain.JobFailed, false, true)
+		_ = h.videos.SetStatus(c.Request.Context(), v.ID, domain.VideoFailed)
 		handlers.ErrorEnvelope(c, 503, "INTERNAL", err.Error())
 		return
 	}

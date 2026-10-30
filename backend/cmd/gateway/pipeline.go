@@ -76,12 +76,7 @@ func wirePipeline(videos ports.VideoRepository, jobs ports.JobRepository, clips 
 			err = runner.HandlePreprocessed(ctx, payload)
 		}
 		if err != nil {
-			if job, getErr := jobs.GetByVideo(ctx, prep.VideoID); getErr == nil {
-				if job.ErrorLog == nil || *job.ErrorLog != "canceled_by_user" {
-					_ = jobs.SetError(ctx, job.ID, err.Error())
-					_ = jobs.SetStatus(ctx, job.ID, domain.JobFailed, false, false)
-				}
-			}
+			return runner.Fail(ctx, prep.VideoID, err)
 		}
 		return err
 	})

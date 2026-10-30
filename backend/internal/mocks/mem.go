@@ -79,7 +79,7 @@ func (r *VideoRepoMem) SetStatus(_ context.Context, id string, s domain.VideoSta
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	v, ok := r.M[id]
-	if !ok {
+	if !ok || v.Status == domain.VideoDeleted {
 		return domain.ErrVideoNotFound
 	}
 	v.Status = s
@@ -489,7 +489,15 @@ func (r *JobRepoMem) SetStatus(_ context.Context, id string, s domain.JobStatus,
 	}
 	v.Status = s
 	now := time.Now()
-	if started {
+	if s == domain.JobPending {
+		v.StartedAt = nil
+		v.CompletedAt = nil
+		v.CurrentStage = nil
+		v.Progress = 0
+		v.ErrorLog = nil
+	}
+	v.UpdatedAt = now
+	if started && v.StartedAt == nil {
 		v.StartedAt = &now
 	}
 	if completed {

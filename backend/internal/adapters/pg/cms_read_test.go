@@ -75,6 +75,28 @@ func TestCMSOperationsRealPersistence(t *testing.T) {
 	if err != nil || job.ProcessingOptions == nil || job.ProcessingOptions.AutoSubtitleEnabled || len(job.SkippedStages) != 2 {
 		t.Fatalf("snapshot: %+v %v", job, err)
 	}
+	if err := jobs.SetStatus(ctx, "job_b", domain.JobRunning, true, false); err != nil {
+		t.Fatal(err)
+	}
+	if err := jobs.SetStage(ctx, "job_b", domain.StageHighlightScoring); err != nil {
+		t.Fatal(err)
+	}
+	if err := jobs.SetError(ctx, "job_b", "old error"); err != nil {
+		t.Fatal(err)
+	}
+	if err := jobs.SetStatus(ctx, "job_b", domain.JobFailed, false, true); err != nil {
+		t.Fatal(err)
+	}
+	if err := jobs.SetStatus(ctx, "job_b", domain.JobPending, false, false); err != nil {
+		t.Fatal(err)
+	}
+	job, err = jobs.Get(ctx, "job_b")
+	if err != nil || job.ErrorLog != nil || job.CurrentStage != nil || job.Progress != 0 || job.StartedAt != nil || job.CompletedAt != nil || job.ProcessingOptions == nil || job.ProcessingOptions.AutoSubtitleEnabled {
+		t.Fatalf("retry reset/preserve snapshot: %+v %v", job, err)
+	}
+	if err := jobs.SetStatus(ctx, "job_b", domain.JobFailed, false, false); err != nil {
+		t.Fatal(err)
+	}
 	cats := &CategoryRepo{DB: db}
 	list, err := cats.List(ctx)
 	if err != nil || len(list) != 1 || list[0].VideoCount != 1 {

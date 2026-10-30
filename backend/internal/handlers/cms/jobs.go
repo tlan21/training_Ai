@@ -94,12 +94,23 @@ func (h *JobHandlers) Retry(c *gin.Context) {
 		handlers.ErrorEnvelope(c, 404, "VIDEO_NOT_FOUND", "Video not found")
 		return
 	}
+	if v.Status == domain.VideoDeleted {
+		handlers.ErrorEnvelope(c, 409, "CONFLICT", "Deleted videos cannot be retried")
+		return
+	}
+	if err := h.videos.SetStatus(c.Request.Context(), v.ID, domain.VideoUploaded); err != nil {
+		handlers.ErrorEnvelope(c, 500, "INTERNAL", "Unable to reset video")
+		return
+	}
 	if err := h.jobs.SetStatus(c.Request.Context(), id, domain.JobPending, false, false); err != nil {
+		_ = h.videos.SetStatus(c.Request.Context(), v.ID, domain.VideoFailed)
 		handlers.ErrorEnvelope(c, 500, "INTERNAL", err.Error())
 		return
 	}
 	if err := h.bus.Publish(c.Request.Context(), "video.uploaded", j.VideoID, gin.H{"video_id": j.VideoID, "raw_file_path": v.RawFilePath}); err != nil {
-		_ = h.jobs.SetStatus(c.Request.Context(), id, domain.JobFailed, false, false)
+		_ = h.jobs.SetStatus(c.Request.Context(), id, domain.JobFailed, false, true)
+		_ = h.jobs.SetError(c.Request.Context(), id, "Unable to enqueue retry")
+		_ = h.videos.SetStatus(c.Request.Context(), v.ID, domain.VideoFailed)
 		handlers.ErrorEnvelope(c, 503, "INTERNAL", err.Error())
 		return
 	}
@@ -117,8 +128,25 @@ func (h *JobHandlers) Cancel(c *gin.Context) {
 		handlers.ErrorEnvelope(c, http.StatusConflict, "CONFLICT", "only pending/running jobs can be canceled")
 		return
 	}
-	_ = h.jobs.SetStatus(c.Request.Context(), id, domain.JobFailed, false, false)
-	_ = h.jobs.SetError(c.Request.Context(), id, "canceled_by_user")
+	if err := h.jobs.SetError(c.Request.Context(), id, "canceled_by_user"); err != nil {
+		handlers.ErrorEnvelope(c, 500, "INTERNAL", "Unable to cancel job")
+		return
+	}
+	if err := h.jobs.SetStatus(c.Request.Context(), id, domain.JobFailed, false, true); err != nil {
+		handlers.ErrorEnvelope(c, 500, "INTERNAL", "Unable to cancel job")
+		return
+	}
+	v, err := h.videos.Get(c.Request.Context(), j.VideoID)
+	if err != nil {
+		handlers.ErrorEnvelope(c, 500, "INTERNAL", "Unable to read source video")
+		return
+	}
+	if v.Status != domain.VideoDeleted {
+		if err := h.videos.SetStatus(c.Request.Context(), j.VideoID, domain.VideoFailed); err != nil {
+			handlers.ErrorEnvelope(c, 500, "INTERNAL", "Unable to cancel video")
+			return
+		}
+	}
 	c.Status(http.StatusOK)
 }
 

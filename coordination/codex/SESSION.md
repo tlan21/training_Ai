@@ -1,5 +1,8 @@
 # SESSION — authoritative resume state (2026-10-30, INT-45 dedicated Settings audit)
 
+- INT-41 source d98a4e9; INT-42 source PARTIAL: ingest failure repro FAIL before fix (uploadedvideo/failedjob), shared terminal failure/cancel/deleted guards and retry reset/policy preservation/monotonicprogress now3affectedpackagesPASS. New realPG reset assertion pending final adapter run. INT-43 IN_PROGRESS now original-library global search/selection safety via0.8 q API, then remaining8screens/backendvalidation; INT-44 backend409 alreadyfc5383a PARTIAL pendingactualtoast. Product006/deploy/E2E stillpending; original services+QA3392unchanged. Do not stop after source checkpoints.
+
+
 - INT-49 checkpoint fc5383a. INT-41 backend PARTIAL: upload snapshot before event, skip actual disabled ASR+summary/highlight calls, preserve retry snapshot/legacy both-on; categorykeyword/vision rules persist suggestion only, no automatic metadata/publish. Unit4policy combinations x2attempts, upload/event order and categoryrules PASS; orchestrator/CMS/gateway packagesPASS (INT-41-go.log). Need UI+real deployed4policy proof later; product006 stillnotapplied. INT-42 IN_PROGRESS now lifecycle/retry/cancel/deleted guards. Then8screen wiring/43/44live/deploy/E2E, no partial-stop. QA3392:5174 and original services preserved.
 
 

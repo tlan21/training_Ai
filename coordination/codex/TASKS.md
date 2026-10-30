@@ -615,15 +615,16 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Next action: Queue/Settings UI and real four-policy API/AI proof after final owned deployment. Source commit recorded in Git; full acceptance still pending.
 
 ### INT-42 — Synchronize failed ingest job and video state
-- Owner: CODEX | Status: IN_PROGRESS (2026-10-30)
+- Owner: CODEX | Status: PARTIAL (2026-10-30; source tested, real batch pending)
 - Depends on: INT-40 live reproduction; existing job/video lifecycle, no AI dependency.
 - Acceptance: failed ingest makes video failed and visible in Lỗi AI; retry/cancel/deletion preserve consistent terminal states and never revive deleted media; reproduce bug before fix, meaningful lifecycle tests and isolated real CMS verification.
 - Planned files: backend/internal/orchestrator/runner.go, backend/cmd/gateway/pipeline.go and lifecycle tests; e2e/ and owned evidence as needed.
 - Commits/Evidence: not implemented; INT-40-edges/failed-job-video-status.json proves failed job/uploaded video. No PASS claim.
-- Next action: write focused failing state-transition check and fix shared terminal error path.
+- Source: reproduced failed ingest uploaded/failed/no completion (INT-42-before.log); shared failure path marks job/video terminal, preserves canceled/deleted guards; retry resets error/times/stage/progress and retains policy, deleted retry409; cancellation checked after last AI stage; monotonic stage progress. Orchestrator/CMS/gateway packages PASS (INT-42-go.log), focused lifecycle tests included.
+- Next action: real PG reset test and invalid/retry/cancel live acceptance after final app rollout. Stage-bound cancellation, no hard-kill of model/ingest process.
 
 ### INT-43 — Apply library search to original-video tab
-- Owner: CODEX | Status: TODO
+- Owner: CODEX | Status: IN_PROGRESS (2026-10-30)
 - Depends on: INT-40 reproduction; existing public/CMS API unchanged.
 - Acceptance: /published?q=... Video gốc filters current-page original titles, empty state and selection/bulk-delete remain correct; page scope disclosed, clip tabs unchanged; Playwright with real/fixture data verifies query with exactly one match and no match.
 - Planned files: cms/src/pages/ClipsPage.tsx, e2e/ relevant CMS tests, owned evidence.
@@ -631,7 +632,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Next action: apply existing title-filter rule to original rows before mapping; test selection safety with filtering.
 
 ### INT-44 — Report referenced-category deletion errors truthfully
-- Owner: CODEX | Status: TODO
+- Owner: CODEX | Status: PARTIAL (2026-10-30; backend included in INT-49, actual toast acceptance pending)
 - Depends on: INT-40 FK23503 reproduction; review OpenAPI error contract before implementation.
 - Acceptance: deleting a referenced category preserves data and yields a clear business error, not CATEGORY_NOT_FOUND/raw SQL; unused delete works; test active and soft-deleted references and actual CMS toast. New response schema/status, if needed, handled contract-first.
 - Planned files: backend/internal/adapters/pg/repositories.go, backend/internal/handlers/cms/categories.go and tests; OpenAPI/generated types only after a scoped contract task if needed; owned evidence.
