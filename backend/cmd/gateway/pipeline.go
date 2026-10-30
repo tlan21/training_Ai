@@ -56,8 +56,15 @@ func wirePipeline(videos ports.VideoRepository, jobs ports.JobRepository, clips 
 		if !strings.HasPrefix(prep.VideoID, "vid_") || strings.ContainsAny(prep.VideoID, "/\\") || prep.KeyframesPath != expected || (prep.Duration > 0 && prep.AudioPath != filepath.Join(expected, "audio.wav")) {
 			return domain.ErrValidation
 		}
+		job, err := jobs.GetByVideo(ctx, prep.VideoID)
+		if err != nil {
+			return err
+		}
+		if job.Status == domain.JobCompleted || job.Status == domain.JobFailed {
+			return nil
+		}
 		defer os.RemoveAll(expected)
-		var err error
+		err = nil
 		if prep.Duration > 0 {
 			key := "audio/" + prep.VideoID + ".wav"
 			defer func() {

@@ -20,6 +20,8 @@ func TestJobCancelRetryPreservePolicyAndDeletedGuard(t *testing.T) {
 	h := NewJobHandlers(jobs, bus, videos)
 	r := gin.New()
 	r.GET("/jobs", h.List)
+	videoH := NewVideoHandlers(videos, jobs, nil, nil, nil, nil, nil, nil, nil, nil)
+	r.DELETE("/videos/:id", videoH.Delete)
 	r.POST("/jobs/:id/cancel", h.Cancel)
 	r.POST("/jobs/:id/retry", h.Retry)
 	call := func(action string, status int) {
@@ -33,9 +35,17 @@ func TestJobCancelRetryPreservePolicyAndDeletedGuard(t *testing.T) {
 	call("cancel", 200)
 	stored, _ := jobs.Get(ctx, job.ID)
 	v, _ := videos.Get(ctx, "vid_job")
-	if stored.CompletedAt == nil || stored.ErrorLog == nil || *stored.ErrorLog != "canceled_by_user" || v.Status != domain.VideoFailed {
-		t.Fatalf("cancel: %+v %+v", stored, v)
+	if stored.Status != domain.JobRunning || stored.CompletedAt != nil || stored.ErrorLog == nil || *stored.ErrorLog != "canceled_by_user" || v.Status != domain.VideoProcessing {
+		t.Fatalf("cancel must await worker acknowledgement: %+v %+v", stored, v)
 	}
+	call("retry", 409)
+	deletion := httptest.NewRecorder()
+	r.ServeHTTP(deletion, httptest.NewRequest("DELETE", "/videos/vid_job", nil))
+	if deletion.Code != 409 {
+		t.Fatalf("delete accepted before worker stopped: %d", deletion.Code)
+	}
+	_ = jobs.SetStatus(ctx, job.ID, domain.JobFailed, false, true)
+	_ = videos.SetStatus(ctx, v.ID, domain.VideoFailed)
 	call("retry", 200)
 	stored, _ = jobs.Get(ctx, job.ID)
 	v, _ = videos.Get(ctx, "vid_job")

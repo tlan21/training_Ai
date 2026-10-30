@@ -1,0 +1,93 @@
+[
+  {
+    "name": "video-ai-gateway-1",
+    "order_only_difference": false,
+    "before_hash": "FCDA803EADCFCEF990979B0C4F180A589A0BD6F020096566A5EDA2A9D96D6735",
+    "matched_identical_mounts_with_permutation": true,
+    "after_hash": "FCDA803EADCFCEF990979B0C4F180A589A0BD6F020096566A5EDA2A9D96D6735"
+  },
+  {
+    "name": "video-ai-cms-1",
+    "order_only_difference": false,
+    "before_hash": "4F53CDA18C2BAA0C0354BB5F9A3ECBE5ED12AB4D8E11BA873C2F11161202B945",
+    "matched_identical_mounts_with_permutation": true,
+    "after_hash": "4F53CDA18C2BAA0C0354BB5F9A3ECBE5ED12AB4D8E11BA873C2F11161202B945"
+  },
+  {
+    "name": "video-ai-client-1",
+    "order_only_difference": false,
+    "before_hash": "4F53CDA18C2BAA0C0354BB5F9A3ECBE5ED12AB4D8E11BA873C2F11161202B945",
+    "matched_identical_mounts_with_permutation": true,
+    "after_hash": "4F53CDA18C2BAA0C0354BB5F9A3ECBE5ED12AB4D8E11BA873C2F11161202B945"
+  },
+  {
+    "name": "video-ai-inference-service-1",
+    "order_only_difference": false,
+    "before_hash": "9BACE4F49120EFFAFDC29C8AF3F5112D165D2398EFFFCB643081B774D8AF1BF2",
+    "matched_identical_mounts_with_permutation": true,
+    "after_hash": "9BACE4F49120EFFAFDC29C8AF3F5112D165D2398EFFFCB643081B774D8AF1BF2"
+  },
+  {
+    "name": "video-ai-ingest-worker-1",
+    "order_only_difference": false,
+    "before_hash": "FCDA803EADCFCEF990979B0C4F180A589A0BD6F020096566A5EDA2A9D96D6735",
+    "matched_identical_mounts_with_permutation": true,
+    "after_hash": "FCDA803EADCFCEF990979B0C4F180A589A0BD6F020096566A5EDA2A9D96D6735"
+  },
+  {
+    "name": "video-ai-milvus-1",
+    "order_only_difference": false,
+    "before_hash": "7388CEF853B0CD0A26839BB997B07A46E3CCE62D91CC5220044139B4CD75C138",
+    "matched_identical_mounts_with_permutation": true,
+    "after_hash": "7388CEF853B0CD0A26839BB997B07A46E3CCE62D91CC5220044139B4CD75C138"
+  },
+  {
+    "name": "video-ai-etcd-1",
+    "order_only_difference": false,
+    "before_hash": "0B81A4F1CADBC39DB29CEEB27E58C5BC9DF4817032AA79002902A53A278FFCD7",
+    "matched_identical_mounts_with_permutation": true,
+    "after_hash": "0B81A4F1CADBC39DB29CEEB27E58C5BC9DF4817032AA79002902A53A278FFCD7"
+  },
+  {
+    "name": "video-ai-kafka-init-1",
+    "order_only_difference": true,
+    "before_hash": "3FB12A224CC7D545D513DB6EBE9C18A95BE86B1FBA4A1574600E48B83A721834",
+    "matched_identical_mounts_with_permutation": true,
+    "after_hash": "2D1CF1D52F056C168B55CDB75DA2687768EBB976121E706F08383AD7F6AD8D53"
+  },
+  {
+    "name": "video-ai-minio-1",
+    "order_only_difference": false,
+    "before_hash": "F8F0DF3805AEF9CFF3E5C5EBE235F6A6F7F53E42C433F715083C29174110394F",
+    "matched_identical_mounts_with_permutation": true,
+    "after_hash": "F8F0DF3805AEF9CFF3E5C5EBE235F6A6F7F53E42C433F715083C29174110394F"
+  },
+  {
+    "name": "video-ai-kafka-1",
+    "order_only_difference": true,
+    "before_hash": "3F53A21710950B1D5ECB6FAAE2F8F040136D59242722CA87F65874B1778AC465",
+    "matched_identical_mounts_with_permutation": true,
+    "after_hash": "FFA5DD8BE7B990EA83A4241E5B14AD793884345CC9B85F30E420078C4D7EC9D6"
+  },
+  {
+    "name": "video-ai-postgres-1",
+    "order_only_difference": false,
+    "before_hash": "1FC737FC8745D89A88752D020686D95B6939DF660A72B543AD27262452ECFB63",
+    "matched_identical_mounts_with_permutation": true,
+    "after_hash": "1FC737FC8745D89A88752D020686D95B6939DF660A72B543AD27262452ECFB63"
+  },
+  {
+    "name": "video-ai-redis-1",
+    "order_only_difference": false,
+    "before_hash": "9B6C392408F281FBC717928F4B12353591001FF0AE359E1DE48FA1A8E979274B",
+    "matched_identical_mounts_with_permutation": true,
+    "after_hash": "9B6C392408F281FBC717928F4B12353591001FF0AE359E1DE48FA1A8E979274B"
+  },
+  {
+    "name": "video-ai-mongo-1",
+    "order_only_difference": false,
+    "before_hash": "8124E28559C8051AEC9D338F920F060512C7FA882DC5E8593F3AB6118FB828F3",
+    "matched_identical_mounts_with_permutation": true,
+    "after_hash": "8124E28559C8051AEC9D338F920F060512C7FA882DC5E8593F3AB6118FB828F3"
+  }
+]

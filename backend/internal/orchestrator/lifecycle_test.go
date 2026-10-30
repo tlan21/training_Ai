@@ -29,8 +29,7 @@ func TestCancelDuringLastStageCannotCompleteVideo(t *testing.T) {
 	_ = videos.Create(ctx, &domain.Video{ID: "vid_cancel", Status: domain.VideoUploaded})
 	job, _ := jobs.Create(ctx, "vid_cancel")
 	ai := &mocks.AIClientMem{SummarizeFn: func(string, int) (*domain.SummaryResult, error) {
-		_ = jobs.SetError(ctx, job.ID, "canceled_by_user")
-		_ = jobs.SetStatus(ctx, job.ID, domain.JobFailed, false, true)
+		_ = jobs.RequestCancel(ctx, job.ID)
 		return &domain.SummaryResult{Text: "late result"}, nil
 	}}
 	r := New(videos, jobs, mocks.NewAnalysisStoreMem(), mocks.NewSubtitleStoreMem(), ai, mocks.NewEventBusMem())
@@ -57,5 +56,22 @@ func TestProcessingProgressNeverMovesBackwards(t *testing.T) {
 			t.Fatalf("stage %s decreased progress %d->%d", stage, previous, progress)
 		}
 		previous = progress
+	}
+}
+
+func TestQueuedCancellationIsAcknowledgedWithoutStartingAI(t *testing.T) {
+	ctx := context.Background()
+	videos, jobs := mocks.NewVideoRepoMem(), mocks.NewJobRepoMem()
+	_ = videos.Create(ctx, &domain.Video{ID: "vid_queued_cancel", Status: domain.VideoUploaded})
+	job, _ := jobs.Create(ctx, "vid_queued_cancel")
+	_ = jobs.RequestCancel(ctx, job.ID)
+	r := New(videos, jobs, mocks.NewAnalysisStoreMem(), mocks.NewSubtitleStoreMem(), &mocks.AIClientMem{}, mocks.NewEventBusMem())
+	if err := r.HandleUploaded(ctx, []byte(`{"video_id":"vid_queued_cancel"}`)); err == nil {
+		t.Fatal("queued cancellation not handled")
+	}
+	j, _ := jobs.Get(ctx, job.ID)
+	v, _ := videos.Get(ctx, job.VideoID)
+	if j.Status != domain.JobFailed || v.Status != domain.VideoFailed || j.CompletedAt == nil {
+		t.Fatalf("cancellation acknowledgement: %+v %+v", j, v)
 	}
 }

@@ -82,6 +82,19 @@ func TestCMSOperationsRealPersistence(t *testing.T) {
 	if err := jobs.SetStage(ctx, "job_b", domain.StageHighlightScoring); err != nil {
 		t.Fatal(err)
 	}
+	if err := jobs.RequestCancel(ctx, "job_a"); err != domain.ErrConflict {
+		t.Fatalf("completed cancellation accepted: %v", err)
+	}
+	if err := jobs.RequestCancel(ctx, "job_b"); err != nil {
+		t.Fatal(err)
+	}
+	if err := jobs.SetStatus(ctx, "job_b", domain.JobCompleted, false, true); err != domain.ErrConflict {
+		t.Fatalf("cancellation raced past completed guard: %v", err)
+	}
+	pendingCancel, err := jobs.Get(ctx, "job_b")
+	if err != nil || pendingCancel.Status != domain.JobRunning || pendingCancel.CompletedAt != nil {
+		t.Fatalf("premature cancellation acknowledgement: %+v %v", pendingCancel, err)
+	}
 	if err := jobs.SetError(ctx, "job_b", "old error"); err != nil {
 		t.Fatal(err)
 	}
@@ -136,6 +149,19 @@ func TestCMSOperationsRealPersistence(t *testing.T) {
 	visible, err := (&ClipRepo{DB: db}).ListCMS(ctx, nil, nil, "")
 	if err != nil || len(visible) != 1 {
 		t.Fatalf("deleted source still in CMS clip catalog: %+v %v", visible, err)
+	}
+	if _, err := db.Exec(ctx, `INSERT INTO categories(id,name) VALUES('cat_deleted_only','Deleted only');UPDATE videos SET category_id='cat_deleted_only' WHERE id='vid_deleted'`); err != nil {
+		t.Fatal(err)
+	}
+	if err := cats.Delete(ctx, "cat_deleted_only"); err != domain.ErrConflict {
+		t.Fatalf("soft-deleted reference lost: %v", err)
+	}
+	temporary, err := cats.Create(ctx, "Unused", nil, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := cats.Delete(ctx, temporary.ID); err != nil {
+		t.Fatalf("unused delete: %v", err)
 	}
 	month := time.Date(2026, 10, 1, 0, 0, 0, 0, time.UTC)
 	m, err := (&CMSRepo{DB: db}).Overview(ctx, month)

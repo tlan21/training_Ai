@@ -491,6 +491,9 @@ func (r *JobRepoMem) SetStatus(_ context.Context, id string, s domain.JobStatus,
 	if !ok {
 		return domain.ErrJobNotFound
 	}
+	if s == domain.JobCompleted && v.ErrorLog != nil && *v.ErrorLog == "canceled_by_user" {
+		return domain.ErrConflict
+	}
 	v.Status = s
 	now := time.Now()
 	if s == domain.JobPending {

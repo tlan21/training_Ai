@@ -1,6 +1,7 @@
 package cms
 
 import (
+	"errors"
 	"net/http"
 	"strings"
 	"unicode/utf8"
@@ -132,25 +133,15 @@ func (h *JobHandlers) Cancel(c *gin.Context) {
 		handlers.ErrorEnvelope(c, http.StatusConflict, "CONFLICT", "only pending/running jobs can be canceled")
 		return
 	}
-	if err := h.jobs.SetError(c.Request.Context(), id, "canceled_by_user"); err != nil {
-		handlers.ErrorEnvelope(c, 500, "INTERNAL", "Unable to cancel job")
-		return
-	}
-	if err := h.jobs.SetStatus(c.Request.Context(), id, domain.JobFailed, false, true); err != nil {
-		handlers.ErrorEnvelope(c, 500, "INTERNAL", "Unable to cancel job")
-		return
-	}
-	v, err := h.videos.Get(c.Request.Context(), j.VideoID)
-	if err != nil {
-		handlers.ErrorEnvelope(c, 500, "INTERNAL", "Unable to read source video")
-		return
-	}
-	if v.Status != domain.VideoDeleted {
-		if err := h.videos.SetStatus(c.Request.Context(), j.VideoID, domain.VideoFailed); err != nil {
-			handlers.ErrorEnvelope(c, 500, "INTERNAL", "Unable to cancel video")
-			return
+	if err := h.jobs.RequestCancel(c.Request.Context(), id); err != nil {
+		if errors.Is(err, domain.ErrConflict) {
+			handlers.ErrorEnvelope(c, 409, "CONFLICT", "Job already finished")
+		} else {
+			handlers.ErrorEnvelope(c, 500, "INTERNAL", "Unable to request cancellation")
 		}
+		return
 	}
+	// The active worker acknowledges at a stage boundary; retry/delete remain blocked meanwhile.
 	c.Status(http.StatusOK)
 }
 

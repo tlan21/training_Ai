@@ -113,3 +113,18 @@ func (s *ObjectStorageMem) Usage(_ context.Context) (*domain.StorageUsage, error
 	}
 	return usage, nil
 }
+
+func (r *JobRepoMem) RequestCancel(_ context.Context, id string) error {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	j, ok := r.M[id]
+	if !ok {
+		return domain.ErrJobNotFound
+	}
+	if j.Status != domain.JobPending && j.Status != domain.JobRunning {
+		return domain.ErrConflict
+	}
+	message := "canceled_by_user"
+	j.ErrorLog = &message
+	return nil
+}

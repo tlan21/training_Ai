@@ -78,6 +78,9 @@ func (r *Runner) HandleUploaded(ctx context.Context, payload []byte) error {
 	if job.Status != domain.JobPending {
 		return nil
 	}
+	if job.ErrorLog != nil && *job.ErrorLog == "canceled_by_user" {
+		return r.Fail(ctx, p.VideoID, context.Canceled)
+	}
 	if err := r.videos.SetStatus(ctx, p.VideoID, domain.VideoProcessing); err != nil {
 		return err
 	}
@@ -97,8 +100,11 @@ func (r *Runner) HandlePreprocessed(ctx context.Context, payload []byte) (runErr
 	if err != nil {
 		return err
 	}
-	if job.Status == domain.JobCompleted || job.Status == domain.JobFailed || (job.ErrorLog != nil && *job.ErrorLog == "canceled_by_user") {
+	if job.Status == domain.JobCompleted || job.Status == domain.JobFailed {
 		return nil
+	}
+	if job.ErrorLog != nil && *job.ErrorLog == "canceled_by_user" {
+		return r.Fail(ctx, p.VideoID, context.Canceled)
 	}
 	defer func() {
 		if runErr != nil {
@@ -198,6 +204,13 @@ func (r *Runner) RunChain(ctx context.Context, job *domain.ProcessingJob, prep p
 	}
 	if err := r.suggestCategory(ctx, prep.VideoID); err != nil {
 		return err
+	}
+	current, err = r.jobs.Get(ctx, job.ID)
+	if err != nil {
+		return err
+	}
+	if current.ErrorLog != nil && *current.ErrorLog == "canceled_by_user" {
+		return context.Canceled
 	}
 	if err := r.videos.SetStatus(ctx, prep.VideoID, domain.VideoProcessed); err != nil {
 		return err

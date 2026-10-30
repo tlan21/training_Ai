@@ -540,3 +540,9 @@ for (const width of [390,1440]) {
   page.once('dialog',dialog=>dialog.dismiss());await page.getByRole('link',{name:'Quản lý người dùng',exact:true}).click();await expect(page).toHaveURL(/settings$/);await expect(page.getByLabel('Tạo phụ đề tự động',{exact:true})).not.toBeChecked();await page.getByRole('button',{name:'Lưu thay đổi',exact:true}).click();await expect(page.getByText('Đã lưu cài đặt',{exact:true})).toBeVisible();await page.reload();await expect(page.getByLabel('Tạo phụ đề tự động',{exact:true})).not.toBeChecked();await page.screenshot({path:info.outputPath(`settings-real-fields-${width}.png`),fullPage:true});
  });
 }
+
+for(const width of [390,1440]) test(`INT-50 ${width} cancellation waits for worker acknowledgement`,async({page})=>{
+ await page.setViewportSize({width,height:width===390?844:900});await setupUI(page);
+ await page.route('**/api/cms/jobs',route=>route.fulfill({json:[{id:'job_cancel_pending',video_id:videoId,video_title:'Cancel pending',status:'running',current_stage:'embedding',progress:40,error_log:'canceled_by_user'} satisfies components['schemas']['Job']]}));
+ await page.goto(`${cms}/queue`);await expect(page.getByText('Đang chờ dừng bước hiện tại',{exact:true})).toBeVisible();await expect(page.getByRole('button',{name:'Hủy xử lý',exact:true})).toBeDisabled();await expect(page.getByRole('button',{name:'Thử lại xử lý',exact:true})).toHaveCount(0);
+});

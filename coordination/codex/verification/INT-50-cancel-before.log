@@ -1,0 +1,13 @@
+=== RUN   TestJobCancelRetryPreservePolicyAndDeletedGuard
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /jobs                     --> traning_ai/backend/internal/handlers/cms.(*JobHandlers).List-fm (1 handlers)
+[GIN-debug] POST   /jobs/:id/cancel          --> traning_ai/backend/internal/handlers/cms.(*JobHandlers).Cancel-fm (1 handlers)
+[GIN-debug] POST   /jobs/:id/retry           --> traning_ai/backend/internal/handlers/cms.(*JobHandlers).Retry-fm (1 handlers)
+    jobs_test.go:36: cancel must await worker acknowledgement: &{ProcessingOptions:0x384eea1f4d3c SkippedStages:[highlight_scoring] ID:job_vid_job VideoID:vid_job QueueName:video_ingest_queue Status:failed WorkerNodeID:<nil> ErrorLog:0x384eea1f6bf0 StartedAt:2026-10-30 16:49:44.5367793 +0700 +07 m=+0.014780301 CompletedAt:2026-10-30 16:49:44.5373034 +0700 +07 m=+0.015304401 UpdatedAt:2026-10-30 16:49:44.5373034 +0700 +07 m=+0.015304401 CurrentStage:0x384eea1f6b00 Progress:80} &{EditorialPriority: CategoryName:<nil> UploadedByName:<nil> ID:vid_job Title: Description:<nil> RawFilePath:raw-videos/test.mp4 ThumbnailURL:<nil> DurationSeconds:0 Width:<nil> Height:<nil> FPS:<nil> Hashtags:[] Status:failed UploadedBy:<nil> CategoryID:<nil> DeletedAt:<nil> CreatedAt:0001-01-01 00:00:00 +0000 UTC UpdatedAt:0001-01-01 00:00:00 +0000 UTC}
+--- FAIL: TestJobCancelRetryPreservePolicyAndDeletedGuard (0.00s)
+FAIL
+FAIL	traning_ai/backend/internal/handlers/cms	2.818s
+FAIL

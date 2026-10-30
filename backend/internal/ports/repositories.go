@@ -61,6 +61,7 @@ type SessionRepository interface {
 }
 
 type JobRepository interface {
+	RequestCancel(ctx context.Context, id string) error
 	Create(ctx context.Context, videoID string) (*domain.ProcessingJob, error)
 	Get(ctx context.Context, id string) (*domain.ProcessingJob, error)
 	GetByVideo(ctx context.Context, videoID string) (*domain.ProcessingJob, error)
