@@ -6,6 +6,17 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 
 ## Tổng quan
 
+### INT-40 — User-requested complete CMS click audit
+- Owner: CODEX
+- Status: IN_PROGRESS (2026-10-30)
+- T gốc: INT-05 functional/widget audit; explicit user request to use Playwright across all CMS screens.
+- Depends on: deployed CMS/gateway/real inference available; INT-38/39 checkpoints.
+- Acceptance: inventory all 11 routes and shared controls; exercise reachable buttons/forms/filters/navigation against live APIs without response mocks; use only audit-owned artifacts for destructive/publish actions; preserve original content/settings/roles; distinguish working/partial/disabled/mock/failure/untested, with per-click evidence, desktop/mobile screenshots and network/error observations. A completed audit does not mark incomplete product features DONE.
+- Files: e2e/cms_audit_live.spec.ts; coordination/codex/verification/INT-40*; owned TASKS/SESSION/HANDOFF.
+- Commits: pending.
+- Evidence: pending live Playwright run and source-to-API corroboration.
+- Next action: inventory screen controls, capture runtime/data baseline, implement/run live audit and classify each result.
+
 | ID | T gốc | Tên | Status | Depends on |
 |---|---|---|---|---|
 | INT-00 | — | Worktree, dependency, stack hạ tầng + mock AI HTTP | REVIEW | HC-02, HC-03 (đã nhận) |

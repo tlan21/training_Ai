@@ -1,4 +1,6 @@
-# SESSION — authoritative resume state (2026-10-30, INT-37/38/39 checkpoint)
+# SESSION — authoritative resume state (2026-10-30, INT-40 CMS audit)
+
+- INT-40 IN_PROGRESS: user requests Playwright audit of every CMS screen/click and mock detection. Branch codex/integration clean at startup; no HEAD..master delta. Read AGENTS/coordination rules, session/tasks, Claude handoff/contract and project ui_design_review; Ponytail remains active. Audit only, no unsolicited product fixes/model changes/deployment. Live APIs without interception; isolated audit artifacts for upload/cut/publish/delete/category/role changes, preserve originals and restore settings. Next inventory controls, baseline runtime/data, run repeatable live audit and write per-screen findings, screenshots and limitations.
 
 - **INT-37 DONE** public contract0.6.0/f709b94. **INT-38 REVIEW** source43e45a1/deployment8979a49: optional reported threshold validated and stored atomically, legacy unknown remains null, Settings model-owned notice, valid0proposals/manual cut and non-football/<120s disclaimer. New AI v1.4 field inference proof remains pending Claude release/current-source parity (HO-04); do not mark INTEGRATED_REAL/DONE for that extension.
 - **INT-39 DONE** precise backend cuts source5ce29db. Old request0.52..2.36(1.840s) produced2.040s; now1.840s. Normal clips reuse existing exact trim/encode engine; no forced SAR1, preserve source aspect; all jobs bounded15m. Source offsets/storage/events unchanged, original files never recut. ASR sentence snapping not implemented.
