@@ -13,7 +13,7 @@ func TestCMSPlanAContract(t *testing.T) {
 	if err := spec.Validate(context.Background()); err != nil {
 		t.Fatal(err)
 	}
-	if spec.Info.Version != "0.6.0" {
+	if spec.Info.Version != "0.7.0" {
 		t.Fatalf("version %s", spec.Info.Version)
 	}
 	put := spec.Paths.Find("/api/cms/videos/{id}").Put
@@ -34,6 +34,20 @@ func TestCMSPlanAContract(t *testing.T) {
 		if spec.Components.Schemas["VideoDetail"].Value.AllOf[1].Value.Properties[name] == nil {
 			t.Fatalf("missing %s", name)
 		}
+	}
+}
+
+func TestSingleCMSCapabilityContract(t *testing.T) {
+	spec, err := GetSwagger()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if spec.Paths.Find("/api/cms/users/{id}/role") != nil {
+		t.Fatal("retired role-management route remains")
+	}
+	users := spec.Paths.Find("/api/cms/users").Get
+	if users == nil || len(users.Parameters) != 2 {
+		t.Fatal("missing read-only searchable user listing")
 	}
 }
 

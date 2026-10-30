@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Video AI Platform — Public + CMS API
-  version: 0.6.0
+  version: 0.7.0
   description: >
     Contract-first (master plan §2). Nguồn sự thật cho gateway Go (oapi-codegen)
     và FE types (openapi-typescript). Điểm highlight thang 0–100; similarity/score 0–1.
@@ -687,7 +687,7 @@ paths:
         "403": { $ref: "#/components/responses/Forbidden" }
     put:
       tags: [cms-settings]
-      summary: Cập nhật settings (admin only)
+      summary: Cập nhật settings bằng tài khoản quản lý CMS tạo sẵn
       requestBody:
         required: true
         content:
@@ -852,8 +852,10 @@ paths:
   /api/cms/users:
     get:
       tags: [cms-users]
-      summary: Danh sách user (admin only)
-      parameters: [ { $ref: "#/components/parameters/Page" } ]
+      summary: Danh sách tài khoản chỉ đọc, không có quản lý vai trò hay xóa tài khoản
+      parameters:
+        - { $ref: "#/components/parameters/Page" }
+        - { name: q, in: query, description: Tìm username hoặc email trên toàn danh sách, schema: { type: string, maxLength: 200 } }
       responses:
         "200":
           description: page
@@ -867,28 +869,6 @@ paths:
                     items: { $ref: "#/components/schemas/User" }
                   total: { type: integer }
                   page: { type: integer }
-        "403": { $ref: "#/components/responses/Forbidden" }
-
-  /api/cms/users/{id}/role:
-    put:
-      tags: [cms-users]
-      summary: Đổi role (admin only)
-      parameters: [ { $ref: "#/components/parameters/PathId" } ]
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required: [role]
-              properties:
-                role: { type: string, enum: [admin, editor, client] }
-      responses:
-        "200":
-          description: user
-          content:
-            application/json:
-              schema: { $ref: "#/components/schemas/User" }
         "403": { $ref: "#/components/responses/Forbidden" }
 
 components:

@@ -1498,7 +1498,7 @@ export interface paths {
                 403: components["responses"]["Forbidden"];
             };
         };
-        /** Cập nhật settings (admin only) */
+        /** Cập nhật settings bằng tài khoản quản lý CMS tạo sẵn */
         put: {
             parameters: {
                 query?: never;
@@ -1879,11 +1879,13 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Danh sách user (admin only) */
+        /** Danh sách tài khoản chỉ đọc, không có quản lý vai trò hay xóa tài khoản */
         get: {
             parameters: {
                 query?: {
                     page?: components["parameters"]["Page"];
+                    /** @description Tìm username hoặc email trên toàn danh sách */
+                    q?: string;
                 };
                 header?: never;
                 path?: never;
@@ -1908,52 +1910,6 @@ export interface paths {
             };
         };
         put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/cms/users/{id}/role": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /** Đổi role (admin only) */
-        put: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    id: components["parameters"]["PathId"];
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": {
-                        /** @enum {string} */
-                        role: "admin" | "editor" | "client";
-                    };
-                };
-            };
-            responses: {
-                /** @description user */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["User"];
-                    };
-                };
-                403: components["responses"]["Forbidden"];
-            };
-        };
         post?: never;
         delete?: never;
         options?: never;

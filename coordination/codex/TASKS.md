@@ -7,15 +7,15 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 ## Tổng quan
 
 ### INT-46 — User scope change: simplify CMS account contract
-- Owner: CODEX | Status: IN_PROGRESS (2026-10-30)
+- Owner: CODEX | Status: DONE (2026-10-30)
 - Depends on: explicit user request to remove CMS password recovery/account deletion and role management; INT-40/45 audits. Account-delete CMS endpoint/implementation does not exist, verify no dormant action remains.
 - Acceptance: contract removes CMS role-write API; CMS management access is one capability for pre-provisioned CMS accounts, viewer accounts remain excluded. CMS recovery removed; shared Client recovery scope clarification pending, so do not break live Client consumers. Regenerate3types and validate contract before implementation. No existing account/data deletion.
 - Planned files: infra/openapi.yaml; backend/internal/gen/**; cms/src/api-types.ts; client/src/api-types.ts; owned scope docs/tracker.
-- Evidence/Commits: pending.
-- Next action: contract-first role API retirement, then INT-47 auth/UI/dead-code implementation; continue operational CMS fixes afterward.
+- Evidence/Commits: startup2f973ce; contract/evidence in this checkpoint. verification/INT-46.md; generated3types; spec validation PASS0.566s, CMS/Client typesPASS. User role data retained for login boundary; no role-write API.
+- Next action: INT-47 auth/UI/dead-code implementation; continue operational CMS fixes afterward.
 
 ### INT-47 — Simplify CMS login/users and remove retired account features
-- Owner: CODEX | Status: TODO
+- Owner: CODEX | Status: IN_PROGRESS (2026-10-30)
 - Depends on: INT-46.
 - Acceptance: no CMS forgot/reset/account-delete link/page, no quick-login credentials, no role editor/role-write handler/port methods; all pre-provisioned CMS accounts share functionality, viewers denied. Users list/search/created timestamp read-only; login/refresh/logout preserved. Remove obsolete code/tests without deleting existing users or public Client functionality that still has consumers.
 - Planned files: cms/src/auth/router/users/hooks/sidebar, backend gateway/users/ports/repos/mocks/tests; shared recovery only after clarification; owned subplans/evidence.
