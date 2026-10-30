@@ -475,3 +475,8 @@ Mẫu HO:
 ## 2026-10-30 INT-50 source checkpoint — eight CMS business screens
 - Public0.8 operations wired with actual metrics/metadata, saved highlight review/category rules/editorial priority, subtitle transcript synchronization and surfaced write failures. Snapshot execution/retry/cancel and deleted source guards retained; source domains/AI API unchanged. Fresh init/seed includes006 fields, product additive migration still pending.
 - Go gates, actual PG3TEMP tests/Mongo1roundtrip, CMS/E2E types/build and fixture73 +final8 +picker2 tests PASS; details verification/INT-50.md. This is source checkpoint, not deployed real acceptance; continue product preservation/migration and owned gateway/CMS rollout/E2E. AI source/model/runtime/checkpoint untouched; HO-04 remains separate Claude release dependency.
+
+
+## 2026-10-30 INT-50 local rollout — source74344bb, real acceptance next
+- Additive006 applied twice, old rows unchanged; final gateway/CMS source74344bb images deployed with safe cancel acknowledgement. HTTP200, actualAI6/stubfalse/CPU/degradedempty, all other11projectcontainers and all app env/mounts/commands preserved. Old source628rollout retained as initial evidence; detailed exactmount-order proof and artifact hashes in verification/INT-50.md.
+- Owned imagepin override docker-compose.cms-completion.yml follows root + inference override for local app commands. No inference image/source/runtime/checkpoint change and no Client/worker/DB restart, no push/release. Original Mongo docs unchanged across rollout. Next tracked real policy/8screen E2E and data/settings/runtime preservation, then acceptance checkpoint; not DONE yet.

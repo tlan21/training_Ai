@@ -1,15 +1,4 @@
 {
-  "device": "cpu",
-  "mount_order_false_alarm_resolved_by_exact_permutation_hash": true,
-  "cms_bundle": "index-BzSu-Jfr.js",
-  "source": "6287454",
-  "degraded": [],
-  "only_gateway_cms_recreated": true,
-  "gateway_health": 200,
-  "app_env_mount_command_preserved": true,
-  "other_services_unchanged": true,
-  "cms_status": 200,
-  "gateway_sha256": "56AE15A19E72491DFD998808C0003216F3E940FCC7FAF6FF2975BBD1CB63D3BA",
   "models_loaded": [
     "asr_ctc",
     "highlight_fusion",
@@ -18,5 +7,16 @@
     "two_tower",
     "vit"
   ],
-  "stub_mode": false
+  "source": "74344bb",
+  "other_services_unchanged": true,
+  "stub_mode": false,
+  "degraded": [],
+  "gateway_sha256": "4BF998F5D44AEAA87715D22A76E17E8EBA5E687C66FA20D17C98680F33720392",
+  "device": "cpu",
+  "only_gateway_cms_recreated": true,
+  "cms_status": 200,
+  "gateway_health": 200,
+  "mount_order_false_alarm_resolved_by_exact_permutation_hash": true,
+  "cms_bundle": "index-BvWilaKn.js",
+  "app_env_mount_command_preserved": true
 }
