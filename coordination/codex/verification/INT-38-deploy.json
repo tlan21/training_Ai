@@ -1,0 +1,16 @@
+{
+  "services": [
+    "gateway",
+    "cms"
+  ],
+  "gateway_binary_sha256": "a80b37112e9003015b83c011738c2bfb50ab4daee32b0994e1f23f4a6e682957",
+  "gateway_environment_unchanged": true,
+  "health": {
+    "dependencies": {
+      "milvus": "ok",
+      "minio": "ok"
+    },
+    "status": "ok"
+  },
+  "image_tag": "int38-43e45a1"
+}

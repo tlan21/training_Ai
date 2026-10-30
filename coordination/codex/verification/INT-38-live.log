@@ -1,0 +1,9 @@
+
+Running 2 tests using 1 worker
+
+(node:19952) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 e2e\hc15_live.spec.ts:5:37 › HC-15 real CMS existing-analysis compatibility 390 (2.8s)
+  ok 2 e2e\hc15_live.spec.ts:5:37 › HC-15 real CMS existing-analysis compatibility 1440 (1.5s)
+
+  2 passed (5.3s)

@@ -6,6 +6,8 @@ Chỉ `INTEGRATED_REAL` với endpoint `API_READY` trên `master` mới được
 
 Bản đầu do Claude khởi tạo 2026-10-26 từ INVENTORY; từ đây Codex tự cập nhật.
 
+2026-10-30 HC-15/INT-38: optional v1.4-rc1 clip_threshold response extension is DRAFT/MOCK_ONLY for inference-field proof (HTTP fixture51/0/null +real Mongo). Legacy real-runtime CMS/DTO compatibility2PASS5.3s, no backfill; this does not promote the extension. AI-19 reports pre-fix vision embeddings unsuitable for Fusion; existing transport tests are not model-quality proof. Current Docker image478052e remains pending Claude current-source/feature-parity release (HO-04), original scores/media preserved. Public product contract0.6.0 only.
+
 2026-10-29 INT-34/35: product compilation uses existing stored highlight proposals; no additional AI request/contract/status change. Real backend/CMS/Client acceptance 1PASS36.4s (60s source→9 intervals→one34s MP4, draft/preview/publish/playback/own-test rejection), verification/INT-35.md. Docker runtime remains ai-v2-478052e, host Fusion5 separate. This does not promote /v2 DRAFT or model-quality acceptance.
 
 | AI endpoint | Contract | Nơi gọi (Go) | Màn/flow | Trạng thái | Bằng chứng |

@@ -1,0 +1,11 @@
+
+Running 4 tests using 1 worker
+
+(node:12468) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 e2e\cms_stitch_reference.spec.ts:7:7 › INT-05 Stitch ph_duy_t_c_t_highlight_ai 390 (2.2s)
+  ok 2 e2e\cms_stitch_reference.spec.ts:7:7 › INT-05 Stitch c_i_t_h_th_ng 390 (992ms)
+  ok 3 e2e\cms_stitch_reference.spec.ts:7:7 › INT-05 Stitch ph_duy_t_c_t_highlight_ai 1440 (1.3s)
+  ok 4 e2e\cms_stitch_reference.spec.ts:7:7 › INT-05 Stitch c_i_t_h_th_ng 1440 (1.2s)
+
+  4 passed (7.0s)

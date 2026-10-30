@@ -1,0 +1,18 @@
+[
+  {
+    "width": 1440,
+    "video_id": "vid_dmh5o652juum",
+    "reported_threshold": null,
+    "proposals": 3,
+    "no_route_mocks": true,
+    "no_media_created_or_reprocessed": true
+  },
+  {
+    "width": 390,
+    "video_id": "vid_dmh5o652juum",
+    "reported_threshold": null,
+    "proposals": 3,
+    "no_route_mocks": true,
+    "no_media_created_or_reprocessed": true
+  }
+]

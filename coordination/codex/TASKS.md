@@ -532,15 +532,16 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Commits: 7722f10 start; **f709b94** contract. Evidence: verification/INT-37.md; schema test PASS0.600s, CMS/Client types PASS, cached generation/no downloads. Next action: INT-38.
 
 ### INT-38 — HC-15 truthful CMS threshold, zero proposals and reference-only scope
-- Owner: CODEX | Status: IN_PROGRESS (2026-10-30)
+- Owner: CODEX | Status: REVIEW (2026-10-30; code/QA/deployed legacy compatibility verified, new AI field release pending HO-04)
 - Depends on: INT-37; existing AI client/analysis store, CMS highlight/settings. Real new-model rollout remains Claude release/runtime dependency.
 - Acceptance: persist reported AI threshold atomically with scores/clips, distinguish null/0, validate untrusted AI bounds; CMS heatmap uses reported threshold and labels legacy unknown; Settings HC-15(b) no misleading adjustable AI threshold; zero proposals is valid/manual save still works; notice for non-football/<120s. Go+Mongo roundtrip+CMS types/build+390/1440 Playwright, real deployed legacy compatibility; no forced model upgrade/reprocessing original videos.
 - Changed: backend domain/ports/AIHTTP/Mongo/mock/orchestrator/CMS analysis DTO and tests; CMS HighlightPage/SettingsPage; e2e/cms_design.spec.ts; owned schema/subplans/coordination/evidence.
-- Commits: f709b94 contract; source checkpoint follows. Evidence: native Go vet/test/build PASS, actual Mongo roundtrip51/0/null +cleanup PASS0.07s, CMS types/build/E2Etypes PASS,14focusedUI PASS12.3s +41CMSregression PASS51.4s +4originalStitch references PASS7.0s. Source metadata kept unknown for legacy data; Settings HC-15(b) model-owned disclosure.
-- Next action: build/deploy only gateway/CMS; verify actual existing analysis null-metadata/UI compatibility and preserve product rows/analysis/container state. New AI response field remains DRAFT/real-rollout dependency HO-04; no INTEGRATED_REAL promotion or old-video reprocessing.
+- Commits: **f709b94** contract; **43e45a1** source. Evidence: native Go vet/test/build PASS, actual Mongo roundtrip51/0/null +cleanup PASS0.07s, CMS types/build/E2Etypes PASS,14focusedUI PASS12.3s +41CMSregression PASS51.4s +4originalStitch references PASS7.0s; actual deployed CMS/API legacy compatibility **2PASS5.3s**. Scoped10pointreview and screenshots inspected.
+- Deployment: only gateway/CMS int38-43e45a1/latest, unchanged gateway environment, live binary SHA verified/health200; rollback tags retained. Other14containers/hostAI state unchanged,106videos/58clips and4original analysis hashes unchanged, jobs0; ownQA21800 stopped/5174closed. No migration/backfill/reprocessing.
+- Next action: wait Claude v1.4 release/current AI runtime feature parity for real reported-threshold verification (HO-04). DRAFT field tested with HTTP fixtures and real Mongo, existing product data remains unknown; no INTEGRATED_REAL/DONE promotion. Existing Settings auto-toggle execution wiring is separate/unresolved.
 
 ### INT-39 — HC-14 precise single-clip cutting
-- Owner: CODEX | Status: TODO (2026-10-30)
+- Owner: CODEX | Status: IN_PROGRESS (2026-10-30)
 - Depends on: existing INT-35 exact trim/concat implementation; no model/AI field dependency. Start after INT-38 deployment checkpoint.
 - Acceptance: normal single-range clips accurately retain requested frame range/duration±0.1s with audio/silent input, reuse existing re-encode path, bound processing time; preserve source offsets, clip storage/status and original media. Native Go gates + actual gateway FFmpeg binary tests. ASR sentence snapping/AI rollout remains separate.
 - Changed: planned backend cutter + meaningful real FFmpeg test and owned evidence; no endpoint/DB schema/AI code edit.
