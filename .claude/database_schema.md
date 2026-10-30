@@ -330,3 +330,11 @@ Encoded source dimensions/average fps come from CPU ingest before resizing; no f
 Editorial title/description/hashtags update together, preserve status/file/provenance and remain separate from Mongo AI proposals.
 categories.description is nullable TEXT(max2000); omitted/null write preserves existing description, empty string clears.
 Additive/idempotent migration004_cms_metadata.sql; no row deletion or historical training-origin change.
+
+
+## CMS operational extension — migration006 (2026-10-30)
+
+- Additive `infra/postgres/migrations/006_cms_operations.sql`: categories.keywords text[] (up to20), videos.editorial_priority low/normal/high (default normal, editorial metadata only), video_processing_jobs.processing_options jsonb nullable legacy snapshot and skipped_stages text[]; no existing record or setting value overwritten.
+- New settings category_suggestion_enabled=true/category_keyword_enabled=false inserted only when absent. Rules create editor-review suggestions; never auto-publish.
+- Mongo video_analyses persists proposal_decisions (original AI proposal index, accepted/dismissed) and category_match. Recomputed analysis resets old review/match; summary remains independently persisted. Original proposals stay immutable on review.
+- CMS counts query actual rows and click interactions, non-deleted source visibility and completed_at UTC month; no training/evaluation accuracy inferred from processing success. MinIO bytes/objects are enumerated, not a configured storage quota.

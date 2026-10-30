@@ -9,6 +9,8 @@ import (
 // 02_backend_plan.md §2.8–2.10 — stores.
 
 type AnalysisStore interface {
+	SetProposalDecisions(ctx context.Context, videoID string, decisions []domain.ProposalDecision) error
+	SetCategoryMatch(ctx context.Context, videoID string, match *domain.CategoryMatch) error
 	Put(ctx context.Context, videoID string, timelineScores []domain.SecondScore, aiClips []domain.AIClip, categorySuggestion *string, clipThreshold *float64) error
 	Get(ctx context.Context, videoID string) (*domain.VideoAnalysis, error)
 	SetSummary(ctx context.Context, videoID, summary, status string) error

@@ -4,6 +4,7 @@ import (
 	"math"
 	"net/http"
 	"time"
+	"unicode/utf8"
 
 	"github.com/gin-gonic/gin"
 
@@ -59,7 +60,7 @@ func (h *ClipHandlers) Create(c *gin.Context) {
 	var source []domain.ClipSourceSegment
 	start, end := 0.0, 0.0
 	if req.AutoHighlights {
-		source = domain.CompilationSegments(analysis.AIClips, v.DurationSeconds)
+		source = domain.CompilationSegments(analysis.ReviewedClips(), v.DurationSeconds)
 		if !domain.ValidSourceSegments(source, v.DurationSeconds) {
 			handlers.ErrorEnvelope(c, 422, "VALIDATION_ERROR", "Chưa có đoạn AI hợp lệ để tổng hợp (tối đa 100 đoạn). Bạn vẫn có thể cắt thủ công.")
 			return
@@ -77,8 +78,12 @@ func (h *ClipHandlers) Create(c *gin.Context) {
 	cl := &domain.Clip{
 		ID: "clp_" + newID(), VideoID: req.VideoID, Title: req.Title,
 		ThumbnailURL: handlers.VideoThumbnailReference(v), SourceSegments: source,
+		CreatedBy: strPtr(c.GetString("user_id")),
 		StartTime: start, EndTime: end, Status: domain.ClipProcessing,
 		CreatedAt: time.Now(), UpdatedAt: time.Now(),
+	}
+	if cl.CreatedBy != nil && *cl.CreatedBy == "" {
+		cl.CreatedBy = nil
 	}
 	ranges := source
 	if len(ranges) == 0 {
@@ -120,7 +125,19 @@ func (h *ClipHandlers) List(c *gin.Context) {
 	if status != "" {
 		sp = &status
 	}
-	items, _ := h.clips.List(c.Request.Context(), vp, sp)
+	if status != "" && status != "draft" && status != "processing" && status != "published" && status != "rejected" {
+		handlers.ErrorEnvelope(c, 422, "VALIDATION_ERROR", "Invalid clip status")
+		return
+	}
+	if utf8.RuneCountInString(c.Query("q")) > 200 {
+		handlers.ErrorEnvelope(c, 422, "VALIDATION_ERROR", "Search too long")
+		return
+	}
+	items, err := h.clips.ListCMS(c.Request.Context(), vp, sp, c.Query("q"))
+	if err != nil {
+		handlers.ErrorEnvelope(c, 500, "INTERNAL", "Unable to load clips")
+		return
+	}
 	out := make([]gin.H, 0, len(items))
 	for i := range items {
 		out = append(out, toClipCMS(&items[i], h.storage))
@@ -214,6 +231,7 @@ func toClipCMS(cl *domain.Clip, storage ports.ObjectStorage) gin.H {
 		"id": cl.ID, "video_id": cl.VideoID, "title": cl.Title,
 		"start_time": cl.StartTime, "end_time": cl.EndTime, "average_score": cl.AverageScore,
 		"thumbnail_url": handlers.ThumbnailURL(cl.ThumbnailURL, storage),
-		"status":        string(cl.Status), "created_at": cl.CreatedAt.UTC().Format(time.RFC3339),
+		"view_count":    cl.ViewCount, "created_by_name": cl.CreatedByName, "category_name": cl.CategoryName, "updated_at": cl.UpdatedAt.UTC().Format(time.RFC3339),
+		"status": string(cl.Status), "created_at": cl.CreatedAt.UTC().Format(time.RFC3339),
 	}
 }

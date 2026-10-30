@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"unicode/utf8"
 
 	"github.com/gin-gonic/gin"
 
@@ -124,7 +125,44 @@ func (h *VideoHandlers) List(c *gin.Context) {
 		page = 1
 	}
 	const size = 20
-	items, total, _ := h.videos.List(c.Request.Context(), statusPtr, page, size)
+	if status != "" && status != "uploaded" && status != "processing" && status != "processed" && status != "failed" && status != "deleted" {
+		handlers.ErrorEnvelope(c, 422, "VALIDATION_ERROR", "Invalid video status")
+		return
+	}
+	if utf8.RuneCountInString(c.Query("q")) > 200 {
+		handlers.ErrorEnvelope(c, 422, "VALIDATION_ERROR", "Search too long")
+		return
+	}
+	includeDeleted, err := strconv.ParseBool(c.DefaultQuery("include_deleted", "false"))
+	if err != nil {
+		handlers.ErrorEnvelope(c, 422, "VALIDATION_ERROR", "Invalid include_deleted")
+		return
+	}
+	filter := domain.CMSVideoFilter{Status: statusPtr, Query: c.Query("q"), CategoryID: c.Query("category_id"), IncludeDeleted: includeDeleted, Page: page, Size: size}
+	for _, key := range []string{"date_from", "date_to"} {
+		if value := c.Query(key); value != "" {
+			date, err := time.Parse("2006-01-02", value)
+			if err != nil {
+				handlers.ErrorEnvelope(c, 422, "VALIDATION_ERROR", "Invalid date")
+				return
+			}
+			if key == "date_from" {
+				filter.From = &date
+			} else {
+				date = date.AddDate(0, 0, 1)
+				filter.To = &date
+			}
+		}
+	}
+	if filter.From != nil && filter.To != nil && !filter.From.Before(*filter.To) {
+		handlers.ErrorEnvelope(c, 422, "VALIDATION_ERROR", "Invalid date range")
+		return
+	}
+	items, total, err := h.videos.ListCMS(c.Request.Context(), filter)
+	if err != nil {
+		handlers.ErrorEnvelope(c, 500, "INTERNAL", "Unable to list videos")
+		return
+	}
 	out := make([]gin.H, 0, len(items))
 	for i := range items {
 		out = append(out, toVideoCMS(&items[i], h.storage))
@@ -237,12 +275,16 @@ func (h *VideoHandlers) GetAnalysis(c *gin.Context) {
 		handlers.ErrorEnvelope(c, http.StatusNotFound, "VIDEO_NOT_FOUND", "Video not found")
 		return
 	}
-	a, _ := h.analyses.Get(c.Request.Context(), id)
+	a, err := h.analyses.Get(c.Request.Context(), id)
+	if err != nil && !errors.Is(err, domain.ErrNotFound) {
+		handlers.ErrorEnvelope(c, 500, "INTERNAL", "Unable to read analysis")
+		return
+	}
 	if a == nil {
 		c.JSON(http.StatusOK, gin.H{
 			"timeline_scores": []gin.H{}, "ai_generated_clips": []gin.H{}, "clip_threshold": nil,
 			"category_suggestion": nil, "summary": nil, "summary_status": nil,
-			"suggested_title": nil, "key_moments": []gin.H{}, "hashtags": []string{},
+			"suggested_title": nil, "key_moments": []gin.H{}, "hashtags": []string{}, "proposal_decisions": []domain.ProposalDecision{}, "category_match": nil,
 		})
 		return
 	}
@@ -265,7 +307,7 @@ func (h *VideoHandlers) GetAnalysis(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"timeline_scores": scores, "ai_generated_clips": clips, "clip_threshold": a.ClipThreshold,
 		"category_suggestion": a.CategorySuggestion, "summary": a.Summary, "summary_status": a.SummaryStatus,
-		"suggested_title": a.SuggestedTitle, "key_moments": kms, "hashtags": hs,
+		"suggested_title": a.SuggestedTitle, "key_moments": kms, "hashtags": hs, "proposal_decisions": append([]domain.ProposalDecision{}, a.ProposalDecisions...), "category_match": a.CategoryMatch,
 	})
 }
 
@@ -348,10 +390,11 @@ func toVideoCMS(v *domain.Video, storage ports.ObjectStorage) gin.H {
 	result := gin.H{
 		"id": v.ID, "title": v.Title, "description": v.Description,
 		"thumbnail_url": handlers.ThumbnailURL(handlers.VideoThumbnailReference(v), storage), "duration_seconds": v.DurationSeconds,
+		"editorial_priority": editorialPriority(v.EditorialPriority), "uploaded_by": v.UploadedBy, "uploaded_by_name": v.UploadedByName,
 		"status": string(v.Status), "created_at": v.CreatedAt.UTC().Format(time.RFC3339),
 	}
 	if v.CategoryID != nil {
-		result["category"] = gin.H{"id": *v.CategoryID}
+		result["category"] = gin.H{"id": *v.CategoryID, "name": v.CategoryName}
 	}
 	return result
 }
@@ -362,11 +405,19 @@ func toJobCMS(j *domain.ProcessingJob) gin.H {
 	return gin.H{
 		"id": j.ID, "video_id": j.VideoID, "status": string(j.Status),
 		"current_stage": j.CurrentStage, "progress": j.Progress, "error_log": j.ErrorLog,
-		"updated_at": j.UpdatedAt.UTC().Format(time.RFC3339),
+		"updated_at":         j.UpdatedAt.UTC().Format(time.RFC3339),
+		"processing_options": j.ProcessingOptions, "skipped_stages": append([]string{}, j.SkippedStages...),
 	}
 }
 func strPtr(s string) *string { return &s }
 func newID() string {
 	// short random hex (avoid import crypto/rand in cms pkg circular)
 	return strconv.FormatInt(time.Now().UnixNano(), 36)
+}
+
+func editorialPriority(value string) string {
+	if value == "" {
+		return "normal"
+	}
+	return value
 }

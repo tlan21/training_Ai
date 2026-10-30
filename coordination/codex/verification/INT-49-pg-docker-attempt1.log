@@ -1,0 +1,7 @@
+=== RUN   TestCMSOperationsRealPersistence
+    cms_read_test.go:41: ERROR: null value in column "duration_seconds" of relation "videos" violates not-null constraint (SQLSTATE 23502)
+--- FAIL: TestCMSOperationsRealPersistence (0.39s)
+=== RUN   TestCMSMetadataRealPersistenceAndMigration
+    metadata_test.go:47: ERROR: there is no unique or exclusion constraint matching the ON CONFLICT specification (SQLSTATE 42P10)
+--- FAIL: TestCMSMetadataRealPersistenceAndMigration (0.06s)
+FAIL

@@ -31,11 +31,12 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 - Next action: INT-49 real storage/read-model implementation,41..44 runtime fixes and8screen wiring.
 
 ### INT-49 — Real CMS persistence, read models and telemetry
-- Owner: CODEX | Status: IN_PROGRESS (2026-10-30)
+- Owner: CODEX | Status: PARTIAL (2026-10-30; source/adapters verified, product apply/deploy/E2E pending)
 - Depends on: INT-48 public0.8.0. See CMS_COMPLETION_SCOPE.md for scope definitions and preservation gates.
 - Acceptance: additive006/no existing row/value rewrite, global video/clip filters, hydrated names/category counts/creator/open stats, actual PG overview and MinIO bytes/LinuxCPU; persist job options/skips/category keywords/editorial priority and Mongo proposal/category match fields. Explicit unavailable metrics; existing Client privacy unchanged. Go gates +real PG TEMP/migration idempotence and Mongo tests, final real E2E/deployment tracked across batch.
 - Planned files: backend domain/ports/PG/Mongo/MinIO/CMS handlers, migration006, matching tests, owned schema/subplans/coordination. No AI source/checkpoint or new library.
-- Evidence/Commits: pending. Next action: implement shared domain/repository storage and migration, then metrics/filters/handlers/tests.
+- Evidence: verification/INT-49.md; Go vet/test/build PASS, real Linux PG2PASS1.86s/0.10s and Mongo1PASS0.16s, no skips. Concrete files/domain/ports/PG/Mongo/MinIO/CMS handlers/tests/migration006 listed in commit. Failed setup/fixture attempts preserved; product006 not yet applied.
+- Checkpoint/next: real data-preserving apply/deploy/HTTP+MinIO/E2E held for final batch. Continue INT-41 flags, then42/43/44/UI; all8screens remain required.
 
 ### INT-45 — Settings deep functional re-audit requested by user
 - Owner: CODEX | Status: DONE (2026-10-30; audit only, Settings remains PARTIAL)
@@ -605,7 +606,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Next action: newly created clips use accurate re-encoding, existing files remain intact. ASR sentence snapping/AI runtime release stays HO-04/HC-14 dependency, not claimed complete.
 
 ### INT-41 — Make persisted CMS AI flags control processing
-- Owner: CODEX | Status: TODO
+- Owner: CODEX | Status: IN_PROGRESS (2026-10-30)
 - Depends on: INT-40 findings; existing Settings contract and orchestrator. No Claude model change required; scope missing ASR/summary/highlight behavior before implementation.
 - Acceptance: saved auto_highlight_enabled/auto_subtitle_enabled affect new video processing with explicit skipped-stage semantics, completed jobs and compatible UI; tests cover on/off combinations, retries and settings persistence. No fake subtitles/summary/clips. Existing media/results preserved.
 - Planned files: backend/internal/orchestrator/**, backend/cmd/gateway/pipeline.go, existing ports/settings adapters as needed, CMS copy/tests, owned evidence. Contract changes, if needed, must precede implementation in a separate task.

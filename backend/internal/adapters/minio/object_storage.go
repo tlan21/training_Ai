@@ -8,6 +8,7 @@ import (
 	"io"
 	"strings"
 	"time"
+	"traning_ai/backend/internal/domain"
 	"traning_ai/backend/internal/startup"
 )
 
@@ -87,4 +88,24 @@ func (c *Client) Health(ctx context.Context) error {
 		}
 	}
 	return nil
+}
+
+func (c *Client) Usage(ctx context.Context) (*domain.StorageUsage, error) {
+	usage := &domain.StorageUsage{Buckets: []domain.BucketUsage{}}
+	for _, name := range []string{"raw-videos", "clips", "thumbnails"} {
+		bucket := domain.BucketUsage{Name: name}
+		for object := range c.internal.ListObjects(ctx, name, miniosdk.ListObjectsOptions{Recursive: true}) {
+			if object.Err != nil {
+				return nil, object.Err
+			}
+			bucket.Objects++
+			bucket.Bytes += object.Size
+		}
+		if err := ctx.Err(); err != nil {
+			return nil, err
+		}
+		usage.TotalBytes += bucket.Bytes
+		usage.Buckets = append(usage.Buckets, bucket)
+	}
+	return usage, nil
 }

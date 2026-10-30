@@ -64,7 +64,7 @@ func missing(err error) error {
 func videoFilter(id string) bson.M { return bson.M{"video_id": id} }
 
 func (s *AnalysisStore) Put(ctx context.Context, id string, scores []domain.SecondScore, clips []domain.AIClip, category *string, threshold *float64) error {
-	_, err := s.Collection.UpdateOne(ctx, videoFilter(id), bson.M{"$set": bson.M{"timeline_scores": scores, "ai_generated_clips": clips, "category_suggestion": category, "clip_threshold": threshold}}, options.UpdateOne().SetUpsert(true))
+	_, err := s.Collection.UpdateOne(ctx, videoFilter(id), bson.M{"$set": bson.M{"timeline_scores": scores, "ai_generated_clips": clips, "category_suggestion": category, "clip_threshold": threshold, "proposal_decisions": []domain.ProposalDecision{}, "category_match": nil}}, options.UpdateOne().SetUpsert(true))
 	return err
 }
 func (s *AnalysisStore) Get(ctx context.Context, id string) (*domain.VideoAnalysis, error) {
@@ -121,4 +121,25 @@ func (s *SubtitleStore) TextSearch(ctx context.Context, q string) ([]domain.Subt
 func (s *SubtitleStore) Delete(ctx context.Context, id string) error {
 	_, err := s.Collection.DeleteOne(ctx, videoFilter(id))
 	return err
+}
+
+func (s *AnalysisStore) SetProposalDecisions(ctx context.Context, id string, decisions []domain.ProposalDecision) error {
+	result, err := s.Collection.UpdateOne(ctx, videoFilter(id), bson.M{"$set": bson.M{"proposal_decisions": decisions}})
+	if err != nil {
+		return err
+	}
+	if result.MatchedCount == 0 {
+		return domain.ErrNotFound
+	}
+	return nil
+}
+func (s *AnalysisStore) SetCategoryMatch(ctx context.Context, id string, match *domain.CategoryMatch) error {
+	result, err := s.Collection.UpdateOne(ctx, videoFilter(id), bson.M{"$set": bson.M{"category_match": match}})
+	if err != nil {
+		return err
+	}
+	if result.MatchedCount == 0 {
+		return domain.ErrNotFound
+	}
+	return nil
 }

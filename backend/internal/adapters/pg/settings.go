@@ -17,9 +17,11 @@ func (r *SettingsRepo) Get(ctx context.Context) (*domain.SystemSettings, error) 
 		(max(value) FILTER(WHERE key='asr_warning_threshold'))::int,
 		(max(value) FILTER(WHERE key='auto_highlight_enabled'))::boolean,
 		(max(value) FILTER(WHERE key='auto_subtitle_enabled'))::boolean,
-		max(value) FILTER(WHERE key='default_subtitle_lang'),max(value) FILTER(WHERE key='ai_service_api_key')
+		max(value) FILTER(WHERE key='default_subtitle_lang'),max(value) FILTER(WHERE key='ai_service_api_key'),
+ coalesce((max(value) FILTER(WHERE key='category_suggestion_enabled'))::boolean,true),
+ coalesce((max(value) FILTER(WHERE key='category_keyword_enabled'))::boolean,false)
 		FROM system_settings`).Scan(&s.HighlightThreshold, &s.ASRWarningThreshold, &s.AutoHighlightEnabled,
-		&s.AutoSubtitleEnabled, &s.DefaultSubtitleLang, &s.AIServiceAPIKey)
+		&s.AutoSubtitleEnabled, &s.DefaultSubtitleLang, &s.AIServiceAPIKey, &s.CategorySuggestionEnabled, &s.CategoryKeywordEnabled)
 	return &s, err
 }
 

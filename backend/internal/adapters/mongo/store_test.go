@@ -48,6 +48,21 @@ func TestStores_RealVietnameseRoundTrip(t *testing.T) {
 	if err != nil || *result.Summary != "bản nháp" || result.TimelineScores[0].Score != 80 || result.ClipThreshold == nil || *result.ClipThreshold != 51 {
 		t.Fatalf("lost analysis: %+v %v", result, err)
 	}
+	decisions := []domain.ProposalDecision{{ProposalIndex: 0, Status: "dismissed"}}
+	if err := analysis.SetProposalDecisions(ctx, id, decisions); err != nil {
+		t.Fatal(err)
+	}
+	match := &domain.CategoryMatch{CategoryID: "cat_test", Name: "Tin tức", Source: "keyword"}
+	if err := analysis.SetCategoryMatch(ctx, id, match); err != nil {
+		t.Fatal(err)
+	}
+	result, err = analysis.Get(ctx, id)
+	if err != nil || len(result.ProposalDecisions) != 1 || result.ProposalDecisions[0].Status != "dismissed" || result.CategoryMatch == nil || result.CategoryMatch.Name != "Tin tức" {
+		t.Fatalf("review/category roundtrip: %+v %v", result, err)
+	}
+	if err := analysis.SetProposalDecisions(ctx, id+"_missing", decisions); err != domain.ErrNotFound {
+		t.Fatalf("missing analysis: %v", err)
+	}
 	for _, threshold := range []*float64{new(float64), nil} {
 		if err := analysis.Put(ctx, id, nil, nil, nil, threshold); err != nil {
 			t.Fatal(err)
@@ -55,6 +70,9 @@ func TestStores_RealVietnameseRoundTrip(t *testing.T) {
 		stored, err := analysis.Get(ctx, id)
 		if err != nil || (stored.ClipThreshold == nil) != (threshold == nil) {
 			t.Fatalf("unknown/zero conflated: %+v %v", stored, err)
+		}
+		if len(stored.ProposalDecisions) != 0 || stored.CategoryMatch != nil {
+			t.Fatal("new analysis kept old review decisions")
 		}
 		if threshold != nil && *stored.ClipThreshold != 0 {
 			t.Fatal("zero lost")

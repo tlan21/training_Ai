@@ -14,11 +14,12 @@ type VideoRepository interface {
 	Get(ctx context.Context, id string) (*domain.Video, error)
 	GetProcessed(ctx context.Context, id string) (*domain.Video, error)
 	List(ctx context.Context, status *string, page, size int) ([]domain.Video, int, error)
+	ListCMS(ctx context.Context, filter domain.CMSVideoFilter) ([]domain.Video, int, error)
 	ListPublicPage(ctx context.Context, categoryID, sort, cursor string, limit int) ([]domain.Video, *string, error)
 	SetStatus(ctx context.Context, id string, s domain.VideoStatus) error
 	SetCategory(ctx context.Context, id, categoryID string) error
 	SetMediaMetadata(ctx context.Context, id string, seconds float64, width, height *int, fps *float64) error
-	UpdateMetadata(ctx context.Context, id, title, description string, hashtags []string) (*domain.Video, error)
+	UpdateMetadata(ctx context.Context, id, title, description string, hashtags []string, priority *string) (*domain.Video, error)
 	SoftDelete(ctx context.Context, id string) error
 }
 
@@ -29,6 +30,7 @@ type ClipRepository interface {
 	ListPublishedByVideo(ctx context.Context, videoID string) ([]domain.Clip, error)
 	ListPopularPage(ctx context.Context, cursor string, limit int) ([]domain.Clip, *string, error)
 	List(ctx context.Context, videoID, status *string) ([]domain.Clip, error)
+	ListCMS(ctx context.Context, videoID, status *string, query string) ([]domain.Clip, error)
 	SetStatus(ctx context.Context, id string, s domain.ClipStatus) error
 	SetFilePath(ctx context.Context, id, path string) error
 	UpdateMeta(ctx context.Context, id string, title *string, start, end *float64) (*domain.Clip, error)
@@ -66,6 +68,7 @@ type JobRepository interface {
 	SetStatus(ctx context.Context, id string, s domain.JobStatus, started, completed bool) error
 	SetStage(ctx context.Context, id string, stage domain.Stage) error
 	SetError(ctx context.Context, id, errorLog string) error
+	SetProcessingOptions(ctx context.Context, id string, options domain.ProcessingOptions) error
 }
 
 type InteractionRepository interface {
@@ -87,7 +90,11 @@ type PreferenceRepository interface {
 
 type CategoryRepository interface {
 	List(ctx context.Context) ([]domain.Category, error)
-	Create(ctx context.Context, name string, description *string) (*domain.Category, error)
-	Update(ctx context.Context, id, name string, description *string) (*domain.Category, error)
+	Create(ctx context.Context, name string, description *string, keywords []string) (*domain.Category, error)
+	Update(ctx context.Context, id, name string, description *string, keywords []string) (*domain.Category, error)
 	Delete(ctx context.Context, id string) error
+}
+
+type CMSMetricsRepository interface {
+	Overview(ctx context.Context, month time.Time) (*domain.CMSMetrics, error)
 }

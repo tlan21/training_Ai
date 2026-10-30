@@ -60,6 +60,29 @@ func TestCreateCompilation_StoredAIAndEmpty(t *testing.T) {
 	if len(stored.SourceSegments) != 2 || stored.SourceSegments[0].StartTime != 1 {
 		t.Fatal("source mapping lost")
 	}
+	review := NewVideoHandlers(videos, nil, analyses, nil, nil, nil, nil, nil, nil, nil)
+	r.PUT("/videos/:id/analysis", review.ReviewHighlights)
+	for _, body := range []string{`{}`, `{"proposal_decisions":[{"proposal_index":9,"status":"dismissed"}]}`, `{"proposal_decisions":[{"proposal_index":0,"status":"accepted"},{"proposal_index":0,"status":"dismissed"}]}`, `{"proposal_decisions":[{"proposal_index":0,"status":"bad"}]}`} {
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, httptest.NewRequest("PUT", "/videos/vid_comp/analysis", strings.NewReader(body)))
+		if w.Code != 422 {
+			t.Fatalf("bad review: %d %s", w.Code, w.Body)
+		}
+	}
+	w = httptest.NewRecorder()
+	r.ServeHTTP(w, httptest.NewRequest("PUT", "/videos/vid_comp/analysis", strings.NewReader(`{"proposal_decisions":[{"proposal_index":0,"status":"dismissed"},{"proposal_index":1,"status":"accepted"}]}`)))
+	if w.Code != 200 {
+		t.Fatalf("review: %d %s", w.Code, w.Body)
+	}
+	w = send(`{"video_id":"vid_comp","title":"reviewed","auto_highlights":true}`)
+	_ = json.Unmarshal(w.Body.Bytes(), &result)
+	if w.Code != 201 || len(result.SourceSegments) != 1 || result.EndTime != 2 || result.SourceSegments[0].StartTime != 1 {
+		t.Fatalf("dismissed proposal included: %d %s", w.Code, w.Body)
+	}
+	original, _ := analyses.Get(ctx, "vid_comp")
+	if len(original.AIClips) != 3 || len(original.ProposalDecisions) != 2 {
+		t.Fatal("review rewrote proposals")
+	}
 	_ = analyses.Put(ctx, "vid_comp", nil, nil, nil, nil)
 	if w := send(`{"video_id":"vid_comp","title":"empty","auto_highlights":true}`); w.Code != 422 {
 		t.Fatalf("empty %d", w.Code)

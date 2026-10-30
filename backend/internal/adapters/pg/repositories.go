@@ -2,6 +2,7 @@ package pg
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"strings"
 	"time"
@@ -42,11 +43,11 @@ func update(ctx context.Context, db *pgxpool.Pool, sql string, args ...any) erro
 	return nil
 }
 
-const videoColumns = `id,title,description,raw_file_path,thumbnail_url,duration_seconds::float8,status,uploaded_by,category_id,deleted_at,created_at,updated_at,width,height,fps,hashtags`
+const videoColumns = `id,title,description,raw_file_path,thumbnail_url,duration_seconds::float8,status,uploaded_by,category_id,deleted_at,created_at,updated_at,width,height,fps,hashtags,editorial_priority`
 
 func scanVideo(row pgx.Row) (*domain.Video, error) {
 	var v domain.Video
-	err := row.Scan(&v.ID, &v.Title, &v.Description, &v.RawFilePath, &v.ThumbnailURL, &v.DurationSeconds, &v.Status, &v.UploadedBy, &v.CategoryID, &v.DeletedAt, &v.CreatedAt, &v.UpdatedAt, &v.Width, &v.Height, &v.FPS, &v.Hashtags)
+	err := row.Scan(videoTargets(&v)...)
 	return &v, notFound(err, domain.ErrVideoNotFound)
 }
 func (r *VideoRepo) Create(ctx context.Context, v *domain.Video) error {
@@ -54,10 +55,10 @@ func (r *VideoRepo) Create(ctx context.Context, v *domain.Video) error {
 	return err
 }
 func (r *VideoRepo) Get(ctx context.Context, id string) (*domain.Video, error) {
-	return scanVideo(r.DB.QueryRow(ctx, `SELECT `+videoColumns+` FROM videos WHERE id=$1`, id))
+	return scanCMSVideo(r.DB.QueryRow(ctx, videoCMSSelect()+` WHERE v.id=$1`, id))
 }
 func (r *VideoRepo) GetProcessed(ctx context.Context, id string) (*domain.Video, error) {
-	return scanVideo(r.DB.QueryRow(ctx, `SELECT `+videoColumns+` FROM videos WHERE id=$1 AND status='processed'`, id))
+	return scanCMSVideo(r.DB.QueryRow(ctx, videoCMSSelect()+` WHERE v.id=$1 AND v.status='processed'`, id))
 }
 func (r *VideoRepo) List(ctx context.Context, status *string, page, size int) ([]domain.Video, int, error) {
 	var total int
@@ -88,8 +89,8 @@ func (r *VideoRepo) SetCategory(ctx context.Context, id, category string) error 
 func (r *VideoRepo) SetMediaMetadata(ctx context.Context, id string, seconds float64, width, height *int, fps *float64) error {
 	return update(ctx, r.DB, `UPDATE videos SET duration_seconds=$2,width=coalesce($3,width),height=coalesce($4,height),fps=coalesce($5,fps),updated_at=now() WHERE id=$1 AND status!='deleted'`, id, seconds, width, height, fps)
 }
-func (r *VideoRepo) UpdateMetadata(ctx context.Context, id, title, description string, hashtags []string) (*domain.Video, error) {
-	return scanVideo(r.DB.QueryRow(ctx, `UPDATE videos SET title=$2,description=$3,hashtags=$4,updated_at=now() WHERE id=$1 AND status!='deleted' RETURNING `+videoColumns, id, title, description, hashtags))
+func (r *VideoRepo) UpdateMetadata(ctx context.Context, id, title, description string, hashtags []string, priority *string) (*domain.Video, error) {
+	return scanVideo(r.DB.QueryRow(ctx, `UPDATE videos SET title=$2,description=$3,hashtags=$4,editorial_priority=coalesce($5,editorial_priority),updated_at=now() WHERE id=$1 AND status!='deleted' RETURNING `+videoColumns, id, title, description, hashtags, priority))
 }
 func (r *VideoRepo) SoftDelete(ctx context.Context, id string) error {
 	return update(ctx, r.DB, `UPDATE videos SET status='deleted',deleted_at=now(),updated_at=now() WHERE id=$1`, id)
@@ -99,11 +100,11 @@ const clipColumns = `id,video_id,title,start_time::float8,end_time::float8,avera
 
 func scanClip(row pgx.Row) (*domain.Clip, error) {
 	var c domain.Clip
-	err := row.Scan(&c.ID, &c.VideoID, &c.Title, &c.StartTime, &c.EndTime, &c.AverageScore, &c.ClipFilePath, &c.ThumbnailURL, &c.Status, &c.CreatedBy, &c.CategoryID, &c.CreatedAt, &c.UpdatedAt, &c.SourceSegments)
+	err := row.Scan(clipTargets(&c)...)
 	return &c, notFound(err, domain.ErrClipNotFound)
 }
 func (r *ClipRepo) Create(ctx context.Context, c *domain.Clip) error {
-	_, err := r.DB.Exec(ctx, `INSERT INTO clips(id,video_id,title,start_time,end_time,average_score,status,thumbnail_url,source_segments) VALUES($1,$2,$3,$4,$5,$6,$7,$8,coalesce($9::jsonb,'[]'::jsonb))`, c.ID, c.VideoID, c.Title, c.StartTime, c.EndTime, c.AverageScore, c.Status, c.ThumbnailURL, c.SourceSegments)
+	_, err := r.DB.Exec(ctx, `INSERT INTO clips(id,video_id,title,start_time,end_time,average_score,status,thumbnail_url,source_segments,created_by) VALUES($1,$2,$3,$4,$5,$6,$7,$8,coalesce($9::jsonb,'[]'::jsonb),$10)`, c.ID, c.VideoID, c.Title, c.StartTime, c.EndTime, c.AverageScore, c.Status, c.ThumbnailURL, c.SourceSegments, c.CreatedBy)
 	return err
 }
 func (r *ClipRepo) Get(ctx context.Context, id string) (*domain.Clip, error) {
@@ -146,11 +147,11 @@ func (r *ClipRepo) HideByVideo(ctx context.Context, id string) error {
 	return err
 }
 
-const jobColumns = `id,video_id,queue_name,status,worker_node_id,error_log,started_at,completed_at,updated_at,current_stage,progress`
+const jobColumns = `id,video_id,queue_name,status,worker_node_id,error_log,started_at,completed_at,updated_at,current_stage,progress,processing_options,skipped_stages`
 
 func scanJob(row pgx.Row) (*domain.ProcessingJob, error) {
 	var j domain.ProcessingJob
-	err := row.Scan(&j.ID, &j.VideoID, &j.QueueName, &j.Status, &j.WorkerNodeID, &j.ErrorLog, &j.StartedAt, &j.CompletedAt, &j.UpdatedAt, &j.CurrentStage, &j.Progress)
+	err := row.Scan(&j.ID, &j.VideoID, &j.QueueName, &j.Status, &j.WorkerNodeID, &j.ErrorLog, &j.StartedAt, &j.CompletedAt, &j.UpdatedAt, &j.CurrentStage, &j.Progress, &j.ProcessingOptions, &j.SkippedStages)
 	return &j, notFound(err, domain.ErrJobNotFound)
 }
 func (r *JobRepo) Create(ctx context.Context, videoID string) (*domain.ProcessingJob, error) {
@@ -186,6 +187,13 @@ func (r *JobRepo) SetStage(ctx context.Context, id string, stage domain.Stage) e
 }
 func (r *JobRepo) SetError(ctx context.Context, id, message string) error {
 	return update(ctx, r.DB, `UPDATE video_processing_jobs SET error_log=$2,updated_at=now() WHERE id=$1`, id, message)
+}
+func (r *JobRepo) SetProcessingOptions(ctx context.Context, id string, options domain.ProcessingOptions) error {
+	data, err := json.Marshal(options)
+	if err != nil {
+		return err
+	}
+	return update(ctx, r.DB, `UPDATE video_processing_jobs SET processing_options=$2::jsonb,skipped_stages=$3,updated_at=now() WHERE id=$1`, id, string(data), options.SkippedStages())
 }
 
 const userColumns = `id,username,email,avatar_url,password_hash,role,created_at,updated_at`
@@ -260,7 +268,7 @@ func (r *SessionRepo) DeleteByUser(ctx context.Context, id string) error {
 }
 
 func (r *CategoryRepo) List(ctx context.Context) ([]domain.Category, error) {
-	rows, err := r.DB.Query(ctx, `SELECT id,name,created_at,description FROM categories ORDER BY created_at,id`)
+	rows, err := r.DB.Query(ctx, `SELECT c.id,c.name,c.created_at,c.description,c.keywords,(SELECT count(*) FROM videos v WHERE v.category_id=c.id AND v.status!='deleted') FROM categories c ORDER BY c.name,c.id`)
 	if err != nil {
 		return nil, err
 	}
@@ -268,30 +276,40 @@ func (r *CategoryRepo) List(ctx context.Context) ([]domain.Category, error) {
 	items := []domain.Category{}
 	for rows.Next() {
 		var c domain.Category
-		if err := rows.Scan(&c.ID, &c.Name, &c.CreatedAt, &c.Description); err != nil {
+		if err := rows.Scan(&c.ID, &c.Name, &c.CreatedAt, &c.Description, &c.Keywords, &c.VideoCount); err != nil {
 			return nil, err
 		}
 		items = append(items, c)
 	}
 	return items, rows.Err()
 }
-func (r *CategoryRepo) Create(ctx context.Context, name string, description *string) (*domain.Category, error) {
+func (r *CategoryRepo) Create(ctx context.Context, name string, description *string, keywords []string) (*domain.Category, error) {
+	if keywords == nil {
+		keywords = []string{}
+	}
 	var c domain.Category
-	err := r.DB.QueryRow(ctx, `INSERT INTO categories(name,description) VALUES($1,$2) RETURNING id,name,created_at,description`, name, description).Scan(&c.ID, &c.Name, &c.CreatedAt, &c.Description)
+	err := r.DB.QueryRow(ctx, `INSERT INTO categories(name,description,keywords) VALUES($1,$2,$3) RETURNING id,name,created_at,description,keywords`, name, description, keywords).Scan(&c.ID, &c.Name, &c.CreatedAt, &c.Description, &c.Keywords)
 	return &c, categoryWriteError(err)
 }
-func (r *CategoryRepo) Update(ctx context.Context, id, name string, description *string) (*domain.Category, error) {
+func (r *CategoryRepo) Update(ctx context.Context, id, name string, description *string, keywords []string) (*domain.Category, error) {
 	var c domain.Category
-	err := r.DB.QueryRow(ctx, `UPDATE categories SET name=$2,description=coalesce($3,description) WHERE id=$1 RETURNING id,name,created_at,description`, id, name, description).Scan(&c.ID, &c.Name, &c.CreatedAt, &c.Description)
+	err := r.DB.QueryRow(ctx, `UPDATE categories SET name=$2,description=coalesce($3,description),keywords=coalesce($4,keywords) WHERE id=$1 RETURNING id,name,created_at,description,keywords,(SELECT count(*) FROM videos v WHERE v.category_id=$1 AND v.status!='deleted')`, id, name, description, keywords).Scan(&c.ID, &c.Name, &c.CreatedAt, &c.Description, &c.Keywords, &c.VideoCount)
 	return &c, categoryWriteError(notFound(err, domain.ErrCategoryNotFound))
 }
 func categoryWriteError(err error) error {
 	var conflict *pgconn.PgError
-	if errors.As(err, &conflict) && conflict.Code == "23505" {
+	if errors.As(err, &conflict) && (conflict.Code == "23505" || conflict.Code == "23503") {
 		return domain.ErrConflict
 	}
 	return err
 }
 func (r *CategoryRepo) Delete(ctx context.Context, id string) error {
-	return update(ctx, r.DB, `DELETE FROM categories WHERE id=$1`, id)
+	tag, err := r.DB.Exec(ctx, `DELETE FROM categories WHERE id=$1`, id)
+	if err != nil {
+		return categoryWriteError(err)
+	}
+	if tag.RowsAffected() == 0 {
+		return domain.ErrCategoryNotFound
+	}
+	return nil
 }

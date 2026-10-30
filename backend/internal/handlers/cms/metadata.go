@@ -31,15 +31,20 @@ func readMetadataJSON(c *gin.Context, target any) bool {
 
 func (h *VideoHandlers) UpdateMetadata(c *gin.Context) {
 	var req struct {
-		Title       *string   `json:"title"`
-		Description *string   `json:"description"`
-		Hashtags    *[]string `json:"hashtags"`
+		Title             *string   `json:"title"`
+		Description       *string   `json:"description"`
+		Hashtags          *[]string `json:"hashtags"`
+		EditorialPriority *string   `json:"editorial_priority"`
 	}
 	if !readMetadataJSON(c, &req) {
 		return
 	}
 	if req.Title == nil || req.Description == nil || req.Hashtags == nil || strings.TrimSpace(*req.Title) == "" || utf8.RuneCountInString(*req.Title) > 255 || utf8.RuneCountInString(*req.Description) > 10000 || len(*req.Hashtags) > 30 {
 		handlers.ErrorEnvelope(c, 422, "VALIDATION_ERROR", "title, description and hashtags must satisfy the metadata limits")
+		return
+	}
+	if req.EditorialPriority != nil && *req.EditorialPriority != "low" && *req.EditorialPriority != "normal" && *req.EditorialPriority != "high" {
+		handlers.ErrorEnvelope(c, 422, "VALIDATION_ERROR", "Invalid editorial priority")
 		return
 	}
 	seen := make(map[string]bool)
@@ -56,7 +61,7 @@ func (h *VideoHandlers) UpdateMetadata(c *gin.Context) {
 		}
 		seen[tag] = true
 	}
-	v, err := h.videos.UpdateMetadata(c.Request.Context(), c.Param("id"), *req.Title, *req.Description, *req.Hashtags)
+	v, err := h.videos.UpdateMetadata(c.Request.Context(), c.Param("id"), *req.Title, *req.Description, *req.Hashtags, req.EditorialPriority)
 	if errors.Is(err, domain.ErrVideoNotFound) {
 		handlers.ErrorEnvelope(c, 404, "VIDEO_NOT_FOUND", "Video not found")
 		return

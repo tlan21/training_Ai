@@ -114,7 +114,7 @@ func (r *VideoRepoMem) SetMediaMetadata(_ context.Context, id string, sec float6
 	}
 	return nil
 }
-func (r *VideoRepoMem) UpdateMetadata(_ context.Context, id, title, description string, hashtags []string) (*domain.Video, error) {
+func (r *VideoRepoMem) UpdateMetadata(_ context.Context, id, title, description string, hashtags []string, priority *string) (*domain.Video, error) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	v, ok := r.M[id]
@@ -122,6 +122,9 @@ func (r *VideoRepoMem) UpdateMetadata(_ context.Context, id, title, description 
 		return nil, domain.ErrVideoNotFound
 	}
 	v.Title, v.Description, v.Hashtags = title, &description, append([]string{}, hashtags...)
+	if priority != nil {
+		v.EditorialPriority = *priority
+	}
 	v.UpdatedAt = time.Now()
 	cp := *v
 	return &cp, nil
@@ -533,7 +536,7 @@ func (r *CategoryRepoMem) List(_ context.Context) ([]domain.Category, error) {
 	}
 	return out, nil
 }
-func (r *CategoryRepoMem) Create(_ context.Context, name string, description *string) (*domain.Category, error) {
+func (r *CategoryRepoMem) Create(_ context.Context, name string, description *string, keywords []string) (*domain.Category, error) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	for _, v := range r.M {
@@ -541,11 +544,11 @@ func (r *CategoryRepoMem) Create(_ context.Context, name string, description *st
 			return nil, domain.ErrConflict
 		}
 	}
-	c := &domain.Category{ID: "cat_" + name, Name: name, Description: description}
+	c := &domain.Category{ID: "cat_" + name, Name: name, Description: description, Keywords: append([]string{}, keywords...)}
 	r.M[c.ID] = c
 	return c, nil
 }
-func (r *CategoryRepoMem) Update(_ context.Context, id, name string, description *string) (*domain.Category, error) {
+func (r *CategoryRepoMem) Update(_ context.Context, id, name string, description *string, keywords []string) (*domain.Category, error) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	v, ok := r.M[id]
@@ -558,6 +561,9 @@ func (r *CategoryRepoMem) Update(_ context.Context, id, name string, description
 		}
 	}
 	v.Name = name
+	if keywords != nil {
+		v.Keywords = append([]string{}, keywords...)
+	}
 	if description != nil {
 		v.Description = description
 	}
@@ -673,6 +679,8 @@ func (s *AnalysisStoreMem) Put(_ context.Context, vid string, scores []domain.Se
 		va = &domain.VideoAnalysis{VideoID: vid}
 		s.M[vid] = va
 	}
+	va.ProposalDecisions = []domain.ProposalDecision{}
+	va.CategoryMatch = nil
 	va.TimelineScores = scores
 	va.AIClips = clips
 	va.CategorySuggestion = cat

@@ -31,7 +31,7 @@ func (h *CategoryHandlers) List(c *gin.Context) {
 	}
 	out := make([]gin.H, 0, len(items))
 	for _, cc := range items {
-		out = append(out, gin.H{"id": cc.ID, "name": cc.Name, "description": cc.Description})
+		out = append(out, categoryDTO(&cc))
 	}
 	c.JSON(http.StatusOK, out)
 }
@@ -41,7 +41,7 @@ func (h *CategoryHandlers) Create(c *gin.Context) {
 	if !readCategory(c, &req) {
 		return
 	}
-	cc, err := h.cats.Create(c.Request.Context(), req.Name, req.Description)
+	cc, err := h.cats.Create(c.Request.Context(), req.Name, req.Description, categoryKeywords(req))
 	if err != nil {
 		categoryError(c, err)
 		return
@@ -49,7 +49,7 @@ func (h *CategoryHandlers) Create(c *gin.Context) {
 	if h.cache != nil {
 		_ = h.cache.Delete(c.Request.Context(), "categories:all")
 	}
-	c.JSON(http.StatusCreated, gin.H{"id": cc.ID, "name": cc.Name, "description": cc.Description})
+	c.JSON(http.StatusCreated, categoryDTO(cc))
 }
 
 func (h *CategoryHandlers) Update(c *gin.Context) {
@@ -58,7 +58,7 @@ func (h *CategoryHandlers) Update(c *gin.Context) {
 	if !readCategory(c, &req) {
 		return
 	}
-	cc, err := h.cats.Update(c.Request.Context(), id, req.Name, req.Description)
+	cc, err := h.cats.Update(c.Request.Context(), id, req.Name, req.Description, categoryKeywords(req))
 	if err != nil {
 		categoryError(c, err)
 		return
@@ -66,7 +66,7 @@ func (h *CategoryHandlers) Update(c *gin.Context) {
 	if h.cache != nil {
 		_ = h.cache.Delete(c.Request.Context(), "categories:all")
 	}
-	c.JSON(http.StatusOK, gin.H{"id": cc.ID, "name": cc.Name, "description": cc.Description})
+	c.JSON(http.StatusOK, categoryDTO(cc))
 }
 
 func categoryError(c *gin.Context, err error) {
@@ -87,17 +87,48 @@ func readCategory(c *gin.Context, req *gen.CategoryWrite) bool {
 		handlers.ErrorEnvelope(c, 422, "VALIDATION_ERROR", "Category name/description exceeds limits or name is blank")
 		return false
 	}
+	if req.Keywords != nil {
+		if len(*req.Keywords) > 20 {
+			handlers.ErrorEnvelope(c, 422, "VALIDATION_ERROR", "At most 20 keywords")
+			return false
+		}
+		seen := map[string]bool{}
+		for i, keyword := range *req.Keywords {
+			keyword = strings.TrimSpace(keyword)
+			key := strings.ToLower(keyword)
+			if keyword == "" || utf8.RuneCountInString(keyword) > 100 || seen[key] {
+				handlers.ErrorEnvelope(c, 422, "VALIDATION_ERROR", "Keywords must be nonblank, unique and at most100characters")
+				return false
+			}
+			seen[key] = true
+			(*req.Keywords)[i] = keyword
+		}
+	}
 	return true
 }
 
 func (h *CategoryHandlers) Delete(c *gin.Context) {
 	id := c.Param("id")
 	if err := h.cats.Delete(c.Request.Context(), id); err != nil {
-		handlers.ErrorEnvelope(c, http.StatusNotFound, "CATEGORY_NOT_FOUND", err.Error())
+		if errors.Is(err, domain.ErrConflict) {
+			handlers.ErrorEnvelope(c, 409, "CONFLICT", "Category is still used by videos, clips or user preferences")
+		} else {
+			categoryError(c, err)
+		}
 		return
 	}
 	if h.cache != nil {
 		_ = h.cache.Delete(c.Request.Context(), "categories:all")
 	}
 	c.Status(http.StatusNoContent)
+}
+
+func categoryKeywords(req gen.CategoryWrite) []string {
+	if req.Keywords == nil {
+		return nil
+	}
+	return append([]string{}, (*req.Keywords)...)
+}
+func categoryDTO(c *domain.Category) gin.H {
+	return gin.H{"id": c.ID, "name": c.Name, "description": c.Description, "keywords": append([]string{}, c.Keywords...), "video_count": c.VideoCount}
 }

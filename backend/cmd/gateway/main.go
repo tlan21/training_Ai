@@ -79,11 +79,11 @@ func main() {
 	interH := handlers.NewInteractionHandlers(interactionRepo)
 
 	videoCMS := cms.NewVideoHandlers(videoRepo, jobRepo, analysisStore, subtitleStore, vectorStore, cache, eventBus, objectStorage, aiClient, clipRepo)
-	jobCMS := cms.NewJobHandlers(jobRepo, eventBus, videoRepo)
+	jobCMS := cms.NewJobHandlers(jobRepo, eventBus, videoRepo).WithStorage(objectStorage)
 	clipCMS := cms.NewClipHandlers(clipRepo, videoRepo, eventBus, cache, analysisStore, objectStorage)
 	catCMS := cms.NewCategoryHandlers(categoryRepo, cache)
 	userCMS := cms.NewUserHandlers(userRepo)
-	sysCMS := cms.NewSystemHandlers(aiClient, &pg.SettingsRepo{DB: db})
+	sysCMS := cms.NewSystemHandlers(aiClient, &pg.SettingsRepo{DB: db}).WithOverview(&pg.CMSRepo{DB: db}, objectStorage, cache)
 
 	r := gin.New()
 	r.Use(gin.Recovery(), handlers.CORS())
@@ -160,6 +160,7 @@ func main() {
 	cmsGroup.PUT("/videos/:id", videoCMS.UpdateMetadata)
 	cmsGroup.DELETE("/videos/:id", videoCMS.Delete)
 	cmsGroup.GET("/videos/:id/analysis", videoCMS.GetAnalysis)
+	cmsGroup.PUT("/videos/:id/analysis", videoCMS.ReviewHighlights)
 	cmsGroup.POST("/videos/:id/summary/regenerate", videoCMS.RegenerateSummary)
 	cmsGroup.PUT("/videos/:id/category", videoCMS.SetCategory)
 	cmsGroup.PUT("/videos/:id/summary", videoCMS.SetSummary)

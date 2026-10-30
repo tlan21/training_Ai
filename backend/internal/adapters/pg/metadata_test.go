@@ -33,13 +33,20 @@ func TestCMSMetadataRealPersistenceAndMigration(t *testing.T) {
 	db := integrationDB(t)
 	ctx := context.Background()
 	// Shadow both ALTER targets: the migration never touches product tables or rows.
-	for _, table := range []string{"videos", "categories"} {
-		if _, err := db.Exec(ctx, "CREATE TEMP TABLE "+table+" (LIKE public."+table+" INCLUDING DEFAULTS)"); err != nil {
+	for _, table := range []string{"videos", "categories", "video_processing_jobs", "system_settings"} {
+		if _, err := db.Exec(ctx, "CREATE TEMP TABLE "+table+" (LIKE public."+table+" INCLUDING DEFAULTS INCLUDING INDEXES)"); err != nil {
 			t.Fatal(err)
 		}
 	}
 	applyMetadataMigration(t, db)
-	_, err := db.Exec(ctx, `INSERT INTO videos(id,title,raw_file_path,duration_seconds,status,training_origin) VALUES('vid_meta','Legacy','',8,'processed','test')`)
+	migration, err := os.ReadFile("../../../../infra/postgres/migrations/006_cms_operations.sql")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err = db.Exec(ctx, string(migration)); err != nil {
+		t.Fatal(err)
+	}
+	_, err = db.Exec(ctx, `INSERT INTO videos(id,title,raw_file_path,duration_seconds,status,training_origin) VALUES('vid_meta','Legacy','',8,'processed','test')`)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -89,7 +96,7 @@ func TestCMSMetadataRealPersistenceAndMigration(t *testing.T) {
 	if origin != "test" {
 		t.Fatal("metadata edit changed data provenance")
 	}
-	if _, err := fresh.UpdateMetadata(ctx, v.ID, "Edited", "", []string{}); err != nil {
+	if _, err := fresh.UpdateMetadata(ctx, v.ID, "Edited", "", []string{}, nil); err != nil {
 		t.Fatal(err)
 	}
 	v, _ = fresh.Get(ctx, v.ID)
@@ -99,16 +106,16 @@ func TestCMSMetadataRealPersistenceAndMigration(t *testing.T) {
 	if err := fresh.SoftDelete(ctx, v.ID); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := fresh.UpdateMetadata(ctx, v.ID, "Undelete", "", []string{}); err != domain.ErrVideoNotFound {
+	if _, err := fresh.UpdateMetadata(ctx, v.ID, "Undelete", "", []string{}, nil); err != domain.ErrVideoNotFound {
 		t.Fatalf("deleted video editable: %v", err)
 	}
 	cats := &CategoryRepo{DB: db}
 	desc := "Category description"
-	cat, err := cats.Create(ctx, "Temporary category", &desc)
+	cat, err := cats.Create(ctx, "Temporary category", &desc, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if _, err = cats.Update(ctx, cat.ID, "Renamed", nil); err != nil {
+	if _, err = cats.Update(ctx, cat.ID, "Renamed", nil, nil); err != nil {
 		t.Fatal(err)
 	}
 	list, err := (&CategoryRepo{DB: db}).List(ctx)
@@ -116,7 +123,7 @@ func TestCMSMetadataRealPersistenceAndMigration(t *testing.T) {
 		t.Fatalf("category not persisted: %+v %v", list, err)
 	}
 	empty := ""
-	if _, err = cats.Update(ctx, cat.ID, "Renamed", &empty); err != nil {
+	if _, err = cats.Update(ctx, cat.ID, "Renamed", &empty, nil); err != nil {
 		t.Fatal(err)
 	}
 	list, _ = cats.List(ctx)
