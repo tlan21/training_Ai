@@ -38,6 +38,7 @@ def main():
     ap.add_argument("--ingest", required=True, help="copy of backend/ingest-worker/main.py (production preprocess)")
     ap.add_argument("--work", required=True)
     ap.add_argument("--out", required=True)
+    ap.add_argument("--blind", action="store_true", help="test set (AI-21): features only, no model scores/proposals — labels must not see the model")
     args = ap.parse_args()
     spec = importlib.util.spec_from_file_location("ingest", args.ingest)
     ingest = importlib.util.module_from_spec(spec)
@@ -63,9 +64,13 @@ def main():
             logit_sums = sums if logit_sums is None else {k: logit_sums[k] + v for k, v in sums.items()}
         category = max(logit_sums, key=logit_sums.get)
         n = min(len(vision), len(audio))
-        hl = worker.highlight(vision[:n], audio[:n])
-        rules = hl["clip_rules"]
-        clips = services._peaks_to_clips(hl["scores"], rules["threshold"], rules["merge_gap_seconds"], rules["min_clip_seconds"])
+        if args.blind:
+            hl, clips = {"scores": []}, []
+            rules = {"threshold": None}
+        else:
+            hl = worker.highlight(vision[:n], audio[:n])
+            rules = hl["clip_rules"]
+            clips = services._peaks_to_clips(hl["scores"], rules["threshold"], rules["merge_gap_seconds"], rules["min_clip_seconds"])
         features[vid] = {"name": vid, "vision": torch.tensor(vision[:n]), "audio": torch.tensor(audio[:n]),
                          "duration": meta["duration"], "category": category}
         proposals[vid] = {"duration": n, "category": category, "scores": hl["scores"], "threshold": rules["threshold"],
@@ -76,7 +81,7 @@ def main():
     torch.save(features, out / "features_news.pt")
     recipe = registry.highlight_postproc
     (out / "proposals.json").write_text(json.dumps({
-        "schema": "highlight-proposals-v1", "status": "CLAUDE_PROPOSED",
+        "schema": "highlight-proposals-v1", "status": "BLIND_NO_PROPOSALS" if args.blind else "CLAUDE_PROPOSED",
         "model": {"highlight_fusion_best_sha256": sha256(Path(registry_dir()) / "best.pt"), "recipe": recipe},
         "videos": proposals}, ensure_ascii=False, indent=1), encoding="utf-8")
     print("wrote", out / "features_news.pt", out / "proposals.json")

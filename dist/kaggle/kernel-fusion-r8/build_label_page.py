@@ -22,7 +22,7 @@ input[type=number]{width:90px}button{margin:2px}.guide{background:#fff8e1;paddin
 <div id="main">
  <div class="guide"><b>Highlight (tin tức) = đoạn đáng xem nhất nếu chỉ được xem vài đoạn ngắn:</b> tin chính/tin nóng, phát biểu hoặc số liệu quan trọng,
  hình ảnh hiện trường nổi bật. Không chọn: giới thiệu chương trình, chuyển cảnh, quảng cáo, đoạn đọc lại. Đoạn nên dài 5–60 giây.
- Đoạn màu cam = AI đề xuất (CLAUDE_PROPOSED) — sửa/xóa/thêm cho đúng ý bạn. Video không có đoạn nào đáng xem: xóa hết rồi tick "Đã duyệt".
+ __AIHINT__ Video không có đoạn nào đáng xem: xóa hết rồi tick "Đã duyệt".
  Chỉ video đã tick mới được xuất (HUMAN_VERIFIED).</div>
  <h3 id="title"></h3><video id="v" controls preload="metadata"></video>
  <canvas id="c" width="1600" height="70" title="Điểm AI theo giây (vạch đỏ = ngưỡng cắt). Click để tua."></canvas>
@@ -33,7 +33,7 @@ input[type=number]{width:90px}button{margin:2px}.guide{background:#fff8e1;paddin
  <p>Người duyệt: <input id="rater" placeholder="tên" oninput="state.rater=this.value;save()"> <button onclick="exportJson()">Xuất file nhãn (JSON)</button> <span id="msg"></span></p>
 </div>
 <script>
-const DATA = __DATA__, RAW = __RAW__, KEY = "ai19-news-labels-v1";
+const DATA = __DATA__, RAW = __RAW__, KEY = __KEY__;
 let state = JSON.parse(localStorage.getItem(KEY) || "null") || {rater: "", videos: {}};
 for (const [id, p] of Object.entries(DATA.videos)) if (!state.videos[id])
   state.videos[id] = {reviewed: false, note: "", segments: p.segments.map(s => ({start: s.start, end: s.end, origin: "CLAUDE_PROPOSED"}))};
@@ -80,19 +80,21 @@ function setRev(on) {
   cur().reviewed = on; render();
 }
 function draw() {
-  const c = $("c"), g = c.getContext("2d"), p = DATA.videos[curId], n = p.scores.length, W = c.width, H = c.height;
+  const c = $("c"), g = c.getContext("2d"), p = DATA.videos[curId], n = p.scores.length || p.duration, W = c.width, H = c.height;
   g.clearRect(0, 0, W, H);
   for (const s of cur().segments) {
     g.fillStyle = s.origin === "CLAUDE_PROPOSED" ? "rgba(255,160,0,.35)" : "rgba(30,136,229,.35)";
     g.fillRect(s.start / n * W, 0, (s.end - s.start) / n * W, H);
   }
-  g.strokeStyle = "#555"; g.beginPath();
-  p.scores.forEach((y, i) => { const X = i / n * W, Y = H - y / 100 * H; if (i) g.lineTo(X, Y); else g.moveTo(X, Y); }); g.stroke();
-  const T = H - p.threshold / 100 * H;
-  g.strokeStyle = "red"; g.setLineDash([4, 4]); g.beginPath(); g.moveTo(0, T); g.lineTo(W, T); g.stroke(); g.setLineDash([]);
+  if (p.scores.length) {
+    g.strokeStyle = "#555"; g.beginPath();
+    p.scores.forEach((y, i) => { const X = i / n * W, Y = H - y / 100 * H; if (i) g.lineTo(X, Y); else g.moveTo(X, Y); }); g.stroke();
+    const T = H - p.threshold / 100 * H;
+    g.strokeStyle = "red"; g.setLineDash([4, 4]); g.beginPath(); g.moveTo(0, T); g.lineTo(W, T); g.stroke(); g.setLineDash([]);
+  }
   g.fillStyle = "#000"; g.fillRect(v.currentTime / n * W, 0, 2, H);
 }
-$("c").onclick = e => { const r = e.target.getBoundingClientRect(); v.currentTime = (e.clientX - r.left) / r.width * DATA.videos[curId].scores.length; };
+$("c").onclick = e => { const r = e.target.getBoundingClientRect(); v.currentTime = (e.clientX - r.left) / r.width * (DATA.videos[curId].scores.length || DATA.videos[curId].duration); };
 v.ontimeupdate = draw;
 function exportJson() {
   if (!state.rater) { alert("Nhập tên người duyệt."); return; }
@@ -108,13 +110,20 @@ pick(curId);
 </script></body></html>"""
 
 
-def main(out_dir, raw_rel):
+def main(out_dir, raw_rel, *flags):
     out = Path(out_dir)
     data = json.loads((out / "proposals.json").read_text(encoding="utf-8"))
-    page = PAGE.replace("__DATA__", json.dumps(data, ensure_ascii=False)).replace("__RAW__", json.dumps(raw_rel))
+    blind = "--blind" in flags
+    hint = ("<b>Gán nhãn MÙ (tập test):</b> không có đề xuất hay điểm AI — chọn hoàn toàn theo ý bạn." if blind else
+            "Đoạn màu cam = AI đề xuất (CLAUDE_PROPOSED) — sửa/xóa/thêm cho đúng ý bạn.")
+    key = "ai21-news-test-labels-v1" if blind else "ai19-news-labels-v1"
+    page = (PAGE.replace("__DATA__", json.dumps(data, ensure_ascii=False)).replace("__RAW__", json.dumps(raw_rel))
+            .replace("__AIHINT__", hint).replace("__KEY__", json.dumps(key)))
+    if blind:
+        page = page.replace('a.download = "highlight_news_labels.json"', 'a.download = "highlight_news_test_labels.json"')
     (out / "label_news.html").write_text(page, encoding="utf-8")
     print("wrote", out / "label_news.html", "videos:", len(data["videos"]))
 
 
 if __name__ == "__main__":
-    main(*sys.argv[1:3])
+    main(*sys.argv[1:])

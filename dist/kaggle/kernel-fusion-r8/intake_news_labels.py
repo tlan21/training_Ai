@@ -92,9 +92,14 @@ def main(out_dir, export_path, *flags):
         n = f["vision"].shape[0]
         halves.append({"name": v["video_id"], "vision": f["vision"], "audio": f["audio"], "labels": per_second_labels(v["segments"], n)})
     names = sorted(h["name"] for h in halves)
-    val = set(random.Random(SPLIT_SEED).sample(names, min(N_VAL, max(0, len(names) - 1))))
-    data = {"train": [h for h in halves if h["name"] not in val], "val": [h for h in halves if h["name"] in val]}
-    torch.save(data, out / "highlight_news_labeled.pt")
+    if "--all-test" in flags:                       # AI-21: independent test set, never split, never trained on
+        data = {"test": halves}
+        target = out / "highlight_news_test_labeled.pt"
+    else:
+        val = set(random.Random(SPLIT_SEED).sample(names, min(N_VAL, max(0, len(names) - 1))))
+        data = {"train": [h for h in halves if h["name"] not in val], "val": [h for h in halves if h["name"] in val]}
+        target = out / "highlight_news_labeled.pt"
+    torch.save(data, target)
     report = {"rater": export["rater"], "exported_at": export["exported_at"], "videos": len(halves),
               "split": {k: [h["name"] for h in hs] for k, hs in data.items()},
               "positive_rate": {h["name"]: round(float((h["labels"] == 1).float().mean()), 4) for h in halves},
