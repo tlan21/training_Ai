@@ -78,7 +78,7 @@ func TestDeleteCleansOwnedStoresAndCanBeRepeated(t *testing.T) {
 	_ = videos.Create(ctx, &domain.Video{ID: "vid_delete", Status: domain.VideoProcessed, RawFilePath: "raw-videos/vid_delete.mp4"})
 	path := "clips/clips/clp_delete.mp4"
 	_ = clips.Create(ctx, &domain.Clip{ID: "clp_delete", VideoID: "vid_delete", Status: domain.ClipPublished, ClipFilePath: &path})
-	_ = ana.Put(ctx, "vid_delete", nil, nil, nil)
+	_ = ana.Put(ctx, "vid_delete", nil, nil, nil, nil)
 	_ = subs.Put(ctx, "vid_delete", "vi", "hello", nil)
 	_ = vec.UpsertFrames(ctx, "vid_delete", nil)
 	for _, key := range []string{"raw-videos/vid_delete.mp4", "raw-videos/audio/vid_delete.wav", "thumbnails/vid_delete/00000000.jpg", "clips/clips/clp_delete.mp4", "thumbnails/vid_other/00000000.jpg"} {

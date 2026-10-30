@@ -67,6 +67,42 @@ func TestClient_DecodesRealSchemasAndBearer(t *testing.T) {
 	}
 }
 
+func TestHighlightReportedThresholdCompatibility(t *testing.T) {
+	for _, value := range []string{"missing", "null", "0", "51", "100", "-1", "101"} {
+		t.Run(value, func(t *testing.T) {
+			server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				body := `{"timeline_scores":[],"recommended_clips":[]`
+				if value != "missing" {
+					body += `,"clip_threshold":` + value
+				}
+				_, _ = w.Write([]byte(body + `}`))
+			}))
+			defer server.Close()
+			result, err := New(server.URL, "test-key").Highlight(context.Background(), "vid_threshold", nil, nil)
+			if value == "-1" || value == "101" {
+				if err == nil {
+					t.Fatal("accepted out-of-range AI metadata")
+				}
+				return
+			}
+			if err != nil {
+				t.Fatal(err)
+			}
+			if value == "missing" || value == "null" {
+				if result.ClipThreshold != nil {
+					t.Fatal("invented threshold")
+				}
+				return
+			}
+			var expected float64
+			_ = json.Unmarshal([]byte(value), &expected)
+			if result.ClipThreshold == nil || *result.ClipThreshold != expected {
+				t.Fatalf("lost reported threshold: %+v", result)
+			}
+		})
+	}
+}
+
 func TestVisionMissingFileDoesNotSendRequest(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { t.Error("missing file sent to AI") }))
 	defer server.Close()

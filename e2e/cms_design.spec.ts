@@ -16,6 +16,35 @@ const videos: components['schemas']['Video'][] = [
 ];
 
 // Isolated UI fixtures exercise visual states. video_flow.spec.ts uses real APIs/AI only.
+for (const width of [390,1440]) for (const scenario of ['reported','zero','legacy','short-football','long-news','short-news'] as const) {
+ test(`HC-15 ${width} ${scenario} threshold and zero-proposal behavior`,async({page},info)=>{
+  await page.setViewportSize({width,height:width===390?844:900});await setupUI(page);
+  const category = scenario.includes('news') ? 'tin_tuc' : 'bong_da';
+  const duration = scenario.startsWith('short') ? 30 : 180;
+  const threshold = scenario==='legacy' ? null : scenario==='zero' ? 0 : 51;
+  const analysis:components['schemas']['CmsAnalysis']={clip_threshold:threshold,category_suggestion:category,timeline_scores:[{second:40,score:60}],ai_generated_clips:[]};
+  await page.route(`**/api/cms/videos/${videoId}`,r=>r.fulfill({json:{...videos[0],duration_seconds:duration}}));
+  await page.route(`**/api/cms/videos/${videoId}/analysis`,r=>r.fulfill({json:analysis}));
+  await page.route('**/api/cms/settings',r=>r.fulfill({json:{highlight_threshold:90}}));
+  await page.goto(`${cms}/highlight?video_id=${videoId}`);
+  await expect(page.getByText(threshold===null?'Ngưỡng hiển thị > 75%':`Ngưỡng AI > ${threshold}%`,{exact:true})).toBeVisible();
+  await expect(page.getByText('AI không đề xuất clip cho video này — bạn có thể chọn khoảng cắt thủ công.',{exact:true})).toBeVisible();
+  await expect(page.getByRole('button',{name:'Tạo video tổng hợp AI',exact:true})).toBeDisabled();
+  await expect(page.getByRole('button',{name:'Lưu bản nháp',exact:true})).toBeEnabled();
+  if(threshold===null)await expect(page.getByText(/Kết quả cũ chưa ghi ngưỡng AI/)).toBeVisible();
+  else await expect(page.getByText(/Kết quả cũ chưa ghi ngưỡng AI/)).toHaveCount(0);
+  const notice=page.getByText(/Điểm AI chỉ để tham khảo/);
+  if(category!=='bong_da'||duration<120)await expect(notice).toBeVisible();else await expect(notice).toHaveCount(0);
+  if(category!=='bong_da')await expect(page.getByRole('heading',{name:'Điểm highlight AI',exact:true})).toBeVisible();
+  if(scenario==='reported'){
+   const canvas=page.getByRole('slider',{name:'Timeline highlight'});
+   await expect.poll(()=>canvas.evaluate((node:HTMLCanvasElement)=>{const pixel=node.getContext('2d')!.getImageData(Math.floor(node.width*40.5/180),Math.floor(node.height*.2),1,1).data;return pixel[0]>pixel[2]})).toBe(true);
+  }
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+  await page.screenshot({path:info.outputPath(`hc15-${width}-${scenario}.png`),fullPage:true});
+ });
+}
+
 async function setupUI(page: Page, role: 'admin' | 'editor' = 'admin') {
   const videoDetail: components['schemas']['VideoDetail'] = { ...videos[0], width: 1920, height: 1080, fps: 29.97, hashtags: null };
   const categoryState: components['schemas']['Category'][] = categories.map(category => ({ ...category }));
@@ -373,18 +402,18 @@ test('T3.1 queue file validation, error log and retry', async ({ page }) => {
   expect((await retried).method()).toBe('POST');
 });
 
-test('T3.1 settings persist response, threshold and reset', async ({ page }) => {
-  await setupUI(page);
-  await page.goto(`${cms}/settings`);
-  const slider = page.getByRole('slider', { name: 'Ngưỡng gợi ý AI' });
-  await slider.fill('80');
-  await expect(page.getByText('80%', { exact: true })).toBeVisible();
-  await page.getByRole('button', { name: 'Hủy bỏ', exact: true }).click();
-  await expect(slider).toHaveValue('75');
-  await slider.fill('80');
-  const updated = page.waitForRequest((request) => request.url().endsWith('/settings') && request.method() === 'PUT');
+test('T3.1 settings persist preferences and disclose model-owned threshold', async ({ page }) => {
+  await setupUI(page); await page.goto(`${cms}/settings`);
+  await expect(page.getByRole('slider', { name: 'Ngưỡng gợi ý AI' })).toHaveCount(0);
+  await expect(page.getByText('Theo model', { exact: true })).toBeVisible();
+  const toggle = page.getByRole('checkbox', { name: 'Tự động đánh dấu (Auto-highlighting)', exact: true });
+  await toggle.setChecked(false);
+  await page.getByRole('button', { name: 'Hủy bỏ', exact: true }).click(); await expect(toggle).toBeChecked();
+  await toggle.setChecked(false);
+  const updated = page.waitForRequest(request => request.url().endsWith('/settings') && request.method() === 'PUT');
   await page.getByRole('button', { name: 'Lưu thay đổi', exact: true }).click();
-  expect((await updated).postDataJSON().highlight_threshold).toBe(80);
+  const body = (await updated).postDataJSON();
+  expect(body).not.toHaveProperty('highlight_threshold'); expect(body.auto_highlight_enabled).toBe(false);
   await expect(page.getByText('Đã lưu cài đặt', { exact: true })).toBeVisible();
 });
 
@@ -433,7 +462,7 @@ test('T3.1 real settings limitation is shown when PUT does not persist', async (
   await setupUI(page);
   await page.route('**/api/cms/settings', (route) => route.request().method() === 'PUT' ? route.fulfill({ json: {} }) : route.fulfill({ json: { highlight_threshold: 75, auto_highlight_enabled: true, auto_subtitle_enabled: true } }));
   await page.goto(`${cms}/settings`);
-  await page.getByRole('slider', { name: 'Ngưỡng gợi ý AI' }).fill('80');
+  await page.getByRole('checkbox', { name: 'Tự động đánh dấu (Auto-highlighting)', exact: true }).setChecked(false);
   await page.getByRole('button', { name: 'Lưu thay đổi', exact: true }).click();
   await expect(page.getByRole('alert')).toContainText('Máy chủ chưa lưu được cài đặt');
   await expect(page.getByText('Đã lưu cài đặt', { exact: true })).toHaveCount(0);

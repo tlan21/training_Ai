@@ -578,6 +578,8 @@ Audit 2 chiều Stitch export ↔ AI core đã chốt. Quy tắc: **HTML trong `
 
 ### 7.3. Task bổ sung
 
+HC-15/INT-38 (2026-10-30): Highlight đọc clip_threshold của từng kết quả AI, không lấy ngưỡng từ Settings; kết quả cũ thiếu metadata phải ghi rõ chưa xác định (75 chỉ là ngưỡng hiển thị dự phòng). 0 đề xuất là trạng thái hợp lệ, vẫn cắt tay được. Video ngoài bóng đá hoặc dưới120s ghi “chỉ tham khảo”; tiêu đề thể loại khác là “Điểm highlight AI”. Chọn HC-15(b): thay slider Settings không điều khiển model bằng thông báo ngưỡng do AI quyết định; giữ field API cũ/deprecated để tương thích, không sửa giá trị cài đặt đã lưu hoặc hardcode ngưỡng50/51. Các bổ sung này thay đúng phần copy/widget Stitch liên quan, không đổi bố cục còn lại. Schema/field AI v1.4 còn DRAFT, không coi model/runtime mới đã tích hợp thật.
+
 User bổ sung 2026-10-29 (INT-34/35): màn Highlight thêm nút “Tạo video tổng hợp AI” trong nhóm hành động hiện có, cùng khối chọn/xem trước các bản tổng hợp đã tạo. Tự chọn và ghép toàn bộ gợi ý AI hợp lệ theo thời gian thành một bản nháp, không tự xuất bản. Dùng lại component/token/flow hiện có; đây là phần bổ sung được user yêu cầu ngoài Stitch gốc, không đổi phần còn lại hay CẮT-list.
 
 | # | Sub-task | ≤ | DoD |

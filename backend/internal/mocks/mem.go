@@ -666,7 +666,7 @@ type AnalysisStoreMem struct {
 func NewAnalysisStoreMem() *AnalysisStoreMem {
 	return &AnalysisStoreMem{M: map[string]*domain.VideoAnalysis{}}
 }
-func (s *AnalysisStoreMem) Put(_ context.Context, vid string, scores []domain.SecondScore, clips []domain.AIClip, cat *string) error {
+func (s *AnalysisStoreMem) Put(_ context.Context, vid string, scores []domain.SecondScore, clips []domain.AIClip, cat *string, threshold *float64) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	va, ok := s.M[vid]
@@ -677,6 +677,7 @@ func (s *AnalysisStoreMem) Put(_ context.Context, vid string, scores []domain.Se
 	va.TimelineScores = scores
 	va.AIClips = clips
 	va.CategorySuggestion = cat
+	va.ClipThreshold = threshold
 	return nil
 }
 func (s *AnalysisStoreMem) Get(_ context.Context, vid string) (*domain.VideoAnalysis, error) {

@@ -240,7 +240,7 @@ func (h *VideoHandlers) GetAnalysis(c *gin.Context) {
 	a, _ := h.analyses.Get(c.Request.Context(), id)
 	if a == nil {
 		c.JSON(http.StatusOK, gin.H{
-			"timeline_scores": []gin.H{}, "ai_generated_clips": []gin.H{},
+			"timeline_scores": []gin.H{}, "ai_generated_clips": []gin.H{}, "clip_threshold": nil,
 			"category_suggestion": nil, "summary": nil, "summary_status": nil,
 			"suggested_title": nil, "key_moments": []gin.H{}, "hashtags": []string{},
 		})
@@ -263,7 +263,7 @@ func (h *VideoHandlers) GetAnalysis(c *gin.Context) {
 		hs = []string{}
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"timeline_scores": scores, "ai_generated_clips": clips,
+		"timeline_scores": scores, "ai_generated_clips": clips, "clip_threshold": a.ClipThreshold,
 		"category_suggestion": a.CategorySuggestion, "summary": a.Summary, "summary_status": a.SummaryStatus,
 		"suggested_title": a.SuggestedTitle, "key_moments": kms, "hashtags": hs,
 	})

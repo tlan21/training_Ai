@@ -162,6 +162,7 @@ type KeyMoment struct {
 }
 
 type VideoAnalysis struct {
+	ClipThreshold      *float64      `json:"clip_threshold" bson:"clip_threshold"`
 	VideoID            string        `json:"video_id" bson:"video_id"`
 	TimelineScores     []SecondScore `json:"timeline_scores" bson:"timeline_scores"`
 	AIClips            []AIClip      `json:"ai_generated_clips" bson:"ai_generated_clips"`
@@ -241,6 +242,7 @@ type ASRResult struct {
 }
 
 type HighlightResult struct {
+	ClipThreshold    *float64      `json:"clip_threshold" bson:"clip_threshold"`
 	TimelineScores   []SecondScore `json:"timeline_scores" bson:"timeline_scores"`
 	RecommendedClips []AIClip      `json:"recommended_clips" bson:"recommended_clips"`
 }

@@ -221,7 +221,7 @@ func (r *Runner) doVision(ctx context.Context, videoID, keyframesPath string) ([
 		catPtr = &cat
 	}
 	// store category suggestion + empty scores (highlight will fill)
-	if err := r.analysis.Put(ctx, videoID, nil, nil, catPtr); err != nil {
+	if err := r.analysis.Put(ctx, videoID, nil, nil, catPtr, nil); err != nil {
 		return nil, err
 	}
 	// Fusion still consumes the 256-d features; backend persists the separate Siamese vectors.
@@ -272,7 +272,7 @@ func (r *Runner) doHighlight(ctx context.Context, videoID string, vision, audio 
 	if a, err2 := r.analysis.Get(ctx, videoID); err2 == nil {
 		cat = a.CategorySuggestion
 	}
-	return r.analysis.Put(ctx, videoID, res.TimelineScores, res.RecommendedClips, cat)
+	return r.analysis.Put(ctx, videoID, res.TimelineScores, res.RecommendedClips, cat, res.ClipThreshold)
 }
 
 func (r *Runner) doSummary(ctx context.Context, videoID string) error {

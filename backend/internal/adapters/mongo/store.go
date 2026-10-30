@@ -63,8 +63,8 @@ func missing(err error) error {
 }
 func videoFilter(id string) bson.M { return bson.M{"video_id": id} }
 
-func (s *AnalysisStore) Put(ctx context.Context, id string, scores []domain.SecondScore, clips []domain.AIClip, category *string) error {
-	_, err := s.Collection.UpdateOne(ctx, videoFilter(id), bson.M{"$set": bson.M{"timeline_scores": scores, "ai_generated_clips": clips, "category_suggestion": category}}, options.UpdateOne().SetUpsert(true))
+func (s *AnalysisStore) Put(ctx context.Context, id string, scores []domain.SecondScore, clips []domain.AIClip, category *string, threshold *float64) error {
+	_, err := s.Collection.UpdateOne(ctx, videoFilter(id), bson.M{"$set": bson.M{"timeline_scores": scores, "ai_generated_clips": clips, "category_suggestion": category, "clip_threshold": threshold}}, options.UpdateOne().SetUpsert(true))
 	return err
 }
 func (s *AnalysisStore) Get(ctx context.Context, id string) (*domain.VideoAnalysis, error) {

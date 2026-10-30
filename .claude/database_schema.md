@@ -232,6 +232,8 @@ Mỗi document lưu trữ kết quả phân tích giọng nói của một Video
 * **`confidence` (0–1):** trung bình xác suất posterior CTC của segment (@model_spec.md §2). **`warning`** (optional): `low_confidence` khi `confidence × 100 < system_settings.asr_warning_threshold`; `blacklist` khi text khớp wordlist từ nhạy cảm (rule backend, không phải model). UI hiển thị %.
 
 ### 3.2. Collection `video_analyses` (Điểm số Highlight & Tóm tắt AI)
+
+`clip_threshold` là metadata tùy chọn AI báo cho từng lần phân tích, không phải mặc định51. Thiếu/null = chưa biết (kết quả cũ); 0 là ngưỡng hợp lệ. Ghi nguyên tử cùng timeline/clip mới, không backfill hoặc suy từ system_settings; ví dụ dưới chỉ minh họa schema.
 Lưu trữ thông tin phân tích thô từ các mô hình AI nguyên thủy: điểm số highlight từng giây và văn bản tóm tắt tự hồi quy.
 
 ```json
@@ -246,7 +248,8 @@ Lưu trữ thông tin phân tích thô từ các mô hình AI nguyên thủy: đ
     { "timestamp": 285.0, "text": "Pha cứu thua xuất sắc của thủ môn" }
   ],
   "hashtags": ["#bongda", "#highlight"],
-  "category_suggestion": "cat_bong_da",
+  "category_suggestion": "bong_da",
+  "clip_threshold": 51.0,
   "timeline_scores": [
     { "second": 0, "score": 12.5 },
     { "second": 1, "score": 24.3 },

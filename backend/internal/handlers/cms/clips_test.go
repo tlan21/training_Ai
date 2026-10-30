@@ -16,7 +16,7 @@ func TestCreateClip_AveragesActualScoresForFractionalRange(t *testing.T) {
 	videos := mocks.NewVideoRepoMem()
 	analyses := mocks.NewAnalysisStoreMem()
 	_ = videos.Create(context.Background(), &domain.Video{ID: "vid_score", Status: domain.VideoProcessed, DurationSeconds: 2})
-	_ = analyses.Put(context.Background(), "vid_score", []domain.SecondScore{{Second: 0, Score: 80}, {Second: 1, Score: 90}}, nil, nil)
+	_ = analyses.Put(context.Background(), "vid_score", []domain.SecondScore{{Second: 0, Score: 80}, {Second: 1, Score: 90}}, nil, nil, nil)
 	handler := NewClipHandlers(mocks.NewClipRepoMem(), videos, mocks.NewEventBusMem(), mocks.NewCacheMem(), analyses, mocks.NewObjectStorageMem())
 	router := gin.New()
 	router.POST("/api/cms/clips", handler.Create)
@@ -39,7 +39,7 @@ func TestCreateCompilation_StoredAIAndEmpty(t *testing.T) {
 	ctx := context.Background()
 	videos, analyses, clips := mocks.NewVideoRepoMem(), mocks.NewAnalysisStoreMem(), mocks.NewClipRepoMem()
 	_ = videos.Create(ctx, &domain.Video{ID: "vid_comp", Status: domain.VideoProcessed, DurationSeconds: 10})
-	_ = analyses.Put(ctx, "vid_comp", []domain.SecondScore{{Second: 1, Score: 80}, {Second: 2, Score: 90}, {Second: 8, Score: 60}}, []domain.AIClip{{StartTime: 8, EndTime: 9}, {StartTime: 1, EndTime: 3}, {StartTime: 2, EndTime: 3}}, nil)
+	_ = analyses.Put(ctx, "vid_comp", []domain.SecondScore{{Second: 1, Score: 80}, {Second: 2, Score: 90}, {Second: 8, Score: 60}}, []domain.AIClip{{StartTime: 8, EndTime: 9}, {StartTime: 1, EndTime: 3}, {StartTime: 2, EndTime: 3}}, nil, nil)
 	h := NewClipHandlers(clips, videos, mocks.NewEventBusMem(), mocks.NewCacheMem(), analyses, mocks.NewObjectStorageMem())
 	r := gin.New()
 	r.POST("/clips", h.Create)
@@ -60,7 +60,7 @@ func TestCreateCompilation_StoredAIAndEmpty(t *testing.T) {
 	if len(stored.SourceSegments) != 2 || stored.SourceSegments[0].StartTime != 1 {
 		t.Fatal("source mapping lost")
 	}
-	_ = analyses.Put(ctx, "vid_comp", nil, nil, nil)
+	_ = analyses.Put(ctx, "vid_comp", nil, nil, nil, nil)
 	if w := send(`{"video_id":"vid_comp","title":"empty","auto_highlights":true}`); w.Code != 422 {
 		t.Fatalf("empty %d", w.Code)
 	}

@@ -104,6 +104,9 @@ func (c *Client) ASR(ctx context.Context, audioURL, language string) (*domain.AS
 func (c *Client) Highlight(ctx context.Context, videoID string, vision, audio [][]float32) (*domain.HighlightResult, error) {
 	var result domain.HighlightResult
 	err := c.request(ctx, "/v1/highlight/completions", map[string]any{"video_id": videoID, "features": map[string]any{"vision_embeddings": vision, "audio_spectrogram_features": audio}}, &result)
+	if err == nil && result.ClipThreshold != nil && (*result.ClipThreshold < 0 || *result.ClipThreshold > 100) {
+		return nil, domain.NewError("AI_UNAVAILABLE", "Invalid reported highlight threshold", 503)
+	}
 	return &result, err
 }
 func (c *Client) Search(ctx context.Context, image string, topK int, threshold float64) (*domain.SearchResult, error) {

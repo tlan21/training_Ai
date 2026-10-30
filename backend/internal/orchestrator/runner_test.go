@@ -48,6 +48,26 @@ func TestPreprocessedMetadataPreservesEditorialFields(t *testing.T) {
 	}
 }
 
+func TestHighlightPersistsReportedThresholdWithoutInventingLegacyValue(t *testing.T) {
+	for _, threshold := range []*float64{nil, new(float64), func() *float64 { v := 51.0; return &v }()} {
+		analysis := mocks.NewAnalysisStoreMem()
+		ai := &mocks.AIClientMem{HighlightFn: func(string, [][]float32, [][]float32) (*domain.HighlightResult, error) {
+			return &domain.HighlightResult{ClipThreshold: threshold, TimelineScores: []domain.SecondScore{{Second: 0, Score: 60}}}, nil
+		}}
+		r := New(mocks.NewVideoRepoMem(), mocks.NewJobRepoMem(), analysis, mocks.NewSubtitleStoreMem(), ai, mocks.NewEventBusMem())
+		if err := r.doHighlight(context.Background(), "vid_threshold", nil, nil, 180); err != nil {
+			t.Fatal(err)
+		}
+		stored, err := analysis.Get(context.Background(), "vid_threshold")
+		if err != nil || len(stored.TimelineScores) != 1 || (stored.ClipThreshold == nil) != (threshold == nil) {
+			t.Fatalf("metadata lost: %+v %v", stored, err)
+		}
+		if threshold != nil && *stored.ClipThreshold != *threshold {
+			t.Fatalf("wrong threshold: %+v", stored)
+		}
+	}
+}
+
 func TestRunner_RetrySuccessOnThird(t *testing.T) {
 	videoRepo := mocks.NewVideoRepoMem()
 	jobRepo := mocks.NewJobRepoMem()

@@ -529,11 +529,19 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Depends on: Claude HC-15/AI-API v1.4-rc1 additive response clip_threshold (DRAFT); current public0.5.0 and existing CMS analysis/settings endpoints.
 - Acceptance: nullable reported clip_threshold in CmsAnalysis with0..100 bounds; legacy missing metadata remains unknown; clarify legacy Settings threshold not an AI control; regenerate Go/CMS/Client types and schema/type checks PASS. No new endpoint or AI contract edit.
 - Changed: infra/openapi.yaml; backend/internal/gen/{api.gen.go,spec_test.go}; cms/src/api-types.ts; client/src/api-types.ts; owned coordination.
-- Commits: 7722f10 start; contract checkpoint follows. Evidence: verification/INT-37.md; schema test PASS0.600s, CMS/Client types PASS, cached generation/no downloads. Next action: INT-38.
+- Commits: 7722f10 start; **f709b94** contract. Evidence: verification/INT-37.md; schema test PASS0.600s, CMS/Client types PASS, cached generation/no downloads. Next action: INT-38.
 
 ### INT-38 — HC-15 truthful CMS threshold, zero proposals and reference-only scope
 - Owner: CODEX | Status: IN_PROGRESS (2026-10-30)
 - Depends on: INT-37; existing AI client/analysis store, CMS highlight/settings. Real new-model rollout remains Claude release/runtime dependency.
 - Acceptance: persist reported AI threshold atomically with scores/clips, distinguish null/0, validate untrusted AI bounds; CMS heatmap uses reported threshold and labels legacy unknown; Settings HC-15(b) no misleading adjustable AI threshold; zero proposals is valid/manual save still works; notice for non-football/<120s. Go+Mongo roundtrip+CMS types/build+390/1440 Playwright, real deployed legacy compatibility; no forced model upgrade/reprocessing original videos.
-- Changed: planned backend domain/ports/AIHTTP/Mongo/mock/orchestrator/CMS DTO, CMS highlight/settings, tests and owned evidence.
-- Commits: pending. Evidence: pending. Next action: implement backward-compatible flow after contract checkpoint; new response field DRAFT cannot be promoted INTEGRATED_REAL before Claude/master release.
+- Changed: backend domain/ports/AIHTTP/Mongo/mock/orchestrator/CMS analysis DTO and tests; CMS HighlightPage/SettingsPage; e2e/cms_design.spec.ts; owned schema/subplans/coordination/evidence.
+- Commits: f709b94 contract; source checkpoint follows. Evidence: native Go vet/test/build PASS, actual Mongo roundtrip51/0/null +cleanup PASS0.07s, CMS types/build/E2Etypes PASS,14focusedUI PASS12.3s +41CMSregression PASS51.4s +4originalStitch references PASS7.0s. Source metadata kept unknown for legacy data; Settings HC-15(b) model-owned disclosure.
+- Next action: build/deploy only gateway/CMS; verify actual existing analysis null-metadata/UI compatibility and preserve product rows/analysis/container state. New AI response field remains DRAFT/real-rollout dependency HO-04; no INTEGRATED_REAL promotion or old-video reprocessing.
+
+### INT-39 — HC-14 precise single-clip cutting
+- Owner: CODEX | Status: TODO (2026-10-30)
+- Depends on: existing INT-35 exact trim/concat implementation; no model/AI field dependency. Start after INT-38 deployment checkpoint.
+- Acceptance: normal single-range clips accurately retain requested frame range/duration±0.1s with audio/silent input, reuse existing re-encode path, bound processing time; preserve source offsets, clip storage/status and original media. Native Go gates + actual gateway FFmpeg binary tests. ASR sentence snapping/AI rollout remains separate.
+- Changed: planned backend cutter + meaningful real FFmpeg test and owned evidence; no endpoint/DB schema/AI code edit.
+- Commits: pending. Evidence: pending. Next action: replace legacy stream-copy with existing precise trim path, verify actual frames/duration, deploy gateway only.
