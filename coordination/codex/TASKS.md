@@ -6,6 +6,14 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 
 ## Tổng quan
 
+### INT-45 — Settings deep functional re-audit requested by user
+- Owner: CODEX | Status: IN_PROGRESS (2026-10-30)
+- Depends on: INT-40 findings, deployed CMS/gateway/AI; no other IN_PROGRESS task. User requests a deeper Settings audit, not implementation of INT-41.
+- Acceptance: enumerate every Settings tab/control; real click/readonly/disabled/save/reset/unsaved-navigation/refresh/permission proof at390/1440; save all4AI flag combinations and process only owned short video under each combination while monitoring other active jobs; restore original settings/roles, remove own media, preserve originals/runtime. Separate real persistence, actual execution, static placeholders, unsupported tabs and untested failure paths. No response mocks, no model/AI source/deployment changes.
+- Planned files: e2e/cms_settings_deep_live.spec.ts; coordination/codex/verification/INT-45*; owned tracker/session/handoff.
+- Evidence/Commits: pending. INT-41 remains TODO, not implemented by an audit.
+- Next action: capture baseline and run detailed Settings UI/API/runtime matrix, then report exact capability of each control.
+
 ### INT-40 — User-requested complete CMS click audit
 - Owner: CODEX
 - Status: DONE (2026-10-30; audit complete, product findings remain open)
