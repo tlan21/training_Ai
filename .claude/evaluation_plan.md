@@ -57,6 +57,10 @@
   hay điểm AI). Recipe production: k + τ của từng model chọn trên val bóng đá (như AI-20). **Đổi sang ×10 khi cả hai:** F1/giây test tin tức(×10)
   ≥ test tin tức(vòng 7) + 0.05 **và** test bóng đá(×10) ≥ test bóng đá(vòng 7) − 0.01. Báo kèm: F1 tin tức với τ riêng (tham khảo), CI bootstrap
   theo video. Tập test tin tức chấm đúng MỘT lần; sau đó không dùng để chọn gì.
+  *Sửa đổi 2026-10-30 (user duyệt, TRƯỚC khi tải video/chạy model):* tìm kiếm CC chỉ ra 2 kênh chính thức mới (Báo SGGP, THVL 24News); kênh
+  đăng lại nội dung đài khác và kênh bình luận bị loại (bản quyền / không phải bản tin). Test = 2 video kênh mới + 6 video CHƯA DÙNG của kênh cũ
+  (HYTV, ĐCSVN, LSTV; 2/kênh theo thứ tự tìm kiếm, thiếu thì bù từ kênh còn lại). Quyết định dùng cả 8 video; báo riêng nhóm kênh mới (độc lập)
+  và nhóm kênh đã thấy (lạc quan hơn). Chỉ kênh chính thức (chủ sở hữu nội dung); trùng kênh lọc theo `channel_id`.
 - **Báo cáo chất lượng weak label:** alignment coverage toàn 50 trận + số trận bị loại (< 60% coverage) + Cohen's kappa của 2 người gán test — bảng riêng trong chương thực nghiệm.
 - **Đánh giá cấp đoạn (sát nghiệp vụ):** ghép giây liên tiếp > τ thành đoạn; đoạn đúng khi IoU ≥ 0.5 với đoạn nhãn người → precision/recall cấp đoạn.
 - **Đánh giá cảm quan:** CMS hiển thị heatmap → biên tập viên chấm "dùng được/không" cho 20 video — số liệu human-in-the-loop đưa vào luận án.
