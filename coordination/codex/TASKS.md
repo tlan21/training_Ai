@@ -37,7 +37,8 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 - Planned files: existing CMS hooks/pages/components, related backend ports/adapters/handlers/tests, e2e tests, owned subplan/evidence/tracker. No new dependency or endpoint family.
 - Verification: Go gates, CMS/Client/E2E types/build as affected;8screens390/1440 and10item Stitch review, fixture faults, data-preserving006 product apply/idempotence, owned gateway/CMS rollout with other runtime preserved; real AI mixed policies/upload/process/review/compile/publish/draft/search/failure/retry/cancel/categoryCRUD. Restore settings, hide/remove only own QA artifacts. Stop own QA3392 at final checkpoint.
 - Source/evidence: verification/INT-50.md;8screens wired, backend writes/validation/clipcategory/editedtranscript fixed, deleted-source operations hidden, freshinit ready. Go gates PASS, realPG3PASS/Mongo1PASS, CMS/Client/E2Etypes+CMSbuild PASS, fixture73PASS +final8 +picker2PASS. Failed historical/fixture attempts retained and corrected.
-- Next action: baseline/product006 apply+idempotence/preservation, source-tagged offline gateway/CMS images, selected rollout, real policy/browser/fault/API acceptance and10item visual evidence; no DONE until actual acceptance.
+- Runtime checkpoint: product006 applied twice, original normalized row hashes/IDs/counts preserved;2newdefaultflags only. Offline gateway/CMS images int50-6287454 built on existing bases, no downloads/restarts/model work. Baseline13containers and actualAI6/stubfalse/CPU preserved. See verification/INT-50.md/JSON/build logs.
+- Next action: selected gateway/CMS recreation with sameenv/mounts, real policy/browser/fault/API acceptance/cleanup and10item visual evidence, stop own3392; no DONE until actual acceptance.
 
 ### INT-49 — Real CMS persistence, read models and telemetry
 - Owner: CODEX | Status: PARTIAL (2026-10-30; source/adapters verified, product apply/deploy/E2E pending)

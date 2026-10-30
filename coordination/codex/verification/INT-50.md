@@ -24,3 +24,10 @@ Owner CODEX, IN_PROGRESS. User-approved CMS simplification and completion; publi
 ## Pending final acceptance
 
 Product baseline/hash capture; apply006 twice and compare old columns/values; build/recreate only owned gateway/CMS, preserve all other runtime/env/volumes/AI; actual health/MinIO+CPU and policy HTTP proof; browser/API flows across8screens, fault checks and full10item Stitch review, restore settings and clean only own QA artifacts; stop own preview PID3392. Old AI Docker release remains real6/stubfalse historically, AI-19/quality upgrade stays Claude-owned HO-04; no claim of new model quality or v2 API_READY promotion.
+
+
+## Product migration / offline artifact checkpoint
+
+Source commit6287454. `backend/.tmp/int50-migrate.ps1`: actual product006 applied twice with ON_ERROR_STOP, normalized original row hashes/IDs/counts identical before/after each apply (exclude only newly added columns and2new settings).119videos,61clips,51users,10categories,119jobs,67interactions,6legacy settings preserved; new flags onlytrue/false defaults. Evidence INT-50-db-before.json, INT-50-db-after006-{1,2}.json, INT-50-product-migration.log, INT-50-new-settings.json. Original Mongo analysis/subtitle id+SHA256 captured, no raw transcript or secret exported. Setup null-hash/Mongo-auth failure occurred before migration; corrected snapshot authentication uses existing container environment, never prints credentials.
+
+`backend/.tmp/int50-build.ps1`: two offline app images built on verified currently running app bases using buildx --load --pull=false --network=none; no dependency/image downloads, container restarts or model work. Tags video-ai-gateway:int50-6287454, video-ai-cms:int50-6287454. Gateway binarySHA25656AE15A19E72491DFD998808C0003216F3E940FCC7FAF6FF2975BBD1CB63D3BA; CMSindex-BzSu-Jfr.js/index-Y6W6UZTl.css. Build logs INT-50-build-{gateway,cms}.log. Actual pre-rollout AIhealth6/stubfalse/CPU/degradedempty in INT-50-ai-before.json; runtime13projectcontainer identities/env/mount/command hashes captured in INT-50-runtime-before.json. Still pending selected gateway/CMS recreation and real acceptance; all original services remain running.

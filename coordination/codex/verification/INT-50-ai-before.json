@@ -1,0 +1,13 @@
+{
+  "models_loaded": [
+    "asr_ctc",
+    "highlight_fusion",
+    "minigpt",
+    "siamese",
+    "two_tower",
+    "vit"
+  ],
+  "stub_mode": false,
+  "device": "cpu",
+  "degraded": []
+}
