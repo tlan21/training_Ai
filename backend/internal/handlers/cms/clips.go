@@ -1,8 +1,10 @@
 package cms
 
 import (
+	"errors"
 	"math"
 	"net/http"
+	"strings"
 	"time"
 	"unicode/utf8"
 
@@ -155,34 +157,38 @@ func (h *ClipHandlers) Update(c *gin.Context) {
 		handlers.ErrorEnvelope(c, http.StatusUnprocessableEntity, "VALIDATION_ERROR", err.Error())
 		return
 	}
-	// load to apply category separately
-	cl, err := h.clips.Get(c.Request.Context(), id)
-	if err != nil {
-		handlers.ErrorEnvelope(c, http.StatusNotFound, "CLIP_NOT_FOUND", "Clip not found")
+	if req.Title != nil && strings.TrimSpace(*req.Title) == "" {
+		handlers.ErrorEnvelope(c, 422, "VALIDATION_ERROR", "Clip title cannot be blank")
 		return
 	}
-	if req.CategoryID != nil {
-		cl.CategoryID = req.CategoryID
-	}
-	updated, err := h.clips.UpdateMeta(c.Request.Context(), id, req.Title, nil, nil)
-	if err != nil {
-		handlers.ErrorEnvelope(c, http.StatusNotFound, "CLIP_NOT_FOUND", err.Error())
+	updated, err := h.clips.UpdateMeta(c.Request.Context(), id, req.Title, nil, nil, req.CategoryID)
+	if errors.Is(err, domain.ErrClipNotFound) || errors.Is(err, domain.ErrCategoryNotFound) {
+		handlers.ErrorEnvelope(c, 404, "NOT_FOUND", "Clip or category not found")
 		return
 	}
-	// preserve category_id change in mem (UpdateMeta doesn't touch it, but Get returns mutated ref in mem)
-	if req.CategoryID != nil {
-		updated.CategoryID = req.CategoryID
+	if err != nil {
+		handlers.ErrorEnvelope(c, 500, "INTERNAL", "Unable to update clip")
+		return
 	}
+	h.invalidateFeed(c)
 	c.JSON(http.StatusOK, toClipCMS(updated, h.storage))
 }
 
 func (h *ClipHandlers) Delete(c *gin.Context) {
 	id := c.Param("id")
-	if _, err := h.clips.Get(c.Request.Context(), id); err != nil {
+	cl, err := h.clips.Get(c.Request.Context(), id)
+	if err != nil {
 		handlers.ErrorEnvelope(c, http.StatusNotFound, "CLIP_NOT_FOUND", "Clip not found")
 		return
 	}
-	_ = h.clips.SetStatus(c.Request.Context(), id, domain.ClipRejected)
+	if cl.Status == domain.ClipProcessing {
+		handlers.ErrorEnvelope(c, 409, "CONFLICT", "Wait for clip processing before hiding")
+		return
+	}
+	if err := h.clips.SetStatus(c.Request.Context(), id, domain.ClipRejected); err != nil {
+		handlers.ErrorEnvelope(c, 500, "INTERNAL", "Unable to hide clip")
+		return
+	}
 	h.invalidateFeed(c)
 	c.Status(http.StatusNoContent)
 }

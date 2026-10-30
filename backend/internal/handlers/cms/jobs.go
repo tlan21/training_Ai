@@ -1,7 +1,6 @@
 package cms
 
 import (
-	"context"
 	"net/http"
 	"strings"
 	"unicode/utf8"
@@ -49,7 +48,11 @@ func (h *JobHandlers) List(c *gin.Context) {
 		if id := c.Query("video_id"); id != "" && items[i].VideoID != id {
 			continue
 		}
-		dto, err := h.jobDTO(c.Request.Context(), &items[i])
+		source, err := h.videos.Get(c.Request.Context(), items[i].VideoID)
+		if err == nil && source.Status == domain.VideoDeleted {
+			continue
+		}
+		dto := h.jobDTO(&items[i], source)
 		if err != nil {
 			handlers.ErrorEnvelope(c, 500, "INTERNAL", "Unable to load job video")
 			return
@@ -70,7 +73,8 @@ func (h *JobHandlers) Get(c *gin.Context) {
 		handlers.ErrorEnvelope(c, http.StatusNotFound, "JOB_NOT_FOUND", "Job not found")
 		return
 	}
-	dto, err := h.jobDTO(c.Request.Context(), j)
+	source, err := h.videos.Get(c.Request.Context(), j.VideoID)
+	dto := h.jobDTO(j, source)
 	if err != nil {
 		handlers.ErrorEnvelope(c, 500, "INTERNAL", "Unable to load job video")
 		return
@@ -150,18 +154,17 @@ func (h *JobHandlers) Cancel(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
-func (h *JobHandlers) jobDTO(ctx context.Context, j *domain.ProcessingJob) (gin.H, error) {
+func (h *JobHandlers) jobDTO(j *domain.ProcessingJob, v *domain.Video) gin.H {
 	dto := toJobCMS(j)
-	v, err := h.videos.Get(ctx, j.VideoID)
-	if err != nil {
-		return nil, err
+	if v == nil {
+		return dto
 	}
 	dto["video_title"] = v.Title
 	dto["thumbnail_url"] = handlers.ThumbnailURL(handlers.VideoThumbnailReference(v), h.storage)
 	dto["duration_seconds"] = v.DurationSeconds
 	dto["uploaded_by_name"] = v.UploadedByName
 	dto["editorial_priority"] = editorialPriority(v.EditorialPriority)
-	return dto, nil
+	return dto
 }
 
 func (h *JobHandlers) WithStorage(storage ports.ObjectStorage) *JobHandlers {

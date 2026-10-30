@@ -102,3 +102,48 @@ func TestCMSVideoFiltersAreGlobalAndDeletedExplicit(t *testing.T) {
 		}
 	}
 }
+
+type summaryFailure struct{ *mocks.AnalysisStoreMem }
+
+func (s summaryFailure) SetSummary(context.Context, string, string, string) error {
+	return errors.New("private database failure")
+}
+func TestEditorialWritesValidateSourceAndReportFailures(t *testing.T) {
+	ctx := context.Background()
+	videos, analysis, subs := mocks.NewVideoRepoMem(), mocks.NewAnalysisStoreMem(), mocks.NewSubtitleStoreMem()
+	_ = videos.Create(ctx, &domain.Video{ID: "vid_editorial", Status: domain.VideoProcessed, DurationSeconds: 8})
+	_ = analysis.SetSummary(ctx, "vid_editorial", "reviewed text", "draft")
+	_ = subs.Put(ctx, "vid_editorial", "vi", "old text", nil)
+	h := NewVideoHandlers(videos, nil, analysis, subs, nil, nil, nil, nil, &mocks.AIClientMem{}, nil)
+	r := gin.New()
+	r.PUT("/videos/:id/summary", h.SetSummary)
+	r.PUT("/videos/:id/subtitles", h.UpdateSubtitles)
+	r.POST("/videos/:id/regenerate", h.RegenerateSummary)
+	call := func(method, path, body string, status int) {
+		t.Helper()
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, httptest.NewRequest(method, path, strings.NewReader(body)))
+		if w.Code != status || strings.Contains(w.Body.String(), "private") {
+			t.Fatalf("%s: %d %s", path, w.Code, w.Body)
+		}
+	}
+	call("PUT", "/videos/vid_missing/summary", `{"summary":"orphan"}`, 404)
+	if _, err := analysis.Get(ctx, "vid_missing"); err == nil {
+		t.Fatal("created orphan analysis")
+	}
+	call("PUT", "/videos/vid_editorial/subtitles", `{"segments":[{"segment_index":0,"start_time":0,"end_time":2,"text":"new text","confidence":0.9}]}`, 200)
+	stored, _ := subs.Get(ctx, "vid_editorial")
+	if stored.FullTranscript != "new text" {
+		t.Fatalf("regeneration transcript stale: %+v", stored)
+	}
+	for _, body := range []string{`{"segments":[{"start_time":-1,"end_time":2}]}`, `{"segments":[{"start_time":0,"end_time":9}]}`, `{"segments":[{"start_time":0,"end_time":0}]}`} {
+		call("PUT", "/videos/vid_editorial/subtitles", body, 422)
+	}
+	failed := NewVideoHandlers(videos, nil, summaryFailure{analysis}, subs, nil, nil, nil, nil, nil, nil)
+	r.PUT("/failed/:id/summary", failed.SetSummary)
+	r.POST("/failed/:id/approve", failed.ApproveSummary)
+	call("PUT", "/failed/vid_editorial/summary", `{"summary":"not saved"}`, 500)
+	call("POST", "/failed/vid_editorial/approve", `{}`, 500)
+	_ = subs.UpdateSegments(ctx, "vid_editorial", []domain.Segment{})
+	call("POST", "/videos/vid_editorial/regenerate", `{}`, 422)
+}

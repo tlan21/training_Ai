@@ -1,0 +1,4 @@
+ok  	traning_ai/backend/internal/handlers/cms	2.892s
+ok  	traning_ai/backend/internal/handlers	2.979s
+ok  	traning_ai/backend/internal/adapters/pg	2.186s
+ok  	traning_ai/backend/internal/adapters/mongo	1.396s

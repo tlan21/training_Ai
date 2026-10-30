@@ -60,7 +60,7 @@ func (r *ClipRepo) ListCMS(ctx context.Context, videoID, status *string, query s
 	 (SELECT count(*) FROM user_interactions i JOIN users viewer ON viewer.id=i.user_id WHERE i.clip_id=cl.id AND i.interaction_type='click' AND viewer.role='client')
 	 FROM clips cl JOIN videos v ON v.id=cl.video_id LEFT JOIN users u ON u.id=cl.created_by
 	 LEFT JOIN categories cat ON cat.id=coalesce(cl.category_id,v.category_id)
-	 WHERE ($1::text IS NULL OR cl.video_id=$1) AND ($2::text IS NULL OR cl.status=$2) AND cl.title ILIKE $3
+	 WHERE v.status!='deleted' AND ($1::text IS NULL OR cl.video_id=$1) AND ($2::text IS NULL OR cl.status=$2) AND cl.title ILIKE $3
 	 AND (cl.status!='published' OR v.status='processed') ORDER BY cl.created_at DESC,cl.id DESC`, videoID, status, likePattern(query))
 	if err != nil {
 		return nil, err

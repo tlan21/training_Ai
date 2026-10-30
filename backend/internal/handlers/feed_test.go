@@ -89,7 +89,7 @@ func TestFeedModeMetadataLimitAndCachedVisibility(t *testing.T) {
 			}
 			updatedTitle := "Current database title"
 			for _, id := range []string{"clp_real_a", "clp_real_b"} {
-				if _, err := clips.UpdateMeta(ctx, id, &updatedTitle, nil, nil); err != nil {
+				if _, err := clips.UpdateMeta(ctx, id, &updatedTitle, nil, nil, nil); err != nil {
 					t.Fatal(err)
 				}
 			}

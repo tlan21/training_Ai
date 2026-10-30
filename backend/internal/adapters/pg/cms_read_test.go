@@ -3,6 +3,7 @@ package pg
 import (
 	"context"
 	"os"
+	"strings"
 	"testing"
 	"time"
 	"traning_ai/backend/internal/domain"
@@ -115,9 +116,26 @@ func TestCMSOperationsRealPersistence(t *testing.T) {
 	if err := cats.Delete(ctx, "cat_news"); err != domain.ErrConflict {
 		t.Fatalf("referenced category deletion: %v", err)
 	}
+	catID := "cat_news"
+	title := "News edited"
+	cl, err := (&ClipRepo{DB: db}).UpdateMeta(ctx, "clp_a", &title, nil, nil, &catID)
+	if err != nil || cl.CategoryID == nil || *cl.CategoryID != catID {
+		t.Fatalf("clip category not persisted: %+v %v", cl, err)
+	}
+	reloaded, err := (&ClipRepo{DB: db}).Get(ctx, "clp_a")
+	if err != nil || reloaded.CategoryID == nil || *reloaded.CategoryID != catID || reloaded.Title != title {
+		t.Fatalf("clip edit reload: %+v %v", reloaded, err)
+	}
 	clips, err := (&ClipRepo{DB: db}).ListCMS(ctx, nil, nil, "News")
 	if err != nil || len(clips) != 1 || clips[0].ViewCount != 1 || clips[0].CreatedByName == nil || clips[0].CategoryName == nil {
 		t.Fatalf("clip metadata: %+v %v", clips, err)
+	}
+	if err := (&ClipRepo{DB: db}).SetStatus(ctx, "clp_deleted", domain.ClipRejected); err != nil {
+		t.Fatal(err)
+	}
+	visible, err := (&ClipRepo{DB: db}).ListCMS(ctx, nil, nil, "")
+	if err != nil || len(visible) != 1 {
+		t.Fatalf("deleted source still in CMS clip catalog: %+v %v", visible, err)
 	}
 	month := time.Date(2026, 10, 1, 0, 0, 0, 0, time.UTC)
 	m, err := (&CMSRepo{DB: db}).Overview(ctx, month)
@@ -130,5 +148,42 @@ func TestCMSOperationsRealPersistence(t *testing.T) {
 	var count int
 	if err := db.QueryRow(ctx, `SELECT count(*) FROM videos`).Scan(&count); err != nil || count != 3 {
 		t.Fatalf("rows changed: %d %v", count, err)
+	}
+}
+
+func TestCMSFreshSchemaAndSeed(t *testing.T) {
+	db := integrationDB(t)
+	ctx := context.Background()
+	schema, err := os.ReadFile("../../../../infra/postgres/init/001_schema.sql")
+	if err != nil {
+		t.Fatal(err)
+	}
+	// Every CREATE targets session-local TEMP tables; existing extensions are read-only IF NOT EXISTS.
+	if _, err := db.Exec(ctx, strings.ReplaceAll(string(schema), "CREATE TABLE ", "CREATE TEMP TABLE ")); err != nil {
+		t.Fatal(err)
+	}
+	seed, err := os.ReadFile("../../../../infra/postgres/init/002_seed.sql")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := db.Exec(ctx, string(seed)); err != nil {
+		t.Fatal(err)
+	}
+	settings, err := (&SettingsRepo{DB: db}).Get(ctx)
+	if err != nil || !settings.CategorySuggestionEnabled || settings.CategoryKeywordEnabled {
+		t.Fatalf("fresh category defaults: %+v %v", settings, err)
+	}
+	repo := &VideoRepo{DB: db}
+	v := &domain.Video{ID: "vid_fresh", Title: "Fresh", RawFilePath: "raw-videos/fresh.mp4", Status: domain.VideoUploaded}
+	if err := repo.Create(ctx, v); err != nil {
+		t.Fatal(err)
+	}
+	stored, err := repo.Get(ctx, v.ID)
+	if err != nil || stored.EditorialPriority != "normal" {
+		t.Fatalf("fresh schema read: %+v %v", stored, err)
+	}
+	job, err := (&JobRepo{DB: db}).Create(ctx, v.ID)
+	if err != nil || job.ProcessingOptions != nil || len(job.SkippedStages) != 0 {
+		t.Fatalf("fresh job defaults: %+v %v", job, err)
 	}
 }

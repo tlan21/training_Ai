@@ -37,6 +37,13 @@ func TestStores_RealVietnameseRoundTrip(t *testing.T) {
 	if err != nil || stored.FullTranscript != "xin chào" || stored.Segments[0].StartTime != 2 {
 		t.Fatalf("lost Vietnamese transcript: %+v %v", stored, err)
 	}
+	if err := sub.UpdateSegments(ctx, id, []domain.Segment{{SegmentIndex: 1, StartTime: 2, EndTime: 3, Text: "đã biên tập", Confidence: 0.9}}); err != nil {
+		t.Fatal(err)
+	}
+	stored, err = sub.Get(ctx, id)
+	if err != nil || stored.FullTranscript != "đã biên tập" {
+		t.Fatalf("stale transcript after edit: %+v %v", stored, err)
+	}
 	threshold := 51.0
 	if err := analysis.Put(ctx, id, []domain.SecondScore{{Second: 2, Score: 80}}, nil, nil, &threshold); err != nil {
 		t.Fatal(err)

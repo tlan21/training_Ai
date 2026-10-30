@@ -10,3 +10,5 @@ export function fmtISO(iso: string): string {
     return iso;
   }
 }
+
+export const fmtBytes = (bytes?: number | null) => bytes == null ? "—" : `${(bytes / 1024 ** 2).toLocaleString("vi-VN", { maximumFractionDigits: 1 })} MB`;

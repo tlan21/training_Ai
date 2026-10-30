@@ -470,3 +470,8 @@ Mẫu HO:
 ## 2026-10-30 INT-41 source checkpoint — execution flags
 - New uploads store auto-highlight/subtitle processing snapshot before Kafka; disabled stages skip HTTP calls, no fabricated output; retry uses same snapshot, legacy jobs both-on. Backend category rules suggest only, editor confirms. Four policies/retry/ordering/rules tests and3affected Go packages PASS (verification/INT-41-go.log).
 - PARTIAL pending Settings/Queue UI and real deployed four-policy proof, product006/deployment untouched. No AI endpoint/source/model changes. Continue INT-42 lifecycle then full CMS UI acceptance.
+
+
+## 2026-10-30 INT-50 source checkpoint — eight CMS business screens
+- Public0.8 operations wired with actual metrics/metadata, saved highlight review/category rules/editorial priority, subtitle transcript synchronization and surfaced write failures. Snapshot execution/retry/cancel and deleted source guards retained; source domains/AI API unchanged. Fresh init/seed includes006 fields, product additive migration still pending.
+- Go gates, actual PG3TEMP tests/Mongo1roundtrip, CMS/E2E types/build and fixture73 +final8 +picker2 tests PASS; details verification/INT-50.md. This is source checkpoint, not deployed real acceptance; continue product preservation/migration and owned gateway/CMS rollout/E2E. AI source/model/runtime/checkpoint untouched; HO-04 remains separate Claude release dependency.

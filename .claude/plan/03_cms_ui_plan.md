@@ -602,3 +602,12 @@ User bổ sung 2026-10-29 (INT-34/35): màn Highlight thêm nút “Tạo video 
   Existing edit/save/reload endpoint remains; no subtitle approval field or official-status claim is introduced.
 - SRT downloads retain valid cue syntax and use -ban-nhap-ai.srt filename; summary approval gate remains separate.
 - This user-approved disclosure overrides original Stitch copy/notice spacing; other layout/parity requirements remain INT-05.
+
+
+## 2026-10-30 — operational completion INT-48/49/50 (user override)
+- Public0.8 supplies actual CMS metrics/storage/CPU and hydrated video/job/clip metadata, server-wide title/category/date filters, category keyword rules, editorial priority and persisted proposal decisions. Data replaces static/undefined values; processing success is not model accuracy, active15min is not a live connection count, click/open count is not playback duration.
+- Dashboard chart uses completed_at UTC month. Queue shows job metadata (no first-page video lookup), settings snapshot and skipped stages; canceled work stops at a stage boundary. Deleted-source jobs/clips excluded from default operational lists; rows retained.
+- Category keyword/vision switches create suggestions requiring editor confirmation, never automatically publish. Keywords are edited one per line, up to20; editorial priority is only a label, no Kafka/GPU scheduler claim. Existing categories have no API system-role/protection property; all expose the same CRUD and server FK conflicts protect referenced data.
+- Highlight accept/dismiss survives reload and can be restored; auto compilation excludes dismissed original proposal indices. No-video selection does not show unrelated compilations. Video picker supports title search and paging rather than limiting selection to20videos.
+- Summary regenerate label explicitly describes AI draft regeneration; saved subtitle edits update the transcript consumed by regeneration. Metadata/priority/category/subtitle drafts are retained on failed writes; Settings has unsaved-navigation protection and reads actual MinIO bucket names. Existing body/grid/token/icon layout reused; mobile Dashboard1column and Settings32px tab gap restored from Stitch reference.
+- Other3Settings tabs and model-owned thresholds/AI key rotation remain explicitly unsupported per prior scope. Users is read-only provisioning inventory; no role editing/recovery/account deletion in CMS. Shared Client recovery remains independently consumed pending clarification.

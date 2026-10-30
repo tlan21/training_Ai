@@ -224,7 +224,7 @@ func (r *ClipRepoMem) SetFilePath(_ context.Context, id, p string) error {
 	v.ClipFilePath = &p
 	return nil
 }
-func (r *ClipRepoMem) UpdateMeta(_ context.Context, id string, title *string, start, end *float64) (*domain.Clip, error) {
+func (r *ClipRepoMem) UpdateMeta(_ context.Context, id string, title *string, start, end *float64, category *string) (*domain.Clip, error) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	v, ok := r.M[id]
@@ -240,6 +240,10 @@ func (r *ClipRepoMem) UpdateMeta(_ context.Context, id string, title *string, st
 	if end != nil {
 		v.EndTime = *end
 	}
+	if category != nil {
+		v.CategoryID = category
+	}
+	v.UpdatedAt = time.Now()
 	cp := *v
 	return &cp, nil
 }
@@ -756,6 +760,11 @@ func (s *SubtitleStoreMem) UpdateSegments(_ context.Context, vid string, segs []
 		return domain.ErrNotFound
 	}
 	v.Segments = segs
+	texts := []string{}
+	for _, segment := range segs {
+		texts = append(texts, segment.Text)
+	}
+	v.FullTranscript = strings.Join(texts, " ")
 	return nil
 }
 func (s *SubtitleStoreMem) TextSearch(_ context.Context, q string) ([]domain.SubtitleMatch, error) {

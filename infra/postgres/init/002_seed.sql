@@ -27,6 +27,8 @@ INSERT INTO system_settings (key, value) VALUES
     ('asr_warning_threshold', '65'),
     ('auto_highlight_enabled','true'),
     ('auto_subtitle_enabled', 'true'),
+    ('category_suggestion_enabled', 'true'),
+    ('category_keyword_enabled', 'false'),
     ('default_subtitle_lang', 'vi'),
     ('ai_service_api_key',    'sk-local-CHANGE-ME')
 ON CONFLICT (key) DO NOTHING;

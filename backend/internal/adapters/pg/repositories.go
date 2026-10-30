@@ -84,7 +84,11 @@ func (r *VideoRepo) SetStatus(ctx context.Context, id string, status domain.Vide
 	return update(ctx, r.DB, `UPDATE videos SET status=$2,updated_at=now() WHERE id=$1 AND status!='deleted'`, id, status)
 }
 func (r *VideoRepo) SetCategory(ctx context.Context, id, category string) error {
-	return update(ctx, r.DB, `UPDATE videos SET category_id=$2,updated_at=now() WHERE id=$1`, id, category)
+	err := update(ctx, r.DB, `UPDATE videos SET category_id=$2,updated_at=now() WHERE id=$1 AND status!='deleted'`, id, category)
+	if errors.Is(err, domain.ErrNotFound) {
+		return domain.ErrVideoNotFound
+	}
+	return categoryReferenceError(err)
 }
 func (r *VideoRepo) SetMediaMetadata(ctx context.Context, id string, seconds float64, width, height *int, fps *float64) error {
 	return update(ctx, r.DB, `UPDATE videos SET duration_seconds=$2,width=coalesce($3,width),height=coalesce($4,height),fps=coalesce($5,fps),updated_at=now() WHERE id=$1 AND status!='deleted'`, id, seconds, width, height, fps)
@@ -139,8 +143,9 @@ func (r *ClipRepo) SetStatus(ctx context.Context, id string, status domain.ClipS
 func (r *ClipRepo) SetFilePath(ctx context.Context, id, path string) error {
 	return update(ctx, r.DB, `UPDATE clips SET clip_file_path=$2,updated_at=now() WHERE id=$1`, id, path)
 }
-func (r *ClipRepo) UpdateMeta(ctx context.Context, id string, title *string, start, end *float64) (*domain.Clip, error) {
-	return scanClip(r.DB.QueryRow(ctx, `UPDATE clips SET title=coalesce($2,title),start_time=coalesce($3,start_time),end_time=coalesce($4,end_time),updated_at=now() WHERE id=$1 RETURNING `+clipColumns, id, title, start, end))
+func (r *ClipRepo) UpdateMeta(ctx context.Context, id string, title *string, start, end *float64, category *string) (*domain.Clip, error) {
+	c, err := scanClip(r.DB.QueryRow(ctx, `UPDATE clips SET title=coalesce($2,title),start_time=coalesce($3,start_time),end_time=coalesce($4,end_time),category_id=coalesce($5,category_id),updated_at=now() WHERE id=$1 RETURNING `+clipColumns, id, title, start, end, category))
+	return c, categoryReferenceError(err)
 }
 func (r *ClipRepo) HideByVideo(ctx context.Context, id string) error {
 	_, err := r.DB.Exec(ctx, `UPDATE clips SET status='rejected',updated_at=now() WHERE video_id=$1`, id)
@@ -312,4 +317,12 @@ func (r *CategoryRepo) Delete(ctx context.Context, id string) error {
 		return domain.ErrCategoryNotFound
 	}
 	return nil
+}
+
+func categoryReferenceError(err error) error {
+	var ref *pgconn.PgError
+	if errors.As(err, &ref) && ref.Code == "23503" {
+		return domain.ErrCategoryNotFound
+	}
+	return err
 }

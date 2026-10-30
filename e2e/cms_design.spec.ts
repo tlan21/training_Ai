@@ -46,10 +46,10 @@ for (const width of [390,1440]) for (const scenario of ['reported','zero','legac
 }
 
 async function setupUI(page: Page, role: 'admin' | 'editor' = 'admin') {
-  const videoDetail: components['schemas']['VideoDetail'] = { ...videos[0], width: 1920, height: 1080, fps: 29.97, hashtags: null };
-  const categoryState: components['schemas']['Category'][] = categories.map(category => ({ ...category }));
+  const videoDetail: components['schemas']['VideoDetail'] = { ...videos[0], width: 1920, height: 1080, fps: 29.97, hashtags: null, editorial_priority: "normal" };
+  const categoryState: components['schemas']['Category'][] = categories.map(category => ({ ...category, video_count: 41, keywords: [] }));
   const analysis: components['schemas']['CmsAnalysis'] = {
-    category_suggestion: 'bong_da', summary: 'Man City và Arsenal tạo ra nhiều tình huống nguy hiểm.', suggested_title: 'Các khoảnh khắc nổi bật', summary_status: 'draft', hashtags: ['BongDa', 'Highlight'],
+    proposal_decisions: [], category_match: {category_id:'cat_news',name:'Tin tức',source:'keyword',keyword:'tin'}, category_suggestion: 'bong_da', summary: 'Man City và Arsenal tạo ra nhiều tình huống nguy hiểm.', suggested_title: 'Các khoảnh khắc nổi bật', summary_status: 'draft', hashtags: ['BongDa', 'Highlight'],
     timeline_scores: Array.from({ length: 5400 }, (_, second) => ({ second, score: second > 2400 && second < 2580 ? 95 : 40 + Math.round(Math.sin(second / 200) * 35) })),
     ai_generated_clips: [
       { start_time: 2465, end_time: 2550, average_score: 98, reason: 'Bàn thắng đẹp từ khoảng cách xa' },
@@ -69,10 +69,10 @@ async function setupUI(page: Page, role: 'admin' | 'editor' = 'admin') {
   ];
   const jobs: components['schemas']['Job'][] = [
     { id: 'job_design01', video_id: videoId, status: 'completed', progress: 100, current_stage: 'completed', updated_at: '2026-10-14T01:00:00Z' },
-    { id: 'job_design02', video_id: 'vid_design02', status: 'running', progress: 64, current_stage: 'highlight_scoring', updated_at: '2026-10-14T01:00:00Z' },
+    { id: 'job_design02', video_id: 'vid_design02', status: 'running', progress: 64, current_stage: 'highlight_scoring', video_title:'Title from job metadata',uploaded_by_name:'Người tải fixture',duration_seconds:908,editorial_priority:'high',processing_options:{auto_highlight_enabled:false,auto_subtitle_enabled:true},skipped_stages:['highlight_scoring'], updated_at: '2026-10-14T01:00:00Z' },
     { id: 'job_design03', video_id: 'vid_design03', status: 'failed', progress: 20, error_log: 'Không đọc được dữ liệu video', updated_at: '2026-10-14T01:00:00Z' },
   ];
-  const settings: components['schemas']['Settings'] = { highlight_threshold: 75, asr_warning_threshold: 65, auto_highlight_enabled: true, auto_subtitle_enabled: true, default_subtitle_lang: 'vi', ai_service_api_key: 'sk-local-••••' };
+  const settings: components['schemas']['Settings'] = { category_suggestion_enabled:true,category_keyword_enabled:false, highlight_threshold: 75, asr_warning_threshold: 65, auto_highlight_enabled: true, auto_subtitle_enabled: true, default_subtitle_lang: 'vi', ai_service_api_key: 'sk-local-••••' };
   await page.route('**/api/**', async (route) => {
     const request = route.request();
     const url = new URL(request.url());
@@ -80,13 +80,13 @@ async function setupUI(page: Page, role: 'admin' | 'editor' = 'admin') {
     const method = request.method();
     if (pathname === '/api/auth/refresh') return route.fulfill({ json: { access_token: 'ui-fixture' } });
     if (pathname === '/api/users/me') return route.fulfill({ json: { id: 'usr_design_admin', username: 'Admin CMS', email: 'admin@example.test', role, preferences: [] } });
-    if (pathname === '/api/cms/system/health') return route.fulfill({ json: { gpu_vram_used: 0, gpu_util: 0, models_loaded: ['asr_ctc', 'highlight_fusion', 'minigpt', 'siamese', 'two_tower', 'vit'], queue_depth: 2 } });
+    if (pathname === '/api/cms/system/health') return route.fulfill({ json: { ai_available:true,device:'cpu',cpu_util:23.4,metrics:{total_videos:119,processed_videos:9,active_users:3,success_rate:80,average_processing_seconds:12.5,views_month:72,pending_jobs:2,running_jobs:1,daily_processing:[{date:'2026-10-01',count:2},{date:'2026-10-02',count:5}]},storage:{total_bytes:3145728,buckets:[{name:'raw-videos',bytes:1048576,objects:2},{name:'clips',bytes:1048576,objects:1},{name:'thumbnails',bytes:1048576,objects:4}]},gpu_vram_used: 0, gpu_util: 0, models_loaded: ['asr_ctc', 'highlight_fusion', 'minigpt', 'siamese', 'two_tower', 'vit'], queue_depth: 2 } });
     if (pathname === '/api/cms/videos') return route.fulfill({ json: { items: videos.filter((video) => !url.searchParams.get('status') || video.status === url.searchParams.get('status')), total: videos.length, page: 1 } });
     if (pathname === `/api/cms/videos/${videoId}`) {
       if (method === 'PUT') Object.assign(videoDetail, request.postDataJSON());
       return route.fulfill({ json: videoDetail });
     }
-    if (pathname === `/api/cms/videos/${videoId}/analysis`) return route.fulfill({ json: analysis });
+    if (pathname === `/api/cms/videos/${videoId}/analysis`) {if(method==='PUT') analysis.proposal_decisions=request.postDataJSON().proposal_decisions;return route.fulfill({json:analysis});}
     if (pathname === `/api/videos/${videoId}/subtitles`) return route.fulfill({ json: subtitles });
     if (pathname === `/api/cms/videos/${videoId}/subtitles`) { subtitles.segments = request.postDataJSON().segments; return route.fulfill({ json: {} }); }
     if (pathname.endsWith('/summary/regenerate')) { analysis.summary = 'Bản tóm tắt mới'; analysis.suggested_title = 'Tiêu đề mới'; analysis.summary_status = 'draft'; return route.fulfill({ json: { summary: analysis.summary, suggested_title: analysis.suggested_title } }); }
@@ -157,7 +157,7 @@ for (const width of [390, 1440]) {
     await page.getByLabel('Thẻ Hashtag', { exact: true }).fill('#BóngĐá, AI_2026');
     const saved = page.waitForRequest(request => request.url().endsWith(`/api/cms/videos/${videoId}`) && request.method() === 'PUT');
     await page.getByRole('button', { name: 'Lưu bản nháp', exact: true }).click();
-    expect((await saved).postDataJSON()).toEqual({ title: 'Tiêu đề biên tập', description: 'Mô tả đã sửa', hashtags: ['BóngĐá', 'AI_2026'] });
+    expect((await saved).postDataJSON()).toEqual({ title: 'Tiêu đề biên tập', description: 'Mô tả đã sửa', hashtags: ['BóngĐá', 'AI_2026'], editorial_priority:'normal' });
     await expect(page.getByText('Đã lưu bản nháp', { exact: true })).toBeVisible();
     expect(summaryWrites).toEqual([]);
     await page.reload();
@@ -167,7 +167,7 @@ for (const width of [390, 1440]) {
     let releaseGeneration!: () => void;
     const generation = new Promise<void>(resolve => { releaseGeneration = resolve; });
     await page.route('**/summary/regenerate', async route => { await generation; await route.fallback(); });
-    await page.getByRole('button', { name: 'Thử tiêu đề khác', exact: true }).click();
+    await page.getByRole('button', { name: 'Tạo lại bản nháp AI', exact: true }).click();
     try { await expect(page.getByLabel('Tiêu đề đề xuất')).toBeDisabled(); } finally { releaseGeneration(); }
     await expect(page.getByLabel('Tiêu đề đề xuất')).toHaveValue('Tiêu đề mới');
     await expect(page.getByLabel('Thẻ Hashtag', { exact: true })).toHaveValue('BóngĐá, AI_2026');
@@ -352,7 +352,7 @@ for (const width of [390, 1440]) {
     await expect(page.getByRole('button', { name: 'Tạm dừng video', exact: true })).toBeVisible();
     await page.getByRole('button', { name: 'Tạm dừng video', exact: true }).click();
     await expect.poll(() => video.evaluate((media: HTMLVideoElement) => media.paused)).toBe(true);
-    await page.route('**/api/clips/clp_design01', route => route.fulfill({ json: { id: 'clp_design01', title: 'Bàn thắng đẹp', status: 'published', playback_url: `${cms}/cms-ui-fixture.mp4` } satisfies components['schemas']['Clip'] }));
+    await page.route('**/api/cms/clips', route => route.fulfill({json:[{id:'clp_design01',video_id:videoId,title:'Bàn thắng đẹp',status:'published',playback_url:`${cms}/cms-ui-fixture.mp4`} satisfies components['schemas']['Clip']]}));
     await page.goto(`${cms}/published`);
     await page.getByRole('button', { name: 'Xem clip Bàn thắng đẹp', exact: true }).click();
     await expect.poll(() => video.evaluate((media: HTMLVideoElement) => media.readyState)).toBeGreaterThan(0);
@@ -382,7 +382,7 @@ test('T3.1 transcript warning, seek, save and summary approval', async ({ page }
   await page.getByTestId('summary-editor').fill('Tóm tắt được biên tập');
   await page.getByRole('button', { name: 'Duyệt nội dung', exact: true }).click();
   await expect(page.getByText('ĐÃ DUYỆT', { exact: true })).toBeVisible();
-  await page.getByRole('button', { name: 'Thử tiêu đề khác', exact: true }).click();
+  await page.getByRole('button', { name: 'Tạo lại bản nháp AI', exact: true }).click();
   await expect(page.getByTestId('summary-editor')).toHaveValue('Bản tóm tắt mới');
   await expect(page.getByLabel('Tiêu đề đề xuất')).toHaveValue('Tiêu đề mới');
   await expect(page.getByText('BẢN NHÁP AI', { exact: true })).toBeVisible();
@@ -515,3 +515,28 @@ test('T3.1 wrong password stays on form with API error', async ({ page }) => {
   await expect(page.getByRole('alert')).toHaveText('Email hoặc mật khẩu không chính xác');
   await expect(page).toHaveURL(`${cms}/login`);
 });
+
+for (const width of [390,1440]) {
+ test(`INT-50 ${width} persisted highlight review and restore`,async({page},info)=>{
+  await page.setViewportSize({width,height:width===390?844:900});await setupUI(page);await page.goto(`${cms}/highlight?video_id=${videoId}`);
+  await page.getByRole('button',{name:'Chấp nhận',exact:true}).first().click();await expect(page.getByRole('button',{name:'Đã chấp nhận',exact:true})).toHaveCount(1);
+  await page.reload();await expect(page.getByRole('button',{name:'Đã chấp nhận',exact:true})).toHaveCount(1);
+  await page.getByRole('button',{name:'Bỏ gợi ý 2',exact:true}).click();await expect(page.locator('.proposal-card')).toHaveCount(2);
+  await page.reload();await expect(page.locator('.proposal-card')).toHaveCount(2);await page.getByRole('button',{name:'Khôi phục gợi ý đã bỏ (1)',exact:true}).click();await expect(page.locator('.proposal-card')).toHaveCount(3);
+  await page.screenshot({path:info.outputPath(`review-${width}.png`),fullPage:true});await page.goto(`${cms}/highlight`);await expect(page.getByRole('region',{name:'Video highlight tổng hợp',exact:true})).toHaveCount(0);
+ });
+ test(`INT-50 ${width} real-field metrics and hydrated queue`,async({page},info)=>{
+  await page.setViewportSize({width,height:width===390?844:900});await setupUI(page);await page.goto(`${cms}/dashboard`);
+  await expect(page.locator('.stat-card').filter({hasText:'Tổng video xử lý'})).toContainText('119');await expect(page.locator('.stat-card').filter({hasText:'Tỷ lệ job thành công'})).toContainText('80.0%');await expect(page.locator('.stat-card').filter({hasText:'Dung lượng lưu trữ'})).toContainText('3 MB');
+  await page.screenshot({path:info.outputPath(`metrics-${width}.png`),fullPage:true});await page.goto(`${cms}/queue`);await expect(page.getByText('Title from job metadata',{exact:true})).toBeVisible();await expect(page.getByText('Người tải fixture',{exact:false})).toBeVisible();await expect(page.getByText('CPU Usage',{exact:true}).locator('..').locator('..')).toContainText('23.4%');await expect(page.getByText('Đã bỏ qua:',{exact:false})).toBeVisible();
+  await page.screenshot({path:info.outputPath(`queue-fields-${width}.png`),fullPage:true});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+ });
+ test(`INT-50 ${width} category rules editorial priority and unsaved settings`,async({page},info)=>{
+  await page.setViewportSize({width,height:width===390?844:900});await setupUI(page);await page.goto(`${cms}/categories`);
+  await expect(page.locator('.category-table').getByRole('cell',{name:'41',exact:true})).toHaveCount(4);await page.getByRole('button',{name:'Sửa danh mục Bóng đá',exact:true}).click();await page.getByLabel('Từ khóa gợi ý (mỗi dòng một từ khóa)').fill('bàn thắng\nbóng đá');await page.getByRole('button',{name:'Lưu',exact:true}).click();await expect(page.getByText('bàn thắng, bóng đá',{exact:true})).toBeVisible();await page.reload();await expect(page.getByText('bàn thắng, bóng đá',{exact:true})).toBeVisible();
+  await page.getByLabel('Gợi ý theo từ khóa',{exact:true}).click();await expect(page.getByLabel('Gợi ý theo từ khóa',{exact:true})).toBeChecked();await page.screenshot({path:info.outputPath(`category-rules-${width}.png`),fullPage:true});
+  await page.goto(`${cms}/subtitles?video_id=${videoId}`);await page.getByLabel('Ưu tiên biên tập',{exact:true}).selectOption('high');await page.getByRole('button',{name:'Lưu bản nháp',exact:true}).click();await expect(page.getByText('Đã lưu bản nháp',{exact:true})).toBeVisible();await page.reload();await expect(page.getByLabel('Ưu tiên biên tập',{exact:true})).toHaveValue('high');await page.screenshot({path:info.outputPath(`editorial-priority-${width}.png`),fullPage:true});
+  await page.goto(`${cms}/settings`);await expect(page.getByLabel('S3 Bucket Name',{exact:true})).toHaveValue('raw-videos / clips / thumbnails');await page.getByLabel('Tạo phụ đề tự động',{exact:true}).uncheck();
+  page.once('dialog',dialog=>dialog.dismiss());await page.getByRole('link',{name:'Quản lý người dùng',exact:true}).click();await expect(page).toHaveURL(/settings$/);await expect(page.getByLabel('Tạo phụ đề tự động',{exact:true})).not.toBeChecked();await page.getByRole('button',{name:'Lưu thay đổi',exact:true}).click();await expect(page.getByText('Đã lưu cài đặt',{exact:true})).toBeVisible();await page.reload();await expect(page.getByLabel('Tạo phụ đề tự động',{exact:true})).not.toBeChecked();await page.screenshot({path:info.outputPath(`settings-real-fields-${width}.png`),fullPage:true});
+ });
+}

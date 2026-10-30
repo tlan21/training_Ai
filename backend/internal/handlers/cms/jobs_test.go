@@ -19,6 +19,7 @@ func TestJobCancelRetryPreservePolicyAndDeletedGuard(t *testing.T) {
 	_ = jobs.SetStage(ctx, job.ID, domain.StageHighlightScoring)
 	h := NewJobHandlers(jobs, bus, videos)
 	r := gin.New()
+	r.GET("/jobs", h.List)
 	r.POST("/jobs/:id/cancel", h.Cancel)
 	r.POST("/jobs/:id/retry", h.Retry)
 	call := func(action string, status int) {
@@ -46,6 +47,11 @@ func TestJobCancelRetryPreservePolicyAndDeletedGuard(t *testing.T) {
 	_ = videos.SoftDelete(ctx, v.ID)
 	call("retry", 409)
 	v, _ = videos.Get(ctx, v.ID)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, httptest.NewRequest("GET", "/jobs", nil))
+	if w.Code != 200 || w.Body.String() != "[]" {
+		t.Fatalf("deleted video job still listed: %d %s", w.Code, w.Body)
+	}
 	if v.Status != domain.VideoDeleted || len(bus.Events) != 1 {
 		t.Fatal("retry revived deleted media")
 	}

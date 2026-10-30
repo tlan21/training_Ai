@@ -2,6 +2,7 @@ package cms
 
 import (
 	"errors"
+	"math"
 	"net/http"
 	"strconv"
 	"strings"
@@ -306,7 +307,7 @@ func (h *VideoHandlers) GetAnalysis(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"timeline_scores": []gin.H{}, "ai_generated_clips": []gin.H{}, "clip_threshold": nil,
 			"category_suggestion": nil, "summary": nil, "summary_status": nil,
-			"suggested_title": nil, "key_moments": []gin.H{}, "hashtags": []string{}, "proposal_decisions": []domain.ProposalDecision{}, "category_match": nil,
+			"suggested_title": nil, "key_moments": []gin.H{}, "hashtags": []string{}, "proposal_decisions": []domain.ProposalDecision{},
 		})
 		return
 	}
@@ -326,15 +327,23 @@ func (h *VideoHandlers) GetAnalysis(c *gin.Context) {
 	if hs == nil {
 		hs = []string{}
 	}
-	c.JSON(http.StatusOK, gin.H{
+	result := gin.H{
 		"timeline_scores": scores, "ai_generated_clips": clips, "clip_threshold": a.ClipThreshold,
 		"category_suggestion": a.CategorySuggestion, "summary": a.Summary, "summary_status": a.SummaryStatus,
-		"suggested_title": a.SuggestedTitle, "key_moments": kms, "hashtags": hs, "proposal_decisions": append([]domain.ProposalDecision{}, a.ProposalDecisions...), "category_match": a.CategoryMatch,
-	})
+		"suggested_title": a.SuggestedTitle, "key_moments": kms, "hashtags": hs, "proposal_decisions": append([]domain.ProposalDecision{}, a.ProposalDecisions...),
+	}
+	if a.CategoryMatch != nil {
+		result["category_match"] = a.CategoryMatch
+	}
+	c.JSON(http.StatusOK, result)
 }
 
 func (h *VideoHandlers) RegenerateSummary(c *gin.Context) {
 	id := c.Param("id")
+	_, ok := h.editableVideo(c)
+	if !ok {
+		return
+	}
 	sub, err := h.subs.Get(c.Request.Context(), id)
 	if err != nil {
 		handlers.ErrorEnvelope(c, http.StatusNotFound, "VIDEO_NOT_FOUND", "Video not found")
@@ -358,6 +367,10 @@ func (h *VideoHandlers) RegenerateSummary(c *gin.Context) {
 
 func (h *VideoHandlers) SetCategory(c *gin.Context) {
 	id := c.Param("id")
+	_, ok := h.editableVideo(c)
+	if !ok {
+		return
+	}
 	var req struct {
 		CategoryID string `json:"category_id" binding:"required"`
 	}
@@ -366,38 +379,67 @@ func (h *VideoHandlers) SetCategory(c *gin.Context) {
 		return
 	}
 	if err := h.videos.SetCategory(c.Request.Context(), id, req.CategoryID); err != nil {
-		handlers.ErrorEnvelope(c, http.StatusNotFound, "VIDEO_NOT_FOUND", err.Error())
+		if errors.Is(err, domain.ErrVideoNotFound) || errors.Is(err, domain.ErrCategoryNotFound) {
+			handlers.ErrorEnvelope(c, 404, "NOT_FOUND", "Video or category not found")
+		} else {
+			handlers.ErrorEnvelope(c, 500, "INTERNAL", "Unable to save category")
+		}
 		return
+	}
+	if h.cache != nil {
+		_ = h.cache.Set(c.Request.Context(), "feed:revision", newID(), 24*time.Hour)
 	}
 	c.Status(http.StatusOK)
 }
 
 func (h *VideoHandlers) SetSummary(c *gin.Context) {
 	id := c.Param("id")
+	_, ok := h.editableVideo(c)
+	if !ok {
+		return
+	}
 	var req struct {
-		Summary string `json:"summary" binding:"required"`
+		Summary *string `json:"summary" binding:"required"`
 	}
 	if err := c.ShouldBindJSON(&req); err != nil {
 		handlers.ErrorEnvelope(c, http.StatusUnprocessableEntity, "VALIDATION_ERROR", err.Error())
 		return
 	}
-	_ = h.analyses.SetSummary(c.Request.Context(), id, req.Summary, "draft")
+	if err := h.analyses.SetSummary(c.Request.Context(), id, *req.Summary, "draft"); err != nil {
+		handlers.ErrorEnvelope(c, 500, "INTERNAL", "Unable to save summary")
+		return
+	}
 	c.Status(http.StatusOK)
 }
 
 func (h *VideoHandlers) ApproveSummary(c *gin.Context) {
 	id := c.Param("id")
+	_, ok := h.editableVideo(c)
+	if !ok {
+		return
+	}
 	a, err := h.analyses.Get(c.Request.Context(), id)
-	if err != nil || a.Summary == nil {
+	if errors.Is(err, domain.ErrNotFound) || (err == nil && (a.Summary == nil || strings.TrimSpace(*a.Summary) == "")) {
 		handlers.ErrorEnvelope(c, http.StatusNotFound, "VIDEO_NOT_FOUND", "Video not found")
 		return
 	}
-	_ = h.analyses.SetSummary(c.Request.Context(), id, *a.Summary, "approved")
+	if err != nil {
+		handlers.ErrorEnvelope(c, 500, "INTERNAL", "Unable to read summary")
+		return
+	}
+	if err := h.analyses.SetSummary(c.Request.Context(), id, *a.Summary, "approved"); err != nil {
+		handlers.ErrorEnvelope(c, 500, "INTERNAL", "Unable to approve summary")
+		return
+	}
 	c.Status(http.StatusOK)
 }
 
 func (h *VideoHandlers) UpdateSubtitles(c *gin.Context) {
 	id := c.Param("id")
+	video, ok := h.editableVideo(c)
+	if !ok {
+		return
+	}
 	var req struct {
 		Segments []domain.Segment `json:"segments" binding:"required"`
 	}
@@ -405,8 +447,20 @@ func (h *VideoHandlers) UpdateSubtitles(c *gin.Context) {
 		handlers.ErrorEnvelope(c, http.StatusUnprocessableEntity, "VALIDATION_ERROR", err.Error())
 		return
 	}
+	seen := map[int]bool{}
+	for _, segment := range req.Segments {
+		if segment.SegmentIndex < 0 || seen[segment.SegmentIndex] || math.IsNaN(segment.StartTime) || math.IsNaN(segment.EndTime) || segment.StartTime < 0 || segment.EndTime <= segment.StartTime || segment.EndTime > video.DurationSeconds+0.1 || segment.Confidence < 0 || segment.Confidence > 1 {
+			handlers.ErrorEnvelope(c, 422, "VALIDATION_ERROR", "Invalid subtitle index, timing or confidence")
+			return
+		}
+		seen[segment.SegmentIndex] = true
+	}
 	if err := h.subs.UpdateSegments(c.Request.Context(), id, req.Segments); err != nil {
-		handlers.ErrorEnvelope(c, http.StatusNotFound, "VIDEO_NOT_FOUND", err.Error())
+		if errors.Is(err, domain.ErrNotFound) {
+			handlers.ErrorEnvelope(c, 404, "VIDEO_NOT_FOUND", "Subtitles not found")
+		} else {
+			handlers.ErrorEnvelope(c, 500, "INTERNAL", "Unable to save subtitles")
+		}
 		return
 	}
 	if h.cache != nil {
@@ -423,7 +477,11 @@ func toVideoCMS(v *domain.Video, storage ports.ObjectStorage) gin.H {
 		"status": string(v.Status), "created_at": v.CreatedAt.UTC().Format(time.RFC3339),
 	}
 	if v.CategoryID != nil {
-		result["category"] = gin.H{"id": *v.CategoryID, "name": v.CategoryName}
+		category := gin.H{"id": *v.CategoryID}
+		if v.CategoryName != nil {
+			category["name"] = *v.CategoryName
+		}
+		result["category"] = category
 	}
 	return result
 }
@@ -431,12 +489,11 @@ func toJobCMS(j *domain.ProcessingJob) gin.H {
 	if j == nil {
 		return gin.H{}
 	}
-	return gin.H{
-		"id": j.ID, "video_id": j.VideoID, "status": string(j.Status),
-		"current_stage": j.CurrentStage, "progress": j.Progress, "error_log": j.ErrorLog,
-		"updated_at":         j.UpdatedAt.UTC().Format(time.RFC3339),
-		"processing_options": j.ProcessingOptions, "skipped_stages": append([]string{}, j.SkippedStages...),
+	result := gin.H{"id": j.ID, "video_id": j.VideoID, "status": string(j.Status), "current_stage": j.CurrentStage, "progress": j.Progress, "error_log": j.ErrorLog, "updated_at": j.UpdatedAt.UTC().Format(time.RFC3339), "skipped_stages": append([]string{}, j.SkippedStages...)}
+	if j.ProcessingOptions != nil {
+		result["processing_options"] = j.ProcessingOptions
 	}
+	return result
 }
 func strPtr(s string) *string { return &s }
 func newID() string {
@@ -454,4 +511,17 @@ func editorialPriority(value string) string {
 func (h *VideoHandlers) WithSettings(settings ports.SettingsRepository) *VideoHandlers {
 	h.settings = settings
 	return h
+}
+
+func (h *VideoHandlers) editableVideo(c *gin.Context) (*domain.Video, bool) {
+	v, err := h.videos.GetProcessed(c.Request.Context(), c.Param("id"))
+	if errors.Is(err, domain.ErrVideoNotFound) {
+		handlers.ErrorEnvelope(c, 404, "VIDEO_NOT_FOUND", "Processed video not found")
+		return nil, false
+	}
+	if err != nil {
+		handlers.ErrorEnvelope(c, 500, "INTERNAL", "Unable to read video")
+		return nil, false
+	}
+	return v, true
 }

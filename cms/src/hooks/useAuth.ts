@@ -23,10 +23,10 @@ export function useLogout() {
     mutationFn: logoutSession,
   });
 }
-export function useSystemHealth() {
+export function useSystemHealth(params: Parameters<typeof qk.health>[0] = {}) {
   return useQuery({
-    queryKey: qk.health(),
-    queryFn: async () => (await apiClient.get<components["schemas"]["SystemHealth"]>("/api/cms/system/health")).data,
+    queryKey: qk.health(params),
+    queryFn: async () => (await apiClient.get<components["schemas"]["SystemHealth"]>("/api/cms/system/health", { params })).data,
     refetchInterval: 5000,
     refetchIntervalInBackground: false,
   });

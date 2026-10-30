@@ -33,7 +33,7 @@ type ClipRepository interface {
 	ListCMS(ctx context.Context, videoID, status *string, query string) ([]domain.Clip, error)
 	SetStatus(ctx context.Context, id string, s domain.ClipStatus) error
 	SetFilePath(ctx context.Context, id, path string) error
-	UpdateMeta(ctx context.Context, id string, title *string, start, end *float64) (*domain.Clip, error)
+	UpdateMeta(ctx context.Context, id string, title *string, start, end *float64, category *string) (*domain.Clip, error)
 	HideByVideo(ctx context.Context, videoID string) error
 }
 

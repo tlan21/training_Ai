@@ -4,7 +4,7 @@ import path from 'node:path';
 
 const cms = process.env.E2E_CMS_URL ?? 'http://127.0.0.1:5173';
 const gateway = process.env.E2E_GATEWAY_URL ?? 'http://127.0.0.1:8000';
-const output = path.resolve('coordination/codex/verification/INT-45-faults');
+const output = path.resolve(process.env.E2E_CMS_FAULT_OUTPUT ?? 'coordination/codex/verification/INT-45-faults');
 
 for (const width of [1440, 390]) for (const operation of ['GET', 'PUT'] as const) {
   test(`INT-45 ${width} Settings ${operation} browser transport failure and recovery`, async ({ page, request }) => {

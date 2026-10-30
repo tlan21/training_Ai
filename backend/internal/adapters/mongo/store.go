@@ -7,6 +7,7 @@ import (
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 	"go.mongodb.org/mongo-driver/v2/mongo/readpref"
+	"strings"
 	"traning_ai/backend/internal/domain"
 	"traning_ai/backend/internal/startup"
 )
@@ -91,7 +92,11 @@ func (s *SubtitleStore) Get(ctx context.Context, id string) (*domain.Subtitle, e
 	return &result, missing(err)
 }
 func (s *SubtitleStore) UpdateSegments(ctx context.Context, id string, segments []domain.Segment) error {
-	result, err := s.Collection.UpdateOne(ctx, videoFilter(id), bson.M{"$set": bson.M{"segments": segments}})
+	texts := []string{}
+	for _, segment := range segments {
+		texts = append(texts, segment.Text)
+	}
+	result, err := s.Collection.UpdateOne(ctx, videoFilter(id), bson.M{"$set": bson.M{"segments": segments, "full_transcript": strings.Join(texts, " ")}})
 	if err != nil {
 		return err
 	}

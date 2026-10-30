@@ -106,7 +106,7 @@ test('INT-12 a rejected refreshed bearer logs out without another refresh loop',
   const state = await sessionAPI(page);
   await page.goto(`${cms}/published`);
   await expect(page.getByRole('heading', { name: 'Thư viện nội dung', exact: true })).toBeVisible();
-  await page.route('**/api/cms/videos*', (route) => route.fulfill(unauthorized));
+  await page.route('**/api/cms/system/health*', (route) => route.fulfill(unauthorized));
   await page.getByRole('link', { name: 'Tổng quan', exact: true }).click();
   await expect(page).toHaveURL(`${cms}/login`);
   expect(state.refreshes).toBe(2);

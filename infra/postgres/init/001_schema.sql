@@ -29,6 +29,7 @@ CREATE TABLE videos (
     height INTEGER CHECK (height > 0),
     fps DOUBLE PRECISION CHECK (fps > 0 AND fps < 'Infinity'::float8),
     hashtags TEXT[] CHECK (cardinality(hashtags) <= 30),
+    editorial_priority VARCHAR(8) NOT NULL DEFAULT 'normal' CHECK(editorial_priority IN ('low','normal','high')),
     status VARCHAR(20) NOT NULL DEFAULT 'uploaded'
         CHECK (status IN ('uploaded', 'processing', 'processed', 'failed', 'deleted')),
     uploaded_by VARCHAR(50) REFERENCES users(id) ON DELETE SET NULL,
@@ -51,6 +52,8 @@ CREATE TABLE video_processing_jobs (
         CHECK (current_stage IS NULL OR current_stage IN
             ('splitting_frames', 'embedding', 'asr_extracting', 'highlight_scoring', 'summarizing', 'completed')),
     progress SMALLINT NOT NULL DEFAULT 0 CHECK (progress BETWEEN 0 AND 100),
+    processing_options JSONB,
+    skipped_stages TEXT[] NOT NULL DEFAULT '{}',
     started_at TIMESTAMP WITH TIME ZONE,
     completed_at TIMESTAMP WITH TIME ZONE,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
@@ -61,6 +64,7 @@ CREATE TABLE categories (
     id VARCHAR(50) PRIMARY KEY DEFAULT 'cat_' || replace(uuid_generate_v4()::text, '-', ''),
     name VARCHAR(100) UNIQUE NOT NULL,
     description TEXT CHECK (char_length(description) <= 2000),
+    keywords TEXT[] NOT NULL DEFAULT '{}' CHECK(cardinality(keywords)<=20),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 

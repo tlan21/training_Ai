@@ -9,6 +9,6 @@ export const qk = {
   clips: (f: NonNullable<paths["/api/cms/clips"]["get"]["parameters"]["query"]>) => ["clips", f] as const,
   categories: () => ["categories"] as const,
   users: (p: { page: number; q?: string }) => ["users", p] as const,
-  health: () => ["health"] as const,
+  health: (p: NonNullable<paths["/api/cms/system/health"]["get"]["parameters"]["query"]> = {}) => ["health", p] as const,
   settings: () => ["settings"] as const,
 };
