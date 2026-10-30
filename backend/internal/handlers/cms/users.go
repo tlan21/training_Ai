@@ -3,10 +3,12 @@ package cms
 import (
 	"net/http"
 	"strconv"
+	"strings"
+	"time"
+	"unicode/utf8"
 
 	"github.com/gin-gonic/gin"
 
-	"traning_ai/backend/internal/domain"
 	"traning_ai/backend/internal/handlers"
 	"traning_ai/backend/internal/ports"
 )
@@ -25,31 +27,19 @@ func (h *UserHandlers) List(c *gin.Context) {
 		page = 1
 	}
 	const size = 20
-	items, total, _ := h.users.List(c.Request.Context(), page, size)
+	query := strings.TrimSpace(c.Query("q"))
+	if utf8.RuneCountInString(query) > 200 {
+		handlers.ErrorEnvelope(c, 422, "VALIDATION_ERROR", "Search is limited to 200 characters")
+		return
+	}
+	items, total, err := h.users.List(c.Request.Context(), page, size, query)
+	if err != nil {
+		handlers.ErrorEnvelope(c, 500, "INTERNAL", "Unable to read users")
+		return
+	}
 	out := make([]gin.H, 0, len(items))
 	for i := range items {
-		out = append(out, gin.H{"id": items[i].ID, "username": items[i].Username, "email": items[i].Email, "role": string(items[i].Role)})
+		out = append(out, gin.H{"id": items[i].ID, "username": items[i].Username, "email": items[i].Email, "created_at": items[i].CreatedAt.UTC().Format(time.RFC3339)})
 	}
 	c.JSON(http.StatusOK, gin.H{"items": out, "total": total, "page": page})
-}
-
-func (h *UserHandlers) SetRole(c *gin.Context) {
-	id := c.Param("id")
-	var req struct {
-		Role string `json:"role" binding:"required"`
-	}
-	if err := c.ShouldBindJSON(&req); err != nil {
-		handlers.ErrorEnvelope(c, http.StatusUnprocessableEntity, "VALIDATION_ERROR", err.Error())
-		return
-	}
-	if req.Role != string(domain.RoleAdmin) && req.Role != string(domain.RoleEditor) && req.Role != string(domain.RoleClient) {
-		handlers.ErrorEnvelope(c, http.StatusUnprocessableEntity, "VALIDATION_ERROR", "invalid role")
-		return
-	}
-	u, err := h.users.SetRole(c.Request.Context(), id, domain.Role(req.Role))
-	if err != nil {
-		handlers.ErrorEnvelope(c, http.StatusNotFound, "USER_NOT_FOUND", err.Error())
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{"id": u.ID, "username": u.Username, "email": u.Email, "role": string(u.Role)})
 }

@@ -33,8 +33,6 @@ type authService interface {
 type userRepo interface {
 	Get(ctx context.Context, id string) (*domain.User, error)
 	UpdateProfile(ctx context.Context, id string, username *string) (*domain.User, error)
-	List(ctx context.Context, page, size int) ([]domain.User, int, error)
-	SetRole(ctx context.Context, id string, r domain.Role) (*domain.User, error)
 }
 type categoryRepo interface {
 	List(ctx context.Context) ([]domain.Category, error)

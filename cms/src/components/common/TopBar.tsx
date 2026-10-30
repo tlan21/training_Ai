@@ -10,13 +10,13 @@ export function TopBar({ onMenu }: { onMenu: () => void }) {
   const [showHealth, setShowHealth] = useState(false);
   const health = useSystemHealth();
   useEffect(() => { setSearch(params.get("q") ?? ""); setShowHealth(false); }, [pathname, params]);
-  const placeholders: Record<string, string> = { "/queue": "Tìm kiếm video trong hàng đợi...", "/videos": "Tìm kiếm video, thẻ hoặc người tạo...", "/highlight": "Tìm kiếm video hoặc clips...", "/subtitles": "Tìm kiếm nội dung...", "/categories": "Tìm kiếm danh mục, video...", "/published": "Tìm kiếm video, thẻ, hoặc biên tập viên..." };
+  const placeholders: Record<string, string> = { "/users": "Tìm tên hoặc email người dùng...", "/queue": "Tìm kiếm video trong hàng đợi...", "/videos": "Tìm kiếm video, thẻ hoặc người tạo...", "/highlight": "Tìm kiếm video hoặc clips...", "/subtitles": "Tìm kiếm nội dung...", "/categories": "Tìm kiếm danh mục, video...", "/published": "Tìm kiếm video, thẻ, hoặc biên tập viên..." };
   const systemLast = ["/queue", "/subtitles", "/published"].includes(pathname);
   const variant = pathname === "/highlight" ? "pill" : pathname === "/categories" ? "soft" : pathname === "/queue" || pathname === "/published" ? "plain" : pathname === "/videos" ? "video" : "";
   const system = <button className={`system-button system-button-${variant}`} aria-label="Trạng thái hệ thống" onClick={() => setShowHealth((show) => !show)} aria-expanded={showHealth}>{pathname === "/highlight" ? <span className={`system-dot ${health.isError ? "is-error" : ""}`} /> : <Icon name={pathname === "/videos" ? "bolt" : "dns"} size={18} />}<span>Trạng thái hệ thống</span></button>;
   return <header className="cms-topbar" data-page={pathname.slice(1)}>
     <button className="icon-button mobile-menu" aria-label="Mở điều hướng" onClick={onMenu}><Icon name="menu" /></button>
-    <form className="topbar-search input-wrap" onSubmit={(event) => { event.preventDefault(); const target = ["/queue", "/categories", "/published"].includes(pathname) ? pathname : "/videos"; navigate(`${target}?q=${encodeURIComponent(search)}`); }}>
+    <form className="topbar-search input-wrap" onSubmit={(event) => { event.preventDefault(); const target = ["/queue", "/categories", "/published", "/users"].includes(pathname) ? pathname : "/videos"; navigate(`${target}?q=${encodeURIComponent(search)}`); }}>
       <span className="input-icon input-icon--left"><Icon name="search" size={18} /></span><input aria-label="Tìm kiếm CMS" className="input input--with-left-icon" placeholder={placeholders[pathname] ?? "Tìm kiếm video, metadata hoặc log..."} value={search} onChange={(event) => setSearch(event.target.value)} />
     </form>
     <div className="topbar-actions">

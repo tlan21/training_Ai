@@ -164,6 +164,8 @@ test('INT-12 non-CMS role is denied after login and its refresh cookie revoked',
     return route.fulfill(unauthorized);
   });
   await page.goto(`${cms}/login`);
+  await page.getByLabel('Tên đăng nhập hoặc Email').fill('admin@local');
+  await page.getByLabel('Mật khẩu', { exact: true }).fill('fixture-password');
   await page.getByRole('button', { name: 'Đăng nhập', exact: true }).click();
   await expect(page.getByRole('alert')).toHaveText('Tài khoản này không có quyền truy cập CMS.');
   expect(revoked).toBe(true);

@@ -218,15 +218,13 @@ func (r *UserRepo) UpdateProfile(ctx context.Context, id string, name *string) (
 func (r *UserRepo) UpdatePassword(ctx context.Context, id, hash string) error {
 	return update(ctx, r.DB, `UPDATE users SET password_hash=$2,updated_at=now() WHERE id=$1`, id, hash)
 }
-func (r *UserRepo) SetRole(ctx context.Context, id string, role domain.Role) (*domain.User, error) {
-	return scanUser(r.DB.QueryRow(ctx, `UPDATE users SET role=$2,updated_at=now() WHERE id=$1 RETURNING `+userColumns, id, role))
-}
-func (r *UserRepo) List(ctx context.Context, page, size int) ([]domain.User, int, error) {
+func (r *UserRepo) List(ctx context.Context, page, size int, query string) ([]domain.User, int, error) {
 	var total int
-	if err := r.DB.QueryRow(ctx, `SELECT count(*) FROM users`).Scan(&total); err != nil {
+	pattern := "%" + strings.NewReplacer(`\`, `\\`, "%", `\%`, "_", `\_`).Replace(strings.TrimSpace(query)) + "%"
+	if err := r.DB.QueryRow(ctx, `SELECT count(*) FROM users WHERE username ILIKE $1 OR email ILIKE $1`, pattern).Scan(&total); err != nil {
 		return nil, 0, err
 	}
-	rows, err := r.DB.Query(ctx, `SELECT `+userColumns+` FROM users ORDER BY created_at DESC LIMIT $1 OFFSET $2`, size, (page-1)*size)
+	rows, err := r.DB.Query(ctx, `SELECT `+userColumns+` FROM users WHERE username ILIKE $1 OR email ILIKE $1 ORDER BY created_at DESC,id DESC LIMIT $2 OFFSET $3`, pattern, size, (page-1)*size)
 	if err != nil {
 		return nil, 0, err
 	}

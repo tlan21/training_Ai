@@ -183,11 +183,6 @@ body:has(.dialog-root[open]) { overflow: hidden; }
 .login-label-row a { font-size: 12px; color: var(--primary); }
 .remember-label { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--on-surface-variant); }
 .remember-label input { width: 16px; height: 16px; accent-color: var(--primary); }
-.login-divider { display: flex; gap: 16px; align-items: center; margin: 24px 0; font-size: 12px; text-transform: uppercase; color: var(--outline); }
-.login-divider::before, .login-divider::after { content: ""; flex: 1; border-top: 1px solid var(--outline-variant); }
-.quick-logins { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.quick-logins button { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 36px; padding: 8px 12px; background: #4615990d; border: 1px solid #4615991a; border-radius: 8px; color: var(--primary); font-size: 12px; }
-.quick-logins button:last-child { background: #d7e4ec33; color: var(--on-secondary-container); border-color: #d7e4ec33; }
 .cms-login { color: black; font-size: 16px; line-height: 24px; }
 .cms-login .auth-logo h1 { line-height: 32px; letter-spacing: -.6px; }
 .cms-login .auth-brand-mark { box-shadow: 0 4px 6px -1px #46159933, 0 2px 4px -2px #46159933; }
@@ -207,12 +202,6 @@ body:has(.dialog-root[open]) { overflow: hidden; }
 .cms-login .btn-primary:hover { background: var(--primary-container); opacity: 1; }
 .cms-login .btn-primary:active { transform: scale(.98); }
 .cms-login .login-label-row a:hover { text-decoration: underline; }
-.cms-login .login-divider { gap: 0; justify-content: space-between; line-height: 16px; letter-spacing: .6px; }
-.cms-login .login-divider::before, .cms-login .login-divider::after { flex: none; width: 30%; }
-.cms-login .quick-logins button { min-height: 38px; line-height: 16px; font-weight: 500; }
-.cms-login .quick-logins button:active { transform: scale(.95); }
-.cms-login .quick-logins button:first-child:hover { background: #4615991a; color: var(--primary-container); }
-.cms-login .quick-logins button:last-child { background: transparent; color: black; border-color: #e5e7eb; }
 .cms-login .auth-footer { margin-top: 32px; line-height: 16px; color: #49445399; }
 .cms-login .auth-error { font-size: 14px; line-height: 20px; }
 .settings-page { max-width: 960px; margin: 0 auto; }

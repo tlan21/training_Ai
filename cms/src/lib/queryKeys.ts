@@ -7,7 +7,7 @@ export const qk = {
   job: (id: string) => ["job", id] as const,
   clips: (f: { video_id?: string; status?: string }) => ["clips", f] as const,
   categories: () => ["categories"] as const,
-  users: (p: { page: number }) => ["users", p] as const,
+  users: (p: { page: number; q?: string }) => ["users", p] as const,
   health: () => ["health"] as const,
   settings: () => ["settings"] as const,
 };

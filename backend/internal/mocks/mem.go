@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"io"
+	"sort"
 	"strings"
 	"sync"
 	"time"
@@ -317,24 +318,22 @@ func (r *UserRepoMem) UpdatePassword(_ context.Context, id string, newHash strin
 	v.PasswordHash = newHash
 	return nil
 }
-func (r *UserRepoMem) SetRole(_ context.Context, id string, role domain.Role) (*domain.User, error) {
-	r.mu.Lock()
-	defer r.mu.Unlock()
-	v, ok := r.M[id]
-	if !ok {
-		return nil, domain.ErrUserNotFound
-	}
-	v.Role = role
-	cp := *v
-	return &cp, nil
-}
-func (r *UserRepoMem) List(_ context.Context, page, size int) ([]domain.User, int, error) {
+func (r *UserRepoMem) List(_ context.Context, page, size int, query string) ([]domain.User, int, error) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	var all []domain.User
+	query = strings.ToLower(strings.TrimSpace(query))
 	for _, v := range r.M {
-		all = append(all, *v)
+		if strings.Contains(strings.ToLower(v.Username), query) || strings.Contains(strings.ToLower(v.Email), query) {
+			all = append(all, *v)
+		}
 	}
+	sort.Slice(all, func(i, j int) bool {
+		if all[i].CreatedAt.Equal(all[j].CreatedAt) {
+			return all[i].ID > all[j].ID
+		}
+		return all[i].CreatedAt.After(all[j].CreatedAt)
+	})
 	total := len(all)
 	start := (page - 1) * size
 	if start >= total {

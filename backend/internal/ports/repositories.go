@@ -41,8 +41,7 @@ type UserRepository interface {
 	GetByEmail(ctx context.Context, email string) (*domain.User, error)
 	UpdateProfile(ctx context.Context, id string, username *string) (*domain.User, error)
 	UpdatePassword(ctx context.Context, id string, newHash string) error
-	SetRole(ctx context.Context, id string, r domain.Role) (*domain.User, error)
-	List(ctx context.Context, page, size int) ([]domain.User, int, error)
+	List(ctx context.Context, page, size int, query string) ([]domain.User, int, error)
 }
 
 type PasswordResetRepository interface {

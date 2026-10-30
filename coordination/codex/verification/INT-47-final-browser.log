@@ -1,0 +1,13 @@
+
+Running 6 tests using 1 worker
+
+(node:27768) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 e2e\cms_account_scope.spec.ts:5:7 › CMS single management capability admin 390 (3.1s)
+  ok 2 e2e\cms_account_scope.spec.ts:5:7 › CMS single management capability admin 1440 (1.2s)
+  ok 3 e2e\cms_account_scope.spec.ts:5:7 › CMS single management capability editor 390 (1.6s)
+  ok 4 e2e\cms_account_scope.spec.ts:5:7 › CMS single management capability editor 1440 (1.2s)
+  ok 5 e2e\cms_design.spec.ts:238:9 › T3.1 1440 users layout (616ms)
+  ok 6 e2e\cms_design.spec.ts:238:9 › T3.1 390 users layout (1.0s)
+
+  6 passed (10.6s)

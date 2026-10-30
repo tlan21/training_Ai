@@ -67,12 +67,8 @@ export function useDeleteCategory() {
   const qc = useQueryClient();
   return useMutation({ mutationFn: async (id: string) => (await apiClient.delete(`/api/cms/categories/${id}`)).data, onSuccess: () => qc.invalidateQueries({ queryKey: qk.categories() }) });
 }
-export function useCmsUsers(page = 1) {
-  return useQuery({ queryKey: qk.users({ page }), queryFn: async () => (await apiClient.get<paths["/api/cms/users"]["get"]["responses"][200]["content"]["application/json"]>("/api/cms/users", { params: { page } })).data });
-}
-export function useUpdateRole() {
-  const qc = useQueryClient();
-  return useMutation({ mutationFn: async ({ id, role }: { id: string; role: string }) => (await apiClient.put(`/api/cms/users/${id}/role`, { role })).data, onSuccess: () => qc.invalidateQueries({ queryKey: ["users"] }) });
+export function useCmsUsers(page = 1, q = "") {
+  return useQuery({ queryKey: qk.users({ page, q }), queryFn: async () => (await apiClient.get<paths["/api/cms/users"]["get"]["responses"][200]["content"]["application/json"]>("/api/cms/users", { params: { page, q: q || undefined } })).data });
 }
 export function useSettings(enabled = true) {
   return useQuery({ queryKey: qk.settings(), queryFn: async () => (await apiClient.get<components["schemas"]["Settings"]>("/api/cms/settings")).data, enabled });

@@ -15,14 +15,15 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 - Next action: INT-47 auth/UI/dead-code implementation; continue operational CMS fixes afterward.
 
 ### INT-47 — Simplify CMS login/users and remove retired account features
-- Owner: CODEX | Status: IN_PROGRESS (2026-10-30)
+- Owner: CODEX | Status: PARTIAL (2026-10-30; source/gates complete, deployed real acceptance pending with CMS batch)
 - Depends on: INT-46.
 - Acceptance: no CMS forgot/reset/account-delete link/page, no quick-login credentials, no role editor/role-write handler/port methods; all pre-provisioned CMS accounts share functionality, viewers denied. Users list/search/created timestamp read-only; login/refresh/logout preserved. Remove obsolete code/tests without deleting existing users or public Client functionality that still has consumers.
 - Planned files: cms/src/auth/router/users/hooks/sidebar, backend gateway/users/ports/repos/mocks/tests; shared recovery only after clarification; owned subplans/evidence.
-- Evidence/Commits: pending. Next action: implement after contract and verify backend/CMS/Client types and browser auth.
+- Evidence/Commits: verification/INT-47.md; source in this checkpoint. Go vet/test/buildPASS, CMS types/build/E2EtypesPASS,4new UI scopePASS8.5s; regression63PASS/2staleheadingFAIL corrected, affected6PASS10.6s. No role-write path/handler/repo method, no CMS recovery component/default login credentials, searchable readonly users. Client shared recovery retained and denied for CMS accounts pending clarification.
+- Next action: verify against real deployed app after remaining CMS batch; original data preserved, no model changes. QApreviewPID3392 retained for subsequent build checks, must stop at final checkpoint.
 
 ### INT-48 — Operational CMS completion contract
-- Owner: CODEX | Status: TODO
+- Owner: CODEX | Status: IN_PROGRESS (2026-10-30)
 - Depends on: INT-46/47 and user-approved completion of8CMSscreens.
 - Acceptance: contract-first real dashboard/storage/activity metrics on existing health endpoint; global video/user/clip query filters and row metadata; category counts/rules and persisted proposal decisions/selected compilation ranges using existing endpoint families. No new AI contract/model or detection/translation features. Nullable unavailable metrics instead of fabricated values; Client privacy preserved.
 - Planned files: infra/openapi.yaml/generated3types; owned scope docs/evidence. Implementation task follows contract; existing41..44 remain planned until started.

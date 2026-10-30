@@ -9,7 +9,6 @@ import { VideoPicker } from "../components/common/Media";
 import { Icon } from "../components/common/Icon";
 import { Skeleton, Empty, ErrorState } from "../components/common/Skeleton";
 import { useToast } from "../components/common/Toast";
-import { useAuthStore } from "../stores/authStore";
 import { fmtSec } from "../lib/time";
 
 export default function SubtitlesPage() {
@@ -18,7 +17,7 @@ export default function SubtitlesPage() {
   const video = useCmsVideo(videoId);
   const subs = useSubtitles(videoId);
   const analysis = useCmsAnalysis(videoId);
-  const settings = useSettings(useAuthStore((state) => state.user?.role) === "admin");
+  const settings = useSettings();
   const categories = useCategories();
   const qc = useQueryClient();
   const toast = useToast();

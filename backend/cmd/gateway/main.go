@@ -172,7 +172,7 @@ func main() {
 	cmsGroup.POST("/jobs/:id/cancel", jobCMS.Cancel)
 
 	cmsGroup.GET("/settings", sysCMS.GetSettings)
-	cmsGroup.PUT("/settings", handlers.RequireRole(string("admin")), sysCMS.UpdateSettings)
+	cmsGroup.PUT("/settings", sysCMS.UpdateSettings)
 	cmsGroup.GET("/system/health", sysCMS.Health)
 
 	cmsGroup.POST("/clips", clipCMS.Create)
@@ -186,11 +186,7 @@ func main() {
 	cmsGroup.PUT("/categories/:id", catCMS.Update)
 	cmsGroup.DELETE("/categories/:id", catCMS.Delete)
 
-	// cms/users — admin only (narrow)
-	cmsUsers := protected.Group("/cms/users")
-	cmsUsers.Use(handlers.RequireRole(string("admin")))
-	cmsUsers.GET("", userCMS.List)
-	cmsUsers.PUT("/:id/role", userCMS.SetRole)
+	cmsGroup.GET("/users", userCMS.List)
 
 	log.Printf("gateway :%s (PostgreSQL/Mongo/MinIO/Kafka/Redis) → AI %s", cfg.Port, cfg.AIBaseURL)
 	if err := r.Run(":" + cfg.Port); err != nil {
