@@ -465,3 +465,8 @@ Mẫu HO:
 ## 2026-10-30 CMS completion checkpoint — INT-49 PARTIAL, INT-41 started
 - Operational public0.8 storage/read APIs implemented; real PG TEMP migration/idempotence/filter/metrics/metadata2PASS, Mongo review/category roundtrip1PASS, Go vet/test/build PASS. Evidence verification/INT-49.md. Product006 migration and owned app deploy/real HTTP/E2E remain in final batch; no claim all CMS complete.
 - Next snapshot execution flags/category suggestions, lifecycle/library/category error and eight-screen wiring. No inference-service/AI contract/checkpoint/model/runtime edits, no reprocessing original videos. HO-04 AI release/feature parity remains Claude dependency. Historical model-quality claims unchanged.
+
+
+## 2026-10-30 INT-41 source checkpoint — execution flags
+- New uploads store auto-highlight/subtitle processing snapshot before Kafka; disabled stages skip HTTP calls, no fabricated output; retry uses same snapshot, legacy jobs both-on. Backend category rules suggest only, editor confirms. Four policies/retry/ordering/rules tests and3affected Go packages PASS (verification/INT-41-go.log).
+- PARTIAL pending Settings/Queue UI and real deployed four-policy proof, product006/deployment untouched. No AI endpoint/source/model changes. Continue INT-42 lifecycle then full CMS UI acceptance.

@@ -26,6 +26,7 @@ type VideoHandlers struct {
 	storage  ports.ObjectStorage
 	ai       ports.AIClient
 	clips    ports.ClipRepository
+	settings ports.SettingsRepository
 }
 
 func NewVideoHandlers(
@@ -77,6 +78,16 @@ func (h *VideoHandlers) Create(c *gin.Context) {
 	if desc != "" {
 		descPtr = &desc
 	}
+	options := domain.ProcessingOptions{AutoHighlightEnabled: true, AutoSubtitleEnabled: true}
+	if h.settings != nil {
+		settings, err := h.settings.Get(c.Request.Context())
+		if err != nil {
+			handlers.ErrorEnvelope(c, 503, "SERVICE_UNAVAILABLE", "Unable to read processing settings")
+			return
+		}
+		options.AutoHighlightEnabled = settings.AutoHighlightEnabled
+		options.AutoSubtitleEnabled = settings.AutoSubtitleEnabled
+	}
 	uid := c.GetString("user_id")
 	v := &domain.Video{
 		ID: `vid_` + newID(), Title: title, Description: descPtr,
@@ -104,6 +115,15 @@ func (h *VideoHandlers) Create(c *gin.Context) {
 		handlers.ErrorEnvelope(c, 500, "INTERNAL", err.Error())
 		return
 	}
+	if err := h.jobs.SetProcessingOptions(c.Request.Context(), job.ID, options); err != nil {
+		_ = h.jobs.SetError(c.Request.Context(), job.ID, "Unable to store processing settings")
+		_ = h.jobs.SetStatus(c.Request.Context(), job.ID, domain.JobFailed, false, true)
+		_ = h.videos.SetStatus(c.Request.Context(), v.ID, domain.VideoFailed)
+		handlers.ErrorEnvelope(c, 500, "INTERNAL", "Unable to store processing settings")
+		return
+	}
+	job.ProcessingOptions = &options
+	job.SkippedStages = options.SkippedStages()
 	if err := h.bus.Publish(c.Request.Context(), "video.uploaded", v.ID, gin.H{"video_id": v.ID, "raw_file_path": path}); err != nil {
 		_ = h.jobs.SetError(c.Request.Context(), job.ID, err.Error())
 		_ = h.jobs.SetStatus(c.Request.Context(), job.ID, domain.JobFailed, false, false)
@@ -318,12 +338,19 @@ func (h *VideoHandlers) RegenerateSummary(c *gin.Context) {
 		handlers.ErrorEnvelope(c, http.StatusNotFound, "VIDEO_NOT_FOUND", "Video not found")
 		return
 	}
+	if strings.TrimSpace(sub.FullTranscript) == "" {
+		handlers.ErrorEnvelope(c, 422, "VALIDATION_ERROR", "No transcript available for AI summary")
+		return
+	}
 	res, err := h.ai.Summarize(c.Request.Context(), sub.FullTranscript, 256)
 	if err != nil {
 		handlers.ErrorEnvelope(c, http.StatusServiceUnavailable, "AI_UNAVAILABLE", err.Error())
 		return
 	}
-	_ = h.analyses.SetSummary(c.Request.Context(), id, res.Text, "draft")
+	if err := h.analyses.SetSummary(c.Request.Context(), id, res.Text, "draft"); err != nil {
+		handlers.ErrorEnvelope(c, 500, "INTERNAL", "Unable to save AI draft")
+		return
+	}
 	c.JSON(http.StatusOK, gin.H{"summary": res.Text, "suggested_title": res.Title})
 }
 
@@ -420,4 +447,9 @@ func editorialPriority(value string) string {
 		return "normal"
 	}
 	return value
+}
+
+func (h *VideoHandlers) WithSettings(settings ports.SettingsRepository) *VideoHandlers {
+	h.settings = settings
+	return h
 }

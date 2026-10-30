@@ -38,14 +38,16 @@ type stageDone struct {
 
 // Runner chain 5 stage (Go, 1 goroutine/video — §5).
 type Runner struct {
-	storage  ports.ObjectStorage
-	vectors  ports.VectorStore
-	videos   ports.VideoRepository
-	jobs     ports.JobRepository
-	analysis ports.AnalysisStore
-	subs     ports.SubtitleStore
-	ai       ports.AIClient
-	bus      ports.EventBus
+	storage    ports.ObjectStorage
+	vectors    ports.VectorStore
+	videos     ports.VideoRepository
+	jobs       ports.JobRepository
+	analysis   ports.AnalysisStore
+	subs       ports.SubtitleStore
+	ai         ports.AIClient
+	bus        ports.EventBus
+	settings   ports.SettingsRepository
+	categories ports.CategoryRepository
 	// sleep allows test to skip backoff
 	sleep func(time.Duration)
 }
@@ -124,6 +126,18 @@ func (r *Runner) RunChain(ctx context.Context, job *domain.ProcessingJob, prep p
 	if err := r.jobs.SetStatus(ctx, job.ID, domain.JobRunning, true, false); err != nil {
 		return err
 	}
+	options := domain.ProcessingOptions{AutoHighlightEnabled: true, AutoSubtitleEnabled: true}
+	if job.ProcessingOptions != nil {
+		options = *job.ProcessingOptions
+	}
+	if !options.AutoSubtitleEnabled {
+		if err := r.subs.Put(ctx, prep.VideoID, "vi", "", []domain.Segment{}); err != nil {
+			return err
+		}
+		if err := r.analysis.SetSummary(ctx, prep.VideoID, "", "draft"); err != nil {
+			return err
+		}
+	}
 	var visionEmb [][]float32
 
 	stages := []struct {
@@ -151,6 +165,9 @@ func (r *Runner) RunChain(ctx context.Context, job *domain.ProcessingJob, prep p
 		if current.ErrorLog != nil && *current.ErrorLog == "canceled_by_user" {
 			return context.Canceled
 		}
+		if !options.AutoSubtitleEnabled && (st.stage == domain.StageAsrExtracting || st.stage == domain.StageSummarizing) || !options.AutoHighlightEnabled && st.stage == domain.StageHighlightScoring {
+			continue
+		}
 		if err := r.jobs.SetStage(ctx, job.ID, st.stage); err != nil {
 			return err
 		}
@@ -164,6 +181,9 @@ func (r *Runner) RunChain(ctx context.Context, job *domain.ProcessingJob, prep p
 		_ = r.bus.Publish(ctx, "ai.stage.completed", prep.VideoID, stageDone{VideoID: prep.VideoID, Stage: st.name, Ok: true})
 	}
 
+	if err := r.suggestCategory(ctx, prep.VideoID); err != nil {
+		return err
+	}
 	if err := r.videos.SetStatus(ctx, prep.VideoID, domain.VideoProcessed); err != nil {
 		return err
 	}

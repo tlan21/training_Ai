@@ -1,5 +1,8 @@
 # SESSION — authoritative resume state (2026-10-30, INT-45 dedicated Settings audit)
 
+- INT-49 checkpoint fc5383a. INT-41 backend PARTIAL: upload snapshot before event, skip actual disabled ASR+summary/highlight calls, preserve retry snapshot/legacy both-on; categorykeyword/vision rules persist suggestion only, no automatic metadata/publish. Unit4policy combinations x2attempts, upload/event order and categoryrules PASS; orchestrator/CMS/gateway packagesPASS (INT-41-go.log). Need UI+real deployed4policy proof later; product006 stillnotapplied. INT-42 IN_PROGRESS now lifecycle/retry/cancel/deleted guards. Then8screen wiring/43/44live/deploy/E2E, no partial-stop. QA3392:5174 and original services preserved.
+
+
 - INT-49 PARTIAL source/adapters checkpoint: public0.8 implemented PG globalfilters/actualmetrics/hydratedmetadata/keywords/options/editorial fields, Mongo review/categorymatch and validated reviewPUT (compilation excludesdismissed), MinIOusage/CPU/dependencyhealth; additive006 not appliedproductyet. Go vet/test/build PASS, real LinuxPG2PASS1.86s/0.10s (TEMPmigrationtwice) +Mongo1PASS0.16s; verification/INT-49.md/logs. NativePGauth/crosscompileCGO/initialfixturefailures retained/corrected; no productwrites/restart. INT-41 IN_PROGRESS next: snapshot flags before event, skipcalls/explicitoutputs, categoryrules backendonly, then42/43/44and8screenUI/deploy/E2E. Keep119videos/61clips/51users historicalbaseline pending fresh finalcapture; QA3392:5174 remains. No Claude/model/Client changes.
 
 

@@ -1,9 +1,11 @@
 package cms
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"github.com/gin-gonic/gin"
+	"mime/multipart"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -146,5 +148,31 @@ func TestDeleteStorageFailureAndActiveJobAreRetryable(t *testing.T) {
 	storage.fail = false
 	if call() != 204 {
 		t.Fatal("retry failed")
+	}
+}
+
+func TestUploadSnapshotsSettingsBeforePublishing(t *testing.T) {
+	var body bytes.Buffer
+	writer := multipart.NewWriter(&body)
+	_ = writer.WriteField("title", "Policy test")
+	file, _ := writer.CreateFormFile("file", "short.mp4")
+	_, _ = file.Write([]byte("fixture"))
+	_ = writer.Close()
+	videos, jobs, bus := mocks.NewVideoRepoMem(), mocks.NewJobRepoMem(), mocks.NewEventBusMem()
+	h := NewVideoHandlers(videos, jobs, nil, nil, nil, nil, bus, mocks.NewObjectStorageMem(), nil, nil).WithSettings(&settingsFixture{})
+	observed := false
+	_ = bus.Consume(context.Background(), "video.uploaded", "test", func(ctx context.Context, data []byte) error {
+		list, _ := jobs.List(ctx, nil)
+		observed = len(list) == 1 && list[0].ProcessingOptions != nil && !list[0].ProcessingOptions.AutoHighlightEnabled && !list[0].ProcessingOptions.AutoSubtitleEnabled && len(list[0].SkippedStages) == 3
+		return nil
+	})
+	r := gin.New()
+	r.POST("/videos", h.Create)
+	req := httptest.NewRequest("POST", "/videos", &body)
+	req.Header.Set("Content-Type", writer.FormDataContentType())
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+	if w.Code != 201 || !observed || !strings.Contains(w.Body.String(), `"auto_subtitle_enabled":false`) {
+		t.Fatalf("settings snapshot published too late: %d %s", w.Code, w.Body)
 	}
 }

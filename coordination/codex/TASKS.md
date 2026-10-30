@@ -606,15 +606,16 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Next action: newly created clips use accurate re-encoding, existing files remain intact. ASR sentence snapping/AI runtime release stays HO-04/HC-14 dependency, not claimed complete.
 
 ### INT-41 — Make persisted CMS AI flags control processing
-- Owner: CODEX | Status: IN_PROGRESS (2026-10-30)
+- Owner: CODEX | Status: PARTIAL (2026-10-30; backend source verified, UI/live batch pending)
 - Depends on: INT-40 findings; existing Settings contract and orchestrator. No Claude model change required; scope missing ASR/summary/highlight behavior before implementation.
 - Acceptance: saved auto_highlight_enabled/auto_subtitle_enabled affect new video processing with explicit skipped-stage semantics, completed jobs and compatible UI; tests cover on/off combinations, retries and settings persistence. No fake subtitles/summary/clips. Existing media/results preserved.
 - Planned files: backend/internal/orchestrator/**, backend/cmd/gateway/pipeline.go, existing ports/settings adapters as needed, CMS copy/tests, owned evidence. Contract changes, if needed, must precede implementation in a separate task.
 - Commits/Evidence: not implemented; INT-45 now proves actual runtime in4combinations: flagsfalse still invokes real highlight/ASR,8scores/1segment each;16HTTP200calls across4videos, flags held until processed. See verification/INT-45.md and INT-45-runtime-matrix-proof.json; earlier INT-40 persistence/source evidence retained. No implementation PASS claim.
-- Next action: trace settings-to-runner dependencies and define minimal contract-compatible skip behavior.
+- Implementation: upload snapshots2flags before Kafka; retry retains snapshot, legacy runs both; disabled ASR+summary/highlight skip actual calls with explicit empty outputs and stored skips. Backend category keyword/vision matching suggests only, no category/publication write. Matching rules/4combination retry/upload-order tests PASS; verification/INT-41-go.log.
+- Next action: Queue/Settings UI and real four-policy API/AI proof after final owned deployment. Source commit recorded in Git; full acceptance still pending.
 
 ### INT-42 — Synchronize failed ingest job and video state
-- Owner: CODEX | Status: TODO
+- Owner: CODEX | Status: IN_PROGRESS (2026-10-30)
 - Depends on: INT-40 live reproduction; existing job/video lifecycle, no AI dependency.
 - Acceptance: failed ingest makes video failed and visible in Lỗi AI; retry/cancel/deletion preserve consistent terminal states and never revive deleted media; reproduce bug before fix, meaningful lifecycle tests and isolated real CMS verification.
 - Planned files: backend/internal/orchestrator/runner.go, backend/cmd/gateway/pipeline.go and lifecycle tests; e2e/ and owned evidence as needed.

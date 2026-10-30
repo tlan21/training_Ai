@@ -68,7 +68,7 @@ func main() {
 	}); err != nil {
 		log.Fatal(err)
 	}
-	wirePipeline(videoRepo, jobRepo, clipRepo, analysisStore, subtitleStore, aiClient, eventBus, objectStorage, vectorStore)
+	wirePipeline(videoRepo, jobRepo, clipRepo, analysisStore, subtitleStore, aiClient, eventBus, objectStorage, vectorStore, &pg.SettingsRepo{DB: db}, categoryRepo)
 
 	resetRepo := mocks.NewPasswordResetRepoMem()
 	authSvc := auth.NewWithResets(userRepo, sessionRepo, resetRepo, jwtSvc)
@@ -78,7 +78,7 @@ func main() {
 	searchH := handlers.NewSearchHandlers(videoRepo, subtitleStore, cache, aiClient, clipRepo, objectStorage, vectorStore)
 	interH := handlers.NewInteractionHandlers(interactionRepo)
 
-	videoCMS := cms.NewVideoHandlers(videoRepo, jobRepo, analysisStore, subtitleStore, vectorStore, cache, eventBus, objectStorage, aiClient, clipRepo)
+	videoCMS := cms.NewVideoHandlers(videoRepo, jobRepo, analysisStore, subtitleStore, vectorStore, cache, eventBus, objectStorage, aiClient, clipRepo).WithSettings(&pg.SettingsRepo{DB: db})
 	jobCMS := cms.NewJobHandlers(jobRepo, eventBus, videoRepo).WithStorage(objectStorage)
 	clipCMS := cms.NewClipHandlers(clipRepo, videoRepo, eventBus, cache, analysisStore, objectStorage)
 	catCMS := cms.NewCategoryHandlers(categoryRepo, cache)

@@ -16,9 +16,10 @@ import (
 )
 
 // Run Go consumers in the gateway process; repositories/events/files are shared persistent adapters.
-func wirePipeline(videos ports.VideoRepository, jobs ports.JobRepository, clips ports.ClipRepository, analyses ports.AnalysisStore, subs ports.SubtitleStore, ai ports.AIClient, bus ports.EventBus, storage ports.ObjectStorage, vectors ports.VectorStore) {
+func wirePipeline(videos ports.VideoRepository, jobs ports.JobRepository, clips ports.ClipRepository, analyses ports.AnalysisStore, subs ports.SubtitleStore, ai ports.AIClient, bus ports.EventBus, storage ports.ObjectStorage, vectors ports.VectorStore, settings ports.SettingsRepository, categories ports.CategoryRepository) {
 	runner := orchestrator.New(videos, jobs, analyses, subs, ai, bus)
 	runner.WithStorage(storage, vectors)
+	runner.WithCategories(settings, categories)
 	cut := cutter.New(clips, videos, storage, bus, "raw-videos", "clips")
 	consume := func(topic, group string, handler func(context.Context, []byte) error) {
 		go func() {
