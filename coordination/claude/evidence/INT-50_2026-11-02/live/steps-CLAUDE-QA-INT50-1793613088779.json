@@ -1,0 +1,92 @@
+[
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /dashboard: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /videos: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /queue: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /highlight: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /subtitles: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /published: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /categories: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /users: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /settings: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "390 /dashboard: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "390 /videos: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "390 /queue: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "390 /highlight: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "390 /subtitles: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "390 /published: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "390 /categories: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "390 /users: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "390 /settings: no horizontal overflow",
+  "result": "PASS"
+ }
+]
