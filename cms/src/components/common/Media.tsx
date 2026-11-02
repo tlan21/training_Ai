@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { ErrorState } from "./Skeleton";
 import { errorMessage } from "../../lib/apiClient";
 import { useCmsVideos } from "../../hooks/useCms";
@@ -6,12 +6,15 @@ import { useSearchParams } from "react-router-dom";
 import { Icon } from "./Icon";
 import { fmtSec } from "../../lib/time";
 
-export function Thumbnail({ src, duration = 0 }: { src?: string | null; duration?: number }) {
-  return <div className="thumbnail">{src ? <img src={src} alt="" loading="lazy" onError={(e) => { e.currentTarget.style.display = "none"; }} /> : <Icon name="video_file" />}<span className="thumbnail-time mono">{fmtSec(duration)}</span></div>;
+export function Thumbnail({ src, duration = 0, showTime = true }: { src?: string | null; duration?: number; showTime?: boolean }) {
+  return <div className="thumbnail">{src ? <img src={src} alt="" loading="lazy" onError={(e) => { e.currentTarget.style.display = "none"; }} /> : <Icon name="video_file" />}{showTime && <span className="thumbnail-time mono">{fmtSec(duration)}</span>}</div>;
 }
-export function Pagination({ page, total, size = 20, onPage }: { page: number; total: number; size?: number; onPage: (page: number) => void }) {
+export function Pagination({ page, total, size = 20, onPage, label = "mục" }: { page: number; total: number; size?: number; onPage: (page: number) => void; label?: string }) {
   const pages = Math.max(1, Math.ceil(total / size));
-  return <div className="pagination"><span>Hiển thị {total ? (page - 1) * size + 1 : 0}–{Math.min(page * size, total)} trên {total} mục</span><div className="pagination-controls"><button className="icon-button" aria-label="Trang trước" disabled={page <= 1} onClick={() => onPage(page - 1)}><Icon name="chevron_left" /></button><button className="page-number" aria-label={`Trang ${page}`}>{page}</button><span className="muted">/ {pages}</span><button className="icon-button" aria-label="Trang sau" disabled={page >= pages} onClick={() => onPage(page + 1)}><Icon name="chevron_right" /></button></div></div>;
+  const from = total ? (page - 1) * size + 1 : 0, to = Math.min(page * size, total);
+  // Stitch: numbered 32px page buttons with an ellipsis gap; first/last/current±1 kept.
+  const nums = [...new Set([1, page - 1, page, page + 1, pages])].filter(n => n >= 1 && n <= pages).sort((a, b) => a - b);
+  return <div className="pagination"><span>Hiển thị <strong>{from}-{to}</strong> của <strong>{total}</strong> {label}</span><div className="pagination-controls"><button className="icon-button" aria-label="Trang trước" disabled={page <= 1} onClick={() => onPage(page - 1)}><Icon name="chevron_left" /></button>{nums.map((n, i) => <Fragment key={n}>{i > 0 && n - nums[i - 1] > 1 && <span className="page-gap">…</span>}<button className={`page-number ${n === page ? "is-active" : ""}`} aria-label={`Trang ${n}`} aria-current={n === page ? "page" : undefined} onClick={() => onPage(n)}>{n}</button></Fragment>)}<button className="icon-button" aria-label="Trang sau" disabled={page >= pages} onClick={() => onPage(page + 1)}><Icon name="chevron_right" /></button></div></div>;
 }
 export function VideoPicker({ beforeChange }: { beforeChange?: () => boolean } = {}) {
   const [params, setParams] = useSearchParams();
