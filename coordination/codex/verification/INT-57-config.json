@@ -1,0 +1,29 @@
+{
+  "image": "video-ai-inference:ai-v3.0-48735ff",
+  "image_id": "sha256:f62671e78fd8bb4ba9fad3fb743ea4ab3aeb76723e76abd821afe0c336837b81",
+  "revision": "48735ffbfda20914976b4206f6ca91f0ecda5ca9",
+  "removed_storage_env": [
+    "MILVUS_HOST",
+    "MILVUS_PORT",
+    "MINIO_ACCESS_KEY",
+    "MINIO_ENDPOINT",
+    "MINIO_SECRET_KEY"
+  ],
+  "remaining_environment_keys": [
+    "AI_SERVICE_KEY",
+    "CHECKPOINT_DIR",
+    "FORCE_STUB",
+    "INFER_DEVICE",
+    "PYTHONDONTWRITEBYTECODE"
+  ],
+  "depends_on": {},
+  "checkpoint_mount": {
+    "type": "bind",
+    "source": "E:/traning_ai/ai-core/checkpoints",
+    "target": "/srv/ai-core/checkpoints",
+    "read_only": true,
+    "bind": {}
+  },
+  "healthcheck_preserved": true,
+  "no_build_no_pull": true
+}

@@ -10,16 +10,22 @@ test('HC-13 real v2 backend storage, ANN search, speech and unified deletion', a
   const dockerAI = process.env.E2E_AI_DOCKER_CONTAINER;
   if (dockerAI) expect(dockerAI).toMatch(/^[a-zA-Z0-9][a-zA-Z0-9_.-]+$/);
   const health = dockerAI
-    ? JSON.parse(execFileSync('wsl', ['-d', 'docker-desktop', '--exec', '/mnt/host/wsl/docker-desktop/cli-tools/usr/bin/docker',
+    ? JSON.parse(execFileSync('docker', [
       ...(process.env.E2E_DOCKER_HOST ? ['-H', process.env.E2E_DOCKER_HOST] : []), 'exec', dockerAI, 'python', '-c',
       "import urllib.request;print(urllib.request.urlopen('http://127.0.0.1:8001/health',timeout=5).read().decode())"], { encoding: 'utf8', timeout: 10_000 }))
     : await (await request.get(`${process.env.E2E_AI_URL ?? 'http://127.0.0.1:8001'}/health`)).json();
   expect(health.stub_mode).toBe(false); expect(health.models_loaded).toHaveLength(6);
+  if (process.env.E2E_AI_EXPECT_COMPUTE_ONLY === '1') expect(health.dependencies).toEqual({});
   const login = await request.post(`${gateway}/api/auth/login`, { data: { email: 'admin@local', password: 'admin123' } });
   expect(login.status()).toBe(200);
   const headers = { Authorization: `Bearer ${(await login.json()).access_token}` };
+  const systemHealth = await request.get(`${gateway}/api/cms/system/health`, { headers });
+  expect(systemHealth.status()).toBe(200);
+  const cmsHealth = await systemHealth.json();
+  expect(cmsHealth.ai_available).toBe(true); expect(cmsHealth.models_loaded).toHaveLength(6);
   let videoId: string | undefined;
   const evidence: Record<string, unknown> = { ai_stub_mode: health.stub_mode, ai_models: health.models_loaded.length, ai_health_source: dockerAI ?? "host_http" };
+  evidence.ai_dependencies = health.dependencies; evidence.cms_health_available = cmsHealth.ai_available;
   const mediaURLs: string[] = [];
   const frames = async (id: string) => {
     expect(id).toMatch(/^vid_[a-z0-9]+$/);
@@ -44,10 +50,12 @@ test('HC-13 real v2 backend storage, ANN search, speech and unified deletion', a
     const subtitles: components['schemas']['Subtitles'] = await (await request.get(`${gateway}/api/videos/${videoId}/subtitles`, { headers })).json();
     expect(subtitles.segments?.filter(s => !!s.text?.trim()).length).toBeGreaterThan(0);
     expect(analysis.timeline_scores.length).toBeGreaterThan(0); expect(analysis.summary_status).toBe('draft');
+    if (process.env.E2E_AI_EXPECT_COMPUTE_ONLY === '1') expect(analysis.clip_threshold).toBe(51);
     expect(analysis.summary?.trim().length).toBeGreaterThan(0);
     const vectors = await frames(videoId!); expect(vectors.length).toBeGreaterThan(0);
     evidence.video_id = videoId; evidence.vectors = vectors.length; evidence.subtitles = subtitles.segments?.length;
     evidence.category = analysis.category_suggestion; evidence.summary_chars = analysis.summary.length;
+    evidence.clip_threshold = analysis.clip_threshold;
     const created = await request.post(`${gateway}/api/cms/clips`, { headers, data: { video_id: videoId, title: 'e2e-int28-v2-clip', start_time: 0, end_time: 3 } });
     expect(created.status()).toBe(201); const clip = await created.json();
     await expect.poll(async () => {
@@ -78,5 +86,7 @@ test('HC-13 real v2 backend storage, ANN search, speech and unified deletion', a
       evidence.cleanup = { repeated_delete: 204, vectors: 0, media_urls_404: mediaURLs.length, mongo_analysis_empty: true };
     }
     writeFileSync(info.outputPath('hc13-counts.json'), JSON.stringify(evidence, null, 2));
+    if (process.env.E2E_AI_EVIDENCE_FILE) writeFileSync(process.env.E2E_AI_EVIDENCE_FILE, JSON.stringify(evidence, null, 2));
+    expect((await request.post(`${gateway}/api/auth/logout`, { headers })).status()).toBe(204);
   }
 });

@@ -1,0 +1,36 @@
+{
+  "checked_at": "2026-11-02T04:58:24.837015+00:00",
+  "since": "2026-11-02T04:54:38.226542+00:00",
+  "containers": {
+    "video-ai-gateway-1": {
+      "http_paths": {
+        "/health": 1,
+        "/v2/vision/completions": 1,
+        "/v2/asr/completions": 1,
+        "/v1/highlight/completions": 1,
+        "/v1/completions": 1,
+        "/v2/search/embeddings": 1
+      },
+      "removed_v1_calls": 0,
+      "lines": 6
+    },
+    "video-ai-ingest-worker-1": {
+      "http_paths": {},
+      "removed_v1_calls": 0,
+      "lines": 1
+    },
+    "video-ai-inference-service-1": {
+      "http_paths": {
+        "/health": 25,
+        "/v1/highlight/completions": 5,
+        "/v2/vision/completions": 1,
+        "/v2/asr/completions": 1,
+        "/v1/completions": 1,
+        "/v2/search/embeddings": 1
+      },
+      "removed_v1_calls": 0,
+      "lines": 36
+    }
+  },
+  "PASS": true
+}

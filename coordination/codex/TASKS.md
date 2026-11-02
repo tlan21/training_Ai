@@ -2,9 +2,39 @@
 
 Owner duy nhất: Codex (bản đầu do Claude khởi tạo trong AI-00 ngày 2026-10-26, từ đây Codex tự ghi).
 Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
+
+Ngoại lệ HO-05 / D28 (2026-11-02): 32 task INT chưa DONE đã được user giao **CLAUDE thực thi**, tracker đang chạy tại `coordination/claude/OPEN_TASKS.md`. Owner CODEX và status trong các khối cũ là lịch sử tại thời điểm bàn giao; acceptance/evidence vẫn được kế thừa, không tự đóng task. Codex dừng triển khai các task này. INT-59 chỉ chuẩn bị bàn giao; Claude cập nhật ACK/tiến độ tại làn mình.
 Định dạng/trạng thái: `coordination/README.md` mục 4. Kiểm kê gốc: `coordination/INVENTORY_2026-10-26.md`.
 
 ## Tổng quan
+
+### INT-59 — User-authorized transfer of remaining application work to Claude
+- Owner: CODEX | Status: DONE (2026-11-02; checklist and committed handoff prepared, Claude ACK pending)
+- Depends on: user explicitly assigns remaining work to Claude; INT-58 DONE and 32-task open inventory.
+- Acceptance: Claude-side open checklist contains exactly the existing 32 non-DONE IDs with preserved acceptance/status/dependencies; explicit sole-writer transfer prevents concurrent application changes; committed HO-05 gives pickup commands, current runtime/evidence and limits. No claim of Claude ACK or completed product QA.
+- Changed files: coordination/README.md, PROJECT_STATUS.md; new coordination/claude/OPEN_TASKS.md under explicit user instruction; owned TASKS/SESSION/OPEN_TASKS/HANDOFF and verification/INT-59.md.
+- Evidence/Commits: start **6a3a802**, assignment in the commit containing coordination/claude/OPEN_TASKS.md; verification/INT-59.md. Exact32 unique ID set/counts/statuses and inherited task rows PASS; append-only HO-05/unchecked tasks/ownership instructions/diff check PASS. No application tests or runtime changes; master/origin refs remain a317c3c.
+- Checkpoint: Lane codex / Changed README D28 + Claude checklist + owned handoff/tracker/evidence / Verified exact inventory, preserved acceptance, docs scope and refs / Contract touched no / Next Claude RE:HO-05 then conditional INT-50.
+- Next action: Claude reads committed handoff and ACKs on own branch. Codex freezes delegated implementation; no direct Claude execution/ACK claim, no new push/master merge.
+
+### INT-58 — Publish HC-19 checkpoint and current open-task checklist
+- Owner: CODEX | Status: DONE (2026-11-02; complete checklist and local/remote publication verified)
+- Depends on: INT-57 DONE, master8e6fd39 received; cleanHEAD8a37ab6; existing current actual HC-19 E2E/parity; local/remote fast-forward ancestry.
+- Acceptance: mandatory release gates, current live image/health and retained actual E2E/parity proof valid; synchronize shared Codex status/tagged plan/sync log; publish complete actionable open-task checklist without falsely closing REVIEW/PARTIAL; normal local master fast-forward and atomic origin master/integration push, verify equality/clean tree. No new product/model/runtime/data action.
+- Changed files: shared release status/masterplan; owned OPEN_TASKS.md, TASKS/SESSION/HANDOFF and verification/INT-58*.
+- Evidence/Commits: start/checklist727a8b2; verification/INT-58.md/3gate logs/liveJSON. FullGo/CMS/ClientPASS, current6real/deps{}/sameimage+10filesmatch4videoparity andretainedactualHC19E2E valid. OPEN_TASKS32IDset checked/counts10PARTIAL/4BLOCKED/16REVIEW/1TODO/1DEFERRED; stale nextactions reconciled without statuspromotion.
+- Publication: **053b143406ab905a3131b5ffb2400ece13acf078** localmaster8e6fd39→053b143 andatomicoriginmaster/integration36b8a1f→053b143 PASS; bothremoterefsassertedHEAD/otherbranchesunchanged/cleantree. Completiondocscheckpoint follows normally with final equality asserted.
+- Checkpoint: Lane codex / Changed release metadata+complete32openchecklist / Verified gates/currentproof/checklistIDset/localremote refs / Contract touched no / Next OPEN_TASKS.md priorities.
+- Next action: no pending publication after final docs/refverification; close REVIEW only after evidence reconciliation and respect existing QA/GPU/data gates.
+
+### INT-57 — HC-19 release #7 compute-only runtime rollout and actual gateway E2E
+- Owner: CODEX | Status: DONE (2026-11-02; selected rollout/fullparity/actualgatewayE2E/preservation PASS)
+- Depends on: explicit HC-19 scope authorizes fresh test upload/real gateway search; fetched and received master8e6fd39; prebuilt ai-v3.0-48735ff exactSHAf62671...; current flags bothtrue, natural-speech/query fixtures present.
+- Acceptance: only inference image/env/dependency compose change, no build/pull; recreate only inference-service; preserve existing checkpointRO/othercontainers/originaldata; health6real/stubfalse/dependencies{} +full parity; CMS health compatible; actual freshupload→processed via v2vision/ASR+retainedhighlight/clip_threshold, backendvectors/thumbnail and visualsearch; no runtime calls to4removedpaths; cleanup own test data and record RE:HC-19/evidence/commit. No remote push, old-media reprocess or checkpoint/model/source change.
+- Changed files: docker-compose.inference.yml; backend health regression test only if alreadycompatible; e2e/ai_v2_live.spec.ts for currentDockerCLI/health/threshold evidence; owned TASKS/SESSION/HANDOFF/MATRIX/verificationINT-57*.
+- Evidence/Commits: startb148b6f, deployment/test/parity **11584c5**; verification/INT-57.md/logs/JSON. Exactimage/6real/deps{}, full4video parity0.0/source101/checkpoint10match, Go+healthregression/E2Etypes PASS. Actualgateway **1PASS16.8s**, ownnewvideo processed/10vectors/3segments/summary204chars/threshold51/top1.99206525; owncleanup and alloriginalPG/Mongo/MinIO/671vectors preserved,15othercontainers unchanged,0removedpathcalls. RE:HC-19/closure in this commit.
+- Checkpoint: Lane codex / Changed inferenceimage/env/dependencies +healthregression/E2Everifier/evidence / Verified fullparity/currentrawupload/backendstorage/search/cleanup/originalpreservation / Contract touched no(public0.8 unchanged, AIv3consumed) / Next separateapprovedCMSQA.
+- Next action: HC-19 complete, no more model/service change needed; optionallegacyGohelpers retained, no productioncalls. Earlier INT50 broadQA/globalflag action remains separately blocked; no old-video reprocess, checkpoint change or remote push.
 
 ### INT-56 — Release and push HC-17/HC-18 integration checkpoint
 - Owner: CODEX | Status: DONE (2026-11-02; local master and both remote target refs verified)
@@ -77,7 +107,7 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 - Acceptance: no CMS forgot/reset/account-delete link/page, no quick-login credentials, no role editor/role-write handler/port methods; all pre-provisioned CMS accounts share functionality, viewers denied. Users list/search/created timestamp read-only; login/refresh/logout preserved. Remove obsolete code/tests without deleting existing users or public Client functionality that still has consumers.
 - Planned files: cms/src/auth/router/users/hooks/sidebar, backend gateway/users/ports/repos/mocks/tests; shared recovery only after clarification; owned subplans/evidence.
 - Evidence/Commits: verification/INT-47.md; source in this checkpoint. Go vet/test/buildPASS, CMS types/build/E2EtypesPASS,4new UI scopePASS8.5s; regression63PASS/2staleheadingFAIL corrected, affected6PASS10.6s. No role-write path/handler/repo method, no CMS recovery component/default login credentials, searchable readonly users. Client shared recovery retained and denied for CMS accounts pending clarification.
-- Next action: verify against real deployed app after remaining CMS batch; original data preserved, no model changes. QApreviewPID3392 retained for subsequent build checks, must stop at final checkpoint.
+- Next action(updated2026-11-02): real-browser acceptance of deployed login/refresh/logout/usersreadonly/retiredCMSfeatures alongside INT-50. Source already implemented; never assume oldQA3392 still valid, verify future owned PID/port/command before stopping it.
 
 ### INT-48 — Operational CMS completion contract
 - Owner: CODEX | Status: DONE (2026-10-30)
@@ -97,15 +127,15 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 - Source/evidence: verification/INT-50.md;8screens wired, backend writes/validation/clipcategory/editedtranscript fixed, deleted-source operations hidden, freshinit ready. Go gates PASS, realPG3PASS/Mongo1PASS, CMS/Client/E2Etypes+CMSbuild PASS, fixture73PASS +final8 +picker2PASS. Failed historical/fixture attempts retained and corrected.
 - Runtime checkpoint: product006 applied twice, original normalized row hashes/IDs/counts preserved;2newdefaultflags only. Offline gateway/CMS images int50-6287454 built on existing bases, no downloads/restarts/model work. Baseline13containers and actualAI6/stubfalse/CPU preserved. See verification/INT-50.md/JSON/build logs.
 - Initial rollout6287454 passed HTTP/binary/bundle/actualAI6 and unrelated runtime preservation; unordered mount falsealarm resolved by exact permutation proof. Before real QA, cancellation safety correction reproduced/tested: waitworkerack, atomiccancel/completed guards, blockretry/delete whileinflight; allGo +realPG3 +QueueUI4 PASS.
-- Next action: deploy tested cancellation correction with pinned owned app image override, then real policy/browser/fault/API acceptance/cleanup and10item visual evidence, stop own3392; no DONE until actual acceptance.
+- Next action(updated2026-11-02): cancellation correction74344bb already deployed/verified; don't redo it. Latest CMS emptyAI-title fix7c7dd74 still needs CMS-only rollout, then explicitly approved broad policy/browser/fault/API/10itemStitch QA and owncleanup. HC-19 pipeline PASS doesn't cover fourpolicy/eight-screen acceptance. Don't assume oldPID3392 valid; verify future ownedQA PID before stopping.
 
 ### INT-49 — Real CMS persistence, read models and telemetry
-- Owner: CODEX | Status: PARTIAL (2026-10-30; source/adapters verified, product apply/deploy/E2E pending)
+- Owner: CODEX | Status: PARTIAL (2026-11-02; source/adapters/product006/app rollout verified; final metrics/readmodel/UI acceptance pending)
 - Depends on: INT-48 public0.8.0. See CMS_COMPLETION_SCOPE.md for scope definitions and preservation gates.
 - Acceptance: additive006/no existing row/value rewrite, global video/clip filters, hydrated names/category counts/creator/open stats, actual PG overview and MinIO bytes/LinuxCPU; persist job options/skips/category keywords/editorial priority and Mongo proposal/category match fields. Explicit unavailable metrics; existing Client privacy unchanged. Go gates +real PG TEMP/migration idempotence and Mongo tests, final real E2E/deployment tracked across batch.
 - Planned files: backend domain/ports/PG/Mongo/MinIO/CMS handlers, migration006, matching tests, owned schema/subplans/coordination. No AI source/checkpoint or new library.
 - Evidence: verification/INT-49.md; Go vet/test/build PASS, real Linux PG2PASS1.86s/0.10s and Mongo1PASS0.16s, no skips. Concrete files/domain/ports/PG/Mongo/MinIO/CMS handlers/tests/migration006 listed in commit. Failed setup/fixture attempts preserved; product006 not yet applied.
-- Checkpoint/next: real data-preserving apply/deploy/HTTP+MinIO/E2E held for final batch. Continue INT-41 flags, then42/43/44/UI; all8screens remain required.
+- Checkpoint/next(updated2026-11-02): source-only apply/deploy notes above are HIST. INT-50 proves product006 applied twice/data preserved and gateway/CMS74344bb deployed; INT-57 actualpipeline/CMShealth PASS. Don't reapply006/redeploy unchangedbackend. Remaining: final live readmodels/metrics/filters/counts/rules/editorial/review UI acceptance under INT-50.
 
 ### INT-45 — Settings deep functional re-audit requested by user
 - Owner: CODEX | Status: DONE (2026-10-30; audit only, Settings remains PARTIAL)
@@ -661,7 +691,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Changed: backend domain/ports/AIHTTP/Mongo/mock/orchestrator/CMS analysis DTO and tests; CMS HighlightPage/SettingsPage; e2e/cms_design.spec.ts; owned schema/subplans/coordination/evidence.
 - Commits: **f709b94** contract; **43e45a1** source. Evidence: native Go vet/test/build PASS, actual Mongo roundtrip51/0/null +cleanup PASS0.07s, CMS types/build/E2Etypes PASS,14focusedUI PASS12.3s +41CMSregression PASS51.4s +4originalStitch references PASS7.0s; actual deployed CMS/API legacy compatibility **2PASS5.3s**. Scoped10pointreview and screenshots inspected.
 - Deployment: only gateway/CMS int38-43e45a1/latest, unchanged gateway environment, live binary SHA verified/health200; rollback tags retained. Other14containers/hostAI state unchanged,106videos/58clips and4original analysis hashes unchanged, jobs0; ownQA21800 stopped/5174closed. No migration/backfill/reprocessing.
-- Next action (updated2026-11-02): publishedv1.4 and current AI runtime parity consumed under INT-52/537f6b1; authenticated service now proves clip_threshold51. Full new-upload backend persistence/CMS heatmap proof belongs to INT-50 after real-QA approval, not an automatic old-video reprocess. Existing product analyses stay unknown until explicitly reprocessed; no blanket DONE/model-quality claim. Settings execution source is INT-41, final real acceptance still pending.
+- Next action (updated2026-11-02): latestAIv3 parity and **actual new-upload stored clip_threshold51/CMSsystemhealth** now proven INT-57/11584c5 +realE2E. Full actual CMSheatmap/design acceptance remains INT-50, separate from this API/storage proof; no oldvideo reprocess. Existing product analyses stay unknown until explicitly reprocessed; no blanketDONE/modelquality claim. Settings execution source INT-41, finalfourpolicy acceptance stillpending.
 
 ### INT-39 — HC-14 precise single-clip cutting
 - Owner: CODEX | Status: DONE (2026-10-30; backend cut precision only, not complete HC-14 sentence snapping)
@@ -681,7 +711,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Planned files: backend/internal/orchestrator/**, backend/cmd/gateway/pipeline.go, existing ports/settings adapters as needed, CMS copy/tests, owned evidence. Contract changes, if needed, must precede implementation in a separate task.
 - Commits/Evidence: not implemented; INT-45 now proves actual runtime in4combinations: flagsfalse still invokes real highlight/ASR,8scores/1segment each;16HTTP200calls across4videos, flags held until processed. See verification/INT-45.md and INT-45-runtime-matrix-proof.json; earlier INT-40 persistence/source evidence retained. No implementation PASS claim.
 - Implementation: upload snapshots2flags before Kafka; retry retains snapshot, legacy runs both; disabled ASR+summary/highlight skip actual calls with explicit empty outputs and stored skips. Backend category keyword/vision matching suggests only, no category/publication write. Matching rules/4combination retry/upload-order tests PASS; verification/INT-41-go.log.
-- Next action: Queue/Settings UI and real four-policy API/AI proof after final owned deployment. Source commit recorded in Git; full acceptance still pending.
+- Next action(updated2026-11-02): Queue/Settings source already wired/deployed; actual four-policy API/AI+UI snapshot/skips/retry proof with settings restoration under approvedINT-50QA remains. HC-19 proves true/true only, not fullpolicyPASS; don't redo implementation.
 
 ### INT-42 — Synchronize failed ingest job and video state
 - Owner: CODEX | Status: PARTIAL (2026-10-30; source tested, real batch pending)
@@ -690,7 +720,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Planned files: backend/internal/orchestrator/runner.go, backend/cmd/gateway/pipeline.go and lifecycle tests; e2e/ and owned evidence as needed.
 - Commits/Evidence: not implemented; INT-40-edges/failed-job-video-status.json proves failed job/uploaded video. No PASS claim.
 - Source: reproduced failed ingest uploaded/failed/no completion (INT-42-before.log); shared failure path marks job/video terminal, preserves canceled/deleted guards; retry resets error/times/stage/progress and retains policy, deleted retry409; cancellation checked after last AI stage; monotonic stage progress. Orchestrator/CMS/gateway packages PASS (INT-42-go.log), focused lifecycle tests included.
-- Next action: real PG reset test and invalid/retry/cancel live acceptance after final app rollout. Stage-bound cancellation, no hard-kill of model/ingest process.
+- Next action(updated2026-11-02): PG reset/cancel guards and deployed74344bb verified in INT-50. Remaining actual invalid/retry/cancel/deleted-source browser/API acceptance, stage-bound acknowledgment; no hard-kill or unchanged-code redeploy.
 
 ### INT-43 — Apply library search to original-video tab
 - Owner: CODEX | Status: PARTIAL (2026-10-30; source and fixture UI verified, live final batch pending)
@@ -699,7 +729,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Planned files: cms/src/pages/ClipsPage.tsx, e2e/ relevant CMS tests, owned evidence.
 - Commits/Evidence: not implemented; INT-40-edges/original-search.json shows20rows for one-match query. No PASS claim.
 - Source/evidence: generated query parameter types in shared hooks/query keys, unused duplicate query hooks removed; original/clip q and video q/category/dates server-side, selection clearing and visible-ID bulk safety. CMS types/build PASS;2Playwright fixtures PASS6.9s at390/1440 (verification/INT-43-ui.log). No CSS changes, full10item Stitch check/live acceptance remains final CMS batch.
-- Next action: deploy final backend/CMS batch and verify real global search/pagination/bulk safety; no full CMS completion claim.
+- Next action(updated2026-11-02): source already in gateway/CMS74344bb. Verify actual global library/video queries/filter/pagination and visible-selection/bulk safety under INT-50; don't redeploy unchangedbackend or infer fullCMSPASS from fixtures.
 
 ### INT-44 — Report referenced-category deletion errors truthfully
 - Owner: CODEX | Status: PARTIAL (2026-10-30; backend included in INT-49, actual toast acceptance pending)
@@ -707,4 +737,4 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Acceptance: deleting a referenced category preserves data and yields a clear business error, not CATEGORY_NOT_FOUND/raw SQL; unused delete works; test active and soft-deleted references and actual CMS toast. New response schema/status, if needed, handled contract-first.
 - Planned files: backend/internal/adapters/pg/repositories.go, backend/internal/handlers/cms/categories.go and tests; OpenAPI/generated types only after a scoped contract task if needed; owned evidence.
 - Commits/Evidence: not implemented; INT-40-edges/category-delete-error.json. No PASS claim.
-- Next action: determine existing contract-compatible conflict response and implement precise error mapping.
+- Next action(updated2026-11-02): referenced-category409 mapping implemented with realPG tests (INT-49/50); actualCMS toast/unuseddelete/keywords/rules acceptance remains. Don't rewrite completed mapping.

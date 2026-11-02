@@ -1,0 +1,46 @@
+{
+ "container": "video-ai-inference-service-1",
+ "image": "video-ai-inference:ai-v3.0-48735ff",
+ "revision": {
+  "label": "48735ffbfda20914976b4206f6ca91f0ecda5ca9",
+  "head": "8e6fd398eddc880e23e00de13e9ccabc3bdcabb5",
+  "head_source_changed": []
+ },
+ "source": {
+  "files": 101,
+  "mismatch": [],
+  "missing_in_image": [],
+  "extra_in_image": []
+ },
+ "checkpoints_ok": true,
+ "behaviour": [
+  {
+   "video": "-NVYudDYCLQ",
+   "seconds": 1245,
+   "max_abs_score_diff": 0.0,
+   "clip_threshold": [
+    51.0,
+    51.0
+   ],
+   "clips_container": [],
+   "clips_host": []
+  },
+  {
+   "video": "c46Liq1aP1s",
+   "seconds": 1480,
+   "max_abs_score_diff": 0.0,
+   "clip_threshold": [
+    51.0,
+    51.0
+   ],
+   "clips_container": [],
+   "clips_host": []
+  }
+ ],
+ "torch": {
+  "host": "2.13.0+cpu",
+  "container": "2.15.0+cpu"
+ },
+ "PASS": true
+}
+PARITY PASS
