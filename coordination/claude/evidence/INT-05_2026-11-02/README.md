@@ -49,3 +49,13 @@ Owner decisions — CMS elements/copy outside the CẮT-list (kept as is until d
 Larger items not done (L): Videos per-status row actions (stop/retry wiring), Highlight heatmap playhead diamond + time label + grip
 handles, Library "AI HOÀN TẤT / ĐANG XỬ LÝ / LỖI" badge, Categories "N phút trước" (no assignment timestamp in API), Queue thumbnail state overlays,
 Subtitles hashtag chip close + "+ Thêm", monitor-card fine details.
+
+## Owner decisions applied (user 2026-11-02: "hãy làm theo bạn đề xuất")
+- (1) Queue: red delete per non-completed row — enabled on failed rows (`DELETE /api/cms/videos/{id}`, confirm), disabled with tooltip while the job
+  is pending/running (backend refuses with 409). Live: INT-42 deletes the failed QA video through this button → 204 + toast.
+- (2–5) Kept and approved: Videos extra chips/category badge/bulk delete and "Đã xử lý"; Highlight clip form; Subtitles save button/title line and
+  "Ưu tiên biên tập / Bình thường"; Library "Lượt mở / Người tạo".
+- (6–8) Follow Stitch: Settings atmosphere copy (extra micro note removed), Categories link "Chỉnh sửa", Dashboard
+  "Chào mừng quay trở lại, {username}. Đây là hiệu suất xử lý hôm nay."
+- Remaining for full PASS: the L items listed above (playhead marker, per-status Videos actions, Library AI badge, Categories time-ago,
+  Queue thumbnail overlays, hashtag chip controls).
