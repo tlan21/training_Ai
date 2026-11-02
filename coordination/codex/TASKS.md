@@ -7,12 +7,14 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 ## Tổng quan
 
 ### INT-58 — Publish HC-19 checkpoint and current open-task checklist
-- Owner: CODEX | Status: REVIEW (2026-11-02; release gates/currentproof/checklist validated, publication next)
+- Owner: CODEX | Status: DONE (2026-11-02; complete checklist and local/remote publication verified)
 - Depends on: INT-57 DONE, master8e6fd39 received; cleanHEAD8a37ab6; existing current actual HC-19 E2E/parity; local/remote fast-forward ancestry.
 - Acceptance: mandatory release gates, current live image/health and retained actual E2E/parity proof valid; synchronize shared Codex status/tagged plan/sync log; publish complete actionable open-task checklist without falsely closing REVIEW/PARTIAL; normal local master fast-forward and atomic origin master/integration push, verify equality/clean tree. No new product/model/runtime/data action.
 - Changed files: shared release status/masterplan; owned OPEN_TASKS.md, TASKS/SESSION/HANDOFF and verification/INT-58*.
 - Evidence/Commits: start/checklist727a8b2; verification/INT-58.md/3gate logs/liveJSON. FullGo/CMS/ClientPASS, current6real/deps{}/sameimage+10filesmatch4videoparity andretainedactualHC19E2E valid. OPEN_TASKS32IDset checked/counts10PARTIAL/4BLOCKED/16REVIEW/1TODO/1DEFERRED; stale nextactions reconciled without statuspromotion.
-- Next action: gated metadata commit/localffmaster/atomicoriginpush/refverification and actual completion; no repeated finished implementation or product QA.
+- Publication: **053b143406ab905a3131b5ffb2400ece13acf078** localmaster8e6fd39→053b143 andatomicoriginmaster/integration36b8a1f→053b143 PASS; bothremoterefsassertedHEAD/otherbranchesunchanged/cleantree. Completiondocscheckpoint follows normally with final equality asserted.
+- Checkpoint: Lane codex / Changed release metadata+complete32openchecklist / Verified gates/currentproof/checklistIDset/localremote refs / Contract touched no / Next OPEN_TASKS.md priorities.
+- Next action: no pending publication after final docs/refverification; close REVIEW only after evidence reconciliation and respect existing QA/GPU/data gates.
 
 ### INT-57 — HC-19 release #7 compute-only runtime rollout and actual gateway E2E
 - Owner: CODEX | Status: DONE (2026-11-02; selected rollout/fullparity/actualgatewayE2E/preservation PASS)

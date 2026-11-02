@@ -97,7 +97,7 @@ Các bằng chứng runtime ngày 2026-10-27…30 là VERIFIED-HIST. INT-54 tri�
 | INT-55 | HC-17 current gateway/ingest deprecated-path confirmation | DONE —cb86e0d/a9f1bd9; deployedbinary/source/callchain/log evidence +Go gates; no application code edit required |
 | INT-56 | Merge/push HC-17/18 checkpoint | DONE — all gates/current parity provenance PASS; local/remote master+integration f60d7a2 verified, completion metadata follows; verification/INT-56.md |
 | INT-57 | HC-19 compute-onlyv3 +actualgatewayE2E | DONE —11584c5/8a37ab6; health6real/deps{},4video parity0.0, freshE2E16.8s/top1.99206525/originaldata+15othercontainers preserved |
-| INT-58 | Publish HC-19/open-task checklist | IN_PROGRESS — release gates PASS, publication/checklist proof verification/INT-58.md |
+| INT-58 | Publish HC-19/open-task checklist | DONE — gates/currentproof/32taskchecklist PASS; local/remote master+integration053b143 verified, completionmetadata follows; verification/INT-58.md |
 
 Checklist: **32 task chưa DONE** (không tính publishINT-58):10PARTIAL/4BLOCKED/16REVIEW/1TODO/1DEFERRED. Xem `coordination/codex/OPEN_TASKS.md` để phân biệt QA/code với REVIEW cần đối chiếu bằng chứng; không coi mọi REVIEW là tính năng chưa có. Migration006/cancelrollout đã làm, không lặp lại từ nextaction cũ.
 

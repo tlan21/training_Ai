@@ -1,6 +1,6 @@
 # Checklist task Codex còn mở — 2026-11-02
 
-Nguồn: TASKS.md + SESSION.md, đối chiếu checkpoint INT-50/52…57. **32 task chưa DONE**:10PARTIAL,4BLOCKED,16REVIEW,1TODO,1DEFERRED. Không tính tác vụ publish INT-58 đang được hoàn tất; danh sách không tự nâng/hạ trạng thái nghiệm thu.
+Nguồn: TASKS.md + SESSION.md, đối chiếu checkpoint INT-50/52…57. **32 task chưa DONE**:10PARTIAL,4BLOCKED,16REVIEW,1TODO,1DEFERRED. Publish INT-58 đã DONE nên không nằm trong danh sách; không tự nâng/hạ trạng thái nghiệm thu.
 
 HC-19/INT-57 đã DONE: inference v3.0/không storage dependencies, full4video parity0.0, actual new-upload/search E2E16.8s, originaldata/15othercontainers preserved. Claude ACK HC-19 và không có handoff AI mới. Không làm lại các phần này.
 

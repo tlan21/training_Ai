@@ -1,6 +1,6 @@
 # INT-58 — Publish HC-19 and current open-task checklist (2026-11-02)
 
-Owner CODEX. User first requested push/merge, then asked for the open-task checklist; the latter steers rather than cancels publication. Initial clean codex/integrationHEAD8a37ab6/master8e6fd39; gitmerge master alreadyuptodate. Received source11584c5/actualHC19evidence8a37ab6, source unchanged. Task/checklist start727a8b2.
+Owner CODEX. Status DONE. User first requested push/merge, then asked for the open-task checklist; the latter steers rather than cancels publication. Initial clean codex/integrationHEAD8a37ab6/master8e6fd39; gitmerge master alreadyuptodate. Received source11584c5/actualHC19evidence8a37ab6, source unchanged. Start727a8b2; release **053b143406ab905a3131b5ffb2400ece13acf078**.
 
 ## Publication scope / preflight
 
@@ -29,10 +29,10 @@ No repeated model/raw-upload/fullCMS workload, runtime recreation, schema/data/m
 
 ## Publication
 
-Commit gated shared/owned paths, normal gitpush . HEAD:master then gitpush --atomic origin master:master codex/integration:codex/integration. Any non-fast-forward rejects rather than forcing; merge/recheck required before retry. Assert localmaster=HEAD=bothremote targets, unrelated remote branches unchanged and worktree clean; actual results recorded after success.
+Actual publication PASS: release053b143406ab905a3131b5ffb2400ece13acf078, git push . HEAD:master fast-forward8e6fd39→053b143; git push --atomic origin master:master codex/integration:codex/integration advanced both36b8a1f→053b143. git ls-remote --heads origin asserted both targetSHAs=HEAD; Claude26c2346d61b8585c6c2627ef232fa0eb6209002a/phase115976b3761a3c29f04fc83f9a522541fe0b015f3 unchanged; gitstatusshort empty. No force/history/defaultbranch change. This docs-only completioncheckpoint follows to localmaster/bothoriginrefs, final equality/cleanstate/source/checklist assertions in tool output; no functionalgates repeated for docs-only completion.
 
 Lane: codex
 Changed: release-authorized sharedstatus/taggedplan/sync14 +owned checklist/tracker/session/handoff/logs
 Verified: mandatoryGo/CMS/Clientgates, currentv3health/parity-provenance, retainedactualHC19E2E, complete32taskchecklist PASS
 Contract touched: no (public0.8/AIv3 consumed unchanged)
-Next safe task: finish merge/push verification, then scopedCMSQA/evidence reconciliation per OPEN_TASKS.md
+Next safe task: scopedCMSQA/evidence reconciliation per OPEN_TASKS.md; no outstanding merge/push work
