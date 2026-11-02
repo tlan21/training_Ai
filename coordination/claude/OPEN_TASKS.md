@@ -54,7 +54,7 @@ HC-19/INT-57 đã DONE: inference v3.0/không storage dependencies, full4video p
 
 | Check | Task | Status | Việc còn thực sự cần làm |
 |---|---|---|---|
-| [ ] | INT-50 | BLOCKED | Final8screen+Settings realQA/faults/390×844 và1440×900/10itemStitch; triển khai riêng bản CMS sửa emptyAI-title7c7dd74 trước khi kiểm. Action QA rộng trước đây bị automatic approval review chặn, còn cần explicit approval; HC-19 chỉ cấp scope upload/search riêng đã xong. |
+| [ ] | INT-50 | IN_PROGRESS (Claude 2026-11-02; user duyệt QA đủ phạm vi — `coordination/claude/evidence/INT-50_2026-11-02/APPROVAL.md`) | Final8screen+Settings realQA/faults/390×844 và1440×900/10itemStitch; triển khai riêng bản CMS sửa emptyAI-title7c7dd74 trước khi kiểm. Action QA rộng trước đây bị automatic approval review chặn, còn cần explicit approval; HC-19 chỉ cấp scope upload/search riêng đã xong. |
 | [ ] | INT-41 | PARTIAL | Chứng minh đủ4tổ hợp auto-highlight/auto-subtitle trên API/AI thật, skipped stages/snapshot/retry và UIQueue/Settings. Code đã có; không triển khai lại từ đầu. |
 | [ ] | INT-42 | PARTIAL | Live invalid ingest/failure/retry/cancel/deleted-source guards; đối chiếu job/video nhất quán và browser. PG/cancel source tests đã có. |
 | [ ] | INT-43 | PARTIAL | Global search/filter/pagination thật ở Video và thư viện, kiểm selection/bulk-action không dùng ID ẩn/cũ. Source đã có trong gateway/CMS74344bb. |
