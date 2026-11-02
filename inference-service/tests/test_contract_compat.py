@@ -1,10 +1,14 @@
-"""D20: the current API must stay backward compatible with the released v1.2 contract (snapshot from master)."""
+"""D20: the current API must stay backward compatible with the released contracts (snapshots from master).
+AI-15: v1.3 snapshot added — /v2 (D24) is additive, every /v1 path and schema must survive the parallel period."""
 import json
 from pathlib import Path
 
+import pytest
+
 from app.main import app
 
-OLD = json.loads((Path(__file__).resolve().parents[2] / "coordination/claude/api/inference_openapi_v1.2.json").read_text(encoding="utf-8"))
+API = Path(__file__).resolve().parents[2] / "coordination/claude/api"
+SNAPSHOTS = {v: json.loads((API / f"inference_openapi_{v}.json").read_text(encoding="utf-8")) for v in ("v1.2", "v1.3")}
 NEW = app.openapi()
 # Deliberate v1.3 change (D18): fake metadata removed, fields kept but nullable. Clients reading strings get "".
 ALLOWED_NULLABLE = {("Recommendation", "title"), ("Recommendation", "thumbnail_url")}
@@ -24,13 +28,17 @@ def _type(prop):
     return prop.get("type") or tuple(sorted(json.dumps(p, sort_keys=True) for p in prop.get("anyOf", [])))
 
 
-def test_no_path_or_method_removed():
+@pytest.mark.parametrize("version", SNAPSHOTS)
+def test_no_path_or_method_removed(version):
+    OLD = SNAPSHOTS[version]
     for path, ops in OLD["paths"].items():
         assert path in NEW["paths"], path
         assert set(ops) <= set(NEW["paths"][path]), path
 
 
-def test_schemas_only_grow():
+@pytest.mark.parametrize("version", SNAPSHOTS)
+def test_schemas_only_grow(version):
+    OLD = SNAPSHOTS[version]
     old_s, new_s = OLD["components"]["schemas"], NEW["components"]["schemas"]
     requests = _request_models(OLD)
     for name, old in old_s.items():

@@ -14,6 +14,14 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | AI-07 | T1.8 | Vận hành runtime :8001 thật cho Codex gọi HTTP (+ sửa UTF-8 Windows) | DONE (2026-10-26; :8001 UP; ingest path ⇐ HC-05) | AI-10; Milvus stack Codex (UP) |
 | AI-11 | T1.8 / T4.2 | HO-01: `video_id` tùy chọn cho Vision + index frame từ data URI 1 fps (contract minor) | DONE (2026-10-26) | HO-01 (Codex chọn HTTP media) |
 | AI-13 | T1.7 / T1.8 | D18: recommendation inference không trả metadata giả + `recommendation_mode` | DONE (2026-10-26; release #3) | D18 |
+| AI-14 | T1.8 | D24 bước 1: tách facade/worker trong inference-service (contract v1.3 không đổi) + worker từ xa (MODEL_WORKER_URL) + kernel Kaggle worker GPU | DONE (2026-10-30, release #5) | D24 (user 2026-10-29) |
+| AI-15 | T1.8 | D24 bước 2: AI-API v2.0 (DRAFT) — AI trả vector/kết quả, Backend sở hữu MinIO/Milvus; v1.3 chạy song song; HC cho Codex | BLOCKED ⇐ RE:HC-13 E2E (phần AI xong 2026-10-29: v2.0 DRAFT, :8001 phục vụ /v1 + /v2) | AI-14; Codex (HC) cho phần backend |
+| AI-16 | T1.5 / T1.8 | Highlight: (B) đối chiếu checkpoint active với vòng đạt DoD; (A) hậu xử lý đúng như lúc chấm (làm mượt k, τ); (C) luật clip (độ dài, nối, biên câu) | DONE (2026-10-30, release #5) | user 2026-10-29 |
+| AI-17 | T1.5 | Fusion vòng 6: chuẩn hóa theo từng video + augment chống overfit; thay vòng 5 chỉ khi val ≥ 0.2750 và gap train−val < 0.205 | DONE (release #5; thay bởi vòng 7/8) | AI-16; user 2026-10-29 |
+| AI-18 | T1.5 | Fusion vòng 7: giảm overfit bằng lr/weight decay/lịch ngắn; thay vòng 6 chỉ khi val ≥ 0.3053, gap < 0.1692, val loss < 1.2136 | DONE (release #5; thay bởi vòng 8 ×10) | AI-17 |
+| AI-19 | T1.5 | (a) SỬA lỗi đặc trưng vision cho highlight (serve ViT ≠ train Siamese backbone); (b) dữ liệu tin tức 10 video gốc: feature + đề xuất + trang gán nhãn người → vòng 8 | DONE (2026-10-30; fix vision + nhãn tin tức đã intake) | user 2026-10-29 |
+| AI-20 | T1.5 | Fusion vòng 8: bóng đá + tin tức (nhãn người), lặp tin tức ×1/×10/×30; thay vòng 7 chỉ khi val tin tức +0.05 và giữ bóng đá | DONE (2026-10-30; quy tắc → GIỮ vòng 7; ×10 hứa hẹn, cần dữ liệu tin tức độc lập) | AI-19 |
+| AI-21 | T1.5 | Xác nhận vòng 8 ×10 trên test tin tức độc lập (kênh mới, nhãn mù); đổi khi test tin tức +0.05 và bóng đá ≥ −0.01 | DONE (2026-10-30, release #5; ×10 ACTIVE) | AI-20; user 2026-10-30 (hướng 1) |
 | AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | BLOCKED ⇐ bundle INT-13 (phần độc lập xong 2026-10-26) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | DONE (2026-10-26; sandbox + artifact; product → AI-12 theo D18) | HC-04 (sandbox READY) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a DONE (2026-10-27) · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
@@ -73,7 +81,7 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   ```
 
 ### AI-02 — ASR domain adaptation (T1.4 follow-up)
-- T gốc: T1.4 | Owner: claude | Status: 02a DONE · 02b IN_PROGRESS (user duyệt lại v3, 2026-10-27) · 02c BLOCKED ⇐ 02b
+- T gốc: T1.4 | Owner: claude | Status: 02a DONE · 02b DONE (user duyệt 51/60, 2026-10-28) · 02c DONE — guard loại, KHÔNG promote · **D23: dừng cải thiện cho MVP** (sau MVP: thu thêm audio domain có người duyệt)
 - Tiến độ duyệt (ghi 2026-10-26): **7/60 đã duyệt, 53/60 còn phải kiểm tra** — số 7/60 là tiến độ trang review hiển thị
   (lưu localStorage Chrome, `http://127.0.0.1:8891/asr_review_v2/index.html`); **chưa có file JSON export** nào
   (Downloads không có `asr_expansion_review_v2*.json`) → bằng chứng file hiện là 0/60. Gói dữ liệu:
@@ -89,6 +97,9 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   (gồm 10 câu ảo giác 'Để không bỏ lỡ…'/'Đi nào?', chuỗi lặp, lỗi chính tả rõ) → nhãn = Whisper, vi phạm §0. User chọn duyệt lại bản gọn.
   Trang v3 `asr_review_v3` (`prepare_expansion_review_v3.py`, test 10 passed + kiểm trình duyệt): 57 clip xếp ưu tiên 11/26/20, điền sẵn gợi ý Claude,
   **chỉ cho xác nhận sau khi audio phát hết** (`audio_played_full` trong export). 3 clip user đã sửa giữ từ v2. Intake 02c sẽ yêu cầu `audio_played_full=true`.
+- **AI-02b/02c (VERIFIED-NOW 2026-10-28, `docs/T1.4_asr_domain_replay_v2.md`):** export `86f0ce11…` 51 xác nhận / 9 loại (không lời); intake chặt 13 test;
+  domain replay v2 (81 clip) trên Kaggle T4: domain WER 91.26→83.71, VIVOS hết hồi quy (28.75→28.55) nhưng FLEURS kém ~2 điểm → guard loại mọi bước,
+  parent133 giữ nguyên, ASR active không đổi. Evidence `evidence/AI-02_2026-10-28/`. Commits 72405c9, 2bc1785, (commit kết quả).
 - **AI-02b — người duyệt (gốc):** user nghe/sửa/xác nhận hoặc loại từng clip, xuất JSON thật. Chỉ mục user xác nhận
   mới là `HUMAN_VERIFIED`. Claude **không** tự gán.
 - **AI-02c — intake + train (BLOCKED ⇐ 02b):** strict intake giữ machine-assisted provenance/coverage/train-only vocab/CTC/split guard;
@@ -99,7 +110,7 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - Checkpoint: Next safe task = AI-02a (không phụ thuộc user); 02b chờ user.
 
 ### AI-03 — Mini-GPT human quality gate (T1.6)
-- T gốc: T1.6 | Owner: claude | Status: 03a DONE · 03b DONE theo D22 (Claude duyệt, 2026-10-27) · 03c DONE — thí nghiệm xong, KHÔNG promote; cổng người ≥3/5 chưa đạt
+- T gốc: T1.6 | Owner: claude | Status: 03a DONE · 03b DONE theo D22 (Claude duyệt, 2026-10-27) · 03c DONE — KHÔNG promote; cổng người ≥3/5 chưa đạt · **D23: dừng cho MVP, tóm tắt = bản nháp admin duyệt**
 - Nguồn 40 clip real-domain (30 train / 10 val, ngoài frozen30): `data/manifests/minigpt_real_domain.json`; transcript user đã rà
   (export SHA `860f8068d0bd…`, 40 transcript/39 sửa) — `docs/T1.6_whisper_review_intake.md`.
 - **AI-03a — Claude soạn summary 40 clip (TODO, theo quyết định user 2026-10-26):** soạn từ transcript user đã rà; mỗi mục lưu
@@ -190,6 +201,135 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   Verified: unit 4 mới PASS; suite 51/7; live probe :8001 index+search+ASR presigned PASS, đã dọn
   Contract touched: yes (v1.2-rc1, chỉ thêm VisionRequest.video_id)
   Next safe task: release #2 (user duyệt push)
+  ```
+
+### AI-21 — Xác nhận vòng 8 ×10 trên test tin tức độc lập
+- T gốc: T1.5 | Owner: claude | Status: REVIEW (2026-10-30) — quy tắc đạt (tin tức +0.097, bóng đá −0.008) nhưng CI [−0.05, +0.24], dưới mốc đoán-bừa; chờ user
+- Depends on: AI-20 (×10 thỏa mọi ngưỡng riêng lẻ nhưng không được chọn theo quy tắc cũ) | user chọn hướng 1 (2026-10-30)
+- Quy tắc đăng ký trước: `.claude/evaluation_plan.md` §2.1 "Xác nhận vòng 8 ×10". Ứng viên cố định; nhãn test mù; test tin tức chấm 1 lần.
+- Việc: tìm + tải 6–10 video CC BY kênh mới (yt-dlp, giữ provenance/SHA) → feature đường production → trang gán nhãn MÙ → user gán → intake → chấm.
+- Evidence (VERIFIED-NOW 2026-10-30, `coordination/claude/evidence/AI-21_2026-10-30/`): test tin tức vòng 7 0.024 / ×10 0.121 (mốc đoán-bừa 0.281);
+  kênh mới ×10 0.0; bóng đá 0.3298 → 0.3222; bootstrap CI95 Δ [−0.053, +0.238]. Quy tắc → chuyển; hiệu quả chưa vững.
+- Kích hoạt (VERIFIED-NOW 2026-10-30, user chọn "kích hoạt theo quy tắc"): vòng 7 sao lưu `_archive/highlight_fusion_round7_550909de/`; luật clip chọn trên val
+  (nối ≤1 s, bỏ <3 s; test 0.3246); validate 6/6; :8001 PID 19220 smoke 9/9; contract §1 SHA `5aecd5c4…`; dataset Kaggle worker version mới ready.
+- Commits: ad79d0d, 10a38d3, f95da24, b56a824, c27e21f, (kích hoạt: commit này)
+
+### AI-20 — Fusion vòng 8: bóng đá + tin tức có nhãn người
+- T gốc: T1.5 | Owner: claude | Status: DONE (2026-10-30) — theo quy tắc đăng ký: GIỮ vòng 7 (thắng ×1 trượt gap 0.224 > 0.1706)
+- Depends on: AI-19 (nhãn tin tức) | Blocks: —
+- Quy tắc: đăng ký trước `.claude/evaluation_plan.md` §2.1 "Vòng 8". Kernel mới `traininghighlight/ai-core-fusion-r8`; dataset private `traininghighlight/highlight-news-v1`
+  (chỉ đặc trưng + nhãn, không có video).
+- Acceptance: 3 biến thể × 3 seed; chấm local; quyết bằng val; test bóng đá sau quyết; đạt → đề xuất kích hoạt.
+- Evidence (VERIFIED-NOW 2026-10-30, `coordination/claude/evidence/AI-20_2026-10-30/`): vòng 7 tin tức val 0.185 (dưới đoán-bừa 0.22);
+  ×1 bóng đá 0.3126 / tin tức 0.511 / gap 0.224 (trượt) / test 0.3267; ×10 bóng đá 0.3228 / tin tức 0.376 / gap 0.133 (thỏa riêng, nhưng không được chọn theo quy tắc);
+  ×30 0.306 / 0.192. Val loss đáy step 300–1500 rồi +48–65% mọi run. τ chung không hợp tin tức. Val tin tức 3 video, 1 cùng kênh với train.
+- Commits: da5a55e, 8984b7b, b2f05a2, (kết quả: commit này) | Checkpoint: giữ vòng 7; đề xuất thu thêm tin tức làm val/test độc lập rồi xác nhận ×10
+
+### AI-19 — Highlight: sửa đặc trưng vision + dữ liệu tin tức có nhãn người
+- T gốc: T1.5 | Owner: claude | Status: DONE (2026-10-30) — (a) fix vision; (b) nhãn tin tức khoatm 10/10 video HUMAN_VERIFIED, intake với gộp đoạn chồng (`coordination/claude/evidence/AI-20_2026-10-30/news_intake_report.json`)
+- Depends on: AI-18 (vòng 7 active); quyết định user 2026-10-29 | Blocks: vòng 8 (cần file nhãn HUMAN_VERIFIED)
+- (a) DONE 2026-10-29 (1b5e211): `embeddings_256` = backbone Siamese (đặc trưng Fusion đã train; trước là ViT phân loại, cosine 0.03–0.13);
+  `tests/test_feature_parity.py` khóa với checkpoint thật; :8001 PID 30580 smoke 9/9; REL cho Codex (video cũ cần chạy lại highlight).
+- (b) Quyết định user (2026-10-29): dùng 10 video tin tức GỐC `D:/data_training_ai/minigpt_real_video_20261015/raw/youtube` cho train highlight;
+  30 đoạn `evaluation/` (tập chấm MiniGPT) giữ nguyên, không dùng. Sau khi dùng, 10 nguồn này KHÔNG được làm test highlight.
+  Nhãn: AI đề xuất (CLAUDE_PROPOSED) → user sửa/duyệt trên `label_news.html` → export HUMAN_VERIFIED → intake → vòng 8.
+- Evidence: — | Commits: — | Checkpoint: —
+
+### AI-18 — Fusion vòng 7: giảm overfit (learning rate / weight decay / lịch ngắn)
+- T gốc: T1.5 | Owner: claude | Status: REVIEW (2026-10-29) — đạt cả 3 điều kiện; **ACTIVE** trên :8001 (user ra lệnh); recipe τ 0.51, bỏ clip < 3 s, video < 120 s không clip; vòng 6 lưu `_archive/highlight_fusion_round6_9b59a7b0/`
+- Depends on: AI-17 (vòng 6 active; val loss đáy step 500–1100 rồi tăng) | Blocks: —
+- Quy tắc: đăng ký trước `.claude/evaluation_plan.md` §2.1 "Vòng 7". Kernel mới `traininghighlight/ai-core-fusion-r7` (giữ output vòng 6).
+- Acceptance: sweep 4 biến thể + (nếu thắng mốc) 3 seed; chấm local; quyết bằng val + gap + val loss; test 1 lần sau quyết; đạt → đề xuất kích hoạt.
+- Evidence (VERIFIED-NOW 2026-10-29, `coordination/claude/evidence/AI-18_2026-10-29/`): thắng wd 0.3; ensemble val 0.3151 / gap 0.1606 / val loss 1.1477 → ĐẠT;
+  test 0.3298 (vòng 6 0.3280). LR 1e-4 hoặc 1500 step: hết overfit theo val loss (+2–6%) nhưng F1 thấp hơn.
+- Commits: 265bc16, f971166, 8e6b014, (kết quả: commit này) | Checkpoint: chờ quyết kích hoạt
+
+### AI-17 — Fusion vòng 6: giảm overfit (chuẩn hóa theo video + augment)
+- T gốc: T1.5 | Owner: claude | Status: REVIEW (2026-10-29) — vòng 6 đạt quy tắc; **ACTIVE** trên :8001 (user ra lệnh), chờ release
+- Kích hoạt (VERIFIED-NOW 2026-10-29): vòng 5 sao lưu `ai-core/checkpoints/_archive/highlight_fusion_round5_34199b68/`; validate 6/6; :8001 PID 27064 smoke 9/9;
+  contract §1 SHA `9b59a7b0…`; dataset Kaggle worker version mới ready (dry-run nạp đủ 6, feature_norm). Giới hạn: video < ~2 phút ngoài phân bố train.
+- Depends on: AI-16 (đo overfit: train 0.480 / val 0.275 / test 0.263) | Blocks: —
+- Quy tắc chọn: đăng ký trước trong `.claude/evaluation_plan.md` §2.1 (vòng 6). Kernel Kaggle MỚI (không ghi đè output vòng 5).
+- Acceptance: 4 biến thể sweep + 3 seed trên Kaggle; chấm local quy trình DoD; quyết bằng val + gap; test báo cáo 1 lần; nếu đạt → đề xuất kích hoạt (user duyệt).
+- Evidence (VERIFIED-NOW 2026-10-29, `coordination/claude/evidence/AI-17_2026-10-29/`): thắng n1_a1 (chuẩn hóa + augment); ensemble val 0.3053 (≥0.2750),
+  gap train−val 0.1692 (<0.205) → ĐẠT; test 0.3280 (vòng 5: 0.2632). Service path 0.3281; luật clip chọn trên val (bỏ < 5 s) → test 0.3334.
+  Đường cong: val loss đáy ở step 500–1100 rồi tăng 22–136% mọi run (overfit sau ~1/4 lịch) — ghi cho vòng sau. ai-core 319 passed; inference 78/10.
+- Commits: 8ca8336 (đăng ký), 8f028d2 (code+kernel), 10a2417 (val-loss monitor), f08e842 (zip), d8a8bac (kết quả), 45d9320 (ứng viên) | Checkpoint:
+  ```
+  Lane: claude
+  Changed: ai-core/ai_core/{config.py,training/trainer.py,training/datasets/highlight_dataset.py}, tests (norm/aug, trainer val loss), inference-service/app/worker.py (feature_norm), dist/kaggle/kernel-fusion-r6, evaluation_plan §2.1, evidence AI-17
+  Verified: ai-core 319; inference 78/10; round 6 val 0.3053 / gap 0.169 / test 0.3280; service path 0.3281
+  Contract touched: no (chưa kích hoạt; kích hoạt = đổi SHA highlight + release)
+  Next safe task: user duyệt kích hoạt vòng 6
+  ```
+
+### AI-16 — Highlight: checkpoint đúng vòng DoD + hậu xử lý như lúc chấm + luật clip
+- T gốc: T1.5 / T1.8 | Owner: claude | Status: REVIEW (2026-10-29) — B/A/C xong; **vòng 5 ACTIVE** trên :8001 (user: "hãy kích hoạt models training mới nhất"); chờ release
+- Kích hoạt (VERIFIED-NOW 2026-10-29): sao lưu vòng 3 → `ai-core/checkpoints/_archive/highlight_fusion_round3_becbd378/`; 4 file vòng 5 vào `highlight_fusion/`
+  (SHA khớp ứng viên); validate_artifacts 6/6; :8001 restart PID 14896, smoke 9/9 (`smoke_8001_round5_active.log`); contract §1 SHA `34199b68…`;
+  dataset Kaggle worker version mới (ensemble + code) ready, kernel dry-run nạp đủ 6. ASR 02c / MiniGPT 03c KHÔNG kích hoạt (trượt guard/cổng).
+- Depends on: user 2026-10-29 (B trước, rồi A + C) | Blocks: HC cho Codex (ngưỡng CMS, FFmpeg cắt chính xác)
+- Bối cảnh: DoD T1.5 đạt với gộp 3 seed + làm mượt k=9 + τ=0.51 (`docs/T1.5_bao_cao.md` §6g), nhưng service chạy 1 checkpoint, không làm mượt, ngưỡng cứng 75;
+  `best.pt` active = d256/p0.3 seed 1337 (val F1 0.199 step 1300) trong khi vòng 5 chốt d128/p0.3.
+- Việc: (B) chỉ đọc — xác định checkpoint active thuộc vòng nào, checkpoint vòng 5 còn không, SHA; (A) hậu xử lý đúng cấu hình đã chấm;
+  (C) độ dài clip tối thiểu/tối đa, nối khe ngắn, biên theo câu ASR. Đổi checkpoint active = bump contract + release (user duyệt).
+- Acceptance: báo cáo B có bằng chứng; A/C có test + đo trên tập test đã khóa (không chọn tham số bằng test); contract cập nhật; suite + smoke PASS.
+- Evidence (VERIFIED-NOW 2026-10-29, `coordination/claude/evidence/AI-16_2026-10-29/`): active = vòng 3 (DoD không đạt); service path tái hiện vòng 5
+  test F1 0.2628 (DoD 0.2632); ngưỡng 75 cùng model 0.168; luật clip chọn trên val (gap 5/min 3) test F1 0.2624, clip < 3 s 97 → 0;
+  inference 77/10; :8001 restart PID 23292 smoke 9/9, highlight example SAME (active chưa đổi). Ứng viên `D:/tmp/ai16_20261029/candidate/highlight_fusion/`.
+- Commits: b26110b (task), 449bfd4 (B), b7ca117 (A+C code/test/evidence), (contract/HC-14: commit này) | Checkpoint:
+  ```
+  Lane: claude
+  Changed: inference-service/app/{registry,worker,services,schemas}.py, tests/{test_highlight_recipe (mới),test_worker}.py; api/{AI_API_CONTRACT.md,inference_openapi.json}; HANDOFF_OUT (HC-14); evidence AI-16
+  Verified: inference 77/10; recipe == eval pipeline; service F1 0.2628 on locked test; smoke :8001 9/9, active highlight unchanged
+  Contract touched: yes (v1.4-rc1 DRAFT: asr_segments tùy chọn; đổi checkpoint chờ duyệt)
+  Next safe task: user duyệt kích hoạt vòng 5 → contract §1 + release; Kaggle dataset rebuild
+  ```
+
+### AI-15 — D24 bước 2: AI-API v2.0 — inference-service chỉ tính toán, Backend sở hữu dữ liệu
+- T gốc: T1.8 | Owner: claude | Status: BLOCKED ⇐ Codex RE:HC-13 (E2E backend dùng /v2) — phần AI xong 2026-10-29 (contract v2.0 DRAFT, endpoint thật, HC-13)
+- Depends on: AI-14 (worker thuần) | Blocks: gỡ minio/pymilvus khỏi inference-service (sau khi Codex E2E PASS); INT-xx phía Codex
+- Việc (phía AI): contract v2.0 DRAFT (vision trả thêm `siamese_vectors`, không ghi MinIO/Milvus; search nhận ảnh → vector 128; ASR nhận bytes audio multipart,
+  chia đoạn; recommendation encode → vector 128 khớp Two-Tower; highlight/completions giữ nguyên) + `inference_openapi.json` + examples thật + error codes
+  + bảng di chuyển v1.3→v2.0; hiện thực endpoint v2 thuần (qua worker AI-14), v1.3 không vỡ; HC cho Codex (Milvus Go, MinIO thumbnail, audio bytes,
+  ingest gọi API mới, recommendation tra Milvus, migrate 280 vector, xóa video đồng bộ, E2E). Sau Codex E2E PASS: release → gỡ minio/pymilvus, v1.3 DEPRECATED.
+- Acceptance (phần AI): endpoint v2 không import/gọi MinIO/Milvus (test khóa); suite inference + compat v1.2 PASS; smoke v1.3 6/6 + v2 thật trên :8001; contract v2.0 DRAFT + REL + HC.
+- Evidence (VERIFIED-NOW 2026-10-29, `coordination/claude/evidence/AI-15_2026-10-29/`): inference 71 passed / 10 skipped (compat v1.2 + v1.3);
+  smoke :8001 9/9 (v1 6/6 + 401, v2 3/3 trùng v1 trên media thật; reco v2 503 MODEL_NOT_READY); OpenAPI chỉ thêm; Milvus đo 411 vector / 49 video.
+  Còn lại (sau RE:HC-13): release → /v2 API_READY, /v1 media/search/reco DEPRECATED → gỡ minio/pymilvus + Milvus khỏi lifespan.
+- Commits: bfa4a40 (task), e307bf2 (code), deecc45 (smoke/examples/openapi), (contract/HC-13: commit này) | Checkpoint:
+  ```
+  Lane: claude
+  Changed: inference-service/app/{v2 (mới),schemas,main,services,worker}.py, tests/{test_v2 (mới),test_live_smoke,test_contract_compat,test_worker}.py, README;
+           coordination/claude/api/{AI_API_CONTRACT_V2.md (mới),AI_API_CONTRACT.md,inference_openapi.json,inference_openapi_v1.3.json,examples/v2_*}; HANDOFF_OUT (REL + HC-13); plan 01 (1 dòng D24)
+  Verified: inference 71/10; smoke :8001 9/9 (v1 + v2 thật); openapi additive
+  Contract touched: yes (AI-API v2.0 DRAFT thêm /v2; v1.3 không đổi)
+  Next safe task: chờ RE:HC-13; song song AI-12 khi có dữ liệu INT-15
+  ```
+
+### AI-14 — D24 bước 1: tách facade/worker trong inference-service
+- T gốc: T1.8 | Owner: claude | Status: REVIEW (2026-10-29) — đạt Acceptance trên `claude/ai-core`, chờ release; kernel Kaggle dựng + dry-run local, chưa push (chờ user)
+- Depends on: D24 (user 2026-10-29: AI service chỉ tính toán, backend sở hữu dữ liệu; làm tuần tự bước 1 → bước 2) | Blocks: AI-15 (bước 2, contract v2.0)
+- Việc: `app/worker.py` = lớp worker thuần (6 model; nhận ảnh bytes / PCM bytes / vector / text → nhãn / vector / text; không import minio/pymilvus);
+  facade (`main.py`, `services.py`, `visual_index.py`) giữ nguyên 7 endpoint, Bearer, validation, error code và toàn bộ I/O MinIO/Milvus.
+  `MODEL_WORKER_URL` trống = worker cùng tiến trình (mặc định, y hệt hiện nay); có URL = facade gọi worker HTTP nội bộ, Bearer riêng `MODEL_WORKER_KEY`
+  (không commit; cấm `sk-local-dev-key`). Kernel Kaggle `dist/kaggle/kernel-model-worker/` (worker GPU + cloudflared quick tunnel, không dữ liệu người dùng).
+- Acceptance: ai-core suite + inference suite (gồm `test_contract_compat.py`) PASS; unit test worker không cần Milvus/MinIO; smoke :8001 6/6 + 401 (worker in-process);
+  1 smoke worker từ xa (process local khác cổng hoặc Kaggle) cùng schema; contract giữ v1.3 (chỉ thêm ghi chú kiến trúc).
+- Evidence (VERIFIED-NOW 2026-10-29, `coordination/claude/evidence/AI-14_2026-10-29/`): inference 63 passed / 7 skipped (baseline 55/7, +8 test worker);
+  ai-core 314 passed; OpenAPI == `inference_openapi.json` v1.3; smoke :8001 in-process 6/6 + 401, response trùng examples công bố (trừ search do Milvus có thêm vid_ai11probe);
+  smoke worker từ xa (worker :8002 + facade :8001 `MODEL_WORKER_URL`) 6/6 + 401, response trùng in-process, health chỉ thêm `model_worker`;
+  worker chết → 503 + `model_worker: unavailable`, không degraded; :8001 khôi phục in-process (PID 16292) 6/6; kernel Kaggle dry-run local OK.
+- Kaggle (user 2026-10-29: chỉ upload dataset): `traininghighlight/ai-model-worker-v1` private, status ready (manifest SHA = contract §1; Kaggle tự giải nén zip).
+  Version 2 (2026-10-29, sau AI-15): code worker mới (`inference_service.zip` 8b098b0d…), checkpoint không đổi. Kernel thêm kiểm GPU fail-fast + log nvidia-smi 10 phút (tham khảo video user gửi, 8d1e0e8).
+  Kernel `traininghighlight/ai-model-worker` **chưa push** — push = mở phiên GPU; user tự Run khi cần.
+- Commits: 7465f2b (task), 8086067 (code + test), 178d9fe (docs/evidence) | Checkpoint:
+  ```
+  Lane: claude
+  Changed: inference-service/app/{worker,worker_client,worker_app}.py (mới), {services,visual_index,main,config}.py, tests/{test_worker (mới),test_health_status,test_visual_search}.py, README, .env.example; dist/kaggle/kernel-model-worker/**; contract §1d/§2.7/changelog (v1.3 không đổi)
+  Verified: inference 63/7; ai-core 314; openapi identical; smoke in-process 6/6+401; smoke remote worker 6/6+401 (same responses)
+  Contract touched: no (AI-API v1.3; chỉ ghi chú kiến trúc + key dependencies.model_worker ở chế độ remote)
+  Next safe task: AI-15 (D24 bước 2, contract v2.0 DRAFT)
   ```
 
 ### AI-13 — Recommendation inference: không metadata giả + recommendation_mode (D18 mục 6–7)
@@ -346,6 +486,8 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - Đợt #1 (2026-10-26, user uỷ quyền tự quyết): **DONE** — xóa 6 mục REGENERABLE trên D:, giải phóng 5,530,226,688 byte
   (D: 1.22 → 6.75 GB); ai-core 285 PASS, inference 37 PASS/1 skip, SHA 6 checkpoint không đổi, server :8891 HTTP 200.
   Manifest + kết quả: `coordination/claude/cleanup/CLEANUP_2026-10-26.md`. Task vẫn TODO cho các đợt sau.
+- Đợt #2 (2026-10-30, user duyệt 4 nhóm): **DONE** — xóa 4 parquet gốc công khai có checksum (tin tức + FLEURS train/val) + 4 thư mục scratch
+  `D:/tmp`; D: 0.84 → 7.1 GB; ai-core 319, inference 81/10, 6 checkpoint SHA khớp, manifest path 0 thiếu. `coordination/claude/cleanup/CLEANUP_2026-10-30.md`.
 - Evidence: VERIFIED-NOW 2026-10-26 (đợt #1, xem manifest) | Commits: `a5f340f` (manifest trước khi xóa) + commit kết quả | Checkpoint: SESSION.md
 
 ### AI-06 — Xác minh nguồn checkpoint + thang sẵn sàng 6 model (ƯU TIÊN 1)

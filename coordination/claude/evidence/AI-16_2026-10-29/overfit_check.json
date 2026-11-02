@@ -1,0 +1,23 @@
+{
+ "train_first60": {
+  "halves": 60,
+  "f1": 0.48,
+  "positive_rate": 0.0457,
+  "mean_score_pos": 0.667,
+  "mean_score_neg": 0.211
+ },
+ "val": {
+  "halves": 28,
+  "f1": 0.2748,
+  "positive_rate": 0.0369,
+  "mean_score_pos": 0.401,
+  "mean_score_neg": 0.169
+ },
+ "test": {
+  "halves": 27,
+  "f1": 0.2628,
+  "positive_rate": 0.0412,
+  "mean_score_pos": 0.426,
+  "mean_score_neg": 0.19
+ }
+}

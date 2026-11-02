@@ -1,0 +1,9 @@
+{
+ "http_status": 503,
+ "body": {
+  "error": {
+   "code": "MODEL_NOT_READY",
+   "message": "Two-Tower v2 checkpoint not trained yet (AI-12); gateway keeps popularity fallback"
+  }
+ }
+}

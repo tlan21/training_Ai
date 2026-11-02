@@ -1,0 +1,71 @@
+{
+ "rater": "khoatm",
+ "exported_at": "2026-10-30T08:23:53.573Z",
+ "videos": 8,
+ "split": {
+  "test": [
+   "-NVYudDYCLQ",
+   "c46Liq1aP1s",
+   "cMN-OAoQiCw",
+   "UN2srxcqpa8",
+   "vAhqmmmqKHg",
+   "ViEjwRu-j3o",
+   "W0U-UheMYOk",
+   "XMgP3vcO-C8"
+  ]
+ },
+ "positive_rate": {
+  "-NVYudDYCLQ": 0.0201,
+  "c46Liq1aP1s": 0.1345,
+  "cMN-OAoQiCw": 0.2805,
+  "UN2srxcqpa8": 0.3807,
+  "vAhqmmmqKHg": 0.1912,
+  "ViEjwRu-j3o": 0.2169,
+  "W0U-UheMYOk": 0.2252,
+  "XMgP3vcO-C8": 0.0217
+ },
+ "merge_overlaps": {
+  "-NVYudDYCLQ": [
+   3,
+   1
+  ],
+  "c46Liq1aP1s": [
+   24,
+   11
+  ],
+  "cMN-OAoQiCw": [
+   28,
+   14
+  ],
+  "UN2srxcqpa8": [
+   17,
+   11
+  ],
+  "vAhqmmmqKHg": [
+   20,
+   13
+  ],
+  "ViEjwRu-j3o": [
+   18,
+   8
+  ],
+  "W0U-UheMYOk": [
+   19,
+   9
+  ],
+  "XMgP3vcO-C8": [
+   2,
+   1
+  ]
+ },
+ "segment_seconds": {
+  "-NVYudDYCLQ": 26.3,
+  "c46Liq1aP1s": 217.0,
+  "cMN-OAoQiCw": 266.4,
+  "UN2srxcqpa8": 168.8,
+  "vAhqmmmqKHg": 193.4,
+  "ViEjwRu-j3o": 171.9,
+  "W0U-UheMYOk": 184.5,
+  "XMgP3vcO-C8": 19.2
+ }
+}

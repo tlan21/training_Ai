@@ -1,0 +1,10 @@
+tests/test_live_smoke.py::test_health_real_and_auth PASSED               [ 11%]
+tests/test_live_smoke.py::test_vision_then_highlight PASSED              [ 22%]
+tests/test_live_smoke.py::test_asr PASSED                                [ 33%]
+tests/test_live_smoke.py::test_completions PASSED                        [ 44%]
+tests/test_live_smoke.py::test_search_needs_milvus PASSED                [ 55%]
+tests/test_live_smoke.py::test_recommendation_contract PASSED            [ 66%]
+tests/test_live_smoke.py::test_v2_vision_and_search_match_v1 PASSED      [ 77%]
+tests/test_live_smoke.py::test_v2_asr_bytes_match_v1_path PASSED         [ 88%]
+tests/test_live_smoke.py::test_v2_recommendation_encode_not_ready PASSED [100%]
+============================== 9 passed in 4.56s ==============================

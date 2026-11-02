@@ -62,7 +62,7 @@ Upload Video (S3 / MinIO Storage)
    ├── ViT           → category_suggestion (MongoDB); Admin duyệt mới ghi category_id (Postgres) — nguyên tắc 6.3.3
    ├── Highlight Fusion → timeline_scores[] & ai_generated_clips[] (MongoDB)
    ├── ASR           → subtitles[] (MongoDB) + full_transcript (Bộ nhớ tạm)
-   └── Siamese ViT   → Milvus: video_frame_embeddings (128-dim, HNSW, Cosine)
+   └── Siamese ViT   → vector 128-dim → Milvus: video_frame_embeddings (HNSW, Cosine) — D24: Backend ghi Milvus, AI chỉ trả vector
    │
    ▼  [GIAI ĐOẠN 3 — GPU Tuần tự sau · Post-Inference]
    └── Mini-GPT ← Nhận full_transcript (từ ASR Giai đoạn 2)
@@ -78,3 +78,26 @@ Upload Video (S3 / MinIO Storage)
 1. **AI chỉ ra quyết định, không đụng file nhị phân:** AI output là tensor/float. FFmpeg / PyAV thực thi thao tác binary trên container .mp4.
 2. **Client chỉ thấy dữ liệu đã phê duyệt:** `videos.status = 'processed'` và `clips.status = 'published'` mới xuất hiện trên Client.
 3. **AI Tagging là đề xuất — Admin là quyết định cuối:** `category_suggestion` được ViT tự sinh. Chỉ khi Admin phê duyệt tại CMS, trường `category_id` mới ghi vào Postgres.
+
+### 6.4. Kiến trúc đích D24 (quyết định user 2026-10-29): AI chỉ tính toán, Backend sở hữu dữ liệu
+
+```
+Client / CMS ──HTTP──▶ Backend Go Gateway (+ ingest worker, job queue)
+                          │  điều phối, nghiệp vụ, xác thực, SỞ HỮU TOÀN BỘ DỮ LIỆU
+                          ├── MinIO     media gốc, clip, thumbnail
+                          ├── Milvus    vector (video_frame_embeddings, user_recommendation_embeddings)
+                          ├── Postgres  metadata, jobs, tương tác
+                          └── MongoDB   phụ đề, summary, timeline highlight
+                          │
+                          │  HTTP nội bộ (Bearer AI_SERVICE_KEY)
+                          │  vào: ảnh, bytes audio, đặc trưng/giây, text   ra: nhãn, vector, text, điểm
+                          ▼
+              AI Inference Service :8001  (KHÔNG kết nối MinIO/Milvus/DB)
+                ├── facade: endpoint, auth, validation, error code, hàng đợi GPU
+                └── model worker thuần (6 checkpoint) — cùng tiến trình (mặc định)
+                      hoặc worker GPU từ xa qua MODEL_WORKER_URL (vd Kaggle, chỉ khi cần)
+```
+
+- Hợp đồng: AI-API v2.0 (`coordination/claude/api/AI_API_CONTRACT_V2.md`). Chuyển tiếp: `/v1` (đọc/ghi Milvus/MinIO) chạy song song tới khi Backend chuyển xong
+  (HC-13), sau đó DEPRECATED và gỡ `minio`/`pymilvus` khỏi inference-service.
+- Nguyên tắc 6.3 giữ nguyên: AI chỉ ra quyết định (tensor/float/text); FFmpeg/PyAV xử lý file nhị phân; Admin duyệt trước khi Client thấy.

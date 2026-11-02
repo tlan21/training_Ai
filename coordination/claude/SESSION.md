@@ -3,19 +3,19 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
-- Task: AI-02c IN_PROGRESS (2026-10-28) — Kaggle `asr-domain-replay-guarded-v2` (81 clip domain). Release #4 lên master 2026-10-28.
-  :8001 UP lại 2026-10-27 (PID 26848) sau khi user bật Docker; smoke 6/6 + 401. Gateway :8000 DOWN (Codex).
-- Trước đó: (2026-10-27) AI-02a DONE (60 đề xuất ASR CLAUDE_PROPOSED), AI-03a DONE, AI-04 DONE (PRELIMINARY_T4). Verify bundle INT-15 → NO_DATA.
-  Còn mở đều chờ người/dữ liệu: AI-02b, AI-03b (user duyệt), AI-12 (tương tác thật INT-15), AI-04 nghiệm thu RTX 3060.
-  AI-12 BLOCKED ⇐ bundle INT-13 (phần độc lập xong). Runtime :8001 UP PID 16808 (restart AI-13).
-- Release #2 đã lên `master` 70bf011 (user duyệt 2026-10-26). AI-API v1.2: 6 endpoint API_READY, recommendation DRAFT.
-- Kế an toàn: AI-09 (đặc tả embedding/schema/version; chờ Codex báo sandbox UP), AI-04 (VRAM T4 sơ bộ), AI-03a, AI-02a.
-- **Runtime :8001: UP từ 2026-10-26 (restart cho AI-11), PID 21520** (`inference-service/run_local_8001.cmd`, log `D:/tmp/ai07_runtime/inference_8001.log`).
-  Dừng: `taskkill //PID <pid> //F` (pid từ `netstat -ano | grep :8001`). Khởi lại: contract §1c.
-- Bước đã xong: —
-- Bước kế: —
+- Task: **AI-16 REVIEW (2026-10-29)** — highlight vòng 5 ACTIVE trên :8001 (PID 14896); chờ release. Rollback: `_archive/highlight_fusion_round3_becbd378/`.
+- **AI-17 REVIEW:** vòng 6 ACTIVE trên :8001 (PID 27064). Rollback `_archive/highlight_fusion_round5_34199b68/`.
+- **AI-18 REVIEW:** vòng 7 ACTIVE trên :8001 (rollback `_archive/highlight_fusion_round6_9b59a7b0/`).
+- **AI-19 DONE / AI-20 DONE (giữ vòng 7).** :8001 PID 19884 (vòng 7 active).
+- **Release #5 (2026-10-30):** làn AI lên master (AI-API v1.4 + v2.0 DRAFT, D24–D26). :8001 PID 19220 = vòng 8 ×10. Còn mở: AI-15 ⇐ RE:HC-13; AI-12 ⇐ INT-15; AI-04 ⇐ RTX 3060; AI-05.
+  mở `D:/data_training_ai/highlight_news_v1/label_news.html` → xuất `highlight_news_labels.json` → Claude chạy
+  `dist/kaggle/kernel-fusion-r8/intake_news_labels.py` → đăng ký + train vòng 8 (bóng đá + tin tức).
+  **Runtime :8001 UP PID 15852** (code AI-15: /v1 + /v2, worker cùng tiến trình); gateway Codex trỏ :8001 thật. Dataset Kaggle `ai-model-worker-v1` uploaded, kernel chưa push.
+- Bước kế: đọc RE:HC-13 → release (user duyệt) → /v2 API_READY, /v1 DEPRECATED → gỡ minio/pymilvus. Release cũng là lúc ghi D24 + sơ đồ đích vào
+  PROJECT_STATUS / master plan / kien_truc_va_thuat_toan_ai.md (file chung, theo yêu cầu user 2026-10-29).
 - File đang sửa: —
 - Lệnh verify dở: —
+- Trước đó (2026-10-28): D23 ASR/MiniGPT dừng cải thiện cho MVP; HC-12. AI-12 ⇐ INT-15; AI-04 nghiệm thu ⇐ RTX 3060.
 
 ## Task kế an toàn
 AI-10 (health/degraded, D15) → AI-07 (:8001 thật + UTF-8, D16) → chuẩn bị release, user duyệt push → công bố API_READY. Chờ: AI-09 (⇐ HC-04).

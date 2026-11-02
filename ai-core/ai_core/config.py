@@ -63,6 +63,7 @@ class TrainConfig:
     log_dir: str = "runs/"
     eval_every: int = 0
     metric_name: str = ""
+    val_loss: bool = False      # AI-17: also compute loss_fn on the val loader at each eval (overfit monitor)
     loss: str = ""                       # override key trong LOSS_FNS; rỗng = lấy theo tên model
     neg_alpha: float = 0.0               # two_tower: q(i) ∝ count(i)^alpha khi sample negative
 

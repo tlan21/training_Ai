@@ -47,8 +47,8 @@ def test_encode_is_batched_finite_128d_and_inference_only(monkeypatch):
             assert not torch.is_grad_enabled()
             assert batch.shape == (2, 3, 224, 224)
             return torch.ones(2, 128) / 128**.5
-    monkeypatch.setattr(visual_index.registry, "models", {"siamese": Siamese()})
-    rows = visual_index.encode([torch.zeros(3,224,224)]*2)
+    monkeypatch.setattr(services.registry, "models", {"siamese": Siamese()})
+    rows = visual_index.encode([base64.b64decode(query_image())]*2)   # facade → in-process worker
     assert len(rows) == 2 and len(rows[0]) == 128
     assert sum(x*x for x in rows[0]) == pytest.approx(1)
 
@@ -139,7 +139,10 @@ def test_vision_passes_video_id_and_bad_id_is_not_model_failure(monkeypatch):
     class ViT:
         def __call__(self, imgs, return_embedding):
             return torch.zeros(len(imgs), 4), torch.zeros(len(imgs), 256)
-    monkeypatch.setattr(services.registry, "models", {"vit": ViT()})
+    class Siamese:
+        def backbone(self, imgs, return_embedding):
+            return None, torch.zeros(len(imgs), 256)
+    monkeypatch.setattr(services.registry, "models", {"vit": ViT(), "siamese": Siamese()})
     monkeypatch.setattr(services.registry, "vit_classes", ["bong_da", "the_thao", "ca_nhac", "tin_tuc"])
 
     def index(refs, video_id=None):

@@ -253,3 +253,137 @@ Chia việc không chồng chéo (PROJECT_STATUS D18):
   công thức domain replay v2 (đang train trên Kaggle, chưa promote).
 - Gate: ai-core 314; inference 55/7 skip (compat v1.2 PASS); smoke :8001 6/6 + 401; tool tests 64. Evidence `coordination/claude/evidence/RELEASE4_2026-10-28/`.
 - Nhắc lại việc phía Codex: HC-11 (gateway race Postgres), HO-03 (chuyển gateway từ ai-mock sang :8001 thật).
+
+## 2026-10-28 HC-12 — D23: phụ đề + tóm tắt AI là bản nháp, admin duyệt trước khi lên client (Codex xác nhận RE:HC-12)
+- User quyết D23 sau AI-02c (ASR domain replay v2 bị guard loại; WER video thật ~84%): dừng cải thiện ASR/MiniGPT cho MVP, checkpoint active giữ nguyên.
+- Đề nghị Codex kiểm/bảo đảm (file Codex, Claude không sửa):
+  1. Tóm tắt AI không tự hiển thị cho client khi `summary_status` chưa được admin duyệt (`/api/cms/videos/{id}/summary/approve`).
+  2. Phụ đề AI có nhãn "bản nháp máy"/cho admin sửa qua `/api/cms/videos/{id}/subtitles` trước khi coi là phụ đề chính thức (hoặc ẩn ở client tới khi duyệt).
+  3. CMS hiển thị rõ đây là gợi ý AI cần kiểm tra.
+- Không đổi API/contract schema (v1.3); contract §2 thêm ghi chú chất lượng. Nếu luồng hiện tại đã đúng, chỉ cần ghi bằng chứng trong RE:HC-12.
+
+## 2026-10-29 NOTE AI-14 — D24 bước 1: inference-service tách facade/worker (AI-API **v1.3 không đổi**, chỉ trên `claude/ai-core`)
+- User quyết D24 (2026-10-29): đích là AI service chỉ tính toán, Backend sở hữu MinIO/Milvus/Postgres/Mongo; làm tuần tự bước 1 → bước 2.
+- Bước 1 (xong, không cần Codex làm gì): bên trong inference-service, worker thuần (6 model) tách khỏi facade (7 endpoint + MinIO/Milvus như cũ).
+  OpenAPI trùng v1.3, smoke :8001 6/6 + 401. Runtime :8001 vẫn worker cùng tiến trình (PID 16292). Contract §1d.
+- Tùy chọn mới (nội bộ Claude): `MODEL_WORKER_URL`/`MODEL_WORKER_KEY` cho worker GPU từ xa (Kaggle). Khi bật, `/health.dependencies` có thêm `model_worker`.
+- Bước 2 (sắp tới, AI-15): AI-API v2.0 DRAFT — vision trả vector Siamese, search trả vector, ASR nhận bytes audio, recommendation encode → Backend tự ghi/tìm Milvus.
+  Sẽ gửi HC riêng với lộ trình chi tiết; v1.3 chạy song song tới khi Codex chuyển xong.
+
+
+## 2026-10-29 REL AI-API v2.0 DRAFT (AI-15, D24 bước 2) — chỉ trên `claude/ai-core`, chưa release
+- Contract: `coordination/claude/api/AI_API_CONTRACT_V2.md` (+ `inference_openapi.json` có `/v1` + `/v2`, `examples/v2_*.json` sinh từ :8001 thật).
+- Thêm (không đổi gì ở `/v1`; compat test khóa với snapshot v1.2 và v1.3): `POST /v2/vision/completions` (ViT + `siamese_vectors` + `category_logit_sums`,
+  không ghi MinIO/Milvus), `POST /v2/search/embeddings` (ảnh → vector 128 COSINE), `POST /v2/asr/completions` (multipart bytes + `offset_seconds`),
+  `POST /v2/recommendation/embeddings` (feature `ttv2-features-v1` → vector 128 IP; thật = `503 MODEL_NOT_READY` tới AI-12).
+- Runtime :8001 (PID 15852) đã phục vụ cả `/v1` và `/v2`; smoke live 9/9 (v1 6 + v2 3; v2 trùng v1 trên cùng media). Mock: `FORCE_STUB=1` trả đúng schema v2.
+
+## 2026-10-29 HC-13 — D24: Backend tiếp quản MinIO/Milvus, chuyển ingest/search/ASR sang AI-API v2.0 (đề nghị Codex tạo INT-xx, phản hồi RE:HC-13)
+User quyết D24 (2026-10-29): AI Inference Service chỉ chạy checkpoint/tiền xử lý/suy luận, **không** kết nối MinIO/Milvus; Backend Go (+ ingest worker,
+job queue) sở hữu toàn bộ dữ liệu. AI phía Claude đã xong (REL trên). Lộ trình đề xuất (file Codex — Claude không sửa), theo thứ tự:
+1. **Mock** `backend/internal/mocks/ai_http.go`: thêm 4 route `/v2/*` đúng schema contract v2 §2 (hoặc chạy inference `FORCE_STUB=1`). Unit test client trên mock trước.
+2. **AI client** `backend/internal/adapters/aihttp/ai_client.go`: thêm `VisionV2` (data URI như hiện tại, lô ≤600 frame, **cộng `category_logit_sums`** các lô → argmax),
+   `SearchEmbedding`, `ASRV2` (multipart `file` + `language=vi` + `offset_seconds`), `RecommendationEmbeddings` (503 `MODEL_NOT_READY` → giữ popularity).
+   Lỗi v2: media hỏng = **422** (v1 là 503) — chỉnh retry: 422 không retry, 503 retry/backoff.
+3. **Milvus (Go)** — mở rộng adapter REST sẵn có `backend/internal/adapters/milvus/frames.go` (đang chỉ delete qua `/v2/vectordb/entities/delete`) hoặc dùng milvus-sdk-go:
+   `insert` (xóa trước `payload["video_id"] == "<vid>"` rồi insert — idempotent khi retry), `search` (COSINE, HNSW `ef=max(64,top_k)`, lọc `distance ≥ threshold`,
+   `similarity_score = clamp(distance,0,1)`, mặc định top_k 5 / threshold 0.75), `delete` (đã có). Đặc tả đầy đủ: contract v2 §6.1.
+   **Lệch schema cần xử lý:** collection thật `video_frame_embeddings` (AI tạo) = `id` INT64 auto + `vector` 128 + **`payload` JSON** `{video_id,timestamp,thumbnail_url}`;
+   `infra/milvus/init_collections.py` lại tạo cột scalar `video_id/timestamp/thumbnail_url` → stack mới sẽ không khớp dữ liệu/adapter. Đề xuất: sửa init theo `payload` JSON
+   (giữ dữ liệu, không copy). Nếu Codex muốn cột scalar: migrate copy (query toàn bộ → insert collection mới → so count + mẫu → đổi tên/alias), không drop trước khi so khớp.
+4. **MinIO thumbnail**: backend upload frame JPEG `thumbnails/{video_id}/{second:08d}.jpg` (`image/jpeg`, tạo bucket nếu thiếu), lưu key tương đối `thumbnails/...` trong payload (như hiện tại).
+5. **Ingest/orchestrator** `backend/internal/orchestrator/runner.go` `doVision` (~dòng 198): gọi `/v2/vision`, rồi tự upload thumbnail + insert `siamese_vectors` (giây i = frame i, 1 fps).
+   `embeddings_256` vẫn là input `/v1/highlight/completions` (không đổi). Milvus/MinIO lỗi = lỗi job phía backend (retry), không phải lỗi AI.
+6. **Search** (gateway): `/v2/search/embeddings` → Milvus search → giữ bước recheck publish/privacy Postgres hiện có → presign thumbnail. Kết quả phải trùng `/v1/search` trên cùng ảnh.
+7. **ASR**: backend tự đọc audio từ MinIO (không gửi `audio_url` presigned nữa), trích 16 kHz mono PCM16 WAV, cắt phần **600 s (bội số 20 s)** ≤64 MiB,
+   POST tuần tự với `offset_seconds`, nối `segments` (đánh lại id) + `full_transcript` (dấu cách) → Mongo. Cắt đúng bội số 20 s = kết quả trùng gửi một lần.
+8. **Recommendation**: MVP giữ popularity (D18). Khi AI-12 có checkpoint v2: backend tạo `user_recommendation_embeddings` (IVF_FLAT IP nlist 1024, search nprobe 128),
+   gọi `/v2/recommendation/embeddings` cho user/video, tự ANN; score = (IP+1)/2. Trước đó không tạo collection/vector giả.
+9. **Migrate vector hiện có**: đo 2026-10-29 = **411 vector sống / 49 video** (`num_entities` 447 gồm bản xóa chưa compact; con số 280 cũ đã lỗi thời).
+   Giữ collection tại chỗ; ghi count + 5 payload mẫu trước/sau cutover; backfill video `processed` thiếu vector bằng `/v2/vision` (frame lấy từ MinIO raw như `app/index_frames.py` cũ).
+10. **Xóa video một nơi**: backend xóa đồng bộ Postgres (soft delete) + Milvus (`payload["video_id"]`) + MinIO (raw, clips, prefix `thumbnails/{vid}/`) + Mongo (subtitles, analyses); idempotent.
+11. **Health/config**: gateway tự báo trạng thái Milvus/MinIO (sau cutover `/health.dependencies` của AI sẽ rỗng). Compose: gateway đã có `MILVUS_HOST: milvus`;
+    nếu orchestrator/ingest-worker ghi Milvus/MinIO thì thêm cho service đó (đề xuất diff):
+    ```yaml
+      orchestrator:
+        environment:
+          MILVUS_HOST: milvus
+          MILVUS_PORT: "19530"
+        depends_on:
+          milvus: { condition: service_healthy }
+    ```
+    Không cần biến mới cho AI (`AI_BASE_URL` giữ `http://host.docker.internal:8001`). Không thêm `MODEL_WORKER_*` vào compose — đó là cấu hình nội bộ tiến trình AI của Claude.
+12. **Nghiệm thu E2E thật** (đề nghị ghi trong RE:HC-13): upload video thật → processed; thumbnails trong MinIO + vector trong Milvus **do backend ghi**;
+    search bằng 1 frame của video → video đó top-1 score > 0.95; ASR bytes ra segment không rỗng trên giọng nói tự nhiên; xóa video → Milvus/MinIO sạch;
+    log :8001 (`D:/tmp/ai07_runtime/inference_8001.log`, Claude đọc hộ nếu cần) không còn `/v1/vision|search|asr|recommendation` trong luồng chính.
+- Sau RE:HC-13 E2E PASS: Claude release (README mục 6) → `/v2` `API_READY`, 4 path `/v1` tương ứng `DEPRECATED`; release kế gỡ `minio`/`pymilvus`, lifespan bỏ Milvus.
+
+## 2026-10-29 HC-14 — Highlight AI-16: gửi `asr_segments`, ngưỡng CMS, FFmpeg cắt chính xác (đề xuất, file Codex — Claude không sửa)
+- Phía AI (v1.4-rc1 DRAFT, chưa hiệu lực): `/v1/highlight/completions` nhận tùy chọn `asr_segments` → biên clip đẩy ra mép câu (≤3 s).
+  Model Fusion đề xuất đổi sang bản đạt DoD (vòng 5, ngưỡng 51, nối khe 5 s, bỏ clip < 3 s) — chờ user duyệt; schema response không đổi.
+1. Orchestrator (`runner.go` `doHighlight`): ASR đã chạy trước highlight → gửi kèm `asr_segments` (lấy `segments` ASR của video, chỉ cần `start_time`/`end_time`).
+2. `highlight_threshold` (CMS Settings) hiện được lưu nhưng không ảnh hưởng clip (dùng nguyên `recommended_clips` của AI). Đề xuất: khi admin đổi ngưỡng,
+   backend tự cắt lại từ `timeline_scores` (điểm > ngưỡng, cùng luật nối/độ dài) — hoặc ẩn ô này. Khi model vòng 5 lên, mặc định nên là 51, không phải 75.
+3. ffmpeg-cutter (`cutter.go:168`): `-ss start -to end -i in -c copy` → điểm đầu bị kéo về keyframe (lệch tới vài giây). Đề xuất cắt chính xác:
+   `-i in -ss start -to end -c:v libx264 -preset veryfast -c:a aac` (re-encode clip ngắn), hoặc chỉ re-encode GOP đầu.
+- Nghiệm thu đề xuất: clip từ video thật bắt đầu/kết thúc đúng mốc ±0.1 s (ffprobe), không cắt giữa câu khi có segment, đổi ngưỡng CMS → danh sách clip đổi.
+
+## 2026-10-29 REL :8001 — Highlight Fusion vòng 5 đã ACTIVE (AI-16, user ra lệnh kích hoạt; AI-API v1.4-rc1, chưa release master)
+- Runtime :8001 (PID 14896) từ 2026-10-29 dùng Fusion vòng 5 (bản đạt DoD T1.5): gộp 3 seed + cửa sổ chồng + làm mượt 9 s; clip = score > **51**
+  (trước: > 75), nối khe ≤ 5 s, bỏ clip < 3 s. Schema request/response **không đổi**; thêm field tùy chọn `asr_segments` (HC-14).
+- **Hành vi đổi Codex cần biết:** điểm timeline mượt hơn và hiệu chỉnh khác hẳn. Model train trên bóng đá (SoccerNet): với video không phải
+  bóng đá, điểm thường thấp và **có thể không có clip** (ví dụ AI-01 tin tức 3 s: cũ 74–75 → 1 clip; mới ~6 → 0 clip). E2E nào giả định
+  "video upload luôn có ≥1 clip" sẽ cần dùng video bóng đá thật hoặc chấp nhận 0 clip là hợp lệ (contract §2.3 đã ghi "có thể rỗng").
+- Quay lại vòng 3 nếu cần: Claude chép `ai-core/checkpoints/_archive/highlight_fusion_round3_becbd378/best.pt` về, xóa `postproc.json`, restart (≈1 phút).
+- Smoke :8001 9/9 PASS sau kích hoạt; ví dụ `examples/highlight.response.json` sinh lại. Contract §1 SHA highlight = `34199b68…` (+ 3 file recipe).
+
+## 2026-10-29 REL :8001 — Highlight Fusion vòng 6 ACTIVE (AI-17, user ra lệnh; AI-API v1.4-rc1, chưa release master)
+- :8001 (PID 27064) dùng Fusion vòng 6: đặc trưng chuẩn hóa theo toàn video + augment khi train, 3 seed. Test F1/giây 0.328 (vòng 5: 0.263).
+  Clip = score > **50**, không nối khe, **bỏ clip < 5 s** (vòng 5: > 51, nối ≤ 5 s, bỏ < 3 s). Schema request/response không đổi.
+- Codex cần biết: (1) orchestrator phải gửi đặc trưng của **cả video trong một request** (như hiện tại) — chuẩn hóa tính trên toàn request;
+  (2) video rất ngắn (< ~2 phút, vd fixture 8–10 s) nằm ngoài phân bố train: điểm không có ý nghĩa, thường 0 clip vì < 5 s; E2E nên chấp nhận 0 clip.
+- Smoke 9/9 sau kích hoạt; `examples/highlight.response.json` sinh lại. Rollback: Claude chép lại `ai-core/checkpoints/_archive/highlight_fusion_round5_34199b68/`.
+
+## 2026-10-29 HC-15 — CMS sau Fusion vòng 6: vạch ngưỡng heatmap, ô ngưỡng Settings, trạng thái 0 clip, ghi chú phạm vi (file Codex — Claude không sửa)
+- Phía AI đã có (:8001 PID 12252, v1.4-rc1 DRAFT, chỉ thêm field): `/v1/highlight/completions` trả thêm `clip_threshold` (vòng 6 = **50**).
+  Ví dụ thật `coordination/claude/api/examples/highlight.response.json`; OpenAPI `inference_openapi.json`. Các HC-13/HC-14 vẫn mở.
+1. **Vạch ngưỡng heatmap** (`cms/src/pages/HighlightPage.tsx:34` đang `settings.highlight_threshold ?? 75`): lưu `clip_threshold` của AI vào analysis
+   (Mongo `video_analyses`) và vẽ vạch theo nó. Hiện vạch 75 trong khi clip cắt ở 50 → admin thấy clip bắt đầu dưới vạch.
+2. **Ô "Ngưỡng gợi ý AI"** (`SettingsPage.tsx`, seed `system_settings.highlight_threshold = 75`): hiện không ảnh hưởng clip. Chọn một:
+   (a) backend tự cắt lại clip từ `timeline_scores` theo ngưỡng admin (score > ngưỡng, bỏ đoạn < 5 s), mặc định = `clip_threshold` của AI; hoặc
+   (b) ẩn ô / ghi rõ "chỉ hiển thị". Khuyến nghị (a) nếu kịp, không thì (b). Dù chọn gì: đổi seed/mặc định 75 → 50.
+3. **Trạng thái 0 clip** trên màn duyệt highlight: `recommended_clips` rỗng là hợp lệ (video không phải bóng đá, video ngắn) → hiện
+   "AI không đề xuất clip cho video này — có thể cắt tay", không hiển thị như lỗi; luồng duyệt/xuất bản vẫn dùng được với clip cắt tay.
+4. **Ghi chú phạm vi** (user chọn mức "tham khảo", không tắt AI): khi `category_suggestion != "bong_da"` hoặc video < 120 s, dưới heatmap hiện
+   "Điểm AI chỉ để tham khảo — model highlight huấn luyện trên bóng đá". Tiêu đề "Cường độ trận đấu" có thể đổi thành "Điểm highlight AI" cho thể loại khác.
+- Client: không cần sửa (heatmap không có vạch ngưỡng; feed đã có trạng thái rỗng).
+- Nghiệm thu đề xuất: CMS 390/1440 — vạch heatmap ở 50 với video bóng đá thật; video tin tức/ngắn hiện thông báo 0 clip + ghi chú; đổi ngưỡng Settings
+  → (a) danh sách clip đổi hoặc (b) ô bị ẩn/ghi rõ; `go test` + CMS `tsc`/build + Playwright màn highlight PASS. Phản hồi RE:HC-15.
+
+## 2026-10-29 REL :8001 — Highlight Fusion vòng 7 ACTIVE (AI-18, user ra lệnh; v1.4-rc1, chưa release master)
+- :8001 (PID 14736): Fusion vòng 7 (vòng 6 + weight decay 0.3). Test F1/giây 0.330 (vòng 6 0.328). `clip_threshold` = **51** (vòng 6: 50),
+  bỏ clip < **3 s** (vòng 6: 5 s). **Mới:** video < 120 s → `timeline_scores` vẫn có, `recommended_clips` luôn rỗng (ngoài phân bố train; trước đó
+  fixture 3 s ra 1 clip trọn video). HC-15 không đổi nội dung — CMS đọc `clip_threshold`, không hardcode 50.
+- Schema không đổi. Rollback: Claude chép lại `ai-core/checkpoints/_archive/highlight_fusion_round6_9b59a7b0/`.
+
+## 2026-10-29 REL :8001 — SỬA LỖI đặc trưng vision cho highlight (AI-19; v1.4-rc1; schema không đổi)
+- Phát hiện: Fusion được train trên embedding **backbone Siamese**, nhưng `/v1/vision.embeddings_256` (đầu vào orchestrator gửi sang `/v1/highlight`)
+  từ AI-01 tới nay là embedding **ViT phân loại** — hai không gian khác nhau (cosine 0.03–0.13). Highlight production chưa từng nhận đúng đặc trưng.
+- Đã sửa (:8001 PID 30580): `embeddings_256` = backbone Siamese (trùng feature train, test `tests/test_feature_parity.py`). `category_suggestion` không đổi.
+  Smoke 9/9; ví dụ `vision.*`, `highlight.*`, `v2_vision.*` sinh lại.
+- Codex: không đổi code. **Đặc trưng/điểm highlight đã lưu trước 2026-10-29 tính trên đặc trưng sai** — nếu muốn highlight đúng cho video cũ,
+  chạy lại vision + highlight (re-process) cho các video đó; `timeline_scores`/clip sẽ khác.
+
+## 2026-10-30 REL :8001 — Highlight Fusion vòng 8 ×10 ACTIVE (AI-21, user ra lệnh theo quy tắc đăng ký; v1.4-rc1, chưa release master)
+- :8001 (PID 19220): Fusion vòng 8 ×10 (bóng đá + tin tức có nhãn người). `clip_threshold` = 51 (không đổi), **nối khe ≤ 1 s**, bỏ clip < 3 s, video < 120 s không clip.
+  Schema không đổi. Test bóng đá 0.322 (vòng 7 0.330). Tin tức: tốt hơn vòng 7 trên kênh quen, nhưng **video tin tức kênh mới gần như vẫn 0 clip**
+  (giới hạn ghi trong contract §2.3) — E2E tiếp tục chấp nhận 0 clip; HC-15 (thông báo 0 clip + "chỉ tham khảo") càng cần.
+- Rollback: Claude chép lại `ai-core/checkpoints/_archive/highlight_fusion_round7_550909de/`.
+
+## 2026-10-30 REL #5 — làn AI lên `master` (AI-API **v1.4**; v2.0 DRAFT song song)
+- Contract v1.4 (chỉ thêm field: highlight `asr_segments` tùy chọn, `clip_threshold`); sửa lỗi `embeddings_256` = backbone Siamese; highlight = Fusion vòng 8 ×10
+  (`5aecd5c4…` + 3 file recipe, contract §1). 6 endpoint `/v1` `API_READY` không đổi path/field bắt buộc; recommendation DRAFT.
+- AI-API v2.0 DRAFT (`AI_API_CONTRACT_V2.md`) + facade/worker (D24 bước 1). Kiến trúc đích D24 ghi trong `PROJECT_STATUS.md` (D24–D26) và `kien_truc_va_thuat_toan_ai.md` §6.4.
+- Gate: ai-core 319; inference 81/10 skip (compat v1.2 + v1.3); smoke :8001 9/9 (v1 + v2, media thật) + 401; 6 checkpoint SHA = contract.
+- Việc Codex còn mở: HC-13 (chuyển sang /v2 + backend sở hữu MinIO/Milvus), HC-14 (`asr_segments`, FFmpeg cắt chính xác), HC-15 (CMS ngưỡng/0 clip/ghi chú),
+  chạy lại highlight cho video xử lý trước 2026-10-29. Codex `git merge master` khi tiện.

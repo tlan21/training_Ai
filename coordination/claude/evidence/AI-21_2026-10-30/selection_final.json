@@ -1,0 +1,115 @@
+{
+ "rule": ".claude/evaluation_plan.md §2.1 Xác nhận vòng 8 ×10 (sửa đổi 2026-10-30)",
+ "picked": [
+  {
+   "id": "UN2srxcqpa8",
+   "title": "Nổ súng trong đám giỗ, 2 người bị thương | Tin nóng 20H",
+   "channel": "Báo Sài Gòn Giải Phóng ",
+   "channel_id": "UC6BENb97B-9QXIOCjbW9Lvw",
+   "duration": 395,
+   "license": "Creative Commons Attribution license (reuse allowed)",
+   "upload_date": "20230720",
+   "group": "new_channel",
+   "query": "PTTH thời sự tối",
+   "rank": 23,
+   "webpage_url": "https://www.youtube.com/watch?v=UN2srxcqpa8"
+  },
+  {
+   "id": "c46Liq1aP1s",
+   "title": "Thời sự 18h30 (17/02/2023)",
+   "channel": "THVL 24News",
+   "channel_id": "UCbs8GhLTzmPUZKVLFGbna1A",
+   "duration": 1481,
+   "license": "Creative Commons Attribution license (reuse allowed)",
+   "upload_date": "20230218",
+   "group": "new_channel",
+   "query": "PTTH thời sự tối",
+   "rank": 0,
+   "webpage_url": "https://www.youtube.com/watch?v=c46Liq1aP1s"
+  },
+  {
+   "id": "ViEjwRu-j3o",
+   "title": "Tăng lương hưu năm 2026 ?",
+   "channel": "Truyền hình Hưng Yên - HYTV",
+   "channel_id": "UCJLLK4X5smjNiB3TgBaxqRg",
+   "duration": 733,
+   "license": "Creative Commons Attribution license (reuse allowed)",
+   "upload_date": "20260105",
+   "group": "seen_channel",
+   "query": "tin tức truyền hình",
+   "rank": 1,
+   "webpage_url": "https://www.youtube.com/watch?v=ViEjwRu-j3o"
+  },
+  {
+   "id": "-NVYudDYCLQ",
+   "title": "Hưng Yên sắp có khu đô thị gần 35 nghìn tỉ đồng diện tích hơn 262 ha",
+   "channel": "Truyền hình Hưng Yên - HYTV",
+   "channel_id": "UCJLLK4X5smjNiB3TgBaxqRg",
+   "duration": 1246,
+   "license": "Creative Commons Attribution license (reuse allowed)",
+   "upload_date": "20250403",
+   "group": "seen_channel",
+   "query": "đài phát thanh truyền hình bản tin",
+   "rank": 3,
+   "webpage_url": "https://www.youtube.com/watch?v=-NVYudDYCLQ"
+  },
+  {
+   "id": "XMgP3vcO-C8",
+   "title": "BẢN TIN THỜI SỰ NGÀY 08/07/2020",
+   "channel": "BÁO ĐIỆN TỬ ĐẢNG CỘNG SẢN VIỆT NAM",
+   "channel_id": "UCy_UfqIh-ckEHHnSoabhBoA",
+   "duration": 829,
+   "license": "Creative Commons Attribution license (reuse allowed)",
+   "upload_date": "20200708",
+   "group": "seen_channel",
+   "query": "bản tin thời sự",
+   "rank": 12,
+   "webpage_url": "https://www.youtube.com/watch?v=XMgP3vcO-C8"
+  },
+  {
+   "id": "vAhqmmmqKHg",
+   "title": "BẢN TIN THỜI SỰ NGÀY 02/04/2020",
+   "channel": "BÁO ĐIỆN TỬ ĐẢNG CỘNG SẢN VIỆT NAM",
+   "channel_id": "UCy_UfqIh-ckEHHnSoabhBoA",
+   "duration": 905,
+   "license": "Creative Commons Attribution license (reuse allowed)",
+   "upload_date": "20200402",
+   "group": "seen_channel",
+   "query": "bản tin thời sự",
+   "rank": 13,
+   "webpage_url": "https://www.youtube.com/watch?v=vAhqmmmqKHg"
+  },
+  {
+   "id": "cMN-OAoQiCw",
+   "title": "Thời sự trưa ngày 30/9/2025 | Tin tức thời sự Lạng Sơn hôm nay | LSTV",
+   "channel": "Truyền hình Lạng Sơn - LSTV",
+   "channel_id": "UCJcPERudmipXzapmx0qQxww",
+   "duration": 871,
+   "license": "Creative Commons Attribution license (reuse allowed)",
+   "upload_date": "20250930",
+   "group": "seen_channel",
+   "query": "truyền hình tỉnh thời sự",
+   "rank": 24,
+   "webpage_url": "https://www.youtube.com/watch?v=cMN-OAoQiCw"
+  },
+  {
+   "id": "W0U-UheMYOk",
+   "title": "“Chốt”: Điều chỉnh lương cơ sở, lương hưu năm 2026: Lương hưu được điều chỉnh trên cơ sở nào?",
+   "channel": "Truyền hình Hưng Yên - HYTV",
+   "channel_id": "UCJLLK4X5smjNiB3TgBaxqRg",
+   "duration": 756,
+   "license": "Creative Commons Attribution license (reuse allowed)",
+   "upload_date": "20251222",
+   "group": "seen_channel",
+   "query": "tin tức truyền hình",
+   "rank": 4,
+   "webpage_url": "https://www.youtube.com/watch?v=W0U-UheMYOk"
+  }
+ ],
+ "rejected": [
+  {
+   "id": "xX9FGkC_fUM",
+   "reason": "license/metadata"
+  }
+ ]
+}

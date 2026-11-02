@@ -1,7 +1,8 @@
 # AI API Contract — inference-service :8001
 
-**Version: AI-API v1.3 (2026-10-26) — release #3.** v1.3 chỉ đổi recommendation (vẫn `DRAFT`, D18/D20); 6 endpoint `API_READY` của v1.2 không đổi. Tương thích ngược được khóa bằng `inference-service/tests/test_contract_compat.py` (so với snapshot `inference_openapi_v1.2.json`). Owner: Claude. Codex chỉ đọc
+**Version: AI-API v1.4 (2026-10-30) — release #5.** v1.4 chỉ THÊM field (highlight: `asr_segments` tùy chọn, `clip_threshold`) + sửa lỗi `embeddings_256` (backbone Siamese) + model highlight vòng 8 ×10; 6 endpoint `API_READY` không đổi path/field bắt buộc. Tương thích ngược khóa bằng `inference-service/tests/test_contract_compat.py` (snapshot v1.2 + v1.3). v2.0 `DRAFT` song song: `AI_API_CONTRACT_V2.md`. Owner: Claude. Codex chỉ đọc
 (`git show claude/ai-core:coordination/claude/api/AI_API_CONTRACT.md`, hoặc bản trên `master` sau release).
+**AI-API v2.0 `DRAFT` (D24, 2026-10-29):** `AI_API_CONTRACT_V2.md` — `/v2` chỉ tính toán, Backend sở hữu MinIO/Milvus; chạy song song, v1.3 dưới đây không đổi.
 Nguồn code: `inference-service/app/schemas.py`, `app/main.py`, `app/services.py`, `app/visual_index.py` trên `claude/ai-core` (AI-01).
 Đi kèm: `inference_openapi.json` (export `app.main:app.openapi()`, không sửa tay) và `examples/` (request/response/error sinh từ chạy thật, mục 4).
 
@@ -50,11 +51,28 @@ thành công thật; Codex được dùng mock, chưa được đánh `INTEGRATE
 | `vit` | `/v1/vision/completions` | `primitive-vit-classifier` | `192d90e4fad893cec1542c5630715cc3bc22197e8cd8ba22a6fb84a64a88ad7f` |
 | `siamese` | `/v1/search/completions` (+ index frame) | `primitive-siamese-vit` | `b4ded465b8eea134a01652811008656b9e0c59716431136bb161216310bbcebb` |
 | `asr_ctc` | `/v1/asr/completions` | `primitive-asr-transformer` | `8f87986781cfb3d4716691f2051e5798187693e2452f9f41b28ca4a753ea5531` |
-| `highlight_fusion` | `/v1/highlight/completions` | `primitive-seq2seq-highlighter` | `becbd378ca237c6992867ca5309663d3c1c142a99b40da57f9a0fb652489b49c` |
+| `highlight_fusion` | `/v1/highlight/completions` | `primitive-seq2seq-highlighter` | `5aecd5c4eecd37a25c8c5c2fd515f268700041987ce38df4ffbf01724fbd052e` |
 | `minigpt` | `/v1/completions` | `primitive-gpt-summarizer` | `cf9cfa7141d40f9d40b0065ae68855ff39ffe750260ee7b42c7c0eac719330ac` |
 | `two_tower` | `/v1/recommendation/completions` | `primitive-two-tower-recommender` | `f28c37943ec499d168f43b5281879273af326a97ee47e571100c93dee0c91695` |
 
 Nguồn canonical: `E:/traning_ai/ai-core/checkpoints` (AI-06). Claude chỉ thay `best.pt` active khi phát hành AI API version mới.
+- **highlight_fusion từ 2026-10-30 (AI-21, user ra lệnh theo quy tắc đã đăng ký; v1.4-rc1, chờ release): Fusion vòng 8 ×10** = công thức vòng 7
+  + 7 video tin tức có nhãn người (lặp ×10), 3 seed + recipe (k 9, τ 0.51, nối khe ≤ 1 s, bỏ clip < 3 s, video < 120 s không clip):
+  `best.pt` `5aecd5c4…` · `seed1338.pt` `06e8f3a100bc0afed7a19253b76561d0f8ca3695dbc858461607cc1b564c8e62` ·
+  `seed1339.pt` `8086d75ed1e5e5e3d471422edf7bf96329bf768030018c8f5c7f92356342327a` · `postproc.json` `f54f62c00e37e2c1c74917da559c944850dd7c88d38fd1542d5de1addb8c0164`.
+  Test bóng đá 0.322 (vòng 7 0.330); test tin tức độc lập 0.121 (vòng 7 0.024; mốc đoán-bừa 0.281; CI Δ [−0.05, +0.24]). Vòng 7 lưu `_archive/highlight_fusion_round7_550909de/`.
+- Trước đó (AI-18): Fusion vòng 7 = công thức vòng 6 + weight decay 0.3,
+  3 seed + recipe (k 9, τ 0.51, bỏ clip < 3 s, **video < 120 s: không đề xuất clip**): `best.pt` `550909de…` ·
+  `seed1338.pt` `0cc89b6244f408103c62ee411fde82adfc19e91197bfd7352151931a0362b6b1` · `seed1339.pt` `56a4fe540a79f201c6c795909671f2db3820b3b37713bdc0fc3c39febd79fb87` ·
+  `postproc.json` `6eb66cc10a1bf4182d13b59b6f21d12ea75f5642d92dc77d1a3f938229f4d2d4`. Test F1/giây 0.330 (vòng 6 0.328). Vòng 6 lưu `_archive/highlight_fusion_round6_9b59a7b0/`.
+- Trước đó (AI-17): Fusion vòng 6 = chuẩn hóa đặc trưng theo từng video
+  + augment, 3 seed + recipe (k 9, τ 0.50, bỏ clip < 5 s): `best.pt` `9b59a7b0…` · `seed1338.pt` `970cc06819009d1f97e6e784d24cb163d7ed85634bed4ce1d11f46f82d445411` ·
+  `seed1339.pt` `931d26c616a76b8c3e584eb0710ab4df7fd69b4764ee2b043c62ddf7b0119ab3` · `postproc.json` `cdb501d94395a193efcfe607cf0f3643bd9b6c182e555e3a908fabcc2ff4a9b7`.
+  Test F1/giây 0.328 (vòng 5: 0.263). Vòng 5 lưu tại `ai-core/checkpoints/_archive/highlight_fusion_round5_34199b68/`.
+- Trước đó (AI-16, cùng ngày) — Fusion vòng 5 (DoD T1.5 đạt) = 3 file seed + recipe:
+  `best.pt` (seed 1337) `34199b68…` · `seed1338.pt` `9678110e0cc8ad0ab9eb854133468cc4446d103d863ed6032309bc171aaa0844` ·
+  `seed1339.pt` `3e837fd1f1492e37daa5c864f454a1331ff8b3cb63b5570021f2f34191ed04d0` · `postproc.json` `8b327e2e78e12a54d6e414cdc35beeb08f3f60d911fc5128b945ae870ad4a5ff`.
+  Bản cũ (vòng 3, `becbd378…`) giữ tại `ai-core/checkpoints/_archive/highlight_fusion_round3_becbd378/best.pt` để quay lại.
 
 ## 1b. Thang sẵn sàng từng model
 
@@ -75,7 +93,7 @@ media thật 6/6 + synthetic 6/6; `/health` → `stub_mode=false`, 6 model, `deg
 |---|---|---|---|---|---|---|
 | vit | ✓ | ✓ `192d90e4…` | ✓ | ✓ | ✓ | |
 | asr_ctc | ✓ | ✓ `8f879867…` | ✓ | ✓ | ✓ | chất lượng video thật kém (transcript nhiễu, AI-02) |
-| highlight_fusion | ✓ | ✓ `becbd378…` | ✓ | ✓ | ✓ | |
+| highlight_fusion | ✓ | ✓ `5aecd5c4…` (vòng 8 ×10, 3 seed) | ✓ | ✓ | ✓ | |
 | minigpt | ✓ | ✓ `cf9cfa71…` | ✓ | ✓ | ✓ | chất lượng human 1.6/5 (AI-03), chỉ dùng làm draft cho admin |
 | siamese | ✓ | ✓ `b4ded465…` | ✓ | ✓ | ✓ | Milvus `video_frame_embeddings` 280 vector, HNSW/COSINE/M16/efC200; index qua `video_id` + data URI (AI-11) |
 | two_tower | ✓ | ✓ `f28c3794…` | ✓ | ✗ | ✗ | collection `user_recommendation_embeddings` chưa có → 503 |
@@ -95,7 +113,23 @@ media thật 6/6 + synthetic 6/6; `/health` → `stub_mode=false`, 6 model, `deg
 - HC-05 đã chốt phương án (b) (RE:HC-05): gateway gửi data URI + `video_id` cho vision, URL MinIO presigned `localhost:9000` cho asr; không dùng `/srv/work`.
   Runtime cần `MINIO_ENDPOINT/ACCESS_KEY/SECRET_KEY` trong `inference-service/.env` (local) để index frame — đã đặt theo default compose.
 
+## 1d. Kiến trúc facade / model worker (D24 bước 1, AI-14, 2026-10-29) — ghi chú, API **không đổi**
+
+- Bên trong inference-service: **facade** (`app/main.py` + `services.py` + `visual_index.py`: 7 endpoint, Bearer, validation, error code,
+  I/O MinIO/Milvus/audio y như v1.3) gọi **model worker thuần** (`app/worker.py`: 6 model, nhận ảnh bytes / PCM / vector / text → nhãn / vector / text,
+  không import minio/pymilvus) qua `app/worker_client.py`.
+- `MODEL_WORKER_URL` trống (mặc định, runtime :8001 hiện tại) = worker chạy cùng tiến trình. Có URL = worker từ xa `app/worker_app.py`
+  (vd Kaggle GPU, `dist/kaggle/kernel-model-worker/`) với Bearer riêng `MODEL_WORKER_KEY` — giao thức nội bộ, **không** phải API cho Codex.
+- Khác biệt quan sát được duy nhất: ở chế độ worker từ xa, `/health.dependencies` có thêm key `model_worker` (`ok`|`unavailable`);
+  worker không tới được → endpoint 503 `AI_UNAVAILABLE` như lỗi dependency khác, model không bị đánh `degraded`.
+- Kiểm chứng: OpenAPI export trùng `inference_openapi.json`; smoke 6/6 + 401 ở cả hai chế độ, output trùng (`coordination/claude/evidence/AI-14_2026-10-29/`).
+- Đích D24 (bước 2, AI-API v2.0 DRAFT, chưa hiệu lực): MinIO/Milvus chuyển hẳn sang Backend; inference-service chỉ tính toán.
+
 ## 2. Endpoints
+
+> **Chất lượng (D23, 2026-10-28):** output `/v1/asr/completions` (phụ đề) và `/v1/completions` (tóm tắt) là **bản nháp máy**: trên video thật
+> ASR có WER ~84–91%, tóm tắt từ input đó thường sai nội dung. Phía sản phẩm phải để admin sửa/duyệt (CMS `summary_status`, `summary/approve`,
+> `subtitles`) trước khi hiển thị cho client; không tự xuất bản. Schema không đổi (v1.3).
 
 Ví dụ thật cho mỗi endpoint: `examples/<name>.request.json`, `<name>.response.json`, `<name>.error_request.json`, `<name>.error.json`
 (file response/error có dạng `{"http_status": int, "body": <JSON trả về>}`).
@@ -125,6 +159,19 @@ Req: `{"model"?: str, "video_id": str, "features": {"vision_embeddings": [[float
   Sai → 503 `AI_UNAVAILABLE` (không phải 422).
 Resp: `{"id","object":"highlight_completion","created","model","video_id","timeline_scores":[{"second":int,"score":0–100}],"recommended_clips":[{"clip_id","start_time","end_time","average_score":0–100}]}`
 - `second` bắt đầu từ 0, liên tục; clip đề xuất = đoạn liên tiếp có score > 75 (có thể rỗng).
+- **v1.4 (AI-16…AI-21; release #5 2026-10-30):**
+  - Resp thêm `"clip_threshold": float` (0–100) = ngưỡng AI đã dùng để cắt `recommended_clips` (vòng 6: 50; không recipe: 75). UI vẽ vạch ngưỡng heatmap theo giá trị này.
+  - Req thêm tùy chọn `"asr_segments": [{"start_time","end_time"}, ...]` (segment `/v1/asr` của cùng video; field thừa bị bỏ qua) →
+    biên clip nằm giữa câu được đẩy ra mép câu nếu cách ≤ 3 s. Không gửi = như cũ.
+  - Checkpoint **active từ 2026-10-29**: Fusion vòng 5 (bản đạt DoD T1.5) = gộp 3 seed + cửa sổ chồng stride 30 + làm mượt 9 s,
+    clip = score > **51**, nối khe ≤ 5 s, bỏ clip < 3 s (`highlight_fusion/postproc.json`). Kích hoạt 2026-10-29, rồi thay bằng vòng 6 cùng ngày.
+  - **Active (AI-21): Fusion vòng 8 ×10** (bóng đá + tin tức) — clip = score > **51**, nối khe ≤ **1 s**, bỏ clip < **3 s**; video < 120 s không clip.
+    **Giới hạn đo được:** highlight tin tức trên video/kênh mới CHƯA giải (test độc lập dưới mốc đoán-bừa; kênh mới F1 0.0) — tin tức thường ra 0 clip.
+  - Trước (AI-18): Fusion vòng 7 — đặc trưng chuẩn hóa theo TOÀN video trong request, clip = score > **51**, không nối khe, bỏ clip < **3 s**;
+    video < **120 s** → vẫn trả `timeline_scores` nhưng `recommended_clips` rỗng. (Vòng 6 trước đó: > 50, bỏ < 5 s.)
+    Phạm vi: train trên hiệp bóng đá ~45 phút. Video rất ngắn (< ~2 phút) và thể loại khác nằm NGOÀI phân bố train — điểm không đáng tin
+    (vd 3 s: điểm ~57, 0 clip vì < 5 s). Request phải gửi đặc trưng của cả video (như hiện tại), không cắt lẻ từng đoạn.
+    Đo qua code service trên tập test đã khóa: F1/giây 0.2628 (DoD 0.2632); ngưỡng 75 trên cùng model chỉ 0.168. Schema response không đổi.
 
 ### 2.4 `POST /v1/search/completions` — Siamese + Milvus — API_READY
 Req: `{"model"?: str, "image": str (data URI/base64/path), "top_k": 1–100 (mặc định 5), "threshold": 0–1 (mặc định 0.75)}`
@@ -160,10 +207,18 @@ Resp: `{"status":"ok","gpu_vram_used": MB,"gpu_util": %,"models_loaded":[...],"d
   và lỗi dependency **không** tính. Tự gỡ khi model chạy thành công lần sau.
 - `dependencies` (mới ở v1.1, mặc định `{}` → client cũ bỏ qua được): trạng thái hạ tầng sau từng capability, không phải lỗi model.
   Key: `visual_index` (Milvus `video_frame_embeddings` + MinIO thumbnail; dùng cho search và index frame của vision),
-  `recommendation_index` (Milvus `user_recommendation_embeddings`). Giá trị: `ok` | `unavailable` | `missing_collection`.
+  `recommendation_index` (Milvus `user_recommendation_embeddings`), `model_worker` (chỉ khi `MODEL_WORKER_URL` đặt, mục 1d).
+  Giá trị: `ok` | `unavailable` | `missing_collection`.
   `/health` tự thử lại dependency chưa `ok` tối đa mỗi 30 s → trạng thái tự phục hồi khi Milvus/collection được sửa. `FORCE_STUB=1` → `{}`.
 
 ## 3. Changelog
+- **v1.4 (2026-10-30)** — release #5: gom các mục v1.4-rc1 bên dưới (AI-16…AI-21); recommendation vẫn DRAFT; v2.0 vẫn DRAFT (chờ RE:HC-13).
+- **v1.4-rc1 — sửa lỗi 2026-10-29 (AI-19):** `embeddings_256` của `/v1/vision` (và `/v2/vision`) giờ là embedding **backbone Siamese** — đúng đặc trưng Fusion đã được train (`extract_vit_embeddings` + siamese md5 `9d2f670f`). Trước đó là embedding ViT phân loại (cosine 0.03–0.13 với đặc trưng train) → highlight production nhận đầu vào lệch phân bố từ AI-01. Schema không đổi; giá trị đổi; `category_suggestion` không đổi.
+- **v1.4-rc1 DRAFT (2026-10-29, AI-17)** — highlight response thêm `clip_threshold` (chỉ thêm field).
+- **v1.4-rc1 DRAFT (2026-10-29, AI-16)** — highlight: `asr_segments` tùy chọn; hỗ trợ recipe `postproc.json`; đề xuất đổi Fusion sang vòng 5 (chờ duyệt). Không đổi path/field bắt buộc.
+- **v2.0 DRAFT (2026-10-29, AI-15)** — tài liệu riêng `AI_API_CONTRACT_V2.md`; thêm path `/v2/*` vào `inference_openapi.json`, `/v1` không đổi (compat v1.2 + v1.3).
+- **v1.3 — ghi chú 2026-10-29 (AI-14, D24 bước 1)** — không đổi version/schema/status code: tách facade/worker nội bộ (mục 1d), thêm key
+  `dependencies.model_worker` chỉ ở chế độ worker từ xa (dict đã mở từ v1.1).
 - **v0 (2026-10-26)** — DRAFT, ghi lại API hiện có tại baseline `15976b3`. Không đổi code.
 - **v0.1 (2026-10-26)** — DRAFT, chỉ tài liệu: thêm thang sẵn sàng (1b) và quyền runtime :8001 thuộc Claude, Codex chỉ HTTP/mock (1c). Schema không đổi.
 - **v0.2 (2026-10-26)** — DRAFT, chỉ tài liệu (AI-06): nguồn checkpoint canonical, thang sẵn sàng có bằng chứng HTTP thật (1b); ghi rõ startup thật cần Milvus và `PYTHONUTF8=1` trên Windows. Schema không đổi.

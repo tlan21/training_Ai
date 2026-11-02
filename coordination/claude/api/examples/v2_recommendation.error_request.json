@@ -1,0 +1,20 @@
+{
+ "videos": [
+  {
+   "video_id": "vid_ai15example",
+   "category_id": "cat_bong_da",
+   "positive_count": 3
+  }
+ ],
+ "users": [
+  {
+   "user_id": "usr_ai15example",
+   "preferred_category_ids": [
+    "cat_bong_da"
+   ],
+   "positive_video_ids": [
+    "vid_ai15example"
+   ]
+  }
+ ]
+}

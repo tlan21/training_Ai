@@ -1,0 +1,50 @@
+{
+ "variants": {
+  "rep1_s1337": {
+   "val_f1_combined": 0.23482197022726212,
+   "step": 3000,
+   "train_windows": 9822
+  },
+  "rep1_s1338": {
+   "val_f1_combined": 0.23734032372154953,
+   "step": 2600,
+   "train_windows": 9822
+  },
+  "rep1_s1339": {
+   "val_f1_combined": 0.23546701502286088,
+   "step": 2400,
+   "train_windows": 9822
+  },
+  "rep10_s1337": {
+   "val_f1_combined": 0.23668953308254043,
+   "step": 2000,
+   "train_windows": 10578
+  },
+  "rep10_s1338": {
+   "val_f1_combined": 0.23892778555711144,
+   "step": 1500,
+   "train_windows": 10578
+  },
+  "rep10_s1339": {
+   "val_f1_combined": 0.2127721546639482,
+   "step": 2300,
+   "train_windows": 10578
+  },
+  "rep30_s1337": {
+   "val_f1_combined": 0.21880698098463142,
+   "step": 1700,
+   "train_windows": 12258
+  },
+  "rep30_s1338": {
+   "val_f1_combined": 0.2230668628412621,
+   "step": 1000,
+   "train_windows": 12258
+  },
+  "rep30_s1339": {
+   "val_f1_combined": 0.21583118155106404,
+   "step": 2700,
+   "train_windows": 12258
+  }
+ },
+ "registered": ".claude/evaluation_plan.md \u00a72.1 Vong 8"
+}

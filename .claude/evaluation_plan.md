@@ -30,6 +30,37 @@
 ### 2.1. Highlight (trọng tâm luận án)
 - **Đánh giá cấp giây:** ngưỡng hóa điểm sigmoid tại τ tối ưu trên **validation 5 trận weak-label giữ riêng** (@dataset_spec.md §3.4) → F1 trên test 5 trận nhãn người (đóng băng, không dùng chọn τ hay model).
 - **Hậu xử lý điểm/giây (chốt 2026-09-25, trước khi xem test):** cửa sổ suy luận chồng nhau stride 30 s (trung bình các cửa sổ phủ mỗi giây), gộp điểm các seed, trung bình trượt k giây. k chọn trên **validation** trong lưới {1,3,5,9,15,21,31,45} cùng lúc với τ, và baseline RMS/frame-diff được chọn k theo **đúng lưới đó** — so model đã làm mượt với baseline thô là so không công bằng. Cấu hình rút ra từ thí nghiệm chỉ-val (`postproc_val.py`), áp lên test T1.5 vòng 4 đúng **một lần**; đó là lần xem thứ hai của tập test này (lần đầu: quy trình không hậu xử lý, F1 0.1659), ghi rõ trong báo cáo.
+- **Khoảng cách train − val (bắt buộc từ 2026-10-29, AI-16/AI-17):** mỗi lần train Fusion báo F1/giây (cùng hậu xử lý, cùng k/τ) trên 60 hiệp train đầu,
+  val và test. Vòng 5 ensemble: train 0.480 / val 0.275 / test 0.263 → khoảng cách 0.205.
+- **Vòng 6 — đăng ký trước khi train (2026-10-29, AI-17):** cùng split vòng 5 (218/28/27 hiệp), d_model 128 / dropout 0.3 / 4000 step như vòng 5.
+  Sweep seed 1337 trên **val** 4 biến thể {chuẩn hóa đặc trưng theo từng video: không/có} × {augment train: không/có}
+  (augment = che 2 đoạn ≤10 s, nhiễu 0.1×std theo chiều, bỏ 1 nhánh p=0.1 — thay bằng trung bình cửa sổ); biến thể val F1 thô cao nhất → 3 seed.
+  Chấm local đúng quy trình DoD (stride 30, gộp seed, k+τ chọn trên val). **Thay vòng 5 chỉ khi cả hai:** val F1 ensemble ≥ 0.2750 **và**
+  khoảng cách train − val < 0.205. Quyết định bằng val + train; test chỉ chấm sau khi quyết, báo cáo kèm số lần đã xem tập test này
+  (vòng 5: 1 lần chấm DoD + 3 lần đo lại 2026-10-29 không dùng để chọn gì).
+- **Vòng 7 — đăng ký trước khi train (2026-10-29, AI-18):** nền = vòng 6 thắng (chuẩn hóa theo video + augment, d128/p0.3), cùng split.
+  Mục tiêu: giảm overfit (vòng 6: val loss đáy step 500–1100 rồi tăng 57–69%). Sweep seed 1337 trên val 4 biến thể tối ưu hóa:
+  lr 1e-4/wd 0.1/4000 step · lr 3e-4/wd 0.3/4000 · lr 1e-4/wd 0.3/4000 · lr 3e-4/wd 0.1/**1500** step; mốc so = vòng 6 n1_a1 (lr 3e-4/wd 0.1/4000, val F1 thô 0.2300).
+  Biến thể val F1 thô cao nhất, nếu > 0.2300 → thêm seed 1338, 1339; nếu không biến thể nào > 0.2300 → giữ vòng 6.
+  **Thay vòng 6 chỉ khi cả ba:** val F1 ensemble ≥ 0.3053; khoảng cách train − val < 0.1692; val loss trung bình tại 3 checkpoint được chọn
+  < 1.2136 (vòng 6). Quyết bằng val + train; test chấm sau khi quyết.
+- **Vòng 8 — đăng ký trước khi train (2026-10-30, AI-20): bóng đá + tin tức.** Dữ liệu: SoccerNet giữ nguyên split (218/28/27 hiệp) +
+  tin tức `highlight_news_labeled.pt` (nhãn người khoatm 2026-10-30, gộp đoạn chồng; train 7 / val 3 video theo video, seed 1337).
+  Công thức = vòng 7 (chuẩn hóa theo video + augment, d128/p0.3, lr 3e-4, wd 0.3, 4000 step). Biến thể: lặp video tin tức train ×1, ×10, ×30;
+  mỗi biến thể 3 seed. best.pt do Trainer chọn theo val gộp (bóng đá + tin tức). Chấm local: gộp 3 seed, stride 30, k+τ chọn trên **val bóng đá**
+  (một recipe production), F1 tin tức tính ở cùng k/τ. Chọn biến thể: trong các biến thể có val bóng đá ≥ 0.3051 (vòng 7 − 0.010), lấy val tin tức cao nhất.
+  **Thay vòng 7 chỉ khi:** val tin tức ≥ val tin tức của vòng 7 (cùng quy trình) + 0.05 **và** gap train−val bóng đá ≤ 0.1706.
+  Test bóng đá chấm sau quyết định. Tin tức KHÔNG có test (chỉ 10 video) — kết quả tin tức chỉ là val 3 video, ghi rõ giới hạn.
+- **Xác nhận vòng 8 ×10 trên test tin tức độc lập — đăng ký trước khi có dữ liệu (2026-10-30, AI-21).** Ứng viên CỐ ĐỊNH = vòng 8 ×10
+  (3 checkpoint đã train ở AI-20, không train lại, không chọn lại), so với vòng 7 active. Test tin tức: 6–10 video tin tức tiếng Việt **CC BY**,
+  **kênh khác** 6 kênh đã dùng, 5–25 phút/video, chọn theo truy vấn cố định trước khi chạy model; nhãn người gán **mù** (trang không hiện đề xuất
+  hay điểm AI). Recipe production: k + τ của từng model chọn trên val bóng đá (như AI-20). **Đổi sang ×10 khi cả hai:** F1/giây test tin tức(×10)
+  ≥ test tin tức(vòng 7) + 0.05 **và** test bóng đá(×10) ≥ test bóng đá(vòng 7) − 0.01. Báo kèm: F1 tin tức với τ riêng (tham khảo), CI bootstrap
+  theo video. Tập test tin tức chấm đúng MỘT lần; sau đó không dùng để chọn gì.
+  *Sửa đổi 2026-10-30 (user duyệt, TRƯỚC khi tải video/chạy model):* tìm kiếm CC chỉ ra 2 kênh chính thức mới (Báo SGGP, THVL 24News); kênh
+  đăng lại nội dung đài khác và kênh bình luận bị loại (bản quyền / không phải bản tin). Test = 2 video kênh mới + 6 video CHƯA DÙNG của kênh cũ
+  (HYTV, ĐCSVN, LSTV; 2/kênh theo thứ tự tìm kiếm, thiếu thì bù từ kênh còn lại). Quyết định dùng cả 8 video; báo riêng nhóm kênh mới (độc lập)
+  và nhóm kênh đã thấy (lạc quan hơn). Chỉ kênh chính thức (chủ sở hữu nội dung); trùng kênh lọc theo `channel_id`.
 - **Báo cáo chất lượng weak label:** alignment coverage toàn 50 trận + số trận bị loại (< 60% coverage) + Cohen's kappa của 2 người gán test — bảng riêng trong chương thực nghiệm.
 - **Đánh giá cấp đoạn (sát nghiệp vụ):** ghép giây liên tiếp > τ thành đoạn; đoạn đúng khi IoU ≥ 0.5 với đoạn nhãn người → precision/recall cấp đoạn.
 - **Đánh giá cảm quan:** CMS hiển thị heatmap → biên tập viên chấm "dùng được/không" cho 20 video — số liệu human-in-the-loop đưa vào luận án.

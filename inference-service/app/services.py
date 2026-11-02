@@ -1,32 +1,22 @@
-"""Logic 6 endpoint. Model thật (registry) khi có checkpoint; STUB đúng schema khi chưa.
+"""Facade logic 6 endpoint (D24): validation, error codes, MinIO/Milvus/audio I/O. Model inference goes through
+worker_client (in-process worker.py by default, remote worker when MODEL_WORKER_URL is set); STUB đúng schema khi chưa có model.
 
 GPU-bound (vision/asr/highlight/completions) chạy qua gpu_queue tuần tự.
 search/recommendation: encode nhẹ + (thật) query Milvus — stub trả mock ổn định.
 """
 
-import base64
 import binascii
 import hashlib
 import io
 import time
 import uuid
 
-from . import schemas
+from . import schemas, worker_client
 from .registry import registry
 from .config import settings
+from .worker import InvalidInput
+from .worker_client import DependencyError
 from fastapi import HTTPException
-
-
-class InvalidInput(ValueError):
-    """Request content the model cannot use (unreadable image/audio, wrong feature shape) — not a model failure."""
-
-
-class DependencyError(RuntimeError):
-    """Milvus/MinIO behind a capability failed — reported in /health.dependencies, not as model failure."""
-
-    def __init__(self, dependency: str, error: Exception):
-        super().__init__(f"{type(error).__name__}: {error}")
-        self.dependency = dependency
 
 
 def _warn(where: str, model_name: str, e: Exception) -> None:
@@ -57,7 +47,7 @@ def _seed_from(text: str) -> int:
 
 def run_completion(req: schemas.CompletionRequest) -> schemas.CompletionResponse:
     text = None
-    if registry.is_real("minigpt"):
+    if worker_client.is_real("minigpt"):
         try:
             text = _real_summarize(req)
             registry.degraded.discard("minigpt")
@@ -77,54 +67,7 @@ def run_completion(req: schemas.CompletionRequest) -> schemas.CompletionResponse
 
 
 def _real_summarize(req: schemas.CompletionRequest) -> str:
-    """Use the trained EOS-delimited formats; recursively reduce all long-input chunks."""
-    import torch
-    from ai_core.training.datasets.summary_dataset import CONTROL_TOKENS
-
-    model = registry.models["minigpt"]
-    tok = registry.tokenizer
-    if tok is None:
-        raise RuntimeError("minigpt checkpoint thiếu BPE vocabulary")
-    eos = tok.special_tokens["<eos>"]
-    context = int(registry.minigpt_metadata.get("summary_context_len", 512))
-    reserve = int(registry.minigpt_metadata.get("max_target_tokens", 96))
-    if not 1 < reserve < context <= model.cfg.context_len:
-        raise RuntimeError("invalid MiniGPT summary context/output metadata")
-    source, fmt = req.prompt.strip(), "sum"
-    for name, marker in CONTROL_TOKENS.items():
-        if source == marker or source.startswith(marker + " ") or source.startswith(marker + "\n"):
-            fmt, source = name, source[len(marker):].strip()
-            break
-    if not source:
-        return ""  # Silent audio has no transcript to summarize.
-    if source.isupper():
-        source = source.lower()  # Our CTC vocabulary is uppercase; ASR fine-tuning used lowercase.
-    prefixes = {name: tok.encode(marker) for name, marker in CONTROL_TOKENS.items()}
-    capacities = {name: context - reserve - 1 - len(prefix) for name, prefix in prefixes.items()}
-    if min(capacities.values()) < 1:
-        raise RuntimeError("MiniGPT context leaves no source capacity")
-
-    def _gen(content: list[int], output_format: str, budget: int) -> str:
-        prompt_ids = prefixes[output_format] + content + [eos]
-        out = model.generate(
-            torch.tensor([prompt_ids], device=registry.device),
-            max_new_tokens=budget, temperature=req.temperature, eos_id=eos,
-        )
-        return tok.decode(out[0, len(prompt_ids):].tolist()).strip()
-
-    # The leading space attaches to the first word in our byte BPE, exactly as in training.
-    ids = tok.encode(" " + source)
-    while len(ids) > capacities[fmt]:
-        chunk = capacities["sum"]
-        partials = [_gen(ids[i:i + chunk], "sum", reserve) for i in range(0, len(ids), chunk)]
-        merged = " ".join(partials).strip()
-        if not merged:
-            return ""
-        reduced = tok.encode(" " + merged)
-        if len(reduced) >= len(ids):
-            raise RuntimeError("MiniGPT map-reduce did not shrink the input")
-        ids = reduced
-    return _gen(ids, fmt, min(req.max_tokens, reserve))
+    return worker_client.call("summarize", prompt=req.prompt, max_tokens=req.max_tokens, temperature=req.temperature)
 
 
 # ---------------- Visual Search /v1/search/completions ----------------
@@ -133,12 +76,15 @@ def run_search(req: schemas.SearchRequest) -> schemas.SearchResponse:
     if not settings.force_stub:
         from . import visual_index
         t0 = time.perf_counter()
+        bad_image = HTTPException(422, detail={"code": "VALIDATION_ERROR", "message": "Invalid JPEG/PNG/WebP image (max 20 megapixels)"})
         try:
-            image = _load_keyframe(req.image)
+            image = visual_index._image_bytes(req.image)
         except (OSError, ValueError, binascii.Error) as exc:
-            raise HTTPException(422, detail={"code": "VALIDATION_ERROR", "message": "Invalid JPEG/PNG/WebP image (max 20 megapixels)"}) from exc
+            raise bad_image from exc
         try:
             vector = visual_index.encode([image])[0]
+        except InvalidInput as exc:
+            raise bad_image from exc
         except Exception as exc:
             _warn("search/siamese", "siamese", exc)
         registry.degraded.discard("siamese")
@@ -177,63 +123,64 @@ def run_search(req: schemas.SearchRequest) -> schemas.SearchResponse:
 
 def run_highlight(req: schemas.HighlightRequest) -> schemas.HighlightResponse:
     n = len(req.features.vision_embeddings)
-    scores = None
-    if registry.is_real("highlight_fusion"):
+    out = None
+    if worker_client.is_real("highlight_fusion"):
         try:
-            scores = _real_highlight(req)
+            out = _real_highlight(req)
             registry.degraded.discard("highlight_fusion")
         except Exception as e:  # noqa: BLE001
             _warn("highlight", "highlight_fusion", e)
-    if scores is None:
+    if out is None:
         # stub: điểm dao động mượt theo index, thang 0–100
         scores = [round(50 + 40 * ((i * 37) % 100 - 50) / 50, 1) for i in range(n)]
-        scores = [max(0.0, min(100.0, s)) for s in scores]
+        out = {"scores": [max(0.0, min(100.0, s)) for s in scores],
+               "clip_rules": {"threshold": 75.0, "merge_gap_seconds": 0, "min_clip_seconds": 1, "min_video_seconds": 0}}
+    scores, rules = out["scores"], out["clip_rules"]
 
     timeline = [schemas.TimelineScore(second=i, score=s) for i, s in enumerate(scores)]
-    clips = _peaks_to_clips(scores, threshold=75.0)
+    # Videos shorter than the recipe's minimum are outside the training distribution (~45 min halves): scores only, no clips.
+    clips = [] if len(scores) < rules.get("min_video_seconds", 0) else _peaks_to_clips(
+        scores, rules["threshold"], rules["merge_gap_seconds"], rules["min_clip_seconds"], req.asr_segments)
     return schemas.HighlightResponse(
         id=_rid("hl-primitive"), created=_now(), model=req.model, video_id=req.video_id,
-        timeline_scores=timeline, recommended_clips=clips,
+        timeline_scores=timeline, recommended_clips=clips, clip_threshold=rules["threshold"],
     )
 
 
-def _real_highlight(req: schemas.HighlightRequest) -> list[float]:
-    import torch
-    model = registry.models["highlight_fusion"]
-    dt = registry.model_dtype                     # khớp dtype model (half trên CUDA) để tránh mismatch
-    vision, audio = req.features.vision_embeddings, req.features.audio_spectrogram_features
-    if len(vision) != len(audio):
-        raise InvalidInput("vision_embeddings và audio_spectrogram_features phải cùng số giây")
-    if not vision:
-        raise InvalidInput("empty highlight features")
-    if any(len(v) != 256 for v in vision) or any(len(a) != 64 for a in audio):
-        raise InvalidInput("highlight features phải là vision 256-d và audio 64-d")
-    scores = []
-    window = 120  # Same window length used to train the Fusion checkpoint.
-    with torch.no_grad():
-        for start in range(0, len(req.features.vision_embeddings), window):
-            v = torch.tensor([req.features.vision_embeddings[start:start+window]], device=registry.device, dtype=dt)
-            a = torch.tensor([req.features.audio_spectrogram_features[start:start+window]], device=registry.device, dtype=dt)
-            scores.extend(round(float(x) * 100, 1) for x in model(v, a)[0])
-    return scores
+def _real_highlight(req: schemas.HighlightRequest) -> dict:
+    return worker_client.call("highlight", vision=req.features.vision_embeddings, audio=req.features.audio_spectrogram_features)
 
 
-def _peaks_to_clips(scores: list[float], threshold: float) -> list[schemas.RecommendedClip]:
-    clips, start = [], None
-    for i, s in enumerate(scores):
+_SNAP_SECONDS = 3.0  # ponytail: fixed reach; make it a recipe field if editors want tighter/looser cuts
+
+
+def _peaks_to_clips(scores: list[float], threshold: float, merge_gap: int = 0, min_len: int = 1,
+                    speech=None) -> list[schemas.RecommendedClip]:
+    """Seconds with score > threshold → runs; runs ≤ merge_gap s apart join (AI-16 C); runs < min_len s drop.
+    With ASR speech spans, a boundary inside a sentence moves to that sentence's edge if ≤ _SNAP_SECONDS away."""
+    runs, start = [], None
+    for i, s in enumerate(scores + [float("-inf")]):
         if s > threshold and start is None:
             start = i
         elif s <= threshold and start is not None:
-            seg = scores[start:i]
-            clips.append(schemas.RecommendedClip(
-                clip_id=f"clp_{start:04d}", start_time=float(start), end_time=float(i),
-                average_score=round(sum(seg) / len(seg), 1)))
+            if runs and start - runs[-1][1] <= merge_gap:
+                runs[-1][1] = i
+            else:
+                runs.append([start, i])
             start = None
-    if start is not None:
-        seg = scores[start:]
-        clips.append(schemas.RecommendedClip(
-            clip_id=f"clp_{start:04d}", start_time=float(start), end_time=float(len(scores)),
-            average_score=round(sum(seg) / len(seg), 1)))
+    clips = []
+    for a, b in runs:
+        if b - a < min_len:
+            continue
+        begin, end = float(a), float(b)
+        for span in speech or []:
+            if span.start_time < begin < span.end_time and begin - span.start_time <= _SNAP_SECONDS:
+                begin = span.start_time
+            if span.start_time < end < span.end_time and span.end_time - end <= _SNAP_SECONDS:
+                end = span.end_time
+        seg = scores[a:b]
+        clips.append(schemas.RecommendedClip(clip_id=f"clp_{a:04d}", start_time=max(0.0, begin), end_time=min(end, float(len(scores))),
+                                             average_score=round(sum(seg) / len(seg), 1)))
     return clips
 
 
@@ -241,7 +188,7 @@ def _peaks_to_clips(scores: list[float], threshold: float) -> list[schemas.Recom
 
 def run_asr(req: schemas.ASRRequest) -> schemas.ASRResponse:
     result = None
-    if registry.is_real("asr_ctc"):
+    if worker_client.is_real("asr_ctc"):
         try:
             result = _real_asr(req)
             registry.degraded.discard("asr_ctc")
@@ -283,10 +230,14 @@ def _fetch_audio(audio_url: str):
 
 
 def _real_asr(req: schemas.ASRRequest):
+    return _transcribe(_audio_chunks(req.audio_url))
+
+
+def _transcribe(chunks):
     texts, segments = [], []
     offset = 0.0
     # Bound attention to 20 seconds; preserve absolute timestamps across windows.
-    for chunk in _audio_chunks(req.audio_url):
+    for chunk in chunks:
         duration = chunk.numel() / 16000
         if chunk.numel() < 400 or float(chunk.abs().max()) < 1e-4:
             offset += duration
@@ -303,9 +254,7 @@ def _real_asr(req: schemas.ASRRequest):
 
 
 def _audio_chunks(audio_url):
-    import numpy as np
     import soundfile as sf
-    import torch
     if audio_url.startswith(("http://", "https://")):
         # shortcut: direct HTTP audio loads whole; upload ingest uses streaming shared WAV paths.
         try:
@@ -319,6 +268,13 @@ def _audio_chunks(audio_url):
         audio = sf.SoundFile(audio_url)
     except Exception as e:
         raise InvalidInput(f"audio_url không đọc được: {type(e).__name__}: {e}") from e
+    yield from _read_chunks(audio)
+
+
+def _read_chunks(audio):
+    """Open soundfile.SoundFile → 20 s float32 mono 16 kHz tensors (streamed, never the whole file)."""
+    import numpy as np
+    import torch
     with audio:
         while True:
             data = audio.read(20*audio.samplerate, dtype="float32")
@@ -333,39 +289,10 @@ def _audio_chunks(audio_url):
 
 
 def _decode_asr(signal):
-    import torch
-    from ai_core.audio.mel import log_mel_spectrogram
-    from ai_core.models.ctc import ctc_greedy_decode, ctc_segments
-    vocab = registry.asr_vocab
-    if vocab is None:
-        raise NotImplementedError("thiếu char_vocab cho ASR (checkpoints/asr_ctc/vocab.json)")
-    model = registry.models["asr_ctc"]
-    mel = log_mel_spectrogram(signal, n_mels=80, sr=16000).unsqueeze(0).to(
-        device=registry.device, dtype=registry.model_dtype)          # khớp dtype model
-    lengths = torch.tensor([mel.shape[2]], device=registry.device)
-    with torch.no_grad():
-        log_probs, out_len = model(mel, lengths)         # (1, T', C)
-    lp = log_probs.float().cpu()
-    valid = int(out_len[0].item())                       # bỏ frame padding khi tính conf
-    ids = ctc_greedy_decode(lp, out_len.cpu(), blank=0)[0]
-    text = "".join(vocab[i] for i in ids if 0 < i < len(vocab))
-    conf = float(lp[0, :valid].max(-1).values.exp().mean()) if valid > 0 else 0.0
-
-    # Timestamp THẬT từ alignment CTC. Bản trước trả đúng một segment 0 → len(audio): khớp schema,
-    # trông như chạy được, nhưng không dựng nổi phụ đề vì mọi dòng cùng một mốc thời gian.
-    # frame_sec = hop/sr × subsample; suy subsample từ chính đầu ra model để encoder đổi tỉ lệ thì
-    # timestamp không lệch âm thầm.
-    subsample = mel.shape[2] / max(valid, 1)
-    parts = ctc_segments(lp[0], valid, vocab, 160 / 16000 * subsample, blank=0)
-    dur = round(signal.numel() / 16000, 2)
-    if not parts:
-        parts = [{"start": 0.0, "end": dur, "text": text}]
-    segs = [
-        schemas.ASRSegment(id=i, start_time=p["start"], end_time=min(p["end"], dur),
-                           text=p["text"], confidence=round(conf, 3))
-        for i, p in enumerate(parts)
-    ]
-    return text, segs
+    """One ≤20 s float32 16 kHz chunk → worker CTC → (text, segments with chunk-relative times)."""
+    text, parts = worker_client.call("asr", pcm=signal.numpy().tobytes())
+    return text, [schemas.ASRSegment(id=i, start_time=p["start"], end_time=p["end"], text=p["text"], confidence=p["confidence"])
+                  for i, p in enumerate(parts)]
 
 
 # ---------------- Recommendation /v1/recommendation/completions ----------------
@@ -493,7 +420,7 @@ def run_recommendation(req: schemas.RecommendationRequest) -> schemas.Recommenda
 def run_vision(req: schemas.VisionRequest) -> schemas.VisionResponse:
     n = len(req.keyframes)
     result = None
-    if registry.is_real("vit"):
+    if worker_client.is_real("vit"):
         try:
             result = _real_vision(req)
         except Exception as e:  # noqa: BLE001
@@ -509,52 +436,19 @@ def run_vision(req: schemas.VisionRequest) -> schemas.VisionResponse:
     )
 
 
-def _load_keyframe(ref: str, img_size: int = 224):
-    """Keyframe từ data URI base64 hoặc path → tensor (3, H, W) [0,1]."""
-    import os
-
-    import numpy as np
-    import torch
-    from PIL import Image
-    if ref.startswith("data:"):                      # data URI → phần base64 sau dấu phẩy
-        img = Image.open(io.BytesIO(base64.b64decode(ref.split(",", 1)[1])))
-    elif os.path.exists(ref):                        # path cục bộ
-        img = Image.open(ref)
-    else:                                            # base64 trần
-        img = Image.open(io.BytesIO(base64.b64decode(ref)))
-    if img.width * img.height > 20_000_000:
-        raise ValueError("Image exceeds 20 megapixels")
-    img = img.convert("RGB").resize((img_size, img_size))
-    return torch.from_numpy(np.asarray(img)).float().div(255.0).permute(2, 0, 1)
-
-
 def _real_vision(req: schemas.VisionRequest):
-    import torch
-    model = registry.models["vit"]
-    if not req.keyframes:
-        raise InvalidInput("empty keyframes")
-
-    def _keyframe(ref):
-        try:
-            return _load_keyframe(ref)
-        except (OSError, ValueError, binascii.Error) as e:
-            raise InvalidInput(f"keyframe không đọc được (JPEG/PNG/WebP ≤20 MP): {type(e).__name__}: {e}") from e
-    embeddings, total_logits = [], None
-    with torch.no_grad():
-        for start in range(0, len(req.keyframes), 16):
-            imgs = torch.stack([_keyframe(k) for k in req.keyframes[start:start+16]]).to(device=registry.device, dtype=registry.model_dtype)
-            logits, emb = model(imgs, return_embedding=True)
-            summed = logits.float().sum(0)
-            total_logits = summed if total_logits is None else total_logits + summed
-            embeddings.extend(emb.float().cpu().tolist())
-    idx = int(total_logits.argmax().item())
-    classes = registry.vit_classes
-    category = classes[idx] if classes and idx < len(classes) else f"class_{idx}"
+    from . import visual_index
+    try:
+        images = [visual_index._image_bytes(ref) for ref in req.keyframes]
+    except (OSError, ValueError, binascii.Error) as e:
+        raise InvalidInput(f"keyframe không đọc được (JPEG/PNG/WebP ≤20 MP): {type(e).__name__}: {e}") from e
+    category, embeddings, _ = worker_client.call("vision", images=images)
     registry.degraded.discard("vit")
     if not settings.force_stub:
-        from .visual_index import index_frames
         try:
-            indexed = index_frames(req.keyframes, video_id=req.video_id)
+            indexed = visual_index.index_frames(req.keyframes, video_id=req.video_id)
+        except DependencyError:
+            raise
         except ValueError as e:
             raise InvalidInput(str(e)) from e
         except Exception as e:  # noqa: BLE001 — MinIO/Milvus behind the frame index

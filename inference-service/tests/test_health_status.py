@@ -73,7 +73,7 @@ def test_model_failure_degrades_then_recovers(monkeypatch):
 
 def test_milvus_search_failure_is_dependency_not_siamese(monkeypatch):
     monkeypatch.setattr(registry, "models", {"siamese": object()})
-    monkeypatch.setattr(services, "_load_keyframe", lambda ref: torch.zeros(3, 224, 224))
+    monkeypatch.setattr(visual_index, "_image_bytes", lambda ref: b"img")
     monkeypatch.setattr(visual_index, "encode", lambda images: [[0.1] * 128])
     calls = {"n": 0}
 

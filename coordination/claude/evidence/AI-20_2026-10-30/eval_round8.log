@@ -1,0 +1,18 @@
+round7: k=9 tau=0.51 soccer val 0.3151 gap 0.1606 | news val 0.1852 (own-tau 0.2946 @ 0.26, info)
+round8 rep1: k=9 tau=0.53 soccer val 0.3126 gap 0.2240 | news val 0.5111 (own-tau 0.5503 @ 0.65, info)
+round8 rep10: k=9 tau=0.51 soccer val 0.3228 gap 0.1326 | news val 0.3756 (own-tau 0.5076 @ 0.24, info)
+round8 rep30: k=5 tau=0.56 soccer val 0.3060 gap 0.1600 | news val 0.1922 (own-tau 0.4891 @ 0.22, info)
+r8_rep1_s1337: F1 peak @3000 (lr 7.4e-05) | val loss min 0.9482@1500 | at best 1.3803 | final +53%
+r8_rep1_s1338: F1 peak @2600 (lr 1.1e-04) | val loss min 0.9376@900 | at best 1.1921 | final +48%
+r8_rep1_s1339: F1 peak @2400 (lr 1.3e-04) | val loss min 0.9519@1500 | at best 1.1612 | final +52%
+r8_rep10_s1337: F1 peak @2000 (lr 1.8e-04) | val loss min 0.9715@400 | at best 1.1877 | final +58%
+r8_rep10_s1338: F1 peak @1500 (lr 2.3e-04) | val loss min 0.9639@400 | at best 1.0636 | final +55%
+r8_rep10_s1339: F1 peak @2300 (lr 1.4e-04) | val loss min 0.9793@1000 | at best 1.1465 | final +65%
+r8_rep30_s1337: F1 peak @1700 (lr 2.1e-04) | val loss min 0.9894@500 | at best 1.1639 | final +64%
+r8_rep30_s1338: F1 peak @1000 (lr 2.7e-04) | val loss min 0.9934@700 | at best 1.0933 | final +53%
+r8_rep30_s1339: F1 peak @2700 (lr 1.0e-04) | val loss min 1.0002@300 | at best 1.4638 | final +58%
+eligible (soccer val >= 0.3051): ['rep1', 'rep10', 'rep30'] | winner rep1
+DECISION (val only): KEEP round 7
+round7 soccer test F1 0.3298
+rep1 soccer test F1 0.3267
+exit 0
