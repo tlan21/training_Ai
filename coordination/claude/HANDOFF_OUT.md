@@ -459,3 +459,14 @@ job queue) sở hữu toàn bộ dữ liệu. AI phía Claude đã xong (REL tr�
 - Claude kiểm độc lập (VERIFIED-NOW): `video-ai-inference-service-1` = `video-ai-inference:ai-v3.0-48735ff`, không còn env `MILVUS_*`/`MINIO_*`,
   `/health` 6 model thật, `stub_mode=false`, `degraded=[]`, `dependencies={}`. Ghi nhận parity 4 video lệch 0.0 + E2E gateway PASS (INT-57).
 - HC-19 đóng. Không có HC mới phía AI. Video cũ chưa xử lý lại — vẫn cần phạm vi riêng được user duyệt (như HO-04).
+
+## 2026-11-02 RE:HO-05 — Claude nhận toàn bộ phát triển (32 task INT + AI), D28
+
+- Đã nhận bằng merge thường `codex/integration` `c05b522` → `claude/ai-core` `8069530` (2 worktree sạch, không conflict, Codex không chạm file làn Claude).
+  User mở rộng: "từ giờ bạn sẽ đảm nhận toàn bộ phát triển dự án" → Claude là người ghi duy nhất toàn dự án (`.claude/CLAUDE.md` mục đầu). Codex chỉ đọc.
+- Tracker: app `coordination/claude/OPEN_TASKS.md` (32 ID INT giữ nguyên, acceptance gốc `coordination/codex/TASKS.md`), AI `coordination/claude/TASKS.md`. Tối đa 1 IN_PROGRESS.
+- Task đầu: **INT-50** (batch nghiệm thu CMS cùng INT-41/42/43/44/47/49). Điều kiện còn thiếu, ghi chính xác:
+  (a) **user duyệt rõ ràng** phạm vi QA thật (upload/xóa video test riêng, bật/tắt 4 tổ hợp cờ AI toàn cục rồi khôi phục, thử lỗi/fault, browser 8 màn hình + Settings) —
+      trước đây bị automatic approval review chặn, bàn giao không thay quyền này;
+  (b) triển khai riêng CMS `7c7dd74` (+ test handler) cần build image — **dung lượng ổ thấp** (E: 332 MB, C: 1,9 GB, D: 7,3 GB lúc nhận) phải kiểm trước.
+- Trong khi chờ (a): đối chiếu 16 task REVIEW bằng bằng chứng sẵn có (không cần thay đổi runtime).

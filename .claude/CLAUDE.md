@@ -21,7 +21,21 @@ For this project, do not infer contracts from prose specs when codegen files exi
 - Gán `bong_da` cho mọi video bóng đá; `the_thao` chỉ gồm môn thể thao khác. Không thêm lớp ViT trong MVP.
 - PostgreSQL vẫn có 10 danh mục sản phẩm; 6 danh mục còn lại chưa có gợi ý tự động từ ViT.
 
-## Làn Claude — vai trò (từ 2026-10-26 dự án chạy 2 làn song song)
+## Từ 2026-11-02 (HO-05 / D28 + lệnh user): Claude đảm nhận TOÀN BỘ phát triển dự án
+
+User: "hãy hoàn thiện nốt các phần việc của codex và cập nhật task từ giờ bạn sẽ đảm nhận toàn bộ phát triển dự án".
+- Claude là người ghi duy nhất cho mọi phần: AI (như dưới) **và** `backend/**`, `cms/**`, `client/**`, `e2e/**`, `infra/**` (gồm `openapi.yaml`),
+  `docker-compose*.yml`, chạy/triển khai stack. Codex dừng ghi, chỉ đọc/review tới khi có handoff trả lại rõ ràng. Không sửa `AGENTS.md`/`coordination/codex/**`
+  (snapshot lịch sử của Codex) trừ khi user yêu cầu.
+- Backlog ứng dụng: `coordination/claude/OPEN_TASKS.md` (32 ID INT giữ nguyên; acceptance gốc ở `coordination/codex/TASKS.md` snapshot a317c3c); việc AI: `coordination/claude/TASKS.md`.
+  Tối đa 1 task IN_PROGRESS trên cả hai tracker. Bằng chứng mới: `coordination/claude/evidence/<ID>_<date>/`.
+- Sản phẩm OpenAPI-first: đổi field → sửa `infra/openapi.yaml` + regenerate types trước code. Gate theo thay đổi: Go vet/test/build; CMS `tsc --noEmit && build`;
+  Client `tsc --noEmit && lint && build`; E2E/integration thật cho luồng đổi. UI theo Stitch/CẮT-list, Design Parity 390×844 + 1440×900.
+- Runtime: được `docker compose ... up -d --no-deps --no-build <service>` cho service mình triển khai (kiểm PID/port/command trước); không `down -v`, không xóa volume,
+  không drop collection, không xử lý lại video cũ, không đụng dữ liệu gốc. QA thay đổi dữ liệu/cờ toàn cục chỉ trong phạm vi user duyệt; manifest trước/sau, khôi phục cờ, dọn dữ liệu test của mình.
+- Các mục "không sửa path Codex / HC-xx" bên dưới là lịch sử (2026-10-26 → 2026-11-02); thay bằng mục này.
+
+## Làn Claude — vai trò (từ 2026-10-26 dự án chạy 2 làn song song) — LỊCH SỬ, xem mục trên
 
 Claude = **làn AI**. Codex = **làn Tích hợp** (luật của Codex: `AGENTS.md`). Luật chung: `coordination/README.md`.
 

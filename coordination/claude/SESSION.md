@@ -3,6 +3,7 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
+- **HO-05 nhận (2026-11-02):** Claude làm toàn bộ dự án; backlog `coordination/claude/OPEN_TASKS.md`. INT-50 chờ user duyệt QA thật + kiểm dung lượng ổ (E: 332 MB). Song song: đối chiếu REVIEW.
 - **HC-19 đóng (2026-11-02):** inference v3.0 chạy trong compose (Codex INT-57), Claude đã kiểm. D24 xong phía AI. Còn: AI-05 REVIEW (§7), AI-12 ⇐ INT-15, AI-04 ⇐ RTX 3060.
 - **Release #7 (2026-11-02):** AI-23 DONE (AI-API v3.0) lên master. Chờ RE:HC-19; AI-05 REVIEW chờ user chọn §7.
 - **AI-23 REVIEW (2026-11-02):** AI-API v3.0 (gỡ /v1 lưu trữ + MinIO/Milvus), image `ai-v3.0-48735ff` parity PASS; chờ user duyệt release; HC-19.

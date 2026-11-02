@@ -3,6 +3,9 @@
 Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordination/claude/TASKS.md`).
 Định dạng + trạng thái: `coordination/README.md` mục 4. Kiểm kê gốc: `coordination/INVENTORY_2026-10-26.md`.
 
+## Từ 2026-11-02: Claude làm toàn bộ dự án (HO-05 / D28)
+Backlog ứng dụng 32 ID INT: `coordination/claude/OPEN_TASKS.md` (tick + evidence ở đó). Bảng dưới = việc AI. Tối đa 1 IN_PROGRESS trên cả hai.
+
 ## Tổng quan
 
 | ID | T gốc | Tên | Status | Depends on |
