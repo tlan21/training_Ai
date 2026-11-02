@@ -15,7 +15,7 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | AI-11 | T1.8 / T4.2 | HO-01: `video_id` tùy chọn cho Vision + index frame từ data URI 1 fps (contract minor) | DONE (2026-10-26) | HO-01 (Codex chọn HTTP media) |
 | AI-13 | T1.7 / T1.8 | D18: recommendation inference không trả metadata giả + `recommendation_mode` | DONE (2026-10-26; release #3) | D18 |
 | AI-14 | T1.8 | D24 bước 1: tách facade/worker trong inference-service (contract v1.3 không đổi) + worker từ xa (MODEL_WORKER_URL) + kernel Kaggle worker GPU | DONE (2026-10-30, release #5) | D24 (user 2026-10-29) |
-| AI-15 | T1.8 | D24 bước 2: AI-API v2.0 (DRAFT) — AI trả vector/kết quả, Backend sở hữu MinIO/Milvus; v1.3 chạy song song; HC cho Codex | IN_PROGRESS (2026-11-02; RE:HC-13 E2E PASS 2026-10-29 → bước 2: /v2 API_READY, /v1 media DEPRECATED; gỡ minio/pymilvus ⇐ Codex ngừng gọi /v1) | AI-14; Codex (HC) cho phần backend |
+| AI-15 | T1.8 | D24 bước 2: AI-API v2.0 (DRAFT) — AI trả vector/kết quả, Backend sở hữu MinIO/Milvus; v1.3 chạy song song; HC cho Codex | REVIEW (2026-11-02) — bước 2 xong trên branch (v2.0 API_READY, v1.5 4 path /v1 DEPRECATED), chờ release; bước 3 gỡ minio/pymilvus ⇐ RE:HC-17 | AI-14; Codex (HC) cho phần backend |
 | AI-16 | T1.5 / T1.8 | Highlight: (B) đối chiếu checkpoint active với vòng đạt DoD; (A) hậu xử lý đúng như lúc chấm (làm mượt k, τ); (C) luật clip (độ dài, nối, biên câu) | DONE (2026-10-30, release #5) | user 2026-10-29 |
 | AI-17 | T1.5 | Fusion vòng 6: chuẩn hóa theo từng video + augment chống overfit; thay vòng 5 chỉ khi val ≥ 0.2750 và gap train−val < 0.205 | DONE (release #5; thay bởi vòng 7/8) | AI-16; user 2026-10-29 |
 | AI-18 | T1.5 | Fusion vòng 7: giảm overfit bằng lr/weight decay/lịch ngắn; thay vòng 6 chỉ khi val ≥ 0.3053, gap < 0.1692, val loss < 1.2136 | DONE (release #5; thay bởi vòng 8 ×10) | AI-17 |
@@ -301,7 +301,7 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   ```
 
 ### AI-15 — D24 bước 2: AI-API v2.0 — inference-service chỉ tính toán, Backend sở hữu dữ liệu
-- T gốc: T1.8 | Owner: claude | Status: IN_PROGRESS (2026-11-02) — RE:HC-13 E2E PASS (Codex 2026-10-29, INT-28/29) → cutover bước 2; phần AI 2026-10-29 (contract v2.0 DRAFT, endpoint thật, HC-13)
+- T gốc: T1.8 | Owner: claude | Status: REVIEW (2026-11-02) — bước 2 xong, chờ release (user duyệt); bước 3 ⇐ RE:HC-17; phần AI 2026-10-29 (contract v2.0 DRAFT, endpoint thật, HC-13)
 - Depends on: AI-14 (worker thuần) | Blocks: gỡ minio/pymilvus khỏi inference-service (sau khi Codex E2E PASS); INT-xx phía Codex
 - Việc (phía AI): contract v2.0 DRAFT (vision trả thêm `siamese_vectors`, không ghi MinIO/Milvus; search nhận ảnh → vector 128; ASR nhận bytes audio multipart,
   chia đoạn; recommendation encode → vector 128 khớp Two-Tower; highlight/completions giữ nguyên) + `inference_openapi.json` + examples thật + error codes
@@ -311,6 +311,10 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - Evidence (VERIFIED-NOW 2026-10-29, `coordination/claude/evidence/AI-15_2026-10-29/`): inference 71 passed / 10 skipped (compat v1.2 + v1.3);
   smoke :8001 9/9 (v1 6/6 + 401, v2 3/3 trùng v1 trên media thật; reco v2 503 MODEL_NOT_READY); OpenAPI chỉ thêm; Milvus đo 411 vector / 49 video.
   Còn lại (sau RE:HC-13): release → /v2 API_READY, /v1 media/search/reco DEPRECATED → gỡ minio/pymilvus + Milvus khỏi lifespan.
+- Cutover bước 2 (VERIFIED-NOW 2026-11-02): RE:HC-13 E2E PASS (Codex INT-28/29). `main.py` 4 route `/v1` `deprecated=True`; test
+  `test_v1_paths_replaced_by_v2_are_deprecated_in_openapi`; inference 82/10 (compat v1.2 + v1.3); OpenAPI diff = 4 dòng `deprecated`;
+  contract v1.5 + v2.0 API_READY (reco v2 vẫn DRAFT); REL + HC-17 (gateway `ai_client.go` vẫn còn client `/v1` → chưa gỡ được).
+  Khi release: build image mới tại commit release + chạy `evidence/AI-22_2026-11-02/parity.py` lại, cập nhật tag trong HC-16.
 - Commits: bfa4a40 (task), e307bf2 (code), deecc45 (smoke/examples/openapi), (contract/HC-13: commit này) | Checkpoint:
   ```
   Lane: claude

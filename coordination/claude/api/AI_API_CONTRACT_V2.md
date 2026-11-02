@@ -1,7 +1,7 @@
 # AI API Contract v2.0 — inference-service chỉ tính toán (D24)
 
-**Version: AI-API v2.0 — `DRAFT` (2026-10-29, AI-15).** Chạy **song song** với v1.3 (`AI_API_CONTRACT.md`, `API_READY`) trên cùng :8001.
-v1.3 giữ nguyên tới khi Codex chuyển xong + E2E PASS (mục 5); khi đó v1.3 → `DEPRECATED`, rồi gỡ.
+**Version: AI-API v2.0 — `API_READY` (2026-11-02, AI-15; hiệu lực khi release).** Codex E2E PASS trên `/v2` (RE:HC-13, INT-28/29, 2026-10-29).
+Chạy song song với v1.5 (`AI_API_CONTRACT.md`): 4 path `/v1` tương ứng đã `DEPRECATED`, gỡ sau khi Codex xác nhận ngừng gọi (HC-17, mục 5).
 Owner: Claude. Codex chỉ đọc (`git show claude/ai-core:coordination/claude/api/AI_API_CONTRACT_V2.md`).
 Nguồn code: `inference-service/app/v2.py`, `app/schemas.py` (mục "AI-API v2.0"), `app/worker.py`. OpenAPI: `inference_openapi.json` (có cả `/v1` và `/v2`).
 Ví dụ thật (media AI-01, :8001 CPU, 6 checkpoint active): `examples/v2_*.json`.
@@ -23,15 +23,15 @@ Client/CMS ──HTTP──▶ Backend Go Gateway (+ ingest worker, job queue) �
 
 | Endpoint | Trạng thái | Thay cho (v1.3) |
 |---|---|---|
-| `POST /v2/vision/completions` | `DRAFT` (chạy thật, ví dụ thật) | `/v1/vision/completions` + index frame vào MinIO/Milvus |
-| `POST /v2/search/embeddings` | `DRAFT` (chạy thật, ví dụ thật) | `/v1/search/completions` (tìm Milvus phía AI) |
-| `POST /v2/asr/completions` | `DRAFT` (chạy thật, ví dụ thật) | `/v1/asr/completions` (`audio_url` MinIO presigned) |
-| `POST /v2/recommendation/embeddings` | `DRAFT` — thật trả `503 MODEL_NOT_READY` tới AI-12 | `/v1/recommendation/completions` (tìm Milvus phía AI) |
+| `POST /v2/vision/completions` | `API_READY` | `/v1/vision/completions` + index frame vào MinIO/Milvus |
+| `POST /v2/search/embeddings` | `API_READY` | `/v1/search/completions` (tìm Milvus phía AI) |
+| `POST /v2/asr/completions` | `API_READY` | `/v1/asr/completions` (`audio_url` MinIO presigned) |
+| `POST /v2/recommendation/embeddings` | `DRAFT` — thật trả `503 MODEL_NOT_READY` tới AI-12 (giữ DRAFT) | `/v1/recommendation/completions` (tìm Milvus phía AI) |
 | `POST /v1/highlight/completions` | `API_READY` — **giữ nguyên** | — |
 | `POST /v1/completions` | `API_READY` — **giữ nguyên** | — |
 | `GET /health` | `API_READY` — giữ nguyên schema | `dependencies` rỗng sau khi gỡ MinIO/Milvus (mục 5) |
 
-`DRAFT` ở đây: schema + hành vi đã chạy thật trên :8001 và có ví dụ thật, nhưng chưa qua release/E2E Codex. Codex được dùng ngay (mock `FORCE_STUB=1` trả đúng schema).
+`API_READY`: schema ổn định + ví dụ thật + smoke live PASS (lần gần nhất 2026-11-02 trên container `ai-v1.4-62b7e05`, AI-22) + Codex E2E PASS. Recommendation giữ `DRAFT` (chưa có model). Codex được dùng ngay (mock `FORCE_STUB=1` trả đúng schema).
 
 ## 1. Chung
 
@@ -118,7 +118,8 @@ Resp 200: `{"id","object":"recommendation_embeddings","created","model","feature
 ## 5. Giai đoạn song song + cutover
 
 1. Hiện tại: `/v1` (API_READY) + `/v2` (DRAFT) cùng chạy trên :8001. Codex chuyển từng luồng theo HC-13; mỗi luồng chuyển xong có thể tắt gọi `/v1` tương ứng.
-2. Codex báo E2E PASS trên `/v2` (RE:HC-13) → release (README mục 6): `/v2` → `API_READY`, `/v1/vision|search|asr|recommendation` → `DEPRECATED`.
+2. ✅ (2026-11-02) Codex báo E2E PASS trên `/v2` (RE:HC-13) → `/v2` → `API_READY`, `/v1/vision|search|asr|recommendation` → `DEPRECATED` (v1.5); hiệu lực khi release.
+   Gateway (`backend/internal/adapters/aihttp/ai_client.go`) vẫn còn client `/v1` → HC-17 hỏi Codex gỡ/xác nhận không còn gọi.
 3. Release kế: gỡ `minio`/`pymilvus` khỏi inference-service, lifespan không cần Milvus, xóa `/v1` deprecated (bump v3.0 nếu xóa path; chỉ khi Codex xác nhận không còn gọi).
 
 ## 6. Đặc tả dữ liệu backend tiếp quản (đo trên Milvus stack Codex, 2026-10-29)
@@ -138,6 +139,7 @@ Resp 200: `{"id","object":"recommendation_embeddings","created","model","feature
 - Score hiển thị 0–1 = `(IP + 1) / 2`. Chỉ tạo khi AI-12 có checkpoint v2.
 
 ## 7. Changelog
+- **v2.0 API_READY (2026-11-02)** — AI-15 cutover bước 2: vision/search/asr `API_READY` (recommendation vẫn `DRAFT` ⇐ AI-12). Schema không đổi so với DRAFT.
 - **v2.0 DRAFT (2026-10-29)** — AI-15 (D24 bước 2). Thêm `/v2/vision/completions`, `/v2/search/embeddings`, `/v2/asr/completions`,
   `/v2/recommendation/embeddings`. Không đổi gì ở `/v1` (compat test khóa với snapshot v1.2 và v1.3).
 

@@ -69,7 +69,8 @@ async def completions(req: schemas.CompletionRequest):
     return await gpu_queue.submit(lambda: services.run_completion(req), "summary")
 
 
-@app.post("/v1/asr/completions", response_model=schemas.ASRResponse, dependencies=[Depends(require_bearer)])
+# AI-15 cutover (v1.5): media/search/reco /v1 paths DEPRECATED in favour of /v2 (compute-only); still served until Codex stops calling them.
+@app.post("/v1/asr/completions", response_model=schemas.ASRResponse, dependencies=[Depends(require_bearer)], deprecated=True)
 async def asr(req: schemas.ASRRequest):
     return await gpu_queue.submit(lambda: services.run_asr(req), "asr")
 
@@ -79,20 +80,20 @@ async def highlight(req: schemas.HighlightRequest):
     return await gpu_queue.submit(lambda: services.run_highlight(req), "highlight")
 
 
-@app.post("/v1/vision/completions", response_model=schemas.VisionResponse, dependencies=[Depends(require_bearer)])
+@app.post("/v1/vision/completions", response_model=schemas.VisionResponse, dependencies=[Depends(require_bearer)], deprecated=True)
 async def vision(req: schemas.VisionRequest):
     return await gpu_queue.submit(lambda: services.run_vision(req), "vision/siamese")
 
 
 # ---- nhẹ (encode + Milvus) — không chiếm GPU lâu ----
 
-@app.post("/v1/search/completions", response_model=schemas.SearchResponse, dependencies=[Depends(require_bearer)])
+@app.post("/v1/search/completions", response_model=schemas.SearchResponse, dependencies=[Depends(require_bearer)], deprecated=True)
 def search(req: schemas.SearchRequest):
     return services.run_search(req)
 
 
 @app.post("/v1/recommendation/completions", response_model=schemas.RecommendationResponse,
-          dependencies=[Depends(require_bearer)])
+          dependencies=[Depends(require_bearer)], deprecated=True)
 async def recommendation(req: schemas.RecommendationRequest):
     return services.run_recommendation(req)
 

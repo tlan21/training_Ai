@@ -133,3 +133,10 @@ def test_real_recommendation_encode_is_not_ready_until_ai12(real_no_storage):
     with pytest.raises(HTTPException) as err:
         v2.run_reco_embeddings(schemas.RecoEmbeddingRequest(users=[schemas.RecoUserFeatures(user_id="usr_a")]))
     assert err.value.status_code == 503 and err.value.detail["code"] == "MODEL_NOT_READY"
+
+
+def test_v1_paths_replaced_by_v2_are_deprecated_in_openapi():
+    from app.main import app
+    ops = {path: op for path, item in app.openapi()["paths"].items() for op in item.values()}
+    deprecated = {path for path, op in ops.items() if op.get("deprecated")}
+    assert deprecated == {"/v1/vision/completions", "/v1/search/completions", "/v1/asr/completions", "/v1/recommendation/completions"}

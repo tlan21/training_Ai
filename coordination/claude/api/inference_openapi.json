@@ -259,6 +259,7 @@
       "post": {
         "summary": "Asr",
         "operationId": "asr_v1_asr_completions_post",
+        "deprecated": true,
         "parameters": [
           {
             "name": "authorization",
@@ -359,6 +360,7 @@
       "post": {
         "summary": "Vision",
         "operationId": "vision_v1_vision_completions_post",
+        "deprecated": true,
         "parameters": [
           {
             "name": "authorization",
@@ -409,6 +411,7 @@
       "post": {
         "summary": "Search",
         "operationId": "search_v1_search_completions_post",
+        "deprecated": true,
         "parameters": [
           {
             "name": "authorization",
@@ -459,6 +462,7 @@
       "post": {
         "summary": "Recommendation",
         "operationId": "recommendation_v1_recommendation_completions_post",
+        "deprecated": true,
         "parameters": [
           {
             "name": "authorization",

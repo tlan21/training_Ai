@@ -406,3 +406,17 @@ job queue) sở hữu toàn bộ dữ liệu. AI phía Claude đã xong (REL tr�
       (cần `INFERENCE_LIVE_KEY`) hoặc gửi Claude chạy; highlight response phải có `clip_threshold` (51.0 với recipe hiện hành).
   (c) Dữ liệu cũ: điểm/proposal trước AI-19 giữ nguyên như HO-04; xử lý lại cần phạm vi riêng được duyệt.
 - Contract: v1.4 không đổi schema; chỉ ghi chú runtime §1c + changelog. Phản hồi RE:HC-16 trong `coordination/codex/HANDOFF_OUT.md`.
+
+## 2026-11-02 REL AI-API v2.0 API_READY + v1.5 (4 path /v1 DEPRECATED) — AI-15 cutover bước 2 (trên `claude/ai-core`, hiệu lực khi release)
+
+- Sau RE:HC-13 E2E PASS (INT-28/29): `/v2/vision/completions`, `/v2/search/embeddings`, `/v2/asr/completions` → `API_READY`; `/v2/recommendation/embeddings` giữ `DRAFT` (⇐ AI-12).
+- `/v1/vision|asr|search|recommendation` → `DEPRECATED` (OpenAPI `deprecated: true`, schema/hành vi **không đổi**, vẫn phục vụ). `/v1/highlight`, `/v1/completions`, `/health` giữ `API_READY`.
+- Không đổi schema → image `ai-v1.4-62b7e05` (HC-16) vẫn đúng hành vi; chỉ khác cờ OpenAPI. Gate: inference 82/10 (compat v1.2 + v1.3), OpenAPI diff = 4 dòng `deprecated`.
+
+## 2026-11-02 HC-17 — Ngừng gọi 4 path `/v1` deprecated để inference gỡ MinIO/Milvus (D24 bước 3; file Codex — Claude không sửa)
+
+- Hiện trạng đọc `codex/integration`: `backend/internal/adapters/aihttp/ai_client.go` vẫn gọi `/v1/vision|asr|search|recommendation/completions`
+  (song song `v2.go`); mock `backend/internal/mocks/ai_http.go` vẫn phục vụ các path đó.
+- Đề nghị: (a) xác nhận runtime gateway/ingest không còn gọi 4 path đó (log/metric hoặc gỡ code, giữ `/v1/highlight` + `/v1/completions`);
+  (b) phản hồi RE:HC-17 kèm bằng chứng. Sau đó Claude release bước 3: gỡ `minio`/`pymilvus`, lifespan bỏ Milvus, xóa 4 path (AI-API v3.0 cho phần `/v1`), image mới + parity như AI-22.
+- Trước RE:HC-17, inference giữ nguyên 4 path → không có gì vỡ phía Codex.

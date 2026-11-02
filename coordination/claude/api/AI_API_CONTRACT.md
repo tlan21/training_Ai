@@ -1,6 +1,7 @@
 # AI API Contract — inference-service :8001
 
-**Version: AI-API v1.4 (2026-10-30) — release #5.** v1.4 chỉ THÊM field (highlight: `asr_segments` tùy chọn, `clip_threshold`) + sửa lỗi `embeddings_256` (backbone Siamese) + model highlight vòng 8 ×10; 6 endpoint `API_READY` không đổi path/field bắt buộc. Tương thích ngược khóa bằng `inference-service/tests/test_contract_compat.py` (snapshot v1.2 + v1.3). v2.0 `DRAFT` song song: `AI_API_CONTRACT_V2.md`. Owner: Claude. Codex chỉ đọc
+**Version: AI-API v1.5 (2026-11-02, AI-15 cutover bước 2; hiệu lực khi release).** v1.5 không đổi schema/path: 4 path `/v1/vision|asr|search|recommendation` → `DEPRECATED` (OpenAPI `deprecated: true`), thay bằng `/v2` (`AI_API_CONTRACT_V2.md`, `API_READY`); vẫn phục vụ tới khi Codex xác nhận ngừng gọi (HC-17), sau đó mới gỡ.
+**Trước đó: AI-API v1.4 (2026-10-30) — release #5.** v1.4 chỉ THÊM field (highlight: `asr_segments` tùy chọn, `clip_threshold`) + sửa lỗi `embeddings_256` (backbone Siamese) + model highlight vòng 8 ×10; 6 endpoint `API_READY` không đổi path/field bắt buộc. Tương thích ngược khóa bằng `inference-service/tests/test_contract_compat.py` (snapshot v1.2 + v1.3). v2.0 `DRAFT` song song: `AI_API_CONTRACT_V2.md`. Owner: Claude. Codex chỉ đọc
 (`git show claude/ai-core:coordination/claude/api/AI_API_CONTRACT.md`, hoặc bản trên `master` sau release).
 **AI-API v2.0 `DRAFT` (D24, 2026-10-29):** `AI_API_CONTRACT_V2.md` — `/v2` chỉ tính toán, Backend sở hữu MinIO/Milvus; chạy song song, v1.3 dưới đây không đổi.
 Nguồn code: `inference-service/app/schemas.py`, `app/main.py`, `app/services.py`, `app/visual_index.py` trên `claude/ai-core` (AI-01).
@@ -16,12 +17,12 @@ thành công thật; Codex được dùng mock, chưa được đánh `INTEGRATE
 | Endpoint | Trạng thái v1.2 | Ghi chú |
 |---|---|---|
 | `GET /health` | `API_READY` | v1.1 thêm `dependencies` |
-| `POST /v1/vision/completions` | `API_READY` | ✓ |
-| `POST /v1/asr/completions` | `API_READY` | ✓ |
+| `POST /v1/vision/completions` | `DEPRECATED` (v1.5) | → `/v2/vision/completions`; vẫn chạy tới HC-17 |
+| `POST /v1/asr/completions` | `DEPRECATED` (v1.5) | → `/v2/asr/completions`; vẫn chạy tới HC-17 |
 | `POST /v1/highlight/completions` | `API_READY` | ✓ |
 | `POST /v1/completions` | `API_READY` | ✓ |
-| `POST /v1/search/completions` | `API_READY` | ✓ |
-| `POST /v1/recommendation/completions` | `DRAFT` | ✗ — Milvus chưa có collection `user_recommendation_embeddings`, luôn 503; personalized chờ D14 (AI-09 + HC-04) |
+| `POST /v1/search/completions` | `DEPRECATED` (v1.5) | → `/v2/search/embeddings` + Milvus phía backend; vẫn chạy tới HC-17 |
+| `POST /v1/recommendation/completions` | `DEPRECATED` (v1.5; trước là `DRAFT`) | → `/v2/recommendation/embeddings` (⇐ AI-12). Cũ: Milvus chưa có collection `user_recommendation_embeddings`, luôn 503; personalized chờ D14 (AI-09 + HC-04) |
 
 ## 0. Quy ước chung
 
@@ -225,6 +226,7 @@ Resp: `{"status":"ok","gpu_vram_used": MB,"gpu_util": %,"models_loaded":[...],"d
   `/health` tự thử lại dependency chưa `ok` tối đa mỗi 30 s → trạng thái tự phục hồi khi Milvus/collection được sửa. `FORCE_STUB=1` → `{}`.
 
 ## 3. Changelog
+- **v1.5 (2026-11-02, AI-15)** — cutover D24 bước 2 sau RE:HC-13 E2E PASS: 4 path `/v1` media/search/reco `DEPRECATED` (chỉ thêm `deprecated: true` vào OpenAPI, test `test_v1_paths_replaced_by_v2_are_deprecated_in_openapi`); schema/hành vi không đổi; compat v1.2 + v1.3 PASS.
 - **v1.4 — ghi chú 2026-11-02 (AI-22, HO-04)** — không đổi version/schema: runtime chính thức = container image `ai-v1.4-62b7e05` (mục 1c) + bằng chứng parity.
 - **v1.4 (2026-10-30)** — release #5: gom các mục v1.4-rc1 bên dưới (AI-16…AI-21); recommendation vẫn DRAFT; v2.0 vẫn DRAFT (chờ RE:HC-13).
 - **v1.4-rc1 — sửa lỗi 2026-10-29 (AI-19):** `embeddings_256` của `/v1/vision` (và `/v2/vision`) giờ là embedding **backbone Siamese** — đúng đặc trưng Fusion đã được train (`extract_vit_embeddings` + siamese md5 `9d2f670f`). Trước đó là embedding ViT phân loại (cosine 0.03–0.13 với đặc trưng train) → highlight production nhận đầu vào lệch phân bố từ AI-01. Schema không đổi; giá trị đổi; `category_suggestion` không đổi.
