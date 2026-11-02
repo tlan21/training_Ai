@@ -3,6 +3,7 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
+- **AI-23 REVIEW (2026-11-02):** AI-API v3.0 (gỡ /v1 lưu trữ + MinIO/Milvus), image `ai-v3.0-48735ff` parity PASS; chờ user duyệt release; HC-19.
 - **Release #6 (2026-11-02):** master ← claude/ai-core (AI-15 DONE, AI-22 DONE, AI-05 REVIEW, D27). Mở: HC-17, HC-18; AI-05 chờ user chọn §7.
 - **AI-15 REVIEW (2026-11-02):** cutover bước 2 xong trên branch (v2.0 API_READY, v1.5); chờ user duyệt release; bước 3 ⇐ RE:HC-17.
 - **AI-05 REVIEW (2026-11-02):** `evidence/AI-05_2026-11-02/SO_LIEU_LUAN_AN.md`; chờ user chọn bổ sung §7.

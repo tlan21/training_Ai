@@ -433,3 +433,19 @@ job queue) sở hữu toàn bộ dữ liệu. AI phía Claude đã xong (REL tr�
 - Khác `ai-v1.4-62b7e05` (đang chạy, HC-16) **chỉ** ở OpenAPI: 4 path `/v1` có `deprecated: true`; schema, checkpoint, điểm highlight y hệt (parity PASS, lệch 0.0).
 - Đề nghị: đổi tag service `inference-service` như HC-16 (không build lại, giữ mount checkpoint `:ro`), recreate riêng service đó, kiểm `/health` + `parity.py`; phản hồi RE:HC-18.
   Không gấp: gateway hiện tại vẫn đúng hành vi với `ai-v1.4-62b7e05`.
+
+## 2026-11-02 REL AI-API v3.0 — gỡ 4 path `/v1` + MinIO/Milvus khỏi inference-service (AI-23, trên `claude/ai-core`, hiệu lực khi release)
+
+- Sau RE:HC-17 (INT-55): `/v1/vision|asr|search|recommendation/completions` → **404**; schema riêng của chúng bị xóa. Còn: `/v1/highlight/completions`,
+  `/v1/completions`, `GET /health`, `/v2/*` — schema không đổi. `/health.dependencies` = `{}` (chỉ `model_worker` khi worker từ xa).
+- inference-service không còn `minio`/`pymilvus`, không cần Milvus lúc startup, không đọc env `MILVUS_*`/`MINIO_*`.
+- Gate: inference 64/6 skip (compat v1.2 + v1.3 + v1.5: chỉ đúng 4 path + schema riêng bị xóa, cả 4 đều deprecated ở v1.5); image `video-ai-inference:ai-v3.0-48735ff` chạy KHÔNG mạng compose,
+  KHÔNG env MinIO/Milvus: smoke 6/6 + 401, 4 path cũ 404, parity PASS (101 file nguồn, 6 checkpoint, highlight 4 video lệch 0.0).
+
+## 2026-11-02 HC-19 — Triển khai image v3.0 sau release (file Codex — Claude không sửa, không `compose up`)
+
+- Image `video-ai-inference:ai-v3.0-48735ff`, id `sha256:f62671e78fd8bb4ba9fad3fb743ea4ab3aeb76723e76abd821afe0c336837b81`, label revision `48735ff…` (đã có trong Docker local).
+- Đề nghị khi Claude release v3.0: (a) service `inference-service`: đổi tag như HC-16/18 (không build lại), **bỏ** env `MILVUS_HOST/MILVUS_PORT/MINIO_*`
+  và `depends_on: milvus/minio` của riêng service này (giữ mount checkpoint `:ro`); (b) client/mocks Go `/v1/vision|asr|search|recommendation` có thể gỡ
+  (đã không còn đường gọi, INT-55) — không bắt buộc, path giờ trả 404; (c) CMS/system health không được kỳ vọng key `visual_index`/`recommendation_index`
+  trong `/health.dependencies` nữa; (d) kiểm `/health` (6 model, `stub_mode=false`) + `parity.py`; phản hồi RE:HC-19.

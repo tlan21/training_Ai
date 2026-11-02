@@ -1,0 +1,7 @@
+6 passed (tests/test_live_smoke.py, image ai-v3.0-48735ff, no MinIO/Milvus env, no compose network)
+POST /v1/completions without Bearer -> 401
+POST /v1/vision/completions -> 404
+POST /v1/asr/completions -> 404
+POST /v1/search/completions -> 404
+POST /v1/recommendation/completions -> 404
+health: {"status":"ok","gpu_vram_used":0.0,"gpu_util":0.0,"models_loaded":["asr_ctc","highlight_fusion","minigpt","siamese","two_tower","vit"],"degraded":[],"dependencies":{},"queue_depth":0,"device":"cpu","stub_mode":false,"load_error":null}

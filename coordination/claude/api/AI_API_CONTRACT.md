@@ -1,6 +1,7 @@
 # AI API Contract — inference-service :8001
 
-**Version: AI-API v1.5 (2026-11-02, AI-15 cutover bước 2; hiệu lực khi release).** v1.5 không đổi schema/path: 4 path `/v1/vision|asr|search|recommendation` → `DEPRECATED` (OpenAPI `deprecated: true`), thay bằng `/v2` (`AI_API_CONTRACT_V2.md`, `API_READY`); vẫn phục vụ tới khi Codex xác nhận ngừng gọi (HC-17), sau đó mới gỡ.
+**Version: AI-API v3.0 (2026-11-02, AI-23 — D24 bước 3; hiệu lực khi release).** v3.0 = major: **xóa** 4 path `/v1/vision|asr|search|recommendation` (trả 404) và mọi MinIO/Milvus khỏi inference-service; còn `/v1/highlight/completions`, `/v1/completions`, `GET /health` (file này) + `/v2/*` (`AI_API_CONTRACT_V2.md`). `/health.dependencies` = `{}` (chỉ có `model_worker` khi dùng worker từ xa). Compat test: `inference-service/tests/test_contract_compat.py` (snapshot v1.2, v1.3, v1.5; chỉ cho phép xóa đúng 4 path + schema riêng).
+**Trước đó — AI-API v1.5 (2026-11-02, release #6):** v1.5 không đổi schema/path: 4 path `/v1/vision|asr|search|recommendation` → `DEPRECATED` (OpenAPI `deprecated: true`), thay bằng `/v2` (`AI_API_CONTRACT_V2.md`, `API_READY`); vẫn phục vụ tới khi Codex xác nhận ngừng gọi (HC-17), sau đó mới gỡ.
 **Trước đó: AI-API v1.4 (2026-10-30) — release #5.** v1.4 chỉ THÊM field (highlight: `asr_segments` tùy chọn, `clip_threshold`) + sửa lỗi `embeddings_256` (backbone Siamese) + model highlight vòng 8 ×10; 6 endpoint `API_READY` không đổi path/field bắt buộc. Tương thích ngược khóa bằng `inference-service/tests/test_contract_compat.py` (snapshot v1.2 + v1.3). v2.0 `DRAFT` song song: `AI_API_CONTRACT_V2.md`. Owner: Claude. Codex chỉ đọc
 (`git show claude/ai-core:coordination/claude/api/AI_API_CONTRACT.md`, hoặc bản trên `master` sau release).
 **AI-API v2.0 `DRAFT` (D24, 2026-10-29):** `AI_API_CONTRACT_V2.md` — `/v2` chỉ tính toán, Backend sở hữu MinIO/Milvus; chạy song song, v1.3 dưới đây không đổi.
@@ -17,12 +18,12 @@ thành công thật; Codex được dùng mock, chưa được đánh `INTEGRATE
 | Endpoint | Trạng thái v1.2 | Ghi chú |
 |---|---|---|
 | `GET /health` | `API_READY` | v1.1 thêm `dependencies` |
-| `POST /v1/vision/completions` | `DEPRECATED` (v1.5) | → `/v2/vision/completions`; vẫn chạy tới HC-17 |
-| `POST /v1/asr/completions` | `DEPRECATED` (v1.5) | → `/v2/asr/completions`; vẫn chạy tới HC-17 |
+| `POST /v1/vision/completions` | **REMOVED** (v3.0) | → `/v2/vision/completions` |
+| `POST /v1/asr/completions` | **REMOVED** (v3.0) | → `/v2/asr/completions` |
 | `POST /v1/highlight/completions` | `API_READY` | ✓ |
 | `POST /v1/completions` | `API_READY` | ✓ |
-| `POST /v1/search/completions` | `DEPRECATED` (v1.5) | → `/v2/search/embeddings` + Milvus phía backend; vẫn chạy tới HC-17 |
-| `POST /v1/recommendation/completions` | `DEPRECATED` (v1.5; trước là `DRAFT`) | → `/v2/recommendation/embeddings` (⇐ AI-12). Cũ: Milvus chưa có collection `user_recommendation_embeddings`, luôn 503; personalized chờ D14 (AI-09 + HC-04) |
+| `POST /v1/search/completions` | **REMOVED** (v3.0) | → `/v2/search/embeddings` + Milvus phía backend |
+| `POST /v1/recommendation/completions` | **REMOVED** (v3.0) | → `/v2/recommendation/embeddings` (⇐ AI-12). Lịch sử: Milvus chưa có collection `user_recommendation_embeddings`, luôn 503; personalized chờ D14 (AI-09 + HC-04) |
 
 ## 0. Quy ước chung
 
@@ -111,6 +112,8 @@ media thật 6/6 + synthetic 6/6; `/health` → `stub_mode=false`, 6 model, `deg
   `parity.py` PASS — 103 file `app/` + `ai_core/` = blob git, checkpoint = §1, điểm highlight 4 video thật lệch 0.0 so với tiến trình host, clip trùng.
 - **Image release #6 (v1.5): `video-ai-inference:ai-v1.5-000e7c1`** — id `sha256:271bb4bab6f4c0e8c57b8a6562adaf71e176a5a90eef2ec9edef51bd8d0c058f`, revision `000e7c1` (code = HEAD release #6; chỉ khác v1.4 ở cờ OpenAPI `deprecated`).
   VERIFIED-NOW 2026-11-02 (`coordination/claude/evidence/AI-15_2026-11-02/`): smoke 9/9 + 401, OpenAPI 4 path deprecated, parity PASS. Codex đổi tag theo HC-18.
+- **Image v3.0 (AI-23): `video-ai-inference:ai-v3.0-48735ff`** — id `sha256:f62671e78fd8bb4ba9fad3fb743ea4ab3aeb76723e76abd821afe0c336837b81`, revision `48735ff`; chạy độc lập không cần MinIO/Milvus (không env, không mạng compose).
+  VERIFIED-NOW 2026-11-02 (`coordination/claude/evidence/AI-23_2026-11-02/`): smoke 6/6 + 401, 4 path cũ 404, parity PASS. Triển khai: HC-19 (sau release).
 - Kiểm parity của container đang chạy bất kỳ: `parity.py <container> <url> <features.pt> out.json` (docstring).
 - Tiến trình host bên dưới = dự phòng dev, không phải runtime tích hợp.
 
@@ -150,7 +153,8 @@ Lịch sử (2026-10-26):
 Ví dụ thật cho mỗi endpoint: `examples/<name>.request.json`, `<name>.response.json`, `<name>.error_request.json`, `<name>.error.json`
 (file response/error có dạng `{"http_status": int, "body": <JSON trả về>}`).
 
-### 2.1 `POST /v1/vision/completions` — ViT (chỉ nội bộ pipeline) — API_READY
+### 2.1 `POST /v1/vision/completions` — ViT (chỉ nội bộ pipeline) — REMOVED v3.0
+⛔ **ĐÃ GỠ ở AI-API v3.0 (AI-23, 2026-11-02)** — trả 404; deprecated từ v1.5, Codex xác nhận không còn gọi (RE:HC-17). Thay bằng ``/v2/vision/completions``. Mô tả dưới đây chỉ là lịch sử (code cuối cùng: master `479f5d5`).
 Req: `{"model"?: str, "keyframes": [str], "video_id"?: str}` — mỗi keyframe là data URI base64, base64 trần, hoặc path file mà process inference đọc được.
 - `video_id` (v1.2, tùy chọn, HO-01): `vid_*`. Có field này → frame được index cho visual search (Milvus `video_frame_embeddings` + thumbnail MinIO
   `thumbnails/<video_id>/<8 số>.jpg`), keyframe thứ i = giây i (1 fps theo thứ tự request). **Gửi toàn bộ frame của video trong 1 request**: index ghi đè
@@ -161,7 +165,8 @@ Resp: `{"id","object":"vision_completion","created","model","category_suggestion
 - `embeddings_256`: 1 vector/keyframe, cùng thứ tự; dùng làm `vision_embeddings` cho highlight.
 - Lỗi: thiếu `keyframes` → 422; ảnh hỏng/>20 MP → 503. Ví dụ: `examples/vision.*` (3 frame thật → `tin_tuc`, 3×256).
 
-### 2.2 `POST /v1/asr/completions` — ASR CTC — API_READY
+### 2.2 `POST /v1/asr/completions` — ASR CTC — REMOVED v3.0
+⛔ **ĐÃ GỠ ở AI-API v3.0 (AI-23, 2026-11-02)** — trả 404; deprecated từ v1.5, Codex xác nhận không còn gọi (RE:HC-17). Thay bằng ``/v2/asr/completions``. Mô tả dưới đây chỉ là lịch sử (code cuối cùng: master `479f5d5`).
 Req: `{"model"?: str, "audio_url": str, "language": "vi"}` — `audio_url` = path WAV **trên máy chạy inference** hoặc `http(s)://` (MinIO nội bộ). 16 kHz mono.
 - Topology host/Docker: dùng URL MinIO presigned với host `localhost:9000` (đã kiểm AI-11: 200, 5 segment).
 Resp: `{"id","object":"asr_completion","created","model","full_transcript": str,"segments":[{"id":int,"start_time":float,"end_time":float,"text":str,"confidence":0–1,"warning": null|"low_confidence"|"blacklist"}]}`
@@ -189,14 +194,16 @@ Resp: `{"id","object":"highlight_completion","created","model","video_id","timel
     (vd 3 s: điểm ~57, 0 clip vì < 5 s). Request phải gửi đặc trưng của cả video (như hiện tại), không cắt lẻ từng đoạn.
     Đo qua code service trên tập test đã khóa: F1/giây 0.2628 (DoD 0.2632); ngưỡng 75 trên cùng model chỉ 0.168. Schema response không đổi.
 
-### 2.4 `POST /v1/search/completions` — Siamese + Milvus — API_READY
+### 2.4 `POST /v1/search/completions` — Siamese + Milvus — REMOVED v3.0
+⛔ **ĐÃ GỠ ở AI-API v3.0 (AI-23, 2026-11-02)** — trả 404; deprecated từ v1.5, Codex xác nhận không còn gọi (RE:HC-17). Thay bằng ``/v2/search/embeddings``. Mô tả dưới đây chỉ là lịch sử (code cuối cùng: master `479f5d5`).
 Req: `{"model"?: str, "image": str (data URI/base64/path), "top_k": 1–100 (mặc định 5), "threshold": 0–1 (mặc định 0.75)}`
 Resp: `{"id","object":"search_completion","created","model","results":[{"video_id","timestamp":float,"similarity_score":0–1,"thumbnail_url"}],"query_metadata":{"execution_time_ms": float}}`
 - Collection Milvus `video_frame_embeddings` (128-d, HNSW, COSINE, M=16, efConstruction=200). Kết quả lọc `similarity_score >= threshold` phía inference.
 - `thumbnail_url` = object key MinIO dạng `thumbnails/<video_id>/<8 chữ số>.jpg` (tương đối, gateway tự dựng URL).
 - Gateway tự lọc processed/published + `min_similarity`. Ảnh hỏng/`top_k` ngoài 1–100 → 422; Milvus lỗi → 503.
 
-### 2.5 `POST /v1/recommendation/completions` — Two-Tower + Milvus — DRAFT
+### 2.5 `POST /v1/recommendation/completions` — Two-Tower + Milvus — REMOVED v3.0
+⛔ **ĐÃ GỠ ở AI-API v3.0 (AI-23, 2026-11-02)** — trả 404; deprecated từ v1.5, Codex xác nhận không còn gọi (RE:HC-17). Thay bằng ``/v2/recommendation/embeddings``. Mô tả dưới đây chỉ là lịch sử (code cuối cùng: master `479f5d5`).
 Req: `{"model"?: str, "user_id": str, "limit": int (mặc định 10), "context": {}}`
 Resp: `{"id","object":"recommendation_completion","created","model","recommendation_mode","recommendations":[{"video_id","score":0–1,"title":null,"thumbnail_url":null}]}`
 - v1.3 (D18): `title`/`thumbnail_url` **luôn `null`** — inference không có metadata sản phẩm; gateway lấy theo `video_id` từ Postgres (không bao giờ hiển thị giá trị giả).
@@ -221,6 +228,7 @@ Resp: `{"status":"ok","gpu_vram_used": MB,"gpu_util": %,"models_loaded":[...],"d
 - Integration test thật phải assert `stub_mode == false` và `models_loaded` đủ 6 key ở mục 1.
 - `degraded` (D15, v1.1): model có **inference lỗi thật** ở lần gọi gần nhất. Input không hợp lệ (422, ảnh/audio không đọc được, sai số giây/chiều highlight)
   và lỗi dependency **không** tính. Tự gỡ khi model chạy thành công lần sau.
+- **v3.0:** `dependencies` = `{}`; chỉ còn key `model_worker` (`ok`|`unavailable`) khi `MODEL_WORKER_URL` đặt. Hai key Milvus bên dưới là lịch sử ≤ v1.5.
 - `dependencies` (mới ở v1.1, mặc định `{}` → client cũ bỏ qua được): trạng thái hạ tầng sau từng capability, không phải lỗi model.
   Key: `visual_index` (Milvus `video_frame_embeddings` + MinIO thumbnail; dùng cho search và index frame của vision),
   `recommendation_index` (Milvus `user_recommendation_embeddings`), `model_worker` (chỉ khi `MODEL_WORKER_URL` đặt, mục 1d).
@@ -228,6 +236,7 @@ Resp: `{"status":"ok","gpu_vram_used": MB,"gpu_util": %,"models_loaded":[...],"d
   `/health` tự thử lại dependency chưa `ok` tối đa mỗi 30 s → trạng thái tự phục hồi khi Milvus/collection được sửa. `FORCE_STUB=1` → `{}`.
 
 ## 3. Changelog
+- **v3.0 (2026-11-02, AI-23)** — D24 bước 3 sau RE:HC-17 (Codex INT-55): xóa 4 path `/v1` deprecated + schema riêng (`VisionRequest/Response`, `ASRRequest`, `Search*`, `Recommendation*`); gỡ `visual_index.py`, `index_frames.py`, warmup/probe Milvus, `minio`/`pymilvus`; `/health.dependencies` còn `{}`; startup không cần Milvus. `/v1/highlight`, `/v1/completions`, `/v2/*` không đổi. Examples v1 tương ứng đã xóa, examples còn lại sinh lại từ image v3.0.
 - **v1.5 (2026-11-02, AI-15)** — cutover D24 bước 2 sau RE:HC-13 E2E PASS: 4 path `/v1` media/search/reco `DEPRECATED` (chỉ thêm `deprecated: true` vào OpenAPI, test `test_v1_paths_replaced_by_v2_are_deprecated_in_openapi`); schema/hành vi không đổi; compat v1.2 + v1.3 PASS.
 - **v1.4 — ghi chú 2026-11-02 (AI-22, HO-04)** — không đổi version/schema: runtime chính thức = container image `ai-v1.4-62b7e05` (mục 1c) + bằng chứng parity.
 - **v1.4 (2026-10-30)** — release #5: gom các mục v1.4-rc1 bên dưới (AI-16…AI-21); recommendation vẫn DRAFT; v2.0 vẫn DRAFT (chờ RE:HC-13).

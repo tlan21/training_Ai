@@ -23,7 +23,7 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | AI-20 | T1.5 | Fusion vòng 8: bóng đá + tin tức (nhãn người), lặp tin tức ×1/×10/×30; thay vòng 7 chỉ khi val tin tức +0.05 và giữ bóng đá | DONE (2026-10-30; quy tắc → GIỮ vòng 7; ×10 hứa hẹn, cần dữ liệu tin tức độc lập) | AI-19 |
 | AI-21 | T1.5 | Xác nhận vòng 8 ×10 trên test tin tức độc lập (kênh mới, nhãn mù); đổi khi test tin tức +0.05 và bóng đá ≥ −0.01 | DONE (2026-10-30, release #5; ×10 ACTIVE) | AI-20; user 2026-10-30 (hướng 1) |
 | AI-22 | T1.8 | HO-04: runtime AI chính thức = container Docker (user 2026-11-02) — image bất biến từ source hiện hành (v1.4 + AI-19 + recipe) + bằng chứng readiness/parity checkpoint–source; Codex đổi tag compose (HC-16) | DONE (2026-11-02; Codex triển khai `ai-v1.4-62b7e05` = RE:HC-16; image release #6 ⇐ HC-18) | HO-04; Docker engine UP |
-| AI-23 | T1.8 | D24 bước 3: gỡ 4 path `/v1` deprecated + MinIO/Milvus khỏi inference-service (AI-API v3.0), image mới + parity | IN_PROGRESS (2026-11-02) | AI-15; RE:HC-17 (Codex INT-55: không còn gọi) |
+| AI-23 | T1.8 | D24 bước 3: gỡ 4 path `/v1` deprecated + MinIO/Milvus khỏi inference-service (AI-API v3.0), image mới + parity | REVIEW (2026-11-02) — code + image v3.0 + parity xong, chờ release; triển khai ⇐ HC-19 | AI-15; RE:HC-17 (Codex INT-55: không còn gọi) |
 | AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | BLOCKED ⇐ bundle INT-13 (phần độc lập xong 2026-10-26) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | DONE (2026-10-26; sandbox + artifact; product → AI-12 theo D18) | HC-04 (sandbox READY) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | DONE (02a 2026-10-27 · 02b user duyệt 51/60 2026-10-28 · 02c guard loại, không promote) · D23 dừng cho MVP | — |
@@ -206,11 +206,17 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   ```
 
 ### AI-23 — D24 bước 3: inference-service chỉ tính toán hoàn toàn
-- T gốc: T1.8 | Owner: claude | Status: IN_PROGRESS (2026-11-02)
+- T gốc: T1.8 | Owner: claude | Status: REVIEW (2026-11-02) — chờ release (user duyệt); triển khai ⇐ HC-19
 - Depends on: AI-15 (release #6) | RE:HC-17 (Codex INT-55: gateway/ingest production không gọi `/v1/vision|asr|search|recommendation`)
 - Việc: xóa 4 route + code MinIO/Milvus (`visual_index.py`, `index_frames.py`, dependency probe, lifespan warmup), bỏ `minio`/`pymilvus`;
   giữ `/v1/highlight`, `/v1/completions`, `/health`, `/v2/*`; contract AI-API v3.0 (xóa path = major); test compat cập nhật đúng danh sách path bị xóa;
   image mới + parity; HC cho Codex (bỏ env MILVUS/MINIO của service inference, đổi tag).
+- Evidence (VERIFIED-NOW 2026-11-02, `coordination/claude/evidence/AI-23_2026-11-02/`): inference 64/6 (compat v1.2+v1.3+v1.5 + test
+  `test_v3_removed_v1_storage_paths_and_clients`, `test_v3_removals_were_deprecated_first`); image `video-ai-inference:ai-v3.0-48735ff` (id `f62671e7…`) chạy không mạng compose,
+  không env MinIO/Milvus: /health 6 model `dependencies={}`, smoke 6/6 + 401, 4 path cũ 404, `minio`/`pymilvus` không có trong image; parity PASS
+  (101 file, 6 checkpoint, highlight 4 video lệch 0.0). Examples v1 (vision/asr/search/recommendation) xóa; examples còn lại sinh lại (lệch float ≤1e-6, torch 2.15).
+  Ghi chú: 6 script lịch sử `dist/kaggle/*` (ASR D23 đã dừng, VRAM AI-04) gọi API Python v1 cũ → chỉ chạy ở master `479f5d5`.
+- Commits: 7c66916, 48735ff, (commit này)
 
 ### AI-22 — HO-04: image AI hiện hành chạy trong Docker + bằng chứng parity
 - T gốc: T1.8 | Owner: claude | Status: DONE (2026-11-02) — Codex đã triển khai (RE:HC-16, master `97687de`); container đang chạy `ai-v1.4-62b7e05`

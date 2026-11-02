@@ -1,9 +1,9 @@
 {
  "http_status": 200,
  "body": {
-  "id": "hl-primitive-66d9038d6fbc",
+  "id": "hl-primitive-93d989a6cde1",
   "object": "highlight_completion",
-  "created": 1793350072,
+  "created": 1793594112,
   "model": "primitive-seq2seq-highlighter",
   "video_id": "vid_ai01example",
   "timeline_scores": [

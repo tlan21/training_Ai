@@ -13,10 +13,7 @@
    "vit"
   ],
   "degraded": [],
-  "dependencies": {
-   "recommendation_index": "missing_collection",
-   "visual_index": "ok"
-  },
+  "dependencies": {},
   "queue_depth": 0,
   "device": "cpu",
   "stub_mode": false,

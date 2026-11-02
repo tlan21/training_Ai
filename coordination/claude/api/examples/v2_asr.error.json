@@ -3,7 +3,7 @@
  "body": {
   "error": {
    "code": "VALIDATION_ERROR",
-   "message": "audio không đọc được (WAV/FLAC/OGG): LibsndfileError: Error opening <_io.BytesIO object at 0x00000245CB714900>: Format not recognised."
+   "message": "audio không đọc được (WAV/FLAC/OGG): LibsndfileError: Error opening <_io.BytesIO object at 0x743f374a1990>: Format not recognised."
   }
  }
 }
