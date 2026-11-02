@@ -1,9 +1,9 @@
 # Explicit Docker AI deployment requested by user; source/weights remain Claude-owned.
-# Build the image from the pinned Claude source per coordination/codex/verification/INT-31.md.
-# Internal port only: Claude's host :8001 stays running and untouched.
+# Consume Claude's prebuilt, parity-verified image (HC-16); do not rebuild it.
+# Official AI runtime: this container, internal port only (HC-16).
 services:
   inference-service:
-    image: video-ai-inference:ai-v2-478052e
+    image: video-ai-inference:ai-v1.4-62b7e05
     restart: unless-stopped
     command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001"]
     environment:

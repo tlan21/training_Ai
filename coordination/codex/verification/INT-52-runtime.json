@@ -1,0 +1,65 @@
+{
+  "checked_at": "2026-11-02T02:56:32.312524+00:00",
+  "container_id": "11ba8c4e8139b8d68e8c0b87d6edfed69a9a4105d702cc0a34774a6197af9466",
+  "image": "video-ai-inference:ai-v1.4-62b7e05",
+  "image_id": "sha256:53e24af8806570abb38e20b55622e97348ebbc33669f6590a5f319f3c4186254",
+  "revision": "62b7e0501cba80edcebaf3d7aad0a764d6494a9f",
+  "docker_health": "healthy",
+  "health": {
+    "status": "ok",
+    "gpu_vram_used": 0.0,
+    "gpu_util": 0.0,
+    "models_loaded": [
+      "asr_ctc",
+      "highlight_fusion",
+      "minigpt",
+      "siamese",
+      "two_tower",
+      "vit"
+    ],
+    "degraded": [],
+    "dependencies": {
+      "recommendation_index": "missing_collection",
+      "visual_index": "ok"
+    },
+    "queue_depth": 0,
+    "device": "cpu",
+    "stub_mode": false,
+    "load_error": null
+  },
+  "highlight_smoke": {
+    "http_status": 200,
+    "clip_threshold": 51.0,
+    "timeline_seconds": 3,
+    "recommended_clips": 0
+  },
+  "fixture": "master:coordination/claude/api/examples/highlight.request.json; new diagnostic video_id only; stateless HTTP, no product writes",
+  "source_parity": {
+    "files": 103,
+    "all_match_revision": true
+  },
+  "checkpoint_recipe_sha256": {
+    "vit/best.pt": "192d90e4fad893cec1542c5630715cc3bc22197e8cd8ba22a6fb84a64a88ad7f",
+    "siamese/best.pt": "b4ded465b8eea134a01652811008656b9e0c59716431136bb161216310bbcebb",
+    "asr_ctc/best.pt": "8f87986781cfb3d4716691f2051e5798187693e2452f9f41b28ca4a753ea5531",
+    "highlight_fusion/best.pt": "5aecd5c4eecd37a25c8c5c2fd515f268700041987ce38df4ffbf01724fbd052e",
+    "minigpt/best.pt": "cf9cfa7141d40f9d40b0065ae68855ff39ffe750260ee7b42c7c0eac719330ac",
+    "two_tower/best.pt": "f28c37943ec499d168f43b5281879273af326a97ee47e571100c93dee0c91695",
+    "minigpt/bpe_vocab.json": "649ffc66d05bdda9c4586fe5500284dc5feef90414a8762ef4d541331937d713",
+    "highlight_fusion/postproc.json": "f54f62c00e37e2c1c74917da559c944850dd7c88d38fd1542d5de1addb8c0164",
+    "highlight_fusion/seed1338.pt": "06e8f3a100bc0afed7a19253b76561d0f8ca3695dbc858461607cc1b564c8e62",
+    "highlight_fusion/seed1339.pt": "8086d75ed1e5e5e3d471422edf7bf96329bf768030018c8f5c7f92356342327a"
+  },
+  "checkpoint_recipe_match_claude_ai22": true,
+  "gateway": {
+    "http_status": 200,
+    "body": {
+      "dependencies": {
+        "milvus": "ok",
+        "minio": "ok"
+      },
+      "status": "ok"
+    }
+  },
+  "full_host_vs_container_four_video_parity": "NOT RERUN; Claude HC-16 same-image/identical-checkpoint evidence retained"
+}

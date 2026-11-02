@@ -7,12 +7,12 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 ## Tổng quan
 
 ### INT-52 — HC-16 consume Claude's verified v1.4 inference image
-- Owner: CODEX | Status: IN_PROGRESS (2026-11-02)
+- Owner: CODEX | Status: REVIEW (2026-11-02; scoped live acceptance PASS, evidence/handoff commit next)
 - Depends on: explicit user authorization to change image and recreate inference-service only; HC-16/AI-22 image already present locally with SHA53e24af88065 and revision62b7e05; existing read-only checkpoint bind.
 - Acceptance: pin image video-ai-inference:ai-v1.4-62b7e05 in the existing inference compose override; no build/pull; preserve environment, checkpoint source/read-only mount and all other containers; recreate only inference-service; actual /health6models/stubfalse/healthy and authenticated highlight clip_threshold51; record commands/results and RE:HC-16, commit. No original-video reprocessing or AI source/contract/model edits.
 - Changed files: docker-compose.inference.yml; coordination/codex/{TASKS.md,SESSION.md,INTEGRATION_MATRIX.md,HANDOFF_OUT.md,verification/INT-52*}.
-- Evidence/Commits: preflight Docker28.4.0 UP; supplied image ID/label match HC-16; source/preservation/HTTP evidence follows. Task-start commit follows.
-- Next action: capture sanitized runtime baseline, pin existing override, validate effective config then recreate exactly one service with --no-deps --no-build --pull never.
+- Evidence/Commits: task start873beb7; verification/INT-52.md +five artifacts. Actual health6real/stubfalse and authenticated clip_threshold51 PASS; 103source/10checkpoint files match; 15other containers unchanged, configured env/effectiveROmount preserved, gateway200/jobs0. No build/pull, no old-data reprocessing. Deployment/evidence commit follows.
+- Next action: commit verified image/evidence, append RE:HC-16 with SHA and close scoped task; full CMS real QA remains separate.
 
 ### INT-51 — Publish the integration checkpoint and fast-forward master
 - Owner: CODEX | Status: DONE (2026-11-02; release gates PASS, local/remote master and integration verified)
