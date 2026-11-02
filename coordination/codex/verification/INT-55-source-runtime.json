@@ -1,0 +1,56 @@
+{
+  "checked_at": "2026-11-02T03:37:42.019844+00:00",
+  "deployed_gateway_image": "video-ai-gateway:int50-74344bb",
+  "gateway_binary_sha256": "4bf998f5d44aeaa87715d22a76e17e8eba5e687c66fa20d17c98680f33720392",
+  "gateway_matches_committed_rollout_evidence": true,
+  "backend_source_unchanged_since_74344bb": true,
+  "packaged_ingest_git_blob": "bcdb28283ba63b18c7015d100e919c8c64fb2e9d",
+  "packaged_ingest_matches_current_source": true,
+  "ingest_imports": [
+    "ai_core",
+    "av",
+    "json",
+    "kafka",
+    "math",
+    "minio",
+    "numpy",
+    "os",
+    "pathlib",
+    "re",
+    "soundfile",
+    "time",
+    "torch",
+    "wave"
+  ],
+  "ingest_has_no_ai_endpoint_or_credential_env": true,
+  "gateway_feed_ai_injection": "nil; Feed early returns PostgreSQL popularity before Recommendation branch",
+  "non_test_legacy_method_callers": [
+    {
+      "path": "backend/internal/handlers/content.go",
+      "line": 105,
+      "code": "result, err := h.ai.Recommendation(ctx, uid, limit, nil)"
+    },
+    {
+      "path": "backend/internal/mocks/ai_v2.go",
+      "line": 9,
+      "code": "return m.Vision(ctx, p)"
+    },
+    {
+      "path": "backend/internal/mocks/ai_v2.go",
+      "line": 12,
+      "code": "return m.ASR(ctx, p, l)"
+    }
+  ],
+  "source_sha256": {
+    "backend/cmd/gateway/main.go": "612dfa807fc3358281ae7f36bc49f34b220f9c7c0cc30ac3a01c15a9525f6ddf",
+    "backend/internal/orchestrator/runner.go": "07b7fe863726459e75075885cddbe49bc5716a060537f5d22dda84f0953213e2",
+    "backend/internal/orchestrator/frames.go": "b608cbd22ea71d14a251b07694b137d66a11ae1a4857b042a1284e895a8f9e6f",
+    "backend/internal/handlers/search.go": "d930e069f4042b7ab5aad44335acc9f582bfb6a137475b005285a5113c0103a8",
+    "backend/internal/handlers/content.go": "ffc4d5506db6d8441053ab066f0976ca0da67e701b69b719c54dc059c1b1630a",
+    "backend/internal/ports/ai_client.go": "d43d8b267df53e865ae2cf1b53d1dbbaae8b97e2e178946e7d6e0acf40de6c3a",
+    "backend/internal/adapters/aihttp/v2.go": "03e3ae37e8f6df719cf96c90d8e0609c15420b89ffbb53affe568559280a2af1",
+    "backend/internal/adapters/aihttp/ai_client.go": "6138e3c4517a7193bd51b4f8abd297e73e9482c8fdabe97d5041091b09320755",
+    "backend/ingest-worker/main.py": "e1fa764723148c29b1cc96548a265621baf6612121b32e55a088438f937b64f9"
+  },
+  "PASS": true
+}

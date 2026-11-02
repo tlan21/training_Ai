@@ -1,0 +1,133 @@
+?   	traning_ai/backend/cmd/ai-mock	[no test files]
+?   	traning_ai/backend/cmd/ffmpeg-cutter	[no test files]
+?   	traning_ai/backend/cmd/frame-backfill	[no test files]
+ok  	traning_ai/backend/cmd/gateway	(cached)
+?   	traning_ai/backend/cmd/orchestrator	[no test files]
+?   	traning_ai/backend/cmd/ttv2-export	[no test files]
+ok  	traning_ai/backend/internal/adapters/aihttp	(cached)
+?   	traning_ai/backend/internal/adapters/kafka	[no test files]
+ok  	traning_ai/backend/internal/adapters/milvus	(cached)
+?   	traning_ai/backend/internal/adapters/minio	[no test files]
+ok  	traning_ai/backend/internal/adapters/mongo	(cached)
+ok  	traning_ai/backend/internal/adapters/pg	(cached)
+?   	traning_ai/backend/internal/adapters/redis	[no test files]
+ok  	traning_ai/backend/internal/auth	(cached)
+ok  	traning_ai/backend/internal/config	(cached)
+ok  	traning_ai/backend/internal/cutter	(cached)
+ok  	traning_ai/backend/internal/domain	(cached)
+ok  	traning_ai/backend/internal/gen	(cached)
+ok  	traning_ai/backend/internal/handlers	(cached)
+ok  	traning_ai/backend/internal/handlers/cms	(cached)
+ok  	traning_ai/backend/internal/mocks	(cached)
+ok  	traning_ai/backend/internal/orchestrator	(cached)
+?   	traning_ai/backend/internal/ports	[no test files]
+ok  	traning_ai/backend/internal/productexport	(cached)
+ok  	traning_ai/backend/internal/startup	(cached)
+=== RUN   TestV2MockRoundTrip
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /health                   --> traning_ai/backend/internal/mocks.NewAIHTTP.func3 (2 handlers)
+[GIN-debug] POST   /v1/vision/completions    --> traning_ai/backend/internal/mocks.NewAIHTTP.func7 (3 handlers)
+[GIN-debug] POST   /v1/asr/completions       --> traning_ai/backend/internal/mocks.NewAIHTTP.func8 (3 handlers)
+[GIN-debug] POST   /v1/highlight/completions --> traning_ai/backend/internal/mocks.NewAIHTTP.func9 (3 handlers)
+[GIN-debug] POST   /v1/search/completions    --> traning_ai/backend/internal/mocks.NewAIHTTP.func10 (3 handlers)
+[GIN-debug] POST   /v1/recommendation/completions --> traning_ai/backend/internal/mocks.NewAIHTTP.func11 (3 handlers)
+[GIN-debug] POST   /v1/completions           --> traning_ai/backend/internal/mocks.NewAIHTTP.func12 (3 handlers)
+[GIN-debug] POST   /v2/vision/completions    --> traning_ai/backend/internal/mocks.registerV2.func7 (3 handlers)
+[GIN-debug] POST   /v2/search/embeddings     --> traning_ai/backend/internal/mocks.registerV2.func8 (3 handlers)
+[GIN-debug] POST   /v2/asr/completions       --> traning_ai/backend/internal/mocks.registerV2.func9 (3 handlers)
+[GIN-debug] POST   /v2/recommendation/embeddings --> traning_ai/backend/internal/mocks.registerV2.func10 (3 handlers)
+2026/11/02 10:39:59 AI HTTP POST /v2/vision/completions
+2026/11/02 10:39:59 AI HTTP POST /v2/vision/completions
+2026/11/02 10:39:59 AI HTTP POST /v2/search/embeddings
+2026/11/02 10:39:59 AI HTTP POST /v2/recommendation/embeddings
+2026/11/02 10:39:59 AI HTTP POST /v2/recommendation/embeddings
+--- PASS: TestV2MockRoundTrip (0.09s)
+=== RUN   TestV2AggregatesLogitsNotMajority
+2026/11/02 10:39:59 AI HTTP POST /v2/vision/completions
+2026/11/02 10:39:59 AI HTTP POST /v2/vision/completions
+--- PASS: TestV2AggregatesLogitsNotMajority (0.08s)
+=== RUN   TestV2ASRSplits600SecondsAndOffsets
+2026/11/02 10:40:02 AI HTTP POST /v2/asr/completions offset_seconds=0
+2026/11/02 10:40:02 AI HTTP POST /v2/asr/completions offset_seconds=600
+--- PASS: TestV2ASRSplits600SecondsAndOffsets (3.49s)
+=== RUN   TestV2PreservesModelNotReady
+2026/11/02 10:40:02 AI HTTP POST /v2/recommendation/embeddings
+--- PASS: TestV2PreservesModelNotReady (0.00s)
+PASS
+ok  	traning_ai/backend/internal/adapters/aihttp	4.062s
+=== RUN   TestIndexVideoFramesPersistsBothStoresAndIsIdempotent
+--- PASS: TestIndexVideoFramesPersistsBothStoresAndIsIdempotent (0.02s)
+=== RUN   TestPreprocessedMetadataPreservesEditorialFields
+=== RUN   TestPreprocessedMetadataPreservesEditorialFields/metadata
+=== RUN   TestPreprocessedMetadataPreservesEditorialFields/legacy_payload
+--- PASS: TestPreprocessedMetadataPreservesEditorialFields (0.01s)
+    --- PASS: TestPreprocessedMetadataPreservesEditorialFields/metadata (0.01s)
+    --- PASS: TestPreprocessedMetadataPreservesEditorialFields/legacy_payload (0.00s)
+PASS
+ok  	traning_ai/backend/internal/orchestrator	0.186s
+=== RUN   TestFeedModeMetadataLimitAndCachedVisibility
+=== RUN   TestFeedModeMetadataLimitAndCachedVisibility/primary_popularity
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /feed                     --> traning_ai/backend/internal/handlers.(*ContentHandlers).Feed-fm (1 handlers)
+=== RUN   TestFeedModeMetadataLimitAndCachedVisibility/AI_unavailable
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /feed                     --> traning_ai/backend/internal/handlers.(*ContentHandlers).Feed-fm (1 handlers)
+2026/11/02 10:40:08 recommendation unavailable: AI timeout
+2026/11/02 10:40:08 recommendation unavailable: AI timeout
+=== RUN   TestFeedModeMetadataLimitAndCachedVisibility/stub_never_personalized
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /feed                     --> traning_ai/backend/internal/handlers.(*ContentHandlers).Feed-fm (1 handlers)
+=== RUN   TestFeedModeMetadataLimitAndCachedVisibility/legacy_missing_mode
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /feed                     --> traning_ai/backend/internal/handlers.(*ContentHandlers).Feed-fm (1 handlers)
+=== RUN   TestFeedModeMetadataLimitAndCachedVisibility/verified_personalized
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /feed                     --> traning_ai/backend/internal/handlers.(*ContentHandlers).Feed-fm (1 handlers)
+--- PASS: TestFeedModeMetadataLimitAndCachedVisibility (0.00s)
+    --- PASS: TestFeedModeMetadataLimitAndCachedVisibility/primary_popularity (0.00s)
+    --- PASS: TestFeedModeMetadataLimitAndCachedVisibility/AI_unavailable (0.00s)
+    --- PASS: TestFeedModeMetadataLimitAndCachedVisibility/stub_never_personalized (0.00s)
+    --- PASS: TestFeedModeMetadataLimitAndCachedVisibility/legacy_missing_mode (0.00s)
+    --- PASS: TestFeedModeMetadataLimitAndCachedVisibility/verified_personalized (0.00s)
+=== RUN   TestFeedRejectsPersonalizedWhenOnlyUnknownProductIDs
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /feed                     --> traning_ai/backend/internal/handlers.(*ContentHandlers).Feed-fm (1 handlers)
+--- PASS: TestFeedRejectsPersonalizedWhenOnlyUnknownProductIDs (0.00s)
+=== RUN   TestVisualValidationBeforeAI
+=== RUN   TestVisualValidationBeforeAI/-0.1
+=== RUN   TestVisualValidationBeforeAI/1.01
+=== RUN   TestVisualValidationBeforeAI/NaN
+=== RUN   TestVisualValidationBeforeAI/+Inf
+=== RUN   TestVisualValidationBeforeAI/abc
+--- PASS: TestVisualValidationBeforeAI (0.05s)
+    --- PASS: TestVisualValidationBeforeAI/-0.1 (0.00s)
+    --- PASS: TestVisualValidationBeforeAI/1.01 (0.00s)
+    --- PASS: TestVisualValidationBeforeAI/NaN (0.00s)
+    --- PASS: TestVisualValidationBeforeAI/+Inf (0.00s)
+    --- PASS: TestVisualValidationBeforeAI/abc (0.00s)
+=== RUN   TestVisualCacheRechecksPublicationAndDeletion
+--- PASS: TestVisualCacheRechecksPublicationAndDeletion (0.00s)
+PASS
+ok  	traning_ai/backend/internal/handlers	0.367s
+HC17_GO_GATES_PASS

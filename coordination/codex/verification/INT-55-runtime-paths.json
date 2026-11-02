@@ -1,0 +1,37 @@
+{
+  "checked_at": "2026-11-02T03:38:36.678722+00:00",
+  "runtime_logs": {
+    "video-ai-gateway-1": {
+      "container_id": "e0a090b27e16471b2c3c8f68b0877c294d6bf8863d27d54029e1130d000e7c02",
+      "started_at": "2026-11-02T02:22:52.804405099Z",
+      "window": "since current container start, capped last10000lines",
+      "lines": 111,
+      "http_path_counts": {
+        "/health": 13
+      },
+      "deprecated_media_path_calls": 0
+    },
+    "video-ai-ingest-worker-1": {
+      "container_id": "709433eefc6f7d141eb7d13f500adbda6a69d96f8bc24a81816821da3253b3fd",
+      "started_at": "2026-11-02T02:23:00.957029575Z",
+      "window": "since current container start, capped last10000lines",
+      "lines": 11,
+      "http_path_counts": {},
+      "deprecated_media_path_calls": 0
+    },
+    "video-ai-inference-service-1": {
+      "container_id": "036cc8c4a304bb0a2189d2aa65b0d0d15bf40bf7fc5f764114a5023dc31ecad3",
+      "started_at": "2026-11-02T03:32:16.499468102Z",
+      "window": "since current container start, capped last10000lines",
+      "lines": 62,
+      "http_path_counts": {
+        "/health": 38,
+        "/v1/highlight/completions": 4,
+        "/openapi.json": 1
+      },
+      "deprecated_media_path_calls": 0
+    }
+  },
+  "PASS": true,
+  "limit": "Zero observed legacy calls is supporting evidence; source wiring and deployed binary/source provenance establish reachability. No new product upload triggered by this audit."
+}

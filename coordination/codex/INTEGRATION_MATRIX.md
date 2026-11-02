@@ -6,6 +6,8 @@ Chỉ `INTEGRATED_REAL` với endpoint `API_READY` trên `master` mới được
 
 Bản đầu do Claude khởi tạo 2026-10-26 từ INVENTORY; từ đây Codex tự cập nhật.
 
+2026-11-02 **release #6 received (master479f5d5), HC-18/INT-54 +HC-17/INT-55**: official current image **ai-v1.5-000e7c1/SHA271bb4bab6f4**, onlyAIrecreated/no build/pull; actual6real/stubfalse/4deprecatedOpenAPIflags. Full official4realfeature-video parity PASS0.0/identicalclips/threshold51, source103/checkpoint10match,15othercontainers preserved. Current gateway/ingest source+binary provenance and bounded real logs confirm **no four deprecated v1 runtime calls**; compatibility adapters/tests retained, productionfeedPGpopularity. **Three v2 media endpoints now INTEGRATED_REAL**: API_READY published onmaster +existing real E2E VERIFIED-HIST INT-28/31 (2026-10-29), not a fabricated newrawupload PASS. Recommendation remainsDRAFT/REAL_PENDING. Reports INT-54.md/INT-55.md; no originalanalysis reprocess/newCMSqualityclaim. Older image/DRAFT/pending-release notes below are historical and superseded for readiness by this entry.
+
 2026-11-02 HC-16/INT-52 VERIFIED-NOW: official Docker runtime now **video-ai-inference:ai-v1.4-62b7e05**, revision62b7e05, imageSHA53e24af88065; only inference-service recreated, no build/pull. Actual health6real/stubfalse/degraded[]/CPU, authenticated API_READYv1.4 highlight HTTP200 **clip_threshold51.0** with published3sfixture (0proposalsvalid). Source103/10checkpoint+recipe hashes match ClaudeAI22 parity, effectiveROmount/configured env preserved,15othercontainers unchanged/gateway200/jobs0. Runtime HO-04 code/recipe mismatch resolved; existing analyses not reprocessed, new-threshold backend/CMS acceptance still INT-50. Evidence verification/INT-52.md +runtime/after JSON, source537f6b1. Full4video hostparity not rerun; fixture is transport/field proof, no model-quality/new-v2-readiness/fullCMS promotion. Earlier old-image/DRAFT-field notes below are historical; v1.4 is published onmaster, v2 stillDRAFT.
 
 2026-10-30 HC-15/INT-38: optional v1.4-rc1 clip_threshold response extension is DRAFT/MOCK_ONLY for inference-field proof (HTTP fixture51/0/null +real Mongo). Legacy real-runtime CMS/DTO compatibility2PASS5.3s, no backfill; this does not promote the extension. AI-19 reports pre-fix vision embeddings unsuitable for Fusion; existing transport tests are not model-quality proof. Current Docker image478052e remains pending Claude current-source/feature-parity release (HO-04), original scores/media preserved. Public product contract0.6.0 only.
@@ -14,12 +16,12 @@ Bản đầu do Claude khởi tạo 2026-10-26 từ INVENTORY; từ đây Codex 
 
 | AI endpoint | Contract | Nơi gọi (Go) | Màn/flow | Trạng thái | Bằng chứng |
 |---|---|---|---|---|---|
-| `POST /v1/vision/completions` | v1.3 API_READY | Legacy HTTP client only; gateway runtime removed under INT-28 | Upload → category suggestion (CMS Highlight/Video) | HIST — retired from runtime (Claude deprecation pending) | 2026-10-27 T4.1 real upload/category PASS; `verification/INT-11-real-e2e.log` |
-| `POST /v1/asr/completions` | v1.3 API_READY | Legacy HTTP client only; gateway runtime removed under INT-28 | Subtitles CMS + Client video detail | HIST — retired from runtime (Claude deprecation pending) | 2026-10-27 T4.1 real pipeline/subtitles PASS; same log |
+| `POST /v1/vision/completions` | v1.5 DEPRECATED (release#6) | Legacy HTTP client only; gateway runtime removed under INT-28 | Upload → category suggestion (CMS Highlight/Video) | HIST — retired from runtime, HC-17 confirmed | 2026-10-27 T4.1 real upload/category PASS; `verification/INT-11-real-e2e.log`; current caller/binary proof INT-55 |
+| `POST /v1/asr/completions` | v1.5 DEPRECATED (release#6) | Legacy HTTP client only; gateway runtime removed under INT-28 | Subtitles CMS + Client video detail | HIST — retired from runtime, HC-17 confirmed | 2026-10-27 T4.1 real pipeline/subtitles PASS; same log; current caller/binary proof INT-55 |
 | `POST /v1/highlight/completions` | v1.4 API_READY | orchestrator stage highlight (`runner.go` clamp clip ≤ duration) | Heatmap CMS/Client, AI clips | INTEGRATED_REAL | HIST T4.1 real timeline/publish/playback; NOW2026-11-02 INT-52 actual authenticated clip_threshold51 field proof on parity-verified Docker image; no new content-quality claim |
 | `POST /v1/completions` | v1.3 API_READY | orchestrator stage summary; `handlers/cms/videos.go` regenerate | Summary review CMS, Client (chỉ approved) | INTEGRATED_REAL — model quality remains AI-03 | 2026-10-27 T4.1 real draft/editor approval/privacy PASS; regenerate route not separately exercised |
-| `POST /v1/search/completions` | v1.3 API_READY | Legacy HTTP client only; gateway runtime removed under INT-28 | Client visual search | HIST — retired from runtime (Claude deprecation pending) | 2026-10-27 T4.2 real index/search/privacy/cache/Client PASS; same log + `INT-11-visual-latency.json` |
-| `POST /v1/recommendation/completions` | v1.3 DRAFT | Legacy HTTP client only; gateway runtime removed under INT-28 | Client feed | HIST — retired from runtime (Claude deprecation pending) | INT-03/AI-12 product vectors and production gate pending; live `recommendation_mode=popularity` verified |
+| `POST /v1/search/completions` | v1.5 DEPRECATED (release#6) | Legacy HTTP client only; gateway runtime removed under INT-28 | Client visual search | HIST — retired from runtime, HC-17 confirmed | 2026-10-27 T4.2 real index/search/privacy/cache/Client PASS; same log + `INT-11-visual-latency.json`; current proof INT-55 |
+| `POST /v1/recommendation/completions` | v1.5 DEPRECATED (release#6) | Compatibility adapter +disabled experimental feed branch; production nilAI | Client feed | HIST — retired from runtime, HC-17 confirmed | INT-03/AI-12 product vectors and production gate pending; actual production constructor uses popularity, provenance INT-55 |
 | `GET /health` | v1.3 API_READY | `handlers/cms/system.go` (`/api/cms/system/health`); gateway startup check | CMS Dashboard/Settings | INTEGRATED_REAL | 2026-10-27 startup/authenticated system health6 + host stubfalse PASS; `INT-11-live-health.json`, `INT-11-final-runtime.json` |
 Release#3 AI-API v1.3 đã nhận từ masterfee83b2 qua merge35cd1a9. Six API_READY endpoints now have real HTTP integration evidence; recommendation remains DRAFT. Public OpenAPI0.3.1 unchanged.
 
@@ -59,18 +61,18 @@ Evidence verification/INT-14-pagination-real-e2e.log +INT-14-pagination-runtime.
 - Existing six API_READY INTEGRATED_REAL rows remain supported; recommendation staysDRAFT/REAL_PENDING. Human review/modelquality gates unchanged (D23).
 
 
-## D24 / INT-28 live v2 cutover — 2026-10-29
+## D24 / INT-28 live v2 cutover — E2E 2026-10-29, readiness release received2026-11-02
 
 | AI endpoint | Contract | Runtime | Status | Evidence |
 |---|---|---|---|---|
-| POST /v2/vision/completions | v2.0 DRAFT | runner +backend MinIO/Milvus | REAL_PENDING — live PASS, awaiting API_READY/master | INT-28 real1+3E2E,10vectors/thumbnail,411oldvectors preserved |
-| POST /v2/search/embeddings | v2.0 DRAFT | gateway->backend COSINE ANN->PG privacy->presign | REAL_PENDING — live PASS, awaiting API_READY/master | ownTOP1 .9920652; same48hits asv1/maxdelta9.754e-9; searchprivacy/cacheClientPASS |
-| POST /v2/asr/completions | v2.0 DRAFT | backend MinIO bytes->PCM16/16k/mono600s multipart | REAL_PENDING — live PASS, awaiting API_READY/master |3nonempty naturalspeechsegments; exact600s/offset testPASS |
+| POST /v2/vision/completions | v2.0 API_READY (master479f5d5) | runner +backend MinIO/Milvus | INTEGRATED_REAL — VERIFIED-HIST real E2E +released readiness | INT-28 real1+3E2E,10vectors/thumbnail,411oldvectors preserved; source/health parity INT-54, current runtime wiring INT-55 |
+| POST /v2/search/embeddings | v2.0 API_READY (master479f5d5) | gateway->backend COSINE ANN->PG privacy->presign | INTEGRATED_REAL — VERIFIED-HIST real E2E +released readiness | ownTOP1 .9920652; same48hits asv1/maxdelta9.754e-9; searchprivacy/cacheClientPASS; current source unchanged/provenance INT-55 |
+| POST /v2/asr/completions | v2.0 API_READY (master479f5d5) | backend MinIO bytes->PCM16/16k/mono600s multipart | INTEGRATED_REAL — VERIFIED-HIST real E2E +released readiness |3nonempty naturalspeechsegments; exact600s/offset testPASS; forced uncached600s multipart test refreshed INT-55 |
 | POST /v2/recommendation/embeddings | v2.0 DRAFT/AI-12 pending | typed client only; MVPfeed PGpopularity | REAL_PENDING — MODEL_NOT_READY503 | nofakecollection/vectors; actualfeedpopularity |
 
 Retained v1highlight/text +health API_READY remain INTEGRATED_REAL, refreshed by INT-28 real regression.
 Four legacy v1 clients retained for compatibility tests only; no primaryruntime calls aftercutover.
-V2mocktested and actualrealcheckpoint E2E passed, but **not INTEGRATED_REAL/DONE** until Claude releases API_READY onmaster.
+V2mocktested and actualrealcheckpoint E2E passed; release#6 **479f5d5** now publishes API_READY for three media endpoints. Their promotion consumes valid VERIFIED-HIST E2E plus released readiness, not health-only evidence. Recommendation remainsDRAFT; new rawupload/fullCMS E2E not rerun under HC-17/18.
 Backendhealth nowowns MinIO/Milvus; AI dependencies can be removed by Claude afterrelease. No AI contract/checkpoint change byCodex.
 
 

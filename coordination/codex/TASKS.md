@@ -16,12 +16,12 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 - Next action: no further image action; proceed HC-17 confirmation under INT-55, preserve old product analyses and separate CMS QA gate.
 
 ### INT-55 — HC-17 prove runtime does not call deprecated AI media paths
-- Owner: CODEX | Status: IN_PROGRESS (2026-11-02; confirmation-only path selected after caller inspection)
+- Owner: CODEX | Status: REVIEW (2026-11-02; caller/provenance/log confirmation and Go verification PASS)
 - Depends on: user HC-17 instruction; INT-54 first; existing gateway74344bb/ingest23 runtime, released v2 contract.
 - Acceptance: trace gateway/orchestrator/search/feed/ingest call sites and deployed-source provenance; prove no runtime calls to /v1/vision|asr|search|recommendation with source plus bounded HTTP/log verification; preserve /v1/highlight and /v1/completions; remove legacy code only if necessary; commit RE:HC-17/evidence with limits, no invented live-upload proof or original-data writes.
 - Changed files: owned verification/tracker/session/handoff/matrix; backend only if an actual runtime legacy caller requires correction.
-- Evidence/Commits: initial source scan shows primary v2 vision/asr/search and gateway feed injected with nilAI/popularity; four legacy methods remain in compatibility adapter/tests. Detailed proof pending.
-- Next action: confirm deployed gateway/ingest provenance, run focused v2/pipeline/search/feed tests and collect bounded runtime HTTP/log evidence. Keep compatibility methods/mock tests because production wiring already avoids them; do not claim they have been deleted.
+- Evidence/Commits: verification/INT-55.md andsource-runtime/runtime-pathsJSON/Go log. CurrentbinarySHA matches74344bb proof, backendunchanged, packagedingestblobmatches; productionv2calls/nilAIpopularity confirmed; real log0deprecatedcalls withlimitedtraffic disclosed. Govet/test/build+forced4v2/2pipeline/4feedvisual groups PASS. Source confirmation chosen; no app code edit. Evidence commit follows.
+- Next action: commit proof/readiness metadata then RE:HC-17; keep compatibility methods/mock tests, do not claim deleted code or newly executed rawupload flow.
 
 ### INT-53 — Release HC-16 integration checkpoint to local master
 - Owner: CODEX | Status: DONE (2026-11-02; all gates PASS, local master fast-forward verified)
@@ -524,8 +524,8 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Evidence: verification/INT-27.md +before/stopped/after/log; initial false failure from mount ordering retained; sorted identity guard, actual second runPASS.
 - Commit:62149d3. Next action: retain current rootCompose/real configuration; no manual gateway start/down/volume deletion, AI or source app replacement.
 ### INT-28 — D24 compute-only AI-API v2 migration (HC-13)
-- Owner: CODEX | Status: REVIEW (2026-10-29; live E2E PASS, Claude API_READY release pending)
-- Depends on: userD24/HC-13, AI-15v2.0DRAFT real runtime; INT-29ef8162b. Blocks: Claudev2release/deprecate4v1paths/storage dependency removal.
+- Owner: CODEX | Status: DONE (2026-11-02; existing real E2E VERIFIED-HIST +API_READY release479f5d5 now received)
+- Depends on: userD24/HC-13, AI-15v2.0API_READY published master479f5d5; INT-29ef8162b. Formal readiness gate resolved; subsequent Claude storage-dependency removal follows RE:HC-17, separate AI task.
 - Acceptance: all12HC-13 steps implemented: mock/client/JSONMilvus/thumbnail/orchestration/backendANN/ASRbytes/popularity/
  missing-onlybackfill/unifiedcleanup/health+writercompose/realE2E with data preservation.
 - Changed: backend ports/domain/http+mock+Milvus/MinIO adapters/tests; runner/sharedframeindex; gatewaypipeline/search/cleanup/health;
@@ -536,15 +536,15 @@ T2.5, T3.1, T3.2 = PARTIAL.
  Compatibilitysame48hits/maxdelta9.754e-9; v2rec503MODEL_NOT_READY. MainHTTPno4retiredv1calls, retainedv1highlight/text only.
 - Preservation:411vectors/49videos allIDs/values/payload equal; MinIO95/47/460key/size/ETag equal; original95PGhash equal;
  activejobs0; other16containerIDs/images/start/mounts and externalAI15852 unchanged. No drop/reindex originals; backfillmissing0.
-- Checkpoint: Lane codex /runtimegatewayint28-7b1e458 /public0.4.1 /AIv2DRAFT consumed read-only /all required live gates PASS.
-- Next action: Claude releasev2API_READY onmaster; then startupmerge and matrixpromotion only with valid release. No master/push, no UI/GPU/soak/modelquality claim.
+- Historical checkpoint2026-10-29: Lane codex /runtimegatewayint28-7b1e458 /public0.4.1 /AIv2DRAFT consumed read-only /all required live gates PASS. Readiness update2026-11-02: release479f5d5 consumed, image/source/checkpoint/realfeature parity INT-54 and current production provenance INT-55 verified; three media rows promoted with explicitly HIST E2E, recommendationDRAFT retained.
+- Next action: no further migration implementation; Claude may proceed D24step3 under RE:HC-17. Existing data/quality/gpu/fullCMS gates remain; no invented freshrawupload or automaticold-media reprocess.
 
 ### INT-29 — HC-13 deletion contract clarification
 - Owner: CODEX | Status: REVIEW (2026-10-29)
 - Depends on: D24 explicit unified cleanup. Blocks: INT-28 cleanup activation.
 - Acceptance: document existing DELETE route's idempotent MinIO/Milvus/Mongo cleanup, active writer409 and storage503; regenerate Go/CMS/Client types; embedded schema validation PASS.
 - Changed: infra/openapi.yaml, generated Go/FE types, contract test, owned coordination.
-- Evidence: verification/INT-29.md/log; generation+schema204/409/503+both FE tsc PASS. Commit: ef8162b. Next: INT-28 live acceptance complete; waiting Claude v2 release.
+- Evidence: verification/INT-29.md/log; generation+schema204/409/503+both FE tsc PASS. Commit: ef8162b. Update2026-11-02: INT-28 live acceptance HIST and publishedv2 readiness gate now resolved by479f5d5; no remaining Claude v2 release wait for this contract.
 
 ### INT-30 — Docker real-AI runtime and remove running mock
 - Owner: CODEX | Status: DONE (2026-10-29)
@@ -575,7 +575,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Preservation:139sourcehashes match pinnedClaude;6checkpointSHAs unchanged;100originalPGrows/10categories hash unchanged;
 411vectors49videos +MinIO95/47/460 unchanged;14othercontainers/hostAI15852 unchanged; activejobs0.
 - Checkpoint: Lane codex /DockerAIai-v2-478052e healthy/internal8001/gatewayhttp://inference-service:8001 /no publicAIport /contractsunchanged.
-- Next action: manage Docker mode with explicitinferenceoverride; await Claudev2API_READY release for INT-28 promotion.
+- Next action(updated2026-11-02): manage Docker mode with explicitinferenceoverride, currentimage upgraded under INT-54; Claudev2API_READY received479f5d5 andINT-28 readiness promoted. D24step3 is a separate Claude release after RE:HC-17.
  CPUonly, no fullcoldreboot/GPU/soak/freshdependencybuild/modelquality claims. HostClaude8001 untouched, no checkpoint copies/AI code edits/push.
 
 ### INT-32 — Feed empty/loading/error layout regression
