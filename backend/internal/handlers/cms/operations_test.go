@@ -5,10 +5,12 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/gin-gonic/gin"
+	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
 	"time"
+	"traning_ai/backend/internal/adapters/aihttp"
 	"traning_ai/backend/internal/domain"
 	"traning_ai/backend/internal/mocks"
 )
@@ -16,6 +18,29 @@ import (
 type metricsFixture struct {
 	month time.Time
 	fail  bool
+}
+
+func TestHealthAcceptsComputeOnlyInferenceWithoutStorageDependencies(t *testing.T) {
+	upstream := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/health" {
+			t.Fatalf("unexpected inference path: %s", r.URL.Path)
+		}
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write([]byte(`{"status":"ok","models_loaded":["vit","siamese","asr_ctc","highlight_fusion","minigpt","two_tower"],"stub_mode":false,"dependencies":{},"device":"cpu"}`))
+	}))
+	defer upstream.Close()
+	r := gin.New()
+	r.GET("/health", NewSystemHandlers(aihttp.New(upstream.URL, "test"), nil).Health)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, httptest.NewRequest("GET", "/health", nil))
+	var response struct {
+		Available bool     `json:"ai_available"`
+		Error     *string  `json:"ai_error"`
+		Models    []string `json:"models_loaded"`
+	}
+	if err := json.Unmarshal(w.Body.Bytes(), &response); err != nil || w.Code != 200 || !response.Available || response.Error != nil || len(response.Models) != 6 {
+		t.Fatalf("compute-only inference rejected: %d %s (%v)", w.Code, w.Body, err)
+	}
 }
 
 func (f *metricsFixture) Overview(_ context.Context, month time.Time) (*domain.CMSMetrics, error) {

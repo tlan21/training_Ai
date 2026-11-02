@@ -1,0 +1,47 @@
+{
+  "checked_at": "2026-11-02T04:54:38.226542+00:00",
+  "health": {
+    "status": "ok",
+    "gpu_vram_used": 0.0,
+    "gpu_util": 0.0,
+    "models_loaded": [
+      "asr_ctc",
+      "highlight_fusion",
+      "minigpt",
+      "siamese",
+      "two_tower",
+      "vit"
+    ],
+    "degraded": [],
+    "dependencies": {},
+    "queue_depth": 0,
+    "device": "cpu",
+    "stub_mode": false,
+    "load_error": null
+  },
+  "image": "video-ai-inference:ai-v3.0-48735ff",
+  "image_id": "sha256:f62671e78fd8bb4ba9fad3fb743ea4ab3aeb76723e76abd821afe0c336837b81",
+  "container_id": "c8f834f33e5da52b614354d8dd343da6167567ab887307cce36d2e95e0d68cf6",
+  "revision": "48735ffbfda20914976b4206f6ca91f0ecda5ca9",
+  "mounts": [
+    {
+      "Type": "bind",
+      "Source": "E:/traning_ai/ai-core/checkpoints",
+      "Destination": "/srv/ai-core/checkpoints",
+      "Mode": "",
+      "RW": false,
+      "Propagation": "rprivate"
+    }
+  ],
+  "openapi": {
+    "legacy_paths_present": [],
+    "v2_paths": [
+      "/v2/vision/completions",
+      "/v2/search/embeddings",
+      "/v2/asr/completions",
+      "/v2/recommendation/embeddings"
+    ]
+  },
+  "readiness_probe_attempts_this_check": 1,
+  "initial_immediate_probe": "connection refused while Docker health starting; no extra recreation, bounded readiness retry passed"
+}

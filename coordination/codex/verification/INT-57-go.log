@@ -1,0 +1,43 @@
+=== RUN   TestHealthAcceptsComputeOnlyInferenceWithoutStorageDependencies
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /health                   --> traning_ai/backend/internal/handlers/cms.(*SystemHandlers).Health-fm (1 handlers)
+2026/11/02 11:53:43 AI HTTP GET /health
+--- PASS: TestHealthAcceptsComputeOnlyInferenceWithoutStorageDependencies (0.00s)
+=== RUN   TestHealthKeepsRealCMSMetricsDuringAIOutage
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /health                   --> traning_ai/backend/internal/handlers/cms.(*SystemHandlers).Health-fm (1 handlers)
+--- PASS: TestHealthKeepsRealCMSMetricsDuringAIOutage (0.00s)
+PASS
+ok  	traning_ai/backend/internal/handlers/cms	0.258s
+?   	traning_ai/backend/cmd/ai-mock	[no test files]
+?   	traning_ai/backend/cmd/ffmpeg-cutter	[no test files]
+?   	traning_ai/backend/cmd/frame-backfill	[no test files]
+ok  	traning_ai/backend/cmd/gateway	(cached)
+?   	traning_ai/backend/cmd/orchestrator	[no test files]
+?   	traning_ai/backend/cmd/ttv2-export	[no test files]
+ok  	traning_ai/backend/internal/adapters/aihttp	(cached)
+?   	traning_ai/backend/internal/adapters/kafka	[no test files]
+ok  	traning_ai/backend/internal/adapters/milvus	(cached)
+?   	traning_ai/backend/internal/adapters/minio	[no test files]
+ok  	traning_ai/backend/internal/adapters/mongo	(cached)
+ok  	traning_ai/backend/internal/adapters/pg	(cached)
+?   	traning_ai/backend/internal/adapters/redis	[no test files]
+ok  	traning_ai/backend/internal/auth	(cached)
+ok  	traning_ai/backend/internal/config	(cached)
+ok  	traning_ai/backend/internal/cutter	(cached)
+ok  	traning_ai/backend/internal/domain	(cached)
+ok  	traning_ai/backend/internal/gen	(cached)
+ok  	traning_ai/backend/internal/handlers	(cached)
+ok  	traning_ai/backend/internal/handlers/cms	0.384s
+ok  	traning_ai/backend/internal/mocks	(cached)
+ok  	traning_ai/backend/internal/orchestrator	(cached)
+?   	traning_ai/backend/internal/ports	[no test files]
+ok  	traning_ai/backend/internal/productexport	(cached)
+ok  	traning_ai/backend/internal/startup	(cached)
+HC19_GO_GATES_PASS
