@@ -1,5 +1,7 @@
 # Checklist task Codex còn mở — 2026-11-02
 
+**SNAPSHOT BÀN GIAO HO-05 / D28:** user đã giao Claude thực thi phần còn lại. Checklist đang thực thi: `coordination/claude/OPEN_TASKS.md` trên branch Codex cho tới khi Claude nhận về. Codex không tiếp tục sửa ứng dụng hoặc cập nhật trạng thái 32 task này trong thời gian chuyển quyền; các status bên dưới là tại lúc bàn giao. ACK Claude còn chờ. Không có task nào tự DONE do chuyển owner.
+
 Nguồn: TASKS.md + SESSION.md, đối chiếu checkpoint INT-50/52…57. **32 task chưa DONE**:10PARTIAL,4BLOCKED,16REVIEW,1TODO,1DEFERRED. Publish INT-58 đã DONE nên không nằm trong danh sách; không tự nâng/hạ trạng thái nghiệm thu.
 
 HC-19/INT-57 đã DONE: inference v3.0/không storage dependencies, full4video parity0.0, actual new-upload/search E2E16.8s, originaldata/15othercontainers preserved. Claude ACK HC-19 và không có handoff AI mới. Không làm lại các phần này.

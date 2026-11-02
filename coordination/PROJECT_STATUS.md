@@ -141,6 +141,8 @@ Checklist: **32 task chưa DONE** (không tính publishINT-58):10PARTIAL/4BLOCKE
 Lưu ý từ Claude cho D3: `instructions.md` §1 cấm "pseudo-label từ model ngoài" → summary Claude soạn chỉ được làm target train/eval sau
 khi người duyệt từng mục (`HUMAN_VERIFIED`) và provenance ghi rõ nguồn Claude; cổng chất lượng T1.6 vẫn do người chấm.
 
+Quyết định bổ sung **D28 (2026-11-02, user yêu cầu trực tiếp; không phải release)**: bàn giao 32 task INT chưa DONE cho Claude hoàn tất theo `coordination/claude/OPEN_TASKS.md` và HO-05. Claude là sole writer cho phần ứng dụng/QA được bàn giao; Codex tạm dừng triển khai các path đó. Giữ nguyên acceptance/status/gate, INT-10 DEFERRED; không cấp quyền phá hủy, push/merge hay vượt policy. Ngoại lệ ownership chi tiết tại README §1. Trạng thái ASSIGNED / ACK_PENDING, không xác nhận Claude đã nhận/chạy; master/remote chưa đổi cho bàn giao này.
+
 ## 6. Sync log (append-only)
 
 | # | Ngày | Làn | master → | Task đổi | HO/HC mở · đóng | Gate test |

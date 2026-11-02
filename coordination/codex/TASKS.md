@@ -2,18 +2,20 @@
 
 Owner duy nhất: Codex (bản đầu do Claude khởi tạo trong AI-00 ngày 2026-10-26, từ đây Codex tự ghi).
 Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
+
+Ngoại lệ HO-05 / D28 (2026-11-02): 32 task INT chưa DONE đã được user giao **CLAUDE thực thi**, tracker đang chạy tại `coordination/claude/OPEN_TASKS.md`. Owner CODEX và status trong các khối cũ là lịch sử tại thời điểm bàn giao; acceptance/evidence vẫn được kế thừa, không tự đóng task. Codex dừng triển khai các task này. INT-59 chỉ chuẩn bị bàn giao; Claude cập nhật ACK/tiến độ tại làn mình.
 Định dạng/trạng thái: `coordination/README.md` mục 4. Kiểm kê gốc: `coordination/INVENTORY_2026-10-26.md`.
 
 ## Tổng quan
 
 ### INT-59 — User-authorized transfer of remaining application work to Claude
-- Owner: CODEX | Status: IN_PROGRESS (2026-11-02; documentation handoff only)
+- Owner: CODEX | Status: DONE (2026-11-02; checklist and committed handoff prepared, Claude ACK pending)
 - Depends on: user explicitly assigns remaining work to Claude; INT-58 DONE and 32-task open inventory.
 - Acceptance: Claude-side open checklist contains exactly the existing 32 non-DONE IDs with preserved acceptance/status/dependencies; explicit sole-writer transfer prevents concurrent application changes; committed HO-05 gives pickup commands, current runtime/evidence and limits. No claim of Claude ACK or completed product QA.
 - Changed files: coordination/README.md, PROJECT_STATUS.md; new coordination/claude/OPEN_TASKS.md under explicit user instruction; owned TASKS/SESSION/OPEN_TASKS/HANDOFF and verification/INT-59.md.
-- Evidence/Commits: pending checklist and ownership consistency checks; startup branch correct, master has no incoming commits and tree was clean.
-- Checkpoint: Lane codex / Changed handoff preparation / Verified startup and source inventory / Contract touched no / Next HO-05 checklist.
-- Next action: commit assignment, verify exact ID/status inventory, freeze delegated implementation and await Claude ACK.
+- Evidence/Commits: start **6a3a802**, assignment in the commit containing coordination/claude/OPEN_TASKS.md; verification/INT-59.md. Exact32 unique ID set/counts/statuses and inherited task rows PASS; append-only HO-05/unchecked tasks/ownership instructions/diff check PASS. No application tests or runtime changes; master/origin refs remain a317c3c.
+- Checkpoint: Lane codex / Changed README D28 + Claude checklist + owned handoff/tracker/evidence / Verified exact inventory, preserved acceptance, docs scope and refs / Contract touched no / Next Claude RE:HO-05 then conditional INT-50.
+- Next action: Claude reads committed handoff and ACKs on own branch. Codex freezes delegated implementation; no direct Claude execution/ACK claim, no new push/master merge.
 
 ### INT-58 — Publish HC-19 checkpoint and current open-task checklist
 - Owner: CODEX | Status: DONE (2026-11-02; complete checklist and local/remote publication verified)

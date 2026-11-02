@@ -5,6 +5,23 @@ hoặc trong release commit (mục 6). Luật riêng từng làn: Claude → `.c
 
 ## 1. Hai làn
 
+### Ngoại lệ theo user 2026-11-02 — HO-05: Claude hoàn tất backlog ứng dụng
+
+User yêu cầu: "hãy giao cho claude thực hiện nốt phần còn lại tạo 1 checklist open phía claude để claude hoàn tất".
+Từ checkpoint HO-05, **Claude là người ghi duy nhất cho phần triển khai/nghiệm thu 32 task INT còn mở** trong
+`coordination/claude/OPEN_TASKS.md`; Codex dừng sửa ứng dụng và chỉ đọc/review cho tới handoff trả lại rõ ràng.
+Đây là ngoại lệ có phạm vi đối với bảng sở hữu bên dưới và luật riêng hai làn; không chuyển quyền ngược tầng AI cho Codex.
+
+- Claude tiếp tục trên `claude/ai-core`, không chuyển sang branch/worktree Codex. Đọc HO-05 qua `git show codex/integration:coordination/codex/HANDOFF_OUT.md`.
+- Trong các task bàn giao, Claude được ghi các path ứng dụng vốn thuộc Codex ở mục 2: `backend/**`, `cms/**`, `client/**`, `e2e/**`, `infra/**`, `docker-compose*.yml`, `.env.example`, `.gitignore`, các plan/schema/docs thuộc Codex. Không mở rộng sang tính năng ngoài acceptance hiện có.
+- Claude tiếp nhận điều phối stack duy nhất cho các task này; trước thay đổi phải kiểm container/PID, tài nguyên, dữ liệu và phạm vi đã được duyệt. Không mặc định được down/xóa volume, xử lý lại video gốc, đổi checkpoint, tải image lớn hoặc bỏ qua policy.
+- Tracker đang thực thi và bằng chứng mới thuộc `coordination/claude/**`. Giữ ID INT gốc, owner thực thi CLAUDE, không tạo 32 task AI trùng. `coordination/codex/TASKS.md` và checklist cũ là snapshot bàn giao, không hai bên cùng cập nhật.
+- Codex chỉ tạo ban đầu file mới `coordination/claude/OPEN_TASKS.md` theo yêu cầu này trên branch Codex; Claude đọc bằng `git show`, nhận về branch mình bằng quy trình Git thông thường và ACK `RE:HO-05`. Không sửa trực tiếp worktree/SESSION/TASKS hiện hành của Claude.
+- Bàn giao không tự cấp quyền push/merge master, thao tác phá hủy hay vượt automatic approval review đã chặn QA. Khi cần, ghi lệnh chính xác và xin đúng phạm vi; tiếp tục việc độc lập.
+- Quy trình API/OpenAPI, mock vs thật, bằng chứng DONE, Design Parity và các gate dữ liệu/GPU vẫn giữ nguyên. INT-10 tiếp tục DEFERRED.
+
+Trạng thái tiếp nhận: **ASSIGNED / ACK_PENDING**. Bắt đầu đọc file này từ branch Codex trước khi xử lý backlog; chưa có xác nhận Claude đang chạy.
+
 | | Claude — làn AI | Codex — làn Tích hợp |
 |---|---|---|
 | Branch | `claude/ai-core` | `codex/integration` |
