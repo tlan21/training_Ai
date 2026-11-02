@@ -3,6 +3,9 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
+- **2026-11-02 (user "kéo lại 2 cho phép xóa…"):** `D:/data_training_ai/highlight_news_v1/` khôi phục từ Kaggle `traininghighlight/highlight-news-v1`
+  (highlight_news_labeled.pt sha256 49dca3e1…, intake_report.json; xem PROVENANCE.md tại đó — export JSON gốc/features_news/proposals không khôi phục được).
+  Xóa danh mục chỉ còn video đã xóa: DONE (gateway int50-83bacd4). INT-43 DONE. Đang: INT-05 đối chiếu Stitch (4 agent soát 8 màn).
 - **INT-50 batch (2026-11-02):** real QA 10/10 PASS (`coordination/claude/evidence/INT-50_2026-11-02/README.md`); INT-41/42/44/47/49/38 DONE; INT-50 PARTIAL (Stitch ⇒ INT-05); INT-43 PARTIAL (phân trang, bulk request). CMS chạy `int50-045988a`.
   ⚠ Phát hiện: `D:/data_training_ai/highlight_news_v1/` (nhãn người tin tức vòng 8 + features train, KEEP theo AI-08 đợt #2) KHÔNG còn trên D:/E: — chưa rõ ai xóa; đã báo user; bản sao có thể ở Kaggle `traininghighlight/highlight-news-v1`.
   Câu hỏi sản phẩm chờ user: danh mục chỉ còn video đã xóa mềm vẫn 409 (giữ theo thiết kế Codex).
