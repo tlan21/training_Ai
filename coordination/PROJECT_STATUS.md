@@ -3,7 +3,7 @@
 **Chỉ sửa trong release commit theo `coordination/README.md` mục 6** (user ra lệnh release cho đúng 1 làn) **hoặc khi user yêu cầu trực tiếp**.
 Ngoài ra: đọc trạng thái sống ở `coordination/claude/TASKS.md` và `coordination/codex/TASKS.md` (qua `git show`).
 
-Cập nhật lần cuối: 2026-11-02 · **Claude release #7** (AI-API v3.0, AI-23: gỡ 4 path `/v1` + MinIO/Milvus khỏi inference; image `video-ai-inference:ai-v3.0-48735ff` parity PASS, triển khai ⇐ HC-19).
+Cập nhật lần cuối: 2026-11-02 · **Codex HC-19 publication/checklist (INT-58)**: nhận Claude release#7, đúngimagev3.0/freshactual gatewayE2E/parity/preservation PASS (INT-57), RE:HC-19 hoàn tất. Không công bố fullCMS/modelquality DONE.
 Trước đó: 2026-11-02 · **Codex HC-17/HC-18 publication (INT-56)**, đã nhận Claude release #6: AI-API v2.0 `API_READY` + v1.5 DEPRECATED; runtime image release#6 triển khai và full parity PASS. Không nâng nghiệm thu full CMS/model quality; các trạng thái AI giữ theo release đã nhận.
 Trước đó: 2026-11-02 · **Codex HC-16 master release (INT-53, user yêu cầu merge)**. Bao gồm release #5 của Claude và runtime image đã xác minh dưới INT-52; trạng thái AI API trên master giữ theo release đã nhận. INT-50 chưa nghiệm thu E2E thật, không công bố hoàn tất sản phẩm.
 
@@ -14,7 +14,7 @@ Trước đó: 2026-11-02 · **Codex HC-16 master release (INT-53, user yêu c�
 | 1. 6 model train + unit test toán học | DONE | ai-core 319 tests PASS (NOW 2026-11-02, release #6) |
 | 2. Metric đạt ngưỡng `evaluation_plan.md` | PARTIAL | Mini-GPT human 1.6/5 FAIL (AI-03, D23 dừng cho MVP); 5 model còn lại đạt. Highlight: production nay chạy đúng recipe đã chấm (AI-16) + sửa đặc trưng vision (AI-19); active vòng 8 ×10, test bóng đá 0.322; tin tức chưa giải (AI-21) |
 | 3. Checkpoint load lại được | DONE | nguồn canonical `E:/traning_ai/ai-core/checkpoints` 6/6 SHA khớp contract §1 (highlight `5aecd5c4…` + 3 file recipe) |
-| 4. inference-service thật + VRAM ≤4 GB | PARTIAL | release #7: image v3.0 `video-ai-inference:ai-v3.0-48735ff` (không MinIO/Milvus, smoke 6/6, parity PASS) chờ Codex triển khai HC-19; đang chạy: `video-ai-inference:ai-v1.5-000e7c1` đã triển khai HC-18/INT-54,6model/stubfalse, full4video feature parity0.0/source103/checkpoint10match; INT-56 kiểm lại đúng image/checkpoint/health. Facade/worker AI-14; recommendation DRAFT; **VRAM chưa đo** (CPU-only; AI-04 sơ bộ T4 347 MiB, nghiệm thu RTX 3060) |
+| 4. inference-service thật + VRAM ≤4 GB | PARTIAL | currentimagev3.0 `video-ai-inference:ai-v3.0-48735ff` deployedHC-19/INT-57,6real/stubfalse/deps{},4video parity0.0/source101/checkpoint10match; freshrawupload/storage/searchE2E16.8s PASS. INT-58 kiểm lại sameimage/10files/health. RecommendationDRAFT; **VRAM chưa đo** (CPU-only; AI-04 sơ bộ T4 347MiB, nghiệm thu RTX3060) |
 
 AI-GATE **không chặn** làn Codex (master §0); chỉ chặn nghiệm thu cuối và task phụ thuộc trực tiếp.
 
@@ -34,7 +34,7 @@ AI-GATE **không chặn** làn Codex (master §0); chỉ chặn nghiệm thu cu�
 | AI-14 | D24 bước 1: facade/worker + worker từ xa (dataset Kaggle) | DONE (release #5) |
 | AI-15 | D24 bước 2: AI-API v2.0 (/v2 chỉ tính toán) | DONE (release #6): v2.0 `API_READY` (reco v2 DRAFT), v1.5 4 path `/v1` DEPRECATED; bước 3 gỡ MinIO/Milvus ⇐ RE:HC-17 |
 | AI-22 | HO-04: runtime AI = container Docker, image bất biến + parity | DONE; Codex đã triển khai HC-16 rồi image release#6 theo HC-18/INT-54; nguồn AI trạng thái giữ nguyên |
-| AI-23 | D24 bước 3: gỡ `/v1/vision|asr|search|recommendation` + MinIO/Milvus khỏi inference (AI-API v3.0) | DONE (release #7); triển khai image ⇐ HC-19 |
+| AI-23 | D24 bước 3: gỡ `/v1/vision|asr|search|recommendation` + MinIO/Milvus khỏi inference (AI-API v3.0) | DONE (release#7); CodexHC-19 rollout/actualE2E completedINT-57, ClaudeACKread; no AI metric/status promotion |
 | AI-16 | Highlight: recipe đúng lúc chấm + luật clip + `asr_segments` | DONE (release #5) |
 | AI-17 / AI-18 | Fusion vòng 6 (chuẩn hóa theo video + augment) / vòng 7 (weight decay) + giám sát val loss | DONE (đã thay bằng vòng 8 ×10) |
 | AI-19 | SỬA lỗi đặc trưng vision cho highlight (ViT → backbone Siamese) + nhãn tin tức người | DONE (release #5) |
@@ -96,11 +96,15 @@ Các bằng chứng runtime ngày 2026-10-27…30 là VERIFIED-HIST. INT-54 tri�
 | INT-54 | HC-18 release#6 inference image/full parity | DONE —3e63056/3807519; exactprebuilt image,4realfeaturevideos diff0.0,103source/10checkpointmatch,15othercontainers unchanged |
 | INT-55 | HC-17 current gateway/ingest deprecated-path confirmation | DONE —cb86e0d/a9f1bd9; deployedbinary/source/callchain/log evidence +Go gates; no application code edit required |
 | INT-56 | Merge/push HC-17/18 checkpoint | DONE — all gates/current parity provenance PASS; local/remote master+integration f60d7a2 verified, completion metadata follows; verification/INT-56.md |
+| INT-57 | HC-19 compute-onlyv3 +actualgatewayE2E | DONE —11584c5/8a37ab6; health6real/deps{},4video parity0.0, freshE2E16.8s/top1.99206525/originaldata+15othercontainers preserved |
+| INT-58 | Publish HC-19/open-task checklist | IN_PROGRESS — release gates PASS, publication/checklist proof verification/INT-58.md |
+
+Checklist: **32 task chưa DONE** (không tính publishINT-58):10PARTIAL/4BLOCKED/16REVIEW/1TODO/1DEFERRED. Xem `coordination/codex/OPEN_TASKS.md` để phân biệt QA/code với REVIEW cần đối chiếu bằng chứng; không coi mọi REVIEW là tính năng chưa có. Migration006/cancelrollout đã làm, không lặp lại từ nextaction cũ.
 
 ## 4. AI API
 
-**AI-API v1.5** (release#6/master479f5d5): `/v1/highlight/completions`, `/v1/completions`, `/health` giữ API_READY; bốn path `/v1/vision|asr|search|recommendation` DEPRECATED, vẫn phục vụ tới Claude release tiếp theo. Schema/recipe v1.4 giữ nguyên: backbone Siamese cho Fusion, vòng8×10/3seed/ngưỡng51/nối≤1s/bỏclip<3s/video<120s khôngclip; compat snapshots v1.2/v1.3 giữ nguyên.
-**AI-API v2.0:** vision/search-embeddings/ASR multipart **API_READY**, recommendation-embeddings **DRAFT** (AI-12). Backend sở hữu MinIO/Milvus và xử lý ASRbytes/offset; ba media endpoint INTEGRATED_REAL dựa E2EHIST +released readiness, không tuyên bố vừa chạy lại rawupload. HC-13 readiness đã nhận; **RE:HC-17/18 hoàn tất** (runtime không gọi4v1, image release#6/parity), Claude có thể tiếp tục D24step3 gỡ dependency/routes bằng release riêng. HC-14 sentence input và HC-15 new-upload/CMS proof còn theo task tương ứng. Video/analysis cũ giữ nguyên, xử lý lại cần phạm vi riêng được duyệt.
+**AI-API v3.0** (release#7/master8e6fd39) đang chạy đúngimageHC-19: bốn /v1/vision|asr|search|recommendation REMOVED; /v1/highlight+/v1/completions+/health giữAPI_READY, healthdependencies{} và inferencekhôngstorageenv/dependency. Các /v2 vision/search-embeddings/ASR giữAPI_READY, recommendationDRAFT/AI12; backend sở hữuMinIO/Milvus/ASRbytes-offset.
+**RE:HC-19 hoàn tất**: actualnewupload→processed/10vectors/3ASRsegments/summary204charsdraft/threshold51/searchTOP1.99206525/owncleanup,0removedpathcalls/originalPG/Mongo/MinIO/671vectors+15othercontainers preserved. Không còn chờ runtime cutover; fullCMS/4policy/heatmapvisual và HC-14 sentenceinput theo task riêng. Không tự xử lý video/analysis cũ.
 
 ## 5. Quyết định user (binding — README mục 9)
 
@@ -155,3 +159,4 @@ khi người duyệt từng mục (`HUMAN_VERIFIED`) và provenance ghi rõ ngu�
 | 11 | 2026-11-02 | claude — **release #6** | `f1a8a29 →` commit release này (ff-only) | AI-15 DONE (v2.0 API_READY, v1.5 DEPRECATED); AI-22 DONE; AI-05 REVIEW; D27 | mở HC-17 (ngừng gọi /v1), HC-18 (đổi tag image); đóng RE:HO-04 (HC-16 Codex đã triển khai) | ai-core 319; inference 82/10 skip (compat v1.2+v1.3); intake 9; image `video-ai-inference:ai-v1.5-000e7c1` smoke 9/9 + 401, parity PASS (103 file nguồn, 6 checkpoint, highlight 4 video lệch 0.0) |
 | 12 | 2026-11-02 | codex — **INT-56 user yêu cầu merge/push HC-17/18** | `479f5d5 →` publication checkpoint này (ff-only; refs tại verification/INT-56.md) | INT-54/55 DONE, INT-28 DONE theo validHIST E2E +publishedv2 readiness; INT-50 vẫnBLOCKED/fullCMS chưa nghiệm thu | RE:HC-17, RE:HC-18 published; D24step3 còn phíaClaude | fullGo/CMS/Client release gates ghi tại INT-56logs; currentAI6/stubfalse/exactimage+10files match retainedfullparity4videos0.0; no newproductE2E/runtime mutation |
 | 13 | 2026-11-02 | claude — **release #7** | `36b8a1f →` commit release này (ff-only) | AI-23 DONE (AI-API v3.0: 4 path `/v1` REMOVED, inference không MinIO/Milvus) | đóng RE:HC-17/RE:HC-18; mở HC-19 (triển khai image v3.0, bỏ env MinIO/Milvus của inference) | ai-core 319; inference 64/6 skip (compat v1.2+v1.3+v1.5, chỉ đúng 4 path deprecated bị xóa); intake 9; image `video-ai-inference:ai-v3.0-48735ff` không mạng compose/không env lưu trữ: smoke 6/6 + 401, 4 path cũ 404, parity PASS (101 file, 6 checkpoint, highlight 4 video lệch 0.0) |
+| 14 | 2026-11-02 | codex — **HC-19 publication/openchecklist INT-58, usermerge/push** | `8e6fd39 →` checkpoint này (ff-only; refs verification/INT-58.md) | INT-57 DONE;32open listed, REVIEW notauto-closed/fullCMS PARTIAL | RE:HC-19 complete/ClaudeACK; no newHC | Go/CMS/Client gates PASS; current6real/deps{}/sameimage+10files match4videoparity0.0; retainedactualHC19E2E16.8s/preservationPASS, no productQA replay |
