@@ -31,7 +31,7 @@ class ModelRegistry:
         self.highlight_postproc: dict = {}        # AI-16: evaluated scoring/clip recipe; {} = legacy (no smoothing, threshold 75)
         self.loaded: list[str] = []               # tên model nạp THẬT
         self.degraded: set[str] = set()           # model có lần inference lỗi thật, gỡ khi lần sau chạy được
-        self.dependencies: dict[str, str] = {}    # visual_index / recommendation_index → ok|unavailable|missing_collection
+        self.dependencies: dict[str, str] = {}    # AI-API v3.0: only model_worker (remote worker mode) → ok|unavailable
         self.stub_mode = True
         self.load_error: str | None = None
 

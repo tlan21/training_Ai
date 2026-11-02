@@ -15,7 +15,7 @@ _TIMEOUT_S = 300  # ponytail: one budget for every op; long CPU summaries are th
 
 
 class DependencyError(RuntimeError):
-    """Milvus/MinIO/remote worker behind a capability failed — reported in /health.dependencies, not as model failure."""
+    """Remote worker behind a capability failed — reported in /health.dependencies, not as model failure."""
 
     def __init__(self, dependency: str, error: Exception):
         super().__init__(f"{type(error).__name__}: {error}")

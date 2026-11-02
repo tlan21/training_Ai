@@ -43,11 +43,6 @@ class Settings:
     device: str = field(default_factory=lambda: os.environ.get("INFER_DEVICE", "auto"))  # auto|cpu|cuda
     # Bật buộc stub kể cả khi có checkpoint (dev/test không GPU)
     force_stub: bool = field(default_factory=lambda: os.environ.get("FORCE_STUB", "0") == "1")
-    # Milvus cho /v1/recommendation (T1.7d). Không kết nối được → endpoint rơi về stub, không sập.
-    milvus_host: str = field(default_factory=lambda: os.environ.get("MILVUS_HOST", "localhost"))
-    milvus_port: str = field(default_factory=lambda: os.environ.get("MILVUS_PORT", "19530"))
-    milvus_collection: str = field(default_factory=lambda: os.environ.get(
-        "MILVUS_RECO_COLLECTION", "user_recommendation_embeddings"))
     # D24: model worker. Empty = in-process (default). URL = remote app.worker_app with its own Bearer key (never committed).
     model_worker_url: str = field(default_factory=lambda: os.environ.get("MODEL_WORKER_URL", "").rstrip("/"))
     model_worker_key: str = field(default_factory=lambda: os.environ.get("MODEL_WORKER_KEY", ""))

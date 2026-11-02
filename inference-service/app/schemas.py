@@ -36,31 +36,6 @@ class CompletionResponse(BaseModel):
     usage: Usage
 
 
-# ---------------- /v1/search/completions (Siamese ViT) ----------------
-
-class SearchRequest(BaseModel):
-    model: str = "primitive-siamese-vit"
-    image: str = Field(..., description="data URI base64 hoặc path")
-    top_k: int = Field(5, ge=1, le=100)
-    threshold: float = Field(0.75, ge=0, le=1)
-
-
-class SearchResult(BaseModel):
-    video_id: str
-    timestamp: float
-    similarity_score: float           # 0–1 (cosine)
-    thumbnail_url: str
-
-
-class SearchResponse(BaseModel):
-    id: str
-    object: str = "search_completion"
-    created: int
-    model: str
-    results: list[SearchResult]
-    query_metadata: dict
-
-
 # ---------------- /v1/highlight/completions (Fusion) ----------------
 
 class HighlightFeatures(BaseModel):
@@ -105,13 +80,7 @@ class HighlightResponse(BaseModel):
     clip_threshold: float | None = None
 
 
-# ---------------- /v1/asr/completions (ASR CTC) ----------------
-
-class ASRRequest(BaseModel):
-    model: str = "primitive-asr-transformer"
-    audio_url: str
-    language: str = "vi"
-
+# ---------------- ASR (ASR CTC) — response of /v2/asr/completions ----------------
 
 class ASRSegment(BaseModel):
     id: int
@@ -131,50 +100,6 @@ class ASRResponse(BaseModel):
     segments: list[ASRSegment]
 
 
-# ---------------- /v1/recommendation/completions (Two-Tower) ----------------
-
-class RecommendationRequest(BaseModel):
-    model: str = "primitive-two-tower-recommender"
-    user_id: str
-    limit: int = 10
-    context: dict = Field(default_factory=dict)
-
-
-class Recommendation(BaseModel):
-    video_id: str
-    score: float                      # 0–1 (inner product)
-    # AI-API v1.3 (D18): inference không có metadata sản phẩm → luôn null; gateway lấy title/thumbnail theo video_id từ Postgres.
-    title: str | None = None
-    thumbnail_url: str | None = None
-
-
-class RecommendationResponse(BaseModel):
-    id: str
-    object: str = "recommendation_completion"
-    created: int
-    model: str
-    recommendation_mode: str          # "personalized" (vector thật) | "stub" (FORCE_STUB) — popularity/fallback là việc của gateway
-    recommendations: list[Recommendation]
-
-
-# ---------------- /v1/vision/completions (ViT — nội bộ pipeline) ----------------
-
-class VisionRequest(BaseModel):
-    model: str = "primitive-vit-classifier"
-    keyframes: list[str] = Field(..., description="paths hoặc base64 keyframe")
-    # AI-API v1.2 (HO-01): có video_id → index frame cho visual search; keyframes = toàn bộ frame của video, 1 fps theo thứ tự.
-    video_id: str | None = Field(None, description="vid_*; keyframe thứ i = giây i; ghi đè frame đã index của video này")
-
-
-class VisionResponse(BaseModel):
-    id: str
-    object: str = "vision_completion"
-    created: int
-    model: str
-    category_suggestion: str
-    embeddings_256: list[list[float]]
-
-
 # ---------------- /health ----------------
 
 class HealthResponse(BaseModel):
@@ -191,8 +116,8 @@ class HealthResponse(BaseModel):
     load_error: str | None = None
 
 
-# ================= AI-API v2.0 (D24, AI-15 — DRAFT) =================
-# Inference only computes; the backend owns MinIO/Milvus/Postgres/Mongo. /v1 stays until the backend has moved (contract §5).
+# ================= AI-API v2 endpoints (D24; v2.0 API_READY in release #6, v3.0 removed the /v1 storage paths) =================
+# Inference only computes; the backend owns MinIO/Milvus/Postgres/Mongo.
 
 _IMAGE_DOC = "data URI hoặc base64 JPEG/PNG/WebP (≤20 MP); không nhận path"
 

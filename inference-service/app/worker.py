@@ -1,6 +1,6 @@
 """Model worker (D24): pure inference on the 6 checkpoints — bytes/vectors/text in, labels/vectors/text out.
 
-No MinIO/Milvus/HTTP here; the facade (services.py, visual_index.py) owns every I/O. The same functions run
+No MinIO/Milvus/HTTP here; the facade (services.py, v2.py) owns every I/O. The same functions run
 in-process (default) or behind worker_app.py when MODEL_WORKER_URL points to a remote worker.
 Inputs: images = encoded JPEG/PNG/WebP bytes; pcm = float32 little-endian mono 16 kHz samples.
 Outputs are plain JSON types so the remote path returns exactly what the in-process path returns.

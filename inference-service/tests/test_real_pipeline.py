@@ -11,21 +11,20 @@ from app import services, schemas
 
 def test_real_failure_cannot_return_stub(monkeypatch):
     monkeypatch.setattr(services.settings, "force_stub", False)
-    monkeypatch.setattr(services.registry, "models", {"vit": object()})
+    monkeypatch.setattr(services.registry, "models", {"minigpt": object()})
     with pytest.raises(HTTPException) as failure:
-        services.run_vision(schemas.VisionRequest(keyframes=["not-a-real-image"]))
+        services.run_completion(schemas.CompletionRequest(prompt="x"))
     assert failure.value.status_code == 503
     assert failure.value.detail["code"] == "AI_UNAVAILABLE"
 
 
 def test_asr_windows_preserve_absolute_timestamps(monkeypatch):
-    monkeypatch.setattr(services, "_audio_chunks", lambda _: (torch.ones(n*16000) for n in [20,20,5]))
     lengths = []
     def decode(signal):
         lengths.append(signal.numel())
         return "xin chào", [schemas.ASRSegment(id=0, start_time=1, end_time=2, text="xin chào")]
     monkeypatch.setattr(services, "_decode_asr", decode)
-    text, parts = services._real_asr(schemas.ASRRequest(audio_url="a.wav"))
+    text, parts = services._transcribe(torch.ones(n*16000) for n in [20,20,5])
     assert lengths == [20*16000, 20*16000, 5*16000]
     assert [part.start_time for part in parts] == [1, 21, 41]
     assert [part.id for part in parts] == [0, 1, 2]

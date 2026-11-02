@@ -1,4 +1,4 @@
-"""FastAPI inference-service — 1 process, 6 endpoint + /health, port 8001 (master plan §2.4)."""
+"""FastAPI inference-service — compute only (D24, AI-API v3.0): /v1/highlight, /v1/completions, /v2/*, /health; port 8001."""
 
 import asyncio
 from contextlib import asynccontextmanager
@@ -23,25 +23,13 @@ async def lifespan(app: FastAPI):
         registry.load_all()
     if not settings.force_stub and registry.stub_mode:
         raise RuntimeError(f"Real inference requires all checkpoints: {registry.load_error}")
-    if not settings.force_stub:
-        import io
-        from PIL import Image
-        from . import visual_index
-        visual_index.collection()
-        black = io.BytesIO()
-        Image.new("RGB", (224, 224)).save(black, "PNG")
-        vector = visual_index.encode([black.getvalue()])[0]
-        # First query after load exceeds the 1 s request budget (DEADLINE_EXCEEDED → 503); warm it here.
-        visual_index.search(vector, 1, 0.0, timeout=60)
-        registry.dependencies["visual_index"] = "ok"
-        services.refresh_dependencies()   # recommendation index is optional at startup; status only
     gpu_queue.start()
     yield
     await gpu_queue.stop()
 
 
 app = FastAPI(title="AI Inference Service", version="0.1.0", lifespan=lifespan)
-app.include_router(v2.router)   # AI-API v2.0 DRAFT (D24): compute-only, runs alongside /v1
+app.include_router(v2.router)   # D24 compute-only endpoints; AI-23 removed /v1 vision|asr|search|recommendation (MinIO/Milvus)
 
 
 # ---- error envelope {"error":{"code","message"}} (master plan §2.6) ----
@@ -69,40 +57,15 @@ async def completions(req: schemas.CompletionRequest):
     return await gpu_queue.submit(lambda: services.run_completion(req), "summary")
 
 
-# AI-15 cutover (v1.5): media/search/reco /v1 paths DEPRECATED in favour of /v2 (compute-only); still served until Codex stops calling them.
-@app.post("/v1/asr/completions", response_model=schemas.ASRResponse, dependencies=[Depends(require_bearer)], deprecated=True)
-async def asr(req: schemas.ASRRequest):
-    return await gpu_queue.submit(lambda: services.run_asr(req), "asr")
-
-
 @app.post("/v1/highlight/completions", response_model=schemas.HighlightResponse, dependencies=[Depends(require_bearer)])
 async def highlight(req: schemas.HighlightRequest):
     return await gpu_queue.submit(lambda: services.run_highlight(req), "highlight")
-
-
-@app.post("/v1/vision/completions", response_model=schemas.VisionResponse, dependencies=[Depends(require_bearer)], deprecated=True)
-async def vision(req: schemas.VisionRequest):
-    return await gpu_queue.submit(lambda: services.run_vision(req), "vision/siamese")
-
-
-# ---- nhẹ (encode + Milvus) — không chiếm GPU lâu ----
-
-@app.post("/v1/search/completions", response_model=schemas.SearchResponse, dependencies=[Depends(require_bearer)], deprecated=True)
-def search(req: schemas.SearchRequest):
-    return services.run_search(req)
-
-
-@app.post("/v1/recommendation/completions", response_model=schemas.RecommendationResponse,
-          dependencies=[Depends(require_bearer)], deprecated=True)
-async def recommendation(req: schemas.RecommendationRequest):
-    return services.run_recommendation(req)
 
 
 # ---- health (proxy bởi gateway /api/cms/system/health) ----
 
 @app.get("/health", response_model=schemas.HealthResponse)
 async def health():
-    await asyncio.to_thread(services.refresh_dependencies)   # rate-limited re-probe → self-recovery
     vram, util = await asyncio.to_thread(worker_client.gpu_stats)
     all_names = ["vit", "siamese", "asr_ctc", "highlight_fusion", "minigpt", "two_tower"]
     return schemas.HealthResponse(

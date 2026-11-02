@@ -8,7 +8,4 @@ Pillow
 soundfile
 av
 kafka-python
-minio
-pymilvus==2.4.9
-marshmallow>=3.13,<4
 # torch nạp từ ai-core (cùng venv). GPU util (tùy chọn): pynvml

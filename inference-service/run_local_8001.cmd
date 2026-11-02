@@ -1,5 +1,5 @@
 @echo off
-rem AI-07: runtime :8001 that cua lan Claude (checkpoint canonical, Milvus stack Codex). Log: D:\tmp\ai07_runtime\inference_8001.log
+rem AI-07: runtime :8001 that cua lan Claude (checkpoint canonical; du phong dev - runtime chinh thuc la container, D27). Log: D:\tmp\ai07_runtime\inference_8001.log
 rem Chay doc lap: powershell Start-Process cmd.exe -ArgumentList '/c','E:\traning_ai\inference-service\run_local_8001.cmd' -WindowStyle Hidden
 cd /d E:\traning_ai\inference-service
 set PYTHONPATH=..\ai-core

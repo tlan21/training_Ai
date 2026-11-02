@@ -1,4 +1,4 @@
-"""AI-API v2.0 (D24, AI-15 — DRAFT): compute-only endpoints. Bytes/vectors/text in → labels/vectors/text out.
+"""AI-API v2 endpoints (D24, AI-15; API_READY): compute-only. Bytes/vectors/text in → labels/vectors/text out.
 
 No MinIO, no Milvus, no server paths: the backend stores thumbnails/vectors and searches Milvus itself.
 Bad input = 422 VALIDATION_ERROR (v1 answered 503 for unreadable media); model failure = 503 AI_UNAVAILABLE.

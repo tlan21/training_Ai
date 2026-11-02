@@ -2,9 +2,8 @@
 
     INFERENCE_LIVE_URL=http://127.0.0.1:8001 INFERENCE_LIVE_KEY=<AI_SERVICE_KEY> pytest tests/test_live_smoke.py
 Optional: INFERENCE_LIVE_MEDIA=<dir with *.jpg + clip.wav> (real media, else synthetic);
-          INFERENCE_LIVE_SERVER_MEDIA=<same dir as the server sees it, e.g. a container mount> (needs INFERENCE_LIVE_MEDIA);
           INFERENCE_EXAMPLES_DIR=<dir> writes <endpoint>.{request,response,error}.json from these exact calls.
-The server reads the WAV by path, so client and server must share the filesystem.
+AI-API v3.0 (AI-23): every input travels in the request (data URI / multipart bytes) — no shared filesystem needed.
 """
 import base64
 import io
@@ -24,7 +23,6 @@ from app import schemas
 URL = os.environ.get("INFERENCE_LIVE_URL")
 KEY = os.environ.get("INFERENCE_LIVE_KEY", "")
 MEDIA = os.environ.get("INFERENCE_LIVE_MEDIA")
-SERVER_MEDIA = os.environ.get("INFERENCE_LIVE_SERVER_MEDIA")
 EXAMPLES = os.environ.get("INFERENCE_EXAMPLES_DIR")
 MODELS = {"vit", "siamese", "asr_ctc", "highlight_fusion", "minigpt", "two_tower"}
 
@@ -79,11 +77,6 @@ def media(tmp_path_factory):
     return frames, str(wav)
 
 
-def _server(path):
-    """audio_url as the server sees it (AI-22: the runtime is a container, the WAV is bind-mounted)."""
-    return f"{SERVER_MEDIA}/{Path(path).name}" if SERVER_MEDIA else path
-
-
 def _data_uri(jpg):
     return "data:image/jpeg;base64," + base64.b64encode(jpg).decode()
 
@@ -92,17 +85,19 @@ def test_health_real_and_auth():
     status, body = _example("health", "GET", "/health", auth=False)
     health = schemas.HealthResponse.model_validate(body)
     assert status == 200 and not health.stub_mode and set(health.models_loaded) == MODELS
+    assert not {"visual_index", "recommendation_index"} & set(health.dependencies)    # v3.0: no MinIO/Milvus left
     status, body = _example("completions", "POST", "/v1/completions", {"prompt": "x", "max_tokens": 1}, auth=False, kind="error")
     assert status == 401 and body["error"]["code"] == "UNAUTHORIZED"
 
 
 def test_vision_then_highlight(media):
     frames, wav = media
-    status, body = _example("vision", "POST", "/v1/vision/completions", {"keyframes": [_data_uri(f) for f in frames]})
-    vision = schemas.VisionResponse.model_validate(body)
+    status, body = _example("v2_vision", "POST", "/v2/vision/completions", {"keyframes": [_data_uri(f) for f in frames]})
+    vision = schemas.VisionV2Response.model_validate(body)
     assert status == 200 and vision.category_suggestion in {"bong_da", "the_thao", "ca_nhac", "tin_tuc"}
     assert len(vision.embeddings_256) == len(frames) and all(len(e) == 256 for e in vision.embeddings_256)
-    status, body = _example("vision", "POST", "/v1/vision/completions", {}, kind="error")
+    assert len(vision.siamese_vectors) == len(frames) and all(len(v) == 128 for v in vision.siamese_vectors)
+    status, body = _example("v2_vision", "POST", "/v2/vision/completions", {}, kind="error")
     assert status == 422 and body["error"]["code"] == "VALIDATION_ERROR"
 
     import soundfile as sf
@@ -122,16 +117,6 @@ def test_vision_then_highlight(media):
     assert "highlight_fusion" not in _call("GET", "/health", auth=False)[1]["degraded"]   # bad input ≠ model failure
 
 
-def test_asr(media):
-    _, wav = media
-    status, body = _example("asr", "POST", "/v1/asr/completions", {"audio_url": _server(wav), "language": "vi"})
-    asr = schemas.ASRResponse.model_validate(body)
-    assert status == 200 and all(0 <= s.start_time <= s.end_time for s in asr.segments)
-    status, body = _example("asr", "POST", "/v1/asr/completions", {"audio_url": _server(wav) + ".missing.wav", "language": "vi"}, kind="error")
-    assert status == 503 and body["error"]["code"] == "AI_UNAVAILABLE"
-    assert "asr_ctc" not in _call("GET", "/health", auth=False)[1]["degraded"]   # bad input ≠ model failure
-
-
 def test_completions():
     prompt = ("Tóm tắt: Chiều nay tại Hà Nội, đội tuyển bóng đá quốc gia đã có buổi tập đầu tiên chuẩn bị cho vòng loại. "
               "Huấn luyện viên cho biết toàn đội đang trong trạng thái tốt và quyết tâm giành chiến thắng.")
@@ -140,28 +125,7 @@ def test_completions():
     assert status == 200 and out.choices[0].text.strip() and out.usage.completion_tokens <= 48
 
 
-def test_search_needs_milvus(media):
-    frames, _ = media
-    status, body = _example("search", "POST", "/v1/search/completions", {"image": _data_uri(frames[0]), "top_k": 5, "threshold": 0.0})
-    out = schemas.SearchResponse.model_validate(body)
-    assert status == 200 and len(out.results) <= 5 and all(0 <= r.similarity_score <= 1 for r in out.results)
-    status, body = _example("search", "POST", "/v1/search/completions", {"image": _data_uri(frames[0]), "top_k": 0}, kind="error")
-    assert status == 422 and body["error"]["code"] == "VALIDATION_ERROR"
-    assert _call("GET", "/health", auth=False)[1]["dependencies"]["visual_index"] == "ok"
-
-
-def test_recommendation_contract():
-    status, body = _example("recommendation", "POST", "/v1/recommendation/completions", {"user_id": "usr_ai01example", "limit": 5, "context": {}})
-    if status == 200:
-        schemas.RecommendationResponse.model_validate(body)
-    else:  # index missing or user without vector: gateway falls back to popularity
-        assert status == 503 and body["error"]["code"] == "AI_UNAVAILABLE"
-    health = _call("GET", "/health", auth=False)[1]
-    assert health["dependencies"]["recommendation_index"] in {"ok", "missing_collection", "unavailable"}
-    assert "two_tower" not in health["degraded"]
-
-
-# ---- AI-API v2.0 (AI-15, DRAFT): compute-only; same models as v1, minus storage ----
+# ---- /v2 endpoints (AI-15; API_READY since release #6): compute-only ----
 
 def _multipart(path, fields, audio, auth=True):
     boundary = "ai15boundary"
@@ -179,14 +143,10 @@ def _multipart(path, fields, audio, auth=True):
         return e.code, json.loads(e.read())
 
 
-def test_v2_vision_and_search_match_v1(media):
+def test_v2_search_embedding_matches_vision_vector(media):
     frames, _ = media
-    body = {"keyframes": [_data_uri(f) for f in frames]}
-    status, out = _example("v2_vision", "POST", "/v2/vision/completions", body)
+    _, out = _call("POST", "/v2/vision/completions", {"keyframes": [_data_uri(f) for f in frames]})
     vis = schemas.VisionV2Response.model_validate(out)
-    assert status == 200 and len(vis.siamese_vectors) == len(frames) and all(len(v) == 128 for v in vis.siamese_vectors)
-    _, v1 = _call("POST", "/v1/vision/completions", body)          # no video_id → v1 does not index either
-    assert vis.category_suggestion == v1["category_suggestion"] and vis.embeddings_256 == v1["embeddings_256"]
     status, out = _example("v2_search", "POST", "/v2/search/embeddings", {"image": _data_uri(frames[0])})
     emb = schemas.SearchEmbeddingResponse.model_validate(out)
     assert status == 200 and max(abs(a - b) for a, b in zip(emb.vector, vis.siamese_vectors[0])) < 1e-5
@@ -194,15 +154,14 @@ def test_v2_vision_and_search_match_v1(media):
     assert status == 422 and out["error"]["code"] == "VALIDATION_ERROR"
 
 
-def test_v2_asr_bytes_match_v1_path(media):
+def test_v2_asr_bytes(media):
     _, wav = media
     fields = {"language": "vi", "offset_seconds": "0"}
     status, out = _multipart("/v2/asr/completions", fields, Path(wav).read_bytes())
     _save("v2_asr", "request", {"multipart": {**fields, "file": f"<{Path(wav).name}, {Path(wav).stat().st_size} bytes>"}})
     _save("v2_asr", "response", {"http_status": status, "body": out})
     asr = schemas.ASRResponse.model_validate(out)
-    _, v1 = _call("POST", "/v1/asr/completions", {"audio_url": _server(wav), "language": "vi"})
-    assert status == 200 and asr.full_transcript == v1["full_transcript"] and len(asr.segments) == len(v1["segments"])
+    assert status == 200 and all(0 <= s.start_time <= s.end_time for s in asr.segments)
     status, out = _multipart("/v2/asr/completions", fields, b"not audio")
     _save("v2_asr", "error_request", {"multipart": {**fields, "file": "<9 bytes: 'not audio'>"}})
     _save("v2_asr", "error", {"http_status": status, "body": out})

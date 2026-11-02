@@ -10,7 +10,7 @@ from fastapi import HTTPException
 from fastapi.testclient import TestClient
 from PIL import Image
 
-from app import main, schemas, services, v2, visual_index
+from app import main, schemas, services, v2
 from app.config import settings
 from app.registry import registry
 
@@ -96,12 +96,7 @@ def real_no_storage(monkeypatch):
     monkeypatch.setattr(registry, "degraded", set())
     monkeypatch.setattr(registry, "dependencies", {})
 
-    def forbidden(*args, **kwargs):
-        raise AssertionError("v2 must not touch MinIO/Milvus")
-    for name in ("collection", "index_frames", "search"):
-        monkeypatch.setattr(visual_index, name, forbidden)
-    monkeypatch.setattr(services, "_milvus_collection", forbidden)
-    monkeypatch.setitem(sys.modules, "minio", None)
+    monkeypatch.setitem(sys.modules, "minio", None)        # importing either client would now raise
     monkeypatch.setitem(sys.modules, "pymilvus", None)
 
 
@@ -135,8 +130,14 @@ def test_real_recommendation_encode_is_not_ready_until_ai12(real_no_storage):
     assert err.value.status_code == 503 and err.value.detail["code"] == "MODEL_NOT_READY"
 
 
-def test_v1_paths_replaced_by_v2_are_deprecated_in_openapi():
-    from app.main import app
-    ops = {path: op for path, item in app.openapi()["paths"].items() for op in item.values()}
-    deprecated = {path for path, op in ops.items() if op.get("deprecated")}
-    assert deprecated == {"/v1/vision/completions", "/v1/search/completions", "/v1/asr/completions", "/v1/recommendation/completions"}
+def test_v3_removed_v1_storage_paths_and_clients():
+    """AI-23 (D24 step 3): the four /v1 paths deprecated in v1.5 are gone, and no MinIO/Milvus client is a dependency."""
+    from pathlib import Path
+    paths = set(main.app.openapi()["paths"])
+    assert paths == {"/health", "/v1/completions", "/v1/highlight/completions", "/v2/vision/completions",
+                     "/v2/search/embeddings", "/v2/asr/completions", "/v2/recommendation/embeddings"}
+    app_dir = Path(main.__file__).parent
+    source = "".join(f.read_text(encoding="utf-8") for f in app_dir.glob("*.py"))
+    assert "import minio" not in source and "from minio" not in source and "pymilvus" not in source
+    reqs = (app_dir.parent / "requirements.txt").read_text(encoding="utf-8").lower()
+    assert "minio" not in reqs and "pymilvus" not in reqs

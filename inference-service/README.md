@@ -11,8 +11,8 @@
 
 - `app/worker.py` = lớp worker **thuần**: 6 model, nhận ảnh bytes / PCM float32 16 kHz / vector / text → nhãn / vector / text.
   Không import `minio`/`pymilvus`, không HTTP (test `tests/test_worker.py` khóa điều này).
-- Facade = `main.py` (7 endpoint, Bearer, validation, error code) + `services.py` + `visual_index.py` (MinIO thumbnail, Milvus vector,
-  tải audio). Mọi suy luận đi qua `app/worker_client.py`.
+- Facade = `main.py` + `v2.py` (Bearer, validation, error code) + `services.py`. Không MinIO/Milvus từ AI-API v3.0 (AI-23):
+  backend lưu thumbnail/vector và tự tìm Milvus. Mọi suy luận đi qua `app/worker_client.py`.
 - `MODEL_WORKER_URL` trống (mặc định) = worker chạy cùng tiến trình, hành vi y hệt trước. Có URL = facade gọi `app/worker_app.py`
   (`GET /info`, `POST /ops/{vision|siamese|highlight|asr|summarize}`) qua HTTP với Bearer riêng `MODEL_WORKER_KEY`
   (≥24 ký tự, khác `sk-local-dev-key` và `AI_SERVICE_KEY`; không commit). `/health` thêm `dependencies.model_worker` chỉ ở chế độ này.
@@ -20,15 +20,15 @@
 ```bash
 # worker (máy có GPU, hoặc Kaggle: dist/kaggle/kernel-model-worker/)
 MODEL_WORKER_KEY=<random> CHECKPOINT_DIR=... python -m uvicorn app.worker_app:app --host 127.0.0.1 --port 8002
-# facade (giữ MinIO/Milvus như cũ)
+# facade
 MODEL_WORKER_URL=http://127.0.0.1:8002 MODEL_WORKER_KEY=<cùng key> python -m uvicorn app.main:app --port 8001
 ```
 
-## AI-API v2.0 DRAFT (D24, AI-15)
+## AI-API v3.0 (D24; /v2 từ AI-15, gỡ /v1 lưu trữ ở AI-23)
 
 `app/v2.py`: `/v2/vision/completions`, `/v2/search/embeddings`, `/v2/asr/completions` (multipart), `/v2/recommendation/embeddings` — chỉ tính toán,
-không MinIO/Milvus/path server (test `tests/test_v2.py`). Chạy song song `/v1` (không đổi, compat v1.2 + v1.3). Đặc tả: `coordination/claude/api/AI_API_CONTRACT_V2.md`.
-Sau khi Codex chuyển xong (HC-13): `/v1` media/search/reco → DEPRECATED, rồi gỡ `minio`/`pymilvus` và Milvus khỏi lifespan.
+không MinIO/Milvus/path server (test `tests/test_v2.py`). `/v1/vision|asr|search|recommendation` đã gỡ ở v3.0 (deprecated v1.5, Codex RE:HC-17);
+còn `/v1/highlight`, `/v1/completions`. Đặc tả: `coordination/claude/api/AI_API_CONTRACT_V2.md`.
 
 ## Env
 
@@ -73,8 +73,7 @@ FORCE_STUB=1 ../.venv/Scripts/python.exe -m uvicorn app.main:app --port 8001
 - Local + runtime :8001 dùng **`E:/traning_ai/ai-core/checkpoints`** (= default `../ai-core/checkpoints`): thư mục duy nhất có đủ 6 `best.pt`
   + `minigpt/bpe_vocab.json`, SHA khớp `coordination/claude/api/AI_API_CONTRACT.md` §1. `.env` local đặt `CHECKPOINT_DIR` trỏ đây.
 - `D:/data_training_ai/checkpoints` chỉ có 4/6 (thiếu `vit`, `minigpt`; 4 model còn lại trùng SHA) → không dùng cho runtime.
-- Chế độ thật (`FORCE_STUB=0`) **bắt buộc Milvus** `MILVUS_HOST:MILVUS_PORT` lúc startup (lifespan gọi `visual_index.collection()`);
-  Milvus tắt → uvicorn thoát `Application startup failed`. Milvus thuộc stack Codex.
+- Chế độ thật (`FORCE_STUB=0`) chỉ cần đủ 6 checkpoint; từ v3.0 không còn phụ thuộc Milvus/MinIO lúc startup.
 - Windows: chạy với `PYTHONUTF8=1`. Không có → log tiếng Việt ra stdout bị redirect (cp1252) gây `UnicodeEncodeError`,
   lỗi 503 có envelope biến thành 500 plain-text.
 
@@ -113,11 +112,11 @@ curl -s -X POST http://127.0.0.1:8001/v1/completions \
 | Path | Model | Ghi chú |
 |---|---|---|
 | `POST /v1/completions` | Mini-GPT | OpenAI-style; map-reduce transcript >1024 token |
-| `POST /v1/search/completions` | Siamese | ảnh → top-k (0–1) |
 | `POST /v1/highlight/completions` | Fusion | timeline_scores **0–100** |
-| `POST /v1/asr/completions` | ASR CTC | transcript + segments + confidence |
-| `POST /v1/recommendation/completions` | Two-Tower | user → ranked (0–1) |
-| `POST /v1/vision/completions` | ViT | **nội bộ** ingest, không expose qua gateway |
+| `POST /v2/vision/completions` | ViT + Siamese | nhãn + embedding 256 + vector Siamese 128 (backend tự lưu) |
+| `POST /v2/search/embeddings` | Siamese | ảnh → vector 128 (backend tự tìm Milvus) |
+| `POST /v2/asr/completions` | ASR CTC | multipart audio → transcript + segments |
+| `POST /v2/recommendation/embeddings` | Two-Tower v2 | 503 `MODEL_NOT_READY` tới AI-12 |
 | `GET /health` | — | gpu_vram_used, gpu_util, models_loaded, queue_depth |
 
-Mọi POST cần `Authorization: Bearer ${AI_SERVICE_KEY}`. Job GPU (vision/asr/highlight/completions) qua **hàng đợi asyncio tuần tự 1 worker** (không tranh VRAM). Error envelope `{"error":{"code","message"}}`.
+Mọi POST cần `Authorization: Bearer ${AI_SERVICE_KEY}`. Job GPU (v2 vision/asr, highlight, completions) qua **hàng đợi asyncio tuần tự 1 worker** (không tranh VRAM). Error envelope `{"error":{"code","message"}}`.
