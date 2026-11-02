@@ -36,3 +36,13 @@ One QA category was stranded by the soft-delete FK rule (see finding 1) and remo
    `cms_read_test.go` "soft-deleted reference lost"). Not changed; user decision.
 2. Fixed: categories aside widened the page with long unbreakable titles (CMS uses the upload filename as title).
 3. Not covered here: 10-item Stitch design parity (→ INT-05), live pagination over >1 page and bulk-delete request capture (INT-43 remainder).
+
+## Follow-up 2026-11-02 (user: "kéo lại 2 cho phép xóa và làm phần còn lại của INT-43")
+- Category delete (user decision): `CategoryRepo.Delete` clears category_id on soft-deleted videos + their clips, then deletes; live refs still 409.
+  Real-PG test (TEMP shadow tables, inside gateway container): TestCMSOperationsRealPersistence + Metadata PASS. Gateway `int50-83bacd4` deployed.
+- Deploy incident (fixed within minutes, no real data affected): first gateway recreate loaded `E:	raning_ai\.env` → wrong AI key → own QA uploads failed
+  `HTTP 401`. Recreated with `--env-file <empty>` + AI_SERVICE_KEY from the inference container; gateway env hash == baseline. 0 non-QA jobs touched.
+- Live run 8: INT-43 (+ remainder: server pagination via "Đã xóa" filter, bulk video delete + bulk clip hide send only visible own IDs) and INT-44
+  (deleted-only category → 204) PASS.
+- Preservation: originals intact; 3 new `user_interactions` (ids 141–143) are real Client activity by an existing user on an original clip at
+  09:20 UTC, not QA. Containers changed: cms, gateway (own deploys).

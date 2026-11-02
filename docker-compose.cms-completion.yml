@@ -1,7 +1,7 @@
-# Local app release INT-50 (gateway 74344bb; CMS 045988a = 7c7dd74 empty-title fix + categories overflow fix, Claude HO-05). Use with root + docker-compose.inference.yml.
+# Local app release INT-50 (gateway 83bacd4 = 74344bb + category delete fix; CMS 045988a = 7c7dd74 empty-title fix + categories overflow fix, Claude HO-05). Use with root + docker-compose.inference.yml.
 # Pins only owned app images; AI, workers, databases, ports and volumes inherit existing configuration.
 services:
   gateway:
-    image: video-ai-gateway:int50-74344bb
+    image: video-ai-gateway:int50-83bacd4
   cms:
     image: video-ai-cms:int50-045988a

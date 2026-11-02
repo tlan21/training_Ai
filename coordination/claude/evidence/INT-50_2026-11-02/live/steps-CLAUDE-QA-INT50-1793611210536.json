@@ -1,0 +1,73 @@
+[
+ {
+  "test": "INT-43 global search/filters/pagination + selection safety; library search/edit/open counts",
+  "step": "Videos: server search returns only own videos; date filter; clear",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-43 global search/filters/pagination + selection safety; library search/edit/open counts",
+  "step": "Videos: selection cleared on filter change (no stale IDs)",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-43 global search/filters/pagination + selection safety; library search/edit/open counts",
+  "step": "own clip view_count",
+  "result": "NOTE",
+  "detail": 0
+ },
+ {
+  "test": "INT-43 global search/filters/pagination + selection safety; library search/edit/open counts",
+  "step": "Library: clip search, rename, open-count column = API",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-43 global search/filters/pagination + selection safety; library search/edit/open counts",
+  "step": "Library: original-video tab uses server search",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-43 remainder: server pagination across pages; bulk deletes send only visible own IDs",
+  "step": "Videos \"Đã xóa\" filter: page 2 is a server request, rows differ, selection cleared on page change",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-43 remainder: server pagination across pages; bulk deletes send only visible own IDs",
+  "step": "Library bulk hide: DELETE only the selected visible own clips",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-43 remainder: server pagination across pages; bulk deletes send only visible own IDs",
+  "step": "Videos bulk delete: DELETE only the 3 visible own videos",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-44 categories: CRUD, keywords persist, referenced delete 409 + toast, rule toggles restore",
+  "step": "create with keywords; persists after reload",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-44 categories: CRUD, keywords persist, referenced delete 409 + toast, rule toggles restore",
+  "step": "edit keywords persists",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-44 categories: CRUD, keywords persist, referenced delete 409 + toast, rule toggles restore",
+  "step": "assign to own video via Videos modal; count = API",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-44 categories: CRUD, keywords persist, referenced delete 409 + toast, rule toggles restore",
+  "step": "referenced delete → 409 toast, category kept",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-44 categories: CRUD, keywords persist, referenced delete 409 + toast, rule toggles restore",
+  "step": "after the only referencing video is soft-deleted, UI delete succeeds (204) — user decision 2026-11-02",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-44 categories: CRUD, keywords persist, referenced delete 409 + toast, rule toggles restore",
+  "step": "rule toggles persist then restore",
+  "result": "PASS"
+ }
+]

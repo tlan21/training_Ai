@@ -1,0 +1,7 @@
+[
+ {
+  "test": "INT-43 remainder: server pagination across pages; bulk deletes send only visible own IDs",
+  "step": "Videos \"Đã xóa\" filter: page 2 is a server request, rows differ, selection cleared on page change",
+  "result": "PASS"
+ }
+]

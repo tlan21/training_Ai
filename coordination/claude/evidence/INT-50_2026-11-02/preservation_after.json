@@ -1,6 +1,12 @@
 {
- "checked_at": "2026-11-02T09:00:21.393140+00:00",
+ "checked_at": "2026-11-02T09:21:46.078273+00:00",
  "containers": {
+  "video-ai-gateway-1": {
+   "id": "d3e1f15b67b917f0aba2db64ed16e91f235ed891714df2dbb7873d78676348d3",
+   "image_id": "sha256:a8437f724a7ea5697211015142c408db4c96aff013e31c4dc8ecff8b9b548526",
+   "started_at": "2026-11-02T09:19:32.616611658Z",
+   "env_hash": "4e5ad710fc0b3b0151ad7f5f967b618b9a8cc19678ae4e42f384198ab6a1a515"
+  },
   "video-ai-cms-1": {
    "id": "5e6772f42c411d3da60f21db0225027da5b1ce019ea626efab5fa5822d57e999",
    "image_id": "sha256:39d64529a3450ce28c77795f14ec448095fc2cd2eedeb2ba53d3264f72d91901",
@@ -12,12 +18,6 @@
    "image_id": "sha256:f62671e78fd8bb4ba9fad3fb743ea4ab3aeb76723e76abd821afe0c336837b81",
    "started_at": "2026-11-02T04:53:30.633729793Z",
    "env_hash": "9b5bf59594e16e06ea034f5151a816666b24860840f86d93c988770f1955087b"
-  },
-  "video-ai-gateway-1": {
-   "id": "e0a090b27e16471b2c3c8f68b0877c294d6bf8863d27d54029e1130d000e7c02",
-   "image_id": "sha256:5354b54657967c20e0752aec2257904ba5e8598166eb2fbfdeaf7a7bd1b5e4ec",
-   "started_at": "2026-11-02T02:22:52.804405099Z",
-   "env_hash": "4e5ad710fc0b3b0151ad7f5f967b618b9a8cc19678ae4e42f384198ab6a1a515"
   },
   "video-ai-client-1": {
    "id": "5a6b4536e63d2e31505d03ec57a867ada5afcacce97a7cfbe00a7848ea29a859",
@@ -1113,6 +1113,60 @@
     "hash": "e519a2f2817b1fb629a97fb0a10aa81f",
     "label": "CLAUDE-QA-INT50-1793609991730-search-b.mp4",
     "video_id": null
+   },
+   {
+    "id": "vid_dmkm28o2iven",
+    "hash": "eedd9c78900e289357e0c1b5aea7582a",
+    "label": "CLAUDE-QA-INT50-1793611072707-search-a.mp4",
+    "video_id": null
+   },
+   {
+    "id": "vid_dmkm2bqy4jqm",
+    "hash": "1be60519684022b8c7512041c94c3ef2",
+    "label": "CLAUDE-QA-INT50-1793611079320-bulk-a.mp4",
+    "video_id": null
+   },
+   {
+    "id": "vid_dmkm2f99y04r",
+    "hash": "cf6f6dc19a3eaefdd3fe743f1f48de0e",
+    "label": "CLAUDE-QA-INT50-1793611086419-cat-target.mp4",
+    "video_id": null
+   },
+   {
+    "id": "vid_dmkm3zal3360",
+    "hash": "070024a279a19bbf2715491ba2d21672",
+    "label": "CLAUDE-QA-INT50-1793611210536-search-a.mp4",
+    "video_id": null
+   },
+   {
+    "id": "vid_dmkm42kl8dyp",
+    "hash": "db1396014d10ab24b7863d80163c1141",
+    "label": "CLAUDE-QA-INT50-1793611210536-search-b.mp4",
+    "video_id": null
+   },
+   {
+    "id": "vid_dmkm47v7xpj5",
+    "hash": "accf33c2a4782363832b1fde0cb4ac37",
+    "label": "CLAUDE-QA-INT50-1793611210536-bulk-a.mp4",
+    "video_id": null
+   },
+   {
+    "id": "vid_dmkm4b4g98xk",
+    "hash": "5b2e397192c5cb4a07e911d829144e0e",
+    "label": "CLAUDE-QA-INT50-1793611210536-bulk-b.mp4",
+    "video_id": null
+   },
+   {
+    "id": "vid_dmkm4i4jl7e5",
+    "hash": "3c33119170dcf2342a648191952dd175",
+    "label": "CLAUDE-QA-INT50-1793611210536-bulk-c.mp4",
+    "video_id": null
+   },
+   {
+    "id": "vid_dmkm4s1ec8gk",
+    "hash": "b5a0e83bb36a264bf336673967d2cd07",
+    "label": "CLAUDE-QA-INT50-1793611210536-cat-target.mp4",
+    "video_id": null
    }
   ],
   "clips": [
@@ -1535,6 +1589,24 @@
     "hash": "34a558b494cc492b9e84718472047a1b",
     "label": "CLAUDE-QA-INT50-1793609991730-manual-renamed",
     "video_id": "vid_dmklofd90apd"
+   },
+   {
+    "id": "clp_dmkm45u5s7uf",
+    "hash": "0ea96cb7bb614a6ddc0b2e841592b8ff",
+    "label": "CLAUDE-QA-INT50-1793611210536-manual-renamed",
+    "video_id": "vid_dmkm3zal3360"
+   },
+   {
+    "id": "clp_dmkm4p58ugiz",
+    "hash": "6e952a78767547f17a44debc64071fa6",
+    "label": "CLAUDE-QA-INT50-1793611210536-bulk-clip-1",
+    "video_id": "vid_dmkm47v7xpj5"
+   },
+   {
+    "id": "clp_dmkm4psqplsb",
+    "hash": "fb2c890bd11807ee244878e23db44a93",
+    "label": "CLAUDE-QA-INT50-1793611210536-bulk-clip-2",
+    "video_id": "vid_dmkm47v7xpj5"
    }
   ],
   "users": [
@@ -1984,6 +2056,11 @@
     "video_id": "vid_dmhxisbsuwea"
    },
    {
+    "id": "job_1d25638b6d4741ed9f3c7e765d2d7db2",
+    "hash": "c30ac436e4f97f516294abf6461c5598",
+    "video_id": "vid_dmkm4b4g98xk"
+   },
+   {
     "id": "job_1d3702f7c15646d88aafa5c453a4bbea",
     "hash": "df878ad963be2804c7f636f91de7b6b5",
     "video_id": "vid_dmkll08hjsqo"
@@ -2059,6 +2136,11 @@
     "video_id": "vid_dmkloimxa7a3"
    },
    {
+    "id": "job_29959d8ac7c24559aa44480d29e92d1b",
+    "hash": "6f42f53e34aaec4b3e6d4866ba3aa6c5",
+    "video_id": "vid_dmkm47v7xpj5"
+   },
+   {
     "id": "job_2a46290ba23e4321873d11d808810380",
     "hash": "6e57fa63af4bbf63542faffc6961905e",
     "video_id": "vid_dm3nahzv882q"
@@ -2112,6 +2194,11 @@
     "id": "job_366ee1e316154d31918b2fed81889bd7",
     "hash": "335575c212d7350784151f773400214b",
     "video_id": "vid_dm4fc5crrlmr"
+   },
+   {
+    "id": "job_37da62c798de4f1fb0095910898e339a",
+    "hash": "fb31757635919e9f1ca0cee2966a4f8f",
+    "video_id": "vid_dmkm42kl8dyp"
    },
    {
     "id": "job_37fe038b34754046b07bcbda89186182",
@@ -2214,6 +2301,11 @@
     "video_id": "vid_dmkks8zwshvu"
    },
    {
+    "id": "job_58281a3ddf4d4550b8dce1f1d3ab6736",
+    "hash": "a5650340b0891584028a6a98544b7b04",
+    "video_id": "vid_dmkm4i4jl7e5"
+   },
+   {
     "id": "job_599e85ba27554bf6b0b6680e0a1c7c4f",
     "hash": "a608d1a644c5a3ac5c2b90d2570300cc",
     "video_id": "vid_dmkl3l2oyaji"
@@ -2242,6 +2334,11 @@
     "id": "job_65622bf9f7a84114b257e3f2189d476b",
     "hash": "b0c7391c17b63aa43d4e0ae73e3a19c7",
     "video_id": "vid_dmenuepz2y41"
+   },
+   {
+    "id": "job_664891c255bd451b8ecf5c326fb25c88",
+    "hash": "0aaa9e7356e4d8eb81f3e699ad205356",
+    "video_id": "vid_dmkm4s1ec8gk"
    },
    {
     "id": "job_6679a4be0c9147e3ab9b919ae281a828",
@@ -2449,9 +2546,19 @@
     "video_id": "vid_dm4faymv79qh"
    },
    {
+    "id": "job_a2e73cfdcc764dee89756141621d36ac",
+    "hash": "3cf355094ae10cad62ecc8eda495308a",
+    "video_id": "vid_dmkm28o2iven"
+   },
+   {
     "id": "job_a30eac12746d4cb1a6625901304cdb55",
     "hash": "35076ba70609562f79cdf0aeef23b287",
     "video_id": "vid_dmklhup94guk"
+   },
+   {
+    "id": "job_a40bd0f4f18a44f8b7803e83e3db661d",
+    "hash": "36a3c854f083b82f4796e3d668dfe888",
+    "video_id": "vid_dmkm2bqy4jqm"
    },
    {
     "id": "job_a555890076b84e119c749df602518fa5",
@@ -2514,6 +2621,11 @@
     "video_id": "vid_dmhxiisg0uiw"
    },
    {
+    "id": "job_b41a4b0ce5d54867bdcb06c9b60bd651",
+    "hash": "f5606e3384ec0c1a1f24cc5e7de24a9a",
+    "video_id": "vid_dmkm2f99y04r"
+   },
+   {
     "id": "job_bb853a71174047fbbaf89d475d591ab1",
     "hash": "226a6410a8f974fce97cfd6436ea1226",
     "video_id": "vid_dmklkv5wvmrj"
@@ -2542,6 +2654,11 @@
     "id": "job_c709eb19accb488eb48eabda30d6e3b1",
     "hash": "9ce4215c793a99f4ce74dae1ddfeda28",
     "video_id": "vid_dmkl9itfg7hp"
+   },
+   {
+    "id": "job_c8a112fd4ca241c695adee18aed8c658",
+    "hash": "8d90c49dc85bf684bc1412dc8481c27c",
+    "video_id": "vid_dmkm3zal3360"
    },
    {
     "id": "job_caa17a81ce1b4d568b44db3caa862504",
@@ -3088,6 +3205,21 @@
    {
     "id": 140,
     "hash": "e9c31bfd7f8c07153e8ecbf22fff2586",
+    "video_id": "vid_dmh5o652juum"
+   },
+   {
+    "id": 141,
+    "hash": "e45413cdf8c2f942bb011270eed4cbef",
+    "video_id": "vid_dmh5o652juum"
+   },
+   {
+    "id": 142,
+    "hash": "1467313865d89c7e96caf455f12224ea",
+    "video_id": "vid_dmh5o652juum"
+   },
+   {
+    "id": 143,
+    "hash": "8f79dba15d9b3f7e85dc378507fc1c1b",
     "video_id": "vid_dmh5o652juum"
    }
   ],
@@ -10092,7 +10224,16 @@
    "vid_dmklnihkof31",
    "vid_dmklnre7ky35",
    "vid_dmklofd90apd",
-   "vid_dmkloimxa7a3"
+   "vid_dmkloimxa7a3",
+   "vid_dmkm28o2iven",
+   "vid_dmkm2bqy4jqm",
+   "vid_dmkm2f99y04r",
+   "vid_dmkm3zal3360",
+   "vid_dmkm42kl8dyp",
+   "vid_dmkm47v7xpj5",
+   "vid_dmkm4b4g98xk",
+   "vid_dmkm4i4jl7e5",
+   "vid_dmkm4s1ec8gk"
   ],
   "extras": {
    "videos": [
@@ -10144,7 +10285,16 @@
     "vid_dmklnihkof31",
     "vid_dmklnre7ky35",
     "vid_dmklofd90apd",
-    "vid_dmkloimxa7a3"
+    "vid_dmkloimxa7a3",
+    "vid_dmkm28o2iven",
+    "vid_dmkm2bqy4jqm",
+    "vid_dmkm2f99y04r",
+    "vid_dmkm3zal3360",
+    "vid_dmkm42kl8dyp",
+    "vid_dmkm47v7xpj5",
+    "vid_dmkm4b4g98xk",
+    "vid_dmkm4i4jl7e5",
+    "vid_dmkm4s1ec8gk"
    ],
    "clips": [
     "clp_dmklb26my7x2",
@@ -10154,20 +10304,26 @@
     "clp_dmklmj7ahoh2",
     "clp_dmklmo7uktv0",
     "clp_dmklnlqrfj15",
-    "clp_dmklolvvl5zs"
+    "clp_dmklolvvl5zs",
+    "clp_dmkm45u5s7uf",
+    "clp_dmkm4p58ugiz",
+    "clp_dmkm4psqplsb"
    ],
    "users": [],
    "categories": [],
    "video_processing_jobs": [
     "job_034ab3d0bb5745909fc1895c5c409bbc",
     "job_0a45db76ea54487282ca30e0d7e036a8",
+    "job_1d25638b6d4741ed9f3c7e765d2d7db2",
     "job_1d3702f7c15646d88aafa5c453a4bbea",
     "job_1da1b0b590b5488c81e0e24e7677e303",
     "job_1fe2898d1df14305ae503abfeaba285b",
     "job_2668fa54db1f42d8a50920a0d26b9425",
     "job_29485686476c45439361fc507eab7838",
+    "job_29959d8ac7c24559aa44480d29e92d1b",
     "job_2c2c3050282a4a6b81cc144ec274f4d5",
     "job_313a6a860f9843d5827643f93bcd6260",
+    "job_37da62c798de4f1fb0095910898e339a",
     "job_37fe038b34754046b07bcbda89186182",
     "job_3cffe366bd194ecab9962a85c94b2270",
     "job_435d6581393b43e199885ebec174d98b",
@@ -10177,7 +10333,9 @@
     "job_4d564d1e67764e178486a7861bfb4ed5",
     "job_513db2886a804b698d9154b07ea39926",
     "job_56e7f2c9fbef470cadcacb1734af77ed",
+    "job_58281a3ddf4d4550b8dce1f1d3ab6736",
     "job_599e85ba27554bf6b0b6680e0a1c7c4f",
+    "job_664891c255bd451b8ecf5c326fb25c88",
     "job_693b99b7d7864c3f9f5561afe1ba92cb",
     "job_69a8b822bf4645179c6e157abd968912",
     "job_709315dce83f4a61a8d873f3d87bff7c",
@@ -10185,12 +10343,16 @@
     "job_8b4ab992c06344b9b0d1dda861569cc2",
     "job_917a6d5b10be41d0a47f8b3caf009e78",
     "job_9e7203aabc2d475cb2deb9a03a9e8649",
+    "job_a2e73cfdcc764dee89756141621d36ac",
     "job_a30eac12746d4cb1a6625901304cdb55",
+    "job_a40bd0f4f18a44f8b7803e83e3db661d",
     "job_a67b8ca374fa4a08a4ace28065d33876",
     "job_a961b68acacb4b029532e2a54451762b",
     "job_adc58c357c2e4890ba4e1e501faff79b",
+    "job_b41a4b0ce5d54867bdcb06c9b60bd651",
     "job_bb853a71174047fbbaf89d475d591ab1",
     "job_c709eb19accb488eb48eabda30d6e3b1",
+    "job_c8a112fd4ca241c695adee18aed8c658",
     "job_ccd7a8af30d84c149ce05504a6ea2439",
     "job_cd6b8382fad747b8a6f5dad8139a0f28",
     "job_ce9c8d55ae60448785f7482c06f8de7f",
@@ -10209,7 +10371,11 @@
     "job_fa9aa5662b78411b80eca48e8a87aeb7",
     "job_fcf808f5623645678b4b9391608d4a24"
    ],
-   "user_interactions": [],
+   "user_interactions": [
+    141,
+    142,
+    143
+   ],
    "system_settings": [],
    "mongo.video_analyses": [],
    "mongo.subtitles": [],
@@ -10218,10 +10384,15 @@
    "minio.thumbnails": [],
    "milvus": []
   },
-  "problems": [],
-  "containers_changed": [
-   "video-ai-cms-1"
+  "problems": [
+   "unexpected new user_interactions row: 141",
+   "unexpected new user_interactions row: 142",
+   "unexpected new user_interactions row: 143"
   ],
-  "PASS": true
+  "containers_changed": [
+   "video-ai-cms-1",
+   "video-ai-gateway-1"
+  ],
+  "PASS": false
  }
 }

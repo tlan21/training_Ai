@@ -1,0 +1,12 @@
+[
+ {
+  "test": "INT-44 categories: CRUD, keywords persist, referenced delete 409 + toast, rule toggles restore",
+  "step": "create with keywords; persists after reload",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-44 categories: CRUD, keywords persist, referenced delete 409 + toast, rule toggles restore",
+  "step": "edit keywords persists",
+  "result": "PASS"
+ }
+]

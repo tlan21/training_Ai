@@ -1,5 +1,4 @@
 import { test, expect, request as pwRequest, type APIRequestContext, type Page } from '@playwright/test';
-import { execFileSync } from 'node:child_process';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import type { components } from '../cms/src/api-types';
@@ -107,12 +106,7 @@ test.afterAll(async () => {
       for (let i = 0; i < 20; i++) { status = (await api.delete(`/api/cms/videos/${id}`, { headers: auth })).status(); if (status !== 409) break; await new Promise(r => setTimeout(r, 5000)); }
       cleanup.push({ video: id, delete: status });
     }
-    for (const id of own.categories) {
-      // Own QA categories only: soft-deleted QA videos keep category_id by design; unlink just those rows, then delete the QA category.
-      execFileSync('docker', ['exec', 'video-ai-postgres-1', 'psql', '-X', '-U', 'app', '-d', 'video_ai', '-c',
-        `UPDATE videos SET category_id=NULL WHERE category_id='${id}' AND title LIKE 'CLAUDE-QA-INT50-%' AND status='deleted'`]);
-      cleanup.push({ category: id, delete: (await api.delete(`/api/cms/categories/${id}`, { headers: auth })).status() });
-    }
+    for (const id of own.categories) cleanup.push({ category: id, delete: (await api.delete(`/api/cms/categories/${id}`, { headers: auth })).status() });
   } finally {
     writeFileSync(path.join(out, `cleanup-${PREFIX}.json`), JSON.stringify(cleanup, null, 1)); save(); await api.dispose();
   }
@@ -410,6 +404,52 @@ test('INT-43 global search/filters/pagination + selection safety; library search
   });
 });
 
+test('INT-43 remainder: server pagination across pages; bulk deletes send only visible own IDs', async ({ page }) => {
+  test.setTimeout(900_000);
+  await login(page);
+  await step('Videos "Đã xóa" filter: page 2 is a server request, rows differ, selection cleared on page change', async () => {
+    await page.goto(cms + '/videos');
+    const first = page.waitForResponse(r => r.url().includes('/api/cms/videos') && r.url().includes('status=deleted') && r.status() === 200);
+    await page.getByRole('button', { name: 'Đã xóa' }).click(); await first;
+    const rows = page.locator('.videos-table tbody tr');
+    await expect(rows).toHaveCount(20);
+    const page1 = await rows.allInnerTexts();
+    await rows.first().locator('input[type=checkbox]').check();
+    await expect(page.getByRole('button', { name: /Xóa 1 video/ })).toBeVisible();
+    const second = page.waitForResponse(r => r.url().includes('/api/cms/videos') && r.url().includes('status=deleted') && r.url().includes('page=2') && r.status() === 200);
+    await page.getByRole('button', { name: 'Trang sau' }).click(); await second;
+    await expect(page.getByRole('button', { name: 'Trang 2' })).toBeVisible();
+    await expect(page.getByRole('button', { name: /Xóa \d+ video/ })).toHaveCount(0);
+    expect(await rows.allInnerTexts()).not.toEqual(page1);
+  });
+  const vids = [await processed(`${PREFIX}-bulk-a.mp4`, SHORT_VIDEO), await processed(`${PREFIX}-bulk-b.mp4`, SHORT_VIDEO), await processed(`${PREFIX}-bulk-c.mp4`, SHORT_VIDEO)].map(v => v.id);
+  const clips = [await manualClip(vids[0], `${PREFIX}-bulk-clip-1`, 1, 4), await manualClip(vids[0], `${PREFIX}-bulk-clip-2`, 4, 7)].map(c => c.id!);
+  await step('Library bulk hide: DELETE only the selected visible own clips', async () => {
+    const sent: string[] = [];
+    page.on('request', r => { if (r.method() === 'DELETE' && r.url().includes('/api/cms/clips/')) sent.push(r.url().split('/').pop()!); });
+    await page.goto(`${cms}/published?q=${encodeURIComponent(`${PREFIX}-bulk-clip`)}`);
+    await page.getByRole('tab', { name: /Bản nháp/ }).click();
+    const rows = page.locator('.library-table tbody tr');
+    await expect(rows).toHaveCount(2);
+    await page.getByLabel('Chọn tất cả nội dung trên trang').check();
+    page.once('dialog', d => void d.accept());
+    await page.getByRole('button', { name: 'Xóa hàng loạt' }).click(); await toast(page, 'Đã ẩn nội dung');
+    expect(sent.sort()).toEqual([...clips].sort());
+    await expect.poll(async () => (await get<Clip[]>(`/api/cms/clips?video_id=${vids[0]}`)).filter(c => clips.includes(c.id!)).map(c => c.status)).toEqual(['rejected', 'rejected']);
+  });
+  await step('Videos bulk delete: DELETE only the 3 visible own videos', async () => {
+    const sent: string[] = [];
+    page.on('request', r => { if (r.method() === 'DELETE' && r.url().includes('/api/cms/videos/')) sent.push(r.url().split('/').pop()!); });
+    await page.goto(`${cms}/videos?q=${encodeURIComponent(`${PREFIX}-bulk-`)}`);
+    await expect(page.locator('.videos-table tbody tr')).toHaveCount(3);
+    await page.getByLabel('Chọn tất cả video trên trang').check();
+    page.once('dialog', d => { expect(d.message()).toContain('Xóa 3 video'); void d.accept(); });
+    await page.getByRole('button', { name: 'Xóa 3 video' }).click(); await toast(page, 'Đã xóa video');
+    expect(sent.sort()).toEqual([...vids].sort());
+    await expect(page.getByText('Không có video khớp')).toBeVisible();
+  });
+});
+
 test('INT-44 categories: CRUD, keywords persist, referenced delete 409 + toast, rule toggles restore', async ({ page }) => {
   test.setTimeout(600_000);
   await login(page);
@@ -451,16 +491,16 @@ test('INT-44 categories: CRUD, keywords persist, referenced delete 409 + toast, 
     await expect(page.locator('.toast, [role=status], [role=alert]').filter({ hasNotText: 'Đã xóa danh mục' }).first()).toBeVisible();
     expect((await get<Category[]>('/api/cms/categories')).some(c => c.id === own.categories[0])).toBe(true);
   });
-  await step('never-used category: UI delete succeeds (204)', async () => {
-    const r = await api.post('/api/cms/categories', { headers: auth, data: { name: `${PREFIX}-cat-unused` } });
-    expect(r.status()).toBeLessThan(300); const unused = await r.json() as Category; own.categories.push(unused.id!); save();
+  await step('after the only referencing video is soft-deleted, UI delete succeeds (204) — user decision 2026-11-02', async () => {
+    expect((await api.delete(`/api/cms/videos/${target}`, { headers: auth })).status()).toBe(204);
     await page.goto(cms + '/categories');
-    const deleted = page.waitForResponse(res => res.url().includes(`/api/cms/categories/${unused.id}`) && res.request().method() === 'DELETE');
+    await expect(page.locator('.category-table tbody tr').filter({ hasText: name }).locator('td.mono')).toHaveText('0');
+    const deleted = page.waitForResponse(res => res.url().includes(`/api/cms/categories/${own.categories[0]}`) && res.request().method() === 'DELETE');
     page.once('dialog', d => void d.accept());
-    await page.getByRole('button', { name: `Xóa danh mục ${PREFIX}-cat-unused` }).click();
+    await page.getByRole('button', { name: `Xóa danh mục ${name}` }).click();
     expect((await deleted).status()).toBe(204); await toast(page, 'Đã xóa danh mục');
-    own.categories = own.categories.filter(id => id !== unused.id); save();
-    note('design', 'soft-deleted videos keep category_id by design (cms_read_test "soft-deleted reference lost"); a category used only by deleted videos stays 409 — product question for the user');
+    expect((await get<Category[]>('/api/cms/categories')).some(c => c.id === own.categories[0])).toBe(false);
+    own.categories = []; save();
   });
   await step('rule toggles persist then restore', async () => {
     const before = (await get<Settings>('/api/cms/settings')).category_keyword_enabled;
