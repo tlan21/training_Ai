@@ -1,0 +1,52 @@
+2026/10/29 03:59:37 AI HTTP GET /health
+2026/10/29 03:59:41 gateway :8000 (PostgreSQL/Mongo/MinIO/Kafka/Redis) → AI http://host.docker.internal:8001
+2026/10/29 04:00:16 AI HTTP POST /v2/vision/completions
+2026/10/29 04:00:18 AI HTTP POST /v2/asr/completions offset_seconds=0
+2026/10/29 04:00:19 AI HTTP POST /v1/highlight/completions
+2026/10/29 04:00:20 AI HTTP POST /v1/completions
+2026/10/29 04:00:25 AI HTTP POST /v2/search/embeddings
+2026/10/29 04:03:20 AI HTTP GET /health
+2026/10/29 04:03:20 AI HTTP GET /health
+2026/10/29 04:03:22 AI HTTP GET /health
+2026/10/29 04:03:27 AI HTTP GET /health
+2026/10/29 04:03:28 AI HTTP POST /v2/vision/completions
+2026/10/29 04:03:30 AI HTTP POST /v2/asr/completions offset_seconds=0
+2026/10/29 04:03:31 AI HTTP POST /v1/highlight/completions
+2026/10/29 04:03:32 AI HTTP POST /v1/completions
+2026/10/29 04:03:32 AI HTTP GET /health
+2026/10/29 04:03:34 AI HTTP GET /health
+2026/10/29 04:03:34 AI HTTP GET /health
+2026/10/29 04:03:34 AI HTTP GET /health
+2026/10/29 04:03:34 AI HTTP GET /health
+2026/10/29 04:03:35 AI HTTP GET /health
+2026/10/29 04:03:35 AI HTTP GET /health
+2026/10/29 04:03:36 AI HTTP GET /health
+2026/10/29 04:03:40 AI HTTP GET /health
+2026/10/29 04:03:46 AI HTTP POST /v2/vision/completions
+2026/10/29 04:03:48 AI HTTP POST /v2/asr/completions offset_seconds=0
+2026/10/29 04:03:49 AI HTTP POST /v1/highlight/completions
+2026/10/29 04:03:50 AI HTTP POST /v1/completions
+2026/10/29 04:03:51 AI HTTP POST /v2/search/embeddings
+2026/10/29 04:03:53 AI HTTP POST /v2/search/embeddings
+2026/10/29 04:03:53 AI HTTP POST /v2/search/embeddings
+2026/10/29 04:03:53 AI HTTP POST /v2/search/embeddings
+2026/10/29 04:03:53 AI HTTP POST /v2/search/embeddings
+2026/10/29 04:03:53 AI HTTP POST /v2/search/embeddings
+2026/10/29 04:03:54 AI HTTP POST /v2/search/embeddings
+2026/10/29 04:03:54 AI HTTP POST /v2/search/embeddings
+2026/10/29 04:03:54 AI HTTP POST /v2/search/embeddings
+2026/10/29 04:03:54 AI HTTP POST /v2/search/embeddings
+2026/10/29 04:03:54 AI HTTP POST /v2/search/embeddings
+2026/10/29 04:03:55 AI HTTP POST /v2/search/embeddings
+2026/10/29 04:03:55 AI HTTP POST /v2/search/embeddings
+2026/10/29 04:03:55 AI HTTP POST /v2/search/embeddings
+2026/10/29 04:03:55 AI HTTP POST /v2/search/embeddings
+2026/10/29 04:03:55 AI HTTP POST /v2/search/embeddings
+2026/10/29 04:03:56 AI HTTP POST /v2/search/embeddings
+2026/10/29 04:03:56 AI HTTP POST /v2/search/embeddings
+2026/10/29 04:03:56 AI HTTP POST /v2/search/embeddings
+2026/10/29 04:03:56 AI HTTP POST /v2/search/embeddings
+2026/10/29 04:03:56 AI HTTP POST /v2/search/embeddings
+2026/10/29 04:03:57 AI HTTP POST /v2/search/embeddings
+2026/10/29 04:03:59 AI HTTP POST /v2/search/embeddings
+2026/10/29 04:04:00 AI HTTP POST /v2/search/embeddings

@@ -1,0 +1,200 @@
+[
+  {
+    "id": 1,
+    "screen": "login",
+    "action": "Anonymous protected route redirects to login",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 2,
+    "screen": "login",
+    "action": "Show/hide password, remember device, editor shortcut",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 3,
+    "screen": "login",
+    "action": "Invalid credentials show real API error",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 4,
+    "screen": "login",
+    "action": "Quick administrator login, HttpOnly refresh, reload restoration",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 5,
+    "screen": "shared",
+    "action": "Health popover reads real six-model health; close button",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 6,
+    "screen": "shared",
+    "action": "Notification and dashboard navigation links",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 7,
+    "screen": "sidebar",
+    "action": "Navigate Tổng quan",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 8,
+    "screen": "sidebar",
+    "action": "Navigate Video",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 9,
+    "screen": "sidebar",
+    "action": "Navigate Hàng đợi xử lý",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 10,
+    "screen": "sidebar",
+    "action": "Navigate Highlight AI",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 11,
+    "screen": "sidebar",
+    "action": "Navigate Danh mục",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 12,
+    "screen": "sidebar",
+    "action": "Navigate Phụ đề & Tóm tắt",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 13,
+    "screen": "sidebar",
+    "action": "Navigate Nội dung đã xuất bản",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 14,
+    "screen": "sidebar",
+    "action": "Navigate Cài đặt",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 15,
+    "screen": "sidebar",
+    "action": "Navigate Người dùng",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 16,
+    "screen": "dashboard",
+    "action": "1440px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 17,
+    "screen": "videos",
+    "action": "1440px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 18,
+    "screen": "queue",
+    "action": "1440px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 19,
+    "screen": "highlight",
+    "action": "1440px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 20,
+    "screen": "categories",
+    "action": "1440px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 21,
+    "screen": "subtitles",
+    "action": "1440px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 22,
+    "screen": "published",
+    "action": "1440px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 23,
+    "screen": "settings",
+    "action": "1440px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 24,
+    "screen": "users",
+    "action": "1440px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 25,
+    "screen": "dashboard",
+    "action": "390px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 26,
+    "screen": "videos",
+    "action": "390px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 27,
+    "screen": "queue",
+    "action": "390px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 28,
+    "screen": "highlight",
+    "action": "390px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 29,
+    "screen": "categories",
+    "action": "390px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 30,
+    "screen": "subtitles",
+    "action": "390px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 31,
+    "screen": "published",
+    "action": "390px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 32,
+    "screen": "settings",
+    "action": "390px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  },
+  {
+    "id": 33,
+    "screen": "users",
+    "action": "390px rendered control inventory / screenshot",
+    "outcome": "VERIFIED"
+  }
+]

@@ -1,0 +1,37 @@
+{
+  "client_final_build_id": "jBLHEZwKfzQvS7Jxe2jdX",
+  "gateway": {
+    "dependencies": {
+      "milvus": "ok",
+      "minio": "ok"
+    },
+    "status": "ok"
+  },
+  "host_ai_pids": [
+    14896
+  ],
+  "no_mock_container": true,
+  "other13_unchanged": true,
+  "services": [
+    {
+      "name": "/video-ai-client-1",
+      "health": "healthy",
+      "image": "video-ai-client:int35-8918060"
+    },
+    {
+      "name": "/video-ai-cms-1",
+      "health": "healthy",
+      "image": "video-ai-cms:int35-fbeeb50"
+    },
+    {
+      "name": "/video-ai-gateway-1",
+      "health": "healthy",
+      "image": "video-ai-gateway:int35-fbeeb50"
+    },
+    {
+      "name": "/video-ai-inference-service-1",
+      "health": "healthy",
+      "image": "video-ai-inference:ai-v2-478052e"
+    }
+  ]
+}

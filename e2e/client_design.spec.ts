@@ -1,5 +1,5 @@
 import {test,expect,type Page} from '@playwright/test';
-import {readFileSync} from 'node:fs';
+import {readFileSync,writeFileSync} from 'node:fs';
 import path from 'node:path';
 import type {components,paths} from '../client/src/api-types';
 const client=process.env.E2E_CLIENT_UI_URL||'http://localhost:3000';
@@ -17,7 +17,68 @@ const videos:components['schemas']['VideoDetail'][]=Array.from({length:8},(_,i)=
 const analysis:components['schemas']['PublicAnalysis']={summary:'Video này khám phá cách các thuật toán AI đang cách mạng hóa kiến trúc bằng cách tối ưu hóa mức tiêu thụ năng lượng và đề xuất các vật liệu xây dựng sinh học mới.',hashtags:['AI','KienTruc'],key_moments:[{timestamp:24,text:'Vật liệu sinh học'},{timestamp:26,text:'Tương lai bền vững'}],timeline_scores:Array.from({length:120},(_,second)=>({second,score:second>=24&&second<26?94:second%13<4?65:20}))};
 const subtitles:components['schemas']['Subtitles']={segments:[{segment_index:0,start_time:20,end_time:24,text:'Chào mừng các bạn đến với VidsAI.',confidence:.98},{segment_index:1,start_time:24,end_time:28,text:'Đây là khoảnh khắc quan trọng của video.',confidence:.62,warning:'low_confidence'}]};
 type Interaction=paths['/api/interactions']['post']['requestBody']['content']['application/json'];
-async function setup(page:Page,{empty=false,fail='',prefs=user.preferences}: {empty?:boolean;fail?:string;prefs?:string[]}={}){
+for (const width of [390, 1440]) for (const [mode, label] of [
+ ['popularity', 'Phổ biến'], ['personalized', 'Dành cho bạn'], ['fallback', 'Phổ biến (dự phòng)'], [undefined, 'Đề xuất'],
+] as const) {
+ test(`INT-14 ${width} truthful recommendation label ${mode ?? 'legacy'}`, async ({page}, info) => {
+  await page.setViewportSize({width,height:width===390?844:900});
+  await setup(page);
+  await page.route('**/api/feed**', route=>route.fulfill({json:{items:clips,next_cursor:null,...(mode?{recommendation_mode:mode}:{})}}));
+  for (const screen of ['feed','discover']) {
+   await page.goto(`${client}/${screen}`);
+   const labels=page.locator('[data-recommendation-mode]');
+   await expect(labels.first()).toHaveAttribute('data-recommendation-mode',mode??'unknown');
+   const copy=screen==='discover'&&mode==='personalized'&&width===390?'Gợi ý cho bạn':label;
+   if(screen==='discover') { await expect(labels.filter({visible:true})).toHaveText(copy); await labels.filter({visible:true}).scrollIntoViewIfNeeded(); }
+   else await expect(labels.first()).toHaveText(copy);
+   expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+   await page.screenshot({path:info.outputPath(`${screen}-${mode??'legacy'}-${width}.png`),animations:'disabled'});
+  }
+ });
+}
+test('INT-35 compilation title, output timeline and available source notice', async ({ page }) => {
+ await setup(page);
+ const compiled:components['schemas']['Clip']={...clips[0],id:'clp_compiled_ui',video_id:'vid_ui1',title:'Bản tổng hợp UI',start_time:0,end_time:4,source_segments:[{start_time:10,end_time:12},{start_time:40,end_time:42}],playback_url:'/ui-fixture.mp4'};
+ await page.route('**/api/videos/vid_ui1',r=>r.fulfill({json:{...videos[0],playback_url:'/ui-fixture.mp4',clips:[compiled]}}));
+ await page.route('**/api/clips/clp_compiled_ui',r=>r.fulfill({json:compiled}));
+ await page.goto(client+'/videos/vid_ui1?clip=clp_compiled_ui');
+ await expect(page.getByRole('heading',{name:'Bản tổng hợp UI',exact:true,level:1})).toBeVisible();
+ await expect(page.locator('.notice')).toContainText('Đang xem video tổng hợp đã xuất bản');
+ await expect(page.locator('.notice')).not.toContainText('Video gốc chưa có nguồn phát');
+ await expect(page.getByLabel('Vị trí phát video')).toHaveAttribute('max','4');
+});
+
+for (const width of [390,1440,1903]) for (const [shape,w,h] of [['square',224,224],['portrait',300,900],['landscape',1600,400]] as const) {
+ test(`INT-36 discovery loaded ${shape} images stay inside frames ${width}`,async({page},info)=>{
+  await page.setViewportSize({width,height:width===390?844:900});await setup(page);
+  await page.route('**/stitch/**',r=>r.fulfill({contentType:'image/svg+xml',body:`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}"><rect width="100%" height="100%" fill="#73549e"/></svg>`}));
+  await page.goto(client+'/discover');
+  const area=page.locator(width>=1024?'.discovery-hero':'.mobile-discovery .bento-grid');
+  await expect(area).toBeVisible();await expect(area.locator('.thumbnail img')).toHaveCount(3);
+  await expect.poll(()=>area.locator('img').evaluateAll(images=>images.every(img=>(img as HTMLImageElement).complete&&(img as HTMLImageElement).naturalWidth>0))).toBe(true);
+  const bounds=await area.evaluate(el=>{const rect=(n:Element)=>{const r=n.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height,bottom:r.bottom,right:r.right}};return {grid:rect(el),frames:Array.from(el.querySelectorAll('.media-frame')).map(rect),images:Array.from(el.querySelectorAll('.thumbnail img')).map(rect)}});
+  writeFileSync(info.outputPath('bounds.json'),JSON.stringify({width,shape,...bounds},null,2));
+  await page.screenshot({path:info.outputPath(`discovery-${width}-${shape}.png`)});
+  await noOverflow(page);
+  for(let i=0;i<bounds.frames.length;i++){
+   const frame=bounds.frames[i],image=bounds.images[i];
+   expect(image.height).toBeLessThanOrEqual(frame.height+1);expect(image.width).toBeLessThanOrEqual(frame.width+1);
+   expect(frame.bottom).toBeLessThanOrEqual(bounds.grid.bottom+1);
+  }
+  if(width>=1024){
+   expect(bounds.grid.height).toBe(520);
+   expect(bounds.frames[0].height).toBeLessThanOrEqual(521);
+   for(const side of bounds.frames.slice(1))expect(side.height).toBeLessThanOrEqual(249);
+   const next=(await page.locator('.desktop-discovery>.discovery-section').nth(1).boundingBox())!;
+   expect(next.y).toBeGreaterThanOrEqual(Math.max(...bounds.frames.map(f=>f.bottom)));
+  }else{
+   expect(Math.abs(bounds.frames[0].height-bounds.frames[0].width*9/16)).toBeLessThan(1);
+   for(const side of bounds.frames.slice(1))expect(Math.abs(side.height-side.width)).toBeLessThan(1);
+  }
+ });
+}
+
+async function setup(page:Page,{empty=false,fail='',prefs=user.preferences,role=user.role}: {empty?:boolean;fail?:string;prefs?:string[];role?:components['schemas']['UserMe']['role']}={}){
  const interactions:Interaction[]=[];const requests:string[]=[];
  await page.route('**/ui-fixture.mp4',route=>{
   const body=readFileSync(path.join(__dirname,'fixtures/video.mp4'));
@@ -31,10 +92,11 @@ async function setup(page:Page,{empty=false,fail='',prefs=user.preferences}: {em
   if(pathname==='/api/auth/refresh')return route.fulfill({json:{access_token:'ui-fixture'}});
   if(pathname==='/api/auth/login'||pathname==='/api/auth/register')return route.fulfill({json:{access_token:'ui-fixture',user},status:pathname.endsWith('register')?201:200});
   if(pathname==='/api/auth/logout')return route.fulfill({status:204});
-  if(pathname==='/api/users/me'){if(req.method()==='PUT'){user.username=req.postDataJSON().username;}return route.fulfill({json:{...user,preferences:prefs}});}
+  if(pathname==='/api/users/me'){if(req.method()==='PUT'){user.username=req.postDataJSON().username;}return route.fulfill({json:{...user,preferences:prefs,role}});}
   if(pathname==='/api/users/me/preferences')return route.fulfill({json:{}});
   if(pathname==='/api/categories')return route.fulfill({json:categories});
-  if(pathname==='/api/feed'||pathname==='/api/users/me/likes')return route.fulfill({json:{items:empty?[]:clips,next_cursor:null}});
+  if(pathname==='/api/feed')return route.fulfill({json:{items:empty?[]:clips,next_cursor:null,recommendation_mode:'popularity'} satisfies components['schemas']['FeedPage']});
+  if(pathname==='/api/users/me/likes')return route.fulfill({json:{items:empty?[]:clips,next_cursor:null}});
   if(pathname==='/api/users/me/history')return route.fulfill({json:{items:empty?[]:[{clip:clips[0],watched_at:'2026-10-14T02:00:00Z',duration_watched:3}],next_cursor:null}});
   if(pathname==='/api/videos')return route.fulfill({json:{items:empty?[]:videos.filter(v=>!url.searchParams.get('category_id')||v.category?.id===url.searchParams.get('category_id')),next_cursor:null}});
   if(pathname.endsWith('/analysis'))return route.fulfill({json:analysis});
@@ -50,16 +112,234 @@ async function setup(page:Page,{empty=false,fail='',prefs=user.preferences}: {em
  });
  return {interactions,requests};
 }
+
+async function expiringSession(page:Page) {
+ await setup(page);
+ const state={refreshes:0,expired:false,otherUser:false,denied:new Set<string>(),events:[] as string[],beforeRefresh:async()=>{}};
+ await page.route('**/api/**',async route=>{
+  const req=route.request(),pathname=new URL(req.url()).pathname;
+  if(pathname==='/api/auth/refresh'){
+   state.refreshes++;
+   if(state.refreshes>1)await state.beforeRefresh();
+   state.events.push('refresh');
+   return route.fulfill({json:{access_token:state.refreshes===1?'ui-fixture':'ui-renewed'}});
+  }
+  if(pathname==='/api/auth/logout'){state.events.push('logout');return route.fallback();}
+  if(pathname==='/api/users/me'&&state.otherUser&&req.headers().authorization==='Bearer ui-renewed')return route.fulfill({json:{...user,id:'usr_other',username:'Other account'}});
+  if(state.expired&&['/api/feed','/api/videos','/api/users/me/history'].includes(pathname)&&req.headers().authorization==='Bearer ui-fixture'){
+   state.denied.add(pathname);return route.fulfill({status:401,json:{error:{code:'UNAUTHORIZED',message:'Expired'}}});
+  }
+  return route.fallback();
+ });
+ return state;
+}
+
+test('INT-16 parallel 401s share refresh and hydrate the same user',async({page})=>{
+ const state=await expiringSession(page);state.expired=true;
+ let release!:()=>void;state.beforeRefresh=()=>new Promise<void>(resolve=>{release=resolve;});
+ await page.goto(client+'/discover');
+ await expect.poll(()=>state.refreshes).toBe(2);
+ await expect.poll(()=>state.denied.size).toBeGreaterThanOrEqual(3);
+ state.beforeRefresh=async()=>{};release();
+ await expect(page.locator('[data-recommendation-mode]:visible')).toHaveText('Phổ biến');
+ expect(state.refreshes).toBe(2);
+});
+
+test('INT-16 logout waits for refresh and reload cannot restore it',async({page})=>{
+ const state=await expiringSession(page);
+ await page.goto(client+'/profile?view=account');await expect(page.getByRole('dialog')).toBeVisible();
+ await page.getByRole('button',{name:'Đóng hồ sơ'}).click();await expect(page.getByRole('dialog')).not.toBeVisible();
+ state.expired=true;
+ let release!:()=>void;state.beforeRefresh=()=>new Promise<void>(resolve=>{release=resolve;});
+ await page.getByRole('link',{name:'Khám phá',exact:true}).click();
+ await expect.poll(()=>state.refreshes).toBe(2);
+ await expect.poll(()=>state.denied.size).toBeGreaterThanOrEqual(3);
+ await page.locator('.account-menu summary').click();
+ await page.locator('.account-dropdown').getByRole('button',{name:'Đăng xuất',exact:true}).click();
+ expect(state.events).toEqual(['refresh']);
+ state.beforeRefresh=async()=>{};release();
+ await expect(page).toHaveURL(client+'/login');
+ await expect(page.getByRole('button',{name:'Đăng nhập',exact:true})).toBeVisible();
+ expect(state.events).toEqual(['refresh','refresh','logout']);
+ await page.reload();await expect(page.getByRole('button',{name:'Đăng nhập',exact:true})).toBeVisible();
+ expect(state.refreshes).toBe(2);
+});
+
+test('INT-16 failed logout still closes local session across reload',async({page})=>{
+ const state=await expiringSession(page);
+ await page.route('**/api/auth/logout',route=>route.fulfill({status:503,json:{}}));
+ await page.goto(client+'/profile?view=account');
+ await page.getByRole('dialog').getByRole('button',{name:'Đăng xuất',exact:true}).click();
+ await expect(page).toHaveURL(client+'/login');
+ await expect(page.getByRole('button',{name:'Đăng nhập',exact:true})).toBeVisible();
+ await page.reload();await expect(page.getByRole('button',{name:'Đăng nhập',exact:true})).toBeVisible();
+ expect(state.refreshes).toBe(1);
+ expect(await page.evaluate(()=>localStorage.getItem('client-signed-out'))).toBe('1');
+});
+
+test('INT-16 changed refresh-cookie identity never mixes user data',async({page})=>{
+ const state=await expiringSession(page);
+ await page.goto(client+'/profile?view=account');await expect(page.getByRole('dialog')).toBeVisible();
+ await page.getByRole('button',{name:'Đóng hồ sơ'}).click();await expect(page.getByRole('dialog')).not.toBeVisible();
+ state.expired=true;state.otherUser=true;
+ await page.getByRole('link',{name:'Khám phá',exact:true}).click();
+ await expect(page).toHaveURL(client+'/login');
+ await expect(page.getByRole('button',{name:'Đăng nhập',exact:true})).toBeVisible();
+ await expect(page.getByText('Other account',{exact:true})).toHaveCount(0);
+ expect(state.refreshes).toBe(2);
+});
 async function noOverflow(page:Page){
  await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
  expect(await page.locator('.material-symbols-outlined').count()).toBe(0);
  expect(await page.locator('svg[data-icon]').evaluateAll(elements=>elements.length>0&&elements.every(el=>el.getAttribute('data-fallback')==='false'))).toBe(true);
 }
+for(const width of [390,1440])for(const mode of ['edited','cleared','legacy']as const){
+ test(`INT-21 ${width} detail uses ${mode} editorial hashtags`,async({page})=>{
+  await setup(page);await page.setViewportSize({width,height:width===390?844:900});
+  const hashtags=mode==='edited'?['BiênTập','AI_2026']:mode==='cleared'?[]:null;
+  await page.route('**/api/videos/vid_ui1',route=>route.fulfill({json:{...videos[0],hashtags} satisfies components['schemas']['VideoDetail']}));
+  await page.goto(client+'/videos/vid_ui1');
+  await expect(page.locator('#ai-summary')).toBeVisible();
+  const expected=mode==='legacy'?(analysis.hashtags??[]):(hashtags??[]);
+  if(expected.length)await expect(page.locator('.summary-hashtags span')).toHaveText(expected.map(tag=>tag.startsWith('#')?tag:'#'+tag));
+  else await expect(page.locator('.summary-hashtags')).toHaveCount(0);
+ });
+}
+
+test('INT-15 one watch row on session end, no heartbeat, seek or duplicate exit',async({page})=>{
+ const {interactions}=await setup(page);await page.goto(client+'/feed');
+ const video=page.locator('.feed-clip').first().locator('video');
+ await expect.poll(()=>video.evaluate((el:HTMLVideoElement)=>el.currentTime)).toBeGreaterThan(.2);
+ await video.evaluate((el:HTMLVideoElement)=>el.pause());
+ await page.clock.install();
+ await video.evaluate((el:HTMLVideoElement)=>{
+  const sample={time:0,seeking:false};
+  Object.defineProperty(el,'currentTime',{get:()=>sample.time,configurable:true});
+  Object.defineProperty(el,'duration',{get:()=>120,configurable:true});
+  Object.defineProperty(el,'seeking',{get:()=>sample.seeking,configurable:true});
+  Object.assign(window,{watchSample:sample});el.dispatchEvent(new Event('playing'));
+ });
+ await page.clock.fastForward(12000);
+ await video.evaluate(el=>{(window as unknown as {watchSample:{time:number}}).watchSample.time=12;el.dispatchEvent(new Event('timeupdate'));});
+ expect(interactions.filter(x=>x.interaction_type==='watch_time')).toHaveLength(0);
+ await video.evaluate(el=>{
+  const sample=(window as unknown as {watchSample:{time:number;seeking:boolean}}).watchSample;
+  sample.seeking=true;sample.time=80;el.dispatchEvent(new Event('seeking'));sample.seeking=false;el.dispatchEvent(new Event('seeked'));
+ });
+ await page.clock.fastForward(1000);
+ await video.evaluate(el=>{(window as unknown as {watchSample:{time:number}}).watchSample.time=81;el.dispatchEvent(new Event('timeupdate'));});
+ await page.evaluate(()=>{Object.defineProperty(document,'hidden',{value:true,configurable:true});document.dispatchEvent(new Event('visibilitychange'));});
+ await page.clock.fastForward(5000);
+ await video.evaluate(el=>{(window as unknown as {watchSample:{time:number}}).watchSample.time=86;el.dispatchEvent(new Event('timeupdate'));});
+ await page.evaluate(()=>{Object.defineProperty(document,'hidden',{value:false,configurable:true});document.dispatchEvent(new Event('visibilitychange'));});
+ await page.evaluate(()=>window.dispatchEvent(new PageTransitionEvent('pagehide')));
+ await expect.poll(()=>interactions.filter(x=>x.interaction_type==='watch_time').length).toBe(1);
+ expect(interactions.find(x=>x.interaction_type==='watch_time')?.duration_watched).toBeGreaterThanOrEqual(12);
+ expect(interactions.find(x=>x.interaction_type==='watch_time')?.duration_watched).toBeLessThanOrEqual(13);
+ await page.getByRole('link',{name:'Khám phá',exact:true}).click();
+ expect(interactions.filter(x=>x.interaction_type==='watch_time')).toHaveLength(1);
+ expect(interactions.filter(x=>x.interaction_type==='skip')).toHaveLength(0);
+});
+
+test('INT-15 skip requires visible second and less than three watched seconds',async({page})=>{
+ const {interactions}=await setup(page);await page.setViewportSize({width:390,height:844});await page.goto(client+'/feed');
+ await expect.poll(()=>page.locator('.feed-clip').first().locator('video').evaluate((el:HTMLVideoElement)=>el.currentTime)).toBeGreaterThan(1.2);
+ await page.locator('.feed-scroll').evaluate(el=>el.scrollTo({top:el.clientHeight,behavior:'instant'}));
+ await expect.poll(()=>interactions.filter(x=>x.interaction_type==='skip').length).toBe(1);
+ expect(interactions.find(x=>x.interaction_type==='skip')?.clip_id).toBe('clp_ui1');
+ expect(interactions.filter(x=>x.clip_id==='clp_ui2'&&x.interaction_type==='skip')).toHaveLength(0);
+});
+
+test('INT-15 staff sessions do not emit product interactions',async({page})=>{
+ const {interactions}=await setup(page,{role:'admin'});await page.goto(client+'/feed');
+ const first=page.locator('.feed-clip').first();await expect.poll(()=>first.locator('video').evaluate((el:HTMLVideoElement)=>el.currentTime)).toBeGreaterThan(1.2);
+ await first.getByRole('button',{name:'Thích',exact:true}).click();
+ await page.evaluate(()=>window.dispatchEvent(new PageTransitionEvent('pagehide')));
+ await page.getByRole('link',{name:'Khám phá',exact:true}).click();
+ expect(interactions).toEqual([]);
+});
 const screens=[
 ['login','VidsAI'],['register','Tham gia VidsAI'],['forgot-password','Quên mật khẩu?'],['reset-password?token=dev-reset-fixture','Đặt lại mật khẩu'],
 ['onboarding',''],['feed',''],['discover',''],['search?q=kiến%20trúc',''],['profile?view=library','Video đã thích'],['videos/vid_ui1?t=22',''],
 ] as const;
 for(const width of [390,1440]){
+ test(`INT-06 ${width} onboarding grid and keyboard follow the same API IDs`,async({page})=>{
+  await page.setViewportSize({width,height:width===390?844:900});await setup(page,{prefs:[]});await page.goto(client+'/onboarding');
+  const cards=page.locator('.interest-card');await expect(cards).toHaveCount(categories.length);
+  await expect(cards.first()).toHaveCSS('background-color',width===390?'rgb(255, 248, 245)':'rgb(255, 255, 255)');
+  const boxes=await cards.evaluateAll(elements=>elements.map(element=>{const rect=element.getBoundingClientRect();return {id:element.getAttribute('data-category-id'),wide:element.classList.contains('wide'),x:rect.x,y:rect.y,right:rect.right};}));
+  expect(boxes.map(box=>box.id).sort()).toEqual(categories.map(category=>category.id).sort());
+  for(let i=0;i<boxes.length;i++){
+   expect(boxes[i].x).toBeGreaterThanOrEqual(0);expect(boxes[i].right).toBeLessThanOrEqual(width);
+   if(i)expect(boxes[i].y).toBeGreaterThanOrEqual(boxes[i-1].y);
+   if(width===390&&boxes[i].wide)expect(boxes[i].x).toBe(16);
+  }
+  await cards.first().focus();
+  for(let i=1;i<boxes.length;i++){await page.keyboard.press('Tab');await expect(cards.nth(i)).toBeFocused();}
+  for(let i=0;i<3;i++)await cards.nth(i).click();
+  await expect(cards.first()).toHaveCSS('background-color',width===390?'rgb(237, 224, 255)':'rgb(245, 243, 255)');
+  const save=page.waitForRequest(request=>request.url().endsWith('/api/users/me/preferences')&&request.method()==='PUT');
+  await page.getByRole('button',{name:width===390?'Hoàn tất':'Hoàn tất và khám phá',exact:true}).click();
+  expect((await save).postDataJSON().category_ids.sort()).toEqual(boxes.slice(0,3).map(box=>box.id).sort());
+ });
+ test(`INT-06 ${width} register geometry matches Stitch`,async({page})=>{
+  await page.setViewportSize({width,height:width===390?844:900});await setup(page);await page.goto(client+'/register');
+  await page.evaluate(()=>document.fonts.ready);
+  const inputs=page.locator('.auth-field input');await expect(inputs).toHaveCount(4);
+  for(let i=0;i<4;i++){
+   await expect(inputs.nth(i)).toHaveCSS('height',width===390?'58px':'50px');
+   expect((await inputs.nth(i).boundingBox())!.y).toBe((width===390?324:264)+i*102);
+  }
+  await expect(page.locator('.auth-submit')).toHaveCSS('height','60px');await noOverflow(page);
+ });
+ test(`INT-06 ${width} shared header and auth spacing follow reference geometry`,async({page})=>{
+  await page.setViewportSize({width,height:width===390?844:900});await setup(page);
+  if(width===390){
+   await page.goto(client+'/discover');
+   await expect(page.locator('.discovery-page .mobile-header')).toHaveCSS('height','49px');
+   const box=(await page.locator('.discovery-mobile-search input').boundingBox())!;
+   expect({x:box.x,y:box.y,width:box.width,height:box.height}).toEqual({x:68,y:79,width:253,height:20});
+  }else{
+   await page.goto(client+'/login');
+   const inputs=page.locator('.auth-field input');
+   expect((await inputs.nth(0).boundingBox())!.y).toBe(322.5);expect((await inputs.nth(1).boundingBox())!.y).toBe(424.5);
+   await expect(page.getByLabel('Ghi nhớ tôi',{exact:true})).toHaveCSS('height','20px');
+   for(const [route,expected]of [['feed',512],['discover',480],['profile?view=library',512]]as const){
+    await page.goto(client+'/'+route);await expect(page.locator('.desktop-nav .nav-search input')).toBeVisible();
+    expect((await page.locator('.desktop-nav .nav-search input').boundingBox())!.width).toBe(expected);
+   }
+  }
+  await noOverflow(page);
+ });
+ test(`INT-06 ${width} original video matches the happy-path player layout`,async({page},info)=>{
+  await page.setViewportSize({width,height:width===390?844:900});await setup(page);
+  await page.route('**/api/videos/vid_ui1',route=>route.fulfill({json:{...videos[0],playback_url:client+'/ui-fixture.mp4',duration_seconds:8} satisfies components['schemas']['VideoDetail']}));
+  await page.route('**/api/videos/vid_ui1/analysis',route=>route.fulfill({json:{...analysis,timeline_scores:Array.from({length:8},(_,second)=>({second,score:second>=2&&second<4?94:20})),key_moments:[{timestamp:2,text:'Điểm nhấn'},{timestamp:6,text:'Kết luận'}]}}));
+  await page.route('**/api/videos/vid_ui1/subtitles',route=>route.fulfill({json:{segments:[{segment_index:0,start_time:0,end_time:4,text:'Video gốc',confidence:.98}]}}));
+  await page.goto(client+'/videos/vid_ui1?t=2');
+  await expect.poll(()=>page.locator('.detail-player video').evaluate((video:HTMLVideoElement)=>video.readyState)).toBeGreaterThan(0);
+  await expect(page.locator('.detail-left .notice')).toHaveCount(0);
+  await expect(page.locator('.auto-highlight-mobile')).toHaveCount(0);
+  if(width===390){
+   const player=(await page.locator('.detail-player').boundingBox())!,heading=(await page.locator('.detail-metadata h1').boundingBox())!;
+   expect(heading.y-player.y-player.height).toBe(16);
+  }else{
+   await expect(page.locator('.nav-detail .nav-search input')).toHaveAttribute('placeholder','Tìm kiếm video hoặc nội dung AI...');
+   await expect(page.locator('.nav-detail .nav-search input')).toHaveCSS('height','32px');
+   await expect(page.locator('.nav-detail nav a.active')).toHaveCount(0);
+   const auto=page.getByRole('button',{name:'Tự động phát Highlight',exact:true});await expect(auto).toBeEnabled();await auto.click();await expect(auto).toHaveAttribute('aria-pressed','true');
+  }
+  await page.screenshot({path:info.outputPath(`detail-original-${width}.png`),fullPage:true});await noOverflow(page);
+ });
+ if(width===1440)test('INT-06 search similarity can be prepared before image upload without an AI request',async({page})=>{
+  await page.setViewportSize({width,height:900});const {requests}=await setup(page);await page.goto(client+'/search?q=kiến%20trúc');
+  const slider=page.getByLabel('Mức độ tương đồng:',{exact:false});await expect(slider).toBeEnabled();await slider.fill('90');
+  await page.getByRole('tab',{name:'Tìm bằng hình ảnh',exact:true}).click();
+  expect(requests.filter(path=>path==='/api/search/visual')).toHaveLength(0);
+  const searched=page.waitForRequest(request=>request.url().endsWith('/api/search/visual')&&!!request.postData()?.includes('0.9'));
+  await page.getByLabel('Ảnh từ thư viện',{exact:true}).setInputFiles(path.join(__dirname,'../client/public/stitch/interest_onboarding_mobile-0.jpg'));
+  await searched;await expect(page.locator('.search-result')).toHaveCount(2);
+ });
  for(const [route,heading]of screens){
   test('T3.2 '+width+' '+route.split('?')[0]+' layout',async({page},info)=>{
    await page.setViewportSize({width,height:width===390?844:900});await setup(page);const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
@@ -71,17 +351,24 @@ for(const width of [390,1440]){
    if(route.startsWith('videos')){await expect(page.getByRole('heading',{name:videos[0].title,exact:true})).toBeVisible();await expect.poll(()=>page.locator('.detail-player video').evaluate((el:HTMLVideoElement)=>el.readyState)).toBeGreaterThan(0);}
    if(route==='onboarding')await expect(page.locator('.interest-card')).toHaveCount(8);
    await page.evaluate(()=>document.fonts.ready);await noOverflow(page);expect(errors).toEqual([]);
+   const metrics=await page.locator('header,nav,main,aside,section,h1,h2,input,button').evaluateAll(elements=>elements.slice(0,100).map(element=>{
+    const box=element.getBoundingClientRect(),css=getComputedStyle(element);
+    return {tag:element.tagName,text:element.textContent?.trim().slice(0,100),id:element.id,x:box.x,y:box.y,width:box.width,height:box.height,font:css.fontFamily,size:css.fontSize,weight:css.fontWeight,line:css.lineHeight,color:css.color,background:css.backgroundColor,padding:css.padding,gap:css.gap,radius:css.borderRadius};
+   }));
+   writeFileSync(info.outputPath('client-metrics.json'),JSON.stringify({route,viewport:page.viewportSize(),metrics},null,2));
    await page.screenshot({path:info.outputPath(route.split('?')[0].replaceAll('/','-')+'-'+width+'.png'),fullPage:true});
   });
  }
  test('T3.2 '+width+' player seek transcript and download',async({page},info)=>{
   await page.setViewportSize({width,height:width===390?844:900});await setup(page);await page.goto(client+'/videos/vid_ui1?t=22');
   const player=page.locator('.detail-player video');await expect.poll(()=>player.evaluate((el:HTMLVideoElement)=>el.currentTime)).toBeCloseTo(2,0);
+  await expect(page.locator('.subtitle-overlay')).toContainText('Bản nháp phụ đề AI');
   await page.getByRole('button',{name:'Đến 00:24, điểm 94',exact:true}).click();await expect.poll(()=>player.evaluate((el:HTMLVideoElement)=>el.currentTime)).toBeCloseTo(4,0);
   if(width===390)await page.getByRole('button',{name:'Bản ghi',exact:true}).click();
   const panel=page.locator(width===390?'.transcript-dialog':'.transcript-desktop');
+  await expect(panel.getByText('BẢN NHÁP MÁY',{exact:true})).toBeVisible();
   await panel.getByRole('textbox',{name:'Tìm trong bản ghi'}).fill('quan trọng');await expect(panel.locator('.transcript-row')).toHaveCount(1);
-  const download=page.waitForEvent('download');await panel.getByRole('button',{name:'Tải bản ghi (.txt)',exact:true}).click();expect((await download).suggestedFilename()).toBe('vid_ui1.txt');
+  const download=page.waitForEvent('download');await panel.getByRole('button',{name:'Tải bản ghi (.txt)',exact:true}).click();const file=await download;expect(file.suggestedFilename()).toBe('vid_ui1-ban-nhap-ai.txt');const text=readFileSync((await file.path())!,'utf8');expect(text).toMatch(/^BẢN NHÁP PHỤ ĐỀ AI/);expect(text).toContain('Chào mừng các bạn đến với VidsAI.');expect(text).toContain('Đây là khoảnh khắc quan trọng của video.');
   await page.screenshot({path:info.outputPath('transcript-'+width+'.png'),fullPage:true});
   if(width===390){await page.keyboard.press('Escape');await expect(page.locator('.transcript-dialog')).not.toBeVisible();}
   if(width===1440){await page.getByLabel('Cài đặt trình phát').click();await page.getByLabel('Tốc độ phát').selectOption('1.5');expect(await player.evaluate((el:HTMLVideoElement)=>el.playbackRate)).toBe(1.5);}

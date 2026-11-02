@@ -1,0 +1,6 @@
+=== RUN   TestFailedPreprocessingMarksVideoFailed
+    lifecycle_test.go:14: inconsistent failed ingest: video=uploaded job=failed completed=<nil>
+--- FAIL: TestFailedPreprocessingMarksVideoFailed (0.00s)
+FAIL
+FAIL	traning_ai/backend/internal/orchestrator	1.653s
+FAIL

@@ -32,6 +32,14 @@ PostgreSQL đóng vai trò là "Nguồn sự thật" (Source of Truth) cho các 
 
 ### 2.1. Sơ đồ các Bảng (DDL SQL)
 
+Codex INT-15: users và videos có `training_origin TEXT NOT NULL DEFAULT 'unknown'`
+CHECK IN ('unknown','product','test'), private metadata, không trả qua API.
+Migration lặp an toàn: `infra/postgres/migrations/003_training_origin.sql`; init schema cũng có cột.
+Không backfill lịch sử thành product. Gateway mặc định PRODUCT_DATA_ORIGIN=unknown;
+deployment thu thập thật mới đặt product. Prefix test/demo/E2E và email example.test/example.com luôn test,
+giữ nguyên sau đổi tên. Export chỉ users roleclient/product và videos/product; unknown/test bị loại.
+Không đổi schema user_interactions; không xóa hay thay đổi dữ liệu lịch sử.
+
 ```sql
 -- Kích hoạt extension để sinh UUID tự động nếu cần
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
@@ -86,7 +94,9 @@ CREATE TABLE clips (
     start_time NUMERIC(10, 2) NOT NULL,
     end_time NUMERIC(10, 2) NOT NULL,
     average_score NUMERIC(5, 2) NOT NULL CHECK (average_score >= 0.00 AND average_score <= 100.00),
-    clip_file_path VARCHAR(512), -- Video segment (.mp4) đã cắt và xuất bản
+    source_segments JSONB NOT NULL DEFAULT '[]'::jsonb CHECK (jsonb_typeof(source_segments) = 'array' AND jsonb_array_length(source_segments) <= 100),
+    -- []: clip đơn, start/end là mốc nguồn. Có đoạn: video tổng hợp, start=0/end=tổng thời lượng; JSON giữ mốc nguồn.
+    clip_file_path VARCHAR(512), -- Video segment hoặc video tổng hợp (.mp4), nháp trước khi xuất bản
     thumbnail_url VARCHAR(512), -- Thumbnail/feed card; nếu NULL backend dùng thumbnail video gốc
     status VARCHAR(20) NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'processing', 'published', 'rejected')),
     created_by VARCHAR(50) REFERENCES users(id) ON DELETE SET NULL, -- Admin/Editor hoặc hệ thống AI
@@ -222,6 +232,8 @@ Mỗi document lưu trữ kết quả phân tích giọng nói của một Video
 * **`confidence` (0–1):** trung bình xác suất posterior CTC của segment (@model_spec.md §2). **`warning`** (optional): `low_confidence` khi `confidence × 100 < system_settings.asr_warning_threshold`; `blacklist` khi text khớp wordlist từ nhạy cảm (rule backend, không phải model). UI hiển thị %.
 
 ### 3.2. Collection `video_analyses` (Điểm số Highlight & Tóm tắt AI)
+
+`clip_threshold` là metadata tùy chọn AI báo cho từng lần phân tích, không phải mặc định51. Thiếu/null = chưa biết (kết quả cũ); 0 là ngưỡng hợp lệ. Ghi nguyên tử cùng timeline/clip mới, không backfill hoặc suy từ system_settings; ví dụ dưới chỉ minh họa schema.
 Lưu trữ thông tin phân tích thô từ các mô hình AI nguyên thủy: điểm số highlight từng giây và văn bản tóm tắt tự hồi quy.
 
 ```json
@@ -236,7 +248,8 @@ Lưu trữ thông tin phân tích thô từ các mô hình AI nguyên thủy: đ
     { "timestamp": 285.0, "text": "Pha cứu thua xuất sắc của thủ môn" }
   ],
   "hashtags": ["#bongda", "#highlight"],
-  "category_suggestion": "cat_bong_da",
+  "category_suggestion": "bong_da",
+  "clip_threshold": 51.0,
   "timeline_scores": [
     { "second": 0, "score": 12.5 },
     { "second": 1, "score": 24.3 },
@@ -299,3 +312,29 @@ Milvus đóng vai trò then chốt cho tính năng **Tìm kiếm bằng Hình �
 }
 ```
 * **Thuật toán Index khuyến nghị:** `IVF_FLAT` để tối ưu bộ nhớ RAM với thời gian tìm kiếm thời gian thực.
+
+### 4.3. Sandbox Two-Tower tách khỏi sản phẩm (D14 / HC-04, 2026-10-26)
+
+- Collection: `sandbox_two_tower_ai09_20261026` trên Milvus Codex `127.0.0.1:19530` (Docker: `milvus:19530`).
+- Schema sandbox theo giao diện hiện có của export/reader: `id VARCHAR(50)` primary, non-auto;
+  `vector FLOAT_VECTOR(128)`; `type VARCHAR(10)` (`user` hoặc `video`, field top-level).
+- Index `vector`: `IVF_FLAT`, `IP`, `nlist=1024`; vector phải L2-normalized theo AI-09, không đổi dimension/metric/index sản phẩm.
+- Codex tạo sandbox rỗng, xác minh schema/index; Claude chỉ nạp dữ liệu thử sau xác nhận handoff. Không nạp dataset train vào collection sản phẩm.
+- Backend sản phẩm không đọc sandbox. Product mapping/encoder/version/tiêu chí dữ liệu phải được hai làn xác minh trước nạp product vectors.
+- Init idempotent: `infra/milvus/init_recommendation_sandbox.py`; không drop/reset collection hoặc đụng dữ liệu hiện hữu.
+
+## 2026-10-28 — CMS planA approved (INT-20/21)
+OpenAPI0.4.0 is authoritative for this scoped extension. videos adds nullable width/height INTEGER>0,
+fps finite DOUBLE PRECISION>0, hashtags TEXT[] (NULL=no editorial override, []=explicit empty override).
+Encoded source dimensions/average fps come from CPU ingest before resizing; no fabricated metadata/backfill.
+Editorial title/description/hashtags update together, preserve status/file/provenance and remain separate from Mongo AI proposals.
+categories.description is nullable TEXT(max2000); omitted/null write preserves existing description, empty string clears.
+Additive/idempotent migration004_cms_metadata.sql; no row deletion or historical training-origin change.
+
+
+## CMS operational extension — migration006 (2026-10-30)
+
+- Additive `infra/postgres/migrations/006_cms_operations.sql`: categories.keywords text[] (up to20), videos.editorial_priority low/normal/high (default normal, editorial metadata only), video_processing_jobs.processing_options jsonb nullable legacy snapshot and skipped_stages text[]; no existing record or setting value overwritten.
+- New settings category_suggestion_enabled=true/category_keyword_enabled=false inserted only when absent. Rules create editor-review suggestions; never auto-publish.
+- Mongo video_analyses persists proposal_decisions (original AI proposal index, accepted/dismissed) and category_match. Recomputed analysis resets old review/match; summary remains independently persisted. Original proposals stay immutable on review.
+- CMS counts query actual rows and click interactions, non-deleted source visibility and completed_at UTC month; no training/evaluation accuracy inferred from processing success. MinIO bytes/objects are enumerated, not a configured storage quota.

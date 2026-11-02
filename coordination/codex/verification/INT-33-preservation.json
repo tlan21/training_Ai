@@ -1,0 +1,23 @@
+{
+  "other_containers_unchanged": 15,
+  "total_containers": 16,
+  "original_106_video_rows_hash_unchanged": "106|41e538d83f6b7f6d73faa03ae214c62e",
+  "original_55_clip_rows_hash_unchanged": "55|c2ee1e8cffb042acdc0c921df98da4e5",
+  "concurrent_new_clip_preserved": "clp_dmh5oswbre9l|vid_dmh4b8ymqbtw|draft|2026-10-29 07:50:04.089821+00",
+  "new_clip_created_at_utc": "2026-10-29T07:50:04.089821Z",
+  "snapshot_before_utc": "2026-10-29T07:49:48Z",
+  "public_temp_test_clip_count": "0",
+  "active_jobs": "0",
+  "host_ai_pids": [
+    15852
+  ],
+  "gateway": {
+    "dependencies": {
+      "milvus": "ok",
+      "minio": "ok"
+    },
+    "status": "ok"
+  },
+  "no_mock_container": true,
+  "note": "First aggregate SQL used nonexistent jobs table; subsequent corrected query verifies original rows. One concurrently created draft clip is preserved, not claimed unchanged."
+}

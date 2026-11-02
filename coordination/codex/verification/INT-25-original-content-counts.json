@@ -1,0 +1,35 @@
+{
+  "video_id": "vid_dmgyhxbk2i23",
+  "job_id": "job_9bedcd353df94b8387b3d0b3a4a6941f",
+  "source_sha256": "8988af7940a29d7b2e81edb6c2396670538ed7f1633724531fa8bfcea0845822",
+  "original_before_any_editorial_write": true,
+  "ai_health": {
+    "status": "ok",
+    "gpu_vram_used": 0,
+    "gpu_util": 0,
+    "models_loaded": [
+      "asr_ctc",
+      "highlight_fusion",
+      "minigpt",
+      "siamese",
+      "two_tower",
+      "vit"
+    ],
+    "degraded": [],
+    "dependencies": {
+      "recommendation_index": "missing_collection",
+      "visual_index": "ok"
+    },
+    "queue_depth": 0,
+    "device": "cpu",
+    "stub_mode": false,
+    "load_error": null
+  },
+  "status": "processed",
+  "category": "tin_tuc",
+  "timeline_seconds": 8,
+  "summary_chars": 0,
+  "summary_status": "draft",
+  "subtitle_segments": 1,
+  "nonempty_subtitle_segments": 0
+}

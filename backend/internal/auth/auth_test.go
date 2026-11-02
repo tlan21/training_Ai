@@ -54,3 +54,22 @@ func TestAuth_RegisterLoginRefresh(t *testing.T) {
 		t.Fatal("after logout refresh should fail")
 	}
 }
+
+func TestPublicRecoveryCannotResetCMSAccounts(t *testing.T) {
+	users := mocks.NewUserRepoMem()
+	resets := mocks.NewPasswordResetRepoMem()
+	service := NewWithResets(users, mocks.NewSessionRepoMem(), resets, NewJWT("test-secret-32-chars-minimum-xyz"))
+	for _, role := range []domain.Role{domain.RoleAdmin, domain.RoleEditor, domain.RoleClient} {
+		email := string(role) + "@local"
+		if err := users.Create(context.Background(), &domain.User{ID: "usr_" + string(role), Username: string(role), Email: email, Role: role}); err != nil {
+			t.Fatal(err)
+		}
+		token, err := service.ForgotPassword(context.Background(), email)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if (token != "") != (role == domain.RoleClient) {
+			t.Fatalf("unexpected recovery for %s", role)
+		}
+	}
+}

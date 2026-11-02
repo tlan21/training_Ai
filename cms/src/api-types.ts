@@ -468,7 +468,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Feed clip published (recommendation; fallback popularity) */
+        /**
+         * Feed clip published với mode gợi ý thực tế (D18)
+         * @description Primary popularity pages use an opaque next_cursor bound to this route. Ranking uses the first page's fixed seven-day interaction window and creation cutoff; current publication/deletion visibility is checked on every page. Forward the cursor unchanged. next_cursor is null when exhausted. Invalid cursor or limit returns 422.
+         */
         get: {
             parameters: {
                 query?: {
@@ -487,10 +490,11 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["ClipPage"];
+                        "application/json": components["schemas"]["FeedPage"];
                     };
                 };
                 401: components["responses"]["Unauthorized"];
+                422: components["responses"]["ValidationError"];
             };
         };
         put?: never;
@@ -508,7 +512,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Duyệt video processed công khai (Discovery) */
+        /**
+         * Duyệt video processed công khai (Discovery)
+         * @description Opaque next_cursor is bound to sort and category_id; keep those filters unchanged between pages. Pages share the first page's creation cutoff; trending also fixes its seven-day interaction window. Current visibility is checked on every page. next_cursor is null when exhausted. Invalid cursor, sort or limit returns 422.
+         */
         get: {
             parameters: {
                 query?: {
@@ -536,6 +543,7 @@ export interface paths {
                     };
                 };
                 401: components["responses"]["Unauthorized"];
+                422: components["responses"]["ValidationError"];
             };
         };
         put?: never;
@@ -839,7 +847,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Ghi tương tác (tín hiệu Two-Tower) */
+        /**
+         * Ghi tương tác (tín hiệu Two-Tower)
+         * @description Chỉ role client. Một watch_time cho mỗi phiên xem, không heartbeat hoặc thời gian tua; các loại khác có duration_watched bằng 0.
+         */
         post: {
             parameters: {
                 query?: never;
@@ -867,6 +878,8 @@ export interface paths {
                     content?: never;
                 };
                 401: components["responses"]["Unauthorized"];
+                403: components["responses"]["Forbidden"];
+                404: components["responses"]["NotFound"];
                 422: components["responses"]["ValidationError"];
             };
         };
@@ -883,11 +896,17 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Danh sách video mọi trạng thái (page-based) */
+        /** Danh sách video với tìm kiếm/lọc toàn kho; mặc định ẩn video đã xóa */
         get: {
             parameters: {
                 query?: {
                     status?: "uploaded" | "processing" | "processed" | "failed" | "deleted";
+                    q?: string;
+                    category_id?: string;
+                    date_from?: string;
+                    /** @description Inclusive UTC day */
+                    date_to?: string;
+                    include_deleted?: boolean;
                     page?: components["parameters"]["Page"];
                 };
                 header?: never;
@@ -981,9 +1000,45 @@ export interface paths {
                 404: components["responses"]["NotFound"];
             };
         };
-        put?: never;
+        /**
+         * Lưu metadata biên tập video (admin/editor; phương án A)
+         * @description Thay thế cùng lúc title/description/hashtags; không đổi file, trạng thái hoặc kết quả AI. Hashtags biên tập lưu riêng với đề xuất AI và không bị inference ghi đè. description rỗng xóa mô tả; hashtags [] xóa toàn bộ thẻ biên tập. Không sửa video đã xóa mềm.
+         */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: components["parameters"]["PathId"];
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["VideoMetadataUpdate"];
+                };
+            };
+            responses: {
+                /** @description Metadata sau khi lưu (playback_url chỉ được cấp qua GET detail) */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["VideoDetail"];
+                    };
+                };
+                401: components["responses"]["Unauthorized"];
+                403: components["responses"]["Forbidden"];
+                404: components["responses"]["NotFound"];
+                422: components["responses"]["ValidationError"];
+            };
+        };
         post?: never;
-        /** Xóa mềm + xóa vectors Milvus + ẩn clips */
+        /**
+         * Xóa mềm và dọn dữ liệu video (D24)
+         * @description Idempotent; xóa vector Milvus, raw/audio/thumbnail/clip MinIO, analysis/subtitle Mongo và ẩn clips. Từ chối khi job hoặc clip đang xử lý để tránh ghi lại dữ liệu sau xóa. Lỗi storage trả 503; gọi lại DELETE để hoàn tất cleanup. Không xóa collection, bucket hoặc dữ liệu video khác.
+         */
         delete: {
             parameters: {
                 query?: never;
@@ -1004,6 +1059,16 @@ export interface paths {
                 };
                 403: components["responses"]["Forbidden"];
                 404: components["responses"]["NotFound"];
+                409: components["responses"]["Conflict"];
+                /** @description Backend storage unavailable; retry deletion. */
+                503: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
             };
         };
         options?: never;
@@ -1042,7 +1107,34 @@ export interface paths {
                 404: components["responses"]["NotFound"];
             };
         };
-        put?: never;
+        /** Lưu quyết định duyệt gợi ý highlight; không sửa output model */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: components["parameters"]["PathId"];
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["HighlightReviewUpdate"];
+                };
+            };
+            responses: {
+                /** @description Review saved */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                404: components["responses"]["NotFound"];
+                409: components["responses"]["Conflict"];
+                422: components["responses"]["ValidationError"];
+            };
+        };
         post?: never;
         delete?: never;
         options?: never;
@@ -1084,6 +1176,7 @@ export interface paths {
                     };
                 };
                 404: components["responses"]["NotFound"];
+                422: components["responses"]["ValidationError"];
             };
         };
         delete?: never;
@@ -1270,6 +1363,8 @@ export interface paths {
             parameters: {
                 query?: {
                     status?: "pending" | "running" | "completed" | "failed";
+                    q?: string;
+                    video_id?: string;
                 };
                 header?: never;
                 path?: never;
@@ -1439,7 +1534,7 @@ export interface paths {
                 403: components["responses"]["Forbidden"];
             };
         };
-        /** Cập nhật settings (admin only) */
+        /** Cập nhật settings bằng tài khoản quản lý CMS tạo sẵn */
         put: {
             parameters: {
                 query?: never;
@@ -1477,10 +1572,14 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Proxy GET :8001/health (số thật RTX 3060) */
+        /** Sức khỏe AI và CPU thực; tùy chọn thống kê CMS/MinIO, không giả telemetry khi dependency lỗi */
         get: {
             parameters: {
-                query?: never;
+                query?: {
+                    include_metrics?: boolean;
+                    /** @description UTC calendar month for metrics */
+                    month?: string;
+                };
                 header?: never;
                 path?: never;
                 cookie?: never;
@@ -1520,6 +1619,7 @@ export interface paths {
                 query?: {
                     video_id?: string;
                     status?: "draft" | "processing" | "published" | "rejected";
+                    q?: string;
                 };
                 header?: never;
                 path?: never;
@@ -1539,7 +1639,7 @@ export interface paths {
             };
         };
         put?: never;
-        /** Tạo clip (draft→processing) + Kafka clip.cut.requested */
+        /** Tạo clip đơn hoặc video tổng hợp AI (processing→draft) + Kafka clip.cut.requested */
         post: {
             parameters: {
                 query?: never;
@@ -1552,10 +1652,12 @@ export interface paths {
                     "application/json": {
                         video_id: string;
                         title: string;
+                        /** @default false */
+                        auto_highlights?: boolean;
                         /** Format: float */
-                        start_time: number;
+                        start_time?: number;
                         /** Format: float */
-                        end_time: number;
+                        end_time?: number;
                     };
                 };
             };
@@ -1570,6 +1672,7 @@ export interface paths {
                     };
                 };
                 403: components["responses"]["Forbidden"];
+                422: components["responses"]["ValidationError"];
             };
         };
         delete?: never;
@@ -1636,6 +1739,7 @@ export interface paths {
                     content?: never;
                 };
                 404: components["responses"]["NotFound"];
+                409: components["responses"]["Conflict"];
             };
         };
         options?: never;
@@ -1719,9 +1823,7 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": {
-                        name: string;
-                    };
+                    "application/json": components["schemas"]["CategoryWrite"];
                 };
             };
             responses: {
@@ -1734,6 +1836,10 @@ export interface paths {
                         "application/json": components["schemas"]["Category"];
                     };
                 };
+                401: components["responses"]["Unauthorized"];
+                403: components["responses"]["Forbidden"];
+                409: components["responses"]["Conflict"];
+                422: components["responses"]["ValidationError"];
             };
         };
         delete?: never;
@@ -1762,9 +1868,7 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": {
-                        name: string;
-                    };
+                    "application/json": components["schemas"]["CategoryWrite"];
                 };
             };
             responses: {
@@ -1775,7 +1879,11 @@ export interface paths {
                     };
                     content?: never;
                 };
+                401: components["responses"]["Unauthorized"];
+                403: components["responses"]["Forbidden"];
                 404: components["responses"]["NotFound"];
+                409: components["responses"]["Conflict"];
+                422: components["responses"]["ValidationError"];
             };
         };
         post?: never;
@@ -1799,6 +1907,7 @@ export interface paths {
                     content?: never;
                 };
                 404: components["responses"]["NotFound"];
+                409: components["responses"]["Conflict"];
             };
         };
         options?: never;
@@ -1813,11 +1922,13 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Danh sách user (admin only) */
+        /** Danh sách tài khoản chỉ đọc, không có quản lý vai trò hay xóa tài khoản */
         get: {
             parameters: {
                 query?: {
                     page?: components["parameters"]["Page"];
+                    /** @description Tìm username hoặc email trên toàn danh sách */
+                    q?: string;
                 };
                 header?: never;
                 path?: never;
@@ -1842,52 +1953,6 @@ export interface paths {
             };
         };
         put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/cms/users/{id}/role": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        /** Đổi role (admin only) */
-        put: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    id: components["parameters"]["PathId"];
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": {
-                        /** @enum {string} */
-                        role: "admin" | "editor" | "client";
-                    };
-                };
-            };
-            responses: {
-                /** @description user */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["User"];
-                    };
-                };
-                403: components["responses"]["Forbidden"];
-            };
-        };
         post?: never;
         delete?: never;
         options?: never;
@@ -1928,6 +1993,29 @@ export interface components {
         Category: {
             id?: string;
             name?: string;
+            description?: string | null;
+            keywords?: string[];
+            /** @description Confirmed non-deleted videos across the entire repository. */
+            readonly video_count?: number;
+        };
+        CategoryWrite: {
+            /** @description Omitted preserves existing keywords; empty clears. Backend rule suggestions only, editor confirms category. */
+            keywords?: string[];
+            name: string;
+            /** @description Omitted/null preserves existing description on update; empty string clears. Name-only callers remain supported. */
+            description?: string | null;
+        };
+        VideoMetadataUpdate: {
+            /**
+             * @description Editorial flag only; does not claim to reorder Kafka or GPU scheduling.
+             * @enum {string}
+             */
+            editorial_priority?: "low" | "normal" | "high";
+            /** @description Nonblank Unicode text. */
+            title: string;
+            description: string;
+            /** @description Plain Unicode letter/digit/underscore tags, without leading hash or spaces; [] explicitly clears editorial tags. */
+            hashtags: string[];
         };
         Video: {
             id?: string;
@@ -1939,13 +2027,42 @@ export interface components {
             /** @enum {string} */
             status?: "uploaded" | "processing" | "processed" | "failed" | "deleted";
             category?: components["schemas"]["Category"];
+            uploaded_by?: string | null;
+            uploaded_by_name?: string | null;
+            /** @enum {string} */
+            editorial_priority?: "low" | "normal" | "high";
             /** Format: date-time */
             created_at?: string;
         };
         VideoDetail: components["schemas"]["Video"] & {
+            /** @description Encoded source width in pixels before ingest resizing; null until known, never inferred from thumbnails. */
+            readonly width?: number | null;
+            /** @description Encoded source height in pixels before ingest resizing; null until known. */
+            readonly height?: number | null;
+            /**
+             * Format: double
+             * @description Average source frames per second from CPU ingest; null when unavailable.
+             */
+            readonly fps?: number | null;
+            /** @description Saved editorial tags; null means no editorial override yet (AI suggestions remain in analysis). [] is an explicit empty override. */
+            hashtags?: string[] | null;
+            /** @description URL MinIO presigned cho video gốc, hết hạn sau 1 giờ. Chỉ cấp trong GET detail: public chỉ video processed; CMS yêu cầu admin/editor và không cấp cho video deleted. Null khi chưa có file gốc. Không trả đường dẫn raw_file_path trong API. */
+            playback_url?: string | null;
             clips?: components["schemas"]["Clip"][];
         };
+        ClipSourceSegment: {
+            /** Format: double */
+            start_time: number;
+            /** Format: double */
+            end_time: number;
+        };
         Clip: {
+            /** @description Count of validated Client click/open events for this clip. */
+            readonly view_count?: number;
+            readonly created_by_name?: string | null;
+            readonly category_name?: string | null;
+            /** Format: date-time */
+            readonly updated_at?: string;
             id?: string;
             video_id?: string;
             title?: string;
@@ -1953,6 +2070,8 @@ export interface components {
             start_time?: number;
             /** Format: float */
             end_time?: number;
+            /** @description Đoạn nguồn của bản tổng hợp, tăng theo thời gian, không trùng. Bỏ trống với clip đơn; mốc phát bản tổng hợp bắt đầu từ 0. */
+            source_segments?: components["schemas"]["ClipSourceSegment"][];
             /** Format: float */
             average_score?: number;
             thumbnail_url?: string | null;
@@ -1962,6 +2081,13 @@ export interface components {
             status?: "draft" | "processing" | "published" | "rejected";
             /** Format: date-time */
             created_at?: string;
+        };
+        FeedPage: components["schemas"]["ClipPage"] & {
+            /**
+             * @description popularity khi xếp hạng từ dữ liệu sản phẩm; personalized chỉ khi AI trả vector sản phẩm thật, backend xác minh ID và hydrate metadata Postgres; fallback khi AI lỗi, timeout hoặc không có kết quả hợp lệ. Không suy diễn personalized từ HTTP 200. Chỉ trả clip published/video processed với metadata thật.
+             * @enum {string}
+             */
+            recommendation_mode: "popularity" | "personalized" | "fallback";
         };
         ClipPage: {
             items?: components["schemas"]["Clip"][];
@@ -1973,6 +2099,14 @@ export interface components {
             page?: number;
         };
         Job: {
+            video_title?: string;
+            thumbnail_url?: string | null;
+            duration_seconds?: number;
+            uploaded_by_name?: string | null;
+            /** @enum {string} */
+            editorial_priority?: "low" | "normal" | "high";
+            processing_options?: components["schemas"]["ProcessingOptions"];
+            skipped_stages?: ("asr_extracting" | "highlight_scoring" | "summarizing")[];
             id?: string;
             video_id?: string;
             /** @enum {string} */
@@ -2010,6 +2144,13 @@ export interface components {
             reason?: string;
         };
         CmsAnalysis: {
+            proposal_decisions?: components["schemas"]["ProposalDecision"][];
+            category_match?: components["schemas"]["CategoryMatch"];
+            /**
+             * Format: double
+             * @description Ngưỡng AI báo đã dùng để đề xuất clip cho kết quả này. Null khi kết quả cũ hoặc AI chưa cung cấp; không suy từ Settings.
+             */
+            clip_threshold?: number | null;
             timeline_scores?: components["schemas"]["TimelineScore"][];
             ai_generated_clips?: components["schemas"]["AiGeneratedClip"][];
             category_suggestion?: string | null;
@@ -2051,6 +2192,14 @@ export interface components {
             matched_text?: string | null;
         };
         Settings: {
+            /** @description Enable mapping AI class output into an editorial category suggestion, not automatic publishing. */
+            category_suggestion_enabled?: boolean;
+            /** @description Allow deterministic keyword rules to suggest a category before the AI class fallback. */
+            category_keyword_enabled?: boolean;
+            /**
+             * @deprecated
+             * @description Giá trị hiển thị cũ; không thay đổi ngưỡng model hoặc đề xuất AI. CMS đọc CmsAnalysis.clip_threshold theo từng video.
+             */
             highlight_threshold?: number;
             asr_warning_threshold?: number;
             auto_highlight_enabled?: boolean;
@@ -2060,6 +2209,12 @@ export interface components {
             ai_service_api_key?: string;
         };
         SettingsUpdate: {
+            category_suggestion_enabled?: boolean;
+            category_keyword_enabled?: boolean;
+            /**
+             * @deprecated
+             * @description Giữ tương thích client cũ; không điều khiển model hoặc tính lại clip.
+             */
             highlight_threshold?: number;
             asr_warning_threshold?: number;
             auto_highlight_enabled?: boolean;
@@ -2067,12 +2222,76 @@ export interface components {
             ai_service_api_key?: string;
         };
         SystemHealth: {
+            ai_available?: boolean;
+            ai_error?: string | null;
+            device?: string | null;
+            /** @description Docker host Linux CPU utilization sampled between reads; null until sampled or unavailable. */
+            cpu_util?: number | null;
+            metrics?: components["schemas"]["CmsMetrics"];
+            metrics_error?: string | null;
+            storage?: components["schemas"]["StorageUsage"];
+            storage_error?: string | null;
             /** Format: float */
             gpu_vram_used?: number;
             /** Format: float */
             gpu_util?: number;
             models_loaded?: string[];
             queue_depth?: number;
+        };
+        /** @description Settings snapshot taken before upload is enqueued; changing settings does not rewrite existing jobs/results. */
+        ProcessingOptions: {
+            auto_highlight_enabled: boolean;
+            auto_subtitle_enabled: boolean;
+        };
+        ProposalDecision: {
+            proposal_index: number;
+            /** @enum {string} */
+            status: "accepted" | "dismissed";
+        };
+        HighlightReviewUpdate: {
+            proposal_decisions: components["schemas"]["ProposalDecision"][];
+        };
+        CategoryMatch: {
+            category_id: string;
+            name: string;
+            /** @enum {string} */
+            source: "vision" | "keyword";
+            keyword?: string | null;
+        };
+        StorageUsage: {
+            /** Format: int64 */
+            total_bytes: number;
+            buckets: {
+                name: string;
+                /** Format: int64 */
+                bytes: number;
+                /** Format: int64 */
+                objects: number;
+            }[];
+        };
+        CmsMetrics: {
+            total_videos?: number;
+            processed_videos?: number;
+            failed_videos?: number;
+            deleted_videos?: number;
+            published_clips?: number;
+            pending_jobs?: number;
+            running_jobs?: number;
+            completed_jobs?: number;
+            failed_jobs?: number;
+            total_users?: number;
+            /** @description Distinct Client users with a validated interaction during the last15minutes. */
+            active_users?: number;
+            /** @description Validated click/open interactions in requested UTC month, not inferred AI quality. */
+            views_month?: number;
+            total_views?: number;
+            success_rate?: number | null;
+            average_processing_seconds?: number | null;
+            daily_processing?: {
+                /** Format: date */
+                date: string;
+                count: number;
+            }[];
         };
     };
     responses: {

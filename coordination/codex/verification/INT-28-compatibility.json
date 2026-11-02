@@ -1,0 +1,14 @@
+{
+  "recommendation": {
+    "http": 503,
+    "code": "MODEL_NOT_READY"
+  },
+  "v1_v2_read_only_comparison": {
+    "v1_hits": 48,
+    "backend_rest_hits": 48,
+    "identical_video_timestamp_set": true,
+    "shared_hits": 48,
+    "max_score_delta": 9.754180907428633e-09,
+    "outside_primary_pipeline": true
+  }
+}

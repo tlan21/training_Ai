@@ -1,0 +1,12 @@
+=== RUN   TestContentPages_RealFeedSnapshotPrivacyAndColdTail
+    content_pages_test.go:98: 24 original clips traversed; unseen hidden/deleted3 excluded, seen-row deletion/new50interactions/newclip did not shift cursor; cold tail/current metadata PASS
+--- PASS: TestContentPages_RealFeedSnapshotPrivacyAndColdTail (0.12s)
+=== RUN   TestContentPages_RealCatalogCategorySnapshotAndExhaustion
+=== RUN   TestContentPages_RealCatalogCategorySnapshotAndExhaustion/newest
+    content_pages_test.go:158: category6 rows, stable tied ordering, snapshot after new interaction/video, deletion of seen anchor, changed-filter422 and exhaustion PASS
+=== RUN   TestContentPages_RealCatalogCategorySnapshotAndExhaustion/trending
+    content_pages_test.go:158: category6 rows, stable tied ordering, snapshot after new interaction/video, deletion of seen anchor, changed-filter422 and exhaustion PASS
+--- PASS: TestContentPages_RealCatalogCategorySnapshotAndExhaustion (0.11s)
+    --- PASS: TestContentPages_RealCatalogCategorySnapshotAndExhaustion/newest (0.06s)
+    --- PASS: TestContentPages_RealCatalogCategorySnapshotAndExhaustion/trending (0.05s)
+PASS

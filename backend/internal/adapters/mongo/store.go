@@ -7,7 +7,9 @@ import (
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 	"go.mongodb.org/mongo-driver/v2/mongo/readpref"
+	"strings"
 	"traning_ai/backend/internal/domain"
+	"traning_ai/backend/internal/startup"
 )
 
 type AnalysisStore struct{ Collection *mongo.Collection }
@@ -18,7 +20,7 @@ func New(ctx context.Context, uri, name string) (*mongo.Database, error) {
 	if err != nil {
 		return nil, err
 	}
-	if err := client.Ping(ctx, readpref.Primary()); err != nil {
+	if err := startup.Wait(ctx, "MongoDB", func(probe context.Context) error { return client.Ping(probe, readpref.Primary()) }); err != nil {
 		_ = client.Disconnect(ctx)
 		return nil, err
 	}
@@ -62,8 +64,8 @@ func missing(err error) error {
 }
 func videoFilter(id string) bson.M { return bson.M{"video_id": id} }
 
-func (s *AnalysisStore) Put(ctx context.Context, id string, scores []domain.SecondScore, clips []domain.AIClip, category *string) error {
-	_, err := s.Collection.UpdateOne(ctx, videoFilter(id), bson.M{"$set": bson.M{"timeline_scores": scores, "ai_generated_clips": clips, "category_suggestion": category}}, options.UpdateOne().SetUpsert(true))
+func (s *AnalysisStore) Put(ctx context.Context, id string, scores []domain.SecondScore, clips []domain.AIClip, category *string, threshold *float64) error {
+	_, err := s.Collection.UpdateOne(ctx, videoFilter(id), bson.M{"$set": bson.M{"timeline_scores": scores, "ai_generated_clips": clips, "category_suggestion": category, "clip_threshold": threshold, "proposal_decisions": []domain.ProposalDecision{}, "category_match": nil}}, options.UpdateOne().SetUpsert(true))
 	return err
 }
 func (s *AnalysisStore) Get(ctx context.Context, id string) (*domain.VideoAnalysis, error) {
@@ -90,7 +92,11 @@ func (s *SubtitleStore) Get(ctx context.Context, id string) (*domain.Subtitle, e
 	return &result, missing(err)
 }
 func (s *SubtitleStore) UpdateSegments(ctx context.Context, id string, segments []domain.Segment) error {
-	result, err := s.Collection.UpdateOne(ctx, videoFilter(id), bson.M{"$set": bson.M{"segments": segments}})
+	texts := []string{}
+	for _, segment := range segments {
+		texts = append(texts, segment.Text)
+	}
+	result, err := s.Collection.UpdateOne(ctx, videoFilter(id), bson.M{"$set": bson.M{"segments": segments, "full_transcript": strings.Join(texts, " ")}})
 	if err != nil {
 		return err
 	}
@@ -120,4 +126,25 @@ func (s *SubtitleStore) TextSearch(ctx context.Context, q string) ([]domain.Subt
 func (s *SubtitleStore) Delete(ctx context.Context, id string) error {
 	_, err := s.Collection.DeleteOne(ctx, videoFilter(id))
 	return err
+}
+
+func (s *AnalysisStore) SetProposalDecisions(ctx context.Context, id string, decisions []domain.ProposalDecision) error {
+	result, err := s.Collection.UpdateOne(ctx, videoFilter(id), bson.M{"$set": bson.M{"proposal_decisions": decisions}})
+	if err != nil {
+		return err
+	}
+	if result.MatchedCount == 0 {
+		return domain.ErrNotFound
+	}
+	return nil
+}
+func (s *AnalysisStore) SetCategoryMatch(ctx context.Context, id string, match *domain.CategoryMatch) error {
+	result, err := s.Collection.UpdateOne(ctx, videoFilter(id), bson.M{"$set": bson.M{"category_match": match}})
+	if err != nil {
+		return err
+	}
+	if result.MatchedCount == 0 {
+		return domain.ErrNotFound
+	}
+	return nil
 }

@@ -1,0 +1,25 @@
+?   	traning_ai/backend/cmd/ai-mock	[no test files]
+?   	traning_ai/backend/cmd/ffmpeg-cutter	[no test files]
+?   	traning_ai/backend/cmd/frame-backfill	[no test files]
+ok  	traning_ai/backend/cmd/gateway	2.365s
+?   	traning_ai/backend/cmd/orchestrator	[no test files]
+?   	traning_ai/backend/cmd/ttv2-export	[no test files]
+ok  	traning_ai/backend/internal/adapters/aihttp	4.703s
+?   	traning_ai/backend/internal/adapters/kafka	[no test files]
+ok  	traning_ai/backend/internal/adapters/milvus	(cached)
+?   	traning_ai/backend/internal/adapters/minio	[no test files]
+ok  	traning_ai/backend/internal/adapters/mongo	(cached)
+ok  	traning_ai/backend/internal/adapters/pg	2.156s
+?   	traning_ai/backend/internal/adapters/redis	[no test files]
+ok  	traning_ai/backend/internal/auth	(cached)
+ok  	traning_ai/backend/internal/config	(cached)
+ok  	traning_ai/backend/internal/cutter	(cached)
+ok  	traning_ai/backend/internal/domain	(cached)
+ok  	traning_ai/backend/internal/gen	(cached)
+ok  	traning_ai/backend/internal/handlers	(cached)
+ok  	traning_ai/backend/internal/handlers/cms	2.990s
+ok  	traning_ai/backend/internal/mocks	3.076s
+ok  	traning_ai/backend/internal/orchestrator	1.368s
+?   	traning_ai/backend/internal/ports	[no test files]
+ok  	traning_ai/backend/internal/productexport	(cached)
+ok  	traning_ai/backend/internal/startup	(cached)

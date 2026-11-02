@@ -1,0 +1,27 @@
+# traning_ai/backend/internal/mocks
+internal\mocks\mem.go:1003:6: undefined: strings
+FAIL	traning_ai/backend/cmd/ai-mock [build failed]
+FAIL	traning_ai/backend/cmd/ffmpeg-cutter [build failed]
+FAIL	traning_ai/backend/cmd/gateway [build failed]
+FAIL	traning_ai/backend/cmd/orchestrator [build failed]
+?   	traning_ai/backend/cmd/ttv2-export	[no test files]
+FAIL	traning_ai/backend/internal/adapters/aihttp [build failed]
+?   	traning_ai/backend/internal/adapters/kafka	[no test files]
+ok  	traning_ai/backend/internal/adapters/milvus	1.787s
+?   	traning_ai/backend/internal/adapters/minio	[no test files]
+ok  	traning_ai/backend/internal/adapters/mongo	1.652s
+ok  	traning_ai/backend/internal/adapters/pg	4.180s
+?   	traning_ai/backend/internal/adapters/redis	[no test files]
+FAIL	traning_ai/backend/internal/auth [build failed]
+ok  	traning_ai/backend/internal/config	(cached)
+FAIL	traning_ai/backend/internal/cutter [build failed]
+ok  	traning_ai/backend/internal/domain	1.262s
+ok  	traning_ai/backend/internal/gen	(cached)
+FAIL	traning_ai/backend/internal/handlers [build failed]
+FAIL	traning_ai/backend/internal/handlers/cms [build failed]
+FAIL	traning_ai/backend/internal/mocks [build failed]
+FAIL	traning_ai/backend/internal/orchestrator [build failed]
+?   	traning_ai/backend/internal/ports	[no test files]
+ok  	traning_ai/backend/internal/productexport	(cached)
+ok  	traning_ai/backend/internal/startup	(cached)
+FAIL

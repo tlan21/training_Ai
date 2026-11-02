@@ -1,0 +1,150 @@
+
+Running 9 tests using 1 worker
+
+(node:29340) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 e2e\client_design.spec.ts:52:6 › INT-36 discovery loaded square images stay inside frames 390 (1.6s)
+  ok 2 e2e\client_design.spec.ts:52:6 › INT-36 discovery loaded portrait images stay inside frames 390 (806ms)
+  ok 3 e2e\client_design.spec.ts:52:6 › INT-36 discovery loaded landscape images stay inside frames 390 (857ms)
+  x  4 e2e\client_design.spec.ts:52:6 › INT-36 discovery loaded square images stay inside frames 1440 (1.1s)
+(node:2020) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  5 e2e\client_design.spec.ts:52:6 › INT-36 discovery loaded portrait images stay inside frames 1440 (972ms)
+(node:15952) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 6 e2e\client_design.spec.ts:52:6 › INT-36 discovery loaded landscape images stay inside frames 1440 (955ms)
+  x  7 e2e\client_design.spec.ts:52:6 › INT-36 discovery loaded square images stay inside frames 1903 (882ms)
+(node:20804) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  8 e2e\client_design.spec.ts:52:6 › INT-36 discovery loaded portrait images stay inside frames 1903 (978ms)
+(node:23920) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 9 e2e\client_design.spec.ts:52:6 › INT-36 discovery loaded landscape images stay inside frames 1903 (903ms)
+
+
+  1) e2e\client_design.spec.ts:52:6 › INT-36 discovery loaded square images stay inside frames 1440
+
+    Error: expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 742
+    Received:    1135.6875
+
+      64 |    const frame=bounds.frames[i],image=bounds.images[i];
+      65 |    expect(image.height).toBeLessThanOrEqual(frame.height+1);expect(image.width).toBeLessThanOrEqual(frame.width+1);
+    > 66 |    expect(frame.bottom).toBeLessThanOrEqual(bounds.grid.bottom+1);
+         |                         ^
+      67 |   }
+      68 |   if(width>=1024){
+      69 |    expect(bounds.grid.height).toBe(520);
+        at E:\traning_ai-codex\e2e\client_design.spec.ts:66:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    backend\.tmp\int36-before\client_design-INT-36-disco-ee86a-ges-stay-inside-frames-1440\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: backend\.tmp\int36-before\client_design-INT-36-disco-ee86a-ges-stay-inside-frames-1440\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    backend\.tmp\int36-before\client_design-INT-36-disco-ee86a-ges-stay-inside-frames-1440\trace.zip
+    Usage:
+
+        npx playwright show-trace backend\.tmp\int36-before\client_design-INT-36-disco-ee86a-ges-stay-inside-frames-1440\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) e2e\client_design.spec.ts:52:6 › INT-36 discovery loaded portrait images stay inside frames 1440
+
+    Error: expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 742
+    Received:    2917.0625
+
+      64 |    const frame=bounds.frames[i],image=bounds.images[i];
+      65 |    expect(image.height).toBeLessThanOrEqual(frame.height+1);expect(image.width).toBeLessThanOrEqual(frame.width+1);
+    > 66 |    expect(frame.bottom).toBeLessThanOrEqual(bounds.grid.bottom+1);
+         |                         ^
+      67 |   }
+      68 |   if(width>=1024){
+      69 |    expect(bounds.grid.height).toBe(520);
+        at E:\traning_ai-codex\e2e\client_design.spec.ts:66:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    backend\.tmp\int36-before\client_design-INT-36-disco-72c9f-ges-stay-inside-frames-1440\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: backend\.tmp\int36-before\client_design-INT-36-disco-72c9f-ges-stay-inside-frames-1440\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    backend\.tmp\int36-before\client_design-INT-36-disco-72c9f-ges-stay-inside-frames-1440\trace.zip
+    Usage:
+
+        npx playwright show-trace backend\.tmp\int36-before\client_design-INT-36-disco-72c9f-ges-stay-inside-frames-1440\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) e2e\client_design.spec.ts:52:6 › INT-36 discovery loaded square images stay inside frames 1903
+
+    Error: expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 742
+    Received:    1135.6875
+
+      64 |    const frame=bounds.frames[i],image=bounds.images[i];
+      65 |    expect(image.height).toBeLessThanOrEqual(frame.height+1);expect(image.width).toBeLessThanOrEqual(frame.width+1);
+    > 66 |    expect(frame.bottom).toBeLessThanOrEqual(bounds.grid.bottom+1);
+         |                         ^
+      67 |   }
+      68 |   if(width>=1024){
+      69 |    expect(bounds.grid.height).toBe(520);
+        at E:\traning_ai-codex\e2e\client_design.spec.ts:66:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    backend\.tmp\int36-before\client_design-INT-36-disco-3049c-ges-stay-inside-frames-1903\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: backend\.tmp\int36-before\client_design-INT-36-disco-3049c-ges-stay-inside-frames-1903\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    backend\.tmp\int36-before\client_design-INT-36-disco-3049c-ges-stay-inside-frames-1903\trace.zip
+    Usage:
+
+        npx playwright show-trace backend\.tmp\int36-before\client_design-INT-36-disco-3049c-ges-stay-inside-frames-1903\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4) e2e\client_design.spec.ts:52:6 › INT-36 discovery loaded portrait images stay inside frames 1903
+
+    Error: expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 742
+    Received:    2917.0625
+
+      64 |    const frame=bounds.frames[i],image=bounds.images[i];
+      65 |    expect(image.height).toBeLessThanOrEqual(frame.height+1);expect(image.width).toBeLessThanOrEqual(frame.width+1);
+    > 66 |    expect(frame.bottom).toBeLessThanOrEqual(bounds.grid.bottom+1);
+         |                         ^
+      67 |   }
+      68 |   if(width>=1024){
+      69 |    expect(bounds.grid.height).toBe(520);
+        at E:\traning_ai-codex\e2e\client_design.spec.ts:66:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    backend\.tmp\int36-before\client_design-INT-36-disco-4bb99-ges-stay-inside-frames-1903\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: backend\.tmp\int36-before\client_design-INT-36-disco-4bb99-ges-stay-inside-frames-1903\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    backend\.tmp\int36-before\client_design-INT-36-disco-4bb99-ges-stay-inside-frames-1903\trace.zip
+    Usage:
+
+        npx playwright show-trace backend\.tmp\int36-before\client_design-INT-36-disco-4bb99-ges-stay-inside-frames-1903\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4 failed
+    e2e\client_design.spec.ts:52:6 › INT-36 discovery loaded square images stay inside frames 1440 ─
+    e2e\client_design.spec.ts:52:6 › INT-36 discovery loaded portrait images stay inside frames 1440
+    e2e\client_design.spec.ts:52:6 › INT-36 discovery loaded square images stay inside frames 1903 ─
+    e2e\client_design.spec.ts:52:6 › INT-36 discovery loaded portrait images stay inside frames 1903
+  5 passed (14.7s)

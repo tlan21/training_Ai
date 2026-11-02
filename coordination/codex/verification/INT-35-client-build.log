@@ -1,0 +1,37 @@
+▲ Next.js 16.4.3 (Turbopack)
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of E:\traning_ai-codex\package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles:
+   * E:\traning_ai-codex\client\package-lock.json
+
+⚠ React 18 support is deprecated in Next.js 16 and will be removed in Next.js 17. Please upgrade to React 19. Learn more: https://nextjs.org/docs/messages/react-version
+✓ Running next.config.mjs took 48ms
+- Experiments (use with caution):
+  · cpus: 1
+
+  Creating an optimized production build ...
+
+> Build error occurred
+Error: Turbopack build failed with 1 error:
+./client/src/app/globals.css:2:1
+Error: Module not found: Can't resolve '/fonts/fonts.css'
+  1 |
+> 2 | @import url('/fonts/fonts.css');
+    | ^
+  3 | *, ::before, ::after{
+  4 |   --tw-border-spacing-x: 0;
+  5 |   --tw-border-spacing-y: 0;
+
+
+
+Import trace:
+  Client Component Browser:
+    ./client/src/app/globals.css [Client Component Browser]
+    ./client/src/app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)

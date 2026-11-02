@@ -1,11 +1,13 @@
 FROM node:22-alpine AS builder
 WORKDIR /src
 COPY client/package.json client/package-lock.json* ./
-RUN npm ci || npm install
+RUN npm ci
 COPY client/ ./
-ARG NEXT_PUBLIC_API_BASE=http://localhost:8000
+ARG NEXT_PUBLIC_API_BASE=
 ENV NEXT_PUBLIC_API_BASE=$NEXT_PUBLIC_API_BASE
-RUN npm run build
+ARG GATEWAY_INTERNAL_URL=http://gateway:8000
+ENV GATEWAY_INTERNAL_URL=$GATEWAY_INTERNAL_URL
+RUN npm run lint && npm run build && node node_modules/typescript/bin/tsc --noEmit
 FROM node:22-alpine
 WORKDIR /src
 COPY --from=builder /src/package.json ./

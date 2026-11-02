@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-26",
+  "master_release": "70bf011",
+  "merge": "5691526",
+  "host_health_status": 200,
+  "stub_mode": false,
+  "model_count": 6,
+  "host_missing_bearer_status": 401,
+  "container_host_health": "timeout after3s",
+  "gateway_startup": "context deadline exceeded at real /health",
+  "windows_named_pipes": "both _ping read timeout3s",
+  "daemon_unix_ping": 200,
+  "rollback": "gateway mock health200",
+  "e2e_real": "NOT_RUN: preflight blocked",
+  "cleanup_or_global_restart": false
+}

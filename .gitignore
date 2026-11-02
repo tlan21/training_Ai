@@ -38,6 +38,9 @@ client/.next/
 client/node_modules/
 client/dist/
 node_modules/
+backend/bin/
+backend/.tmp/
+docker-compose.local.yml
 playwright-report/
 test-results/
 

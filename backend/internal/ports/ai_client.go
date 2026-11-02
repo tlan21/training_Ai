@@ -9,6 +9,9 @@ import (
 // 02_backend_plan.md §2.14 — AIClient gọi :8001.
 
 type AIClient interface {
+	VisionV2(ctx context.Context, keyframePaths []string) (*domain.VisionResult, error)
+	ASRV2(ctx context.Context, audioPath, language string) (*domain.ASRResult, error)
+	SearchEmbedding(ctx context.Context, image string) ([]float32, error)
 	Vision(ctx context.Context, keyframePaths []string) (*domain.VisionResult, error)
 	ASR(ctx context.Context, audioURL, language string) (*domain.ASRResult, error)
 	Highlight(ctx context.Context, videoID string, visionEmb [][]float32, audioFeat [][]float32) (*domain.HighlightResult, error)

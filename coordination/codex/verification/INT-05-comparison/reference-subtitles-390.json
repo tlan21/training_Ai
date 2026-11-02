@@ -1,0 +1,80 @@
+{
+  "folder": "ph_t_m_t_t_ai",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "assetFailures": [],
+  "metrics": [
+    {
+      "text": "logout\n        Đăng xuất",
+      "width": 227,
+      "height": 32,
+      "radius": "4px",
+      "background": "rgba(220, 38, 38, 0.1)"
+    },
+    {
+      "text": "notifications",
+      "width": 32,
+      "height": 38,
+      "radius": "0px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "analytics",
+      "width": 32,
+      "height": 38,
+      "radius": "0px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "cloud_done\n                Trạng thái hệ thống",
+      "width": 89.390625,
+      "height": 88,
+      "radius": "4px",
+      "background": "rgb(70, 21, 153)"
+    },
+    {
+      "text": "play_arrow",
+      "width": 24,
+      "height": 48,
+      "radius": "12px",
+      "background": "rgba(70, 21, 153, 0.9)"
+    },
+    {
+      "text": "sync",
+      "width": 22,
+      "height": 32,
+      "radius": "0px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "download",
+      "width": 22,
+      "height": 32,
+      "radius": "0px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "check",
+      "width": 0,
+      "height": 0,
+      "radius": "2px",
+      "background": "rgb(255, 255, 255)"
+    },
+    {
+      "text": "refresh Thử tiêu đề khác",
+      "width": 42.078125,
+      "height": 64,
+      "radius": "0px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "content_copy",
+      "width": 22,
+      "height": 32,
+      "radius": "2px",
+      "background": "rgba(94, 53, 177, 0.1)"
+    }
+  ]
+}

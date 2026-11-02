@@ -1,0 +1,62 @@
+[
+  {
+    "health": "healthy",
+    "started_at": "2026-10-28T10:21:47.342624707Z",
+    "service": "gateway",
+    "restart": "unless-stopped",
+    "mounts": [
+      {
+        "Type": "volume",
+        "Name": "video-ai_ingest_work",
+        "Source": "/var/lib/docker/volumes/video-ai_ingest_work/_data",
+        "Destination": "/srv/work",
+        "RW": true
+      }
+    ],
+    "status": "running",
+    "image": "video-ai-gateway:int23-7d2664a",
+    "container_id": "0a3b4a820656547945dd1b293db86fae9b5003d4199136b2fd834bfa39d85b1b",
+    "image_id": "sha256:48f627dd25757ce19f349e4a1d7de298493c33a16a92dd84d302416a95ea0191"
+  },
+  {
+    "health": null,
+    "started_at": "2026-10-28T10:21:47.449044472Z",
+    "service": "ingest-worker",
+    "restart": "unless-stopped",
+    "mounts": [
+      {
+        "Type": "volume",
+        "Name": "video-ai_ingest_work",
+        "Source": "/var/lib/docker/volumes/video-ai_ingest_work/_data",
+        "Destination": "/srv/work",
+        "RW": true
+      }
+    ],
+    "status": "running",
+    "image": "video-ai-ingest-worker:int23-7d2664a",
+    "container_id": "992b66c48a0fa0a3b64aa78e6f483ca68bce09ed4e11f51b5c3d3eaa4d5eb779",
+    "image_id": "sha256:97d7bcb8174283e4b30afcf6064aa44360905a3c0f4004944a062707f3ecc6b8"
+  },
+  {
+    "health": "healthy",
+    "started_at": "2026-10-28T10:21:58.304145751Z",
+    "service": "cms",
+    "restart": "unless-stopped",
+    "mounts": [],
+    "status": "running",
+    "image": "video-ai-cms:int23-7d2664a",
+    "container_id": "bcd3469b6b76b840a0ad1fcfca3ed27abd243d15131483acba99cc8dab3e7506",
+    "image_id": "sha256:4af1fc713083055618bf9e21ecc82ef75d609b04f4a60f6f743b1e63d86c0979"
+  },
+  {
+    "health": "healthy",
+    "started_at": "2026-10-28T10:21:58.309374464Z",
+    "service": "client",
+    "restart": "unless-stopped",
+    "mounts": [],
+    "status": "running",
+    "image": "video-ai-client:int23-7d2664a",
+    "container_id": "4594407e6f9e64b4de1efe1484e529033ce99d7ab63649ba88a51a744509f674",
+    "image_id": "sha256:b8b9ad21bfa364fb40f0ccb2f093a494c3a2fffaf8911870b0314bf9a154b751"
+  }
+]

@@ -1,0 +1,154 @@
+
+Running 65 tests using 1 worker
+
+(node:9560) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 e2e\cms_account_scope.spec.ts:5:7 › CMS single management capability admin 390 (3.4s)
+  ok  2 e2e\cms_account_scope.spec.ts:5:7 › CMS single management capability admin 1440 (7.5s)
+  ok  3 e2e\cms_account_scope.spec.ts:5:7 › CMS single management capability editor 390 (2.3s)
+  ok  4 e2e\cms_account_scope.spec.ts:5:7 › CMS single management capability editor 1440 (1.9s)
+  ok  5 e2e\cms_auth.spec.ts:47:5 › INT-12 reload restores HttpOnly session without persisting JWT or user (1.3s)
+  ok  6 e2e\cms_auth.spec.ts:62:5 › INT-12 legacy stored JWT is removed and never grants CMS access (884ms)
+  ok  7 e2e\cms_auth.spec.ts:76:5 › INT-12 simultaneous 401s share one refresh and retry with new bearer (6.2s)
+  ok  8 e2e\cms_auth.spec.ts:93:5 › INT-12 failed refresh clears session and routes to login (1.2s)
+  ok  9 e2e\cms_auth.spec.ts:105:5 › INT-12 a rejected refreshed bearer logs out without another refresh loop (1.2s)
+  ok 10 e2e\cms_auth.spec.ts:116:5 › INT-12 logout still clears RAM when logout endpoint fails (1.3s)
+  ok 11 e2e\cms_auth.spec.ts:129:5 › INT-12 logout during refresh finishes after refresh and cannot resurrect session (1.8s)
+  ok 12 e2e\cms_auth.spec.ts:150:5 › INT-12 unchecked remember does not restore in a new browser session (985ms)
+  ok 13 e2e\cms_auth.spec.ts:158:5 › INT-12 non-CMS role is denied after login and its refresh cookie revoked (1.4s)
+  ok 14 e2e\cms_design.spec.ts:20:6 › HC-15 390 reported threshold and zero-proposal behavior (1.0s)
+  ok 15 e2e\cms_design.spec.ts:20:6 › HC-15 390 zero threshold and zero-proposal behavior (1.2s)
+  ok 16 e2e\cms_design.spec.ts:20:6 › HC-15 390 legacy threshold and zero-proposal behavior (954ms)
+  ok 17 e2e\cms_design.spec.ts:20:6 › HC-15 390 short-football threshold and zero-proposal behavior (947ms)
+  ok 18 e2e\cms_design.spec.ts:20:6 › HC-15 390 long-news threshold and zero-proposal behavior (1.0s)
+  ok 19 e2e\cms_design.spec.ts:20:6 › HC-15 390 short-news threshold and zero-proposal behavior (1.1s)
+  ok 20 e2e\cms_design.spec.ts:20:6 › HC-15 1440 reported threshold and zero-proposal behavior (1.4s)
+  ok 21 e2e\cms_design.spec.ts:20:6 › HC-15 1440 zero threshold and zero-proposal behavior (1.5s)
+  ok 22 e2e\cms_design.spec.ts:20:6 › HC-15 1440 legacy threshold and zero-proposal behavior (1.4s)
+  ok 23 e2e\cms_design.spec.ts:20:6 › HC-15 1440 short-football threshold and zero-proposal behavior (926ms)
+  ok 24 e2e\cms_design.spec.ts:20:6 › HC-15 1440 long-news threshold and zero-proposal behavior (1.4s)
+  ok 25 e2e\cms_design.spec.ts:20:6 › HC-15 1440 short-news threshold and zero-proposal behavior (1.0s)
+  ok 26 e2e\cms_design.spec.ts:122:7 › HC-12 390 subtitle edits and downloads remain explicit drafts (2.0s)
+  ok 27 e2e\cms_design.spec.ts:145:7 › INT-21 390 editorial metadata survives reload and AI regeneration (3.0s)
+  ok 28 e2e\cms_design.spec.ts:186:7 › INT-21 390 category descriptions can be created edited and reloaded (1.8s)
+  ok 29 e2e\cms_design.spec.ts:122:7 › HC-12 1440 subtitle edits and downloads remain explicit drafts (2.4s)
+  ok 30 e2e\cms_design.spec.ts:145:7 › INT-21 1440 editorial metadata survives reload and AI regeneration (3.3s)
+  ok 31 e2e\cms_design.spec.ts:186:7 › INT-21 1440 category descriptions can be created edited and reloaded (1.9s)
+  ok 32 e2e\cms_design.spec.ts:207:5 › INT-21 metadata save failure retains the editor draft and stops later mutations (1.1s)
+  ok 33 e2e\cms_design.spec.ts:220:5 › INT-21 editorial metadata can save while AI analysis is unavailable (1.9s)
+  ok 34 e2e\cms_design.spec.ts:238:9 › T3.1 1440 dashboard layout (1.4s)
+  ok 35 e2e\cms_design.spec.ts:238:9 › T3.1 1440 queue layout (1.2s)
+  ok 36 e2e\cms_design.spec.ts:238:9 › T3.1 1440 videos layout (1.2s)
+  ok 37 e2e\cms_design.spec.ts:238:9 › T3.1 1440 highlight layout (1.6s)
+  ok 38 e2e\cms_design.spec.ts:238:9 › T3.1 1440 subtitles layout (1.4s)
+  ok 39 e2e\cms_design.spec.ts:238:9 › T3.1 1440 published layout (1.4s)
+  ok 40 e2e\cms_design.spec.ts:238:9 › T3.1 1440 categories layout (1.2s)
+  ok 41 e2e\cms_design.spec.ts:238:9 › T3.1 1440 settings layout (1.3s)
+  x  42 e2e\cms_design.spec.ts:238:9 › T3.1 1440 users layout (10.9s)
+(node:6328) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 43 e2e\cms_design.spec.ts:238:9 › T3.1 390 dashboard layout (2.2s)
+  ok 44 e2e\cms_design.spec.ts:238:9 › T3.1 390 queue layout (1.8s)
+  ok 45 e2e\cms_design.spec.ts:238:9 › T3.1 390 videos layout (1.9s)
+  ok 46 e2e\cms_design.spec.ts:238:9 › T3.1 390 highlight layout (1.9s)
+  ok 47 e2e\cms_design.spec.ts:238:9 › T3.1 390 subtitles layout (1.9s)
+  ok 48 e2e\cms_design.spec.ts:238:9 › T3.1 390 published layout (1.4s)
+  ok 49 e2e\cms_design.spec.ts:238:9 › T3.1 390 categories layout (1.4s)
+  ok 50 e2e\cms_design.spec.ts:238:9 › T3.1 390 settings layout (1.7s)
+  x  51 e2e\cms_design.spec.ts:238:9 › T3.1 390 users layout (13.2s)
+(node:17616) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 52 e2e\cms_design.spec.ts:306:7 › INT-05 390 original player controls and bounded highlight preview (6.7s)
+  ok 53 e2e\cms_design.spec.ts:306:7 › INT-05 1440 original player controls and bounded highlight preview (5.5s)
+  ok 54 e2e\cms_design.spec.ts:364:5 › INT-05 player reports an unavailable original source (893ms)
+  ok 55 e2e\cms_design.spec.ts:372:5 › T3.1 transcript warning, seek, save and summary approval (1.6s)
+  ok 56 e2e\cms_design.spec.ts:391:5 › T3.1 queue file validation, error log and retry (1.2s)
+  ok 57 e2e\cms_design.spec.ts:405:5 › T3.1 settings persist preferences and disclose model-owned threshold (1.3s)
+  ok 58 e2e\cms_design.spec.ts:420:5 › T3.1 library tabs and shared CMS management access (1.4s)
+  ok 59 e2e\cms_design.spec.ts:433:5 › T3.1 timeline uses resolved colors and keyboard seeking (1.5s)
+  ok 60 e2e\cms_design.spec.ts:461:5 › T3.1 real settings limitation is shown when PUT does not persist (1.3s)
+  ok 61 e2e\cms_design.spec.ts:472:7 › T3.1 390 login remembers=true, SVG padding and reload (1.6s)
+  ok 62 e2e\cms_design.spec.ts:472:7 › T3.1 390 login remembers=false, SVG padding and reload (1.6s)
+  ok 63 e2e\cms_design.spec.ts:472:7 › T3.1 1440 login remembers=true, SVG padding and reload (2.1s)
+  ok 64 e2e\cms_design.spec.ts:472:7 › T3.1 1440 login remembers=false, SVG padding and reload (1.8s)
+  ok 65 e2e\cms_design.spec.ts:508:5 › T3.1 wrong password stays on form with API error (918ms)
+
+
+  1) e2e\cms_design.spec.ts:238:9 › T3.1 1440 users layout ─────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Quản lý người dùng', exact: true })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading', { name: 'Quản lý người dùng', exact: true }) with timeout 10000ms
+      - waiting for getByRole('heading', { name: 'Quản lý người dùng', exact: true })
+
+
+      242 |       page.on('pageerror', (error) => errors.push(error.message));
+      243 |       await page.goto(`${cms}/${route}`);
+    > 244 |       await expect(page.getByRole('heading', { name: heading, exact: true })).toBeVisible();
+          |                                                                               ^
+      245 |       if (route.startsWith('highlight')) {
+      246 |         await expect(page.getByText('85% Match', { exact: true })).toHaveClass(/match-medium/);
+      247 |         await expect(page.getByText('78% Match', { exact: true })).toHaveClass(/match-low/);
+        at E:\traning_ai-codex\e2e\cms_design.spec.ts:244:79
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\int47-regression\cms_design-T3-1-1440-users-layout\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\int47-regression\cms_design-T3-1-1440-users-layout\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\int47-regression\cms_design-T3-1-1440-users-layout\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\int47-regression\cms_design-T3-1-1440-users-layout\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) e2e\cms_design.spec.ts:238:9 › T3.1 390 users layout ──────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Quản lý người dùng', exact: true })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading', { name: 'Quản lý người dùng', exact: true }) with timeout 10000ms
+      - waiting for getByRole('heading', { name: 'Quản lý người dùng', exact: true })
+
+
+      242 |       page.on('pageerror', (error) => errors.push(error.message));
+      243 |       await page.goto(`${cms}/${route}`);
+    > 244 |       await expect(page.getByRole('heading', { name: heading, exact: true })).toBeVisible();
+          |                                                                               ^
+      245 |       if (route.startsWith('highlight')) {
+      246 |         await expect(page.getByText('85% Match', { exact: true })).toHaveClass(/match-medium/);
+      247 |         await expect(page.getByText('78% Match', { exact: true })).toHaveClass(/match-low/);
+        at E:\traning_ai-codex\e2e\cms_design.spec.ts:244:79
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\int47-regression\cms_design-T3-1-390-users-layout\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\int47-regression\cms_design-T3-1-390-users-layout\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\int47-regression\cms_design-T3-1-390-users-layout\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\int47-regression\cms_design-T3-1-390-users-layout\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    e2e\cms_design.spec.ts:238:9 › T3.1 1440 users layout ──────────────────────────────────────────
+    e2e\cms_design.spec.ts:238:9 › T3.1 390 users layout ───────────────────────────────────────────
+  63 passed (2.8m)

@@ -1,0 +1,81 @@
+[
+  {
+    "service": "gateway",
+    "container_id": "a4d51fa878800dca7510c2006a7d3f3deb345ad8bd8c1ff4703fecf9697101a5",
+    "image_id": "sha256:d5610a3a43a42b525dbcdcaa916ea606e43237864b437925196766195fd4c310",
+    "rollback_tag": "video-ai-gateway:rollback-int23",
+    "command": [
+      "gateway"
+    ],
+    "mounts": [
+      {
+        "Type": "volume",
+        "Source": "/var/lib/docker/volumes/video-ai_ingest_work/_data",
+        "Destination": "/srv/work",
+        "RW": true
+      },
+      {
+        "Type": "bind",
+        "Source": "/run/desktop/mnt/host/e/traning_ai-codex/backend/bin/gateway-int14",
+        "Destination": "/usr/local/bin/gateway",
+        "RW": false
+      }
+    ],
+    "started_at": "2026-10-27T13:38:58.445052008Z",
+    "restart": "no"
+  },
+  {
+    "service": "ingest-worker",
+    "container_id": "8dba8647c6a266883d8864cbf63cf534f7befca4325ef2ca08094baa746c3471",
+    "image_id": "sha256:ed21674b559e233f4b6f4bd3600496ebf2c4da7d974db0f104822c6debebba0c",
+    "rollback_tag": "video-ai-ingest-worker:rollback-int23",
+    "command": [
+      "python",
+      "/srv/ingest-worker/main.py"
+    ],
+    "mounts": [
+      {
+        "Type": "volume",
+        "Source": "/var/lib/docker/volumes/video-ai_ingest_work/_data",
+        "Destination": "/srv/work",
+        "RW": true
+      }
+    ],
+    "started_at": "2026-10-27T04:09:48.277983625Z",
+    "restart": "no"
+  },
+  {
+    "service": "cms",
+    "container_id": "2552ec8dcbc3ebcd7eb89d279b1604e5c827a683e4ae58099d40165f6bc5216a",
+    "image_id": "sha256:874833b13f8d3a8f46318082f300ad97b0bdf658d868f6c00bff0dc9d0c31194",
+    "rollback_tag": "video-ai-cms:rollback-int23",
+    "command": [
+      "nginx",
+      "-g",
+      "daemon off;"
+    ],
+    "mounts": [
+      {
+        "Type": "bind",
+        "Source": "/run/desktop/mnt/host/e/traning_ai-codex/cms/dist",
+        "Destination": "/usr/share/nginx/html",
+        "RW": false
+      }
+    ],
+    "started_at": "2026-10-27T03:53:14.547623385Z",
+    "restart": "no"
+  },
+  {
+    "service": "client",
+    "container_id": "28ab36991195e0152fc4f1c6d3d8e88531d1b4f38ff988cf37fbfd549fb87186",
+    "image_id": "sha256:4fcf241026fb926cfd8d56bf5d31dade374df42dcded6c1037f2d2792d376cc3",
+    "rollback_tag": "video-ai-client:rollback-int23",
+    "command": [
+      "npm",
+      "start"
+    ],
+    "mounts": [],
+    "started_at": "2026-10-27T04:12:33.853579309Z",
+    "restart": "no"
+  }
+]

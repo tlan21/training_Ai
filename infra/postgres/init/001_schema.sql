@@ -12,6 +12,7 @@ CREATE TABLE users (
     avatar_url VARCHAR(512),
     password_hash VARCHAR(255) NOT NULL,
     role VARCHAR(20) NOT NULL DEFAULT 'client' CHECK (role IN ('admin', 'editor', 'client')),
+    training_origin TEXT NOT NULL DEFAULT 'unknown' CHECK (training_origin IN ('unknown', 'product', 'test')),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
@@ -24,9 +25,15 @@ CREATE TABLE videos (
     raw_file_path VARCHAR(512) NOT NULL,
     thumbnail_url VARCHAR(512),
     duration_seconds NUMERIC(10, 2) NOT NULL,
+    width INTEGER CHECK (width > 0),
+    height INTEGER CHECK (height > 0),
+    fps DOUBLE PRECISION CHECK (fps > 0 AND fps < 'Infinity'::float8),
+    hashtags TEXT[] CHECK (cardinality(hashtags) <= 30),
+    editorial_priority VARCHAR(8) NOT NULL DEFAULT 'normal' CHECK(editorial_priority IN ('low','normal','high')),
     status VARCHAR(20) NOT NULL DEFAULT 'uploaded'
         CHECK (status IN ('uploaded', 'processing', 'processed', 'failed', 'deleted')),
     uploaded_by VARCHAR(50) REFERENCES users(id) ON DELETE SET NULL,
+    training_origin TEXT NOT NULL DEFAULT 'unknown' CHECK (training_origin IN ('unknown', 'product', 'test')),
     deleted_at TIMESTAMP WITH TIME ZONE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
@@ -45,6 +52,8 @@ CREATE TABLE video_processing_jobs (
         CHECK (current_stage IS NULL OR current_stage IN
             ('splitting_frames', 'embedding', 'asr_extracting', 'highlight_scoring', 'summarizing', 'completed')),
     progress SMALLINT NOT NULL DEFAULT 0 CHECK (progress BETWEEN 0 AND 100),
+    processing_options JSONB,
+    skipped_stages TEXT[] NOT NULL DEFAULT '{}',
     started_at TIMESTAMP WITH TIME ZONE,
     completed_at TIMESTAMP WITH TIME ZONE,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
@@ -54,6 +63,8 @@ CREATE TABLE video_processing_jobs (
 CREATE TABLE categories (
     id VARCHAR(50) PRIMARY KEY DEFAULT 'cat_' || replace(uuid_generate_v4()::text, '-', ''),
     name VARCHAR(100) UNIQUE NOT NULL,
+    description TEXT CHECK (char_length(description) <= 2000),
+    keywords TEXT[] NOT NULL DEFAULT '{}' CHECK(cardinality(keywords)<=20),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -65,6 +76,7 @@ CREATE TABLE clips (
     start_time NUMERIC(10, 2) NOT NULL,
     end_time NUMERIC(10, 2) NOT NULL,
     average_score NUMERIC(5, 2) NOT NULL CHECK (average_score >= 0.00 AND average_score <= 100.00),
+    source_segments JSONB NOT NULL DEFAULT '[]'::jsonb CHECK (jsonb_typeof(source_segments) = 'array' AND jsonb_array_length(source_segments) <= 100),
     clip_file_path VARCHAR(512),
     thumbnail_url VARCHAR(512),
     status VARCHAR(20) NOT NULL DEFAULT 'draft'

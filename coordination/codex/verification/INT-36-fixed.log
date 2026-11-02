@@ -1,0 +1,18 @@
+
+Running 11 tests using 1 worker
+
+(node:14344) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 e2e\client_design.spec.ts:52:6 › INT-36 discovery loaded square images stay inside frames 390 (1.2s)
+  ok  2 e2e\client_design.spec.ts:52:6 › INT-36 discovery loaded portrait images stay inside frames 390 (658ms)
+  ok  3 e2e\client_design.spec.ts:52:6 › INT-36 discovery loaded landscape images stay inside frames 390 (800ms)
+  ok  4 e2e\client_design.spec.ts:52:6 › INT-36 discovery loaded square images stay inside frames 1440 (1.1s)
+  ok  5 e2e\client_design.spec.ts:52:6 › INT-36 discovery loaded portrait images stay inside frames 1440 (810ms)
+  ok  6 e2e\client_design.spec.ts:52:6 › INT-36 discovery loaded landscape images stay inside frames 1440 (703ms)
+  ok  7 e2e\client_design.spec.ts:52:6 › INT-36 discovery loaded square images stay inside frames 1903 (818ms)
+  ok  8 e2e\client_design.spec.ts:52:6 › INT-36 discovery loaded portrait images stay inside frames 1903 (727ms)
+  ok  9 e2e\client_design.spec.ts:52:6 › INT-36 discovery loaded landscape images stay inside frames 1903 (823ms)
+  ok 10 e2e\stitch_reference.spec.ts:9:7 › INT-06 Stitch discovery 390 (3.5s)
+  ok 11 e2e\stitch_reference.spec.ts:9:7 › INT-06 Stitch discovery 1440 (1.9s)
+
+  11 passed (14.1s)

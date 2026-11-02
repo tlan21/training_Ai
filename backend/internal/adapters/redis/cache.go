@@ -5,13 +5,14 @@ import (
 	"errors"
 	redissdk "github.com/redis/go-redis/v9"
 	"time"
+	"traning_ai/backend/internal/startup"
 )
 
 type Client struct{ db *redissdk.Client }
 
 func New(ctx context.Context, addr string) (*Client, error) {
 	db := redissdk.NewClient(&redissdk.Options{Addr: addr})
-	if err := db.Ping(ctx).Err(); err != nil {
+	if err := startup.Wait(ctx, "Redis", func(probe context.Context) error { return db.Ping(probe).Err() }); err != nil {
 		_ = db.Close()
 		return nil, err
 	}

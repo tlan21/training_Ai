@@ -51,9 +51,9 @@ const (
 
 var StageProgress = map[Stage]int{
 	StageSplittingFrames:  20,
-	StageAsrExtracting:    40,
-	StageHighlightScoring: 60,
-	StageEmbedding:        80,
+	StageAsrExtracting:    60,
+	StageHighlightScoring: 80,
+	StageEmbedding:        40,
 	StageSummarizing:      90,
 	StageCompleted:        100,
 }

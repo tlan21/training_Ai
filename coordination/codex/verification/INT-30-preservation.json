@@ -1,0 +1,13 @@
+{
+  "only_mock_container_removed": true,
+  "remaining_containers_unchanged": 16,
+  "all_remaining_mounts_unchanged": true,
+  "ai_pid_unchanged": [
+    15852
+  ],
+  "real_models": 6,
+  "original99_video_rows_10_categories_hash_unchanged": true,
+  "active_jobs": 0,
+  "mock_containers": 0,
+  "mock_port_18001_closed": true
+}

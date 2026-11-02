@@ -14,9 +14,12 @@ type VideoRepository interface {
 	Get(ctx context.Context, id string) (*domain.Video, error)
 	GetProcessed(ctx context.Context, id string) (*domain.Video, error)
 	List(ctx context.Context, status *string, page, size int) ([]domain.Video, int, error)
+	ListCMS(ctx context.Context, filter domain.CMSVideoFilter) ([]domain.Video, int, error)
+	ListPublicPage(ctx context.Context, categoryID, sort, cursor string, limit int) ([]domain.Video, *string, error)
 	SetStatus(ctx context.Context, id string, s domain.VideoStatus) error
 	SetCategory(ctx context.Context, id, categoryID string) error
-	SetDuration(ctx context.Context, id string, seconds float64) error
+	SetMediaMetadata(ctx context.Context, id string, seconds float64, width, height *int, fps *float64) error
+	UpdateMetadata(ctx context.Context, id, title, description string, hashtags []string, priority *string) (*domain.Video, error)
 	SoftDelete(ctx context.Context, id string) error
 }
 
@@ -25,10 +28,12 @@ type ClipRepository interface {
 	Get(ctx context.Context, id string) (*domain.Clip, error)
 	GetPublished(ctx context.Context, id string) (*domain.Clip, error)
 	ListPublishedByVideo(ctx context.Context, videoID string) ([]domain.Clip, error)
+	ListPopularPage(ctx context.Context, cursor string, limit int) ([]domain.Clip, *string, error)
 	List(ctx context.Context, videoID, status *string) ([]domain.Clip, error)
+	ListCMS(ctx context.Context, videoID, status *string, query string) ([]domain.Clip, error)
 	SetStatus(ctx context.Context, id string, s domain.ClipStatus) error
 	SetFilePath(ctx context.Context, id, path string) error
-	UpdateMeta(ctx context.Context, id string, title *string, start, end *float64) (*domain.Clip, error)
+	UpdateMeta(ctx context.Context, id string, title *string, start, end *float64, category *string) (*domain.Clip, error)
 	HideByVideo(ctx context.Context, videoID string) error
 }
 
@@ -38,8 +43,7 @@ type UserRepository interface {
 	GetByEmail(ctx context.Context, email string) (*domain.User, error)
 	UpdateProfile(ctx context.Context, id string, username *string) (*domain.User, error)
 	UpdatePassword(ctx context.Context, id string, newHash string) error
-	SetRole(ctx context.Context, id string, r domain.Role) (*domain.User, error)
-	List(ctx context.Context, page, size int) ([]domain.User, int, error)
+	List(ctx context.Context, page, size int, query string) ([]domain.User, int, error)
 }
 
 type PasswordResetRepository interface {
@@ -57,6 +61,7 @@ type SessionRepository interface {
 }
 
 type JobRepository interface {
+	RequestCancel(ctx context.Context, id string) error
 	Create(ctx context.Context, videoID string) (*domain.ProcessingJob, error)
 	Get(ctx context.Context, id string) (*domain.ProcessingJob, error)
 	GetByVideo(ctx context.Context, videoID string) (*domain.ProcessingJob, error)
@@ -64,6 +69,7 @@ type JobRepository interface {
 	SetStatus(ctx context.Context, id string, s domain.JobStatus, started, completed bool) error
 	SetStage(ctx context.Context, id string, stage domain.Stage) error
 	SetError(ctx context.Context, id, errorLog string) error
+	SetProcessingOptions(ctx context.Context, id string, options domain.ProcessingOptions) error
 }
 
 type InteractionRepository interface {
@@ -73,9 +79,23 @@ type InteractionRepository interface {
 	PopularityTop(ctx context.Context, limit int) ([]string, error)
 }
 
+type SettingsRepository interface {
+	Get(ctx context.Context) (*domain.SystemSettings, error)
+	Update(ctx context.Context, values map[string]string) error
+}
+
+type PreferenceRepository interface {
+	Get(ctx context.Context, userID string) ([]string, error)
+	Replace(ctx context.Context, userID string, categoryIDs []string) error
+}
+
 type CategoryRepository interface {
 	List(ctx context.Context) ([]domain.Category, error)
-	Create(ctx context.Context, name string) (*domain.Category, error)
-	Update(ctx context.Context, id, name string) (*domain.Category, error)
+	Create(ctx context.Context, name string, description *string, keywords []string) (*domain.Category, error)
+	Update(ctx context.Context, id, name string, description *string, keywords []string) (*domain.Category, error)
 	Delete(ctx context.Context, id string) error
+}
+
+type CMSMetricsRepository interface {
+	Overview(ctx context.Context, month time.Time) (*domain.CMSMetrics, error)
 }

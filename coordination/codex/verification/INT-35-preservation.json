@@ -1,0 +1,51 @@
+{
+  "other_13_containers_unchanged": true,
+  "host_ai_pids": [
+    14896
+  ],
+  "docker_ai": {
+    "status": "ok",
+    "gpu_vram_used": 0.0,
+    "gpu_util": 0.0,
+    "models_loaded": [
+      "asr_ctc",
+      "highlight_fusion",
+      "minigpt",
+      "siamese",
+      "two_tower",
+      "vit"
+    ],
+    "degraded": [],
+    "dependencies": {
+      "recommendation_index": "missing_collection",
+      "visual_index": "ok"
+    },
+    "queue_depth": 0,
+    "device": "cpu",
+    "stub_mode": false,
+    "load_error": null
+  },
+  "original_videos": "videos|106|41e538d83f6b7f6d73faa03ae214c62e",
+  "original_clips": "clips|56|e6810835e055c262d7c39314279cb35d",
+  "active_jobs": "0",
+  "own_test_clip": "clp_dmh7dapvqjn1|rejected|9|34.00",
+  "public_temp_clip_count": "0",
+  "migration_legacy_projection": "omit newly added source_segments for before/after comparison",
+  "original_row_cutoff_utc": "2026-10-29T08:59:09.8794534Z",
+  "no_new_video_upload": true,
+  "test_file_retained": "one compiled MP4, rejected/not public; original source media untouched",
+  "services": [
+    {
+      "health": "healthy",
+      "name": "/video-ai-client-1"
+    },
+    {
+      "health": "healthy",
+      "name": "/video-ai-cms-1"
+    },
+    {
+      "health": "healthy",
+      "name": "/video-ai-gateway-1"
+    }
+  ]
+}

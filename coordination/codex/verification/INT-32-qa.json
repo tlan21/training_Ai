@@ -1,0 +1,6 @@
+{
+  "pid": 22188,
+  "created": "2026-10-29T14:02:31.956032+07:00",
+  "command": "\"D:\\nodejs\\node.exe\" node_modules/next/dist/bin/next start --hostname 127.0.0.1 --port 3100",
+  "build_id": "eqhNJmAsXQNOLhmwmgMGu"
+}

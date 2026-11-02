@@ -1,0 +1,7 @@
+{
+  "checked_at": "2026-10-27T03:26:36.5875165Z",
+  "gateway_url": "http://127.0.0.1:8000/healthz",
+  "live_auth_cases": "NOT_RUN",
+  "gateway_status": "UNAVAILABLE",
+  "reason": "Project gateway is stopped; prior start auto-review rejection has not been overridden"
+}

@@ -5,6 +5,8 @@ import (
 	"context"
 	"encoding/json"
 	"io"
+	"sort"
+	"strings"
 	"sync"
 	"time"
 
@@ -15,8 +17,10 @@ import (
 // Mỗi mock embed mutex để test song song an toàn.
 
 type VideoRepoMem struct {
-	mu sync.Mutex
-	M  map[string]*domain.Video
+	Clips        *ClipRepoMem
+	Interactions *InteractionRepoMem
+	mu           sync.Mutex
+	M            map[string]*domain.Video
 }
 
 func NewVideoRepoMem() *VideoRepoMem { return &VideoRepoMem{M: map[string]*domain.Video{}} }
@@ -75,7 +79,7 @@ func (r *VideoRepoMem) SetStatus(_ context.Context, id string, s domain.VideoSta
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	v, ok := r.M[id]
-	if !ok {
+	if !ok || v.Status == domain.VideoDeleted {
 		return domain.ErrVideoNotFound
 	}
 	v.Status = s
@@ -91,15 +95,39 @@ func (r *VideoRepoMem) SetCategory(_ context.Context, id, catID string) error {
 	v.CategoryID = &catID
 	return nil
 }
-func (r *VideoRepoMem) SetDuration(_ context.Context, id string, sec float64) error {
+func (r *VideoRepoMem) SetMediaMetadata(_ context.Context, id string, sec float64, width, height *int, fps *float64) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	v, ok := r.M[id]
-	if !ok {
+	if !ok || v.Status == domain.VideoDeleted {
 		return domain.ErrVideoNotFound
 	}
 	v.DurationSeconds = sec
+	if width != nil {
+		v.Width = width
+	}
+	if height != nil {
+		v.Height = height
+	}
+	if fps != nil {
+		v.FPS = fps
+	}
 	return nil
+}
+func (r *VideoRepoMem) UpdateMetadata(_ context.Context, id, title, description string, hashtags []string, priority *string) (*domain.Video, error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	v, ok := r.M[id]
+	if !ok || v.Status == domain.VideoDeleted {
+		return nil, domain.ErrVideoNotFound
+	}
+	v.Title, v.Description, v.Hashtags = title, &description, append([]string{}, hashtags...)
+	if priority != nil {
+		v.EditorialPriority = *priority
+	}
+	v.UpdatedAt = time.Now()
+	cp := *v
+	return &cp, nil
 }
 func (r *VideoRepoMem) SoftDelete(_ context.Context, id string) error {
 	r.mu.Lock()
@@ -117,8 +145,10 @@ func (r *VideoRepoMem) SoftDelete(_ context.Context, id string) error {
 // --- Clip ---
 
 type ClipRepoMem struct {
-	mu sync.Mutex
-	M  map[string]*domain.Clip
+	Videos       *VideoRepoMem
+	Interactions *InteractionRepoMem
+	mu           sync.Mutex
+	M            map[string]*domain.Clip
 }
 
 func NewClipRepoMem() *ClipRepoMem { return &ClipRepoMem{M: map[string]*domain.Clip{}} }
@@ -194,7 +224,7 @@ func (r *ClipRepoMem) SetFilePath(_ context.Context, id, p string) error {
 	v.ClipFilePath = &p
 	return nil
 }
-func (r *ClipRepoMem) UpdateMeta(_ context.Context, id string, title *string, start, end *float64) (*domain.Clip, error) {
+func (r *ClipRepoMem) UpdateMeta(_ context.Context, id string, title *string, start, end *float64, category *string) (*domain.Clip, error) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	v, ok := r.M[id]
@@ -210,6 +240,10 @@ func (r *ClipRepoMem) UpdateMeta(_ context.Context, id string, title *string, st
 	if end != nil {
 		v.EndTime = *end
 	}
+	if category != nil {
+		v.CategoryID = category
+	}
+	v.UpdatedAt = time.Now()
 	cp := *v
 	return &cp, nil
 }
@@ -291,24 +325,22 @@ func (r *UserRepoMem) UpdatePassword(_ context.Context, id string, newHash strin
 	v.PasswordHash = newHash
 	return nil
 }
-func (r *UserRepoMem) SetRole(_ context.Context, id string, role domain.Role) (*domain.User, error) {
-	r.mu.Lock()
-	defer r.mu.Unlock()
-	v, ok := r.M[id]
-	if !ok {
-		return nil, domain.ErrUserNotFound
-	}
-	v.Role = role
-	cp := *v
-	return &cp, nil
-}
-func (r *UserRepoMem) List(_ context.Context, page, size int) ([]domain.User, int, error) {
+func (r *UserRepoMem) List(_ context.Context, page, size int, query string) ([]domain.User, int, error) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	var all []domain.User
+	query = strings.ToLower(strings.TrimSpace(query))
 	for _, v := range r.M {
-		all = append(all, *v)
+		if strings.Contains(strings.ToLower(v.Username), query) || strings.Contains(strings.ToLower(v.Email), query) {
+			all = append(all, *v)
+		}
 	}
+	sort.Slice(all, func(i, j int) bool {
+		if all[i].CreatedAt.Equal(all[j].CreatedAt) {
+			return all[i].ID > all[j].ID
+		}
+		return all[i].CreatedAt.After(all[j].CreatedAt)
+	})
 	total := len(all)
 	start := (page - 1) * size
 	if start >= total {
@@ -459,9 +491,20 @@ func (r *JobRepoMem) SetStatus(_ context.Context, id string, s domain.JobStatus,
 	if !ok {
 		return domain.ErrJobNotFound
 	}
+	if s == domain.JobCompleted && v.ErrorLog != nil && *v.ErrorLog == "canceled_by_user" {
+		return domain.ErrConflict
+	}
 	v.Status = s
 	now := time.Now()
-	if started {
+	if s == domain.JobPending {
+		v.StartedAt = nil
+		v.CompletedAt = nil
+		v.CurrentStage = nil
+		v.Progress = 0
+		v.ErrorLog = nil
+	}
+	v.UpdatedAt = now
+	if started && v.StartedAt == nil {
 		v.StartedAt = &now
 	}
 	if completed {
@@ -508,7 +551,7 @@ func (r *CategoryRepoMem) List(_ context.Context) ([]domain.Category, error) {
 	}
 	return out, nil
 }
-func (r *CategoryRepoMem) Create(_ context.Context, name string) (*domain.Category, error) {
+func (r *CategoryRepoMem) Create(_ context.Context, name string, description *string, keywords []string) (*domain.Category, error) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	for _, v := range r.M {
@@ -516,18 +559,29 @@ func (r *CategoryRepoMem) Create(_ context.Context, name string) (*domain.Catego
 			return nil, domain.ErrConflict
 		}
 	}
-	c := &domain.Category{ID: "cat_" + name, Name: name}
+	c := &domain.Category{ID: "cat_" + name, Name: name, Description: description, Keywords: append([]string{}, keywords...)}
 	r.M[c.ID] = c
 	return c, nil
 }
-func (r *CategoryRepoMem) Update(_ context.Context, id, name string) (*domain.Category, error) {
+func (r *CategoryRepoMem) Update(_ context.Context, id, name string, description *string, keywords []string) (*domain.Category, error) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	v, ok := r.M[id]
 	if !ok {
 		return nil, domain.ErrCategoryNotFound
 	}
+	for otherID, other := range r.M {
+		if otherID != id && other.Name == name {
+			return nil, domain.ErrConflict
+		}
+	}
 	v.Name = name
+	if keywords != nil {
+		v.Keywords = append([]string{}, keywords...)
+	}
+	if description != nil {
+		v.Description = description
+	}
 	cp := *v
 	return &cp, nil
 }
@@ -632,7 +686,7 @@ type AnalysisStoreMem struct {
 func NewAnalysisStoreMem() *AnalysisStoreMem {
 	return &AnalysisStoreMem{M: map[string]*domain.VideoAnalysis{}}
 }
-func (s *AnalysisStoreMem) Put(_ context.Context, vid string, scores []domain.SecondScore, clips []domain.AIClip, cat *string) error {
+func (s *AnalysisStoreMem) Put(_ context.Context, vid string, scores []domain.SecondScore, clips []domain.AIClip, cat *string, threshold *float64) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	va, ok := s.M[vid]
@@ -640,9 +694,12 @@ func (s *AnalysisStoreMem) Put(_ context.Context, vid string, scores []domain.Se
 		va = &domain.VideoAnalysis{VideoID: vid}
 		s.M[vid] = va
 	}
+	va.ProposalDecisions = []domain.ProposalDecision{}
+	va.CategoryMatch = nil
 	va.TimelineScores = scores
 	va.AIClips = clips
 	va.CategorySuggestion = cat
+	va.ClipThreshold = threshold
 	return nil
 }
 func (s *AnalysisStoreMem) Get(_ context.Context, vid string) (*domain.VideoAnalysis, error) {
@@ -706,6 +763,11 @@ func (s *SubtitleStoreMem) UpdateSegments(_ context.Context, vid string, segs []
 		return domain.ErrNotFound
 	}
 	v.Segments = segs
+	texts := []string{}
+	for _, segment := range segs {
+		texts = append(texts, segment.Text)
+	}
+	v.FullTranscript = strings.Join(texts, " ")
 	return nil
 }
 func (s *SubtitleStoreMem) TextSearch(_ context.Context, q string) ([]domain.SubtitleMatch, error) {
@@ -910,13 +972,14 @@ func (c *CacheMem) Delete(_ context.Context, keys ...string) error {
 }
 
 type AIClientMem struct {
-	VisionFn         func([]string) (*domain.VisionResult, error)
-	ASRFn            func(string, string) (*domain.ASRResult, error)
-	HighlightFn      func(string, [][]float32, [][]float32) (*domain.HighlightResult, error)
-	SearchFn         func(string, int, float64) (*domain.SearchResult, error)
-	RecommendationFn func(string, int, map[string]string) (*domain.RecResult, error)
-	SummarizeFn      func(string, int) (*domain.SummaryResult, error)
-	HealthFn         func() (*domain.AIHealth, error)
+	SearchEmbeddingFn func(string) ([]float32, error)
+	VisionFn          func([]string) (*domain.VisionResult, error)
+	ASRFn             func(string, string) (*domain.ASRResult, error)
+	HighlightFn       func(string, [][]float32, [][]float32) (*domain.HighlightResult, error)
+	SearchFn          func(string, int, float64) (*domain.SearchResult, error)
+	RecommendationFn  func(string, int, map[string]string) (*domain.RecResult, error)
+	SummarizeFn       func(string, int) (*domain.SummaryResult, error)
+	HealthFn          func() (*domain.AIHealth, error)
 }
 
 func (m *AIClientMem) Vision(_ context.Context, paths []string) (*domain.VisionResult, error) {
@@ -960,4 +1023,15 @@ func (m *AIClientMem) Health(_ context.Context) (*domain.AIHealth, error) {
 		return m.HealthFn()
 	}
 	return &domain.AIHealth{GpuVramUsed: 100, GpuUtil: 10, ModelsLoaded: []string{"vit"}, StubMode: false}, nil
+}
+
+func (s *ObjectStorageMem) DeletePrefix(_ context.Context, bucket, prefix string) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	for key := range s.Objs {
+		if strings.HasPrefix(key, bucket+"/"+prefix) {
+			delete(s.Objs, key)
+		}
+	}
+	return nil
 }

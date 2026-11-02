@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"traning_ai/backend/internal/domain"
+	"traning_ai/backend/internal/ports"
 )
 
 // AuthHandlers — T2.2: register/login/refresh/logout + users/* (me, preferences, history, likes).
@@ -15,9 +16,10 @@ import (
 type AuthHandlers struct {
 	authSvc         authService
 	userRepo        userRepo
-	vectorStore     vectorStoreI
+	preferences     ports.PreferenceRepository
 	categoryRepo    categoryRepo
 	interactionRepo interactionRepo
+	storage         ports.ObjectStorage
 }
 
 type authService interface {
@@ -31,11 +33,6 @@ type authService interface {
 type userRepo interface {
 	Get(ctx context.Context, id string) (*domain.User, error)
 	UpdateProfile(ctx context.Context, id string, username *string) (*domain.User, error)
-	List(ctx context.Context, page, size int) ([]domain.User, int, error)
-	SetRole(ctx context.Context, id string, r domain.Role) (*domain.User, error)
-}
-type vectorStoreI interface {
-	UpsertUser(ctx context.Context, userID string, vector []float32, tags []string) error
 }
 type categoryRepo interface {
 	List(ctx context.Context) ([]domain.Category, error)
@@ -45,8 +42,8 @@ type interactionRepo interface {
 	Likes(ctx context.Context, userID string, cursor *string, limit int) ([]domain.Clip, *string, error)
 }
 
-func NewAuthHandlers(a authService, u userRepo, vec vectorStoreI, cat categoryRepo, inter interactionRepo) *AuthHandlers {
-	return &AuthHandlers{authSvc: a, userRepo: u, vectorStore: vec, categoryRepo: cat, interactionRepo: inter}
+func NewAuthHandlers(a authService, u userRepo, preferences ports.PreferenceRepository, cat categoryRepo, inter interactionRepo, storage ports.ObjectStorage) *AuthHandlers {
+	return &AuthHandlers{authSvc: a, userRepo: u, preferences: preferences, categoryRepo: cat, interactionRepo: inter, storage: storage}
 }
 
 func (h *AuthHandlers) Register(c *gin.Context) {
@@ -82,8 +79,13 @@ func (h *AuthHandlers) Login(c *gin.Context) {
 		handleDomainErr(c, err)
 		return
 	}
+	prefs, err := h.preferences.Get(c.Request.Context(), u.ID)
+	if err != nil {
+		handleDomainErr(c, err)
+		return
+	}
 	c.SetCookie("refresh", refresh, 604800, "/", "", false, true)
-	c.JSON(http.StatusOK, gin.H{"user": toUserMe(u, nil), "access_token": access})
+	c.JSON(http.StatusOK, gin.H{"user": toUserMe(u, prefs), "access_token": access})
 }
 
 func (h *AuthHandlers) Refresh(c *gin.Context) {
@@ -151,7 +153,12 @@ func (h *AuthHandlers) GetMe(c *gin.Context) {
 		handleDomainErr(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, toUserMe(u, []string{}))
+	prefs, err := h.preferences.Get(c.Request.Context(), uid)
+	if err != nil {
+		handleDomainErr(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, toUserMe(u, prefs))
 }
 
 func (h *AuthHandlers) UpdateMe(c *gin.Context) {
@@ -168,7 +175,12 @@ func (h *AuthHandlers) UpdateMe(c *gin.Context) {
 		handleDomainErr(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, toUserMe(u, []string{}))
+	prefs, err := h.preferences.Get(c.Request.Context(), uid)
+	if err != nil {
+		handleDomainErr(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, toUserMe(u, prefs))
 }
 
 func (h *AuthHandlers) UpdatePreferences(c *gin.Context) {
@@ -191,17 +203,24 @@ func (h *AuthHandlers) UpdatePreferences(c *gin.Context) {
 	catSet := map[string]bool{}
 	for _, cc := range cats {
 		catSet[cc.ID] = true
-		catSet[cc.Name] = true
 	}
+	seen := map[string]bool{}
 	for _, id := range req.CategoryIDs {
 		if !catSet[id] {
 			ErrorEnvelope(c, http.StatusUnprocessableEntity, "VALIDATION_ERROR", "unknown category: "+id)
 			return
 		}
+		if seen[id] {
+			ErrorEnvelope(c, http.StatusUnprocessableEntity, "VALIDATION_ERROR", "category_ids must be distinct")
+			return
+		}
+		seen[id] = true
 	}
 	uid := c.GetString("user_id")
-	vec := make([]float32, 128)
-	_ = h.vectorStore.UpsertUser(c.Request.Context(), uid, vec, req.CategoryIDs)
+	if err := h.preferences.Replace(c.Request.Context(), uid, req.CategoryIDs); err != nil {
+		handleDomainErr(c, err)
+		return
+	}
 	c.Status(http.StatusOK)
 }
 
@@ -217,7 +236,11 @@ func (h *AuthHandlers) History(c *gin.Context) {
 		handleDomainErr(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"items": items, "next_cursor": next})
+	result := make([]gin.H, 0, len(items))
+	for _, item := range items {
+		result = append(result, gin.H{"clip": toClipH(&item.Clip, h.storage), "watched_at": item.WatchedAt.UTC(), "duration_watched": item.DurationWatched})
+	}
+	c.JSON(http.StatusOK, gin.H{"items": result, "next_cursor": next})
 }
 
 func (h *AuthHandlers) Likes(c *gin.Context) {
@@ -232,7 +255,11 @@ func (h *AuthHandlers) Likes(c *gin.Context) {
 		handleDomainErr(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"items": items, "next_cursor": next})
+	result := make([]gin.H, 0, len(items))
+	for _, clip := range items {
+		result = append(result, toClipH(&clip, h.storage))
+	}
+	c.JSON(http.StatusOK, gin.H{"items": result, "next_cursor": next})
 }
 
 func handleDomainErr(c *gin.Context, err error) {

@@ -15,7 +15,13 @@ type State = {
 };
 export const useAuthStore = create<State>((set) => ({
     accessToken: null, user: null, ready: false,
-    setAuth: ({ accessToken, user }) => set({ accessToken, user, ready: true }),
+    setAuth: ({ accessToken, user }) => {
+        localStorage.removeItem("client-signed-out");
+        set({ accessToken, user, ready: true });
+    },
     setToken: (accessToken) => set({ accessToken }), setReady: () => set({ ready: true }),
-    logout: () => set({ accessToken: null, user: null, ready: true }),
+    logout: () => {
+        localStorage.setItem("client-signed-out", "1");
+        set({ accessToken: null, user: null, ready: true });
+    },
 }));

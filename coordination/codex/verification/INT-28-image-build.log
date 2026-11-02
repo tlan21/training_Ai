@@ -1,0 +1,41 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile:
+#1 transferring dockerfile: 153B 0.1s done
+#1 DONE 0.2s
+
+#2 [internal] load metadata for docker.io/library/video-ai-gateway:int23-fa8a382
+#2 DONE 0.2s
+
+#3 [internal] load .dockerignore
+#3 transferring context:
+#3 transferring context: 2B 0.1s done
+#3 DONE 0.2s
+
+#4 [internal] load build context
+#4 ...
+
+#5 [1/2] FROM docker.io/library/video-ai-gateway:int23-fa8a382@sha256:9fecc4dfbaf4721ab19722cfaad60a04ca38f1c72732c90263d04581643e29eb
+#5 resolve docker.io/library/video-ai-gateway:int23-fa8a382@sha256:9fecc4dfbaf4721ab19722cfaad60a04ca38f1c72732c90263d04581643e29eb 0.0s done
+#5 DONE 0.6s
+
+#4 [internal] load build context
+#4 transferring context: 101.59MB 1.8s done
+#4 DONE 2.3s
+
+#6 [2/2] COPY gateway orchestrator ffmpeg-cutter ai-mock frame-backfill /usr/local/bin/
+#6 DONE 1.0s
+
+#7 exporting to image
+#7 exporting layers
+#7 exporting layers 7.1s done
+#7 exporting manifest sha256:8430f5019b7ba4834f866197be8de33be61c1df374d9adde9f36ea53de7e740e 0.1s done
+#7 exporting config sha256:65c1d716644de857f863683b20f60df6504bcc37954dd0e3129b189672d52de2 0.0s done
+#7 exporting attestation manifest sha256:cbb2ffb0a37844f61c08b29e090f59b8bfa16420832e48845799bcd262fca5a8
+#7 exporting attestation manifest sha256:cbb2ffb0a37844f61c08b29e090f59b8bfa16420832e48845799bcd262fca5a8 0.1s done
+#7 exporting manifest list sha256:7663a7728d731c636c92c88b6ccf5954027202ad53a9d61656d2362f5c71bc21 0.0s done
+#7 naming to docker.io/library/video-ai-gateway:int28-7b1e458 done
+#7 unpacking to docker.io/library/video-ai-gateway:int28-7b1e458
+#7 unpacking to docker.io/library/video-ai-gateway:int28-7b1e458 1.2s done
+#7 DONE 8.6s

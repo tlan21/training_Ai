@@ -1,0 +1,65 @@
+{
+  "checked_at": "2026-10-27T04:42:54.4377565Z",
+  "gateway": {
+    "status": "running",
+    "ai_environment": {
+      "AI_ALLOW_STUB": "0",
+      "AI_BASE_URL": "http://host.docker.internal:8001"
+    },
+    "binary_mount": [
+      {
+        "Source": "/run/desktop/mnt/host/e/traning_ai-codex/backend/bin/gateway-int18",
+        "Destination": "/usr/local/bin/gateway",
+        "RW": false
+      }
+    ],
+    "health": "healthy"
+  },
+  "ai_health": {
+    "status": "ok",
+    "gpu_vram_used": 0.0,
+    "gpu_util": 0.0,
+    "models_loaded": [
+      "asr_ctc",
+      "highlight_fusion",
+      "minigpt",
+      "siamese",
+      "two_tower",
+      "vit"
+    ],
+    "degraded": [],
+    "dependencies": {
+      "recommendation_index": "missing_collection",
+      "visual_index": "ok"
+    },
+    "queue_depth": 0,
+    "device": "cpu",
+    "stub_mode": false,
+    "load_error": null
+  },
+  "missing_bearer_http": 401,
+  "recommendation_mode": "popularity",
+  "fixture_cleanup": [
+    {
+      "status": "deleted",
+      "id": "vid_dmfcfh717m5b"
+    },
+    {
+      "status": "deleted",
+      "id": "vid_dmfcftrr3gtp"
+    },
+    {
+      "status": "deleted",
+      "id": "vid_dmfcfukqtor5"
+    }
+  ],
+  "contracts": {
+    "ai": "1.3",
+    "public": "0.3.1"
+  },
+  "e2e": {
+    "duration_seconds": 54.3,
+    "passed": 3,
+    "failed": 0
+  }
+}

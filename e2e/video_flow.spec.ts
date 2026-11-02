@@ -9,13 +9,21 @@ const cms = process.env.E2E_CMS_URL ?? 'http://localhost:5173';
 const client = process.env.E2E_CLIENT_URL ?? 'http://localhost:3000';
 
 test('T4.1 upload → processed → approve → publish → client feed', async ({ page, browser, request }, info) => {
+  const aiHealth = await request.get(`${process.env.E2E_AI_URL ?? 'http://localhost:8001'}/health`);
+  expect(aiHealth.status()).toBe(200);
+  const realHealth = await aiHealth.json();
+  expect(realHealth.stub_mode).toBe(false);
+  expect(realHealth.models_loaded).toHaveLength(6);
+  await info.attach('real-ai-health', { body: JSON.stringify(realHealth), contentType: 'application/json' });
   const name = `e2e-${Date.now()}`;
   const email = `${name}@example.test`;
   const password = 'E2e-test-123!';
-  const title = `${name}.mp4`;
+  let title = `${name}.mp4`;
+  const description = `Mô tả biên tập ${name}`;
   const summary = `Tóm tắt đã được biên tập ${name}`;
   let videoId: string | undefined;
   let clipId: string | undefined;
+  let categoryId: string | undefined;
   let adminHeaders: Record<string, string> = {};
   const viewer = await browser.newContext({ viewport: { width: 390, height: 844 } });
   const viewerPage = await viewer.newPage();
@@ -76,7 +84,13 @@ test('T4.1 upload → processed → approve → publish → client feed', async 
       return job.status;
     }, { timeout: Number(process.env.E2E_PROCESS_TIMEOUT_MS ?? 90_000), message: 'Upload must reach completed through real worker/inference processing' }).toBe('completed');
     const video = await request.get(`${gateway}/api/cms/videos/${videoId}`, { headers: adminHeaders });
-    expect((await video.json()).status).toBe('processed');
+    const original = await video.json();
+    expect(original.status).toBe('processed');
+    expect(original).toMatchObject({ width: 160, height: 90, fps: 10 });
+    const metadataURL = `${gateway}/api/cms/videos/${videoId}`;
+    expect((await request.put(metadataURL, { data: {} })).status()).toBe(401);
+    expect((await request.put(metadataURL, { headers: viewerHeaders, data: {} })).status()).toBe(403);
+    expect((await request.put(metadataURL, { headers: adminHeaders, data: { title: null, description: '', hashtags: [] } })).status()).toBe(422);
 
     const publicDraft = await request.get(`${gateway}/api/videos/${videoId}/analysis`, { headers: viewerHeaders });
     expect(publicDraft.status()).toBe(200);
@@ -88,19 +102,66 @@ test('T4.1 upload → processed → approve → publish → client feed', async 
     expect(analysis.summary ?? '').not.toContain('stub');
     expect(analysis.category_suggestion).toMatch(/^(bong_da|the_thao|ca_nhac|tin_tuc)$/);
     const subtitles = await request.get(`${gateway}/api/videos/${videoId}/subtitles`, { headers: viewerHeaders });
-    expect(JSON.stringify(await subtitles.json())).not.toContain('giả lập');
+    const originalSubtitles = await subtitles.json();
+    expect(JSON.stringify(originalSubtitles)).not.toContain('giả lập');
+    await info.attach('original-real-ai-output', { body: JSON.stringify({ videoId, jobId: upload.job.id, category: analysis.category_suggestion, timeline_seconds: analysis.timeline_scores.length, summary: analysis.summary, subtitles: originalSubtitles }), contentType: 'application/json' });
 
     const loadedAnalysis = page.waitForResponse(r => r.url().endsWith(`/videos/${videoId}/analysis`));
     await page.goto(`${cms}/subtitles?video_id=${videoId}`);
     expect((await loadedAnalysis).status()).toBe(200);
     await expect(page.getByTestId('summary-editor')).toHaveValue(analysis.summary ?? '');
     await expect(page.getByText('BẢN NHÁP AI', { exact: true })).toBeVisible();
+    title = `Biên tập ${name}`;
+    await expect(page.getByText('160 × 90', { exact: true })).toBeVisible();
+    await page.getByLabel('Tiêu đề đề xuất').fill(title);
+    await page.getByLabel('Mô tả chi tiết').fill(description);
+    await page.getByLabel('Thẻ Hashtag', { exact: true }).fill('#BiênTập, INT_23');
+    const saved = page.waitForResponse(r => r.url().endsWith(`/api/cms/videos/${videoId}`) && r.request().method() === 'PUT');
+    await page.getByRole('button', { name: 'Lưu bản nháp', exact: true }).click();
+    expect((await saved).status()).toBe(200);
+    await expect(page.getByText('Đã lưu bản nháp', { exact: true })).toBeVisible();
+    await page.reload();
+    await expect(page.getByLabel('Tiêu đề đề xuất')).toHaveValue(title);
+    await expect(page.getByLabel('Mô tả chi tiết')).toHaveValue(description);
+    await expect(page.getByLabel('Thẻ Hashtag', { exact: true })).toHaveValue('BiênTập, INT_23');
+    // An explicit editorial test caption exercises persistence/cache without claiming ASR accuracy.
+    const caption = `Phụ đề biên tập kiểm thử ${name}`;
+    expect((await request.put(`${gateway}/api/cms/videos/${videoId}/subtitles`, { headers: adminHeaders, data: { segments: [{ segment_index: 0, start_time: 0, end_time: 5, text: 'Bản nháp kiểm thử', confidence: 0 }] } })).status()).toBe(200);
+    await page.reload();
+    await page.getByLabel('Nội dung phụ đề 1').fill(caption);
+    const subtitlesSaved = page.waitForResponse(response => response.url().endsWith(`/videos/${videoId}/subtitles`) && response.request().method() === 'PUT');
+    await page.getByRole('button', { name: 'Lưu thay đổi phụ đề', exact: true }).click();
+    expect((await subtitlesSaved).status()).toBe(200);
+    await expect(page.getByText('Đã lưu phụ đề', { exact: true })).toBeVisible();
+    await page.reload();
+    await expect(page.getByLabel('Nội dung phụ đề 1')).toHaveValue(caption);
+    expect((await (await request.get(`${gateway}/api/videos/${videoId}/subtitles`, { headers: viewerHeaders })).json()).segments[0].text).toBe(caption);
+    const persisted = await (await request.get(metadataURL, { headers: adminHeaders })).json();
+    expect(persisted).toMatchObject({ title, description, hashtags: ['BiênTập', 'INT_23'], width: 160, height: 90, fps: 10, status: 'processed' });
+    expect(new URL(persisted.playback_url).pathname).toBe(new URL(original.playback_url).pathname);
     await page.getByTestId('summary-editor').fill(summary);
     const approved = page.waitForResponse(r => r.url().endsWith(`/videos/${videoId}/summary/approve`) && r.request().method() === 'POST');
     await page.getByRole('button', { name: 'Duyệt nội dung', exact: true }).click();
     expect((await approved).status()).toBe(200);
     const publicApproved = await request.get(`${gateway}/api/videos/${videoId}/analysis`, { headers: viewerHeaders });
     expect((await publicApproved.json()).summary).toBe(summary);
+
+    await page.goto(`${cms}/categories`);
+    await page.getByRole('button', { name: 'Thêm danh mục mới', exact: true }).click();
+    await page.getByLabel('Tên danh mục', { exact: true }).fill(name);
+    await page.getByRole('textbox', { name: 'Mô tả danh mục', exact: true }).fill(description);
+    const categoryCreated = page.waitForResponse(r => r.url().endsWith('/api/cms/categories') && r.request().method() === 'POST');
+    await page.getByRole('button', { name: 'Lưu', exact: true }).click();
+    const categoryResponse = await categoryCreated;
+    expect(categoryResponse.status()).toBe(201);
+    categoryId = (await categoryResponse.json()).id;
+    await page.getByRole('button', { name: `Sửa danh mục ${name}`, exact: true }).click();
+    await page.getByRole('textbox', { name: 'Mô tả danh mục', exact: true }).fill(`${description} đã sửa`);
+    const categorySaved = page.waitForResponse(r => r.url().endsWith(`/api/cms/categories/${categoryId}`) && r.request().method() === 'PUT');
+    await page.getByRole('button', { name: 'Lưu', exact: true }).click();
+    expect((await categorySaved).status()).toBe(200);
+    await page.reload();
+    await expect(page.getByRole('cell', { name: `${description} đã sửa`, exact: true })).toBeVisible();
 
     await page.goto(`${cms}/highlight?video_id=${videoId}`);
     await expect(page.getByRole('heading', { name: title, exact: true })).toBeVisible();
@@ -130,7 +191,9 @@ test('T4.1 upload → processed → approve → publish → client feed', async 
     await page.getByRole('button', { name: 'Xuất bản clip', exact: true }).click();
     expect((await published).status()).toBe(200);
     const feed = await request.get(`${gateway}/api/feed`, { headers: viewerHeaders });
-    const feedItems: Clip[] = (await feed.json()).items;
+    const feedPage = await feed.json();
+    expect(feedPage.recommendation_mode).toBe('popularity');
+    const feedItems: Clip[] = feedPage.items;
     expect(feedItems).toContainEqual(expect.objectContaining({ id: clipId, video_id: videoId, title, status: 'published' }));
     const playback = feedItems.find(clip => clip.id === clipId)?.playback_url;
     expect(playback).toContain('localhost:9000');
@@ -164,12 +227,15 @@ test('T4.1 upload → processed → approve → publish → client feed', async 
     await detailPlayer.evaluate((element) => (element as HTMLVideoElement).play());
     await expect.poll(() => detailPlayer.evaluate((element) => (element as HTMLVideoElement).currentTime)).toBeGreaterThan(1.2);
     await expect(viewerPage.getByText(summary, { exact: true })).toBeVisible();
+    await expect(viewerPage.getByRole('heading', { level: 1, name: title, exact: true })).toBeVisible();
+    await expect(viewerPage.locator('.summary-hashtags span')).toHaveText(['#BiênTập', '#INT_23']);
     await viewerPage.screenshot({ path: info.outputPath('client-detail-player.png') });
     await info.attach('flow-ids', { body: JSON.stringify({ videoId, clipId, title, jobId: upload.job.id }), contentType: 'application/json' });
   } finally {
     // Reject only our clip before soft-deleting our video; keep all existing demo data.
     if (clipId) expect((await request.delete(`${gateway}/api/cms/clips/${clipId}`, { headers: adminHeaders })).status()).toBe(204);
     if (videoId) expect((await request.delete(`${gateway}/api/cms/videos/${videoId}`, { headers: adminHeaders })).status()).toBe(204);
+    if (categoryId) expect((await request.delete(`${gateway}/api/cms/categories/${categoryId}`, { headers: adminHeaders })).status()).toBe(204);
     await viewer.close();
   }
 });

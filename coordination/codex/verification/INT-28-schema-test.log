@@ -1,0 +1,11 @@
+[milvus] kết nối localhost:19530
+[ok] tạo + load video_frame_embeddings (JSON payload, HNSW/COSINE)
+[milvus] init xong: <Mock name='mock.list_collections()' id='2667218358224'>
+[milvus] kết nối localhost:19530
+[skip] video_frame_embeddings đã tồn tại
+[milvus] init xong: <Mock name='mock.list_collections()' id='2667218358224'>
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.003s
+
+OK

@@ -1,0 +1,101 @@
+{
+  "folder": "t_ng_quan_h_th_ng",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "assetFailures": [],
+  "metrics": [
+    {
+      "text": "logout\n        Đăng xuất",
+      "width": 227,
+      "height": 36,
+      "radius": "4px",
+      "background": "rgba(220, 38, 38, 0.1)"
+    },
+    {
+      "text": "dns\n                Trạng thái hệ thống",
+      "width": 207.09375,
+      "height": 32,
+      "radius": "4px",
+      "background": "rgb(70, 21, 153)"
+    },
+    {
+      "text": "notifications",
+      "width": 24,
+      "height": 30,
+      "radius": "0px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "analytics",
+      "width": 24,
+      "height": 30,
+      "radius": "0px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "Xem tất cả log arrow_forward",
+      "width": 311.34375,
+      "height": 24,
+      "radius": "0px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "edit",
+      "width": 32,
+      "height": 32,
+      "radius": "2px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "download",
+      "width": 32,
+      "height": 32,
+      "radius": "2px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "edit",
+      "width": 32,
+      "height": 32,
+      "radius": "2px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "download",
+      "width": 32,
+      "height": 32,
+      "radius": "2px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "refresh",
+      "width": 32,
+      "height": 32,
+      "radius": "2px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "edit",
+      "width": 32,
+      "height": 32,
+      "radius": "2px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "Tải thêm dữ liệu expand_more",
+      "width": 200.984375,
+      "height": 32,
+      "radius": "0px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "add\n\n            Phân tích video mới",
+      "width": 56,
+      "height": 56,
+      "radius": "12px",
+      "background": "rgb(70, 21, 153)"
+    }
+  ]
+}

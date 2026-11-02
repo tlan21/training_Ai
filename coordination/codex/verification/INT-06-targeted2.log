@@ -1,0 +1,24 @@
+
+Running 8 tests using 1 worker
+
+(node:23704) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 e2e\client_design.spec.ts:211:6 › INT-06 390 onboarding grid and keyboard follow the same API IDs (3.5s)
+  ok 2 e2e\client_design.spec.ts:228:6 › INT-06 390 register geometry matches Stitch (3.1s)
+  ok 3 e2e\client_design.spec.ts:238:6 › INT-06 390 original video matches the happy-path player layout (3.0s)
+  ok 4 e2e\client_design.spec.ts:211:6 › INT-06 1440 onboarding grid and keyboard follow the same API IDs (2.3s)
+  ok 5 e2e\client_design.spec.ts:228:6 › INT-06 1440 register geometry matches Stitch (2.5s)
+  ok 6 e2e\client_design.spec.ts:238:6 › INT-06 1440 original video matches the happy-path player layout (2.2s)
+  x  7 e2e\client_design.spec.ts:258:22 › INT-06 search similarity can be prepared before image upload without an AI request (0ms)
+(node:18004) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 8 e2e\client_onboarding_layout.spec.ts:4:5 › INT-06 interest packing has no internal gaps and preserves API IDs and keyboard order (922ms)
+
+
+  1) e2e\client_design.spec.ts:258:22 › INT-06 search similarity can be prepared before image upload without an AI request 
+
+    Error: worker process exited unexpectedly (code=4294967295, signal=null)
+
+  1 failed
+    e2e\client_design.spec.ts:258:22 › INT-06 search similarity can be prepared before image upload without an AI request 
+  7 passed (1.8m)

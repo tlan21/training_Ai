@@ -1,0 +1,93 @@
+{
+  "checked_at": "2026-10-27T13:41:07.3810157Z",
+  "gateway_health": "healthy",
+  "ai_environment": {
+    "AI_ALLOW_STUB": "0",
+    "AI_BASE_URL": "http://host.docker.internal:8001"
+  },
+  "binary_mount": [
+    {
+      "Source": "/run/desktop/mnt/host/e/traning_ai-codex/backend/bin/gateway-int14",
+      "Destination": "/usr/local/bin/gateway",
+      "RW": false
+    }
+  ],
+  "cms_system_health": {
+    "gpu_util": 0,
+    "gpu_vram_used": 0,
+    "models_loaded": [
+      "asr_ctc",
+      "highlight_fusion",
+      "minigpt",
+      "siamese",
+      "two_tower",
+      "vit"
+    ],
+    "queue_depth": 0
+  },
+  "recommendation_mode": "popularity",
+  "own_videos": [
+    {
+      "id": "vid_dmfnuxlcawkp",
+      "status": "deleted"
+    },
+    {
+      "id": "vid_dmfnvcga2aj0",
+      "status": "deleted"
+    },
+    {
+      "id": "vid_dmfnvhpqupc1",
+      "status": "deleted"
+    }
+  ],
+  "own_clips": [
+    {
+      "id": "clp_dmfnva6gyebn",
+      "public_http": 404
+    },
+    {
+      "id": "clp_dmfnvana8ccf",
+      "public_http": 404
+    },
+    {
+      "id": "clp_dmfnvb3zbx9x",
+      "public_http": 404
+    },
+    {
+      "id": "clp_dmfnvbkpliuy",
+      "public_http": 404
+    },
+    {
+      "id": "clp_dmfnvfo8ls5x",
+      "public_http": 404
+    },
+    {
+      "id": "clp_dmfnvg4zk48j",
+      "public_http": 404
+    },
+    {
+      "id": "clp_dmfnvglr7uju",
+      "public_http": 404
+    },
+    {
+      "id": "clp_dmfnvh2j7b6n",
+      "public_http": 404
+    },
+    {
+      "id": "clp_dmfnvkxkfokb",
+      "public_http": 404
+    },
+    {
+      "id": "clp_dmfnvle949rn",
+      "public_http": 404
+    },
+    {
+      "id": "clp_dmfnvluytb1v",
+      "public_http": 404
+    },
+    {
+      "id": "clp_dmfnvmboj74i",
+      "public_http": 404
+    }
+  ]
+}

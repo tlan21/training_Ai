@@ -1,16 +1,14 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { apiClient } from "../lib/apiClient";
+import { apiClient, loginSession, logoutSession } from "../lib/apiClient";
 import { useAuthStore } from "../stores/authStore";
 import { qk } from "../lib/queryKeys";
 import type { components } from "../api-types";
+import { queryClient } from "../lib/queryClient";
 
 export function useLogin() {
   return useMutation({
-    mutationFn: async (p: { email: string; password: string }) => {
-      const r = await apiClient.post("/api/auth/login", p);
-      return r.data as { access_token: string; user: { id: string; username: string; email: string; role: string } };
-    },
-    onSuccess: (d) => useAuthStore.getState().setAuth({ accessToken: d.access_token, user: d.user }),
+    mutationFn: loginSession,
+    onSuccess: (d) => { queryClient.removeQueries(); useAuthStore.getState().setAuth({ accessToken: d.access_token, user: d.user }); },
   });
 }
 export function useMe(enabled = true) {
@@ -22,28 +20,13 @@ export function useMe(enabled = true) {
 }
 export function useLogout() {
   return useMutation({
-    mutationFn: async () => apiClient.post("/api/auth/logout"),
-    onSettled: () => useAuthStore.getState().logout(),
+    mutationFn: logoutSession,
   });
 }
-export function useVideos(params: { status?: string; page?: number }) {
+export function useSystemHealth(params: Parameters<typeof qk.health>[0] = {}) {
   return useQuery({
-    queryKey: qk.videos(params),
-    queryFn: async () => (await apiClient.get("/api/cms/videos", { params })).data,
-  });
-}
-export function useJobs(params: { status?: string }) {
-  return useQuery({
-    queryKey: qk.jobs(params),
-    queryFn: async () => (await apiClient.get("/api/cms/jobs", { params })).data,
-    refetchInterval: 5000,
-    refetchIntervalInBackground: false,
-  });
-}
-export function useSystemHealth() {
-  return useQuery({
-    queryKey: qk.health(),
-    queryFn: async () => (await apiClient.get<components["schemas"]["SystemHealth"]>("/api/cms/system/health")).data,
+    queryKey: qk.health(params),
+    queryFn: async () => (await apiClient.get<components["schemas"]["SystemHealth"]>("/api/cms/system/health", { params })).data,
     refetchInterval: 5000,
     refetchIntervalInBackground: false,
   });

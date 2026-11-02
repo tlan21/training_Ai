@@ -32,54 +32,75 @@ type PasswordReset struct {
 }
 
 type Video struct {
-	ID              string      `json:"id" bson:"id"`
-	Title           string      `json:"title" bson:"title"`
-	Description     *string     `json:"description" bson:"description"`
-	RawFilePath     string      `json:"raw_file_path" bson:"raw_file_path"`
-	ThumbnailURL    *string     `json:"thumbnail_url" bson:"thumbnail_url"`
-	DurationSeconds float64     `json:"duration_seconds" bson:"duration_seconds"`
-	Status          VideoStatus `json:"status" bson:"status"`
-	UploadedBy      *string     `json:"uploaded_by" bson:"uploaded_by"`
-	CategoryID      *string     `json:"category_id" bson:"category_id"`
-	DeletedAt       *time.Time  `json:"deleted_at" bson:"deleted_at"`
-	CreatedAt       time.Time   `json:"created_at" bson:"created_at"`
-	UpdatedAt       time.Time   `json:"updated_at" bson:"updated_at"`
+	EditorialPriority string      `json:"editorial_priority" bson:"editorial_priority"`
+	CategoryName      *string     `json:"-" bson:"-"`
+	UploadedByName    *string     `json:"-" bson:"-"`
+	ID                string      `json:"id" bson:"id"`
+	Title             string      `json:"title" bson:"title"`
+	Description       *string     `json:"description" bson:"description"`
+	RawFilePath       string      `json:"raw_file_path" bson:"raw_file_path"`
+	ThumbnailURL      *string     `json:"thumbnail_url" bson:"thumbnail_url"`
+	DurationSeconds   float64     `json:"duration_seconds" bson:"duration_seconds"`
+	Width             *int        `json:"width" bson:"width"`
+	Height            *int        `json:"height" bson:"height"`
+	FPS               *float64    `json:"fps" bson:"fps"`
+	Hashtags          []string    `json:"hashtags" bson:"hashtags"`
+	Status            VideoStatus `json:"status" bson:"status"`
+	UploadedBy        *string     `json:"uploaded_by" bson:"uploaded_by"`
+	CategoryID        *string     `json:"category_id" bson:"category_id"`
+	DeletedAt         *time.Time  `json:"deleted_at" bson:"deleted_at"`
+	CreatedAt         time.Time   `json:"created_at" bson:"created_at"`
+	UpdatedAt         time.Time   `json:"updated_at" bson:"updated_at"`
 }
 
 type ProcessingJob struct {
-	ID           string     `json:"id" bson:"id"`
-	VideoID      string     `json:"video_id" bson:"video_id"`
-	QueueName    string     `json:"queue_name" bson:"queue_name"`
-	Status       JobStatus  `json:"status" bson:"status"`
-	WorkerNodeID *string    `json:"worker_node_id" bson:"worker_node_id"`
-	ErrorLog     *string    `json:"error_log" bson:"error_log"`
-	StartedAt    *time.Time `json:"started_at" bson:"started_at"`
-	CompletedAt  *time.Time `json:"completed_at" bson:"completed_at"`
-	UpdatedAt    time.Time  `json:"updated_at" bson:"updated_at"`
-	CurrentStage *Stage     `json:"current_stage" bson:"current_stage"`
-	Progress     int        `json:"progress" bson:"progress"`
+	ProcessingOptions *ProcessingOptions `json:"processing_options,omitempty" bson:"processing_options,omitempty"`
+	SkippedStages     []string           `json:"skipped_stages" bson:"skipped_stages"`
+	ID                string             `json:"id" bson:"id"`
+	VideoID           string             `json:"video_id" bson:"video_id"`
+	QueueName         string             `json:"queue_name" bson:"queue_name"`
+	Status            JobStatus          `json:"status" bson:"status"`
+	WorkerNodeID      *string            `json:"worker_node_id" bson:"worker_node_id"`
+	ErrorLog          *string            `json:"error_log" bson:"error_log"`
+	StartedAt         *time.Time         `json:"started_at" bson:"started_at"`
+	CompletedAt       *time.Time         `json:"completed_at" bson:"completed_at"`
+	UpdatedAt         time.Time          `json:"updated_at" bson:"updated_at"`
+	CurrentStage      *Stage             `json:"current_stage" bson:"current_stage"`
+	Progress          int                `json:"progress" bson:"progress"`
 }
 
 type Clip struct {
-	ID           string     `json:"id" bson:"id"`
-	VideoID      string     `json:"video_id" bson:"video_id"`
-	Title        string     `json:"title" bson:"title"`
-	StartTime    float64    `json:"start_time" bson:"start_time"`
-	EndTime      float64    `json:"end_time" bson:"end_time"`
-	AverageScore float64    `json:"average_score" bson:"average_score"`
-	ClipFilePath *string    `json:"clip_file_path" bson:"clip_file_path"`
-	ThumbnailURL *string    `json:"thumbnail_url" bson:"thumbnail_url"`
-	Status       ClipStatus `json:"status" bson:"status"`
-	CreatedBy    *string    `json:"created_by" bson:"created_by"`
-	CategoryID   *string    `json:"category_id" bson:"category_id"`
-	CreatedAt    time.Time  `json:"created_at" bson:"created_at"`
-	UpdatedAt    time.Time  `json:"updated_at" bson:"updated_at"`
+	ViewCount      int64               `json:"-" bson:"-"`
+	CreatedByName  *string             `json:"-" bson:"-"`
+	CategoryName   *string             `json:"-" bson:"-"`
+	SourceSegments []ClipSourceSegment `json:"source_segments,omitempty" bson:"source_segments,omitempty"`
+	ID             string              `json:"id" bson:"id"`
+	VideoID        string              `json:"video_id" bson:"video_id"`
+	Title          string              `json:"title" bson:"title"`
+	StartTime      float64             `json:"start_time" bson:"start_time"`
+	EndTime        float64             `json:"end_time" bson:"end_time"`
+	AverageScore   float64             `json:"average_score" bson:"average_score"`
+	ClipFilePath   *string             `json:"clip_file_path" bson:"clip_file_path"`
+	ThumbnailURL   *string             `json:"thumbnail_url" bson:"thumbnail_url"`
+	Status         ClipStatus          `json:"status" bson:"status"`
+	CreatedBy      *string             `json:"created_by" bson:"created_by"`
+	CategoryID     *string             `json:"category_id" bson:"category_id"`
+	CreatedAt      time.Time           `json:"created_at" bson:"created_at"`
+	UpdatedAt      time.Time           `json:"updated_at" bson:"updated_at"`
+}
+
+type ClipSourceSegment struct {
+	StartTime float64 `json:"start_time" bson:"start_time"`
+	EndTime   float64 `json:"end_time" bson:"end_time"`
 }
 
 type Category struct {
-	ID        string    `json:"id" bson:"id"`
-	Name      string    `json:"name" bson:"name"`
-	CreatedAt time.Time `json:"created_at" bson:"created_at"`
+	Keywords    []string  `json:"-" bson:"keywords"`
+	VideoCount  int       `json:"-" bson:"-"`
+	ID          string    `json:"id" bson:"id"`
+	Name        string    `json:"name" bson:"name"`
+	Description *string   `json:"description" bson:"description"`
+	CreatedAt   time.Time `json:"created_at" bson:"created_at"`
 }
 
 type Interaction struct {
@@ -90,6 +111,17 @@ type Interaction struct {
 	InteractionType InteractionType `json:"interaction_type" bson:"interaction_type"`
 	DurationWatched int             `json:"duration_watched" bson:"duration_watched"`
 	CreatedAt       time.Time       `json:"created_at" bson:"created_at"`
+}
+
+type SystemSettings struct {
+	CategorySuggestionEnabled bool
+	CategoryKeywordEnabled    bool
+	HighlightThreshold        int
+	ASRWarningThreshold       int
+	AutoHighlightEnabled      bool
+	AutoSubtitleEnabled       bool
+	DefaultSubtitleLang       string
+	AIServiceAPIKey           string
 }
 
 type HistoryItem struct {
@@ -142,16 +174,19 @@ type KeyMoment struct {
 }
 
 type VideoAnalysis struct {
-	VideoID            string        `json:"video_id" bson:"video_id"`
-	TimelineScores     []SecondScore `json:"timeline_scores" bson:"timeline_scores"`
-	AIClips            []AIClip      `json:"ai_generated_clips" bson:"ai_generated_clips"`
-	CategorySuggestion *string       `json:"category_suggestion" bson:"category_suggestion"`
-	Summary            *string       `json:"summary" bson:"summary"`
-	SummaryStatus      *string       `json:"summary_status" bson:"summary_status"` // draft|approved
-	SuggestedTitle     *string       `json:"suggested_title" bson:"suggested_title"`
-	KeyMoments         []KeyMoment   `json:"key_moments" bson:"key_moments"`
-	Hashtags           []string      `json:"hashtags" bson:"hashtags"`
-	CreatedAt          time.Time     `json:"created_at" bson:"created_at"`
+	ProposalDecisions  []ProposalDecision `json:"proposal_decisions" bson:"proposal_decisions"`
+	CategoryMatch      *CategoryMatch     `json:"category_match,omitempty" bson:"category_match,omitempty"`
+	ClipThreshold      *float64           `json:"clip_threshold" bson:"clip_threshold"`
+	VideoID            string             `json:"video_id" bson:"video_id"`
+	TimelineScores     []SecondScore      `json:"timeline_scores" bson:"timeline_scores"`
+	AIClips            []AIClip           `json:"ai_generated_clips" bson:"ai_generated_clips"`
+	CategorySuggestion *string            `json:"category_suggestion" bson:"category_suggestion"`
+	Summary            *string            `json:"summary" bson:"summary"`
+	SummaryStatus      *string            `json:"summary_status" bson:"summary_status"` // draft|approved
+	SuggestedTitle     *string            `json:"suggested_title" bson:"suggested_title"`
+	KeyMoments         []KeyMoment        `json:"key_moments" bson:"key_moments"`
+	Hashtags           []string           `json:"hashtags" bson:"hashtags"`
+	CreatedAt          time.Time          `json:"created_at" bson:"created_at"`
 }
 
 // --- Vector store payloads (database_schema.md §4) ---
@@ -178,8 +213,41 @@ type VideoHit struct {
 // --- AI results (inference-service :8001) ---
 
 type VisionResult struct {
-	CategorySuggestion string      `json:"category_suggestion" bson:"category_suggestion"`
-	Embeddings256      [][]float32 `json:"embeddings_256" bson:"embeddings_256"`
+	CategoryLogitSums  map[string]float64 `json:"category_logit_sums"`
+	SiameseVectors     [][]float32        `json:"siamese_vectors"`
+	CategorySuggestion string             `json:"category_suggestion" bson:"category_suggestion"`
+	Embeddings256      [][]float32        `json:"embeddings_256" bson:"embeddings_256"`
+}
+
+// AI-API v2.0 compute-only Two-Tower features; no ANN or storage in inference.
+type RecommendationVideo struct {
+	VideoID             string    `json:"video_id"`
+	CategoryID          *string   `json:"category_id"`
+	ContentEmbedding256 []float32 `json:"content_embedding_256"`
+	PositiveCount       int       `json:"positive_count"`
+}
+type RecommendationUser struct {
+	UserID               string   `json:"user_id"`
+	PreferredCategoryIDs []string `json:"preferred_category_ids"`
+	PositiveVideoIDs     []string `json:"positive_video_ids"`
+}
+type RecommendationFeatures struct {
+	Videos []RecommendationVideo `json:"videos"`
+	Users  []RecommendationUser  `json:"users"`
+}
+type RecommendationEmbeddings struct {
+	FeatureVersion string `json:"feature_version"`
+	Dim            int    `json:"dim"`
+	Metric         string `json:"metric"`
+	Normalized     bool   `json:"normalized"`
+	Videos         []struct {
+		VideoID string    `json:"video_id"`
+		Vector  []float32 `json:"vector"`
+	} `json:"videos"`
+	Users []struct {
+		UserID string    `json:"user_id"`
+		Vector []float32 `json:"vector"`
+	} `json:"users"`
 }
 
 type ASRResult struct {
@@ -188,6 +256,7 @@ type ASRResult struct {
 }
 
 type HighlightResult struct {
+	ClipThreshold    *float64      `json:"clip_threshold" bson:"clip_threshold"`
 	TimelineScores   []SecondScore `json:"timeline_scores" bson:"timeline_scores"`
 	RecommendedClips []AIClip      `json:"recommended_clips" bson:"recommended_clips"`
 }
@@ -197,7 +266,8 @@ type SearchResult struct {
 }
 
 type RecResult struct {
-	Hits []VideoHit `json:"hits" bson:"hits"`
+	Hits               []VideoHit `json:"hits" bson:"hits"`
+	RecommendationMode string     `json:"recommendation_mode" bson:"recommendation_mode"`
 }
 
 type SummaryResult struct {

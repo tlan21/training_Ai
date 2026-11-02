@@ -1,0 +1,60 @@
+[
+  {
+    "width": 1903,
+    "grid": {
+      "x": 271.5,
+      "y": 221,
+      "width": 1360,
+      "height": 520
+    },
+    "frames": [
+      {
+        "y": 221,
+        "height": 520,
+        "bottom": 741
+      },
+      {
+        "y": 221,
+        "height": 248,
+        "bottom": 469
+      },
+      {
+        "y": 493,
+        "height": 248,
+        "bottom": 741
+      }
+    ],
+    "next_section_y": 789,
+    "no_mock": true,
+    "no_media_created": true
+  },
+  {
+    "width": 1440,
+    "grid": {
+      "x": 40,
+      "y": 221,
+      "width": 1360,
+      "height": 520
+    },
+    "frames": [
+      {
+        "y": 221,
+        "height": 520,
+        "bottom": 741
+      },
+      {
+        "y": 221,
+        "height": 248,
+        "bottom": 469
+      },
+      {
+        "y": 493,
+        "height": 248,
+        "bottom": 741
+      }
+    ],
+    "next_section_y": 789,
+    "no_mock": true,
+    "no_media_created": true
+  }
+]

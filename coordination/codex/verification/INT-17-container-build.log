@@ -1,0 +1,141 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 845B 0.0s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/node:22-alpine
+#2 DONE 6.4s
+
+#3 [internal] load build context
+#3 DONE 0.0s
+
+#4 [builder 1/6] FROM docker.io/library/node:22-alpine@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914
+#4 resolve docker.io/library/node:22-alpine@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914
+#4 resolve docker.io/library/node:22-alpine@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914 0.3s done
+#4 DONE 0.4s
+
+#3 [internal] load build context
+#3 transferring context:
+#3 transferring context: 273.54kB 0.6s done
+#3 DONE 0.8s
+
+#5 [builder 2/6] WORKDIR /src
+#5 CACHED
+
+#6 [builder 3/6] COPY client/package.json client/package-lock.json* ./
+#6 DONE 0.2s
+
+#7 [builder 4/6] RUN npm ci
+#7 38.46 npm warn deprecated eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+#7 74.92 
+#7 74.92 added 408 packages, and audited 409 packages in 1m
+#7 74.92 
+#7 74.92 156 packages are looking for funding
+#7 74.92   run `npm fund` for details
+#7 74.93 
+#7 74.93 found 0 vulnerabilities
+#7 74.93 npm notice
+#7 74.93 npm notice New major version of npm available! 10.9.9 -> 12.2.1
+#7 74.93 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+#7 74.93 npm notice To update run: npm install -g npm@12.2.1
+#7 74.93 npm notice
+#7 DONE 129.5s
+
+#8 [builder 5/6] COPY client/ ./
+#8 DONE 9.3s
+
+#9 [builder 6/6] RUN npm run lint && npm run build && npx tsc --noEmit
+#9 1.541 
+#9 1.541 > client2@0.1.0 lint
+#9 1.541 > eslint src
+#9 1.541 
+#9 24.53 
+#9 24.53 > client2@0.1.0 build
+#9 24.53 > next build --webpack
+#9 24.53 
+#9 26.17 ▲ Next.js 16.4.3 (webpack)
+#9 26.21 ⚠ React 18 support is deprecated in Next.js 16 and will be removed in Next.js 17. Please upgrade to React 19. Learn more: https://nextjs.org/docs/messages/react-version
+#9 26.21 ✓ Running next.config.mjs took 35ms
+#9 29.83 Attention: Next.js now collects completely anonymous telemetry regarding usage.
+#9 29.83 This information is used to shape Next.js' roadmap and prioritize features.
+#9 29.83 You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+#9 29.83 https://nextjs.org/telemetry
+#9 29.83 
+#9 31.55 - Experiments (use with caution):
+#9 31.55   · cpus: 1
+#9 31.55 
+#9 31.73   Creating an optimized production build ...
+#9 70.34 ✓ Compiled successfully in 31.5s
+#9 70.37   Running TypeScript ...
+#9 70.41 
+#9 70.41   We detected TypeScript in your project and reconfigured your tsconfig.json file for you.
+#9 70.41   The following suggested values were added to your tsconfig.json. These values can be changed to fit your project's needs:
+#9 70.41 
+#9 70.41   	- target was set to ES2017 (For top-level `await`. Note: Next.js only polyfills for the esmodules target.)
+#9 70.41   	- include was updated to add '.next/dev/types/**/*.ts'
+#9 70.41 
+#9 70.41   The following mandatory changes were made to your tsconfig.json:
+#9 70.41 
+#9 70.41   	- jsx was set to react-jsx (next.js uses the React automatic runtime)
+#9 70.41 
+#9 94.36   Finished TypeScript in 24.0s ...
+#9 94.42   Collecting page data using 1 worker ...
+#9 100.5   Generating static pages using 1 worker (0/13) ...
+#9 102.6   Generating static pages using 1 worker (3/13) 
+#9 102.6   Generating static pages using 1 worker (6/13) 
+#9 102.7   Generating static pages using 1 worker (9/13) 
+#9 102.7 ✓ Generating static pages using 1 worker (13/13) in 2.1s
+#9 103.2   Finalizing page optimization ...
+#9 103.2   Collecting build traces ...
+#9 139.1 
+#9 139.1 Route (app)
+#9 139.1 ┌ ○ /
+#9 139.1 ├ ○ /_not-found
+#9 139.1 ├ ○ /discover
+#9 139.1 ├ ○ /feed
+#9 139.1 ├ ○ /forgot-password
+#9 139.1 ├ ○ /login
+#9 139.1 ├ ○ /onboarding
+#9 139.1 ├ ○ /profile
+#9 139.1 ├ ○ /register
+#9 139.1 ├ ○ /reset-password
+#9 139.1 ├ ○ /search
+#9 139.1 └ ƒ /videos/[id]
+#9 139.1 
+#9 139.1 
+#9 139.1 ○  (Static)   prerendered as static content
+#9 139.1 ƒ  (Dynamic)  server-rendered on demand
+#9 139.1 
+#9 DONE 156.8s
+
+#10 [stage-1 3/7] COPY --from=builder /src/package.json ./
+#10 DONE 0.3s
+
+#11 [stage-1 4/7] COPY --from=builder /src/.next ./.next
+#11 DONE 2.0s
+
+#12 [stage-1 5/7] COPY --from=builder /src/public ./public
+#12 DONE 0.2s
+
+#13 [stage-1 6/7] COPY --from=builder /src/node_modules ./node_modules
+#13 DONE 36.2s
+
+#14 [stage-1 7/7] COPY --from=builder /src/next.config.mjs ./next.config.mjs
+#14 DONE 0.3s
+
+#15 exporting to image
+#15 exporting layers
+#15 exporting layers 56.8s done
+#15 exporting manifest sha256:c1d6b8a3c67ebedabb86a0b32ef8a0480b1c43b858580f04dcd56701d40c0287 0.1s done
+#15 exporting config sha256:23ed435b81e2cb1842f05ea095bda2a1e241006e10c21654663d7e6ce7f07cb8
+#15 exporting config sha256:23ed435b81e2cb1842f05ea095bda2a1e241006e10c21654663d7e6ce7f07cb8 0.1s done
+#15 exporting attestation manifest sha256:8cd66bd626fd0931fd03ea2d16f3cc7e46affa447329c6fe8c2d3655c31fad2d
+#15 exporting attestation manifest sha256:8cd66bd626fd0931fd03ea2d16f3cc7e46affa447329c6fe8c2d3655c31fad2d 0.2s done
+#15 exporting manifest list sha256:4fcf241026fb926cfd8d56bf5d31dade374df42dcded6c1037f2d2792d376cc3
+#15 exporting manifest list sha256:4fcf241026fb926cfd8d56bf5d31dade374df42dcded6c1037f2d2792d376cc3 0.3s done
+#15 naming to docker.io/library/video-ai-client:latest
+#15 naming to docker.io/library/video-ai-client:latest 0.0s done
+#15 unpacking to docker.io/library/video-ai-client:latest
+#15 unpacking to docker.io/library/video-ai-client:latest 40.2s done
+#15 DONE 98.0s

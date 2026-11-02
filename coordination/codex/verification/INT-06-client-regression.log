@@ -1,0 +1,106 @@
+
+Running 63 tests using 1 worker
+
+(node:20260) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 e2e\client_design.spec.ts:23:6 › INT-14 390 truthful recommendation label popularity (5.1s)
+  ok  2 e2e\client_design.spec.ts:23:6 › INT-14 390 truthful recommendation label personalized (3.7s)
+  ok  3 e2e\client_design.spec.ts:23:6 › INT-14 390 truthful recommendation label fallback (3.5s)
+  ok  4 e2e\client_design.spec.ts:23:6 › INT-14 390 truthful recommendation label legacy (3.7s)
+  ok  5 e2e\client_design.spec.ts:23:6 › INT-14 1440 truthful recommendation label popularity (4.0s)
+  ok  6 e2e\client_design.spec.ts:23:6 › INT-14 1440 truthful recommendation label personalized (4.9s)
+  ok  7 e2e\client_design.spec.ts:23:6 › INT-14 1440 truthful recommendation label fallback (4.1s)
+  ok  8 e2e\client_design.spec.ts:23:6 › INT-14 1440 truthful recommendation label legacy (4.5s)
+  ok  9 e2e\client_design.spec.ts:95:5 › INT-16 parallel 401s share refresh and hydrate the same user (2.4s)
+  ok 10 e2e\client_design.spec.ts:106:5 › INT-16 logout waits for refresh and reload cannot restore it (7.1s)
+  ok 11 e2e\client_design.spec.ts:126:5 › INT-16 failed logout still closes local session across reload (3.9s)
+  ok 12 e2e\client_design.spec.ts:138:5 › INT-16 changed refresh-cookie identity never mixes user data (2.6s)
+  x  13 e2e\client_design.spec.ts:154:5 › INT-15 one watch row on session end, no heartbeat, seek or duplicate exit (2.6s)
+(node:10968) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 14 e2e\client_design.spec.ts:189:5 › INT-15 skip requires visible second and less than three watched seconds (3.9s)
+  ok 15 e2e\client_design.spec.ts:198:5 › INT-15 staff sessions do not emit product interactions (4.8s)
+  ok 16 e2e\client_design.spec.ts:211:6 › INT-06 390 onboarding grid and keyboard follow the same API IDs (4.2s)
+  ok 17 e2e\client_design.spec.ts:228:6 › INT-06 390 register geometry matches Stitch (2.7s)
+  ok 18 e2e\client_design.spec.ts:238:6 › INT-06 390 original video matches the happy-path player layout (2.9s)
+  ok 19 e2e\client_design.spec.ts:268:7 › T3.2 390 login layout (1.6s)
+  ok 20 e2e\client_design.spec.ts:268:7 › T3.2 390 register layout (1.9s)
+  ok 21 e2e\client_design.spec.ts:268:7 › T3.2 390 forgot-password layout (2.1s)
+  ok 22 e2e\client_design.spec.ts:268:7 › T3.2 390 reset-password layout (2.2s)
+  ok 23 e2e\client_design.spec.ts:268:7 › T3.2 390 onboarding layout (2.4s)
+  ok 24 e2e\client_design.spec.ts:268:7 › T3.2 390 feed layout (2.9s)
+  ok 25 e2e\client_design.spec.ts:268:7 › T3.2 390 discover layout (2.7s)
+  ok 26 e2e\client_design.spec.ts:268:7 › T3.2 390 search layout (2.2s)
+  ok 27 e2e\client_design.spec.ts:268:7 › T3.2 390 profile layout (4.8s)
+  ok 28 e2e\client_design.spec.ts:268:7 › T3.2 390 videos/vid_ui1 layout (2.5s)
+  ok 29 e2e\client_design.spec.ts:286:6 › T3.2 390 player seek transcript and download (2.7s)
+  ok 30 e2e\client_design.spec.ts:299:6 › T3.2 390 visual upload and threshold (2.3s)
+  ok 31 e2e\client_design.spec.ts:211:6 › INT-06 1440 onboarding grid and keyboard follow the same API IDs (2.8s)
+  ok 32 e2e\client_design.spec.ts:228:6 › INT-06 1440 register geometry matches Stitch (2.1s)
+  ok 33 e2e\client_design.spec.ts:238:6 › INT-06 1440 original video matches the happy-path player layout (2.4s)
+  ok 34 e2e\client_design.spec.ts:258:22 › INT-06 search similarity can be prepared before image upload without an AI request (2.3s)
+  ok 35 e2e\client_design.spec.ts:268:7 › T3.2 1440 login layout (2.5s)
+  ok 36 e2e\client_design.spec.ts:268:7 › T3.2 1440 register layout (2.4s)
+  ok 37 e2e\client_design.spec.ts:268:7 › T3.2 1440 forgot-password layout (2.7s)
+  ok 38 e2e\client_design.spec.ts:268:7 › T3.2 1440 reset-password layout (2.3s)
+  ok 39 e2e\client_design.spec.ts:268:7 › T3.2 1440 onboarding layout (2.6s)
+  ok 40 e2e\client_design.spec.ts:268:7 › T3.2 1440 feed layout (2.7s)
+  ok 41 e2e\client_design.spec.ts:268:7 › T3.2 1440 discover layout (2.9s)
+  ok 42 e2e\client_design.spec.ts:268:7 › T3.2 1440 search layout (2.1s)
+  ok 43 e2e\client_design.spec.ts:268:7 › T3.2 1440 profile layout (2.5s)
+  ok 44 e2e\client_design.spec.ts:268:7 › T3.2 1440 videos/vid_ui1 layout (2.5s)
+  ok 45 e2e\client_design.spec.ts:286:6 › T3.2 1440 player seek transcript and download (3.8s)
+  ok 46 e2e\client_design.spec.ts:299:6 › T3.2 1440 visual upload and threshold (3.0s)
+  ok 47 e2e\client_design.spec.ts:310:5 › T3.2 onboarding minimum three and skip (4.7s)
+  ok 48 e2e\client_design.spec.ts:317:5 › T3.2 login wrong credentials stays on form (2.3s)
+  ok 49 e2e\client_design.spec.ts:322:5 › T3.2 visual unavailable and invalid file are explicit (3.1s)
+  ok 50 e2e\client_design.spec.ts:328:5 › T3.2 account edit and logout (6.0s)
+  ok 51 e2e\client_design.spec.ts:332:6 › T3.2 feed empty state (3.6s)
+  ok 52 e2e\client_design.spec.ts:332:6 › T3.2 discover empty state (3.0s)
+  ok 53 e2e\client_design.spec.ts:332:6 › T3.2 profile?view=library empty state (2.5s)
+  ok 54 e2e\client_design.spec.ts:334:5 › T3.2 feed actions and swipe pause inactive player (3.9s)
+  ok 55 e2e\client_design.spec.ts:346:5 › T3.2 loading and feed error states (3.3s)
+  ok 56 e2e\client_design.spec.ts:351:5 › T3.2 analysis failure does not block clip playback (3.8s)
+  ok 57 e2e\client_design.spec.ts:355:5 › T3.2 register validates confirmation before API (1.8s)
+  ok 58 e2e\client_design.spec.ts:360:5 › T3.2 discovery category chips keep label width and filter API (1.8s)
+  ok 59 e2e\client_design.spec.ts:365:5 › T3.2 draft summary hidden and saved list gap is clear (5.0s)
+  ok 60 e2e\client_design.spec.ts:369:5 › T3.2 refresh restores session without persisting access token (3.7s)
+  ok 61 e2e\client_onboarding_layout.spec.ts:4:5 › INT-06 interest packing has no internal gaps and preserves API IDs and keyboard order (920ms)
+  ok 62 e2e\client_player.spec.ts:3:5 › T3.2 highlight ranges threshold gaps and next scene (2ms)
+  ok 63 e2e\client_player.spec.ts:9:5 › T3.2 clip seek uses source offset and player writes time (2ms)
+
+
+  1) e2e\client_design.spec.ts:154:5 › INT-15 one watch row on session end, no heartbeat, seek or duplicate exit 
+
+    Error: expect(received).toHaveLength(expected)
+
+    Expected length: 0
+    Received length: 1
+    Received array:  [{"clip_id": "clp_ui1", "duration_watched": 0, "interaction_type": "watch_time", "video_id": "vid_ui1"}]
+
+      167 |  await page.clock.fastForward(12000);
+      168 |  await video.evaluate(el=>{(window as unknown as {watchSample:{time:number}}).watchSample.time=12;el.dispatchEvent(new Event('timeupdate'));});
+    > 169 |  expect(interactions.filter(x=>x.interaction_type==='watch_time')).toHaveLength(0);
+          |                                                                    ^
+      170 |  await video.evaluate(el=>{
+      171 |   const sample=(window as unknown as {watchSample:{time:number;seeking:boolean}}).watchSample;
+      172 |   sample.seeking=true;sample.time=80;el.dispatchEvent(new Event('seeking'));sample.seeking=false;el.dispatchEvent(new Event('seeked'));
+        at E:\traning_ai-codex\e2e\client_design.spec.ts:169:68
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    backend\.tmp\int06-regression\client_design-INT-15-one-w-24991-beat-seek-or-duplicate-exit\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: backend\.tmp\int06-regression\client_design-INT-15-one-w-24991-beat-seek-or-duplicate-exit\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    backend\.tmp\int06-regression\client_design-INT-15-one-w-24991-beat-seek-or-duplicate-exit\trace.zip
+    Usage:
+
+        npx playwright show-trace backend\.tmp\int06-regression\client_design-INT-15-one-w-24991-beat-seek-or-duplicate-exit\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    e2e\client_design.spec.ts:154:5 › INT-15 one watch row on session end, no heartbeat, seek or duplicate exit 
+  62 passed (3.3m)

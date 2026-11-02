@@ -1,0 +1,18 @@
+[
+  {
+    "Name": "/v1/completions, 200",
+    "Count": 4
+  },
+  {
+    "Name": "/v1/highlight/completions, 200",
+    "Count": 4
+  },
+  {
+    "Name": "/v2/asr/completions, 200",
+    "Count": 4
+  },
+  {
+    "Name": "/v2/vision/completions, 200",
+    "Count": 4
+  }
+]

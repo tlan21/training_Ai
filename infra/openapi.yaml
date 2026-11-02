@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Video AI Platform — Public + CMS API
-  version: 0.1.0
+  version: 0.8.0
   description: >
     Contract-first (master plan §2). Nguồn sự thật cho gateway Go (oapi-codegen)
     và FE types (openapi-typescript). Điểm highlight thang 0–100; similarity/score 0–1.
@@ -247,7 +247,12 @@ paths:
   /api/feed:
     get:
       tags: [content]
-      summary: Feed clip published (recommendation; fallback popularity)
+      summary: Feed clip published với mode gợi ý thực tế (D18)
+      description: >
+        Primary popularity pages use an opaque next_cursor bound to this route.
+        Ranking uses the first page's fixed seven-day interaction window and creation cutoff;
+        current publication/deletion visibility is checked on every page. Forward the cursor unchanged.
+        next_cursor is null when exhausted. Invalid cursor or limit returns 422.
       parameters:
         - $ref: "#/components/parameters/Cursor"
         - $ref: "#/components/parameters/Limit"
@@ -256,13 +261,19 @@ paths:
           description: clip page
           content:
             application/json:
-              schema: { $ref: "#/components/schemas/ClipPage" }
+              schema: { $ref: "#/components/schemas/FeedPage" }
         "401": { $ref: "#/components/responses/Unauthorized" }
+        "422": { $ref: "#/components/responses/ValidationError" }
 
   /api/videos:
     get:
       tags: [content]
       summary: Duyệt video processed công khai (Discovery)
+      description: >
+        Opaque next_cursor is bound to sort and category_id; keep those filters unchanged between pages.
+        Pages share the first page's creation cutoff; trending also fixes its seven-day interaction window.
+        Current visibility is checked on every page. next_cursor is null when exhausted.
+        Invalid cursor, sort or limit returns 422.
       parameters:
         - { name: category_id, in: query, schema: { type: string } }
         - { name: sort, in: query, schema: { type: string, enum: [trending, newest], default: newest } }
@@ -281,6 +292,7 @@ paths:
                     items: { $ref: "#/components/schemas/Video" }
                   next_cursor: { type: string, nullable: true }
         "401": { $ref: "#/components/responses/Unauthorized" }
+        "422": { $ref: "#/components/responses/ValidationError" }
 
   /api/videos/{id}:
     get:
@@ -399,6 +411,7 @@ paths:
     post:
       tags: [interactions]
       summary: Ghi tương tác (tín hiệu Two-Tower)
+      description: Chỉ role client. Một watch_time cho mỗi phiên xem, không heartbeat hoặc thời gian tua; các loại khác có duration_watched bằng 0.
       requestBody:
         required: true
         content:
@@ -412,10 +425,12 @@ paths:
                 interaction_type:
                   type: string
                   enum: [click, watch_time, like, share, skip, save]
-                duration_watched: { type: integer, nullable: true }
+                duration_watched: { type: integer, nullable: true, minimum: 0, maximum: 2147483647 }
       responses:
         "201": { description: Đã ghi }
         "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
         "422": { $ref: "#/components/responses/ValidationError" }
 
   # ---------------- 2.3 CMS videos ----------------
@@ -448,9 +463,14 @@ paths:
         "403": { $ref: "#/components/responses/Forbidden" }
     get:
       tags: [cms-videos]
-      summary: Danh sách video mọi trạng thái (page-based)
+      summary: Danh sách video với tìm kiếm/lọc toàn kho; mặc định ẩn video đã xóa
       parameters:
         - { name: status, in: query, schema: { type: string, enum: [uploaded, processing, processed, failed, deleted] } }
+        - { name: q, in: query, schema: { type: string, maxLength: 200 } }
+        - { name: category_id, in: query, schema: { type: string } }
+        - { name: date_from, in: query, schema: { type: string, format: date } }
+        - { name: date_to, in: query, description: Inclusive UTC day, schema: { type: string, format: date } }
+        - { name: include_deleted, in: query, schema: { type: boolean, default: false } }
         - $ref: "#/components/parameters/Page"
       responses:
         "200":
@@ -472,16 +492,64 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/VideoDetail" }
         "404": { $ref: "#/components/responses/NotFound" }
+    put:
+      tags: [cms-videos]
+      summary: Lưu metadata biên tập video (admin/editor; phương án A)
+      description: >
+        Thay thế cùng lúc title/description/hashtags; không đổi file, trạng thái hoặc kết quả AI.
+        Hashtags biên tập lưu riêng với đề xuất AI và không bị inference ghi đè.
+        description rỗng xóa mô tả; hashtags [] xóa toàn bộ thẻ biên tập. Không sửa video đã xóa mềm.
+      parameters: [ { $ref: "#/components/parameters/PathId" } ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/VideoMetadataUpdate" }
+      responses:
+        "200":
+          description: Metadata sau khi lưu (playback_url chỉ được cấp qua GET detail)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/VideoDetail" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "422": { $ref: "#/components/responses/ValidationError" }
     delete:
       tags: [cms-videos]
-      summary: Xóa mềm + xóa vectors Milvus + ẩn clips
+      summary: Xóa mềm và dọn dữ liệu video (D24)
+      description: >
+        Idempotent; xóa vector Milvus, raw/audio/thumbnail/clip MinIO, analysis/subtitle Mongo và ẩn clips.
+        Từ chối khi job hoặc clip đang xử lý để tránh ghi lại dữ liệu sau xóa. Lỗi storage trả 503;
+        gọi lại DELETE để hoàn tất cleanup. Không xóa collection, bucket hoặc dữ liệu video khác.
       parameters: [ { $ref: "#/components/parameters/PathId" } ]
       responses:
         "204": { description: Đã xóa mềm }
         "403": { $ref: "#/components/responses/Forbidden" }
         "404": { $ref: "#/components/responses/NotFound" }
 
+        "409": { $ref: "#/components/responses/Conflict" }
+        "503":
+          description: Backend storage unavailable; retry deletion.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+
   /api/cms/videos/{id}/analysis:
+    put:
+      tags: [cms-videos]
+      summary: Lưu quyết định duyệt gợi ý highlight; không sửa output model
+      parameters: [ { $ref: "#/components/parameters/PathId" } ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/HighlightReviewUpdate" }
+      responses:
+        "200": { description: Review saved }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "409": { $ref: "#/components/responses/Conflict" }
+        "422": { $ref: "#/components/responses/ValidationError" }
     get:
       tags: [cms-videos]
       summary: Analysis đầy đủ (gồm ai_generated_clips, category_suggestion, summary_status)
@@ -510,6 +578,7 @@ paths:
                   summary: { type: string }
                   suggested_title: { type: string }
         "404": { $ref: "#/components/responses/NotFound" }
+        "422": { $ref: "#/components/responses/ValidationError" }
 
   /api/cms/videos/{id}/category:
     put:
@@ -583,6 +652,8 @@ paths:
       summary: Hàng đợi job + current_stage + progress
       parameters:
         - { name: status, in: query, schema: { type: string, enum: [pending, running, completed, failed] } }
+        - { name: q, in: query, schema: { type: string, maxLength: 200 } }
+        - { name: video_id, in: query, schema: { type: string } }
       responses:
         "200":
           description: list job
@@ -638,7 +709,7 @@ paths:
         "403": { $ref: "#/components/responses/Forbidden" }
     put:
       tags: [cms-settings]
-      summary: Cập nhật settings (admin only)
+      summary: Cập nhật settings bằng tài khoản quản lý CMS tạo sẵn
       requestBody:
         required: true
         content:
@@ -651,7 +722,10 @@ paths:
   /api/cms/system/health:
     get:
       tags: [cms-settings]
-      summary: Proxy GET :8001/health (số thật RTX 3060)
+      summary: Sức khỏe AI và CPU thực; tùy chọn thống kê CMS/MinIO, không giả telemetry khi dependency lỗi
+      parameters:
+        - { name: include_metrics, in: query, schema: { type: boolean, default: false } }
+        - { name: month, in: query, description: UTC calendar month for metrics, schema: { type: string, pattern: '^\d{4}-\d{2}$' } }
       responses:
         "200":
           description: health
@@ -664,17 +738,23 @@ paths:
   /api/cms/clips:
     post:
       tags: [cms-clips]
-      summary: Tạo clip (draft→processing) + Kafka clip.cut.requested
+      summary: Tạo clip đơn hoặc video tổng hợp AI (processing→draft) + Kafka clip.cut.requested
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
-              required: [video_id, title, start_time, end_time]
+              required: [video_id, title]
+              description: >
+                auto_highlights=true tự lấy các đoạn AI đã lưu chưa bị biên tập viên bỏ, gộp phần trùng và xếp theo thời gian nguồn.
+                Không có đoạn hợp lệ trả 422. Kết quả là một file MP4 nháp, không tự xuất bản.
+                Clip tổng hợp dùng start_time=0 và end_time=tổng thời lượng các đoạn; source_segments giữ mốc video gốc.
+                Khi auto_highlights=false hoặc bỏ trống, bắt buộc gửi start_time và end_time như trước.
               properties:
                 video_id: { type: string }
                 title: { type: string }
+                auto_highlights: { type: boolean, default: false }
                 start_time: { type: number, format: float }
                 end_time: { type: number, format: float }
       responses:
@@ -684,12 +764,14 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/Clip" }
         "403": { $ref: "#/components/responses/Forbidden" }
+        "422": { $ref: "#/components/responses/ValidationError" }
     get:
       tags: [cms-clips]
       summary: Danh sách clip theo video/status
       parameters:
         - { name: video_id, in: query, schema: { type: string } }
         - { name: status, in: query, schema: { type: string, enum: [draft, processing, published, rejected] } }
+        - { name: q, in: query, schema: { type: string, maxLength: 200 } }
       responses:
         "200":
           description: list
@@ -723,6 +805,7 @@ paths:
       responses:
         "204": { description: Đã xóa }
         "404": { $ref: "#/components/responses/NotFound" }
+        "409": { $ref: "#/components/responses/Conflict" }
 
   /api/cms/clips/{id}/publish:
     post:
@@ -754,16 +837,17 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required: [name]
-              properties:
-                name: { type: string }
+              $ref: "#/components/schemas/CategoryWrite"
       responses:
         "201":
           description: category
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Category" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "409": { $ref: "#/components/responses/Conflict" }
+        "422": { $ref: "#/components/responses/ValidationError" }
 
   /api/cms/categories/{id}:
     put:
@@ -775,13 +859,14 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required: [name]
-              properties:
-                name: { type: string }
+              $ref: "#/components/schemas/CategoryWrite"
       responses:
         "200": { description: OK }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "409": { $ref: "#/components/responses/Conflict" }
         "404": { $ref: "#/components/responses/NotFound" }
+        "422": { $ref: "#/components/responses/ValidationError" }
     delete:
       tags: [cms-categories]
       summary: Xóa
@@ -789,13 +874,16 @@ paths:
       responses:
         "204": { description: Đã xóa }
         "404": { $ref: "#/components/responses/NotFound" }
+        "409": { $ref: "#/components/responses/Conflict" }
 
   # ---------------- 2.3 CMS users (admin) ----------------
   /api/cms/users:
     get:
       tags: [cms-users]
-      summary: Danh sách user (admin only)
-      parameters: [ { $ref: "#/components/parameters/Page" } ]
+      summary: Danh sách tài khoản chỉ đọc, không có quản lý vai trò hay xóa tài khoản
+      parameters:
+        - { $ref: "#/components/parameters/Page" }
+        - { name: q, in: query, description: Tìm username hoặc email trên toàn danh sách, schema: { type: string, maxLength: 200 } }
       responses:
         "200":
           description: page
@@ -809,28 +897,6 @@ paths:
                     items: { $ref: "#/components/schemas/User" }
                   total: { type: integer }
                   page: { type: integer }
-        "403": { $ref: "#/components/responses/Forbidden" }
-
-  /api/cms/users/{id}/role:
-    put:
-      tags: [cms-users]
-      summary: Đổi role (admin only)
-      parameters: [ { $ref: "#/components/parameters/PathId" } ]
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required: [role]
-              properties:
-                role: { type: string, enum: [admin, editor, client] }
-      responses:
-        "200":
-          description: user
-          content:
-            application/json:
-              schema: { $ref: "#/components/schemas/User" }
         "403": { $ref: "#/components/responses/Forbidden" }
 
 components:
@@ -929,6 +995,37 @@ components:
       properties:
         id: { type: string }
         name: { type: string }
+        description: { type: string, nullable: true, maxLength: 2000 }
+        keywords: { type: array, maxItems: 20, items: { type: string, minLength: 1, maxLength: 100 } }
+        video_count: { type: integer, minimum: 0, readOnly: true, description: Confirmed non-deleted videos across the entire repository. }
+
+    CategoryWrite:
+      type: object
+      additionalProperties: false
+      required: [name]
+      properties:
+        keywords: { type: array, maxItems: 20, uniqueItems: true, description: "Omitted preserves existing keywords; empty clears. Backend rule suggestions only, editor confirms category.", items: { type: string, minLength: 1, maxLength: 100 } }
+        name: { type: string, minLength: 1, maxLength: 100 }
+        description:
+          type: string
+          nullable: true
+          maxLength: 2000
+          description: Omitted/null preserves existing description on update; empty string clears. Name-only callers remain supported.
+
+    VideoMetadataUpdate:
+      type: object
+      additionalProperties: false
+      required: [title, description, hashtags]
+      properties:
+        editorial_priority: { type: string, enum: [low, normal, high], description: Editorial flag only; does not claim to reorder Kafka or GPU scheduling. }
+        title: { type: string, minLength: 1, maxLength: 255, description: Nonblank Unicode text. }
+        description: { type: string, maxLength: 10000 }
+        hashtags:
+          type: array
+          maxItems: 30
+          uniqueItems: true
+          description: Plain Unicode letter/digit/underscore tags, without leading hash or spaces; [] explicitly clears editorial tags.
+          items: { type: string, minLength: 1, maxLength: 64, pattern: '^[\p{L}\p{N}_]+$' }
 
     Video:
       type: object
@@ -940,6 +1037,9 @@ components:
         duration_seconds: { type: number, format: float }
         status: { type: string, enum: [uploaded, processing, processed, failed, deleted] }
         category: { $ref: "#/components/schemas/Category" }
+        uploaded_by: { type: string, nullable: true }
+        uploaded_by_name: { type: string, nullable: true }
+        editorial_priority: { type: string, enum: [low, normal, high] }
         created_at: { type: string, format: date-time }
 
     VideoDetail:
@@ -947,23 +1047,85 @@ components:
         - $ref: "#/components/schemas/Video"
         - type: object
           properties:
+            width:
+              type: integer
+              minimum: 1
+              nullable: true
+              readOnly: true
+              description: Encoded source width in pixels before ingest resizing; null until known, never inferred from thumbnails.
+            height:
+              type: integer
+              minimum: 1
+              nullable: true
+              readOnly: true
+              description: Encoded source height in pixels before ingest resizing; null until known.
+            fps:
+              type: number
+              format: double
+              minimum: 0
+              exclusiveMinimum: true
+              nullable: true
+              readOnly: true
+              description: Average source frames per second from CPU ingest; null when unavailable.
+            hashtags:
+              type: array
+              nullable: true
+              description: Saved editorial tags; null means no editorial override yet (AI suggestions remain in analysis). [] is an explicit empty override.
+              items: { type: string }
+            playback_url:
+              type: string
+              nullable: true
+              description: >
+                URL MinIO presigned cho video gốc, hết hạn sau 1 giờ. Chỉ cấp trong GET detail:
+                public chỉ video processed; CMS yêu cầu admin/editor và không cấp cho video deleted.
+                Null khi chưa có file gốc. Không trả đường dẫn raw_file_path trong API.
             clips:
               type: array
               items: { $ref: "#/components/schemas/Clip" }
 
+    ClipSourceSegment:
+      type: object
+      required: [start_time, end_time]
+      properties:
+        start_time: { type: number, format: double, minimum: 0 }
+        end_time: { type: number, format: double, exclusiveMinimum: true, minimum: 0 }
+
     Clip:
       type: object
       properties:
+        view_count: { type: integer, minimum: 0, readOnly: true, description: Count of validated Client click/open events for this clip. }
+        created_by_name: { type: string, nullable: true, readOnly: true }
+        category_name: { type: string, nullable: true, readOnly: true }
+        updated_at: { type: string, format: date-time, readOnly: true }
         id: { type: string }
         video_id: { type: string }
         title: { type: string }
         start_time: { type: number, format: float }
         end_time: { type: number, format: float }
+        source_segments:
+          type: array
+          maxItems: 100
+          description: Đoạn nguồn của bản tổng hợp, tăng theo thời gian, không trùng. Bỏ trống với clip đơn; mốc phát bản tổng hợp bắt đầu từ 0.
+          items: { $ref: "#/components/schemas/ClipSourceSegment" }
         average_score: { type: number, format: float, minimum: 0, maximum: 100 }
         thumbnail_url: { type: string, nullable: true }
         playback_url: { type: string, nullable: true, description: MinIO presigned URL }
         status: { type: string, enum: [draft, processing, published, rejected] }
         created_at: { type: string, format: date-time }
+
+    FeedPage:
+      allOf:
+        - $ref: "#/components/schemas/ClipPage"
+        - type: object
+          required: [recommendation_mode]
+          properties:
+            recommendation_mode:
+              type: string
+              enum: [popularity, personalized, fallback]
+              description: >
+                popularity khi xếp hạng từ dữ liệu sản phẩm; personalized chỉ khi AI trả vector sản phẩm thật,
+                backend xác minh ID và hydrate metadata Postgres; fallback khi AI lỗi, timeout hoặc không có kết quả hợp lệ.
+                Không suy diễn personalized từ HTTP 200. Chỉ trả clip published/video processed với metadata thật.
 
     ClipPage:
       type: object
@@ -985,6 +1147,13 @@ components:
     Job:
       type: object
       properties:
+        video_title: { type: string }
+        thumbnail_url: { type: string, nullable: true }
+        duration_seconds: { type: number }
+        uploaded_by_name: { type: string, nullable: true }
+        editorial_priority: { type: string, enum: [low, normal, high] }
+        processing_options: { $ref: "#/components/schemas/ProcessingOptions" }
+        skipped_stages: { type: array, items: { type: string, enum: [asr_extracting, highlight_scoring, summarizing] } }
         id: { type: string }
         video_id: { type: string }
         status: { type: string, enum: [pending, running, completed, failed] }
@@ -1033,6 +1202,15 @@ components:
     CmsAnalysis:
       type: object
       properties:
+        proposal_decisions: { type: array, items: { $ref: "#/components/schemas/ProposalDecision" } }
+        category_match: { $ref: "#/components/schemas/CategoryMatch" }
+        clip_threshold:
+          type: number
+          format: double
+          nullable: true
+          minimum: 0
+          maximum: 100
+          description: Ngưỡng AI báo đã dùng để đề xuất clip cho kết quả này. Null khi kết quả cũ hoặc AI chưa cung cấp; không suy từ Settings.
         timeline_scores:
           type: array
           items: { $ref: "#/components/schemas/TimelineScore" }
@@ -1086,7 +1264,9 @@ components:
     Settings:
       type: object
       properties:
-        highlight_threshold: { type: integer }
+        category_suggestion_enabled: { type: boolean, description: "Enable mapping AI class output into an editorial category suggestion, not automatic publishing." }
+        category_keyword_enabled: { type: boolean, description: Allow deterministic keyword rules to suggest a category before the AI class fallback. }
+        highlight_threshold: { type: integer, deprecated: true, description: Giá trị hiển thị cũ; không thay đổi ngưỡng model hoặc đề xuất AI. CMS đọc CmsAnalysis.clip_threshold theo từng video. }
         asr_warning_threshold: { type: integer }
         auto_highlight_enabled: { type: boolean }
         auto_subtitle_enabled: { type: boolean }
@@ -1096,7 +1276,9 @@ components:
     SettingsUpdate:
       type: object
       properties:
-        highlight_threshold: { type: integer, minimum: 0, maximum: 100 }
+        category_suggestion_enabled: { type: boolean }
+        category_keyword_enabled: { type: boolean }
+        highlight_threshold: { type: integer, minimum: 0, maximum: 100, deprecated: true, description: Giữ tương thích client cũ; không điều khiển model hoặc tính lại clip. }
         asr_warning_threshold: { type: integer, minimum: 0, maximum: 100 }
         auto_highlight_enabled: { type: boolean }
         auto_subtitle_enabled: { type: boolean }
@@ -1105,9 +1287,91 @@ components:
     SystemHealth:
       type: object
       properties:
+        ai_available: { type: boolean }
+        ai_error: { type: string, nullable: true }
+        device: { type: string, nullable: true }
+        cpu_util: { type: number, nullable: true, minimum: 0, maximum: 100, description: Docker host Linux CPU utilization sampled between reads; null until sampled or unavailable. }
+        metrics: { $ref: "#/components/schemas/CmsMetrics" }
+        metrics_error: { type: string, nullable: true }
+        storage: { $ref: "#/components/schemas/StorageUsage" }
+        storage_error: { type: string, nullable: true }
         gpu_vram_used: { type: number, format: float }
         gpu_util: { type: number, format: float }
         models_loaded:
           type: array
           items: { type: string }
         queue_depth: { type: integer }
+
+    ProcessingOptions:
+      type: object
+      required: [auto_highlight_enabled, auto_subtitle_enabled]
+      description: Settings snapshot taken before upload is enqueued; changing settings does not rewrite existing jobs/results.
+      properties:
+        auto_highlight_enabled: { type: boolean }
+        auto_subtitle_enabled: { type: boolean }
+
+    ProposalDecision:
+      type: object
+      required: [proposal_index, status]
+      additionalProperties: false
+      properties:
+        proposal_index: { type: integer, minimum: 0 }
+        status: { type: string, enum: [accepted, dismissed] }
+
+    HighlightReviewUpdate:
+      type: object
+      required: [proposal_decisions]
+      additionalProperties: false
+      properties:
+        proposal_decisions: { type: array, maxItems: 100, items: { $ref: "#/components/schemas/ProposalDecision" } }
+
+    CategoryMatch:
+      type: object
+      required: [category_id, name, source]
+      properties:
+        category_id: { type: string }
+        name: { type: string }
+        source: { type: string, enum: [vision, keyword] }
+        keyword: { type: string, nullable: true }
+
+    StorageUsage:
+      type: object
+      required: [total_bytes, buckets]
+      properties:
+        total_bytes: { type: integer, format: int64, minimum: 0 }
+        buckets:
+          type: array
+          items:
+            type: object
+            required: [name, bytes, objects]
+            properties:
+              name: { type: string }
+              bytes: { type: integer, format: int64, minimum: 0 }
+              objects: { type: integer, format: int64, minimum: 0 }
+
+    CmsMetrics:
+      type: object
+      properties:
+        total_videos: { type: integer }
+        processed_videos: { type: integer }
+        failed_videos: { type: integer }
+        deleted_videos: { type: integer }
+        published_clips: { type: integer }
+        pending_jobs: { type: integer }
+        running_jobs: { type: integer }
+        completed_jobs: { type: integer }
+        failed_jobs: { type: integer }
+        total_users: { type: integer }
+        active_users: { type: integer, description: Distinct Client users with a validated interaction during the last15minutes. }
+        views_month: { type: integer, description: "Validated click/open interactions in requested UTC month, not inferred AI quality." }
+        total_views: { type: integer }
+        success_rate: { type: number, nullable: true, minimum: 0, maximum: 100 }
+        average_processing_seconds: { type: number, nullable: true, minimum: 0 }
+        daily_processing:
+          type: array
+          items:
+            type: object
+            required: [date, count]
+            properties:
+              date: { type: string, format: date }
+              count: { type: integer, minimum: 0 }

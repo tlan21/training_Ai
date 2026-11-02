@@ -1,4 +1,4 @@
-"""init_collections.py — tạo 2 collection Milvus (database_schema §4). T0.1b.
+"""init_collections.py — tạo collection frame Milvus (D24; recommendation chờ AI-12) (database_schema §4). T0.1b.
 
 Chạy sau khi milvus healthy:
     pip install pymilvus
@@ -33,9 +33,7 @@ def _video_frame_embeddings() -> None:
     fields = [
         FieldSchema(name="id", dtype=DataType.INT64, is_primary=True, auto_id=True),
         FieldSchema(name="vector", dtype=DataType.FLOAT_VECTOR, dim=DIM),
-        FieldSchema(name="video_id", dtype=DataType.VARCHAR, max_length=50),
-        FieldSchema(name="timestamp", dtype=DataType.FLOAT),
-        FieldSchema(name="thumbnail_url", dtype=DataType.VARCHAR, max_length=512),
+        FieldSchema(name="payload", dtype=DataType.JSON),
     ]
     col = Collection(name, CollectionSchema(fields, description="Visual Search frame embeddings"))
     col.create_index("vector", {
@@ -43,7 +41,8 @@ def _video_frame_embeddings() -> None:
         "metric_type": "COSINE",
         "params": {"M": 16, "efConstruction": 200},
     })
-    print(f"[ok] tạo {name} (HNSW/COSINE)")
+    col.load()
+    print(f"[ok] tạo + load {name} (JSON payload, HNSW/COSINE)")
 
 
 def _user_recommendation_embeddings() -> None:
@@ -70,7 +69,7 @@ def main() -> None:
     connections.connect(alias="default", host=HOST, port=PORT)
     print(f"[milvus] kết nối {HOST}:{PORT}")
     _video_frame_embeddings()
-    _user_recommendation_embeddings()
+    # D24/AI-12: do not create a recommendation collection before the real v2 checkpoint.
     print("[milvus] init xong:", utility.list_collections())
 
 

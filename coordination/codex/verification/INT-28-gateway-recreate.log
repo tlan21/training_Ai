@@ -1,0 +1,5 @@
+time="2026-10-29T03:59:35Z" level=warning msg="Found orphan containers ([video-ai-ai-mock-1 video-ai-inference-service-1]) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container video-ai-gateway-1  Recreate
+ Container video-ai-gateway-1  Recreated
+ Container video-ai-gateway-1  Starting
+ Container video-ai-gateway-1  Started

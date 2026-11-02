@@ -1,0 +1,58 @@
+
+Running 3 tests using 1 worker
+
+(node:14500) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 e2e\video_flow.spec.ts:11:5 › T4.1 upload → processed → approve → publish → client feed (31.4s)
+(node:21208) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 2 e2e\video_flow.spec.ts:227:5 › T4.1 invalid video fails processing and stays private (1.5s)
+  ok 3 e2e\visual_search.spec.ts:12:5 › T4.2 real Siamese search, publish privacy, cache, latency and Client (12.4s)
+
+
+  1) e2e\video_flow.spec.ts:11:5 › T4.1 upload → processed → approve → publish → client feed ───────
+
+    Error: expect(received).toMatchObject(expected)
+
+    - Expected  - 3
+    + Received  + 3
+
+      Object {
+    -   "fps": 10,
+    -   "height": 90,
+    -   "width": 160,
+    +   "fps": null,
+    +   "height": null,
+    +   "width": null,
+      }
+
+      87 |     const original = await video.json();
+      88 |     expect(original.status).toBe('processed');
+    > 89 |     expect(original).toMatchObject({ width: 160, height: 90, fps: 10 });
+         |                      ^
+      90 |     const metadataURL = `${gateway}/api/cms/videos/${videoId}`;
+      91 |     expect((await request.put(metadataURL, { data: {} })).status()).toBe(401);
+      92 |     expect((await request.put(metadataURL, { headers: viewerHeaders, data: {} })).status()).toBe(403);
+        at E:\traning_ai-codex\e2e\video_flow.spec.ts:89:22
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\video_flow-T4-1-upload-→-p-68fde-ove-→-publish-→-client-feed\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\video_flow-T4-1-upload-→-p-68fde-ove-→-publish-→-client-feed\test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\video_flow-T4-1-upload-→-p-68fde-ove-→-publish-→-client-feed\error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\video_flow-T4-1-upload-→-p-68fde-ove-→-publish-→-client-feed\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\video_flow-T4-1-upload-→-p-68fde-ove-→-publish-→-client-feed\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    e2e\video_flow.spec.ts:11:5 › T4.1 upload → processed → approve → publish → client feed ────────
+  2 passed (48.3s)

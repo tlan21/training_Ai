@@ -3,7 +3,6 @@ import { useAuthStore } from "./stores/authStore";
 import { Sidebar } from "./components/common/Sidebar";
 import { TopBar } from "./components/common/TopBar";
 import LoginPage from "./pages/LoginPage";
-import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import DashboardPage from "./pages/DashboardPage";
 import QueuePage from "./pages/QueuePage";
 import HighlightPage from "./pages/HighlightPage";
@@ -15,10 +14,9 @@ import UsersPage from "./pages/UsersPage";
 import SettingsPage from "./pages/SettingsPage";
 import { useState } from "react";
 
-function Guard({ allow, children }: { allow?: string[]; children: React.ReactNode }) {
+function Guard({ children }: { children: React.ReactNode }) {
   const { accessToken, user } = useAuthStore();
-  if (!accessToken) return <Navigate to="/login" replace />;
-  if (allow && user && !allow.includes(user.role)) return <Navigate to="/dashboard" replace />;
+  if (!accessToken || !user || !["admin", "editor"].includes(user.role ?? "")) return <Navigate to="/login" replace />;
   return <>{children}</>;
 }
 function Shell() {
@@ -38,7 +36,7 @@ function Shell() {
 }
 export const router = createBrowserRouter([
   { path: "/login", element: <LoginPage /> },
-  { path: "/forgot-password", element: <ForgotPasswordPage /> },
+  { path: "/forgot-password", element: <Navigate to="/login" replace /> },
   {
     element: <Guard><Shell /></Guard>,
     children: [
@@ -50,8 +48,8 @@ export const router = createBrowserRouter([
       { path: "/categories", element: <CategoriesPage /> },
       { path: "/subtitles", element: <SubtitlesPage /> },
       { path: "/published", element: <ClipsPage /> },
-      { path: "/settings", element: <Guard allow={["admin"]}><SettingsPage /></Guard> },
-      { path: "/users", element: <Guard allow={["admin"]}><UsersPage /></Guard> },
+      { path: "/settings", element: <SettingsPage /> },
+      { path: "/users", element: <UsersPage /> },
     ],
   },
 ]);

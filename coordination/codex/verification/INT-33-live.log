@@ -1,0 +1,9 @@
+
+Running 2 tests using 1 worker
+
+(node:28188) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 e2e\thumbnails_live.spec.ts:7:38 › existing video thumbnail loads in real CMS 1440 (9.8s)
+  ok 2 e2e\thumbnails_live.spec.ts:7:38 › existing video thumbnail loads in real CMS 390 (2.0s)
+
+  2 passed (23.7s)

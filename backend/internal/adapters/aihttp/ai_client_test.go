@@ -2,9 +2,13 @@ package aihttp
 
 import (
 	"context"
+	"encoding/base64"
+	"encoding/json"
 	"errors"
 	"net/http"
 	"net/http/httptest"
+	"os"
+	"path/filepath"
 	"testing"
 	"traning_ai/backend/internal/domain"
 )
@@ -17,6 +21,13 @@ func TestClient_DecodesRealSchemasAndBearer(t *testing.T) {
 		w.Header().Set("Content-Type", "application/json")
 		switch r.URL.Path {
 		case "/v1/vision/completions":
+			var body struct {
+				Keyframes []string `json:"keyframes"`
+				VideoID   string   `json:"video_id"`
+			}
+			if err := json.NewDecoder(r.Body).Decode(&body); err != nil || len(body.Keyframes) != 1 || body.VideoID != "vid_test" || body.Keyframes[0] != "data:text/plain; charset=utf-8;base64,"+base64.StdEncoding.EncodeToString([]byte("frame fixture")) {
+				t.Errorf("vision must send file bytes, not a Docker path: %+v %v", body, err)
+			}
 			_, _ = w.Write([]byte(`{"category_suggestion":"bong_da","embeddings_256":[[0.1,0.2]]}`))
 		case "/v1/asr/completions":
 			_, _ = w.Write([]byte(`{"full_transcript":"xin chào","segments":[{"id":3,"start_time":1.5,"end_time":2.5,"text":"xin chào","confidence":0.8}]}`))
@@ -31,7 +42,15 @@ func TestClient_DecodesRealSchemasAndBearer(t *testing.T) {
 	defer server.Close()
 	client := New(server.URL, "sk-local-test")
 	ctx := context.Background()
-	vision, err := client.Vision(ctx, []string{"f.jpg"})
+	directory := filepath.Join(t.TempDir(), "vid_test")
+	if err := os.Mkdir(directory, 0700); err != nil {
+		t.Fatal(err)
+	}
+	frame := filepath.Join(directory, "00000000.jpg")
+	if err := os.WriteFile(frame, []byte("frame fixture"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	vision, err := client.Vision(ctx, []string{directory})
 	if err != nil || vision.CategorySuggestion != "bong_da" || len(vision.Embeddings256) != 1 {
 		t.Fatalf("vision: %+v, %v", vision, err)
 	}
@@ -48,6 +67,65 @@ func TestClient_DecodesRealSchemasAndBearer(t *testing.T) {
 	}
 }
 
+func TestHighlightReportedThresholdCompatibility(t *testing.T) {
+	for _, value := range []string{"missing", "null", "0", "51", "100", "-1", "101"} {
+		t.Run(value, func(t *testing.T) {
+			server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				body := `{"timeline_scores":[],"recommended_clips":[]`
+				if value != "missing" {
+					body += `,"clip_threshold":` + value
+				}
+				_, _ = w.Write([]byte(body + `}`))
+			}))
+			defer server.Close()
+			result, err := New(server.URL, "test-key").Highlight(context.Background(), "vid_threshold", nil, nil)
+			if value == "-1" || value == "101" {
+				if err == nil {
+					t.Fatal("accepted out-of-range AI metadata")
+				}
+				return
+			}
+			if err != nil {
+				t.Fatal(err)
+			}
+			if value == "missing" || value == "null" {
+				if result.ClipThreshold != nil {
+					t.Fatal("invented threshold")
+				}
+				return
+			}
+			var expected float64
+			_ = json.Unmarshal([]byte(value), &expected)
+			if result.ClipThreshold == nil || *result.ClipThreshold != expected {
+				t.Fatalf("lost reported threshold: %+v", result)
+			}
+		})
+	}
+}
+
+func TestVisionMissingFileDoesNotSendRequest(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { t.Error("missing file sent to AI") }))
+	defer server.Close()
+	_, err := New(server.URL, "sk-local-test").Vision(context.Background(), []string{filepath.Join(t.TempDir(), "missing.jpg")})
+	if !errors.Is(err, os.ErrNotExist) {
+		t.Fatalf("lost file error: %v", err)
+	}
+}
+
+func TestRecommendationV13ModeAndNullableMetadata(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Header.Get("Authorization") != "Bearer sk-local-test" || r.URL.Path != "/v1/recommendation/completions" {
+			t.Error("bad recommendation transport")
+		}
+		_, _ = w.Write([]byte(`{"recommendation_mode":"personalized","recommendations":[{"video_id":"vid_real","score":0.9,"title":null,"thumbnail_url":null}]}`))
+	}))
+	defer server.Close()
+	result, err := New(server.URL, "sk-local-test").Recommendation(context.Background(), "usr_real", 10, nil)
+	if err != nil || result.RecommendationMode != "personalized" || len(result.Hits) != 1 || result.Hits[0].VideoID != "vid_real" || result.Hits[0].Score != 0.9 {
+		t.Fatalf("v1.3 decode: %+v %v", result, err)
+	}
+}
+
 func TestClient_RejectsStubHealthAndPreservesHTTPError(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path == "/health" {
@@ -61,6 +139,10 @@ func TestClient_RejectsStubHealthAndPreservesHTTPError(t *testing.T) {
 	client := New(server.URL, "sk-local-test")
 	if _, err := client.Health(context.Background()); err == nil {
 		t.Fatal("stub accepted as real AI")
+	}
+	client.AllowStub = true
+	if health, err := client.Health(context.Background()); err != nil || !health.StubMode {
+		t.Fatalf("explicit development stub rejected: %+v %v", health, err)
 	}
 	_, err := client.Vision(context.Background(), nil)
 	var de *domain.DomainError

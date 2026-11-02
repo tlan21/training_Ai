@@ -1,0 +1,143 @@
+{
+  "folder": "danh_s_ch_video",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "assetFailures": [],
+  "metrics": [
+    {
+      "text": "logout\n        Đăng xuất",
+      "width": 227,
+      "height": 32,
+      "radius": "4px",
+      "background": "rgba(220, 38, 38, 0.1)"
+    },
+    {
+      "text": "bolt\n                    Trạng thái hệ thống",
+      "width": 185.4375,
+      "height": 32,
+      "radius": "12px",
+      "background": "rgb(94, 53, 177)"
+    },
+    {
+      "text": "notifications",
+      "width": 36,
+      "height": 36,
+      "radius": "12px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "analytics",
+      "width": 36,
+      "height": 36,
+      "radius": "12px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "cloud_upload\n                    Tải lên video",
+      "width": 165.9375,
+      "height": 40,
+      "radius": "4px",
+      "background": "rgb(70, 21, 153)"
+    },
+    {
+      "text": "filter_list",
+      "width": 36,
+      "height": 36,
+      "radius": "4px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "visibility",
+      "width": 32,
+      "height": 32,
+      "radius": "2px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "edit",
+      "width": 32,
+      "height": 32,
+      "radius": "2px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "delete",
+      "width": 32,
+      "height": 32,
+      "radius": "2px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "visibility",
+      "width": 32,
+      "height": 32,
+      "radius": "2px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "edit",
+      "width": 32,
+      "height": 32,
+      "radius": "2px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "stop_circle",
+      "width": 32,
+      "height": 32,
+      "radius": "2px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "refresh",
+      "width": 32,
+      "height": 32,
+      "radius": "2px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "delete",
+      "width": 32,
+      "height": 32,
+      "radius": "2px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "visibility",
+      "width": 32,
+      "height": 32,
+      "radius": "2px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "edit",
+      "width": 32,
+      "height": 32,
+      "radius": "2px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "delete",
+      "width": 32,
+      "height": 32,
+      "radius": "2px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "chevron_left",
+      "width": 32,
+      "height": 32,
+      "radius": "2px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "chevron_right",
+      "width": 32,
+      "height": 32,
+      "radius": "2px",
+      "background": "rgba(0, 0, 0, 0)"
+    }
+  ]
+}

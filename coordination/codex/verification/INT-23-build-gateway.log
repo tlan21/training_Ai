@@ -1,0 +1,99 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.04kB 0.0s done
+#1 DONE 0.1s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 2.0s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#3 resolve docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e 0.0s done
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/library/alpine:3.20
+#4 DONE 1.3s
+
+#5 [internal] load metadata for docker.io/library/golang:1.26-alpine
+#5 DONE 2.3s
+
+#6 [internal] load .dockerignore
+#6 transferring context: 1.05kB 0.1s done
+#6 DONE 0.1s
+
+#7 [stage-1 1/5] FROM docker.io/library/alpine:3.20@sha256:d9e853e87e55526f6b2917df91a2115c36dd7c696a35be12163d44e6e2a4b6bc
+#7 resolve docker.io/library/alpine:3.20@sha256:d9e853e87e55526f6b2917df91a2115c36dd7c696a35be12163d44e6e2a4b6bc 0.0s done
+#7 CACHED
+
+#8 [builder 1/7] FROM docker.io/library/golang:1.26-alpine@sha256:a2012b4a1d1f9f7e9f44e0d39b805a901e856b1dd80b4e6ee4338db547050308
+#8 resolve docker.io/library/golang:1.26-alpine@sha256:a2012b4a1d1f9f7e9f44e0d39b805a901e856b1dd80b4e6ee4338db547050308 0.0s done
+#8 DONE 0.2s
+
+#9 [internal] load build context
+#9 ...
+
+#8 [builder 1/7] FROM docker.io/library/golang:1.26-alpine@sha256:a2012b4a1d1f9f7e9f44e0d39b805a901e856b1dd80b4e6ee4338db547050308
+#8 sha256:f64d732997a02e45cca29ef334d56f89f7599c8937c2617b6467edd19bc037d6 67.35MB / 67.35MB 5.1s
+#8 sha256:4ad7415f7583ac3d07f7d1729bf3d726c87ae7575b1c7c3df2d4b1259a864818 244.49kB / 244.49kB 1.3s done
+#8 sha256:ead54485711a8318109d68e0c427563205ddb40a8b984863417df291b31b0f04 126B / 126B 1.1s done
+#8 extracting sha256:4ad7415f7583ac3d07f7d1729bf3d726c87ae7575b1c7c3df2d4b1259a864818 0.4s done
+#8 ...
+
+#10 [stage-1 2/5] RUN apk add --no-cache ca-certificates ffmpeg
+#10 0.240 fetch https://dl-cdn.alpinelinux.org/alpine/v3.20/main/x86_64/APKINDEX.tar.gz
+#10 5.245 WARNING: fetching https://dl-cdn.alpinelinux.org/alpine/v3.20/main: temporary error (try again later)
+#10 5.245 fetch https://dl-cdn.alpinelinux.org/alpine/v3.20/community/x86_64/APKINDEX.tar.gz
+#10 10.25 WARNING: fetching https://dl-cdn.alpinelinux.org/alpine/v3.20/community: temporary error (try again later)
+#10 10.25 ERROR: unable to select packages:
+#10 10.25   ca-certificates (no such package):
+#10 10.25     required by: world[ca-certificates]
+#10 10.25   ffmpeg (no such package):
+#10 10.25     required by: world[ffmpeg]
+#10 ...
+
+#8 [builder 1/7] FROM docker.io/library/golang:1.26-alpine@sha256:a2012b4a1d1f9f7e9f44e0d39b805a901e856b1dd80b4e6ee4338db547050308
+#8 sha256:f64d732997a02e45cca29ef334d56f89f7599c8937c2617b6467edd19bc037d6 67.35MB / 67.35MB 10.2s
+#8 sha256:f64d732997a02e45cca29ef334d56f89f7599c8937c2617b6467edd19bc037d6 67.35MB / 67.35MB 10.6s done
+#8 DONE 11.1s
+
+#9 [internal] load build context
+#9 ...
+
+#8 [builder 1/7] FROM docker.io/library/golang:1.26-alpine@sha256:a2012b4a1d1f9f7e9f44e0d39b805a901e856b1dd80b4e6ee4338db547050308
+#8 extracting sha256:f64d732997a02e45cca29ef334d56f89f7599c8937c2617b6467edd19bc037d6
+#8 ...
+
+#10 [stage-1 2/5] RUN apk add --no-cache ca-certificates ffmpeg
+#10 ERROR: process "/bin/sh -c apk add --no-cache ca-certificates ffmpeg" did not complete successfully: exit code: 2
+
+#8 [builder 1/7] FROM docker.io/library/golang:1.26-alpine@sha256:a2012b4a1d1f9f7e9f44e0d39b805a901e856b1dd80b4e6ee4338db547050308
+#8 extracting sha256:f64d732997a02e45cca29ef334d56f89f7599c8937c2617b6467edd19bc037d6 2.4s done
+#8 DONE 13.5s
+
+#11 [builder 2/7] WORKDIR /src
+#11 CANCELED
+
+#9 [internal] load build context
+#9 transferring context: 27B 13.9s done
+#9 CANCELED
+------
+ > [stage-1 2/5] RUN apk add --no-cache ca-certificates ffmpeg:
+0.240 fetch https://dl-cdn.alpinelinux.org/alpine/v3.20/main/x86_64/APKINDEX.tar.gz
+5.245 WARNING: fetching https://dl-cdn.alpinelinux.org/alpine/v3.20/main: temporary error (try again later)
+5.245 fetch https://dl-cdn.alpinelinux.org/alpine/v3.20/community/x86_64/APKINDEX.tar.gz
+10.25 WARNING: fetching https://dl-cdn.alpinelinux.org/alpine/v3.20/community: temporary error (try again later)
+10.25 ERROR: unable to select packages:
+10.25   ca-certificates (no such package):
+10.25     required by: world[ca-certificates]
+10.25   ffmpeg (no such package):
+10.25     required by: world[ffmpeg]
+------
+Dockerfile:16
+--------------------
+  14 |     
+  15 |     FROM alpine:3.20
+  16 | >>> RUN apk add --no-cache ca-certificates ffmpeg
+  17 |     WORKDIR /srv
+  18 |     COPY --from=builder /out/gateway /out/orchestrator /out/ffmpeg-cutter /usr/local/bin/
+--------------------
+ERROR: failed to build: failed to solve: process "/bin/sh -c apk add --no-cache ca-certificates ffmpeg" did not complete successfully: exit code: 2

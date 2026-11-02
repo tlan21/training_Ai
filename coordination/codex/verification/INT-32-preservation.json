@@ -1,0 +1,10 @@
+{
+  "only_client_recreated": true,
+  "other_containers_unchanged": 15,
+  "host_ai_pid_unchanged": [
+    15852
+  ],
+  "docker_ai_real_models": 6,
+  "video_category_hashes_unchanged": true,
+  "qa3100_stopped": true
+}

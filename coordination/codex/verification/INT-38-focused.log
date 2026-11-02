@@ -1,0 +1,10 @@
+# traning_ai/backend/internal/handlers/cms [traning_ai/backend/internal/handlers/cms.test]
+internal\handlers\cms\videos_test.go:81:43: not enough arguments in call to ana.Put
+	have (context.Context, string, nil, nil, nil)
+	want (context.Context, string, []domain.SecondScore, []domain.AIClip, *string, *float64)
+FAIL	traning_ai/backend/internal/handlers/cms [build failed]
+ok  	traning_ai/backend/internal/orchestrator	1.492s
+ok  	traning_ai/backend/internal/adapters/aihttp	6.024s
+ok  	traning_ai/backend/internal/adapters/mongo	1.229s
+ok  	traning_ai/backend/internal/mocks	2.623s
+FAIL

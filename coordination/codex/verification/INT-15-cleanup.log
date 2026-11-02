@@ -1,0 +1,6 @@
+BEGIN
+highlight_threshold|75
+UPDATE 1
+vid_dmeqh2hrogtb|deleted|test
+UPDATE 1
+COMMIT

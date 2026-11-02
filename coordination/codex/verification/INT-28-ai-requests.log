@@ -1,0 +1,7 @@
+2026/10/29 03:59:37 AI HTTP GET /health
+2026/10/29 03:59:41 gateway :8000 (PostgreSQL/Mongo/MinIO/Kafka/Redis) → AI http://host.docker.internal:8001
+2026/10/29 04:00:16 AI HTTP POST /v2/vision/completions
+2026/10/29 04:00:18 AI HTTP POST /v2/asr/completions offset_seconds=0
+2026/10/29 04:00:19 AI HTTP POST /v1/highlight/completions
+2026/10/29 04:00:20 AI HTTP POST /v1/completions
+2026/10/29 04:00:25 AI HTTP POST /v2/search/embeddings

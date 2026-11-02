@@ -4,12 +4,69 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"os"
+	"path/filepath"
 	"testing"
 	"time"
 
 	"traning_ai/backend/internal/domain"
 	"traning_ai/backend/internal/mocks"
 )
+
+func TestPreprocessedMetadataPreservesEditorialFields(t *testing.T) {
+	for _, legacy := range []bool{false, true} {
+		t.Run(map[bool]string{false: "metadata", true: "legacy_payload"}[legacy], func(t *testing.T) {
+			ctx := context.Background()
+			videos := mocks.NewVideoRepoMem()
+			jobs := mocks.NewJobRepoMem()
+			_ = videos.Create(ctx, &domain.Video{ID: "vid_metadata", Title: "Editorial", Hashtags: []string{"EditorialTag"}, Status: domain.VideoUploaded})
+			_, _ = jobs.Create(ctx, "vid_metadata")
+			dir := t.TempDir()
+			if err := os.WriteFile(filepath.Join(dir, "audio_features.json"), []byte(`[[1,2]]`), 0600); err != nil {
+				t.Fatal(err)
+			}
+			payload := map[string]any{"video_id": "vid_metadata", "duration": 8, "keyframes_path": dir, "audio_path": "audio"}
+			if !legacy {
+				payload["width"], payload["height"], payload["fps"] = 1920, 1080, 29.97
+			}
+			data, _ := json.Marshal(payload)
+			r := New(videos, jobs, mocks.NewAnalysisStoreMem(), mocks.NewSubtitleStoreMem(), &mocks.AIClientMem{}, mocks.NewEventBusMem())
+			if err := r.HandlePreprocessed(ctx, data); err != nil {
+				t.Fatal(err)
+			}
+			v, _ := videos.Get(ctx, "vid_metadata")
+			if v.Title != "Editorial" || len(v.Hashtags) != 1 || v.Hashtags[0] != "EditorialTag" || v.DurationSeconds != 8 {
+				t.Fatalf("editorial overwritten: %+v", v)
+			}
+			if legacy && (v.Width != nil || v.FPS != nil) {
+				t.Fatal("fabricated legacy metadata")
+			}
+			if !legacy && (v.Width == nil || *v.Width != 1920 || *v.Height != 1080 || *v.FPS != 29.97) {
+				t.Fatal("metadata not saved")
+			}
+		})
+	}
+}
+
+func TestHighlightPersistsReportedThresholdWithoutInventingLegacyValue(t *testing.T) {
+	for _, threshold := range []*float64{nil, new(float64), func() *float64 { v := 51.0; return &v }()} {
+		analysis := mocks.NewAnalysisStoreMem()
+		ai := &mocks.AIClientMem{HighlightFn: func(string, [][]float32, [][]float32) (*domain.HighlightResult, error) {
+			return &domain.HighlightResult{ClipThreshold: threshold, TimelineScores: []domain.SecondScore{{Second: 0, Score: 60}}}, nil
+		}}
+		r := New(mocks.NewVideoRepoMem(), mocks.NewJobRepoMem(), analysis, mocks.NewSubtitleStoreMem(), ai, mocks.NewEventBusMem())
+		if err := r.doHighlight(context.Background(), "vid_threshold", nil, nil, 180); err != nil {
+			t.Fatal(err)
+		}
+		stored, err := analysis.Get(context.Background(), "vid_threshold")
+		if err != nil || len(stored.TimelineScores) != 1 || (stored.ClipThreshold == nil) != (threshold == nil) {
+			t.Fatalf("metadata lost: %+v %v", stored, err)
+		}
+		if threshold != nil && *stored.ClipThreshold != *threshold {
+			t.Fatalf("wrong threshold: %+v", stored)
+		}
+	}
+}
 
 func TestRunner_RetrySuccessOnThird(t *testing.T) {
 	videoRepo := mocks.NewVideoRepoMem()

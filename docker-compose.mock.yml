@@ -1,0 +1,21 @@
+# Explicit test/CI override only; do not include in the local real-AI runtime.
+# Removing a running mock container does not remove this test fixture.
+services:
+  ai-mock:
+    build: { context: ., dockerfile: backend/Dockerfile }
+    image: video-ai-gateway:${APP_IMAGE_TAG:-latest}
+    command: ["ai-mock"]
+    environment:
+      AI_SERVICE_KEY: ${AI_SERVICE_KEY:-sk-local-dev-key-change-me}
+    ports: ["127.0.0.1:18001:8001"]
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8001/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  gateway:
+    environment:
+      AI_BASE_URL: http://ai-mock:8001
+      AI_ALLOW_STUB: "1"
+    depends_on:
+      ai-mock: { condition: service_healthy }

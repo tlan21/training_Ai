@@ -1,0 +1,5 @@
+{
+  "port": 3100,
+  "command": "\"D:\\nodejs\\node.exe\" node_modules/next/dist/bin/next start --hostname 127.0.0.1 --port 3100",
+  "pid": 8704
+}

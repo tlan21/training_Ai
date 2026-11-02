@@ -1,0 +1,13 @@
+{
+  "operation": "GET",
+  "width": 390,
+  "browserOnlyBlockedURL": true,
+  "responseMocking": false,
+  "serverStopped": false,
+  "transportFailures": [
+    "inspector",
+    "inspector"
+  ],
+  "originalSettingsUnchanged": true,
+  "recovery": "unblock then actual GET200 through Retry"
+}

@@ -1,0 +1,5 @@
+=== RUN   TestCompilationRealFFmpeg
+    compilation_test.go:84: audio=true duration=2.000, both retained source frames match
+    compilation_test.go:84: audio=false duration=2.000, both retained source frames match
+--- PASS: TestCompilationRealFFmpeg (2.53s)
+PASS

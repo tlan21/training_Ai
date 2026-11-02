@@ -1,0 +1,21 @@
+
+Running 14 tests using 1 worker
+
+(node:20228) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 e2e\cms_design.spec.ts:20:6 › HC-15 390 reported threshold and zero-proposal behavior (1.5s)
+  ok  2 e2e\cms_design.spec.ts:20:6 › HC-15 390 zero threshold and zero-proposal behavior (538ms)
+  ok  3 e2e\cms_design.spec.ts:20:6 › HC-15 390 legacy threshold and zero-proposal behavior (525ms)
+  ok  4 e2e\cms_design.spec.ts:20:6 › HC-15 390 short-football threshold and zero-proposal behavior (577ms)
+  ok  5 e2e\cms_design.spec.ts:20:6 › HC-15 390 long-news threshold and zero-proposal behavior (668ms)
+  ok  6 e2e\cms_design.spec.ts:20:6 › HC-15 390 short-news threshold and zero-proposal behavior (580ms)
+  ok  7 e2e\cms_design.spec.ts:20:6 › HC-15 1440 reported threshold and zero-proposal behavior (669ms)
+  ok  8 e2e\cms_design.spec.ts:20:6 › HC-15 1440 zero threshold and zero-proposal behavior (751ms)
+  ok  9 e2e\cms_design.spec.ts:20:6 › HC-15 1440 legacy threshold and zero-proposal behavior (743ms)
+  ok 10 e2e\cms_design.spec.ts:20:6 › HC-15 1440 short-football threshold and zero-proposal behavior (715ms)
+  ok 11 e2e\cms_design.spec.ts:20:6 › HC-15 1440 long-news threshold and zero-proposal behavior (514ms)
+  ok 12 e2e\cms_design.spec.ts:20:6 › HC-15 1440 short-news threshold and zero-proposal behavior (527ms)
+  ok 13 e2e\cms_design.spec.ts:405:5 › T3.1 settings persist preferences and disclose model-owned threshold (830ms)
+  ok 14 e2e\cms_design.spec.ts:461:5 › T3.1 real settings limitation is shown when PUT does not persist (700ms)
+
+  14 passed (12.3s)

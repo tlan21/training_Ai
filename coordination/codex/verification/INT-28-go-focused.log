@@ -1,0 +1,6 @@
+ok  	traning_ai/backend/internal/adapters/aihttp	5.572s
+ok  	traning_ai/backend/internal/adapters/milvus	1.771s
+ok  	traning_ai/backend/internal/handlers	3.473s
+ok  	traning_ai/backend/internal/handlers/cms	4.119s
+ok  	traning_ai/backend/internal/orchestrator	1.957s
+ok  	traning_ai/backend/cmd/gateway	2.430s

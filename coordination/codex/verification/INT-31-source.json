@@ -1,0 +1,702 @@
+{
+  "ref": "478052e6afea1139cb85ecb84100a0727a4535ad",
+  "unmodified_git_archive": true,
+  "no_checkpoints_or_env": true,
+  "files": [
+    {
+      "path": "ai-core/ai_core/__init__.py",
+      "sha256": "fe7fc81df5d3f90f8a62430ed59b69abbcfc94d989e8f50f8b512380342637ac",
+      "bytes": 1130
+    },
+    {
+      "path": "ai-core/ai_core/audio/__init__.py",
+      "sha256": "c1555fa522aced8635b04001a38b7d9efd8c5f93537f384e3974b5e7af81ab68",
+      "bytes": 316
+    },
+    {
+      "path": "ai-core/ai_core/audio/features.py",
+      "sha256": "aa59fed49710b0d31ee2077cc532764df4f59ffe599cb8afeecc7e7013145c5b",
+      "bytes": 4605
+    },
+    {
+      "path": "ai-core/ai_core/audio/mel.py",
+      "sha256": "323f387f84ac4f8386af04482213dece8181b3916f9c8001b536129384a22ddb",
+      "bytes": 4085
+    },
+    {
+      "path": "ai-core/ai_core/baselines.py",
+      "sha256": "a1bbcfd0cd5fd3ca1f2637551282e3ddbe461a100dae58b6fb8985481aab1389",
+      "bytes": 7058
+    },
+    {
+      "path": "ai-core/ai_core/config.py",
+      "sha256": "d3566f50b93dbc4a363a92a763f70f49287613aedbe22fe2d60ae7bde934f5a3",
+      "bytes": 3342
+    },
+    {
+      "path": "ai-core/ai_core/data/__init__.py",
+      "sha256": "84e95e13f356099b404c9245758dbe1a64817f3277a31d906fd7533282f238e2",
+      "bytes": 196
+    },
+    {
+      "path": "ai-core/ai_core/data/manifest.py",
+      "sha256": "ba0f43f7cc865babe36f75173e9fe58e07f14c79678faab3ce4a077f612c6f1f",
+      "bytes": 2300
+    },
+    {
+      "path": "ai-core/ai_core/data/weak_label.py",
+      "sha256": "20f766d9c6a53f09f131f95b59acae77256d6328f0e5f083c888d54abc579ce3",
+      "bytes": 3676
+    },
+    {
+      "path": "ai-core/ai_core/models/__init__.py",
+      "sha256": "1bc454863d7680f5575b532141253f4fc1cb5e35c81b0454eaf3c4e013f255fe",
+      "bytes": 366
+    },
+    {
+      "path": "ai-core/ai_core/models/asr_ctc.py",
+      "sha256": "754974b20eaedff303db6cb95a646f0d1ca3c03c05b524a0c566af27e15e2530",
+      "bytes": 2216
+    },
+    {
+      "path": "ai-core/ai_core/models/ctc.py",
+      "sha256": "3d515633482ed50d4a659a3a3578e18ea9a8908839d08d4831e433fae5c9c1f8",
+      "bytes": 9817
+    },
+    {
+      "path": "ai-core/ai_core/models/highlight_fusion.py",
+      "sha256": "1e35c8da7175ed3f77c437f49ac37eef352280bae09d546110771d1d2ff220f4",
+      "bytes": 4026
+    },
+    {
+      "path": "ai-core/ai_core/models/minigpt.py",
+      "sha256": "000b14416b3051457439a1b4751580e3f78617614161f0f4dc18e6d3dd854966",
+      "bytes": 3742
+    },
+    {
+      "path": "ai-core/ai_core/models/siamese.py",
+      "sha256": "a7e449d9fb783352cc8d9a399d53304d85fab012decce1a8cafb709488ea653c",
+      "bytes": 1436
+    },
+    {
+      "path": "ai-core/ai_core/models/two_tower.py",
+      "sha256": "b22893080bc6d7ec9cae280119e6aba1b575ed494ee4489676c0fb6657370aca",
+      "bytes": 2599
+    },
+    {
+      "path": "ai-core/ai_core/models/vit.py",
+      "sha256": "d45784372f720bde1255a3a87d2b510a814c7cbc504b08ff98737477cf4ae062",
+      "bytes": 1858
+    },
+    {
+      "path": "ai-core/ai_core/optim/__init__.py",
+      "sha256": "f81ad7143576d5bcd70fcf1318e90e4832047124b83830415bf078c5c89ab4a4",
+      "bytes": 91
+    },
+    {
+      "path": "ai-core/ai_core/optim/adamw.py",
+      "sha256": "244bca1a9fc3e045fadf3526946273e379a064e9aa1419890890bf436ee39b4b",
+      "bytes": 3004
+    },
+    {
+      "path": "ai-core/ai_core/primitives/__init__.py",
+      "sha256": "379b7b097d451ea723c341208f8dea3b97b75e39049e28fa3e7de317de1ed1c7",
+      "bytes": 615
+    },
+    {
+      "path": "ai-core/ai_core/primitives/attention.py",
+      "sha256": "fe0bcbf53a57d27f10b04714af6c671080e81175d8ae9f76b83d01ecaf22b64d",
+      "bytes": 5699
+    },
+    {
+      "path": "ai-core/ai_core/primitives/block.py",
+      "sha256": "a05ca46316d4cac6ab3046f78d1fbb09846341bf456c34a546a8cd95ec497953",
+      "bytes": 2764
+    },
+    {
+      "path": "ai-core/ai_core/primitives/embedding.py",
+      "sha256": "0d87a8787ed6950f4cc713857ef931b470b2f263ab68e99483a88cf5e5fe4b22",
+      "bytes": 1228
+    },
+    {
+      "path": "ai-core/ai_core/primitives/rmsnorm.py",
+      "sha256": "23421bcb1a2078f4e65165475ca204f1a35793ec7f0902cb8dba7235fa1c038e",
+      "bytes": 607
+    },
+    {
+      "path": "ai-core/ai_core/primitives/rope.py",
+      "sha256": "24ee29fc6e7490798c05334d0d263e1890e948d5c8690b458347aba92bb21afa",
+      "bytes": 1530
+    },
+    {
+      "path": "ai-core/ai_core/primitives/swiglu.py",
+      "sha256": "0586cee26b7ca5a95ef2c5f4f21d2c4481ca71429ea3b816a7f0044ed888e4b8",
+      "bytes": 971
+    },
+    {
+      "path": "ai-core/ai_core/scripts/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "ai-core/ai_core/scripts/bootstrap_highlight.py",
+      "sha256": "3e5f2dd798951b78750c3def7f34b6088807605cd2927b20fffe0b7bd0e93aed",
+      "bytes": 6644
+    },
+    {
+      "path": "ai-core/ai_core/scripts/build_asr_manifest.py",
+      "sha256": "274809dfc5d50c05188835407a2c441364f6169246eb8d8086672f6af5c6eedc",
+      "bytes": 1750
+    },
+    {
+      "path": "ai-core/ai_core/scripts/build_asr_vocab.py",
+      "sha256": "74700d0899c39a20a2bb2c86ddac3a529797ce8354da0b7cc029c81189757d2f",
+      "bytes": 710
+    },
+    {
+      "path": "ai-core/ai_core/scripts/build_highlight_features.py",
+      "sha256": "d1072a18af949949dcba501d7123633920b5c457ae5ab0a3a88ae76d2491498c",
+      "bytes": 7377
+    },
+    {
+      "path": "ai-core/ai_core/scripts/build_shot_groups.py",
+      "sha256": "c05c7bbd1a7966bc484c0ad04f89aa7a411ef1719a83d0901398551d73d394e6",
+      "bytes": 7163
+    },
+    {
+      "path": "ai-core/ai_core/scripts/build_siamese_subset.py",
+      "sha256": "35e95d31fc5d5f88105bd8c37871f6a029625fe646e1b6187afc5f0cd7876278",
+      "bytes": 6119
+    },
+    {
+      "path": "ai-core/ai_core/scripts/build_soccernet_labels.py",
+      "sha256": "588972713f87d256795bda48d31679a4ffec27953c67128ac9f080920552f9da",
+      "bytes": 11488
+    },
+    {
+      "path": "ai-core/ai_core/scripts/build_vit_manifest.py",
+      "sha256": "2119a49d5a8a576c48ba31d9fe118a57fbfd71a695c2eb365213d5ada04a821c",
+      "bytes": 7264
+    },
+    {
+      "path": "ai-core/ai_core/scripts/build_weak_labels.py",
+      "sha256": "0d00894f114470684e240a4bc803ac253f8778d9e393c4fa699787a0261e5831",
+      "bytes": 3961
+    },
+    {
+      "path": "ai-core/ai_core/scripts/eval_highlight.py",
+      "sha256": "74d4e04fbc253d2bb659e1e1f01b4349598e86bf8ca7f3e56c64dad969b3a066",
+      "bytes": 21001
+    },
+    {
+      "path": "ai-core/ai_core/scripts/eval_vit.py",
+      "sha256": "d0b917264494b35b918beebf8077cd58a89c656e21676f483e7631e5b25405e0",
+      "bytes": 6169
+    },
+    {
+      "path": "ai-core/ai_core/scripts/evaluate.py",
+      "sha256": "29595d5811c4ed0bfd7f2fd1b95e5b279833f9146e39763461cfc5a9fcd2a456",
+      "bytes": 8628
+    },
+    {
+      "path": "ai-core/ai_core/scripts/export_two_tower_milvus.py",
+      "sha256": "ea3229cf4e4d32dfaf9be32bce99a3c084dcd70fbd46210d343542b60020bf05",
+      "bytes": 11310
+    },
+    {
+      "path": "ai-core/ai_core/scripts/export_vit_jpg.py",
+      "sha256": "826139bbb65a8bcd8ba07cff2982d1dd4481115b507221cc4259064b4e820ffc",
+      "bytes": 2859
+    },
+    {
+      "path": "ai-core/ai_core/scripts/extract_audio.py",
+      "sha256": "c9b032b4ef7a180fae34346e5fdf3db8ed9a28bcb720ed1c70bbe48cae9962be",
+      "bytes": 2637
+    },
+    {
+      "path": "ai-core/ai_core/scripts/extract_vit_embeddings.py",
+      "sha256": "7ce0c41130e7dde7fe388f01a8dadc26566ceddc123f700fb1ae87dd7593590c",
+      "bytes": 4245
+    },
+    {
+      "path": "ai-core/ai_core/scripts/fetch_commons_videos.py",
+      "sha256": "9a10319193e49deec6d846755df57ba4a10c885a20e1052095014f70ba786392",
+      "bytes": 9337
+    },
+    {
+      "path": "ai-core/ai_core/scripts/fetch_soccernet_videos.py",
+      "sha256": "17e0929d04852af859c491e93431bafca3f292da61e9abd145f8934c5218832d",
+      "bytes": 4496
+    },
+    {
+      "path": "ai-core/ai_core/scripts/fetch_youtube_videos.py",
+      "sha256": "f2a9ce2106f99764ab9b44d4231c2c4a0859d800cce5d8259988e1b5e55521e7",
+      "bytes": 9586
+    },
+    {
+      "path": "ai-core/ai_core/scripts/finetune_asr_robust.py",
+      "sha256": "7f187ea92842e9bfe22ee397f027451b74f81eeb340748367f75693f47ee690a",
+      "bytes": 23071
+    },
+    {
+      "path": "ai-core/ai_core/scripts/finetune_news_summary.py",
+      "sha256": "6c47e5b4e44dae3053d1530f268c39bc8e3114f67b9bb79c3c5d8a16f6bb59b5",
+      "bytes": 20870
+    },
+    {
+      "path": "ai-core/ai_core/scripts/flatten_soccernet.py",
+      "sha256": "9d50f09cdb82913459619f248a8f799150158445cc834f7ca35e5eb86d12bf15",
+      "bytes": 4009
+    },
+    {
+      "path": "ai-core/ai_core/scripts/label_tool.py",
+      "sha256": "80140d7ae5a6e45445bf722cbdfc652dc77ce744af1a0ca237669400732aa904",
+      "bytes": 8465
+    },
+    {
+      "path": "ai-core/ai_core/scripts/prepare_aligned_summary.py",
+      "sha256": "1d5ab50e5d83919151a066f3463874427e4f69232a7b637f346f5d51b4da38e8",
+      "bytes": 11945
+    },
+    {
+      "path": "ai-core/ai_core/scripts/prepare_asr_english.py",
+      "sha256": "224f57eb57504d7ee16abab91609e0a4b0018b933b5543728e7550ee4b889b72",
+      "bytes": 11782
+    },
+    {
+      "path": "ai-core/ai_core/scripts/prepare_asr_robust.py",
+      "sha256": "e5e2621805b5f57030eda2c4e634f39b0fcadac217b5803815d9ec8425bf8139",
+      "bytes": 8508
+    },
+    {
+      "path": "ai-core/ai_core/scripts/prepare_keyframes.py",
+      "sha256": "0e592f36319dbf81dda32ca4a1d53c9598e6a7bfa8485db85e4fc1177bcb1d88",
+      "bytes": 10337
+    },
+    {
+      "path": "ai-core/ai_core/scripts/prepare_news_summary.py",
+      "sha256": "718b6c6f91994664653423e33b703752abfb7462869da812b252d14c20fd6bef",
+      "bytes": 4170
+    },
+    {
+      "path": "ai-core/ai_core/scripts/prepare_vivos.py",
+      "sha256": "565d50cda2e4696cece316185bf94e1f572bcaf22eff55fff7738e3eeb095150",
+      "bytes": 4853
+    },
+    {
+      "path": "ai-core/ai_core/scripts/tokenize_corpus.py",
+      "sha256": "35aaea9b7185422e1d5cd602534939a8a232d3df195c0196ae8ff8a12572913c",
+      "bytes": 4904
+    },
+    {
+      "path": "ai-core/ai_core/scripts/train.py",
+      "sha256": "7011b52cf2c9771a0a570c88c69d6259778987b0243250e9e45ad5fc1145a572",
+      "bytes": 14791
+    },
+    {
+      "path": "ai-core/ai_core/scripts/train_bpe.py",
+      "sha256": "420a8b22a1975d59f14ce9c3316abe99ac2b284370cace1520fc064300146b9e",
+      "bytes": 1237
+    },
+    {
+      "path": "ai-core/ai_core/scripts/validate_artifacts.py",
+      "sha256": "bec147e3c643b726b5da03a8d2b0828c1bb8c7784e73950f9baba17073b80b13",
+      "bytes": 1334
+    },
+    {
+      "path": "ai-core/ai_core/scripts/verify_ttv2_bundle.py",
+      "sha256": "5736c29d9a646d27ae6c680bce58804584eaa8a3ef16e0cf4a98b0348c1a82de",
+      "bytes": 2802
+    },
+    {
+      "path": "ai-core/ai_core/tests/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_adamw_parity.py",
+      "sha256": "b13b304b77c351a97580aad5518c0aaca3415fd8ff05eb92a39b4c141b93a0fc",
+      "bytes": 1185
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_aligned_summary.py",
+      "sha256": "2f39907cd7fb946858305f67676b3e3abdd15827375ef9b579dbe64e86c1fb41",
+      "bytes": 18265
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_asr_domain_replay.py",
+      "sha256": "c4b0d88e94588166aad551f9182631ec436dfdd3c8d94dad97563786ccfb0de4",
+      "bytes": 13553
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_asr_english.py",
+      "sha256": "85c22675b6903a913fbdcc37ea73ed268155acf3d1dd52d47c1f0813ec05dd68",
+      "bytes": 3021
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_asr_labels.py",
+      "sha256": "9830f5da85832749c1c8aa7ca399fd147127978992c7d349bb3d8a90753260ed",
+      "bytes": 3890
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_asr_robust.py",
+      "sha256": "cf4e4def4c7ecb22fc0b8dd4b466f05329982044dcf494dea04b920899ada4c4",
+      "bytes": 5006
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_asr_three_source.py",
+      "sha256": "214e18471f90e0dd1e8d4bc32857256976d97245b2afb806f4e36a3881190e14",
+      "bytes": 5623
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_audio.py",
+      "sha256": "1561bfd963c03ecd8528d4c41ca7c66aa47afb5e4b6e7af2f0c278851cd1098f",
+      "bytes": 4657
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_baselines.py",
+      "sha256": "5a6270ce585f4395244e380f5be8b7316159b1170f63ca6dd2999868120dde48",
+      "bytes": 6274
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_bootstrap_highlight.py",
+      "sha256": "6e4465919b3a28deb5a3337a922b81f107c5c4463dc8ea22049869f255a2aa22",
+      "bytes": 1319
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_bpe_roundtrip.py",
+      "sha256": "8c2cfeb4f9a64eed386d2cedb59811468e02127b72209cb066dbbe6eb9bafc99",
+      "bytes": 2050
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_build_highlight_features.py",
+      "sha256": "1fd5230873f0487afd0ebf3988cea361ee0d0aa2598d047fb1d69317e98cf324",
+      "bytes": 6798
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_ctc_parity.py",
+      "sha256": "4302a10436b74a8c2fab5e43f6c81b89c7c5e6688e40e49f6258a8baadf0be1b",
+      "bytes": 5901
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_data_pipeline.py",
+      "sha256": "b977e4d1cdb5e13e7cbb72f83b9b8cea386b857a1d2a81e282ca7f8ace990ad4",
+      "bytes": 29075
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_eval_highlight.py",
+      "sha256": "2ae96275cb698454856336c438198dc4860dcbf88328fb661a4d4a23d25d3293",
+      "bytes": 5514
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_export_two_tower.py",
+      "sha256": "d49f543183939e378c2c1ef813ebc0154dd9708f1ef55957721f5dc4acfb7374",
+      "bytes": 1884
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_extract_audio.py",
+      "sha256": "c9f2290a95d40c1392d85b7b2e902e39d9d97e789d21f61e185a27a5de8b8e90",
+      "bytes": 3005
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_fetch_soccernet.py",
+      "sha256": "3b1584c0a7033588483a1e53c0b94c0b1eae8a59ba9c145c855791fb008786fd",
+      "bytes": 691
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_flatten_soccernet.py",
+      "sha256": "424f80981984500cc875b21235fa5463aabc4cce802e11f9750f907014b57606",
+      "bytes": 4387
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_gradient_check.py",
+      "sha256": "53fc495b3b56fc3f97346f92965b0f26094cedd206abfac6df62fae4a3781aed",
+      "bytes": 1505
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_highlight_ablation.py",
+      "sha256": "1f6b148d4ee7de13b5aa655ff075b966728f7d0acbb98c947e9bf3c8ab18464a",
+      "bytes": 9038
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_highlight_loss.py",
+      "sha256": "bddc61c7f9a9b4619007237c55e58337e6781bce94b2577e20b971c8812f62a9",
+      "bytes": 3980
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_minigpt_generate.py",
+      "sha256": "e4f2a5528c2d8776956bcb2347c52ee44ef2201e17777671dd56ecd8283fb9eb",
+      "bytes": 2744
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_models.py",
+      "sha256": "e7a0f25a31ac44db01e9265613f55eb0b84c62f3426cf4f8564506138f290d0e",
+      "bytes": 4457
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_news_summary.py",
+      "sha256": "9c2043411b88d04a77652c72ed12ed418b126881cbb493b0add883782752b826",
+      "bytes": 2317
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_overfit_one_batch.py",
+      "sha256": "368920792d151f6232cee0d4428b57cf1ddd054bfc18cf34ad1101ae1763aeef",
+      "bytes": 6770
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_prepare_keyframes.py",
+      "sha256": "f16e63dcba3680fd4a401da45de42517aa59c8fc0d652db23988b68c64d7613c",
+      "bytes": 8456
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_product_interactions.py",
+      "sha256": "a342892b8e84443e176d291f2e2b3e2df4d94d19a26ee784397d3aa39fb09315",
+      "bytes": 9691
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_sdpa_parity.py",
+      "sha256": "1f4661fc33816ab32459cd5b78198dd119f7339652bf2eddc6ac9b64767a2df9",
+      "bytes": 1463
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_shapes.py",
+      "sha256": "d483062abfe3bfbe203e0fb6a12e8c4c59c366d8f26cc6571ee163524c3db320",
+      "bytes": 1958
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_shot_groups.py",
+      "sha256": "788f60d656dcaf85b20245d154b9824983ff235e536dc7d873cb8cd696fe54ca",
+      "bytes": 6956
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_siamese_subset.py",
+      "sha256": "e184ca6cefb09b650c6a4b3a885d15ab465cd9e888a8c41da3580f0f723b77b8",
+      "bytes": 6301
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_soccernet_labels.py",
+      "sha256": "fa6a5a4decc67d4a2343f64c598840ca1084d5e0c536f3d428e8fdd71d42ae6f",
+      "bytes": 5589
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_tokenize_corpus.py",
+      "sha256": "8d3fee104da7f352f6a608ad130dfe21b1939fdeb494cacbd66cbf22a88375a8",
+      "bytes": 3743
+    },
+    {
+      "path": "ai-core/ai_core/tests/test_two_tower_v2.py",
+      "sha256": "226712e7728df923f71ef3abc0d7d3cc41392c3415e2116dc609741e51efae8c",
+      "bytes": 6984
+    },
+    {
+      "path": "ai-core/ai_core/tokenizer/__init__.py",
+      "sha256": "e7404433927a58ee90d607e5419bcdb7df0dafbd1bdc4a3ee08c16c3d933e588",
+      "bytes": 95
+    },
+    {
+      "path": "ai-core/ai_core/tokenizer/bpe.py",
+      "sha256": "f5a25ee88c721945bcc7d4df8499e04fd833a31d7872217a7e739e719b03b3b9",
+      "bytes": 6597
+    },
+    {
+      "path": "ai-core/ai_core/training/__init__.py",
+      "sha256": "ae851b84086168a19f39a9c0cd6b00038cf3ab2c5142665845d577187fb15d69",
+      "bytes": 219
+    },
+    {
+      "path": "ai-core/ai_core/training/checkpoint.py",
+      "sha256": "bce1b72ca977f9200a7fe18a16b1253e39de8b1de3119f41d4f8670792b01843",
+      "bytes": 1484
+    },
+    {
+      "path": "ai-core/ai_core/training/configs/asr_ctc.yaml",
+      "sha256": "5e71d28c6972c9d4e3c5845f789c42b0f0f4a3be68d8d3f43ac3faba182f84b9",
+      "bytes": 313
+    },
+    {
+      "path": "ai-core/ai_core/training/configs/highlight_fusion.yaml",
+      "sha256": "4211447814e5355955a082ced1117b429db64cc668084ffd8380681e9c12f442",
+      "bytes": 1029
+    },
+    {
+      "path": "ai-core/ai_core/training/configs/minigpt_finetune_summary.yaml",
+      "sha256": "8fba6e9621cb31ea96bbde1973b8488d8db18a8a10638c7e61eb70e16b38b5f0",
+      "bytes": 327
+    },
+    {
+      "path": "ai-core/ai_core/training/configs/minigpt_pretrain.yaml",
+      "sha256": "48ad348723bfc75cc22eb1073e0c329665051ef4a9a55a850829d4f16389d714",
+      "bytes": 331
+    },
+    {
+      "path": "ai-core/ai_core/training/configs/siamese.yaml",
+      "sha256": "4a18b67c551701d0ad7f272f95dfd5c4c1099b25a4de0bff388784fe6bc5ecdf",
+      "bytes": 1023
+    },
+    {
+      "path": "ai-core/ai_core/training/configs/two_tower.yaml",
+      "sha256": "8770a548b5676e3c000d495f80e0d3cfaae8f9e06ad92096c9cf6a89ee2e1052",
+      "bytes": 1232
+    },
+    {
+      "path": "ai-core/ai_core/training/configs/vit.yaml",
+      "sha256": "dd9789d5f27ccccec7eec4a4cf34c302a706174c3fd506082a64190fd6d5ede0",
+      "bytes": 332
+    },
+    {
+      "path": "ai-core/ai_core/training/datasets/__init__.py",
+      "sha256": "3c45df12ce61986fe70bcbe834a213aa1fc4f7c4d7d3cc33147d55580a7ac99d",
+      "bytes": 1154
+    },
+    {
+      "path": "ai-core/ai_core/training/datasets/asr_dataset.py",
+      "sha256": "c48a8f3c73c376a99d33d6740ada78126ccede3d1426269162e4b2b8a87fe2e1",
+      "bytes": 5406
+    },
+    {
+      "path": "ai-core/ai_core/training/datasets/highlight_dataset.py",
+      "sha256": "52598ad130f24828bb2a760d6997a1edfd111767c5e391aeb09664f7dd9c5716",
+      "bytes": 3001
+    },
+    {
+      "path": "ai-core/ai_core/training/datasets/movielens_dataset.py",
+      "sha256": "f2acad334b865ed06e13fb5e15b07c32eb6386cc7fa2b18b5706135c2530676f",
+      "bytes": 9293
+    },
+    {
+      "path": "ai-core/ai_core/training/datasets/product_interactions.py",
+      "sha256": "8ebf5fa06112755a5e67521508a345d1139d4b09ca3084d050387f8deb5df7b9",
+      "bytes": 10760
+    },
+    {
+      "path": "ai-core/ai_core/training/datasets/siamese_dataset.py",
+      "sha256": "66307b7c64b00e20bd87b1cd6f426808026f61a015d9732b5fa852d9e2fa1b5a",
+      "bytes": 2760
+    },
+    {
+      "path": "ai-core/ai_core/training/datasets/summary_dataset.py",
+      "sha256": "8ca2ecaa195ad637746a412881c3e7199865cd907db7ced729e9dbbc1c3e453d",
+      "bytes": 3229
+    },
+    {
+      "path": "ai-core/ai_core/training/datasets/text_dataset.py",
+      "sha256": "d9fcfd7929630494007e849a5e0273c67e6d4023d7e2511f6e1742e77ad3be7b",
+      "bytes": 2737
+    },
+    {
+      "path": "ai-core/ai_core/training/datasets/vit_dataset.py",
+      "sha256": "4fe567d644c0ba5fcd63067423ef31bc4969f120f62ab6970b7ac2af66903a92",
+      "bytes": 3370
+    },
+    {
+      "path": "ai-core/ai_core/training/loss_fns.py",
+      "sha256": "9fc1e8cfc73b6f16e66a3b049da877d291d0a73186f5c3d1ef4d67798747c4c7",
+      "bytes": 3533
+    },
+    {
+      "path": "ai-core/ai_core/training/schedule.py",
+      "sha256": "39d8343184becc1c5244c3a0a244fe16f5fb147cf5c731b6fc142564ae4c7ea1",
+      "bytes": 715
+    },
+    {
+      "path": "ai-core/ai_core/training/trainer.py",
+      "sha256": "7292632f3eef78518f6a0c407177e03349ddcfcf1f865bf3a4ac42b299ffc091",
+      "bytes": 8723
+    },
+    {
+      "path": "ai-core/ai_core/training/two_tower_v2.py",
+      "sha256": "3c8942d72b6fc1013084877654f3489456334ca238f3548b7990f0588ba81f5f",
+      "bytes": 10496
+    },
+    {
+      "path": "ai-core/ai_core/vision/__init__.py",
+      "sha256": "44b8320c5faa2b5ac8b4c7712af33601466540031d1dab87cd5e6f74f8fc86a5",
+      "bytes": 340
+    },
+    {
+      "path": "ai-core/ai_core/vision/patchify.py",
+      "sha256": "512f2560df92c75074960d93cd1ae57858bb63cbb402bbc03b55eee6197c80c8",
+      "bytes": 836
+    },
+    {
+      "path": "ai-core/ai_core/vision/shot_boundary.py",
+      "sha256": "0c27e5a3bc3036ffc90098e665eb6f4a107151b94f45632c92e65c3e3d148442",
+      "bytes": 2011
+    },
+    {
+      "path": "inference-service/app/__init__.py",
+      "sha256": "8029acf32a685c2b76a26e2566070ca2eec64bd604bac0269ccce255e1ab8aac",
+      "bytes": 370
+    },
+    {
+      "path": "inference-service/app/auth.py",
+      "sha256": "925ae71fd42ea82a167b109292ee30f8ffd57f8f7414a90ab2173151b7930d01",
+      "bytes": 663
+    },
+    {
+      "path": "inference-service/app/config.py",
+      "sha256": "ab03557165a1f63eb376e0bb85b471746d39e30bbfdeae242a87a82e0062999f",
+      "bytes": 3006
+    },
+    {
+      "path": "inference-service/app/gen_key.py",
+      "sha256": "f9867c65f12905548ddd5d70447d94d3915e47ed056cd54930e1d3486edb9a0e",
+      "bytes": 436
+    },
+    {
+      "path": "inference-service/app/gpu_queue.py",
+      "sha256": "84615c592b10fab15ee9ef5d32769d3fdfc08757a745177d391f673cd7d595b7",
+      "bytes": 2840
+    },
+    {
+      "path": "inference-service/app/index_frames.py",
+      "sha256": "14935ae6e30424de6821042dd5e3424ecb0cfed79d15e20b92c0aced1eda2e29",
+      "bytes": 1905
+    },
+    {
+      "path": "inference-service/app/main.py",
+      "sha256": "613e7d2d202ffd7b867705d13ac5a95c061544f0b9cc513bf4d33e78b4926d92",
+      "bytes": 5512
+    },
+    {
+      "path": "inference-service/app/registry.py",
+      "sha256": "3ad24481df62aba54032a95d3be376fcb2553af9d539057c6169fc90a6864b9d",
+      "bytes": 8147
+    },
+    {
+      "path": "inference-service/app/schemas.py",
+      "sha256": "39f4d3e8b14be7c0bd8b24e0751ebc91e0696bc419f2ebe4e0e23e6256b727ad",
+      "bytes": 8287
+    },
+    {
+      "path": "inference-service/app/services.py",
+      "sha256": "d93a4866670f19fb598b5d49f7690fc68e1bb2d1b5f205ad3830c9e659b83184",
+      "bytes": 18897
+    },
+    {
+      "path": "inference-service/app/v2.py",
+      "sha256": "70bcdbbc42bc93f171a9581926a1b3b4fbbb012b2a92742b70548194bb42672b",
+      "bytes": 7404
+    },
+    {
+      "path": "inference-service/app/visual_index.py",
+      "sha256": "d9a2a400aef7b4a705543d40acb7a3392cde1eedc212e89b58d9ceac3894ff6d",
+      "bytes": 5555
+    },
+    {
+      "path": "inference-service/app/worker.py",
+      "sha256": "8dcdc89480f94dc0efd8cd7be1609cfb1df49e140960b4ecc70a7b0ad61e4e88",
+      "bytes": 9532
+    },
+    {
+      "path": "inference-service/app/worker_app.py",
+      "sha256": "5baf7ea3794ec12fe4ee1b9cb64e9c6a562cbf8f46a1ee0c38eddee7f7dd016a",
+      "bytes": 2968
+    },
+    {
+      "path": "inference-service/app/worker_client.py",
+      "sha256": "8d4eaa303a81154f83a7b01c793f338504bd421d1fe77aaf90451bafd6f98bd6",
+      "bytes": 3850
+    }
+  ]
+}

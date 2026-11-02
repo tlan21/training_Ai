@@ -14,9 +14,9 @@ import (
 )
 
 const (
-	accessTTL       = 15 * time.Minute
-	refreshTTL      = 7 * 24 * time.Hour
-	resetTTL        = 30 * time.Minute
+	accessTTL  = 15 * time.Minute
+	refreshTTL = 7 * 24 * time.Hour
+	resetTTL   = 30 * time.Minute
 )
 
 type Service struct {
@@ -95,8 +95,8 @@ func (s *Service) Logout(ctx context.Context, rawRefresh string) error {
 
 func (s *Service) ForgotPassword(ctx context.Context, email string) (string, error) {
 	u, err := s.users.GetByEmail(ctx, email)
-	if err != nil {
-		// không lộ email tồn tại — trả token rỗng, caller vẫn 200
+	if err != nil || u.Role != domain.RoleClient {
+		// Public recovery never resets pre-provisioned CMS accounts or reveals whether they exist.
 		return "", nil
 	}
 	raw := randomToken()

@@ -1,0 +1,12 @@
+{
+  "host_ai_pids": [
+    15852
+  ],
+  "gateway": {
+    "dependencies": {
+      "milvus": "ok",
+      "minio": "ok"
+    },
+    "status": "ok"
+  }
+}

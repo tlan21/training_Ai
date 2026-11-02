@@ -3,11 +3,15 @@ package aihttp
 import (
 	"bytes"
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
+	"os"
 	"path/filepath"
+	"strings"
 	"time"
 	"traning_ai/backend/internal/domain"
 )
@@ -15,6 +19,7 @@ import (
 type Client struct {
 	baseURL, apiKey string
 	http            *http.Client
+	AllowStub       bool // Development only; real inference remains required by default.
 }
 
 func New(baseURL, apiKey string) *Client {
@@ -35,23 +40,14 @@ func (c *Client) request(ctx context.Context, path string, input, output any) er
 	}
 	req.Header.Set("Authorization", "Bearer "+c.apiKey)
 	req.Header.Set("Content-Type", "application/json")
+	log.Printf("AI HTTP %s %s", method, path)
 	response, err := c.http.Do(req)
 	if err != nil {
 		return err
 	}
 	defer response.Body.Close()
 	if response.StatusCode != http.StatusOK {
-		var envelope struct {
-			Error struct {
-				Message string `json:"message"`
-			} `json:"error"`
-		}
-		_ = json.NewDecoder(response.Body).Decode(&envelope)
-		status := response.StatusCode
-		if status >= 500 {
-			status = http.StatusServiceUnavailable
-		}
-		return domain.NewError("AI_UNAVAILABLE", fmt.Sprintf("%s: HTTP %d: %s", path, response.StatusCode, envelope.Error.Message), status)
+		return aiHTTPError(path, response)
 	}
 	return json.NewDecoder(response.Body).Decode(output)
 }
@@ -66,7 +62,22 @@ func (c *Client) Vision(ctx context.Context, paths []string) (*domain.VisionResu
 		}
 	}
 	var result domain.VisionResult
-	err := c.request(ctx, "/v1/vision/completions", map[string]any{"keyframes": paths}, &result)
+	keyframes := make([]string, len(paths))
+	for i, path := range paths {
+		data, err := os.ReadFile(path)
+		if err != nil {
+			return nil, fmt.Errorf("read vision frame: %w", err)
+		}
+		keyframes[i] = "data:" + http.DetectContentType(data) + ";base64," + base64.StdEncoding.EncodeToString(data)
+	}
+	input := map[string]any{"keyframes": keyframes}
+	if len(paths) > 0 {
+		videoID := filepath.Base(filepath.Dir(paths[0]))
+		if strings.HasPrefix(videoID, "vid_") {
+			input["video_id"] = videoID
+		}
+	}
+	err := c.request(ctx, "/v1/vision/completions", input, &result)
 	return &result, err
 }
 func (c *Client) ASR(ctx context.Context, audioURL, language string) (*domain.ASRResult, error) {
@@ -93,6 +104,9 @@ func (c *Client) ASR(ctx context.Context, audioURL, language string) (*domain.AS
 func (c *Client) Highlight(ctx context.Context, videoID string, vision, audio [][]float32) (*domain.HighlightResult, error) {
 	var result domain.HighlightResult
 	err := c.request(ctx, "/v1/highlight/completions", map[string]any{"video_id": videoID, "features": map[string]any{"vision_embeddings": vision, "audio_spectrogram_features": audio}}, &result)
+	if err == nil && result.ClipThreshold != nil && (*result.ClipThreshold < 0 || *result.ClipThreshold > 100) {
+		return nil, domain.NewError("AI_UNAVAILABLE", "Invalid reported highlight threshold", 503)
+	}
 	return &result, err
 }
 func (c *Client) Search(ctx context.Context, image string, topK int, threshold float64) (*domain.SearchResult, error) {
@@ -119,10 +133,11 @@ func (c *Client) Recommendation(ctx context.Context, userID string, limit int, m
 	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel()
 	var result struct {
-		Hits []domain.VideoHit `json:"recommendations"`
+		Hits               []domain.VideoHit `json:"recommendations"`
+		RecommendationMode string            `json:"recommendation_mode"`
 	}
 	err := c.request(ctx, "/v1/recommendation/completions", map[string]any{"user_id": userID, "limit": limit, "context": meta}, &result)
-	return &domain.RecResult{Hits: result.Hits}, err
+	return &domain.RecResult{Hits: result.Hits, RecommendationMode: result.RecommendationMode}, err
 }
 func (c *Client) Summarize(ctx context.Context, prompt string, maxTokens int) (*domain.SummaryResult, error) {
 	var result struct {
@@ -145,6 +160,9 @@ func (c *Client) Health(ctx context.Context) (*domain.AIHealth, error) {
 	var result domain.AIHealth
 	if err := c.request(ctx, "/health", nil, &result); err != nil {
 		return nil, err
+	}
+	if result.StubMode && c.AllowStub {
+		return &result, nil
 	}
 	if result.StubMode || len(result.ModelsLoaded) != 6 {
 		return nil, fmt.Errorf("inference is not running all six real checkpoints")

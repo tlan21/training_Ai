@@ -1,0 +1,42 @@
+# Explicit Docker AI deployment requested by user; source/weights remain Claude-owned.
+# Consume Claude's prebuilt, parity-verified image (HC-16); do not rebuild it.
+# Official AI runtime: this container, internal port only (HC-16).
+services:
+  inference-service:
+    image: video-ai-inference:ai-v1.4-62b7e05
+    restart: unless-stopped
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001"]
+    environment:
+      AI_SERVICE_KEY: ${AI_SERVICE_KEY:?Set the existing Claude AI_SERVICE_KEY in the process environment}
+      FORCE_STUB: "0"
+      INFER_DEVICE: cpu
+      CHECKPOINT_DIR: /srv/ai-core/checkpoints
+      PYTHONDONTWRITEBYTECODE: "1"
+      # Temporary v1 compatibility startup warmup; /v2 compute endpoints do not persist data.
+      MILVUS_HOST: milvus
+      MILVUS_PORT: "19530"
+      MINIO_ENDPOINT: minio:9000
+      MINIO_ACCESS_KEY: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD:-12345678}
+    volumes:
+      - type: bind
+        source: ${AI_CHECKPOINT_BIND:-E:/traning_ai/ai-core/checkpoints}
+        target: /srv/ai-core/checkpoints
+        read_only: true
+        bind:
+          create_host_path: false
+    depends_on:
+      milvus: { condition: service_healthy }
+      minio: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "python", "-c", "import json,urllib.request; h=json.load(urllib.request.urlopen('http://127.0.0.1:8001/health',timeout=5)); assert h['stub_mode'] is False and len(h['models_loaded']) == 6 and not h['degraded'], h"]
+      interval: 10s
+      timeout: 8s
+      start_period: 60s
+      retries: 12
+  gateway:
+    environment:
+      AI_BASE_URL: http://inference-service:8001
+      AI_ALLOW_STUB: "0"
+    depends_on:
+      inference-service: { condition: service_healthy }

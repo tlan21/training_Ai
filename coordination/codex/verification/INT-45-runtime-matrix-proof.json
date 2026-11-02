@@ -1,0 +1,62 @@
+[
+  {
+    "video": "vid_dmhxl0xljfir",
+    "flags": {
+      "auto_highlight_enabled": true,
+      "auto_subtitle_enabled": true
+    },
+    "httpCalls": 4,
+    "allHTTP200": true,
+    "paths": [
+      "/v2/vision/completions",
+      "/v2/asr/completions",
+      "/v1/highlight/completions",
+      "/v1/completions"
+    ]
+  },
+  {
+    "video": "vid_dmhxl4v2xpuh",
+    "flags": {
+      "auto_highlight_enabled": false,
+      "auto_subtitle_enabled": true
+    },
+    "httpCalls": 4,
+    "allHTTP200": true,
+    "paths": [
+      "/v2/vision/completions",
+      "/v2/asr/completions",
+      "/v1/highlight/completions",
+      "/v1/completions"
+    ]
+  },
+  {
+    "video": "vid_dmhxl8t7p4oj",
+    "flags": {
+      "auto_highlight_enabled": true,
+      "auto_subtitle_enabled": false
+    },
+    "httpCalls": 4,
+    "allHTTP200": true,
+    "paths": [
+      "/v2/vision/completions",
+      "/v2/asr/completions",
+      "/v1/highlight/completions",
+      "/v1/completions"
+    ]
+  },
+  {
+    "video": "vid_dmhxle8gp039",
+    "flags": {
+      "auto_highlight_enabled": false,
+      "auto_subtitle_enabled": false
+    },
+    "httpCalls": 4,
+    "allHTTP200": true,
+    "paths": [
+      "/v2/vision/completions",
+      "/v2/asr/completions",
+      "/v1/highlight/completions",
+      "/v1/completions"
+    ]
+  }
+]

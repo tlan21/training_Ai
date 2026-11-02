@@ -1,0 +1,41 @@
+{
+  "checked_at": "2026-10-27T04:41:27.7328932Z",
+  "ai_base_url": "http://host.docker.internal:8001",
+  "ai_allow_stub": false,
+  "ai_health": {
+    "status": "ok",
+    "gpu_vram_used": 0.0,
+    "gpu_util": 0.0,
+    "models_loaded": [
+      "asr_ctc",
+      "highlight_fusion",
+      "minigpt",
+      "siamese",
+      "two_tower",
+      "vit"
+    ],
+    "degraded": [],
+    "dependencies": {
+      "recommendation_index": "missing_collection",
+      "visual_index": "ok"
+    },
+    "queue_depth": 0,
+    "device": "cpu",
+    "stub_mode": false,
+    "load_error": null
+  },
+  "gateway_system_health": {
+    "gpu_util": 0,
+    "gpu_vram_used": 0,
+    "models_loaded": [
+      "asr_ctc",
+      "highlight_fusion",
+      "minigpt",
+      "siamese",
+      "two_tower",
+      "vit"
+    ],
+    "queue_depth": 0
+  },
+  "gateway_artifact_sha256": "DA8D646B8A8BDFC48775AE9B15FD2ED313E50CEDBEDB548E307E4A8194CDA280"
+}

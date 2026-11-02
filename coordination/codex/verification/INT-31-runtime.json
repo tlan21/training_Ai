@@ -1,0 +1,26 @@
+{
+  "inference_image": "video-ai-inference:ai-v2-478052e",
+  "inference_image_id": "sha256:616c63aec37d5e7bb8447a26b34562bbf9eca94b99e88892c46a5b0c9578cddd",
+  "status": "running",
+  "health": "healthy",
+  "host_port_bindings": {},
+  "checkpoint_mount": [
+    {
+      "Type": "bind",
+      "Source": "/run/desktop/mnt/host/e/traning_ai/ai-core/checkpoints",
+      "Destination": "/srv/ai-core/checkpoints",
+      "RW": false
+    }
+  ],
+  "gateway_image": "video-ai-gateway:latest",
+  "gateway_health": "healthy",
+  "gateway_http": {
+    "dependencies": {
+      "milvus": "ok",
+      "minio": "ok"
+    },
+    "status": "ok"
+  },
+  "cms_http": 200,
+  "client_http": 200
+}

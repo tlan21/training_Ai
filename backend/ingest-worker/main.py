@@ -4,10 +4,12 @@ import math
 import os
 from pathlib import Path
 import re
+import time
 import wave
 
 import av
 from kafka import KafkaConsumer, KafkaProducer
+from kafka.errors import KafkaTimeoutError, KafkaConnectionError
 from minio import Minio
 import numpy as np
 import soundfile as sf
@@ -16,11 +18,15 @@ import torch
 from ai_core.audio.features import audio_features_per_second
 
 
-def preprocess(raw: Path, directory: Path) -> float:
+def preprocess(raw: Path, directory: Path) -> dict:
     next_second = 0
     with av.open(str(raw)) as container:
         has_audio = bool(container.streams.audio)
         video = container.streams.video[0]
+        width, height = video.width or None, video.height or None
+        fps = float(video.average_rate) if video.average_rate else None
+        if fps is not None and (not math.isfinite(fps) or fps <= 0):
+            fps = None
         duration = float(container.duration / av.time_base) if container.duration else float((video.duration or 0) * video.time_base)
         if not math.isfinite(duration) or duration <= 0:
             raise ValueError("invalid video duration")
@@ -69,7 +75,31 @@ def preprocess(raw: Path, directory: Path) -> float:
     for extra in range(aligned, next_second):
         (directory / f"{extra:08d}.jpg").unlink()
     (directory / "audio_features.json").write_text(json.dumps(features[:aligned]), encoding="utf-8")
-    return duration
+    return {"duration": duration, "width": width, "height": height, "fps": fps}
+
+
+def connect_kafka(brokers):
+    deadline = time.monotonic() + 90
+    while True:
+        producer = None
+        try:
+            producer = KafkaProducer(bootstrap_servers=brokers, bootstrap_timeout_ms=5000,
+                                     value_serializer=lambda x: json.dumps(x).encode())
+            consumer = KafkaConsumer("video.uploaded", bootstrap_servers=brokers, group_id="ingest-worker",
+                                     auto_offset_reset="earliest", enable_auto_commit=False,
+                                     max_poll_records=1, max_poll_interval_ms=2*60*60*1000,
+                                     bootstrap_timeout_ms=5000)
+            return producer, consumer
+        except Exception as exc:
+            if producer is not None:
+                producer.close(timeout=0)
+            if not isinstance(exc, (KafkaTimeoutError, KafkaConnectionError, OSError)):
+                raise
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise
+            print("[ingest] Kafka not ready; retrying startup", flush=True)
+            time.sleep(min(2, remaining))
 
 
 def main():
@@ -78,11 +108,7 @@ def main():
     work.mkdir(exist_ok=True)
     storage = Minio(os.environ["MINIO_ENDPOINT"], access_key=os.environ["MINIO_ACCESS_KEY"],
                     secret_key=os.environ["MINIO_SECRET_KEY"], secure=False)
-    brokers = os.environ["KAFKA_BROKERS"].split(",")
-    producer = KafkaProducer(bootstrap_servers=brokers, value_serializer=lambda x: json.dumps(x).encode())
-    consumer = KafkaConsumer("video.uploaded", bootstrap_servers=brokers, group_id="ingest-worker",
-                             auto_offset_reset="earliest", enable_auto_commit=False,
-                             max_poll_records=1, max_poll_interval_ms=2*60*60*1000)
+    producer, consumer = connect_kafka(os.environ["KAFKA_BROKERS"].split(","))
     for message in consumer:
         req = json.loads(message.value)
         video_id = req["video_id"]
@@ -92,23 +118,23 @@ def main():
             continue
         directory = work / video_id
         directory.mkdir(exist_ok=True)
-        duration = 0.0
+        metadata = {"duration": 0.0}
         try:
             bucket, key = req["raw_file_path"].split("/", 1)
             raw = directory / "raw.mp4"
             storage.fget_object(bucket, key, str(raw))
-            duration = preprocess(raw, directory)
+            metadata = preprocess(raw, directory)
             raw.unlink()
         except Exception as exc:
             (directory / "error.txt").write_text(str(exc), encoding="utf-8")
             print(f"[ingest] {video_id} failed: {exc}", flush=True)
         # Zero duration explicitly marks failed preprocessing; the Go consumer records error.txt in the job.
         producer.send("video.preprocessed", key=video_id.encode(), value={
-            "video_id": video_id, "duration": duration, "keyframes_path": str(directory),
+            "video_id": video_id, **metadata, "keyframes_path": str(directory),
             "audio_path": str(directory / "audio.wav"),
         }).get(timeout=30)
         consumer.commit()
-        print(f"[ingest] {video_id}: {duration}s", flush=True)
+        print(f"[ingest] {video_id}: {metadata['duration']}s", flush=True)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,47 @@
+{
+  "video_id": "vid_dmh4b8ymqbtw",
+  "clip_id": "clp_dmh7dapvqjn1",
+  "source_segments": [
+    {
+      "start_time": 0,
+      "end_time": 12
+    },
+    {
+      "start_time": 17,
+      "end_time": 19
+    },
+    {
+      "start_time": 21,
+      "end_time": 24
+    },
+    {
+      "start_time": 28,
+      "end_time": 29
+    },
+    {
+      "start_time": 34,
+      "end_time": 37
+    },
+    {
+      "start_time": 38,
+      "end_time": 43
+    },
+    {
+      "start_time": 46,
+      "end_time": 47
+    },
+    {
+      "start_time": 52,
+      "end_time": 56
+    },
+    {
+      "start_time": 57,
+      "end_time": 60
+    }
+  ],
+  "output_duration": 34,
+  "draft_private": true,
+  "published_playback": true,
+  "original_video_unchanged": true,
+  "cleanup": "test clip rejected in finally; no video deletion"
+}

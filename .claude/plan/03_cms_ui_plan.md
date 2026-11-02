@@ -577,7 +577,37 @@ Audit 2 chiều Stitch export ↔ AI core đã chốt. Quy tắc: **HTML trong `
 | Storage Provider AWS/GCS/Azure (Settings) | Chỉ MinIO (đọc từ env, hiển thị read-only) |
 
 ### 7.3. Task bổ sung
+
+User override2026-10-30: CMS focuses on AI, uses pre-provisioned management accounts with one shared capability. Remove CMS forgot/reset/account-delete and role assignment UI/API; keep authentication/access boundary from public Client accounts. Users screen becomes read-only searchable account listing. Remove frontend default passwords/quick role logins. Complete existing8business screens with real persistence/metrics and fix audited bugs; no invented model capabilities or fabricated telemetry. Shared Client password-recovery removal requires clarification because it currently consumes the same API; do not leave broken Client links. This override supersedes old CMS role/forgot-screen specifications only within this scope.
+
+HC-15/INT-38 (2026-10-30): Highlight đọc clip_threshold của từng kết quả AI, không lấy ngưỡng từ Settings; kết quả cũ thiếu metadata phải ghi rõ chưa xác định (75 chỉ là ngưỡng hiển thị dự phòng). 0 đề xuất là trạng thái hợp lệ, vẫn cắt tay được. Video ngoài bóng đá hoặc dưới120s ghi “chỉ tham khảo”; tiêu đề thể loại khác là “Điểm highlight AI”. Chọn HC-15(b): thay slider Settings không điều khiển model bằng thông báo ngưỡng do AI quyết định; giữ field API cũ/deprecated để tương thích, không sửa giá trị cài đặt đã lưu hoặc hardcode ngưỡng50/51. Các bổ sung này thay đúng phần copy/widget Stitch liên quan, không đổi bố cục còn lại. Schema/field AI v1.4 còn DRAFT, không coi model/runtime mới đã tích hợp thật.
+
+User bổ sung 2026-10-29 (INT-34/35): màn Highlight thêm nút “Tạo video tổng hợp AI” trong nhóm hành động hiện có, cùng khối chọn/xem trước các bản tổng hợp đã tạo. Tự chọn và ghép toàn bộ gợi ý AI hợp lệ theo thời gian thành một bản nháp, không tự xuất bản. Dùng lại component/token/flow hiện có; đây là phần bổ sung được user yêu cầu ngoài Stitch gốc, không đổi phần còn lại hay CẮT-list.
+
 | # | Sub-task | ≤ | DoD |
 |---|---|---|---|
 | T3.1.15 | Màn 11 Settings: hooks settings, form 2 toggle + slider + key masked | 0.5d | PUT stub ok; slider đổi 75→80 thì heatmap/clip panel dùng 80 (đọc settings, bỏ hằng số) |
 | T3.1.16 | Gộp màn 6+7 theo layout 3 cột Stitch; confidence % + warning đỏ; nút regenerate | 0.5d | Segment 62% hiện đỏ; regenerate thay draft; layout khớp `ph_t_m_t_t_ai/code.html` |
+
+## 2026-10-28 — User-approved CMS planA override (INT-20/21)
+- Editable/persistent video title/description/editorial hashtags and category description; read-only real source width/height/fps.
+  Canonical contract OpenAPI0.4.0; editorial values stay separate from AI candidate fields. Save errors retain unsaved editor state.
+- Approved release deferrals: priority scheduling, custom category AI rules/status workflow, logo insertion/proposals,
+  undefined accuracy/online/render/storage/view metrics, AI key rotation. Hide/disable these honestly; never invent a value/state.
+- Existing soft-hide semantics retained. No new AI model/API operation. Four Client library routes/forgot-link remain separate undecided scope.
+- New editable input/category-description modal controls are the approved functional additions to Stitch. Other visual parity work remains INT-05.
+
+## 2026-10-28 — User-approved HC-12/D23 subtitle disclosure (INT-24)
+- AI subtitles remain machine drafts: show explicit BẢN NHÁP MÁY notice with verification/edit guidance in the CMS transcript panel.
+  Existing edit/save/reload endpoint remains; no subtitle approval field or official-status claim is introduced.
+- SRT downloads retain valid cue syntax and use -ban-nhap-ai.srt filename; summary approval gate remains separate.
+- This user-approved disclosure overrides original Stitch copy/notice spacing; other layout/parity requirements remain INT-05.
+
+
+## 2026-10-30 — operational completion INT-48/49/50 (user override)
+- Public0.8 supplies actual CMS metrics/storage/CPU and hydrated video/job/clip metadata, server-wide title/category/date filters, category keyword rules, editorial priority and persisted proposal decisions. Data replaces static/undefined values; processing success is not model accuracy, active15min is not a live connection count, click/open count is not playback duration.
+- Dashboard chart uses completed_at UTC month. Queue shows job metadata (no first-page video lookup), settings snapshot and skipped stages; canceled work stops at a stage boundary. Deleted-source jobs/clips excluded from default operational lists; rows retained.
+- Category keyword/vision switches create suggestions requiring editor confirmation, never automatically publish. Keywords are edited one per line, up to20; editorial priority is only a label, no Kafka/GPU scheduler claim. Existing categories have no API system-role/protection property; all expose the same CRUD and server FK conflicts protect referenced data.
+- Highlight accept/dismiss survives reload and can be restored; auto compilation excludes dismissed original proposal indices. No-video selection does not show unrelated compilations. Video picker supports title search and paging rather than limiting selection to20videos.
+- Summary regenerate label explicitly describes AI draft regeneration; saved subtitle edits update the transcript consumed by regeneration. Metadata/priority/category/subtitle drafts are retained on failed writes; Settings has unsaved-navigation protection and reads actual MinIO bucket names. Existing body/grid/token/icon layout reused; mobile Dashboard1column and Settings32px tab gap restored from Stitch reference.
+- Other3Settings tabs and model-owned thresholds/AI key rotation remain explicitly unsupported per prior scope. Users is read-only provisioning inventory; no role editing/recovery/account deletion in CMS. Shared Client recovery remains independently consumed pending clarification.

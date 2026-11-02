@@ -1,0 +1,44 @@
+
+Running 1 test using 1 worker
+
+(node:2840) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 e2e\video_flow.spec.ts:11:5 › T4.1 upload → processed → approve → publish → client feed (27.3s)
+
+
+  1) e2e\video_flow.spec.ts:11:5 › T4.1 upload → processed → approve → publish → client feed ───────
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      100 |     expect(analysis.summary_status).toBe('draft');
+      101 |     expect(analysis.timeline_scores.length).toBeGreaterThan(0);
+    > 102 |     expect(analysis.summary?.trim().length).toBeGreaterThan(0);
+          |                                             ^
+      103 |     expect(analysis.summary ?? '').not.toContain('stub');
+      104 |     expect(analysis.category_suggestion).toMatch(/^(bong_da|the_thao|ca_nhac|tin_tuc)$/);
+      105 |     const subtitles = await request.get(`${gateway}/api/videos/${videoId}/subtitles`, { headers: viewerHeaders });
+        at E:\traning_ai-codex\e2e\video_flow.spec.ts:102:45
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    backend\.tmp\int25-live\video_flow-T4-1-upload-→-p-68fde-ove-→-publish-→-client-feed\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────
+    backend\.tmp\int25-live\video_flow-T4-1-upload-→-p-68fde-ove-→-publish-→-client-feed\test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: backend\.tmp\int25-live\video_flow-T4-1-upload-→-p-68fde-ove-→-publish-→-client-feed\error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    backend\.tmp\int25-live\video_flow-T4-1-upload-→-p-68fde-ove-→-publish-→-client-feed\trace.zip
+    Usage:
+
+        npx playwright show-trace backend\.tmp\int25-live\video_flow-T4-1-upload-→-p-68fde-ove-→-publish-→-client-feed\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    e2e\video_flow.spec.ts:11:5 › T4.1 upload → processed → approve → publish → client feed ────────

@@ -1,0 +1,13 @@
+
+Running 6 tests using 1 worker
+
+(node:14276) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 e2e\cms_design.spec.ts:145:7 › INT-21 390 editorial metadata survives reload and AI regeneration (1.5s)
+  ok 2 e2e\cms_design.spec.ts:145:7 › INT-21 1440 editorial metadata survives reload and AI regeneration (1.9s)
+  ok 3 e2e\cms_design.spec.ts:238:9 › T3.1 1440 subtitles layout (589ms)
+  ok 4 e2e\cms_design.spec.ts:238:9 › T3.1 390 subtitles layout (1.2s)
+  ok 5 e2e\cms_design.spec.ts:372:5 › T3.1 transcript warning, seek, save and summary approval (1.0s)
+  ok 6 e2e\cms_design.spec.ts:550:5 › INT-50 regenerate without an AI title preserves editorial title (623ms)
+
+  6 passed (7.8s)

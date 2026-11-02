@@ -1,0 +1,43 @@
+{
+  "source": "7d2664a",
+  "built_at": "2026-10-28T10:21:10.4880281Z",
+  "strategy": "offline artifact overlays on existing locked-dependency runtimes; no dependency install/pull",
+  "gateway_go_version": "go version go1.25.1 windows/amd64",
+  "gateway_artifacts": [
+    {
+      "name": "ai-mock",
+      "sha256": "57D2B427A71D16DF98E42BAD1BFF0D8AAC9FD685CC05E6E07F2D1B2C97EDF9E0",
+      "bytes": 21135522
+    },
+    {
+      "name": "ffmpeg-cutter",
+      "sha256": "9970D5AE73634DFC50DFCEB31967ADC11A83C8F9B642DE4E50B2AD9570454A2B",
+      "bytes": 12288162
+    },
+    {
+      "name": "gateway",
+      "sha256": "15D87D90AEE7A94360DEDE79B7EB2E73B4D4AD2395425FDBF60BCC4D68E48B1A",
+      "bytes": 43798690
+    },
+    {
+      "name": "orchestrator",
+      "sha256": "415E520B35F5C08CEE6F24E29DF554CCCA7B8085B2A2448FBB918D95CC1EDB76",
+      "bytes": 12152994
+    }
+  ],
+  "worker_main_sha256": "D44B4BD51DDA04E99491D1BAEA1EB3FABAC03526404863A099E038A94E95F181",
+  "worker_requirements_sha256": "1090974192A8C46E56CBB9E1D214305D6F6D9F20BC64BFF94E09894A6E7E3723",
+  "client_lock_sha256": "C3E0CDA49002264A630CFDF5CF8B1A850D2704C9C8B372DAC9B16147CA1CF3B6",
+  "client_build_id": "GDlD_B05A4hk6gQkPj679",
+  "client_rewrite": "http://gateway:8000/api/:path*",
+  "cms_bundle": "index-B8Z5jrXZ.js",
+  "recipes": {
+    "gateway": "FROM video-ai-gateway:rollback-int23\nCOPY gateway orchestrator ffmpeg-cutter ai-mock /usr/local/bin/\r\n",
+    "client": "FROM video-ai-client:rollback-int23\nCOPY .next/ /src/.next/\nCOPY next.config.mjs /src/next.config.mjs\nENV GATEWAY_INTERNAL_URL=http://gateway:8000\r\n",
+    "cms": "FROM video-ai-cms:rollback-int23\nCOPY dist/ /usr/share/nginx/html/\nCOPY nginx.conf /etc/nginx/conf.d/default.conf\r\n",
+    "worker": "FROM video-ai-ingest-worker:rollback-int23\nCOPY main.py /srv/ingest-worker/main.py\r\n"
+  },
+  "final_source": "fa8a382",
+  "final_tag": "int23-fa8a382",
+  "gateway_artifact_toolchain": "go1.26.0 linux/amd64 CGO_ENABLED=0 -ldflags=-s -w"
+}

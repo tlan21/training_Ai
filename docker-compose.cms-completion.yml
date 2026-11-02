@@ -1,0 +1,7 @@
+# Local app release INT-50. Use with root + docker-compose.inference.yml.
+# Pins only owned app images; AI, workers, databases, ports and volumes inherit existing configuration.
+services:
+  gateway:
+    image: video-ai-gateway:int50-74344bb
+  cms:
+    image: video-ai-cms:int50-74344bb

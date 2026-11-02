@@ -1,0 +1,212 @@
+[
+  {
+    "path": "/login",
+    "tag": "BUTTON",
+    "control": "Đăng nhập",
+    "disabled": false,
+    "readOnly": false
+  },
+  {
+    "path": "/settings",
+    "tag": "BUTTON",
+    "control": "Cấu hình AI",
+    "disabled": false,
+    "readOnly": false
+  },
+  {
+    "path": "/settings",
+    "tag": "BUTTON",
+    "control": "Cấu hình AI",
+    "disabled": false,
+    "readOnly": false
+  },
+  {
+    "path": "/settings",
+    "tag": "INPUT",
+    "control": "Tự động đánh dấu (Auto-highlighting)",
+    "disabled": false,
+    "readOnly": false
+  },
+  {
+    "path": "/settings",
+    "tag": "INPUT",
+    "control": "Tạo phụ đề tự động",
+    "disabled": false,
+    "readOnly": false
+  },
+  {
+    "path": "/settings",
+    "tag": "BUTTON",
+    "control": "Hủy bỏ",
+    "disabled": false,
+    "readOnly": false
+  },
+  {
+    "path": "/settings",
+    "tag": "INPUT",
+    "control": "Tự động đánh dấu (Auto-highlighting)",
+    "disabled": false,
+    "readOnly": false
+  },
+  {
+    "path": "/settings",
+    "tag": "INPUT",
+    "control": "Tự động đánh dấu (Auto-highlighting)",
+    "disabled": false,
+    "readOnly": false
+  },
+  {
+    "path": "/settings",
+    "tag": "A",
+    "control": "Video",
+    "disabled": false,
+    "readOnly": false
+  },
+  {
+    "path": "/settings",
+    "tag": "BUTTON",
+    "control": "Lưu thay đổi",
+    "disabled": false,
+    "readOnly": false
+  },
+  {
+    "path": "/settings",
+    "tag": "BUTTON",
+    "control": "Lưu thay đổi",
+    "disabled": false,
+    "readOnly": false
+  },
+  {
+    "path": "/settings",
+    "tag": "A",
+    "control": "Hàng đợi xử lý",
+    "disabled": false,
+    "readOnly": false
+  },
+  {
+    "path": "/queue",
+    "tag": "BUTTON",
+    "control": "Tải lên",
+    "disabled": false,
+    "readOnly": false
+  },
+  {
+    "path": "/settings",
+    "tag": "INPUT",
+    "control": "Tự động đánh dấu (Auto-highlighting)",
+    "disabled": false,
+    "readOnly": false
+  },
+  {
+    "path": "/settings",
+    "tag": "BUTTON",
+    "control": "Lưu thay đổi",
+    "disabled": false,
+    "readOnly": false
+  },
+  {
+    "path": "/settings",
+    "tag": "A",
+    "control": "Hàng đợi xử lý",
+    "disabled": false,
+    "readOnly": false
+  },
+  {
+    "path": "/queue",
+    "tag": "BUTTON",
+    "control": "Tải lên",
+    "disabled": false,
+    "readOnly": false
+  },
+  {
+    "path": "/settings",
+    "tag": "INPUT",
+    "control": "Tạo phụ đề tự động",
+    "disabled": false,
+    "readOnly": false
+  },
+  {
+    "path": "/settings",
+    "tag": "BUTTON",
+    "control": "Lưu thay đổi",
+    "disabled": false,
+    "readOnly": false
+  },
+  {
+    "path": "/settings",
+    "tag": "A",
+    "control": "Hàng đợi xử lý",
+    "disabled": false,
+    "readOnly": false
+  },
+  {
+    "path": "/queue",
+    "tag": "BUTTON",
+    "control": "Tải lên",
+    "disabled": false,
+    "readOnly": false
+  },
+  {
+    "path": "/settings",
+    "tag": "INPUT",
+    "control": "Tự động đánh dấu (Auto-highlighting)",
+    "disabled": false,
+    "readOnly": false
+  },
+  {
+    "path": "/settings",
+    "tag": "INPUT",
+    "control": "Tạo phụ đề tự động",
+    "disabled": false,
+    "readOnly": false
+  },
+  {
+    "path": "/settings",
+    "tag": "BUTTON",
+    "control": "Lưu thay đổi",
+    "disabled": false,
+    "readOnly": false
+  },
+  {
+    "path": "/settings",
+    "tag": "A",
+    "control": "Hàng đợi xử lý",
+    "disabled": false,
+    "readOnly": false
+  },
+  {
+    "path": "/queue",
+    "tag": "BUTTON",
+    "control": "Tải lên",
+    "disabled": false,
+    "readOnly": false
+  },
+  {
+    "path": "/settings",
+    "tag": "A",
+    "control": "Thông báo hệ thống",
+    "disabled": false,
+    "readOnly": false
+  },
+  {
+    "path": "/settings",
+    "tag": "A",
+    "control": "Quản lý người dùng",
+    "disabled": false,
+    "readOnly": false
+  },
+  {
+    "path": "/settings",
+    "tag": "BUTTON",
+    "control": "Trạng thái hệ thống",
+    "disabled": false,
+    "readOnly": false
+  },
+  {
+    "path": "/settings",
+    "tag": "BUTTON",
+    "control": "Đóng",
+    "disabled": false,
+    "readOnly": false
+  }
+]

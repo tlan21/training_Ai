@@ -1,0 +1,4 @@
+{
+  "baseline_exit_code": 1,
+  "old_implementation": "single-range stream copy"
+}

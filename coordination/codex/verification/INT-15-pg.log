@@ -1,0 +1,13 @@
+=== RUN   TestInteractionRepository_RealPersistencePaginationAndPrivacy
+--- PASS: TestInteractionRepository_RealPersistencePaginationAndPrivacy (0.08s)
+=== RUN   TestInteractionRepository_RejectsInvalidInputs
+--- PASS: TestInteractionRepository_RejectsInvalidInputs (0.00s)
+=== RUN   TestPreferenceRepository_RealReplaceRollbackAndIsolation
+--- PASS: TestPreferenceRepository_RealReplaceRollbackAndIsolation (0.04s)
+=== RUN   TestJobRepository_RealTransitions
+--- PASS: TestJobRepository_RealTransitions (0.03s)
+=== RUN   TestSettingsRepository_RealAtomicPatch
+--- PASS: TestSettingsRepository_RealAtomicPatch (0.04s)
+=== RUN   TestTrainingOrigin
+--- PASS: TestTrainingOrigin (0.00s)
+PASS

@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "originalVideos": 111,
+  "originalClips": 61,
+  "settingsValuesUnchanged": true,
+  "unchangedContainers": 13,
+  "ownVideos": [
+    "vid_dmhxiisg0uiw",
+    "vid_dmhxinvp08ej",
+    "vid_dmhxisbsuwea",
+    "vid_dmhxiweewfzj",
+    "vid_dmhxl0xljfir",
+    "vid_dmhxl4v2xpuh",
+    "vid_dmhxl8t7p4oj",
+    "vid_dmhxle8gp039"
+  ],
+  "allOwnVideosDeleted": true,
+  "newUsers": 0,
+  "newClips": 0,
+  "aiRealModels": 6,
+  "aiStub": false,
+  "aiQueue": 0,
+  "noProductSourceOrDeploymentChange": true
+}

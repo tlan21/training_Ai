@@ -30,12 +30,14 @@ export default function LoginPage() {
         setError("");
         try {
             const { data } = await apiClient.post<components["schemas"]["AuthResponse"]>("/api/auth/login", { email: email.trim(), password });
-            if (!data.access_token || !data.user)
+            if (!data.access_token || !data.user?.id)
                 throw new Error("Phản hồi đăng nhập không hợp lệ.");
             query.clear();
             useAuthStore.getState().setAuth({ accessToken: data.access_token, user: data.user });
             const { data: me } = await apiClient.get<components["schemas"]["UserMe"]>("/api/users/me");
-            useAuthStore.getState().setAuth({ accessToken: data.access_token, user: me });
+            const token = useAuthStore.getState().accessToken;
+            if (!token || useAuthStore.getState().user?.id !== data.user.id || me.id !== data.user.id) throw new Error("Phiên đăng nhập đã thay đổi.");
+            useAuthStore.getState().setAuth({ accessToken: token, user: me });
             if (remember)
                 localStorage.setItem("client-remember-email", email.trim());
             else

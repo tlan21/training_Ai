@@ -1,0 +1,18 @@
+{
+  "ai_stub_mode": false,
+  "ai_models": 6,
+  "ai_health_source": "video-ai-inference-service-1",
+  "video_id": "vid_dmh2b70ee8l7",
+  "vectors": 10,
+  "subtitles": 3,
+  "category": "ca_nhac",
+  "summary_chars": 240,
+  "top1_score": 0.99206525,
+  "feed_mode": "popularity",
+  "cleanup": {
+    "repeated_delete": 204,
+    "vectors": 0,
+    "media_urls_404": 3,
+    "mongo_analysis_empty": true
+  }
+}

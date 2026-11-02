@@ -1,0 +1,188 @@
+[
+  {
+    "screen": "/login",
+    "tag": "BUTTON",
+    "control": "Đăng nhập",
+    "type": null
+  },
+  {
+    "screen": "/categories",
+    "tag": "BUTTON",
+    "control": "Xóa danh mục INT40-1793335785078",
+    "type": null
+  },
+  {
+    "screen": "/published",
+    "tag": "BUTTON",
+    "control": "Bộ lọc nâng cao",
+    "type": null
+  },
+  {
+    "screen": "/published",
+    "tag": "BUTTON",
+    "control": "Bộ lọc nâng cao",
+    "type": null
+  },
+  {
+    "screen": "/published",
+    "tag": "BUTTON",
+    "control": "Clip highlight (60)",
+    "type": null
+  },
+  {
+    "screen": "/published",
+    "tag": "BUTTON",
+    "control": "Trang sau",
+    "type": null
+  },
+  {
+    "screen": "/published",
+    "tag": "BUTTON",
+    "control": "Trang trước",
+    "type": null
+  },
+  {
+    "screen": "/published",
+    "tag": "INPUT",
+    "control": "Chọn tất cả nội dung trên trang",
+    "type": "checkbox"
+  },
+  {
+    "screen": "/published",
+    "tag": "INPUT",
+    "control": "Chọn tất cả nội dung trên trang",
+    "type": "checkbox"
+  },
+  {
+    "screen": "/published",
+    "tag": "BUTTON",
+    "control": "Video gốc (108)",
+    "type": null
+  },
+  {
+    "screen": "/published",
+    "tag": "A",
+    "control": "Biên tập video",
+    "type": null
+  },
+  {
+    "screen": "/categories",
+    "tag": "A",
+    "control": "00:08INT40-1793335785078-edited",
+    "type": null
+  },
+  {
+    "screen": "/categories",
+    "tag": "A",
+    "control": "Xem tất cả video",
+    "type": null
+  },
+  {
+    "screen": "/users",
+    "tag": "BUTTON",
+    "control": "Trang sau",
+    "type": null
+  },
+  {
+    "screen": "/users",
+    "tag": "BUTTON",
+    "control": "Trang sau",
+    "type": null
+  },
+  {
+    "screen": "/highlight",
+    "tag": "CANVAS",
+    "control": "Timeline highlight",
+    "type": null
+  },
+  {
+    "screen": "/highlight",
+    "tag": "BUTTON",
+    "control": "Tạo video tổng hợp AI",
+    "type": null
+  },
+  {
+    "screen": "/highlight",
+    "tag": "A",
+    "control": "Mở thư viện",
+    "type": null
+  },
+  {
+    "screen": "/highlight",
+    "tag": "A",
+    "control": "Dự án",
+    "type": null
+  },
+  {
+    "screen": "/queue",
+    "tag": "BUTTON",
+    "control": "Tải lên",
+    "type": null
+  },
+  {
+    "screen": "/queue",
+    "tag": "BUTTON",
+    "control": "Hủy xử lý",
+    "type": null
+  },
+  {
+    "screen": "/queue",
+    "tag": "BUTTON",
+    "control": "Hủy xử lý",
+    "type": null
+  },
+  {
+    "screen": "/queue",
+    "tag": "BUTTON",
+    "control": "Tải lên",
+    "type": null
+  },
+  {
+    "screen": "/videos",
+    "tag": "BUTTON",
+    "control": "Xóa INT40EDGE-1793336038649-invalid.mp4",
+    "type": null
+  },
+  {
+    "screen": "/queue",
+    "tag": "BUTTON",
+    "control": "Tải lên",
+    "type": null
+  },
+  {
+    "screen": "/queue",
+    "tag": "BUTTON",
+    "control": "Hủy tải lên",
+    "type": null
+  },
+  {
+    "screen": "/queue",
+    "tag": "BUTTON",
+    "control": "Bỏ tệp đã chọn",
+    "type": null
+  },
+  {
+    "screen": "/queue",
+    "tag": "BUTTON",
+    "control": "Tải lên",
+    "type": null
+  },
+  {
+    "screen": "/published",
+    "tag": "BUTTON",
+    "control": "Video gốc (111)",
+    "type": null
+  },
+  {
+    "screen": "/published",
+    "tag": "INPUT",
+    "control": "Chọn INT40EDGE-1793336038649-library-delete.mp4",
+    "type": "checkbox"
+  },
+  {
+    "screen": "/published",
+    "tag": "BUTTON",
+    "control": "Xóa hàng loạt",
+    "type": null
+  }
+]

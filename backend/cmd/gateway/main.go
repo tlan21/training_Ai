@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 
@@ -20,6 +21,7 @@ import (
 	"traning_ai/backend/internal/handlers"
 	"traning_ai/backend/internal/handlers/cms"
 	"traning_ai/backend/internal/mocks"
+	"traning_ai/backend/internal/startup"
 )
 
 func main() {
@@ -44,42 +46,69 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	userRepo := &pg.UserRepo{DB: db}
+	userRepo := &pg.UserRepo{DB: db, DataOrigin: cfg.ProductDataOrigin}
 	sessionRepo := &pg.SessionRepo{DB: db}
 	vectorStore := milvus.NewFrames("http://"+cfg.MilvusHost+":"+cfg.MilvusPort, mocks.NewVectorStoreMem())
 	categoryRepo := &pg.CategoryRepo{DB: db}
-	interactionRepo := mocks.NewInteractionRepoMem()
-	videoRepo := &pg.VideoRepo{DB: db}
+	interactionRepo := &pg.InteractionRepo{DB: db}
+	videoRepo := &pg.VideoRepo{DB: db, DataOrigin: cfg.ProductDataOrigin}
 	clipRepo := &pg.ClipRepo{DB: db}
 	jobRepo := &pg.JobRepo{DB: db}
 	analysisStore := &mongo.AnalysisStore{Collection: documents.Collection("video_analyses")}
 	subtitleStore := &mongo.SubtitleStore{Collection: documents.Collection("subtitles")}
 	eventBus := kafka.New(cfg.KafkaBrokers)
 	aiClient := aihttp.New(cfg.AIBaseURL, cfg.AIServiceKey)
-	if _, err := aiClient.Health(ctx); err != nil {
+	aiClient.AllowStub = cfg.AIAllowStub
+	if err := startup.Wait(ctx, "AI HTTP health", func(probe context.Context) error {
+		health, err := aiClient.Health(probe)
+		if err == nil {
+			log.Printf("AI health: stub_mode=%t models_loaded=%v", health.StubMode, health.ModelsLoaded)
+		}
+		return err
+	}); err != nil {
 		log.Fatal(err)
 	}
-	wirePipeline(videoRepo, jobRepo, clipRepo, analysisStore, subtitleStore, aiClient, eventBus, objectStorage)
+	wirePipeline(videoRepo, jobRepo, clipRepo, analysisStore, subtitleStore, aiClient, eventBus, objectStorage, vectorStore, &pg.SettingsRepo{DB: db}, categoryRepo)
 
 	resetRepo := mocks.NewPasswordResetRepoMem()
 	authSvc := auth.NewWithResets(userRepo, sessionRepo, resetRepo, jwtSvc)
-	authH := handlers.NewAuthHandlers(authSvc, userRepo, vectorStore, categoryRepo, interactionRepo)
-	contentH := handlers.NewContentHandlers(videoRepo, clipRepo, categoryRepo, interactionRepo, analysisStore, subtitleStore, cache, aiClient, objectStorage)
-	searchH := handlers.NewSearchHandlers(videoRepo, subtitleStore, cache, aiClient, clipRepo, objectStorage)
+	authH := handlers.NewAuthHandlers(authSvc, userRepo, &pg.PreferenceRepo{DB: db}, categoryRepo, interactionRepo, objectStorage)
+	// D18: use product popularity for MVP; enable the recommender after the v2 production gate.
+	contentH := handlers.NewContentHandlers(videoRepo, clipRepo, categoryRepo, interactionRepo, analysisStore, subtitleStore, cache, nil, objectStorage)
+	searchH := handlers.NewSearchHandlers(videoRepo, subtitleStore, cache, aiClient, clipRepo, objectStorage, vectorStore)
 	interH := handlers.NewInteractionHandlers(interactionRepo)
 
-	videoCMS := cms.NewVideoHandlers(videoRepo, jobRepo, analysisStore, subtitleStore, vectorStore, cache, eventBus, objectStorage, aiClient, clipRepo)
-	jobCMS := cms.NewJobHandlers(jobRepo, eventBus, videoRepo)
-	clipCMS := cms.NewClipHandlers(clipRepo, videoRepo, eventBus, cache, analysisStore)
+	videoCMS := cms.NewVideoHandlers(videoRepo, jobRepo, analysisStore, subtitleStore, vectorStore, cache, eventBus, objectStorage, aiClient, clipRepo).WithSettings(&pg.SettingsRepo{DB: db})
+	jobCMS := cms.NewJobHandlers(jobRepo, eventBus, videoRepo).WithStorage(objectStorage)
+	clipCMS := cms.NewClipHandlers(clipRepo, videoRepo, eventBus, cache, analysisStore, objectStorage)
 	catCMS := cms.NewCategoryHandlers(categoryRepo, cache)
 	userCMS := cms.NewUserHandlers(userRepo)
-	sysCMS := cms.NewSystemHandlers(aiClient)
+	sysCMS := cms.NewSystemHandlers(aiClient, &pg.SettingsRepo{DB: db}).WithOverview(&pg.CMSRepo{DB: db}, objectStorage, cache)
 
 	r := gin.New()
 	r.Use(gin.Recovery(), handlers.CORS())
 	r.NoRoute(handlers.NotFound())
 
-	r.GET("/healthz", func(c *gin.Context) { c.JSON(http.StatusOK, gin.H{"status": "ok"}) })
+	r.GET("/healthz", func(c *gin.Context) {
+		ctx, cancel := context.WithTimeout(c.Request.Context(), 5*time.Second)
+		defer cancel()
+		deps := gin.H{}
+		status := http.StatusOK
+		for name, probe := range map[string]func(context.Context) error{"milvus": vectorStore.Health, "minio": objectStorage.Health} {
+			if err := probe(ctx); err != nil {
+				deps[name] = "unavailable"
+				status = 503
+				log.Printf("health %s: %v", name, err)
+			} else {
+				deps[name] = "ok"
+			}
+		}
+		state := "ok"
+		if status != 200 {
+			state = "degraded"
+		}
+		c.JSON(status, gin.H{"status": state, "dependencies": deps})
+	})
 	r.GET("/openapi.json", func(c *gin.Context) {
 		swagger, err := gen.GetSwagger()
 		if err != nil {
@@ -128,8 +157,10 @@ func main() {
 	cmsGroup.POST("/videos", videoCMS.Create)
 	cmsGroup.GET("/videos", videoCMS.List)
 	cmsGroup.GET("/videos/:id", videoCMS.Get)
+	cmsGroup.PUT("/videos/:id", videoCMS.UpdateMetadata)
 	cmsGroup.DELETE("/videos/:id", videoCMS.Delete)
 	cmsGroup.GET("/videos/:id/analysis", videoCMS.GetAnalysis)
+	cmsGroup.PUT("/videos/:id/analysis", videoCMS.ReviewHighlights)
 	cmsGroup.POST("/videos/:id/summary/regenerate", videoCMS.RegenerateSummary)
 	cmsGroup.PUT("/videos/:id/category", videoCMS.SetCategory)
 	cmsGroup.PUT("/videos/:id/summary", videoCMS.SetSummary)
@@ -142,7 +173,7 @@ func main() {
 	cmsGroup.POST("/jobs/:id/cancel", jobCMS.Cancel)
 
 	cmsGroup.GET("/settings", sysCMS.GetSettings)
-	cmsGroup.PUT("/settings", handlers.RequireRole(string("admin")), sysCMS.UpdateSettings)
+	cmsGroup.PUT("/settings", sysCMS.UpdateSettings)
 	cmsGroup.GET("/system/health", sysCMS.Health)
 
 	cmsGroup.POST("/clips", clipCMS.Create)
@@ -156,13 +187,9 @@ func main() {
 	cmsGroup.PUT("/categories/:id", catCMS.Update)
 	cmsGroup.DELETE("/categories/:id", catCMS.Delete)
 
-	// cms/users — admin only (narrow)
-	cmsUsers := protected.Group("/cms/users")
-	cmsUsers.Use(handlers.RequireRole(string("admin")))
-	cmsUsers.GET("", userCMS.List)
-	cmsUsers.PUT("/:id/role", userCMS.SetRole)
+	cmsGroup.GET("/users", userCMS.List)
 
-	log.Printf("gateway :%s (PostgreSQL/Mongo/MinIO/Kafka/Redis, real AI) → AI %s", cfg.Port, cfg.AIBaseURL)
+	log.Printf("gateway :%s (PostgreSQL/Mongo/MinIO/Kafka/Redis) → AI %s", cfg.Port, cfg.AIBaseURL)
 	if err := r.Run(":" + cfg.Port); err != nil {
 		log.Fatal(err)
 	}

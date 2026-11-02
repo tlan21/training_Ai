@@ -1,0 +1,9 @@
+{
+  "all_original_keys_sizes_etags_unchanged": true,
+  "no_test_objects_remaining": true,
+  "buckets": {
+    "raw-videos": 95,
+    "clips": 47,
+    "thumbnails": 460
+  }
+}

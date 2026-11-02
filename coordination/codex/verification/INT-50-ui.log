@@ -1,0 +1,13 @@
+
+Running 6 tests using 1 worker
+
+(node:20900) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 e2e\cms_design.spec.ts:520:6 › INT-50 390 persisted highlight review and restore (1.7s)
+  ok 2 e2e\cms_design.spec.ts:528:6 › INT-50 390 real-field metrics and hydrated queue (989ms)
+  ok 3 e2e\cms_design.spec.ts:534:6 › INT-50 390 category rules editorial priority and unsaved settings (2.1s)
+  ok 4 e2e\cms_design.spec.ts:520:6 › INT-50 1440 persisted highlight review and restore (1.5s)
+  ok 5 e2e\cms_design.spec.ts:528:6 › INT-50 1440 real-field metrics and hydrated queue (1.1s)
+  ok 6 e2e\cms_design.spec.ts:534:6 › INT-50 1440 category rules editorial priority and unsaved settings (2.6s)
+
+  6 passed (11.7s)

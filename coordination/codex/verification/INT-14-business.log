@@ -1,0 +1,19 @@
+video-ai-gateway-1
+{
+  "mode": "MOCK_ONLY",
+  "user_id": "usr_eb87c7d428983779",
+  "clip_id": "clp_dmeooz2jfc5l",
+  "restart_verified": true,
+  "history_count": 1,
+  "duration_watched": 2,
+  "likes_count": 1,
+  "settings_persisted": true,
+  "key_masked": true,
+  "playback_range_status": 206,
+  "unpublished_interaction_status": 404,
+  "deleted_content_hidden": true,
+  "recommendation_fallback": true,
+  "recommendation_mode": "fallback",
+  "preferences_persisted": true,
+  "login_preferences_retained": true
+}

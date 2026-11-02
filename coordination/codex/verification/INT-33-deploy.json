@@ -1,0 +1,13 @@
+{
+  "image": "video-ai-gateway:int33-40b8bdc",
+  "binary_sha256": "91d008ef5960041ba7bc5aa46a93a3ee0dd91fcc4048ffae2d11540a981e3554",
+  "all_environment_unchanged": true,
+  "only_gateway_recreated": true,
+  "health": {
+    "dependencies": {
+      "milvus": "ok",
+      "minio": "ok"
+    },
+    "status": "ok"
+  }
+}

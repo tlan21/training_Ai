@@ -1,0 +1,802 @@
+[
+  {
+    "method": "POST",
+    "path": "/api/auth/refresh",
+    "status": 401
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/login",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/system/health",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/jobs",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/clips",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/videos",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/refresh",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/users/me",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/system/health",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/settings",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/refresh",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/users/me",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/system/health",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/settings",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/refresh",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/users/me",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/settings",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/system/health",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/refresh",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/users/me",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/settings",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/system/health",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/categories",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/videos",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/refresh",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/users/me",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/system/health",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/settings",
+    "status": 200
+  },
+  {
+    "method": "PUT",
+    "path": "/api/cms/settings",
+    "status": 200,
+    "flags": {
+      "auto_highlight_enabled": true,
+      "auto_subtitle_enabled": true
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/settings",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/settings",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/refresh",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/users/me",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/settings",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/system/health",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/refresh",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/users/me",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/settings",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/system/health",
+    "status": 200
+  },
+  {
+    "method": "PUT",
+    "path": "/api/cms/settings",
+    "status": 200,
+    "flags": {
+      "auto_highlight_enabled": true,
+      "auto_subtitle_enabled": true
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/settings",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/settings",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/refresh",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/users/me",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/settings",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/system/health",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/jobs",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/videos",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/api/cms/videos",
+    "status": 201
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/jobs",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/videos",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/system/health",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/jobs",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/refresh",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/users/me",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/videos/vid_dmhxiisg0uiw/subtitles",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/system/health",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/videos/vid_dmhxiisg0uiw/analysis",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/videos/vid_dmhxiisg0uiw",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/settings",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/categories",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/refresh",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/users/me",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/settings",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/system/health",
+    "status": 200
+  },
+  {
+    "method": "PUT",
+    "path": "/api/cms/settings",
+    "status": 200,
+    "flags": {
+      "auto_highlight_enabled": false,
+      "auto_subtitle_enabled": true
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/settings",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/settings",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/refresh",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/users/me",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/settings",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/system/health",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/jobs",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/videos",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/api/cms/videos",
+    "status": 201
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/videos",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/jobs",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/system/health",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/jobs",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/refresh",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/users/me",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/system/health",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/settings",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/categories",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/videos/vid_dmhxinvp08ej/subtitles",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/videos/vid_dmhxinvp08ej",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/videos/vid_dmhxinvp08ej/analysis",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/refresh",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/users/me",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/settings",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/system/health",
+    "status": 200
+  },
+  {
+    "method": "PUT",
+    "path": "/api/cms/settings",
+    "status": 200,
+    "flags": {
+      "auto_highlight_enabled": true,
+      "auto_subtitle_enabled": false
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/settings",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/settings",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/refresh",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/users/me",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/settings",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/system/health",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/jobs",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/videos",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/api/cms/videos",
+    "status": 201
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/jobs",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/videos",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/system/health",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/jobs",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/refresh",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/users/me",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/videos/vid_dmhxisbsuwea",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/videos/vid_dmhxisbsuwea/subtitles",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/videos/vid_dmhxisbsuwea/analysis",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/settings",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/system/health",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/categories",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/refresh",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/users/me",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/settings",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/system/health",
+    "status": 200
+  },
+  {
+    "method": "PUT",
+    "path": "/api/cms/settings",
+    "status": 200,
+    "flags": {
+      "auto_highlight_enabled": false,
+      "auto_subtitle_enabled": false
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/settings",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/refresh",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/users/me",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/settings",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/system/health",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/jobs",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/videos",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/api/cms/videos",
+    "status": 201
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/jobs",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/videos",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/system/health",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/jobs",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/refresh",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/users/me",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/settings",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/videos/vid_dmhxiweewfzj/subtitles",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/system/health",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/categories",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/videos/vid_dmhxiweewfzj/analysis",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/videos/vid_dmhxiweewfzj",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/refresh",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/users/me",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/settings",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/system/health",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/jobs",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/videos",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/refresh",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/users/me",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/settings",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/system/health",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/users",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/refresh",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/users/me",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/system/health",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/settings",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/system/health",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/system/health",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/cms/system/health",
+    "status": 200
+  }
+]

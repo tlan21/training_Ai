@@ -1,0 +1,99 @@
+
+Running 6 tests using 1 worker
+
+(node:32008) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 e2e\cms_design.spec.ts:520:6 › INT-50 390 persisted highlight review and restore (1.9s)
+  ok 2 e2e\cms_design.spec.ts:528:6 › INT-50 390 real-field metrics and hydrated queue (752ms)
+  x  3 e2e\cms_design.spec.ts:534:6 › INT-50 390 category rules editorial priority and unsaved settings (887ms)
+(node:28824) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 4 e2e\cms_design.spec.ts:520:6 › INT-50 1440 persisted highlight review and restore (1.8s)
+  ok 5 e2e\cms_design.spec.ts:528:6 › INT-50 1440 real-field metrics and hydrated queue (1.0s)
+  x  6 e2e\cms_design.spec.ts:534:6 › INT-50 1440 category rules editorial priority and unsaved settings (1.2s)
+
+
+  1) e2e\cms_design.spec.ts:534:6 › INT-50 390 category rules editorial priority and unsaved settings
+
+    Error: locator.check: Clicking the checkbox did not change its state
+    Call log:
+      - waiting for getByLabel('Gợi ý theo từ khóa', { exact: true })
+        - locator resolved to <input type="checkbox" aria-label="Gợi ý theo từ khóa"/>
+      - attempting click action
+        - waiting for element to be visible, enabled and stable
+        - element is visible, enabled and stable
+        - scrolling into view if needed
+        - done scrolling
+        - performing click action
+        - click action done
+        - waiting for scheduled navigations to finish
+        - navigations have finished
+
+
+      535 |   await page.setViewportSize({width,height:width===390?844:900});await setupUI(page);await page.goto(`${cms}/categories`);
+      536 |   await expect(page.locator('.category-table').getByRole('cell',{name:'41',exact:true})).toHaveCount(4);await page.getByRole('button',{name:'Sửa danh mục Bóng đá',exact:true}).click();await page.getByLabel('Từ khóa gợi ý (mỗi dòng một từ khóa)').fill('bàn thắng\nbóng đá');await page.getByRole('button',{name:'Lưu',exact:true}).click();await expect(page.getByText('bàn thắng, bóng đá',{exact:true})).toBeVisible();await page.reload();await expect(page.getByText('bàn thắng, bóng đá',{exact:true})).toBeVisible();
+    > 537 |   await page.getByLabel('Gợi ý theo từ khóa',{exact:true}).check();await expect(page.getByLabel('Gợi ý theo từ khóa',{exact:true})).toBeChecked();await page.screenshot({path:info.outputPath(`category-rules-${width}.png`),fullPage:true});
+          |                                                            ^
+      538 |   await page.goto(`${cms}/subtitles?video_id=${videoId}`);await page.getByLabel('Ưu tiên biên tập',{exact:true}).selectOption('high');await page.getByRole('button',{name:'Lưu bản nháp',exact:true}).click();await expect(page.getByText('Đã lưu bản nháp',{exact:true})).toBeVisible();await page.reload();await expect(page.getByLabel('Ưu tiên biên tập',{exact:true})).toHaveValue('high');await page.screenshot({path:info.outputPath(`editorial-priority-${width}.png`),fullPage:true});
+      539 |   await page.goto(`${cms}/settings`);await expect(page.getByLabel('S3 Bucket Name',{exact:true})).toHaveValue('raw-videos / clips / thumbnails');await page.getByLabel('Tạo phụ đề tự động',{exact:true}).uncheck();
+      540 |   page.once('dialog',dialog=>dialog.dismiss());await page.getByRole('link',{name:'Quản lý người dùng',exact:true}).click();await expect(page).toHaveURL(/settings$/);await expect(page.getByLabel('Tạo phụ đề tự động',{exact:true})).not.toBeChecked();await page.getByRole('button',{name:'Lưu thay đổi',exact:true}).click();await expect(page.getByText('Đã lưu cài đặt',{exact:true})).toBeVisible();await page.reload();await expect(page.getByLabel('Tạo phụ đề tự động',{exact:true})).not.toBeChecked();await page.screenshot({path:info.outputPath(`settings-real-fields-${width}.png`),fullPage:true});
+        at E:\traning_ai-codex\e2e\cms_design.spec.ts:537:60
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\cms_design-INT-50-390-cate-f65e6-iority-and-unsaved-settings\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\cms_design-INT-50-390-cate-f65e6-iority-and-unsaved-settings\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\cms_design-INT-50-390-cate-f65e6-iority-and-unsaved-settings\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\cms_design-INT-50-390-cate-f65e6-iority-and-unsaved-settings\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) e2e\cms_design.spec.ts:534:6 › INT-50 1440 category rules editorial priority and unsaved settings
+
+    Error: locator.check: Clicking the checkbox did not change its state
+    Call log:
+      - waiting for getByLabel('Gợi ý theo từ khóa', { exact: true })
+        - locator resolved to <input type="checkbox" aria-label="Gợi ý theo từ khóa"/>
+      - attempting click action
+        - waiting for element to be visible, enabled and stable
+        - element is visible, enabled and stable
+        - scrolling into view if needed
+        - done scrolling
+        - performing click action
+        - click action done
+        - waiting for scheduled navigations to finish
+        - navigations have finished
+
+
+      535 |   await page.setViewportSize({width,height:width===390?844:900});await setupUI(page);await page.goto(`${cms}/categories`);
+      536 |   await expect(page.locator('.category-table').getByRole('cell',{name:'41',exact:true})).toHaveCount(4);await page.getByRole('button',{name:'Sửa danh mục Bóng đá',exact:true}).click();await page.getByLabel('Từ khóa gợi ý (mỗi dòng một từ khóa)').fill('bàn thắng\nbóng đá');await page.getByRole('button',{name:'Lưu',exact:true}).click();await expect(page.getByText('bàn thắng, bóng đá',{exact:true})).toBeVisible();await page.reload();await expect(page.getByText('bàn thắng, bóng đá',{exact:true})).toBeVisible();
+    > 537 |   await page.getByLabel('Gợi ý theo từ khóa',{exact:true}).check();await expect(page.getByLabel('Gợi ý theo từ khóa',{exact:true})).toBeChecked();await page.screenshot({path:info.outputPath(`category-rules-${width}.png`),fullPage:true});
+          |                                                            ^
+      538 |   await page.goto(`${cms}/subtitles?video_id=${videoId}`);await page.getByLabel('Ưu tiên biên tập',{exact:true}).selectOption('high');await page.getByRole('button',{name:'Lưu bản nháp',exact:true}).click();await expect(page.getByText('Đã lưu bản nháp',{exact:true})).toBeVisible();await page.reload();await expect(page.getByLabel('Ưu tiên biên tập',{exact:true})).toHaveValue('high');await page.screenshot({path:info.outputPath(`editorial-priority-${width}.png`),fullPage:true});
+      539 |   await page.goto(`${cms}/settings`);await expect(page.getByLabel('S3 Bucket Name',{exact:true})).toHaveValue('raw-videos / clips / thumbnails');await page.getByLabel('Tạo phụ đề tự động',{exact:true}).uncheck();
+      540 |   page.once('dialog',dialog=>dialog.dismiss());await page.getByRole('link',{name:'Quản lý người dùng',exact:true}).click();await expect(page).toHaveURL(/settings$/);await expect(page.getByLabel('Tạo phụ đề tự động',{exact:true})).not.toBeChecked();await page.getByRole('button',{name:'Lưu thay đổi',exact:true}).click();await expect(page.getByText('Đã lưu cài đặt',{exact:true})).toBeVisible();await page.reload();await expect(page.getByLabel('Tạo phụ đề tự động',{exact:true})).not.toBeChecked();await page.screenshot({path:info.outputPath(`settings-real-fields-${width}.png`),fullPage:true});
+        at E:\traning_ai-codex\e2e\cms_design.spec.ts:537:60
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\cms_design-INT-50-1440-cat-dfe10-iority-and-unsaved-settings\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\cms_design-INT-50-1440-cat-dfe10-iority-and-unsaved-settings\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\cms_design-INT-50-1440-cat-dfe10-iority-and-unsaved-settings\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\cms_design-INT-50-1440-cat-dfe10-iority-and-unsaved-settings\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    e2e\cms_design.spec.ts:534:6 › INT-50 390 category rules editorial priority and unsaved settings
+    e2e\cms_design.spec.ts:534:6 › INT-50 1440 category rules editorial priority and unsaved settings
+  4 passed (10.2s)

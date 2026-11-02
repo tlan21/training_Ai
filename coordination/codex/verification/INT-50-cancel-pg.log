@@ -1,0 +1,7 @@
+=== RUN   TestCMSOperationsRealPersistence
+--- PASS: TestCMSOperationsRealPersistence (0.37s)
+=== RUN   TestCMSFreshSchemaAndSeed
+--- PASS: TestCMSFreshSchemaAndSeed (0.21s)
+=== RUN   TestCMSMetadataRealPersistenceAndMigration
+--- PASS: TestCMSMetadataRealPersistenceAndMigration (0.14s)
+PASS

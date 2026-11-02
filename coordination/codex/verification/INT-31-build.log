@@ -1,0 +1,45 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 488B 0.0s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/video-ai-inference:base-int31
+#2 DONE 0.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [internal] load build context
+#4 DONE 0.0s
+
+#5 [1/4] FROM docker.io/library/video-ai-inference:base-int31@sha256:ddd6ebd334333940024b1cc42197872b02b989a52b16495f667747d2dc6b241f
+#5 resolve docker.io/library/video-ai-inference:base-int31@sha256:ddd6ebd334333940024b1cc42197872b02b989a52b16495f667747d2dc6b241f 0.0s done
+#5 DONE 0.1s
+
+#4 [internal] load build context
+#4 transferring context: 711.64kB 0.9s done
+#4 DONE 1.0s
+
+#6 [2/4] COPY source/ai-core/ai_core /srv/ai-core/ai_core
+#6 DONE 0.2s
+
+#7 [3/4] COPY source/inference-service/app /srv/inference-service/app
+#7 DONE 0.1s
+
+#8 [4/4] WORKDIR /srv/inference-service
+#8 DONE 0.1s
+
+#9 exporting to image
+#9 exporting layers
+#9 exporting layers 0.3s done
+#9 exporting manifest sha256:545cb540fbd37d81350ca643db4284b5666343a13b1e92eee350d94c1fed9e21 0.0s done
+#9 exporting config sha256:68d61fe49680f32663f8330eeb5e1a2037d8be17a970906cf2a0cabd7d96fe5c 0.0s done
+#9 exporting attestation manifest sha256:ded7f5d92e6b69630712659bb4743626d9d3ce5ca1fd71efde6e28148d4d327e 0.0s done
+#9 exporting manifest list sha256:616c63aec37d5e7bb8447a26b34562bbf9eca94b99e88892c46a5b0c9578cddd
+#9 exporting manifest list sha256:616c63aec37d5e7bb8447a26b34562bbf9eca94b99e88892c46a5b0c9578cddd 0.0s done
+#9 naming to docker.io/library/video-ai-inference:ai-v2-478052e done
+#9 unpacking to docker.io/library/video-ai-inference:ai-v2-478052e
+#9 unpacking to docker.io/library/video-ai-inference:ai-v2-478052e 0.2s done
+#9 DONE 0.7s

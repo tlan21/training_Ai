@@ -1,0 +1,11 @@
+{
+  "live_vectors": 411,
+  "videos": 49,
+  "original_vectors_ids_payload_unchanged": true,
+  "minio_all_original_keys_sizes_etags_unchanged": true,
+  "buckets": {
+    "raw-videos": 95,
+    "clips": 47,
+    "thumbnails": 460
+  }
+}

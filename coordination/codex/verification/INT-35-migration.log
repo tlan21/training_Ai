@@ -1,0 +1,7 @@
+BEGIN
+ALTER TABLE
+COMMIT
+BEGIN
+psql:/tmp/int35-migration.sql:4: NOTICE:  column "source_segments" of relation "clips" already exists, skipping
+ALTER TABLE
+COMMIT

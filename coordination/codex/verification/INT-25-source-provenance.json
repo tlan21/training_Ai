@@ -1,0 +1,10 @@
+{
+  "original_video_id": "vid_dm46jsx30bah",
+  "original_status": "processed",
+  "original_duration": 10.08,
+  "source_bytes": 2504101,
+  "sha256": "CFB3D387F1FDDAFDE621C037EA7FC31E197BDD6EB635D69AF6CD53F1450798AE",
+  "provenance": "Existing original user video documented in Claude T4.3 report; read-only MinIO download to Codex-owned ignored staging",
+  "original_modified": false,
+  "no_training_data_promotion": true
+}

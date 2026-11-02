@@ -1,0 +1,17 @@
+{
+  "verified_at": "2026-10-27T03:29:48.0853337Z",
+  "image": "sha256:4fcf241026fb926cfd8d56bf5d31dade374df42dcded6c1037f2d2792d376cc3",
+  "size_bytes": 237333048,
+  "next": "16.4.3",
+  "react": "18.3.1",
+  "eslint": "9.39.5",
+  "host_clean_install": "PASS",
+  "host_lint_build_types": "PASS",
+  "docker_clean_install_lint_build_types": "PASS",
+  "proxy_smoke": "PASS",
+  "browser_fixture_tests": 53,
+  "live_gateway_cases": "NOT_RUN",
+  "runtime_audit_total": 0,
+  "full_audit_total": 0,
+  "production_deployed": false
+}

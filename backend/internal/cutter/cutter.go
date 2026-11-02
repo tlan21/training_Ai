@@ -1,16 +1,15 @@
 package cutter
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
 	"io"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"time"
 
+	"traning_ai/backend/internal/domain"
 	"traning_ai/backend/internal/ports"
 )
 
@@ -29,7 +28,7 @@ type cutCompleted struct {
 	Error        string `json:"error,omitempty"`
 }
 
-// Service consumes clip.cut.requested, cuts via ffmpeg -c copy, uploads to MinIO, publishes clip.cut.completed.
+// Service consumes clip.cut.requested, trims accurately, uploads to MinIO, and publishes clip.cut.completed.
 type Service struct {
 	clips   ports.ClipRepository
 	videos  ports.VideoRepository
@@ -77,6 +76,12 @@ func (s *Service) HandleOne(ctx context.Context, payload []byte) error {
 	if err != nil {
 		return err
 	}
+	if clip.VideoID != video.ID {
+		return s.fail(ctx, clip.ID, "clip/source video mismatch")
+	}
+	if len(clip.SourceSegments) > 0 && !domain.ValidSourceSegments(clip.SourceSegments, video.DurationSeconds) {
+		return s.fail(ctx, clip.ID, "invalid compilation source segments")
+	}
 	if video.RawFilePath == "" {
 		return s.fail(ctx, req.ClipID, "video raw_file_path empty")
 	}
@@ -95,10 +100,14 @@ func (s *Service) HandleOne(ctx context.Context, payload []byte) error {
 		return s.fail(ctx, clip.ID, fmt.Sprintf("fetch raw: %v", err))
 	}
 
-	// ffmpeg -ss start -to end -i in -c copy out (no re-encode, §4b)
-	cutCtx, cancel := context.WithTimeout(ctx, 2*time.Minute)
+	cutCtx, cancel := context.WithTimeout(ctx, 15*time.Minute)
 	defer cancel()
-	if err := s.execFn(cutCtx, tmpIn, tmpOut, req.Start, req.End); err != nil {
+	if len(clip.SourceSegments) > 0 {
+		err = realCompilation(cutCtx, tmpIn, tmpOut, clip.SourceSegments)
+	} else {
+		err = s.execFn(cutCtx, tmpIn, tmpOut, req.Start, req.End)
+	}
+	if err != nil {
 		return s.fail(ctx, clip.ID, fmt.Sprintf("ffmpeg: %v", err))
 	}
 
@@ -164,13 +173,5 @@ func splitBucketKey(p, fallbackBucket string) (string, string) {
 }
 
 func realExec(ctx context.Context, in, out string, start, end float64) error {
-	// ffmpeg -ss start -to end -i in -c copy out  (input seeking, fast)
-	args := []string{"-y", "-ss", fmt.Sprintf("%g", start), "-to", fmt.Sprintf("%g", end), "-i", in, "-c", "copy", out}
-	cmd := exec.CommandContext(ctx, "ffmpeg", args...)
-	var stderr bytes.Buffer
-	cmd.Stderr = &stderr
-	if err := cmd.Run(); err != nil {
-		return fmt.Errorf("%w: %s", err, stderr.String())
-	}
-	return nil
+	return realCompilation(ctx, in, out, []domain.ClipSourceSegment{{StartTime: start, EndTime: end}})
 }

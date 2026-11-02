@@ -1,0 +1,1 @@
+{"unauthorized": {"http": 401, "code": "UNAUTHORIZED"}, "recommendation": {"http": 503, "code": "MODEL_NOT_READY"}}

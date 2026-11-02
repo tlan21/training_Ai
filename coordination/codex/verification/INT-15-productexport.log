@@ -1,0 +1,5 @@
+=== RUN   TestExportFieldTypes
+--- PASS: TestExportFieldTypes (0.00s)
+=== RUN   TestRealSnapshotProvenanceAndChecksums
+--- PASS: TestRealSnapshotProvenanceAndChecksums (0.08s)
+PASS

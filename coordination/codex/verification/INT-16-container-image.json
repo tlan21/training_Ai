@@ -1,0 +1,16 @@
+{
+  "verified_at": "2026-10-27T02:57:18.1875980Z",
+  "image": "sha256:83d175168674232e4ce43a38bdc519a478d6001735d210b723c5f027d1f15e67",
+  "size_bytes": 208700149,
+  "command": [
+    "npm",
+    "start"
+  ],
+  "build_context_reported": "4.37MB",
+  "proxy_gateway": "http://gateway:8000",
+  "smoke_network": "none",
+  "smoke_host_alias": "gateway=127.0.0.1",
+  "product_volumes_attached": false,
+  "production_deployed": false,
+  "security_audit": "1critical+1high runtime packages; upgrade decision required"
+}

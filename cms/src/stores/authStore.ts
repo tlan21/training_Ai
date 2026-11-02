@@ -1,37 +1,34 @@
 import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
-import { apiClient } from "../lib/apiClient";
+import type { components } from "../api-types";
+import { queryClient } from "../lib/queryClient";
 
-type User = { id: string; username: string; email: string; role: string };
+type User = components["schemas"]["User"];
 type State = {
   accessToken: string | null;
   user: User | null;
+  ready: boolean;
   setAuth: (p: { accessToken: string; user: User }) => void;
   setToken: (t: string) => void;
-  setUser: (u: User | null) => void;
+  setReady: () => void;
   logout: () => void;
 };
-export const useAuthStore = create<State>()(
-  persist(
-    (set) => ({
-      accessToken: null,
-      user: null,
-      setAuth: ({ accessToken, user }) => set({ accessToken, user }),
-      setToken: (accessToken) => set({ accessToken }),
-      setUser: (user) => set({ user }),
-      logout: () => {
-        apiClient.post("/api/auth/logout").catch(() => {});
-        set({ accessToken: null, user: null });
-      },
-    }),
-    { name: "cms-auth", partialize: (s) => ({ accessToken: s.accessToken, user: s.user }), storage: createJSONStorage(() => ({
-      getItem: (name) => localStorage.getItem(name) ?? sessionStorage.getItem(name),
-      setItem: (name, value) => {
-        const remember = localStorage.getItem("cms-remember") !== "false";
-        (remember ? sessionStorage : localStorage).removeItem(name);
-        (remember ? localStorage : sessionStorage).setItem(name, value);
-      },
-      removeItem: (name) => { localStorage.removeItem(name); sessionStorage.removeItem(name); },
-    })) },
-  ),
-);
+
+localStorage.removeItem("cms-auth");
+sessionStorage.removeItem("cms-auth");
+
+export const useAuthStore = create<State>((set) => ({
+  accessToken: null, user: null, ready: false,
+  setAuth: ({ accessToken, user }) => {
+    localStorage.removeItem("cms-signed-out");
+    sessionStorage.setItem("cms-session-active", "1");
+    set({ accessToken, user, ready: true });
+  },
+  setToken: (accessToken) => set({ accessToken }),
+  setReady: () => set({ ready: true }),
+  logout: () => {
+    localStorage.setItem("cms-signed-out", "1");
+    sessionStorage.removeItem("cms-session-active");
+    set({ accessToken: null, user: null, ready: true });
+    queryClient.clear();
+  },
+}));

@@ -1,0 +1,29 @@
+?   	traning_ai/backend/cmd/ai-mock	[no test files]
+?   	traning_ai/backend/cmd/ffmpeg-cutter	[no test files]
+?   	traning_ai/backend/cmd/frame-backfill	[no test files]
+ok  	traning_ai/backend/cmd/gateway	3.050s
+?   	traning_ai/backend/cmd/orchestrator	[no test files]
+?   	traning_ai/backend/cmd/ttv2-export	[no test files]
+ok  	traning_ai/backend/internal/adapters/aihttp	7.128s
+?   	traning_ai/backend/internal/adapters/kafka	[no test files]
+ok  	traning_ai/backend/internal/adapters/milvus	(cached)
+?   	traning_ai/backend/internal/adapters/minio	[no test files]
+ok  	traning_ai/backend/internal/adapters/mongo	(cached)
+ok  	traning_ai/backend/internal/adapters/pg	(cached)
+?   	traning_ai/backend/internal/adapters/redis	[no test files]
+ok  	traning_ai/backend/internal/auth	3.671s
+ok  	traning_ai/backend/internal/config	(cached)
+ok  	traning_ai/backend/internal/cutter	1.788s
+ok  	traning_ai/backend/internal/domain	(cached)
+--- FAIL: TestCMSPlanAContract (0.08s)
+    spec_test.go:17: version 0.4.0
+FAIL
+FAIL	traning_ai/backend/internal/gen	3.139s
+ok  	traning_ai/backend/internal/handlers	4.212s
+ok  	traning_ai/backend/internal/handlers/cms	3.379s
+ok  	traning_ai/backend/internal/mocks	3.658s
+ok  	traning_ai/backend/internal/orchestrator	2.158s
+?   	traning_ai/backend/internal/ports	[no test files]
+ok  	traning_ai/backend/internal/productexport	(cached)
+ok  	traning_ai/backend/internal/startup	(cached)
+FAIL

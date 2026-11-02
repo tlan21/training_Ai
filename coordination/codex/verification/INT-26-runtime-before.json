@@ -1,0 +1,31 @@
+{
+  "qa_pid": 27160,
+  "qa_command": "\"D:\\nodejs\\node.exe\" node_modules/next/dist/bin/next start --hostname 127.0.0.1 --port 3100",
+  "qa_created": "2026-10-29T01:54:31.4162360Z",
+  "build_id": "ghoG8gi0uP7RGc-tjYb-s",
+  "build_last_write": "2026-10-28T15:01:11.3560732Z",
+  "source_newest": [
+    {
+      "path": "E:\\traning_ai-codex\\client\\src\\app\\globals.css",
+      "last_write": "2026-10-28T14:59:09.0190125Z"
+    }
+  ],
+  "build_fresh": true,
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [
+      {
+        "source": "/api/:path*",
+        "destination": "http://127.0.0.1:8000/api/:path*",
+        "regex": "^/api(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))?(?:/)?$"
+      }
+    ],
+    "fallback": []
+  },
+  "qa_login_http": 200,
+  "qa_api_proxy_http": 401,
+  "product_client_id": "dc090234825b5fec9544e53f4b1b64ce4facaf00670689863ec1770c6892635e",
+  "product_client_image": "video-ai-client:int23-fa8a382",
+  "product_client_started": "2026-10-28T10:25:49.684147254Z",
+  "product_client_http": 200
+}

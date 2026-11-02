@@ -1,0 +1,8 @@
+{
+  "image": "video-ai-gateway:int28-7b1e458",
+  "ai_base_url": "http://host.docker.internal:8001",
+  "allow_stub": "0",
+  "key_matches": true,
+  "all_gateway_environment_unchanged": true,
+  "gateway_ready": true
+}

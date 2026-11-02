@@ -1,0 +1,3 @@
+ok  	traning_ai/backend/internal/adapters/aihttp	3.490s
+ok  	traning_ai/backend/internal/handlers/cms	2.923s
+ok  	traning_ai/backend/internal/adapters/milvus	(cached)

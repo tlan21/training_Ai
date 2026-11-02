@@ -5,10 +5,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"math"
 	"math/rand"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"traning_ai/backend/internal/domain"
@@ -21,6 +23,9 @@ type preprocessed struct {
 	KeyframesPath string      `json:"keyframes_path"`
 	AudioPath     string      `json:"audio_path"`
 	Duration      float64     `json:"duration"`
+	Width         *int        `json:"width"`
+	Height        *int        `json:"height"`
+	FPS           *float64    `json:"fps"`
 	AudioFeatures [][]float32 `json:"-"`
 }
 
@@ -33,18 +38,27 @@ type stageDone struct {
 
 // Runner chain 5 stage (Go, 1 goroutine/video — §5).
 type Runner struct {
-	videos   ports.VideoRepository
-	jobs     ports.JobRepository
-	analysis ports.AnalysisStore
-	subs     ports.SubtitleStore
-	ai       ports.AIClient
-	bus      ports.EventBus
+	storage    ports.ObjectStorage
+	vectors    ports.VectorStore
+	videos     ports.VideoRepository
+	jobs       ports.JobRepository
+	analysis   ports.AnalysisStore
+	subs       ports.SubtitleStore
+	ai         ports.AIClient
+	bus        ports.EventBus
+	settings   ports.SettingsRepository
+	categories ports.CategoryRepository
 	// sleep allows test to skip backoff
 	sleep func(time.Duration)
 }
 
 func New(videos ports.VideoRepository, jobs ports.JobRepository, analysis ports.AnalysisStore, subs ports.SubtitleStore, ai ports.AIClient, bus ports.EventBus) *Runner {
 	return &Runner{videos: videos, jobs: jobs, analysis: analysis, subs: subs, ai: ai, bus: bus, sleep: time.Sleep}
+}
+
+func (r *Runner) WithStorage(storage ports.ObjectStorage, vectors ports.VectorStore) {
+	r.storage = storage
+	r.vectors = vectors
 }
 
 func (r *Runner) WithSleep(fn func(time.Duration)) { r.sleep = fn }
@@ -64,14 +78,20 @@ func (r *Runner) HandleUploaded(ctx context.Context, payload []byte) error {
 	if job.Status != domain.JobPending {
 		return nil
 	}
+	if job.ErrorLog != nil && *job.ErrorLog == "canceled_by_user" {
+		return r.Fail(ctx, p.VideoID, context.Canceled)
+	}
+	if err := r.videos.SetStatus(ctx, p.VideoID, domain.VideoProcessing); err != nil {
+		return err
+	}
 	if err := r.jobs.SetStatus(ctx, job.ID, domain.JobRunning, true, false); err != nil {
 		return err
 	}
 	return r.jobs.SetStage(ctx, job.ID, domain.StageSplittingFrames)
 }
 
-// HandlePreprocessed: consume video.preprocessed → SetDuration → RunChain.
-func (r *Runner) HandlePreprocessed(ctx context.Context, payload []byte) error {
+// HandlePreprocessed: consume video.preprocessed → source metadata → RunChain.
+func (r *Runner) HandlePreprocessed(ctx context.Context, payload []byte) (runErr error) {
 	var p preprocessed
 	if err := json.Unmarshal(payload, &p); err != nil {
 		return err
@@ -80,14 +100,20 @@ func (r *Runner) HandlePreprocessed(ctx context.Context, payload []byte) error {
 	if err != nil {
 		return err
 	}
-	if job.Status == domain.JobCompleted || (job.ErrorLog != nil && *job.ErrorLog == "canceled_by_user") {
+	if job.Status == domain.JobCompleted || job.Status == domain.JobFailed {
 		return nil
 	}
-	if p.Duration <= 0 {
+	if job.ErrorLog != nil && *job.ErrorLog == "canceled_by_user" {
+		return r.Fail(ctx, p.VideoID, context.Canceled)
+	}
+	defer func() {
+		if runErr != nil {
+			runErr = r.Fail(ctx, p.VideoID, runErr)
+		}
+	}()
+	if p.Duration <= 0 || math.IsNaN(p.Duration) || math.IsInf(p.Duration, 0) || (p.Width != nil && *p.Width <= 0) || (p.Height != nil && *p.Height <= 0) || (p.FPS != nil && (*p.FPS <= 0 || math.IsNaN(*p.FPS) || math.IsInf(*p.FPS, 0))) {
 		message, _ := os.ReadFile(filepath.Join(p.KeyframesPath, "error.txt"))
 		err := fmt.Errorf("preprocess: invalid video: %s", message)
-		_ = r.jobs.SetError(ctx, job.ID, err.Error())
-		_ = r.jobs.SetStatus(ctx, job.ID, domain.JobFailed, false, false)
 		return err
 	}
 	data, err := os.ReadFile(filepath.Join(p.KeyframesPath, "audio_features.json"))
@@ -97,20 +123,37 @@ func (r *Runner) HandlePreprocessed(ctx context.Context, payload []byte) error {
 	if err := json.Unmarshal(data, &p.AudioFeatures); err != nil {
 		return err
 	}
-	if err := r.videos.SetDuration(ctx, p.VideoID, p.Duration); err != nil {
+	if err := r.videos.SetMediaMetadata(ctx, p.VideoID, p.Duration, p.Width, p.Height, p.FPS); err != nil {
 		return err
 	}
 	return r.RunChain(ctx, job, p)
 }
 
 // RunChain chạy tuần tự embedding→asr→highlight→summarizing (mỗi stage retry 3, backoff 2s/4s/8s).
-func (r *Runner) RunChain(ctx context.Context, job *domain.ProcessingJob, prep preprocessed) error {
+func (r *Runner) RunChain(ctx context.Context, job *domain.ProcessingJob, prep preprocessed) (runErr error) {
+	defer func() {
+		if runErr != nil {
+			runErr = r.Fail(ctx, prep.VideoID, runErr)
+		}
+	}()
 	// ensure video is processing
 	if err := r.videos.SetStatus(ctx, prep.VideoID, domain.VideoProcessing); err != nil {
 		return err
 	}
 	if err := r.jobs.SetStatus(ctx, job.ID, domain.JobRunning, true, false); err != nil {
 		return err
+	}
+	options := domain.ProcessingOptions{AutoHighlightEnabled: true, AutoSubtitleEnabled: true}
+	if job.ProcessingOptions != nil {
+		options = *job.ProcessingOptions
+	}
+	if !options.AutoSubtitleEnabled {
+		if err := r.subs.Put(ctx, prep.VideoID, "vi", "", []domain.Segment{}); err != nil {
+			return err
+		}
+		if err := r.analysis.SetSummary(ctx, prep.VideoID, "", "draft"); err != nil {
+			return err
+		}
 	}
 	var visionEmb [][]float32
 
@@ -139,19 +182,36 @@ func (r *Runner) RunChain(ctx context.Context, job *domain.ProcessingJob, prep p
 		if current.ErrorLog != nil && *current.ErrorLog == "canceled_by_user" {
 			return context.Canceled
 		}
+		if !options.AutoSubtitleEnabled && (st.stage == domain.StageAsrExtracting || st.stage == domain.StageSummarizing) || !options.AutoHighlightEnabled && st.stage == domain.StageHighlightScoring {
+			continue
+		}
 		if err := r.jobs.SetStage(ctx, job.ID, st.stage); err != nil {
 			return err
 		}
 		if err := r.retry(ctx, string(st.stage), st.fn); err != nil {
-			msg := fmt.Sprintf("stage=%s: %v", st.stage, err)
-			_ = r.jobs.SetError(ctx, job.ID, msg)
-			_ = r.jobs.SetStatus(ctx, job.ID, domain.JobFailed, false, false)
 			_ = r.bus.Publish(ctx, "ai.stage.completed", prep.VideoID, stageDone{VideoID: prep.VideoID, Stage: st.name, Ok: false, Error: err.Error()})
-			return err
+			return fmt.Errorf("stage=%s: %w", st.stage, err)
 		}
 		_ = r.bus.Publish(ctx, "ai.stage.completed", prep.VideoID, stageDone{VideoID: prep.VideoID, Stage: st.name, Ok: true})
 	}
 
+	current, err := r.jobs.Get(ctx, job.ID)
+	if err != nil {
+		return err
+	}
+	if current.ErrorLog != nil && *current.ErrorLog == "canceled_by_user" {
+		return context.Canceled
+	}
+	if err := r.suggestCategory(ctx, prep.VideoID); err != nil {
+		return err
+	}
+	current, err = r.jobs.Get(ctx, job.ID)
+	if err != nil {
+		return err
+	}
+	if current.ErrorLog != nil && *current.ErrorLog == "canceled_by_user" {
+		return context.Canceled
+	}
 	if err := r.videos.SetStatus(ctx, prep.VideoID, domain.VideoProcessed); err != nil {
 		return err
 	}
@@ -193,7 +253,13 @@ func (r *Runner) retry(ctx context.Context, stage string, fn func(context.Contex
 }
 
 func (r *Runner) doVision(ctx context.Context, videoID, keyframesPath string) ([][]float32, error) {
-	res, err := r.ai.Vision(ctx, []string{keyframesPath})
+	var res *domain.VisionResult
+	var err error
+	if r.storage != nil && r.vectors != nil {
+		res, err = IndexVideoFrames(ctx, r.ai, r.storage, r.vectors, videoID, keyframesPath)
+	} else {
+		res, err = r.ai.VisionV2(ctx, []string{keyframesPath})
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -203,15 +269,39 @@ func (r *Runner) doVision(ctx context.Context, videoID, keyframesPath string) ([
 		catPtr = &cat
 	}
 	// store category suggestion + empty scores (highlight will fill)
-	if err := r.analysis.Put(ctx, videoID, nil, nil, catPtr); err != nil {
+	if err := r.analysis.Put(ctx, videoID, nil, nil, catPtr, nil); err != nil {
 		return nil, err
 	}
-	// ViT's 256-d features feed Fusion; Siamese 128-d indexing belongs to T4.2.
+	// Fusion still consumes the 256-d features; backend persists the separate Siamese vectors.
 	return res.Embeddings256, nil
 }
 
 func (r *Runner) doASR(ctx context.Context, videoID, audioPath string) error {
-	res, err := r.ai.ASR(ctx, audioPath, "vi")
+	if r.storage != nil {
+		if !strings.HasPrefix(audioPath, "raw-videos/audio/"+videoID+".") {
+			return domain.ErrValidation
+		}
+		object, err := r.storage.GetObject(ctx, "raw-videos", strings.TrimPrefix(audioPath, "raw-videos/"))
+		if err != nil {
+			return err
+		}
+		defer object.Close()
+		file, err := os.CreateTemp("", "asr-source-*.wav")
+		if err != nil {
+			return err
+		}
+		defer os.Remove(file.Name())
+		_, copyErr := io.Copy(file, object)
+		closeErr := file.Close()
+		if copyErr != nil {
+			return copyErr
+		}
+		if closeErr != nil {
+			return closeErr
+		}
+		audioPath = file.Name()
+	}
+	res, err := r.ai.ASRV2(ctx, audioPath, "vi")
 	if err != nil {
 		return err
 	}
@@ -230,7 +320,7 @@ func (r *Runner) doHighlight(ctx context.Context, videoID string, vision, audio 
 	if a, err2 := r.analysis.Get(ctx, videoID); err2 == nil {
 		cat = a.CategorySuggestion
 	}
-	return r.analysis.Put(ctx, videoID, res.TimelineScores, res.RecommendedClips, cat)
+	return r.analysis.Put(ctx, videoID, res.TimelineScores, res.RecommendedClips, cat, res.ClipThreshold)
 }
 
 func (r *Runner) doSummary(ctx context.Context, videoID string) error {
@@ -243,4 +333,29 @@ func (r *Runner) doSummary(ctx context.Context, videoID string) error {
 		return err
 	}
 	return r.analysis.SetSummary(ctx, videoID, res.Text, "draft")
+}
+
+// Fail records one terminal meaning across ingest, AI and publication failures.
+func (r *Runner) Fail(ctx context.Context, videoID string, cause error) error {
+	cleanup, cancel := context.WithTimeout(context.WithoutCancel(ctx), 5*time.Second)
+	defer cancel()
+	job, err := r.jobs.GetByVideo(cleanup, videoID)
+	if err != nil {
+		return errors.Join(cause, err)
+	}
+	if job.Status == domain.JobCompleted {
+		return cause
+	}
+	var failures []error
+	if job.ErrorLog == nil || *job.ErrorLog != "canceled_by_user" {
+		failures = append(failures, r.jobs.SetError(cleanup, job.ID, cause.Error()))
+	}
+	failures = append(failures, r.jobs.SetStatus(cleanup, job.ID, domain.JobFailed, false, true))
+	video, err := r.videos.Get(cleanup, videoID)
+	if err != nil {
+		failures = append(failures, err)
+	} else if video.Status != domain.VideoDeleted {
+		failures = append(failures, r.videos.SetStatus(cleanup, videoID, domain.VideoFailed))
+	}
+	return errors.Join(append([]error{cause}, failures...)...)
 }

@@ -1,7 +1,13 @@
 # 02 — KẾ HOẠCH TRIỂN KHAI BACKEND (GO + PYTHON AI BOUNDARY)
 *Plan con của @00_master_plan.md. MỌI path/payload/topic ở đây PHẢI khớp bảng contract mục 2.1–2.6 của master plan — không thêm/bớt/đổi. Nền tảng thiết kế: @architecture.md (schema 6 AI endpoint + hexagonal), @architecture_unified.md (4 layer + conflict matrix), @auto_ai_flow_corrected.md (luồng 3 giai đoạn), @database_schema.md (DDL Postgres/Mongo/Milvus), @features.md (quy ước 1 FastAPI process cho AI).*
 
+HC-15/INT-37/38 (2026-10-30): public0.6.0 thêm CmsAnalysis.clip_threshold nullable0..100. AIHTTP chỉ đọc field tùy chọn từ response, request giữ nguyên; ngưỡng sai miền trả AI_UNAVAILABLE. AnalysisStore.Put ghi ngưỡng cùng điểm/đoạn trong một Mongo update, thiếu field giữ null (không giả định giá trị Settings). Chỉ ghi khi có kết quả mới, không migration/backfill/tính lại video cũ. Settings.highlight_threshold giữ tương thích nhưng deprecated/không điều khiển model; CMS chọn phương án(b) công bố rõ. AIv1.4 DRAFT chờ Claude release/runtime parity; không thay AI source/checkpoint tại làn Codex.
+
+HC-14/INT-39 (2026-10-30): clip đơn và bản tổng hợp đều dùng trim/setpts +audio atrim/asetpts, mã hóa H.264/AAC qua engine hiện có; bỏ stream-copy cũ cho clip đơn. Giữ SAR/tỷ lệ hiển thị nguồn (không ép pixel vuông), timeout mã hóa15phút. Metadata start/end clip đơn vẫn là mốc nguồn, source_segments của clip đơn vẫn rỗng; không tính/cắt lại file đã có. Source frame/duration là giới hạn độ chính xác; fixture25fps đạt±0.1s. ASR sentence snapping/API mới thuộc dependency khác, chưa được triển khai.
+
 > Quy ước thang điểm (bất biến từ @architecture.md): điểm highlight `timeline_scores`/`average_score` thang **0–100**; `similarity_score` (Visual Search) và `score` (Recommendation) thang **0–1**.
+
+> INT-34/35 (user yêu cầu 2026-10-29): OpenAPI 0.5.0 mở rộng POST /api/cms/clips với auto_highlights=true, không thêm route/topic/AI field. Backend lấy gợi ý AI đã lưu, gộp khoảng trùng, xếp thời gian, trim+concat FFmpeg thành một MP4 nháp. clips.source_segments JSONB lưu mốc nguồn; start/end của bản tổng hợp = 0/tổng thời lượng. Event clip.cut.requested giữ payload cũ, cutter đọc source map từ ClipRepository. CMS duyệt/xuất bản như clip đơn; Client ánh xạ lại phụ đề/heatmap. Migration 005 additive, clip/video cũ giữ nguyên.
 
 ---
 
@@ -525,3 +531,9 @@ Sub-task ≤0.5 ngày. DoD = Definition of Done. "Sau" = phụ thuộc.
 | 2.6.6 | /health gpu stats + queue depth | proxy CMS trả đủ field | 2.6.2 |
 
 **Thứ tự tổng:** T0.1 → T2.1 (kèm 2.1.0 openapi trước tiên) → {T2.2, T2.3, T2.4} song song → T2.5 → T2.6 (ghép checkpoint sau Phase 1; trước đó MockAIClient nên không bị chặn).
+
+## 2026-10-28 — User-approved CMS planA (INT-20/21)
+OpenAPI0.4.0 PUT /api/cms/videos/{id} (admin/editor) persists full title/description/hashtags update; 422 invalid/unknown fields,
+404 missing/deleted. GET detail returns nullable source width/height/fps +editorial hashtags; category writes add optional description.
+CPU worker adds width/height/fps to video.preprocessed; old payloads still accepted without guessing/clearing source metadata.
+No model/inference contract change; no automatic update of historical rows or product provenance.

@@ -1,0 +1,87 @@
+{
+  "folder": "ph_duy_t_c_t_highlight_ai",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "assetFailures": [],
+  "metrics": [
+    {
+      "text": "logout\n        Đăng xuất",
+      "width": 227,
+      "height": 32,
+      "radius": "4px",
+      "background": "rgba(220, 38, 38, 0.1)"
+    },
+    {
+      "text": "notifications",
+      "width": 40,
+      "height": 40,
+      "radius": "12px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "analytics",
+      "width": 40,
+      "height": 40,
+      "radius": "12px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "save\n                    Lưu bản nháp",
+      "width": 163.359375,
+      "height": 40,
+      "radius": "4px",
+      "background": "rgb(237, 230, 241)"
+    },
+    {
+      "text": "rocket_launch\n                    Xuất bản clip",
+      "width": 158.515625,
+      "height": 40,
+      "radius": "4px",
+      "background": "rgb(70, 21, 153)"
+    },
+    {
+      "text": "play_arrow",
+      "width": 64,
+      "height": 64,
+      "radius": "12px",
+      "background": "rgba(255, 255, 255, 0.2)"
+    },
+    {
+      "text": "zoom_out",
+      "width": 32,
+      "height": 32,
+      "radius": "2px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "zoom_in",
+      "width": 32,
+      "height": 32,
+      "radius": "2px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "close",
+      "width": 32,
+      "height": 32,
+      "radius": "4px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "close",
+      "width": 32,
+      "height": 32,
+      "radius": "4px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "text": "close",
+      "width": 32,
+      "height": 32,
+      "radius": "4px",
+      "background": "rgba(0, 0, 0, 0)"
+    }
+  ]
+}
