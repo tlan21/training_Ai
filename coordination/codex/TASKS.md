@@ -6,6 +6,14 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 
 ## Tổng quan
 
+### INT-58 — Publish HC-19 checkpoint and current open-task checklist
+- Owner: CODEX | Status: IN_PROGRESS (2026-11-02; user requests push/merge then checklist)
+- Depends on: INT-57 DONE, master8e6fd39 received; cleanHEAD8a37ab6; existing current actual HC-19 E2E/parity; local/remote fast-forward ancestry.
+- Acceptance: mandatory release gates, current live image/health and retained actual E2E/parity proof valid; synchronize shared Codex status/tagged plan/sync log; publish complete actionable open-task checklist without falsely closing REVIEW/PARTIAL; normal local master fast-forward and atomic origin master/integration push, verify equality/clean tree. No new product/model/runtime/data action.
+- Changed files: shared release status/masterplan; owned OPEN_TASKS.md, TASKS/SESSION/HANDOFF and verification/INT-58*.
+- Evidence/Commits: preflightHEAD8a37ab6/master8e6fd39clean; bothoriginrefs36b8a1f ancestors. Go/CMS/Client gates alreadyPASS with logs;32existingopen tasks:10PARTIAL/4BLOCKED/16REVIEW/1TODO/1DEFERRED (publicationtask excluded). Startcommit follows.
+- Next action: current health/proof validation, accurate checklist/status sync, commit/fast-forward/push and final ref verification; no repeat of completed implementation.
+
 ### INT-57 — HC-19 release #7 compute-only runtime rollout and actual gateway E2E
 - Owner: CODEX | Status: DONE (2026-11-02; selected rollout/fullparity/actualgatewayE2E/preservation PASS)
 - Depends on: explicit HC-19 scope authorizes fresh test upload/real gateway search; fetched and received master8e6fd39; prebuilt ai-v3.0-48735ff exactSHAf62671...; current flags bothtrue, natural-speech/query fixtures present.
