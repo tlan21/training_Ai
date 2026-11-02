@@ -1,4 +1,6 @@
-# SESSION — Codex resume (2026-11-02, INT-50)
+# SESSION — Codex resume (2026-11-02, INT-51 publication)
+
+- CURRENT2026-11-02: user explicitly requested push code and merge master, then continue. INT-51 IN_PROGRESS for Git publication only. Branch codex/integration clean before gate logs; master release #5 already merged as ab9e4d9; source HEAD7c7dd74. Remote origin fetched, integration is a fast-forward candidate; no remote master existed at inspection. Go/CMS/Client release gates rerunning with retained logs because prior process handles no longer exist. No runtime deployment or new real QA authorized by this Git task; INT-50 remains BLOCKED as below.
 
 - CURRENT2026-11-02: startup branchcodex/integration, masterrelease#5 merged withoutconflict asab9e4d9 (protocol startupauthorization). AI-APIv1.4 published, v2stillDRAFT; no AI source edits/training/model/runtime changes byCodex. INT-50 BLOCKED on explicitapproval of previouslypolicy-rejected realE2E filecreation/run and DockerEngine recovery. Asyncquestions pending; no silence-asapproval and no alternate launcher/port/container used.
 - Independent title correction ready: preserve editorial title when AI returns empty suggested_title; historical6UI PASS7.8s, currentCMS/E2Etypes+CMSbuild PASS (bundleindex-DciNKmBZ.js/CSSY6W6UZTl). Source notdeployed yet. Reportverification/INT-50-resume-2026-11-02.md; priorrejectedcmd attemptedwriting e2e/cms_completion_live.spec.ts then tsc, fileabsent/no QAdata created. Fullrejectedargument remainsconversationtoolrecord.

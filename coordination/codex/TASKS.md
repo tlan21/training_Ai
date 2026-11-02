@@ -6,6 +6,15 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 
 ## Tổng quan
 
+### INT-51 — Publish the integration checkpoint and fast-forward master
+- Owner: CODEX | Status: IN_PROGRESS (2026-11-02; explicit user request to push and merge master)
+- Depends on: master release #5 received at ab9e4d9; clean codex/integration; existing historical real integration evidence; normal remote fast-forward access.
+- Acceptance: rerun Go vet/test/build, CMS types/build, Client types/lint/build; inspect current refs and release diff; sync shared Codex status/master-plan entries without promoting unfinished work; fast-forward local master and push integration/master without force; verify remote SHAs. No runtime deployment, AI edits, new live-data QA or branch-default changes.
+- Changed files: coordination/codex/{TASKS.md,SESSION.md,HANDOFF_OUT.md,verification/INT-51*}; coordination/PROJECT_STATUS.md; .claude/plan/00_master_plan.md (release-authorized shared updates only).
+- Evidence: verification/INT-51.md and gate logs being collected. INT-50 remains BLOCKED; v2 remains DRAFT/REAL_PENDING; historical live proofs must not be relabeled VERIFIED-NOW.
+- Commits: source 7c7dd74, startup master merge ab9e4d9; publication checkpoint follows.
+- Next action: finish gate collection and status synchronization, then normal fast-forward/push under the user's explicit Git authorization.
+
 ### INT-46 — User scope change: simplify CMS account contract
 - Owner: CODEX | Status: DONE (2026-10-30)
 - Depends on: explicit user request to remove CMS password recovery/account deletion and role management; INT-40/45 audits. Account-delete CMS endpoint/implementation does not exist, verify no dormant action remains.
