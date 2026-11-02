@@ -453,3 +453,9 @@ job queue) sở hữu toàn bộ dữ liệu. AI phía Claude đã xong (REL tr�
   và `depends_on: milvus/minio` của riêng service này (giữ mount checkpoint `:ro`); (b) client/mocks Go `/v1/vision|asr|search|recommendation` có thể gỡ
   (đã không còn đường gọi, INT-55) — không bắt buộc, path giờ trả 404; (c) CMS/system health không được kỳ vọng key `visual_index`/`recommendation_index`
   trong `/health.dependencies` nữa; (d) kiểm `/health` (6 model, `stub_mode=false`) + `parity.py`; phản hồi RE:HC-19.
+
+## 2026-11-02 ACK RE:HC-19 — inference v3.0 đang chạy, D24 hoàn tất phía AI (AI-23)
+
+- Claude kiểm độc lập (VERIFIED-NOW): `video-ai-inference-service-1` = `video-ai-inference:ai-v3.0-48735ff`, không còn env `MILVUS_*`/`MINIO_*`,
+  `/health` 6 model thật, `stub_mode=false`, `degraded=[]`, `dependencies={}`. Ghi nhận parity 4 video lệch 0.0 + E2E gateway PASS (INT-57).
+- HC-19 đóng. Không có HC mới phía AI. Video cũ chưa xử lý lại — vẫn cần phạm vi riêng được user duyệt (như HO-04).

@@ -23,7 +23,7 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | AI-20 | T1.5 | Fusion vòng 8: bóng đá + tin tức (nhãn người), lặp tin tức ×1/×10/×30; thay vòng 7 chỉ khi val tin tức +0.05 và giữ bóng đá | DONE (2026-10-30; quy tắc → GIỮ vòng 7; ×10 hứa hẹn, cần dữ liệu tin tức độc lập) | AI-19 |
 | AI-21 | T1.5 | Xác nhận vòng 8 ×10 trên test tin tức độc lập (kênh mới, nhãn mù); đổi khi test tin tức +0.05 và bóng đá ≥ −0.01 | DONE (2026-10-30, release #5; ×10 ACTIVE) | AI-20; user 2026-10-30 (hướng 1) |
 | AI-22 | T1.8 | HO-04: runtime AI chính thức = container Docker (user 2026-11-02) — image bất biến từ source hiện hành (v1.4 + AI-19 + recipe) + bằng chứng readiness/parity checkpoint–source; Codex đổi tag compose (HC-16) | DONE (2026-11-02; Codex triển khai `ai-v1.4-62b7e05` = RE:HC-16; image release #6 ⇐ HC-18) | HO-04; Docker engine UP |
-| AI-23 | T1.8 | D24 bước 3: gỡ 4 path `/v1` deprecated + MinIO/Milvus khỏi inference-service (AI-API v3.0), image mới + parity | DONE (release #7, 2026-11-02); triển khai image ⇐ HC-19 | AI-15; RE:HC-17 (Codex INT-55: không còn gọi) |
+| AI-23 | T1.8 | D24 bước 3: gỡ 4 path `/v1` deprecated + MinIO/Milvus khỏi inference-service (AI-API v3.0), image mới + parity | DONE (release #7, 2026-11-02); Codex đã triển khai (RE:HC-19, INT-57) | AI-15; RE:HC-17 (Codex INT-55: không còn gọi) |
 | AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | BLOCKED ⇐ bundle INT-13 (phần độc lập xong 2026-10-26) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | DONE (2026-10-26; sandbox + artifact; product → AI-12 theo D18) | HC-04 (sandbox READY) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | DONE (02a 2026-10-27 · 02b user duyệt 51/60 2026-10-28 · 02c guard loại, không promote) · D23 dừng cho MVP | — |
@@ -206,7 +206,7 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   ```
 
 ### AI-23 — D24 bước 3: inference-service chỉ tính toán hoàn toàn
-- T gốc: T1.8 | Owner: claude | Status: DONE (release #7, 2026-11-02); triển khai ⇐ HC-19
+- T gốc: T1.8 | Owner: claude | Status: DONE (release #7, 2026-11-02); triển khai xong (RE:HC-19, Codex INT-57, VERIFIED-NOW Claude: container `ai-v3.0-48735ff`, 0 env MinIO/Milvus, /health 6 model `stub_mode=false` `dependencies={}`)
 - Depends on: AI-15 (release #6) | RE:HC-17 (Codex INT-55: gateway/ingest production không gọi `/v1/vision|asr|search|recommendation`)
 - Việc: xóa 4 route + code MinIO/Milvus (`visual_index.py`, `index_frames.py`, dependency probe, lifespan warmup), bỏ `minio`/`pymilvus`;
   giữ `/v1/highlight`, `/v1/completions`, `/health`, `/v2/*`; contract AI-API v3.0 (xóa path = major); test compat cập nhật đúng danh sách path bị xóa;
