@@ -28,7 +28,7 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | DONE (02a 2026-10-27 · 02b user duyệt 51/60 2026-10-28 · 02c guard loại, không promote) · D23 dừng cho MVP | — |
 | AI-03 | T1.6 | Mini-GPT: 03a Claude soạn summary 40 clip · 03b người duyệt · 03c train/eval | DONE (03a 2026-10-26 · 03b Claude duyệt theo D22 2026-10-27 · 03c không promote, người chấm 1.6/5) · D23 dừng cho MVP | — |
 | AI-04 | T1.8 / T4.3 | Đo VRAM sơ bộ Kaggle T4 (PRELIMINARY) | DONE — PRELIMINARY_T4 (2026-10-26; nghiệm thu 3060 vẫn mở) | AI-06 (DONE) |
-| AI-05 | T5.3 | Số liệu evaluation cho luận án | IN_PROGRESS (2026-11-02; dependency đã đủ; VRAM 3060 ghi PRELIMINARY_T4) | AI-02, AI-03, AI-04 |
+| AI-05 | T5.3 | Số liệu evaluation cho luận án | REVIEW (2026-11-02) — bảng 6 model + baseline + CI + limitation xong; 7 nhóm thiếu chờ user chọn đo thêm hay ghi limitation | AI-02, AI-03, AI-04 |
 | AI-08 | — | Dọn dẹp dữ liệu/artefact làn AI an toàn (lặp lại sau mỗi đợt train) | TODO lặp lại (đợt #1 2026-10-26, đợt #2 2026-10-30 DONE) | không job/server nào đang dùng; user duyệt danh sách |
 
 Thứ tự đề xuất (tối đa 1 IN_PROGRESS, cập nhật D14–D17): AI-10 → AI-07 → release (user duyệt) → AI-01 công bố API_READY; song song khi chờ: AI-09 (phần không cần mapping: schema/version/test), AI-03a, AI-02a, AI-04.
@@ -455,10 +455,14 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   ```
 
 ### AI-05 — Số liệu evaluation luận án (T5.3 phần AI)
-- T gốc: T5.3 | Owner: claude | Status: IN_PROGRESS (2026-11-02)
+- T gốc: T5.3 | Owner: claude | Status: REVIEW (2026-11-02)
 - Depends on: AI-02, AI-03, AI-04 (hoặc dùng số thật hiện có nếu user chốt dừng thí nghiệm)
 - Acceptance: bảng metric 6 model vs baseline, CI, limitation thật, khớp `.claude/evaluation_plan.md`.
-- Evidence: — | Commits: — | Checkpoint: —
+- Evidence (VERIFIED-NOW 2026-11-02, `coordination/claude/evidence/AI-05_2026-11-02/SO_LIEU_LUAN_AN.md`): bảng §1 6 model vs baseline, nguồn path:dòng;
+  5/6 đạt mục tiêu chính (Mini-GPT người 1.6/5 trượt; highlight tin tức chưa đạt); ★ mới: highlight ×10 từng seed test bóng đá 0.3123 ± 0.0052
+  (ensemble tính lại 0.3222 = AI-21); SHA 6 checkpoint = contract; 4 test toán học 13 passed. §7 liệt kê 7 nhóm thiếu, §8 mâu thuẫn nguồn.
+  Contract: sửa 2 dòng lỗi thời (tiêu đề §1, ngưỡng 75 → `clip_threshold`), không đổi API.
+- Commits: e3fa5f6, (commit này) | Checkpoint: —
 
 ### AI-08 — Dọn dẹp dữ liệu/artefact làn AI an toàn (yêu cầu user 2026-10-26)
 - T gốc: — | Owner: claude | Status: TODO (task lặp lại: chạy sau mỗi đợt train xong, hoặc khi một ổ chạm `BLOCKED_RESOURCE`)

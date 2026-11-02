@@ -46,7 +46,7 @@ thành công thật; Codex được dùng mock, chưa được đánh `INTEGRATE
 - Thang điểm: highlight 0–100; similarity/score/confidence 0–1.
 - Mock cho Codex: `FORCE_STUB=1` → mọi endpoint trả dữ liệu giả đúng schema, `/health.stub_mode=true`. Mock không bao giờ tính là tích hợp thật.
 
-## 1. Model & checkpoint (active tại v1.0)
+## 1. Model & checkpoint (active hiện hành — v1.4/v1.5)
 
 | Model key (`/health.models_loaded`) | Endpoint | `model` mặc định | SHA256 `best.pt` |
 |---|---|---|---|
@@ -172,7 +172,7 @@ Req: `{"model"?: str, "video_id": str, "features": {"vision_embeddings": [[float
 - **Ràng buộc:** 2 mảng **cùng số phần tử** (1 phần tử = 1 giây); vision 256-d (đầu ra 2.1), audio 64-d (`ai_core.audio.features.audio_features_per_second`).
   Sai → 503 `AI_UNAVAILABLE` (không phải 422).
 Resp: `{"id","object":"highlight_completion","created","model","video_id","timeline_scores":[{"second":int,"score":0–100}],"recommended_clips":[{"clip_id","start_time","end_time","average_score":0–100}]}`
-- `second` bắt đầu từ 0, liên tục; clip đề xuất = đoạn liên tiếp có score > 75 (có thể rỗng).
+- `second` bắt đầu từ 0, liên tục; clip đề xuất = đoạn liên tiếp có score > ngưỡng (có thể rỗng); ≤ v1.3 ngưỡng cố định 75, từ v1.4 xem `clip_threshold` bên dưới.
 - **v1.4 (AI-16…AI-21; release #5 2026-10-30):**
   - Resp thêm `"clip_threshold": float` (0–100) = ngưỡng AI đã dùng để cắt `recommended_clips` (vòng 6: 50; không recipe: 75). UI vẽ vạch ngưỡng heatmap theo giá trị này.
   - Req thêm tùy chọn `"asr_segments": [{"start_time","end_time"}, ...]` (segment `/v1/asr` của cùng video; field thừa bị bỏ qua) →
