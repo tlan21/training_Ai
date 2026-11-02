@@ -703,3 +703,4 @@ body:has(.settings-page) .account-row strong { font-size: 16px; font-weight: 400
 .status-text, .kind-cell span { white-space: nowrap; }
 .videos-page .status-chips .field-label { white-space: nowrap; }
 @media (max-width: 760px) { .videos-page .status-chips { flex-wrap: wrap; } }
+.videos-page .filters { gap: 12px; }
