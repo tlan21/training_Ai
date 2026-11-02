@@ -73,7 +73,7 @@ export default function SubtitlesPage() {
   const regenerate = async () => {
     if ((summaryDirty || title !== (video.data?.title ?? "")) && !confirm("Tạo lại tóm tắt và tiêu đề sẽ thay thế nội dung chưa lưu. Tiếp tục?")) return;
     setRegenerating(true);
-    try { const result = await apiClient.post<paths["/api/cms/videos/{id}/summary/regenerate"]["post"]["responses"][200]["content"]["application/json"]>(`/api/cms/videos/${videoId}/summary/regenerate`); setSummary(result.data.summary ?? ""); setTitle(result.data.suggested_title ?? title); await qc.invalidateQueries({ queryKey: ["analysis", videoId] }); toast.ok("Đã tạo lại bản nháp AI"); } catch (error) { toast.err(errorMessage(error)); } finally { setRegenerating(false); }
+    try { const result = await apiClient.post<paths["/api/cms/videos/{id}/summary/regenerate"]["post"]["responses"][200]["content"]["application/json"]>(`/api/cms/videos/${videoId}/summary/regenerate`); setSummary(result.data.summary ?? ""); if (result.data.suggested_title?.trim()) setTitle(result.data.suggested_title); await qc.invalidateQueries({ queryKey: ["analysis", videoId] }); toast.ok("Đã tạo lại bản nháp AI"); } catch (error) { toast.err(errorMessage(error)); } finally { setRegenerating(false); }
   };
   const exportSubtitles = () => {
     const timestamp = (seconds: number) => new Date(Math.max(0, seconds) * 1000).toISOString().slice(11, 23).replace(".", ",");

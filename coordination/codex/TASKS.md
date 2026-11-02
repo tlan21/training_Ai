@@ -31,7 +31,8 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 - Next action: INT-49 real storage/read-model implementation,41..44 runtime fixes and8screen wiring.
 
 ### INT-50 — Complete eight operational CMS screens and final real acceptance
-- Owner: CODEX | Status: IN_PROGRESS (2026-10-30)
+- Owner: CODEX | Status: BLOCKED (2026-11-02; explicit real-QA approval and Docker Engine recovery required)
+- Blocker/evidence: verification/INT-50-resume-2026-11-02.md. Prior realE2E creation/typecheck exec rejected blocked-by-policy; fileabsent, explicitapproval requested. DockerDesktopserviceStopped/no dockerd/app ports; Start-Service cannotopenservice, userruntime recovery needed. Independent blankAI-title correction/source test ready, currenttypes/buildPASS and historical6UIPASS. No new realQA/data mutation thisresume.
 - Depends on: public0.8 INT-48; source checkpoints47/49/41/42/43. User explicitly requests all8business screens, no role assignment or new AI ownership.
 - Acceptance: Dashboard real metrics/chart/report; Videos server filters/errors/metadata; Queue real video metadata/policies/skips/CPU and navigation/retry/cancel; Highlight persisted proposal decisions/restoration/compilation/manual preview/publish; Subtitles draft/approval/regenerate/editorial validation; Published metadata/open counts/search/safe actions; Categories real counts/keywords/flags/conflicts; Users readonly provisioned CMS capability. Related Settings execute/display actual flags/buckets and dirty guard. Fix affected backend silent writes/validation; no AI contract/model change.
 - Planned files: existing CMS hooks/pages/components, related backend ports/adapters/handlers/tests, e2e tests, owned subplan/evidence/tracker. No new dependency or endpoint family.

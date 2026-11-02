@@ -1,0 +1,48 @@
+
+Running 1 test using 1 worker
+
+(node:13300) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 e2e\cms_design.spec.ts:550:5 › INT-50 regenerate without an AI title preserves editorial title (11.3s)
+
+
+  1) e2e\cms_design.spec.ts:550:5 › INT-50 regenerate without an AI title preserves editorial title
+
+    Error: expect(locator).toHaveValue(expected) failed
+
+    Locator:  getByLabel('Tiêu đề đề xuất', { exact: true })
+    Expected: "Man City vs Arsenal - Vòng 5"
+    Received: ""
+    Timeout:  10000ms
+
+    Call log:
+      - Expect "toHaveValue" getByLabel('Tiêu đề đề xuất', { exact: true }) with timeout 10000ms
+      - waiting for getByLabel('Tiêu đề đề xuất', { exact: true })
+        23 × locator resolved to <input value="" class="input" maxlength="255" id="suggested-title"/>
+           - unexpected value ""
+
+
+      549 |
+      550 | test('INT-50 regenerate without an AI title preserves editorial title',async({page})=>{
+    > 551 |  await setupUI(page);await page.route('**/summary/regenerate',route=>route.fulfill({json:{summary:'AI draft',suggested_title:''}}));await page.goto(`${cms}/subtitles?video_id=${videoId}`);await expect(page.getByLabel('Tiêu đề đề xuất',{exact:true})).toHaveValue(videos[0].title!);await page.getByRole('button',{name:'Tạo lại bản nháp AI',exact:true}).click();await expect(page.getByLabel('Tiêu đề đề xuất',{exact:true})).toHaveValue(videos[0].title!);
+          |                                                                                                                                                                                                                                                                                                                                                                                                                                      ^
+      552 | });
+      553 |
+        at E:\traning_ai-codex\e2e\cms_design.spec.ts:551:422
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\cms_design-INT-50-regenera-2230c-e-preserves-editorial-title\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\cms_design-INT-50-regenera-2230c-e-preserves-editorial-title\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\cms_design-INT-50-regenera-2230c-e-preserves-editorial-title\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\cms_design-INT-50-regenera-2230c-e-preserves-editorial-title\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    e2e\cms_design.spec.ts:550:5 › INT-50 regenerate without an AI title preserves editorial title ─

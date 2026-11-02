@@ -546,3 +546,7 @@ for(const width of [390,1440]) test(`INT-50 ${width} cancellation waits for work
  await page.route('**/api/cms/jobs',route=>route.fulfill({json:[{id:'job_cancel_pending',video_id:videoId,video_title:'Cancel pending',status:'running',current_stage:'embedding',progress:40,error_log:'canceled_by_user'} satisfies components['schemas']['Job']]}));
  await page.goto(`${cms}/queue`);await expect(page.getByText('Đang chờ dừng bước hiện tại',{exact:true})).toBeVisible();await expect(page.getByRole('button',{name:'Hủy xử lý',exact:true})).toBeDisabled();await expect(page.getByRole('button',{name:'Thử lại xử lý',exact:true})).toHaveCount(0);
 });
+
+test('INT-50 regenerate without an AI title preserves editorial title',async({page})=>{
+ await setupUI(page);await page.route('**/summary/regenerate',route=>route.fulfill({json:{summary:'AI draft',suggested_title:''}}));await page.goto(`${cms}/subtitles?video_id=${videoId}`);await expect(page.getByLabel('Tiêu đề đề xuất',{exact:true})).toHaveValue(videos[0].title!);await page.getByRole('button',{name:'Tạo lại bản nháp AI',exact:true}).click();await expect(page.getByLabel('Tiêu đề đề xuất',{exact:true})).toHaveValue(videos[0].title!);
+});

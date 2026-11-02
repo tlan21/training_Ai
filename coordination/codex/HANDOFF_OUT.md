@@ -480,3 +480,9 @@ Mẫu HO:
 ## 2026-10-30 INT-50 local rollout — source74344bb, real acceptance next
 - Additive006 applied twice, old rows unchanged; final gateway/CMS source74344bb images deployed with safe cancel acknowledgement. HTTP200, actualAI6/stubfalse/CPU/degradedempty, all other11projectcontainers and all app env/mounts/commands preserved. Old source628rollout retained as initial evidence; detailed exactmount-order proof and artifact hashes in verification/INT-50.md.
 - Owned imagepin override docker-compose.cms-completion.yml follows root + inference override for local app commands. No inference image/source/runtime/checkpoint change and no Client/worker/DB restart, no push/release. Original Mongo docs unchanged across rollout. Next tracked real policy/8screen E2E and data/settings/runtime preservation, then acceptance checkpoint; not DONE yet.
+
+
+## 2026-11-02 INT-50 resume — source title correction, runtime/approval blockers
+- Received masterrelease#5/AI-API1.4 via startupmergeab9e4d9, no conflict or manualClaude edits; v2DRAFT remains. No inference/checkpoint/model work or new realAI/modelquality acceptance.
+- Preserves editorial title when AI suggests empty title; historical6UIPASS7.8s/currentCMS+E2Etypes/CMSbuildPASS. NewCMSbundleindex-DciNKmBZ.js notdeployed, lastknownimageint50-74344bb historicalOct30.
+- INT-50 BLOCKED: prior exec creatingrealE2Efile/typecheck rejected blocked-by-policy, fileabsent, newexplicitapproval pending; DockerEngine unavailable/serviceStopped, Start-Service cannotopenservice, userstart required. No alternate launcher/port/container/elevation and no new liveQA mutations. Evidence verification/INT-50-resume-2026-11-02.md. Refresholdruntime/data baselines before futureQA; no DONE untilactualacceptance.
