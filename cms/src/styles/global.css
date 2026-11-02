@@ -701,3 +701,5 @@ body:has(.settings-page) .account-row strong { font-size: 16px; font-weight: 400
 .videos-page .filters label, .videos-page .status-chips button { white-space: nowrap; }
 .videos-page .filters select.input { min-width: 140px; }
 .status-text, .kind-cell span { white-space: nowrap; }
+.videos-page .status-chips .field-label { white-space: nowrap; }
+@media (max-width: 760px) { .videos-page .status-chips { flex-wrap: wrap; } }
