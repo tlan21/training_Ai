@@ -1,6 +1,6 @@
 # INT-55 — HC-17 production runtime legacy AI path confirmation (2026-11-02)
 
-Owner CODEX. User permits **remove or confirm** gateway/ingest no longer call /v1/vision|asr|search|recommendation. Selected confirmation-only: production already migrated; no application code deletion, endpoint change, gateway/worker recreation or product-data write is necessary. Keep permitted /v1/highlight/completions and /v1/completions.
+Owner CODEX. Status DONE. Evidence/readiness commit **cb86e0d**, activation **3807519**; RE:HC-17/closure follows in this commit. User permits **remove or confirm** gateway/ingest no longer call /v1/vision|asr|search|recommendation. Selected confirmation-only: production already migrated; no application code deletion, endpoint change, gateway/worker recreation or product-data write is necessary. Keep permitted /v1/highlight/completions and /v1/completions.
 
 ## Source reachability and deployed provenance — VERIFIED-NOW
 

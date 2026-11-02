@@ -1,6 +1,6 @@
 # INT-54 — HC-18 release #6 inference rollout and full parity (2026-11-02)
 
-Owner CODEX. User explicitly requested merge master479f5d5, HC-18 existing-image rollout, actual health/parity and RE:HC-18. Startup fast-forward f1a8a29→479f5d5 completed without conflicts or manual Claude-file edits. Published contracts now v1.5 and v2API_READY (recommendation remains DRAFT). Task starta87e623.
+Owner CODEX. Status DONE. User explicitly requested merge master479f5d5, HC-18 existing-image rollout, actual health/parity and RE:HC-18. Startup fast-forward f1a8a29→479f5d5 completed without conflicts or manual Claude-file edits. Published contracts now v1.5 and v2API_READY (recommendation remains DRAFT). Task starta87e623; deployment/full parity **3e63056**, RE:HC-18 **3807519**.
 
 ## Image and selected-service deployment
 

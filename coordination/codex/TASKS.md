@@ -16,12 +16,13 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 - Next action: no further image action; proceed HC-17 confirmation under INT-55, preserve old product analyses and separate CMS QA gate.
 
 ### INT-55 — HC-17 prove runtime does not call deprecated AI media paths
-- Owner: CODEX | Status: REVIEW (2026-11-02; caller/provenance/log confirmation and Go verification PASS)
+- Owner: CODEX | Status: DONE (2026-11-02; current deployed runtime confirmed compliant, no application edit required)
 - Depends on: user HC-17 instruction; INT-54 first; existing gateway74344bb/ingest23 runtime, released v2 contract.
 - Acceptance: trace gateway/orchestrator/search/feed/ingest call sites and deployed-source provenance; prove no runtime calls to /v1/vision|asr|search|recommendation with source plus bounded HTTP/log verification; preserve /v1/highlight and /v1/completions; remove legacy code only if necessary; commit RE:HC-17/evidence with limits, no invented live-upload proof or original-data writes.
 - Changed files: owned verification/tracker/session/handoff/matrix; backend only if an actual runtime legacy caller requires correction.
-- Evidence/Commits: verification/INT-55.md andsource-runtime/runtime-pathsJSON/Go log. CurrentbinarySHA matches74344bb proof, backendunchanged, packagedingestblobmatches; productionv2calls/nilAIpopularity confirmed; real log0deprecatedcalls withlimitedtraffic disclosed. Govet/test/build+forced4v2/2pipeline/4feedvisual groups PASS. Source confirmation chosen; no app code edit. Evidence commit follows.
-- Next action: commit proof/readiness metadata then RE:HC-17; keep compatibility methods/mock tests, do not claim deleted code or newly executed rawupload flow.
+- Evidence/Commits: **cb86e0d** proof/readiness metadata, activation3807519; verification/INT-55.md andsource-runtime/runtime-pathsJSON/Go log. CurrentbinarySHA matches74344bb, backendunchanged, packagedingestblobmatches; productionv2/nilAIpopularity confirmed; boundedreal log0deprecatedcalls. Govet/test/build+forced4v2/2pipeline/4feedvisual groups PASS. RE:HC-17/closure in this commit.
+- Checkpoint: Lane codex / Changed owned proof/matrix/coordination / Verified deployedsource/binary/callchain/logs/Go gates / Contract touched no, publishedv1.5/v2 consumed / Next ClaudeD24step3 or separatelyapprovedINT50QA.
+- Next action: Claude can remove deprecated routes/storage dependencies in its own versioned release. Compatibility methods/tests retained; no gateway/ingest redeploy or newrawupload claim, no automatic master/remote publication.
 
 ### INT-53 — Release HC-16 integration checkpoint to local master
 - Owner: CODEX | Status: DONE (2026-11-02; all gates PASS, local master fast-forward verified)
