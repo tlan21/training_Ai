@@ -7,12 +7,12 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 ## Tổng quan
 
 ### INT-56 — Release and push HC-17/HC-18 integration checkpoint
-- Owner: CODEX | Status: IN_PROGRESS (2026-11-02; explicit user request push and merge master)
+- Owner: CODEX | Status: REVIEW (2026-11-02; all release gates/current parity provenance PASS, publication next)
 - Depends on: INT-54/55 DONE; master479f5d5 received; existing real parity and HIST v2 E2E; normal local/remote fast-forward ancestry.
 - Acceptance: mandatory Go/CMS/Client release gates PASS; current AI health and retained full parity/readiness evidence verified; synchronize shared Codex status/tagged master-plan/sync log; commit, fast-forward master and atomically push master/integration; assert remote refs=HEAD and clean worktree. No new app/AI/contract/runtime/data operation.
 - Changed files: coordination/PROJECT_STATUS.md; .claude/plan/00_master_plan.md; coordination/codex/{TASKS.md,SESSION.md,HANDOFF_OUT.md,verification/INT-56*}.
-- Evidence/Commits: preflightcleanHEADa9f1bd9/master479f5d5; origin/master479f5d5/originintegrationf1a8a29 are ancestors. Gate logs running, existing source3e63056/proofcb86e0d/closurea9f1bd9. Task-start commit follows.
-- Next action: collect release gates/current bounded health, sync shared status, commit and push normally; preserve unrelated branches and incomplete CMS gates.
+- Evidence/Commits: start121e59e; verification/INT-56.md,3gate logs/currentliveJSON. All Go/CMS/Client gates PASS; current6real/stubfalse/exactimage+10filesmatchsame4videoparity0.0. Local/remoteancestry PASS, sharedstatus/plansync12 prepared; source3e63056/proofcb86e0d/closurea9f1bd9 unchanged.
+- Next action: commit gated metadata/evidence, localffmaster +atomicoriginpush/assertrefs, then record actual completion. Preserve unrelated branches and incomplete CMS gates.
 
 ### INT-54 — HC-18 consume release #6 image and verify full parity
 - Owner: CODEX | Status: DONE (2026-11-02; selected rollout and full official parity PASS)

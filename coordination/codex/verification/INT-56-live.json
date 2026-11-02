@@ -1,0 +1,65 @@
+{
+  "health": {
+    "status": "ok",
+    "gpu_vram_used": 0.0,
+    "gpu_util": 0.0,
+    "models_loaded": [
+      "asr_ctc",
+      "highlight_fusion",
+      "minigpt",
+      "siamese",
+      "two_tower",
+      "vit"
+    ],
+    "degraded": [],
+    "dependencies": {
+      "recommendation_index": "missing_collection",
+      "visual_index": "ok"
+    },
+    "queue_depth": 0,
+    "device": "cpu",
+    "stub_mode": false,
+    "load_error": null
+  },
+  "checkpoints": {
+    "vit/best.pt": "192d90e4fad893cec1542c5630715cc3bc22197e8cd8ba22a6fb84a64a88ad7f",
+    "siamese/best.pt": "b4ded465b8eea134a01652811008656b9e0c59716431136bb161216310bbcebb",
+    "asr_ctc/best.pt": "8f87986781cfb3d4716691f2051e5798187693e2452f9f41b28ca4a753ea5531",
+    "highlight_fusion/best.pt": "5aecd5c4eecd37a25c8c5c2fd515f268700041987ce38df4ffbf01724fbd052e",
+    "minigpt/best.pt": "cf9cfa7141d40f9d40b0065ae68855ff39ffe750260ee7b42c7c0eac719330ac",
+    "two_tower/best.pt": "f28c37943ec499d168f43b5281879273af326a97ee47e571100c93dee0c91695",
+    "minigpt/bpe_vocab.json": "649ffc66d05bdda9c4586fe5500284dc5feef90414a8762ef4d541331937d713",
+    "highlight_fusion/postproc.json": "f54f62c00e37e2c1c74917da559c944850dd7c88d38fd1542d5de1addb8c0164",
+    "highlight_fusion/seed1338.pt": "06e8f3a100bc0afed7a19253b76561d0f8ca3695dbc858461607cc1b564c8e62",
+    "highlight_fusion/seed1339.pt": "8086d75ed1e5e5e3d471422edf7bf96329bf768030018c8f5c7f92356342327a"
+  },
+  "deprecated": {
+    "vision": true,
+    "asr": true,
+    "search": true,
+    "recommendation": true
+  },
+  "checked_at": "2026-11-02T04:18:33.399498+00:00",
+  "image": "video-ai-inference:ai-v1.5-000e7c1",
+  "image_id": "sha256:271bb4bab6f4c0e8c57b8a6562adaf71e176a5a90eef2ec9edef51bd8d0c058f",
+  "container_id": "036cc8c4a304bb0a2189d2aa65b0d0d15bf40bf7fc5f764114a5023dc31ecad3",
+  "checkpoint_read_only": true,
+  "retained_full_parity_proofs": [
+    {
+      "dataset": "news",
+      "PASS": true,
+      "videos": 2,
+      "max_abs_score_diff": 0.0
+    },
+    {
+      "dataset": "soccer",
+      "PASS": true,
+      "videos": 2,
+      "max_abs_score_diff": 0.0
+    }
+  ],
+  "checkpoint_recipe_files_match_retained_parity": true,
+  "gateway_status": 200,
+  "PASS": true,
+  "raw_upload_e2e": "VERIFIED-HIST INT-28/31, not rerun for this metadata/image publication"
+}
