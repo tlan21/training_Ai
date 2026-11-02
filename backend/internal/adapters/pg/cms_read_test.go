@@ -150,11 +150,20 @@ func TestCMSOperationsRealPersistence(t *testing.T) {
 	if err != nil || len(visible) != 1 {
 		t.Fatalf("deleted source still in CMS clip catalog: %+v %v", visible, err)
 	}
-	if _, err := db.Exec(ctx, `INSERT INTO categories(id,name) VALUES('cat_deleted_only','Deleted only');UPDATE videos SET category_id='cat_deleted_only' WHERE id='vid_deleted'`); err != nil {
+	// User decision 2026-11-02: a category referenced only by soft-deleted videos (and their clips) is deletable;
+	// those references are cleared, live references above still conflict.
+	if _, err := db.Exec(ctx, `INSERT INTO categories(id,name) VALUES('cat_deleted_only','Deleted only');UPDATE videos SET category_id='cat_deleted_only' WHERE id='vid_deleted';UPDATE clips SET category_id='cat_deleted_only' WHERE id='clp_deleted'`); err != nil {
 		t.Fatal(err)
 	}
-	if err := cats.Delete(ctx, "cat_deleted_only"); err != domain.ErrConflict {
-		t.Fatalf("soft-deleted reference lost: %v", err)
+	if err := cats.Delete(ctx, "cat_deleted_only"); err != nil {
+		t.Fatalf("deleted-only category must be deletable: %v", err)
+	}
+	var videoRef, clipRef *string
+	if err := db.QueryRow(ctx, `SELECT (SELECT category_id FROM videos WHERE id='vid_deleted'),(SELECT category_id FROM clips WHERE id='clp_deleted')`).Scan(&videoRef, &clipRef); err != nil || videoRef != nil || clipRef != nil {
+		t.Fatalf("soft-deleted references not cleared: %v %v %v", videoRef, clipRef, err)
+	}
+	if v, err := videos.Get(ctx, "vid_a"); err != nil || v.CategoryID == nil || *v.CategoryID != "cat_news" {
+		t.Fatalf("live video reference touched: %+v %v", v, err)
 	}
 	temporary, err := cats.Create(ctx, "Unused", nil, nil)
 	if err != nil {

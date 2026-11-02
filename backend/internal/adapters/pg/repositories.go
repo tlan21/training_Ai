@@ -313,14 +313,27 @@ func categoryWriteError(err error) error {
 	return err
 }
 func (r *CategoryRepo) Delete(ctx context.Context, id string) error {
-	tag, err := r.DB.Exec(ctx, `DELETE FROM categories WHERE id=$1`, id)
+	tx, err := r.DB.Begin(ctx)
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback(ctx)
+	// User decision 2026-11-02: soft-deleted videos (and their clips) must not pin a category the CMS shows as unused
+	// (video_count excludes them). Live videos, clips of live videos and user preferences still block via FK → 409.
+	if _, err = tx.Exec(ctx, `UPDATE clips SET category_id=NULL WHERE category_id=$1 AND video_id IN (SELECT id FROM videos WHERE status='deleted')`, id); err != nil {
+		return err
+	}
+	if _, err = tx.Exec(ctx, `UPDATE videos SET category_id=NULL WHERE category_id=$1 AND status='deleted'`, id); err != nil {
+		return err
+	}
+	tag, err := tx.Exec(ctx, `DELETE FROM categories WHERE id=$1`, id)
 	if err != nil {
 		return categoryWriteError(err)
 	}
 	if tag.RowsAffected() == 0 {
 		return domain.ErrCategoryNotFound
 	}
-	return nil
+	return tx.Commit(ctx)
 }
 
 func categoryReferenceError(err error) error {
