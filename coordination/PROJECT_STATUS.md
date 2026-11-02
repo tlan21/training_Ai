@@ -3,7 +3,7 @@
 **Chỉ sửa trong release commit theo `coordination/README.md` mục 6** (user ra lệnh release cho đúng 1 làn) **hoặc khi user yêu cầu trực tiếp**.
 Ngoài ra: đọc trạng thái sống ở `coordination/claude/TASKS.md` và `coordination/codex/TASKS.md` (qua `git show`).
 
-Cập nhật lần cuối: 2026-10-30 · **release #5 (làn Claude)** — `master` = commit release này.
+Cập nhật lần cuối: 2026-11-02 · **Codex publication checkpoint (INT-51, user yêu cầu push/merge)**. Bao gồm release #5 của Claude; trạng thái AI bên dưới giữ theo release đó. INT-50 chưa nghiệm thu E2E thật, không công bố hoàn tất sản phẩm.
 
 ## 1. Cổng nghiệm thu AI (AI-GATE — master plan §0)
 
@@ -38,8 +38,8 @@ AI-GATE **không chặn** làn Codex (master §0); chỉ chặn nghiệm thu cu�
 
 ## 3. Làn Codex (Tích hợp)
 
-Chép từ `git show codex/integration:coordination/codex/TASKS.md` (bảng tổng quan) lúc sync #8, 2026-10-30 (nguồn sống là file của Codex;
-INT-28…INT-49 chỉ có ở phần chi tiết của file Codex).
+Đồng bộ từ bảng tổng quan và từng task trong `coordination/codex/TASKS.md` ngày 2026-11-02 (nguồn sống là file của Codex).
+Các bằng chứng runtime ngày 2026-10-27…30 là VERIFIED-HIST; Docker Engine chưa hoạt động trong phiên 2026-11-02 nên chưa kiểm lại runtime/E2E thật. Không nâng trạng thái AI v2 DRAFT hoặc các task PARTIAL/BLOCKED chỉ vì push code.
 
 | ID | Việc | Status |
 |---|---|---|
@@ -53,7 +53,7 @@ INT-28…INT-49 chỉ có ở phần chi tiết của file Codex).
 | INT-07 | Load test 50 video dồn hàng đợi | BLOCKED |
 | INT-08 | Soak test 48 h | BLOCKED |
 | INT-09 | Docs bàn giao hệ thống | TODO |
-| INT-10 | Forgot-password giữ nguyên, ngoài release hiện tại | DEFERRED / OUT_OF_SCOPE |
+| INT-10 | Client forgot-password giữ nguyên; riêng CMS đã được user yêu cầu bỏ trong INT-47 | DEFERRED / OUT_OF_SCOPE (Client) |
 | INT-11 | HTTP media giữa gateway Docker và inference host | REVIEW |
 | INT-12 | CMS access JWT chỉ ở RAM, refresh khi reload | REVIEW |
 | INT-13 | Image ingest riêng + kiểm clean build | REVIEW |
@@ -71,6 +71,22 @@ INT-28…INT-49 chỉ có ở phần chi tiết của file Codex).
 | INT-25 | Revalidate real gateway/key/pipeline and popularity | DONE |
 | INT-26 | Production QA3100 and HC-12 Client evidence | DONE |
 | INT-27 | Verify cold Compose startup with existing dependencies | DONE |
+| INT-28 | D24 backend-owned MinIO/Milvus + compute-only /v2 | REVIEW — live E2E HIST PASS; Claude v2 API_READY còn chờ |
+| INT-29 | Clarify deletion contract | REVIEW |
+| INT-30 / INT-31 | Real inference Docker runtime, remove running mock | DONE — deployment/live E2E HIST; không khởi động lại trong INT-51 |
+| INT-32 / INT-33 | Feed frame layout / real thumbnail mapping | DONE — scoped fixes |
+| INT-34 / INT-35 | Compilation contract / one combined highlight video | DONE — real FFmpeg/PG/API/UI HIST |
+| INT-36 | Discovery frame sizing | DONE — scoped layout fix |
+| INT-37 | Reported AI threshold product contract | DONE |
+| INT-38 | Truthful threshold/zero proposals/reference scope | REVIEW — legacy live HIST; new AI runtime feature parity pending HO-04 |
+| INT-39 | Precise single-range clip cutting | DONE — real FFmpeg HIST; full sentence snapping remains separate |
+| INT-40 / INT-45 | All-screen CMS audit / dedicated Settings audit | DONE — audit only |
+| INT-41 / INT-42 | Execute saved AI flags / consistent failure-cancel-retry state | PARTIAL — source/tests; final real acceptance pending |
+| INT-43 / INT-44 | Global library search / referenced-category conflict | PARTIAL — source/tests; final real acceptance pending |
+| INT-46 / INT-48 | Simplified CMS account contract / operational public API 0.8.0 | DONE — generated types/schema checks |
+| INT-47 / INT-49 | CMS account cleanup / real storage, read models, metrics | PARTIAL — source/adapters and historical rollout; final real acceptance pending |
+| INT-50 | Complete eight operational CMS screens | BLOCKED — Docker Engine unavailable; previously rejected real-QA action awaits explicit approval |
+| INT-51 | Authorized Git publication and master fast-forward | REVIEW — all local gates PASS; publication verification next (verification/INT-51.md) |
 
 ## 4. AI API
 
@@ -129,3 +145,4 @@ khi người duyệt từng mục (`HUMAN_VERIFIED`) và provenance ghi rõ ngu�
 | 6 | 2026-10-26 | claude — **release #3** (D20) | `70bf011 →` commit release này (ff-only) | AI-09, AI-13 DONE; AI-12 IN_PROGRESS (12a/12c); D18–D21 | mở HC-06, HC-07 (Codex: INT-12, INT-13); RE:HO-02 | ai-core 297 PASS; inference 55 PASS/7 skip (gồm compatibility v1.2→v1.3); smoke :8001 6/6 + 401; health stub_mode=false, degraded [] |
 | 7 | 2026-10-28 | claude — **release #4** | `fee83b2 →` commit release này (ff-only) | AI-02a/b, AI-03a/b/c, AI-04 (PRELIMINARY_T4), AI-12 phần độc lập; D22 | HC-08…HC-11, RE:INT-15, RE:HO-03 | ai-core 314; inference 55/7 skip (compat v1.2 PASS); smoke :8001 6/6 + 401; tool tests 64; 6 ckpt SHA = contract; AI-API v1.3 không đổi |
 | 8 | 2026-10-30 | claude — **release #5** | `26c2346 →` commit release này (ff-only) | AI-14, AI-16…AI-21 DONE; AI-15 BLOCKED ⇐ RE:HC-13; AI-08 đợt #2; D24–D26; AI-API v1.4 + v2.0 DRAFT | mở HC-13, HC-14, HC-15 | ai-core 319; inference 81/10 skip (compat v1.2+v1.3); intake 9; smoke :8001 9/9 (v1+v2, media thật) + 401; 6 ckpt SHA = contract |
+| 9 | 2026-11-02 | codex — **INT-51 publication checkpoint, user yêu cầu push/merge** | `62b7e05 →` checkpoint commit này (ff-only; kết quả refs tại verification/INT-51.md) | đồng bộ trạng thái INT-28…50; INT-50 vẫn BLOCKED, INT-05/06 PARTIAL; không nâng v2 DRAFT | giữ HO-04/runtime parity, HC-13 API_READY gate; không sửa làn AI | VERIFIED-NOW Go vet/test/build + CMS types/build + Client types/lint/build PASS; real E2E VERIFIED-HIST theo reports; fresh E2E NOT RUN vì Docker/QA blocker |
