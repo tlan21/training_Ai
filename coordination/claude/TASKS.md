@@ -15,7 +15,7 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | AI-11 | T1.8 / T4.2 | HO-01: `video_id` tùy chọn cho Vision + index frame từ data URI 1 fps (contract minor) | DONE (2026-10-26) | HO-01 (Codex chọn HTTP media) |
 | AI-13 | T1.7 / T1.8 | D18: recommendation inference không trả metadata giả + `recommendation_mode` | DONE (2026-10-26; release #3) | D18 |
 | AI-14 | T1.8 | D24 bước 1: tách facade/worker trong inference-service (contract v1.3 không đổi) + worker từ xa (MODEL_WORKER_URL) + kernel Kaggle worker GPU | DONE (2026-10-30, release #5) | D24 (user 2026-10-29) |
-| AI-15 | T1.8 | D24 bước 2: AI-API v2.0 (DRAFT) — AI trả vector/kết quả, Backend sở hữu MinIO/Milvus; v1.3 chạy song song; HC cho Codex | BLOCKED ⇐ RE:HC-13 E2E (phần AI xong 2026-10-29: v2.0 DRAFT, :8001 phục vụ /v1 + /v2) | AI-14; Codex (HC) cho phần backend |
+| AI-15 | T1.8 | D24 bước 2: AI-API v2.0 (DRAFT) — AI trả vector/kết quả, Backend sở hữu MinIO/Milvus; v1.3 chạy song song; HC cho Codex | IN_PROGRESS (2026-11-02; RE:HC-13 E2E PASS 2026-10-29 → bước 2: /v2 API_READY, /v1 media DEPRECATED; gỡ minio/pymilvus ⇐ Codex ngừng gọi /v1) | AI-14; Codex (HC) cho phần backend |
 | AI-16 | T1.5 / T1.8 | Highlight: (B) đối chiếu checkpoint active với vòng đạt DoD; (A) hậu xử lý đúng như lúc chấm (làm mượt k, τ); (C) luật clip (độ dài, nối, biên câu) | DONE (2026-10-30, release #5) | user 2026-10-29 |
 | AI-17 | T1.5 | Fusion vòng 6: chuẩn hóa theo từng video + augment chống overfit; thay vòng 5 chỉ khi val ≥ 0.2750 và gap train−val < 0.205 | DONE (release #5; thay bởi vòng 7/8) | AI-16; user 2026-10-29 |
 | AI-18 | T1.5 | Fusion vòng 7: giảm overfit bằng lr/weight decay/lịch ngắn; thay vòng 6 chỉ khi val ≥ 0.3053, gap < 0.1692, val loss < 1.2136 | DONE (release #5; thay bởi vòng 8 ×10) | AI-17 |
@@ -25,11 +25,11 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | AI-22 | T1.8 | HO-04: runtime AI chính thức = container Docker (user 2026-11-02) — image bất biến từ source hiện hành (v1.4 + AI-19 + recipe) + bằng chứng readiness/parity checkpoint–source; Codex đổi tag compose (HC-16) | DONE phần Claude (2026-11-02); đổi tag compose ⇐ RE:HC-16 (Codex) | HO-04; Docker engine UP |
 | AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | BLOCKED ⇐ bundle INT-13 (phần độc lập xong 2026-10-26) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | DONE (2026-10-26; sandbox + artifact; product → AI-12 theo D18) | HC-04 (sandbox READY) |
-| AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a DONE (2026-10-27) · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
-| AI-03 | T1.6 | Mini-GPT: 03a Claude soạn summary 40 clip · 03b người duyệt · 03c train/eval | 03a DONE (2026-10-26) · 03b BLOCKED ⇐ user · 03c BLOCKED | 03b ⇐ user; 03c ⇐ 03b |
+| AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | DONE (02a 2026-10-27 · 02b user duyệt 51/60 2026-10-28 · 02c guard loại, không promote) · D23 dừng cho MVP | — |
+| AI-03 | T1.6 | Mini-GPT: 03a Claude soạn summary 40 clip · 03b người duyệt · 03c train/eval | DONE (03a 2026-10-26 · 03b Claude duyệt theo D22 2026-10-27 · 03c không promote, người chấm 1.6/5) · D23 dừng cho MVP | — |
 | AI-04 | T1.8 / T4.3 | Đo VRAM sơ bộ Kaggle T4 (PRELIMINARY) | DONE — PRELIMINARY_T4 (2026-10-26; nghiệm thu 3060 vẫn mở) | AI-06 (DONE) |
-| AI-05 | T5.3 | Số liệu evaluation cho luận án | TODO | AI-02, AI-03, AI-04 |
-| AI-08 | — | Dọn dẹp dữ liệu/artefact làn AI an toàn (lặp lại sau mỗi đợt train) | TODO (đợt #1 DONE 2026-10-26) | không job/server nào đang dùng; user duyệt danh sách |
+| AI-05 | T5.3 | Số liệu evaluation cho luận án | TODO (dependency đã đủ; VRAM 3060 ghi PRELIMINARY_T4) | AI-02, AI-03, AI-04 |
+| AI-08 | — | Dọn dẹp dữ liệu/artefact làn AI an toàn (lặp lại sau mỗi đợt train) | TODO lặp lại (đợt #1 2026-10-26, đợt #2 2026-10-30 DONE) | không job/server nào đang dùng; user duyệt danh sách |
 
 Thứ tự đề xuất (tối đa 1 IN_PROGRESS, cập nhật D14–D17): AI-10 → AI-07 → release (user duyệt) → AI-01 công bố API_READY; song song khi chờ: AI-09 (phần không cần mapping: schema/version/test), AI-03a, AI-02a, AI-04.
 AI-08 (dọn dẹp) chạy sau mỗi đợt train xong hoặc khi một ổ chạm `BLOCKED_RESOURCE`; luôn qua manifest + user duyệt.
@@ -301,7 +301,7 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   ```
 
 ### AI-15 — D24 bước 2: AI-API v2.0 — inference-service chỉ tính toán, Backend sở hữu dữ liệu
-- T gốc: T1.8 | Owner: claude | Status: BLOCKED ⇐ Codex RE:HC-13 (E2E backend dùng /v2) — phần AI xong 2026-10-29 (contract v2.0 DRAFT, endpoint thật, HC-13)
+- T gốc: T1.8 | Owner: claude | Status: IN_PROGRESS (2026-11-02) — RE:HC-13 E2E PASS (Codex 2026-10-29, INT-28/29) → cutover bước 2; phần AI 2026-10-29 (contract v2.0 DRAFT, endpoint thật, HC-13)
 - Depends on: AI-14 (worker thuần) | Blocks: gỡ minio/pymilvus khỏi inference-service (sau khi Codex E2E PASS); INT-xx phía Codex
 - Việc (phía AI): contract v2.0 DRAFT (vision trả thêm `siamese_vectors`, không ghi MinIO/Milvus; search nhận ảnh → vector 128; ASR nhận bytes audio multipart,
   chia đoạn; recommendation encode → vector 128 khớp Two-Tower; highlight/completions giữ nguyên) + `inference_openapi.json` + examples thật + error codes
