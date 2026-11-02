@@ -1,6 +1,6 @@
 # INT-52 — HC-16 official Docker inference image (2026-11-02)
 
-Owner: CODEX. User explicitly authorized consuming HC-16, changing the existing inference-service compose image without building, preserving the read-only checkpoint bind, recreating only that service, and checking health/clip_threshold.
+Owner: CODEX. Status: DONE (scoped deployment, not full CMS E2E). Task start873beb7; deployment/evidence **537f6b1**; handoff/closure commit follows. User explicitly authorized consuming HC-16, changing the existing inference-service compose image without building, preserving the read-only checkpoint bind, recreating only that service, and checking health/clip_threshold.
 
 ## Change and deployment
 

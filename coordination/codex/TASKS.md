@@ -7,12 +7,13 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 ## Tổng quan
 
 ### INT-52 — HC-16 consume Claude's verified v1.4 inference image
-- Owner: CODEX | Status: REVIEW (2026-11-02; scoped live acceptance PASS, evidence/handoff commit next)
+- Owner: CODEX | Status: DONE (2026-11-02; HC-16 scoped deployment and live checks PASS)
 - Depends on: explicit user authorization to change image and recreate inference-service only; HC-16/AI-22 image already present locally with SHA53e24af88065 and revision62b7e05; existing read-only checkpoint bind.
 - Acceptance: pin image video-ai-inference:ai-v1.4-62b7e05 in the existing inference compose override; no build/pull; preserve environment, checkpoint source/read-only mount and all other containers; recreate only inference-service; actual /health6models/stubfalse/healthy and authenticated highlight clip_threshold51; record commands/results and RE:HC-16, commit. No original-video reprocessing or AI source/contract/model edits.
 - Changed files: docker-compose.inference.yml; coordination/codex/{TASKS.md,SESSION.md,INTEGRATION_MATRIX.md,HANDOFF_OUT.md,verification/INT-52*}.
-- Evidence/Commits: task start873beb7; verification/INT-52.md +five artifacts. Actual health6real/stubfalse and authenticated clip_threshold51 PASS; 103source/10checkpoint files match; 15other containers unchanged, configured env/effectiveROmount preserved, gateway200/jobs0. No build/pull, no old-data reprocessing. Deployment/evidence commit follows.
-- Next action: commit verified image/evidence, append RE:HC-16 with SHA and close scoped task; full CMS real QA remains separate.
+- Evidence/Commits: task start873beb7; deployment/evidence **537f6b1**; verification/INT-52.md +five artifacts. Actual health6real/stubfalse and authenticated clip_threshold51 PASS; 103source/10checkpoint files match; 15other containers unchanged, configured env/effectiveROmount preserved, gateway200/jobs0. No build/pull, no old-data reprocessing. RE:HC-16 in HANDOFF_OUT; closure commit follows.
+- Checkpoint: Lane codex / Changed inference image/comments and owned evidence/coordination / Verified actual health+threshold+integrity+preservation / Contract touched no, consumes publishedv1.4 / Next safe task INT-50 after its real-QA approval blocker clears.
+- Next action: no further image rollout required; Claude may consume RE:HC-16. Keep v2 readiness/model quality and CMS final real QA gates separate; no automatic master/push or old-video reprocessing.
 
 ### INT-51 — Publish the integration checkpoint and fast-forward master
 - Owner: CODEX | Status: DONE (2026-11-02; release gates PASS, local/remote master and integration verified)
@@ -49,8 +50,8 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 - Next action: INT-49 real storage/read-model implementation,41..44 runtime fixes and8screen wiring.
 
 ### INT-50 — Complete eight operational CMS screens and final real acceptance
-- Owner: CODEX | Status: BLOCKED (2026-11-02; explicit real-QA approval and Docker Engine recovery required)
-- Blocker/evidence: verification/INT-50-resume-2026-11-02.md. Prior realE2E creation/typecheck exec rejected blocked-by-policy; fileabsent, explicitapproval requested. DockerDesktopserviceStopped/no dockerd/app ports; Start-Service cannotopenservice, userruntime recovery needed. Independent blankAI-title correction/source test ready, currenttypes/buildPASS and historical6UIPASS. No new realQA/data mutation thisresume.
+- Owner: CODEX | Status: BLOCKED (2026-11-02; explicit approval for previously rejected real-QA action required)
+- Blocker/evidence: verification/INT-50-resume-2026-11-02.md records prior realE2E creation/typecheck rejected blocked-by-policy; fileabsent, explicitapproval requested. Docker Engine/app availability blocker now resolved and inference image updated under narrower explicit HC-16 authorization (INT-52/537f6b1); this does not approve the separate rejected QA action. Independent blankAI-title correction/source test ready, types/buildPASS and historical6UIPASS; titlefixnotdeployed. No new realQA/business-data mutation under INT-52; refresh runtime/data baselines before future QA.
 - Depends on: public0.8 INT-48; source checkpoints47/49/41/42/43. User explicitly requests all8business screens, no role assignment or new AI ownership.
 - Acceptance: Dashboard real metrics/chart/report; Videos server filters/errors/metadata; Queue real video metadata/policies/skips/CPU and navigation/retry/cancel; Highlight persisted proposal decisions/restoration/compilation/manual preview/publish; Subtitles draft/approval/regenerate/editorial validation; Published metadata/open counts/search/safe actions; Categories real counts/keywords/flags/conflicts; Users readonly provisioned CMS capability. Related Settings execute/display actual flags/buckets and dirty guard. Fix affected backend silent writes/validation; no AI contract/model change.
 - Planned files: existing CMS hooks/pages/components, related backend ports/adapters/handlers/tests, e2e tests, owned subplan/evidence/tracker. No new dependency or endpoint family.
@@ -622,7 +623,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Changed: backend domain/ports/AIHTTP/Mongo/mock/orchestrator/CMS analysis DTO and tests; CMS HighlightPage/SettingsPage; e2e/cms_design.spec.ts; owned schema/subplans/coordination/evidence.
 - Commits: **f709b94** contract; **43e45a1** source. Evidence: native Go vet/test/build PASS, actual Mongo roundtrip51/0/null +cleanup PASS0.07s, CMS types/build/E2Etypes PASS,14focusedUI PASS12.3s +41CMSregression PASS51.4s +4originalStitch references PASS7.0s; actual deployed CMS/API legacy compatibility **2PASS5.3s**. Scoped10pointreview and screenshots inspected.
 - Deployment: only gateway/CMS int38-43e45a1/latest, unchanged gateway environment, live binary SHA verified/health200; rollback tags retained. Other14containers/hostAI state unchanged,106videos/58clips and4original analysis hashes unchanged, jobs0; ownQA21800 stopped/5174closed. No migration/backfill/reprocessing.
-- Next action: wait Claude v1.4 release/current AI runtime feature parity for real reported-threshold verification (HO-04). DRAFT field tested with HTTP fixtures and real Mongo, existing product data remains unknown; no INTEGRATED_REAL/DONE promotion. Existing Settings auto-toggle execution wiring is separate/unresolved.
+- Next action (updated2026-11-02): publishedv1.4 and current AI runtime parity consumed under INT-52/537f6b1; authenticated service now proves clip_threshold51. Full new-upload backend persistence/CMS heatmap proof belongs to INT-50 after real-QA approval, not an automatic old-video reprocess. Existing product analyses stay unknown until explicitly reprocessed; no blanket DONE/model-quality claim. Settings execution source is INT-41, final real acceptance still pending.
 
 ### INT-39 — HC-14 precise single-clip cutting
 - Owner: CODEX | Status: DONE (2026-10-30; backend cut precision only, not complete HC-14 sentence snapping)
