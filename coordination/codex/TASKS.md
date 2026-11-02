@@ -6,6 +6,14 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 
 ## Tổng quan
 
+### INT-53 — Release HC-16 integration checkpoint to local master
+- Owner: CODEX | Status: IN_PROGRESS (2026-11-02; explicit user request merge into master)
+- Depends on: INT-52 DONE/source537f6b1/closure328de98; mastera2e1b21 is ancestor; release gates and existing HC-16 actual HTTP evidence.
+- Acceptance: merge current master into lane, run Go vet/test/build + CMS types/build + Client types/lint/build; verify current real health/threshold for the changed matrix metadata; synchronize shared Codex status/tagged master-plan lines and sync log; commit and fast-forward local master via git push . HEAD:master; verify equality/clean worktree. No runtime recreation, model/data changes, remote push or new AI-readiness promotion.
+- Changed files: coordination/PROJECT_STATUS.md; .claude/plan/00_master_plan.md; coordination/codex/{TASKS.md,SESSION.md,HANDOFF_OUT.md,verification/INT-53*}.
+- Evidence/Commits: gates running with retained logs; task start commit follows. Existing source537f6b1 and verified runtime evidence in INT-52.md.
+- Next action: finish mandatory gates and current bounded HTTP check; sync release metadata, commit and fast-forward local master under current explicit authorization.
+
 ### INT-52 — HC-16 consume Claude's verified v1.4 inference image
 - Owner: CODEX | Status: DONE (2026-11-02; HC-16 scoped deployment and live checks PASS)
 - Depends on: explicit user authorization to change image and recreate inference-service only; HC-16/AI-22 image already present locally with SHA53e24af88065 and revision62b7e05; existing read-only checkpoint bind.
