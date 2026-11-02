@@ -6,6 +6,22 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 
 ## Tổng quan
 
+### INT-54 — HC-18 consume release #6 image and verify full parity
+- Owner: CODEX | Status: IN_PROGRESS (2026-11-02)
+- Depends on: user explicitly requests merge master479f5d5 and HC-18 rollout; prebuilt local image ai-v1.5-000e7c1/SHA271bb4bab6f4; existing read-only checkpoint bind, Claude parity.py/features available.
+- Acceptance: receive master479f5d5; pin only existing inference-service image, no build/pull; preserve configured env/checkpointRO/all other containers; recreate only inference-service; actualhealth6real/stubfalse, released deprecated OpenAPI flags and full Claude parity source/checkpoint/real-feature HTTP behavior PASS; commit RE:HC-18 with commands/evidence. No original-video reprocessing or remote/master publication of new Codex changes.
+- Changed files: docker-compose.inference.yml; coordination/codex/{TASKS.md,SESSION.md,INTEGRATION_MATRIX.md,HANDOFF_OUT.md,verification/INT-54*}; any temporary verification runner stays in owned scope.
+- Evidence/Commits: startup fast-forward f1a8a29→479f5d5 PASS, clean tree, no manual Claude edits; imageID/revision matchHC18. Task-start commit follows.
+- Next action: baseline/config guard, selected-service recreate, actualhealth + officialparity news/soccer via existing-container HTTP without publishing a port, then HC-17 separately.
+
+### INT-55 — HC-17 prove runtime does not call deprecated AI media paths
+- Owner: CODEX | Status: TODO (2026-11-02)
+- Depends on: user HC-17 instruction; INT-54 first; existing gateway74344bb/ingest23 runtime, released v2 contract.
+- Acceptance: trace gateway/orchestrator/search/feed/ingest call sites and deployed-source provenance; prove no runtime calls to /v1/vision|asr|search|recommendation with source plus bounded HTTP/log verification; preserve /v1/highlight and /v1/completions; remove legacy code only if necessary; commit RE:HC-17/evidence with limits, no invented live-upload proof or original-data writes.
+- Changed files: owned verification/tracker/session/handoff/matrix; backend only if an actual runtime legacy caller requires correction.
+- Evidence/Commits: initial source scan shows primary v2 vision/asr/search and gateway feed injected with nilAI/popularity; four legacy methods remain in compatibility adapter/tests. Detailed proof pending.
+- Next action: complete INT-54, then inspect relevant callers/tests and choose confirmation-only if runtime is already compliant.
+
 ### INT-53 — Release HC-16 integration checkpoint to local master
 - Owner: CODEX | Status: DONE (2026-11-02; all gates PASS, local master fast-forward verified)
 - Depends on: INT-52 DONE/source537f6b1/closure328de98; mastera2e1b21 is ancestor; release gates and existing HC-16 actual HTTP evidence.
