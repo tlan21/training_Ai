@@ -15,14 +15,14 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | AI-11 | T1.8 / T4.2 | HO-01: `video_id` tùy chọn cho Vision + index frame từ data URI 1 fps (contract minor) | DONE (2026-10-26) | HO-01 (Codex chọn HTTP media) |
 | AI-13 | T1.7 / T1.8 | D18: recommendation inference không trả metadata giả + `recommendation_mode` | DONE (2026-10-26; release #3) | D18 |
 | AI-14 | T1.8 | D24 bước 1: tách facade/worker trong inference-service (contract v1.3 không đổi) + worker từ xa (MODEL_WORKER_URL) + kernel Kaggle worker GPU | DONE (2026-10-30, release #5) | D24 (user 2026-10-29) |
-| AI-15 | T1.8 | D24 bước 2: AI-API v2.0 (DRAFT) — AI trả vector/kết quả, Backend sở hữu MinIO/Milvus; v1.3 chạy song song; HC cho Codex | REVIEW (2026-11-02) — bước 2 xong trên branch (v2.0 API_READY, v1.5 4 path /v1 DEPRECATED), chờ release; bước 3 gỡ minio/pymilvus ⇐ RE:HC-17 | AI-14; Codex (HC) cho phần backend |
+| AI-15 | T1.8 | D24 bước 2: AI-API v2.0 (DRAFT) — AI trả vector/kết quả, Backend sở hữu MinIO/Milvus; v1.3 chạy song song; HC cho Codex | DONE (release #6, 2026-11-02) — v2.0 API_READY, v1.5 4 path /v1 DEPRECATED; bước 3 gỡ minio/pymilvus ⇐ RE:HC-17 | AI-14; Codex (HC) cho phần backend |
 | AI-16 | T1.5 / T1.8 | Highlight: (B) đối chiếu checkpoint active với vòng đạt DoD; (A) hậu xử lý đúng như lúc chấm (làm mượt k, τ); (C) luật clip (độ dài, nối, biên câu) | DONE (2026-10-30, release #5) | user 2026-10-29 |
 | AI-17 | T1.5 | Fusion vòng 6: chuẩn hóa theo từng video + augment chống overfit; thay vòng 5 chỉ khi val ≥ 0.2750 và gap train−val < 0.205 | DONE (release #5; thay bởi vòng 7/8) | AI-16; user 2026-10-29 |
 | AI-18 | T1.5 | Fusion vòng 7: giảm overfit bằng lr/weight decay/lịch ngắn; thay vòng 6 chỉ khi val ≥ 0.3053, gap < 0.1692, val loss < 1.2136 | DONE (release #5; thay bởi vòng 8 ×10) | AI-17 |
 | AI-19 | T1.5 | (a) SỬA lỗi đặc trưng vision cho highlight (serve ViT ≠ train Siamese backbone); (b) dữ liệu tin tức 10 video gốc: feature + đề xuất + trang gán nhãn người → vòng 8 | DONE (2026-10-30; fix vision + nhãn tin tức đã intake) | user 2026-10-29 |
 | AI-20 | T1.5 | Fusion vòng 8: bóng đá + tin tức (nhãn người), lặp tin tức ×1/×10/×30; thay vòng 7 chỉ khi val tin tức +0.05 và giữ bóng đá | DONE (2026-10-30; quy tắc → GIỮ vòng 7; ×10 hứa hẹn, cần dữ liệu tin tức độc lập) | AI-19 |
 | AI-21 | T1.5 | Xác nhận vòng 8 ×10 trên test tin tức độc lập (kênh mới, nhãn mù); đổi khi test tin tức +0.05 và bóng đá ≥ −0.01 | DONE (2026-10-30, release #5; ×10 ACTIVE) | AI-20; user 2026-10-30 (hướng 1) |
-| AI-22 | T1.8 | HO-04: runtime AI chính thức = container Docker (user 2026-11-02) — image bất biến từ source hiện hành (v1.4 + AI-19 + recipe) + bằng chứng readiness/parity checkpoint–source; Codex đổi tag compose (HC-16) | DONE phần Claude (2026-11-02); đổi tag compose ⇐ RE:HC-16 (Codex) | HO-04; Docker engine UP |
+| AI-22 | T1.8 | HO-04: runtime AI chính thức = container Docker (user 2026-11-02) — image bất biến từ source hiện hành (v1.4 + AI-19 + recipe) + bằng chứng readiness/parity checkpoint–source; Codex đổi tag compose (HC-16) | DONE (2026-11-02; Codex triển khai `ai-v1.4-62b7e05` = RE:HC-16; image release #6 ⇐ HC-18) | HO-04; Docker engine UP |
 | AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | BLOCKED ⇐ bundle INT-13 (phần độc lập xong 2026-10-26) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | DONE (2026-10-26; sandbox + artifact; product → AI-12 theo D18) | HC-04 (sandbox READY) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | DONE (02a 2026-10-27 · 02b user duyệt 51/60 2026-10-28 · 02c guard loại, không promote) · D23 dừng cho MVP | — |
@@ -205,7 +205,7 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   ```
 
 ### AI-22 — HO-04: image AI hiện hành chạy trong Docker + bằng chứng parity
-- T gốc: T1.8 | Owner: claude | Status: DONE phần Claude (2026-11-02); triển khai ⇐ RE:HC-16 (Codex đổi tag compose)
+- T gốc: T1.8 | Owner: claude | Status: DONE (2026-11-02) — Codex đã triển khai (RE:HC-16, master `97687de`); container đang chạy `ai-v1.4-62b7e05`
 - Depends on: HO-04 (Codex 2026-10-30) | user 2026-11-02 chọn runtime chính thức = container Docker (thay tiến trình host :8001)
 - Hiện trạng: container `video-ai-inference-service-1` chạy image cũ `ai-v2-478052e` (trước AI-19/recipe) nhưng mount checkpoint
   `E:/traning_ai/ai-core/checkpoints` (vòng 8 ×10) → checkpoint mới + code cũ.
@@ -301,7 +301,7 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   ```
 
 ### AI-15 — D24 bước 2: AI-API v2.0 — inference-service chỉ tính toán, Backend sở hữu dữ liệu
-- T gốc: T1.8 | Owner: claude | Status: REVIEW (2026-11-02) — bước 2 xong, chờ release (user duyệt); bước 3 ⇐ RE:HC-17; phần AI 2026-10-29 (contract v2.0 DRAFT, endpoint thật, HC-13)
+- T gốc: T1.8 | Owner: claude | Status: DONE (release #6, 2026-11-02) — bước 2 released; bước 3 ⇐ RE:HC-17; phần AI 2026-10-29 (contract v2.0 DRAFT, endpoint thật, HC-13)
 - Depends on: AI-14 (worker thuần) | Blocks: gỡ minio/pymilvus khỏi inference-service (sau khi Codex E2E PASS); INT-xx phía Codex
 - Việc (phía AI): contract v2.0 DRAFT (vision trả thêm `siamese_vectors`, không ghi MinIO/Milvus; search nhận ảnh → vector 128; ASR nhận bytes audio multipart,
   chia đoạn; recommendation encode → vector 128 khớp Two-Tower; highlight/completions giữ nguyên) + `inference_openapi.json` + examples thật + error codes

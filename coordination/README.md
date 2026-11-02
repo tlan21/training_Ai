@@ -114,7 +114,9 @@ nếu `master` có commit mới (`git log HEAD..master --oneline`).
 
 ## 7. Runtime chung
 
-(sửa 2026-10-26 theo quyết định user)
+(sửa 2026-10-26 theo quyết định user; **2026-11-02 D27: runtime AI chính thức = container `inference-service` trong compose** —
+Claude build image từ commit release + bằng chứng parity, Codex chạy image đó (đổi tag, không build lại), checkpoint mount chỉ đọc từ worktree Claude,
+không sao chép. Hai gạch đầu dòng về :8001 bên dưới là lịch sử; tiến trình host :8001 chỉ còn là dự phòng dev.)
 - Chỉ 1 docker-compose stack chạy tại 1 thời điểm (trùng port). **Codex sở hữu stack hạ tầng + backend + UI**
   (Postgres, Mongo, Redis, MinIO, Kafka, Milvus, gateway, workers, CMS, Client).
 - **Claude sở hữu runtime inference-service :8001 chạy checkpoint thật** (task AI-07), chạy từ worktree Claude, dùng Milvus của stack Codex.

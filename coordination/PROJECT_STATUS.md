@@ -3,16 +3,17 @@
 **Chỉ sửa trong release commit theo `coordination/README.md` mục 6** (user ra lệnh release cho đúng 1 làn) **hoặc khi user yêu cầu trực tiếp**.
 Ngoài ra: đọc trạng thái sống ở `coordination/claude/TASKS.md` và `coordination/codex/TASKS.md` (qua `git show`).
 
-Cập nhật lần cuối: 2026-11-02 · **Codex HC-16 master release (INT-53, user yêu cầu merge)**. Bao gồm release #5 của Claude và runtime image đã xác minh dưới INT-52; trạng thái AI API trên master giữ theo release đã nhận. INT-50 chưa nghiệm thu E2E thật, không công bố hoàn tất sản phẩm.
+Cập nhật lần cuối: 2026-11-02 · **Claude release #6** (AI-API v2.0 `API_READY` + v1.5: 4 path `/v1` DEPRECATED; AI-22 runtime = container; AI-05 số liệu luận án REVIEW; D27).
+Trước đó: 2026-11-02 · **Codex HC-16 master release (INT-53, user yêu cầu merge)**. Bao gồm release #5 của Claude và runtime image đã xác minh dưới INT-52; trạng thái AI API trên master giữ theo release đã nhận. INT-50 chưa nghiệm thu E2E thật, không công bố hoàn tất sản phẩm.
 
 ## 1. Cổng nghiệm thu AI (AI-GATE — master plan §0)
 
 | Điều kiện | Trạng thái | Ghi chú |
 |---|---|---|
-| 1. 6 model train + unit test toán học | DONE | ai-core 319 tests PASS (NOW 2026-10-30) |
+| 1. 6 model train + unit test toán học | DONE | ai-core 319 tests PASS (NOW 2026-11-02, release #6) |
 | 2. Metric đạt ngưỡng `evaluation_plan.md` | PARTIAL | Mini-GPT human 1.6/5 FAIL (AI-03, D23 dừng cho MVP); 5 model còn lại đạt. Highlight: production nay chạy đúng recipe đã chấm (AI-16) + sửa đặc trưng vision (AI-19); active vòng 8 ×10, test bóng đá 0.322; tin tức chưa giải (AI-21) |
 | 3. Checkpoint load lại được | DONE | nguồn canonical `E:/traning_ai/ai-core/checkpoints` 6/6 SHA khớp contract §1 (highlight `5aecd5c4…` + 3 file recipe) |
-| 4. inference-service thật + VRAM ≤4 GB | PARTIAL | runtime :8001 UP, 6 checkpoint thật, smoke 9/9 (v1 + v2), facade/worker (AI-14); recommendation DRAFT; **VRAM chưa đo** (CPU-only; AI-04 sơ bộ T4 347 MiB, nghiệm thu RTX 3060) |
+| 4. inference-service thật + VRAM ≤4 GB | PARTIAL | runtime = container compose (D27): đang chạy `ai-v1.4-62b7e05` (HC-16), image release #6 `video-ai-inference:ai-v1.5-000e7c1` parity PASS + smoke 9/9 chờ Codex đổi tag (HC-18); 6 checkpoint thật, facade/worker (AI-14); recommendation DRAFT; **VRAM chưa đo** (CPU-only; AI-04 sơ bộ T4 347 MiB, nghiệm thu RTX 3060) |
 
 AI-GATE **không chặn** làn Codex (master §0); chỉ chặn nghiệm thu cuối và task phụ thuộc trực tiếp.
 
@@ -27,10 +28,11 @@ AI-GATE **không chặn** làn Codex (master §0); chỉ chặn nghiệm thu cu�
 | AI-12 | Two-Tower v2 (D18-B, gate D19) | BLOCKED ⇐ dữ liệu INT-15 (`NO_DATA`) |
 | AI-02 / AI-03 | ASR domain / MiniGPT chất lượng | dừng cải thiện cho MVP (D23); checkpoint giữ nguyên; output = bản nháp admin duyệt |
 | AI-04 | VRAM sơ bộ T4 | DONE PRELIMINARY_T4 (347 MiB); nghiệm thu RTX 3060 còn mở |
-| AI-05 | T5.3 số liệu | TODO |
+| AI-05 | T5.3 số liệu | REVIEW — bảng 6 model vs baseline + CI + limitation (`coordination/claude/evidence/AI-05_2026-11-02/SO_LIEU_LUAN_AN.md`); 7 nhóm thiếu chờ user |
 | AI-08 | dọn dẹp an toàn | đợt #1 (2026-10-26) + #2 (2026-10-30: D: 0.84 → 7.1 GB) DONE; task lặp lại |
 | AI-14 | D24 bước 1: facade/worker + worker từ xa (dataset Kaggle) | DONE (release #5) |
-| AI-15 | D24 bước 2: AI-API v2.0 DRAFT (/v2 chỉ tính toán) | BLOCKED ⇐ Codex RE:HC-13 — phần AI xong |
+| AI-15 | D24 bước 2: AI-API v2.0 (/v2 chỉ tính toán) | DONE (release #6): v2.0 `API_READY` (reco v2 DRAFT), v1.5 4 path `/v1` DEPRECATED; bước 3 gỡ MinIO/Milvus ⇐ RE:HC-17 |
+| AI-22 | HO-04: runtime AI = container Docker, image bất biến + parity | DONE (Codex triển khai `ai-v1.4-62b7e05`, HC-16); image release #6 ⇐ HC-18 |
 | AI-16 | Highlight: recipe đúng lúc chấm + luật clip + `asr_segments` | DONE (release #5) |
 | AI-17 / AI-18 | Fusion vòng 6 (chuẩn hóa theo video + augment) / vòng 7 (weight decay) + giám sát val loss | DONE (đã thay bằng vòng 8 ×10) |
 | AI-19 | SỬA lỗi đặc trưng vision cho highlight (ViT → backbone Siamese) + nhãn tin tức người | DONE (release #5) |
@@ -129,6 +131,7 @@ HC-15 (CMS: vạch ngưỡng theo `clip_threshold`, ô ngưỡng Settings, trạ
 | D23 | 2026-10-28 | **ASR + MiniGPT: dừng cải thiện cho MVP** (user chọn phương án 3 sau AI-02c). Giữ checkpoint active `8f879867` (ASR) và `cf9cfa71` (MiniGPT); phụ đề và tóm tắt AI chỉ là **bản nháp** — admin sửa/duyệt trong CMS trước khi hiển thị cho client, không tự xuất bản. Tập trung hoàn thiện app. Cải thiện sau MVP (nếu luận án cần): thu thêm vài giờ audio domain có người nghe/duyệt (phương án 2). Không nới guard. |
 | D24 | 2026-10-29 | **Kiến trúc đích: AI Inference Service chỉ tính toán, Backend sở hữu dữ liệu.** inference-service chỉ chạy checkpoint/tiền xử lý/suy luận, KHÔNG kết nối MinIO/Milvus; Backend Go Gateway (+ ingest worker, job queue) sở hữu MinIO (media, thumbnail), Milvus (vector), Postgres (metadata, jobs), MongoDB (phụ đề, summary); giao tiếp HTTP: dữ liệu đầu vào (ảnh, bytes audio, đặc trưng, text) ↔ kết quả AI (nhãn, vector, text). Tuần tự: bước 1 tách facade/worker (AI-14, không đổi contract) → bước 2 AI-API v2.0 hai làn (AI-15 + HC-13); khi Codex E2E PASS: release, gỡ minio/pymilvus khỏi inference-service, /v1 media/search/reco → DEPRECATED. Sơ đồ: `kien_truc_va_thuat_toan_ai.md` §6.4. |
 | D25 | 2026-10-29/30 | **Dữ liệu highlight tin tức:** dùng 10 video tin tức GỐC (`minigpt_real_video_20261015/raw/youtube`) cho train Fusion; 30 đoạn `evaluation/` (tập chấm MiniGPT) không dùng. Nhãn do user (khoatm) sửa/duyệt từng video (HUMAN_VERIFIED; AI chỉ đề xuất). Tập test tin tức độc lập: 8 video CC BY kênh chính thức (2 kênh mới + 6 video chưa dùng của kênh cũ), gán nhãn MÙ, chấm 1 lần. |
+| D27 | 2026-11-02 | **Runtime AI chính thức = container Docker** (user chọn "3 hãy chạy trên docker"): service compose `inference-service` chạy image do Claude build từ commit release (label revision) + bằng chứng parity (`coordination/claude/evidence/AI-22_2026-11-02/parity.py`); Codex đổi tag, không build lại; checkpoint mount chỉ đọc từ worktree Claude. Tiến trình host :8001 chỉ là dự phòng dev. Thay quy tắc README §7 "Codex không mount checkpoint". |
 | D26 | 2026-10-30 | **Highlight active = Fusion vòng 8 ×10** (user: "kích hoạt theo quy tắc"): quy tắc đăng ký trước đạt (test tin tức +0.097, bóng đá −0.008) dù CI Δ tin tức [−0.05, +0.24], cả hai dưới mốc đoán-bừa (0.28), kênh mới F1 0 — giới hạn ghi trong contract §2.3. Các lần kích hoạt vòng 5/6/7 trước đó cùng đợt theo lệnh user; bản cũ lưu `ai-core/checkpoints/_archive/`. |
 
 Lưu ý từ Claude cho D3: `instructions.md` §1 cấm "pseudo-label từ model ngoài" → summary Claude soạn chỉ được làm target train/eval sau
@@ -149,3 +152,4 @@ khi người duyệt từng mục (`HUMAN_VERIFIED`) và provenance ghi rõ ngu�
 | 8 | 2026-10-30 | claude — **release #5** | `26c2346 →` commit release này (ff-only) | AI-14, AI-16…AI-21 DONE; AI-15 BLOCKED ⇐ RE:HC-13; AI-08 đợt #2; D24–D26; AI-API v1.4 + v2.0 DRAFT | mở HC-13, HC-14, HC-15 | ai-core 319; inference 81/10 skip (compat v1.2+v1.3); intake 9; smoke :8001 9/9 (v1+v2, media thật) + 401; 6 ckpt SHA = contract |
 | 9 | 2026-11-02 | codex — **INT-51 publication checkpoint, user yêu cầu push/merge** | `62b7e05 →` checkpoint commit này (ff-only; kết quả refs tại verification/INT-51.md) | đồng bộ trạng thái INT-28…50; INT-50 vẫn BLOCKED, INT-05/06 PARTIAL; không nâng v2 DRAFT | giữ HO-04/runtime parity, HC-13 API_READY gate; không sửa làn AI | VERIFIED-NOW Go vet/test/build + CMS types/build + Client types/lint/build PASS; real E2E VERIFIED-HIST theo reports; fresh E2E NOT RUN vì Docker/QA blocker |
 | 10 | 2026-11-02 | codex — **INT-53 HC-16 master release, user yêu cầu merge** | `a2e1b21 →` release checkpoint này (local ff-only; kết quả refs tại verification/INT-53.md) | INT-52 DONE; runtime HO-04 resolved; INT-50 vẫn BLOCKED chỉ còn real-QA approval, INT-05/06 PARTIAL | RE:HC-16 released; HC-17 mới chỉ ghi nhận trên branch Claude, chưa triển khai | VERIFIED-NOW Go vet/test/build + CMS types/build + Client types/lint/build PASS; actual AI6/stubfalse, highlight200/threshold51, auth401/gateway200; no full CMS E2E or v2 promotion, no remote push |
+| 11 | 2026-11-02 | claude — **release #6** | `f1a8a29 →` commit release này (ff-only) | AI-15 DONE (v2.0 API_READY, v1.5 DEPRECATED); AI-22 DONE; AI-05 REVIEW; D27 | mở HC-17 (ngừng gọi /v1), HC-18 (đổi tag image); đóng RE:HO-04 (HC-16 Codex đã triển khai) | ai-core 319; inference 82/10 skip (compat v1.2+v1.3); intake 9; image `video-ai-inference:ai-v1.5-000e7c1` smoke 9/9 + 401, parity PASS (103 file nguồn, 6 checkpoint, highlight 4 video lệch 0.0) |

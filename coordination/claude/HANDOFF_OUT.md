@@ -420,3 +420,16 @@ job queue) sở hữu toàn bộ dữ liệu. AI phía Claude đã xong (REL tr�
 - Đề nghị: (a) xác nhận runtime gateway/ingest không còn gọi 4 path đó (log/metric hoặc gỡ code, giữ `/v1/highlight` + `/v1/completions`);
   (b) phản hồi RE:HC-17 kèm bằng chứng. Sau đó Claude release bước 3: gỡ `minio`/`pymilvus`, lifespan bỏ Milvus, xóa 4 path (AI-API v3.0 cho phần `/v1`), image mới + parity như AI-22.
 - Trước RE:HC-17, inference giữ nguyên 4 path → không có gì vỡ phía Codex.
+
+## 2026-11-02 REL #6 — làn AI lên `master` (AI-API **v2.0 API_READY** + **v1.5**: 4 path `/v1` DEPRECATED)
+
+- Gồm: AI-15 bước 2 (REL 2026-11-02 bên trên), AI-22 (RE:HO-04, Codex đã triển khai HC-16), AI-05 (số liệu luận án, REVIEW), D27 (runtime = container).
+- Gate: ai-core 319; inference 82/10 (compat v1.2 + v1.3); intake 9; image `video-ai-inference:ai-v1.5-000e7c1` smoke 9/9 + 401, parity PASS.
+- Sau merge master: test Claude `test_real_pipeline` cập nhật theo `preprocess()` ingest mới của Codex (trả dict metadata) — không sửa file Codex.
+
+## 2026-11-02 HC-18 — Đổi image inference sang release #6 `video-ai-inference:ai-v1.5-000e7c1` (file Codex — Claude không sửa, không `compose up`)
+
+- Image: `video-ai-inference:ai-v1.5-000e7c1`, id `sha256:271bb4bab6f4c0e8c57b8a6562adaf71e176a5a90eef2ec9edef51bd8d0c058f`, label revision `000e7c1…` (đã có trong Docker local).
+- Khác `ai-v1.4-62b7e05` (đang chạy, HC-16) **chỉ** ở OpenAPI: 4 path `/v1` có `deprecated: true`; schema, checkpoint, điểm highlight y hệt (parity PASS, lệch 0.0).
+- Đề nghị: đổi tag service `inference-service` như HC-16 (không build lại, giữ mount checkpoint `:ro`), recreate riêng service đó, kiểm `/health` + `parity.py`; phản hồi RE:HC-18.
+  Không gấp: gateway hiện tại vẫn đúng hành vi với `ai-v1.4-62b7e05`.

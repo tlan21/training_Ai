@@ -109,6 +109,8 @@ media thật 6/6 + synthetic 6/6; `/health` → `stub_mode=false`, 6 model, `deg
   revision `62b7e05` (master release #5, v1.4 + AI-19 + recipe vòng 8 ×10), torch 2.15.0+cpu.
 - Bằng chứng (VERIFIED-NOW 2026-11-02, `coordination/claude/evidence/AI-22_2026-11-02/`): container thử → /health 6 model, smoke 9/9 + 401;
   `parity.py` PASS — 103 file `app/` + `ai_core/` = blob git, checkpoint = §1, điểm highlight 4 video thật lệch 0.0 so với tiến trình host, clip trùng.
+- **Image release #6 (v1.5): `video-ai-inference:ai-v1.5-000e7c1`** — id `sha256:271bb4bab6f4c0e8c57b8a6562adaf71e176a5a90eef2ec9edef51bd8d0c058f`, revision `000e7c1` (code = HEAD release #6; chỉ khác v1.4 ở cờ OpenAPI `deprecated`).
+  VERIFIED-NOW 2026-11-02 (`coordination/claude/evidence/AI-15_2026-11-02/`): smoke 9/9 + 401, OpenAPI 4 path deprecated, parity PASS. Codex đổi tag theo HC-18.
 - Kiểm parity của container đang chạy bất kỳ: `parity.py <container> <url> <features.pt> out.json` (docstring).
 - Tiến trình host bên dưới = dự phòng dev, không phải runtime tích hợp.
 

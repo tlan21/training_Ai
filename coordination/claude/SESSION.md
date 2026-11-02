@@ -3,6 +3,7 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
+- **Release #6 (2026-11-02):** master ← claude/ai-core (AI-15 DONE, AI-22 DONE, AI-05 REVIEW, D27). Mở: HC-17, HC-18; AI-05 chờ user chọn §7.
 - **AI-15 REVIEW (2026-11-02):** cutover bước 2 xong trên branch (v2.0 API_READY, v1.5); chờ user duyệt release; bước 3 ⇐ RE:HC-17.
 - **AI-05 REVIEW (2026-11-02):** `evidence/AI-05_2026-11-02/SO_LIEU_LUAN_AN.md`; chờ user chọn bổ sung §7.
 - **AI-22 DONE phần Claude (2026-11-02):** runtime AI = container Docker. Image `video-ai-inference:ai-v1.4-62b7e05` parity PASS; HC-16 chờ Codex đổi tag compose. Host :8001 không chạy (dự phòng dev).

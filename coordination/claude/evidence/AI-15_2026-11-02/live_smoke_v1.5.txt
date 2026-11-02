@@ -1,0 +1,3 @@
+9 passed in 5.98s
+no-auth 401
+deprecated: ['/v1/asr/completions', '/v1/recommendation/completions', '/v1/search/completions', '/v1/vision/completions']
