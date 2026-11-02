@@ -13,7 +13,8 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 - Changed files: coordination/PROJECT_STATUS.md; .claude/plan/00_master_plan.md; coordination/codex/{TASKS.md,SESSION.md,HANDOFF_OUT.md,verification/INT-53*}.
 - Evidence/Commits: task starta765739; release **97687de5d5e9adf4ff48c0e745532c6cf40fba13**; verification/INT-53.md, three gate logs/current live JSON. All Go/CMS/Client gates PASS; actualhealth6real/stubfalse/highlight200threshold51/noBearer401/gateway200. git push . HEAD:master fast-forwarda2e1b21→97687de, HEAD/master equality and clean tree verified. Source537f6b1/closure328de98 included.
 - Checkpoint: Lane codex / Changed release metadata and logs only / Verified full local release gates +current real scoped HTTP +local master ref equality / Contract touched no / Next safe task INT-50 after explicit QA approval, HC-17 separate follow-up.
-- Next action: forward this documentation-only completion commit to local master and verify final equality; no remote push in this local merge request and no runtime/data action.
+- Remote follow-up (later explicit user request push): git fetch origin/ancestry checks PASS; atomic push advanced origin/master and origin/codex/integration a2e1b21→e7d8116, both verified e7d8116f21f0629fa4c8bc457e0bd8d2acb50353; other remote branches unchanged. This documentation-only publication checkpoint follows normally to both refs; final equality verified in tool output. No runtime/data action or new source changes.
+- Next action: no pending merge/push work after final verification. INT-50 requires explicit approval of its previously rejected real-QA action; HC-17 remains a separate follow-up.
 
 ### INT-52 — HC-16 consume Claude's verified v1.4 inference image
 - Owner: CODEX | Status: DONE (2026-11-02; HC-16 scoped deployment and live checks PASS)

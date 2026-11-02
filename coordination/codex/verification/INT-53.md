@@ -43,6 +43,10 @@ git status --short                            # empty
 
 This documentation-only completion commit records the achieved merge, is forwarded normally to local master, and final HEAD/master equality, clean worktree, pinned image in master and unchanged application/AI source are verified again in tool output. No source changes occurred after the gates. No Git remote command/push is part of this local merge request; remote refs are not claimed updated.
 
+## Subsequent user-authorized remote publication
+
+After the local merge completed at e7d8116f21f0629fa4c8bc457e0bd8d2acb50353, user separately requested `push lên`. `git fetch origin` and ancestry checks for origin/master and origin/codex/integration PASS. `git push --atomic origin master:master codex/integration:codex/integration` exited0, both branches advanced a2e1b21→e7d8116. `git ls-remote --heads origin` verified both refs equal e7d8116f21f0629fa4c8bc457e0bd8d2acb50353; Claude26c2346/phase115976b3 unchanged, worktree clean. No force, history rewrite or default-branch change. This documentation-only publication checkpoint is forwarded to local master and both origin refs; final equality is asserted in tool output. Existing release gates remain applicable because application/AI/compose source did not change. No runtime/data action or additional product QA.
+
 Lane: codex
 Changed: shared release status/tagged plan/sync log; owned tracker/session/handoff/evidence
 Verified: Go/CMS/Client gates +current real AI health/threshold/auth/gateway +local master fast-forward/equality/clean state PASS
