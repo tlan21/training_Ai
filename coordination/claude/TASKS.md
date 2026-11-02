@@ -22,7 +22,7 @@ Owner duy nhất: Claude. Codex chỉ đọc (`git show claude/ai-core:coordinat
 | AI-19 | T1.5 | (a) SỬA lỗi đặc trưng vision cho highlight (serve ViT ≠ train Siamese backbone); (b) dữ liệu tin tức 10 video gốc: feature + đề xuất + trang gán nhãn người → vòng 8 | DONE (2026-10-30; fix vision + nhãn tin tức đã intake) | user 2026-10-29 |
 | AI-20 | T1.5 | Fusion vòng 8: bóng đá + tin tức (nhãn người), lặp tin tức ×1/×10/×30; thay vòng 7 chỉ khi val tin tức +0.05 và giữ bóng đá | DONE (2026-10-30; quy tắc → GIỮ vòng 7; ×10 hứa hẹn, cần dữ liệu tin tức độc lập) | AI-19 |
 | AI-21 | T1.5 | Xác nhận vòng 8 ×10 trên test tin tức độc lập (kênh mới, nhãn mù); đổi khi test tin tức +0.05 và bóng đá ≥ −0.01 | DONE (2026-10-30, release #5; ×10 ACTIVE) | AI-20; user 2026-10-30 (hướng 1) |
-| AI-22 | T1.8 | HO-04: runtime AI chính thức = container Docker (user 2026-11-02) — image bất biến từ source hiện hành (v1.4 + AI-19 + recipe) + bằng chứng readiness/parity checkpoint–source; Codex đổi tag compose (HC-16) | IN_PROGRESS (2026-11-02) | HO-04; Docker engine UP |
+| AI-22 | T1.8 | HO-04: runtime AI chính thức = container Docker (user 2026-11-02) — image bất biến từ source hiện hành (v1.4 + AI-19 + recipe) + bằng chứng readiness/parity checkpoint–source; Codex đổi tag compose (HC-16) | DONE phần Claude (2026-11-02); đổi tag compose ⇐ RE:HC-16 (Codex) | HO-04; Docker engine UP |
 | AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | BLOCKED ⇐ bundle INT-13 (phần độc lập xong 2026-10-26) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | DONE (2026-10-26; sandbox + artifact; product → AI-12 theo D18) | HC-04 (sandbox READY) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | 02a DONE (2026-10-27) · 02b BLOCKED · 02c BLOCKED | 02b ⇐ user; 02c ⇐ 02b |
@@ -205,12 +205,17 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   ```
 
 ### AI-22 — HO-04: image AI hiện hành chạy trong Docker + bằng chứng parity
-- T gốc: T1.8 | Owner: claude | Status: IN_PROGRESS (2026-11-02)
+- T gốc: T1.8 | Owner: claude | Status: DONE phần Claude (2026-11-02); triển khai ⇐ RE:HC-16 (Codex đổi tag compose)
 - Depends on: HO-04 (Codex 2026-10-30) | user 2026-11-02 chọn runtime chính thức = container Docker (thay tiến trình host :8001)
 - Hiện trạng: container `video-ai-inference-service-1` chạy image cũ `ai-v2-478052e` (trước AI-19/recipe) nhưng mount checkpoint
   `E:/traning_ai/ai-core/checkpoints` (vòng 8 ×10) → checkpoint mới + code cũ.
 - Việc: build `video-ai-inference:ai-v1.4-<commit>` từ HEAD (label revision) → container thử cổng 18001 (checkpoint `:ro`) →
   /health 6 model + smoke + SHA checkpoint = contract §1 + đầu ra highlight trùng tiến trình host → HC-16 (Codex đổi tag compose; Claude không sửa compose, không `compose up`).
+- Evidence (VERIFIED-NOW 2026-11-02, `coordination/claude/evidence/AI-22_2026-11-02/`): image `video-ai-inference:ai-v1.4-62b7e05`
+  (id `53e24af8…`, revision `62b7e05`, torch 2.15.0+cpu); container thử 18001: /health 6 model, smoke 9/9 + 401; `parity.py` PASS
+  (103 file nguồn = git sau chuẩn hóa CRLF, checkpoint = §1, highlight 2 tin tức + 2 hiệp bóng đá lệch 0.0, clip trùng). Suite inference 81/10.
+  Container thử + key tạm đã gỡ. Ghi chú: Dockerfile chưa pin torch → Codex không build lại, dùng tag. Git Bash: `MSYS_NO_PATHCONV=1` khi `docker run -e /srv/...`.
+- Commits: ca78b77, (commit này)
 
 ### AI-21 — Xác nhận vòng 8 ×10 trên test tin tức độc lập
 - T gốc: T1.5 | Owner: claude | Status: REVIEW (2026-10-30) — quy tắc đạt (tin tức +0.097, bóng đá −0.008) nhưng CI [−0.05, +0.24], dưới mốc đoán-bừa; chờ user

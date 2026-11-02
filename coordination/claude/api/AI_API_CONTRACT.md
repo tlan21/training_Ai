@@ -25,7 +25,8 @@ thành công thật; Codex được dùng mock, chưa được đánh `INTEGRATE
 
 ## 0. Quy ước chung
 
-- Base URL nội bộ: `http://127.0.0.1:8001` trên host (runtime do Claude chạy, AI-07); từ container Docker thường là `http://host.docker.internal:8001`.
+- Base URL nội bộ: `http://inference-service:8001` trong mạng compose (runtime chính thức = container, mục 1c, từ 2026-11-02);
+  dự phòng dev: tiến trình host `http://127.0.0.1:8001` (AI-07).
   Không public ra internet.
 - Auth: mọi `/v1/*` cần header `Authorization: Bearer ${AI_SERVICE_KEY}` (format `sk-local-...`, cùng giá trị ở inference và gateway).
   `/health` không cần key.
@@ -98,7 +99,19 @@ media thật 6/6 + synthetic 6/6; `/health` → `stub_mode=false`, 6 model, `deg
 | siamese | ✓ | ✓ `b4ded465…` | ✓ | ✓ | ✓ | Milvus `video_frame_embeddings` 280 vector, HNSW/COSINE/M16/efC200; index qua `video_id` + data URI (AI-11) |
 | two_tower | ✓ | ✓ `f28c3794…` | ✓ | ✗ | ✗ | collection `user_recommendation_embeddings` chưa có → 503 |
 
-## 1c. Runtime :8001 (quyết định user 2026-10-26)
+## 1c. Runtime :8001 (quyết định user 2026-10-26; đổi 2026-11-02)
+
+**2026-11-02 (user, AI-22 / HO-04): runtime chính thức = container Docker** service `inference-service` của stack compose.
+- Claude sở hữu **image** (build từ commit đã release, label `org.opencontainers.image.revision`) + bằng chứng parity; Codex chạy image đó
+  trong compose (đổi tag, không tự build lại), checkpoint mount **chỉ đọc** từ `E:/traning_ai/ai-core/checkpoints` (không sao chép).
+- Image hiện hành: `video-ai-inference:ai-v1.4-62b7e05` — id `sha256:53e24af8806570abb38e20b55622e97348ebbc33669f6590a5f319f3c4186254`,
+  revision `62b7e05` (master release #5, v1.4 + AI-19 + recipe vòng 8 ×10), torch 2.15.0+cpu.
+- Bằng chứng (VERIFIED-NOW 2026-11-02, `coordination/claude/evidence/AI-22_2026-11-02/`): container thử → /health 6 model, smoke 9/9 + 401;
+  `parity.py` PASS — 103 file `app/` + `ai_core/` = blob git, checkpoint = §1, điểm highlight 4 video thật lệch 0.0 so với tiến trình host, clip trùng.
+- Kiểm parity của container đang chạy bất kỳ: `parity.py <container> <url> <features.pt> out.json` (docstring).
+- Tiến trình host bên dưới = dự phòng dev, không phải runtime tích hợp.
+
+Lịch sử (2026-10-26):
 
 - Claude sở hữu tiến trình inference-service chạy checkpoint thật (task AI-07). Codex **không** sao chép, mount hay quản lý checkpoint;
   chỉ gọi HTTP `:8001` với Bearer key.
@@ -212,6 +225,7 @@ Resp: `{"status":"ok","gpu_vram_used": MB,"gpu_util": %,"models_loaded":[...],"d
   `/health` tự thử lại dependency chưa `ok` tối đa mỗi 30 s → trạng thái tự phục hồi khi Milvus/collection được sửa. `FORCE_STUB=1` → `{}`.
 
 ## 3. Changelog
+- **v1.4 — ghi chú 2026-11-02 (AI-22, HO-04)** — không đổi version/schema: runtime chính thức = container image `ai-v1.4-62b7e05` (mục 1c) + bằng chứng parity.
 - **v1.4 (2026-10-30)** — release #5: gom các mục v1.4-rc1 bên dưới (AI-16…AI-21); recommendation vẫn DRAFT; v2.0 vẫn DRAFT (chờ RE:HC-13).
 - **v1.4-rc1 — sửa lỗi 2026-10-29 (AI-19):** `embeddings_256` của `/v1/vision` (và `/v2/vision`) giờ là embedding **backbone Siamese** — đúng đặc trưng Fusion đã được train (`extract_vit_embeddings` + siamese md5 `9d2f670f`). Trước đó là embedding ViT phân loại (cosine 0.03–0.13 với đặc trưng train) → highlight production nhận đầu vào lệch phân bố từ AI-01. Schema không đổi; giá trị đổi; `category_suggestion` không đổi.
 - **v1.4-rc1 DRAFT (2026-10-29, AI-17)** — highlight response thêm `clip_threshold` (chỉ thêm field).

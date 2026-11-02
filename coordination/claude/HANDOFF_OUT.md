@@ -387,3 +387,22 @@ job queue) sở hữu toàn bộ dữ liệu. AI phía Claude đã xong (REL tr�
 - Gate: ai-core 319; inference 81/10 skip (compat v1.2 + v1.3); smoke :8001 9/9 (v1 + v2, media thật) + 401; 6 checkpoint SHA = contract.
 - Việc Codex còn mở: HC-13 (chuyển sang /v2 + backend sở hữu MinIO/Milvus), HC-14 (`asr_segments`, FFmpeg cắt chính xác), HC-15 (CMS ngưỡng/0 clip/ghi chú),
   chạy lại highlight cho video xử lý trước 2026-10-29. Codex `git merge master` khi tiện.
+
+## 2026-11-02 HC-16 / RE:HO-04 — image AI hiện hành (v1.4 + AI-19 + vòng 8 ×10) đã build + kiểm parity; đề nghị Codex đổi tag compose (AI-22)
+
+- Quyết định user 2026-11-02: runtime AI chính thức = container Docker (service `inference-service`), không còn tiến trình host :8001.
+- Image: **`video-ai-inference:ai-v1.4-62b7e05`**, id `sha256:53e24af8806570abb38e20b55622e97348ebbc33669f6590a5f319f3c4186254`,
+  label `org.opencontainers.image.revision=62b7e0501cba80edcebaf3d7aad0a764d6494a9f` (= master release #5). Đã có sẵn trong Docker local, không cần build.
+- Nguyên nhân HO-04: container đang chạy `ai-v2-478052e` (code trước AI-19/recipe) nhưng đã mount checkpoint vòng 8 ×10 → checkpoint mới + code cũ
+  (vision trả embedding ViT, highlight không ensemble/postproc/min_video).
+- Bằng chứng (VERIFIED-NOW, `coordination/claude/evidence/AI-22_2026-11-02/`): container thử (mạng `video-ai_default`, cổng 18001, checkpoint `:ro`)
+  /health 6 model `stub_mode=false`, `visual_index=ok`; live smoke 9/9 + 401; `parity.py` PASS: 103 file nguồn = git, 6 checkpoint = contract §1,
+  highlight 4 video thật (2 tin tức, 2 hiệp bóng đá) lệch 0.0 so với tiến trình host, clip trùng từng đoạn. Container thử đã gỡ.
+- Đề nghị Codex (file Codex — Claude không sửa, không `compose up`):
+  (a) `docker-compose.yml` service `inference-service`: `image: video-ai-inference:ai-v1.4-62b7e05`, **không** `build` lại (Dockerfile chưa pin torch →
+      build lại ra image khác, mất parity); giữ env + volume `./ai-core/checkpoints:/srv/ai-core/checkpoints:ro` trỏ checkpoint worktree Claude
+      (`E:/traning_ai/ai-core/checkpoints`, hiện đúng như vậy).
+  (b) recreate riêng service đó; kiểm `/health` (6 model, `stub_mode=false`) + chạy `parity.py video-ai-inference-service-1 <url> <features.pt> out.json`
+      (cần `INFERENCE_LIVE_KEY`) hoặc gửi Claude chạy; highlight response phải có `clip_threshold` (51.0 với recipe hiện hành).
+  (c) Dữ liệu cũ: điểm/proposal trước AI-19 giữ nguyên như HO-04; xử lý lại cần phạm vi riêng được duyệt.
+- Contract: v1.4 không đổi schema; chỉ ghi chú runtime §1c + changelog. Phản hồi RE:HC-16 trong `coordination/codex/HANDOFF_OUT.md`.

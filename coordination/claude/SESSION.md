@@ -3,7 +3,7 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
-- **AI-22 IN_PROGRESS (2026-11-02):** user chọn runtime AI = container Docker. Build image `video-ai-inference:ai-v1.4-62b7e05` (log `D:/tmp/ai22/build.log`) → thử cổng 18001 → HC-16.
+- **AI-22 DONE phần Claude (2026-11-02):** runtime AI = container Docker. Image `video-ai-inference:ai-v1.4-62b7e05` parity PASS; HC-16 chờ Codex đổi tag compose. Host :8001 không chạy (dự phòng dev).
 - Task: **AI-16 REVIEW (2026-10-29)** — highlight vòng 5 ACTIVE trên :8001 (PID 14896); chờ release. Rollback: `_archive/highlight_fusion_round3_becbd378/`.
 - **AI-17 REVIEW:** vòng 6 ACTIVE trên :8001 (PID 27064). Rollback `_archive/highlight_fusion_round5_34199b68/`.
 - **AI-18 REVIEW:** vòng 7 ACTIVE trên :8001 (rollback `_archive/highlight_fusion_round6_9b59a7b0/`).

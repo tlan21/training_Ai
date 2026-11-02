@@ -2,6 +2,7 @@
 
     INFERENCE_LIVE_URL=http://127.0.0.1:8001 INFERENCE_LIVE_KEY=<AI_SERVICE_KEY> pytest tests/test_live_smoke.py
 Optional: INFERENCE_LIVE_MEDIA=<dir with *.jpg + clip.wav> (real media, else synthetic);
+          INFERENCE_LIVE_SERVER_MEDIA=<same dir as the server sees it, e.g. a container mount> (needs INFERENCE_LIVE_MEDIA);
           INFERENCE_EXAMPLES_DIR=<dir> writes <endpoint>.{request,response,error}.json from these exact calls.
 The server reads the WAV by path, so client and server must share the filesystem.
 """
@@ -23,6 +24,7 @@ from app import schemas
 URL = os.environ.get("INFERENCE_LIVE_URL")
 KEY = os.environ.get("INFERENCE_LIVE_KEY", "")
 MEDIA = os.environ.get("INFERENCE_LIVE_MEDIA")
+SERVER_MEDIA = os.environ.get("INFERENCE_LIVE_SERVER_MEDIA")
 EXAMPLES = os.environ.get("INFERENCE_EXAMPLES_DIR")
 MODELS = {"vit", "siamese", "asr_ctc", "highlight_fusion", "minigpt", "two_tower"}
 
@@ -77,6 +79,11 @@ def media(tmp_path_factory):
     return frames, str(wav)
 
 
+def _server(path):
+    """audio_url as the server sees it (AI-22: the runtime is a container, the WAV is bind-mounted)."""
+    return f"{SERVER_MEDIA}/{Path(path).name}" if SERVER_MEDIA else path
+
+
 def _data_uri(jpg):
     return "data:image/jpeg;base64," + base64.b64encode(jpg).decode()
 
@@ -117,10 +124,10 @@ def test_vision_then_highlight(media):
 
 def test_asr(media):
     _, wav = media
-    status, body = _example("asr", "POST", "/v1/asr/completions", {"audio_url": wav, "language": "vi"})
+    status, body = _example("asr", "POST", "/v1/asr/completions", {"audio_url": _server(wav), "language": "vi"})
     asr = schemas.ASRResponse.model_validate(body)
     assert status == 200 and all(0 <= s.start_time <= s.end_time for s in asr.segments)
-    status, body = _example("asr", "POST", "/v1/asr/completions", {"audio_url": wav + ".missing.wav", "language": "vi"}, kind="error")
+    status, body = _example("asr", "POST", "/v1/asr/completions", {"audio_url": _server(wav) + ".missing.wav", "language": "vi"}, kind="error")
     assert status == 503 and body["error"]["code"] == "AI_UNAVAILABLE"
     assert "asr_ctc" not in _call("GET", "/health", auth=False)[1]["degraded"]   # bad input ≠ model failure
 
@@ -194,7 +201,7 @@ def test_v2_asr_bytes_match_v1_path(media):
     _save("v2_asr", "request", {"multipart": {**fields, "file": f"<{Path(wav).name}, {Path(wav).stat().st_size} bytes>"}})
     _save("v2_asr", "response", {"http_status": status, "body": out})
     asr = schemas.ASRResponse.model_validate(out)
-    _, v1 = _call("POST", "/v1/asr/completions", {"audio_url": wav, "language": "vi"})
+    _, v1 = _call("POST", "/v1/asr/completions", {"audio_url": _server(wav), "language": "vi"})
     assert status == 200 and asr.full_transcript == v1["full_transcript"] and len(asr.segments) == len(v1["segments"])
     status, out = _multipart("/v2/asr/completions", fields, b"not audio")
     _save("v2_asr", "error_request", {"multipart": {**fields, "file": "<9 bytes: 'not audio'>"}})
