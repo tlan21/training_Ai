@@ -1,0 +1,149 @@
+[
+ {
+  "test": "INT-44 categories: CRUD, keywords persist, referenced delete 409 + toast, rule toggles restore",
+  "step": "create with keywords; persists after reload",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-44 categories: CRUD, keywords persist, referenced delete 409 + toast, rule toggles restore",
+  "step": "edit keywords persists",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-44 categories: CRUD, keywords persist, referenced delete 409 + toast, rule toggles restore",
+  "step": "assign to own video via Videos modal; count = API",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-44 categories: CRUD, keywords persist, referenced delete 409 + toast, rule toggles restore",
+  "step": "referenced delete → 409 toast, category kept",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-44 categories: CRUD, keywords persist, referenced delete 409 + toast, rule toggles restore",
+  "step": "design",
+  "result": "NOTE",
+  "detail": "soft-deleted videos keep category_id by design (cms_read_test \"soft-deleted reference lost\"); a category used only by deleted videos stays 409 — product question for the user"
+ },
+ {
+  "test": "INT-44 categories: CRUD, keywords persist, referenced delete 409 + toast, rule toggles restore",
+  "step": "never-used category: UI delete succeeds (204)",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-44 categories: CRUD, keywords persist, referenced delete 409 + toast, rule toggles restore",
+  "step": "rule toggles persist then restore",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-49 Dashboard metrics/storage/report match the API",
+  "step": "dashboard metrics",
+  "result": "NOTE",
+  "detail": {
+   "month": "2026-11",
+   "total_videos": 5,
+   "success_rate": 100,
+   "storage_bytes": 438067721
+  }
+ },
+ {
+  "test": "INT-49 Dashboard metrics/storage/report match the API",
+  "step": "stat cards = API values",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-49 Dashboard metrics/storage/report match the API",
+  "step": "month switch queries previous month; report download contains metrics",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /dashboard: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /videos: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /queue: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /highlight: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /subtitles: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /published: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /categories: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /users: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /settings: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "390 /dashboard: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "390 /videos: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "390 /queue: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "390 /highlight: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "390 /subtitles: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "390 /published: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "390 /categories: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "390 /users: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "390 /settings: no horizontal overflow",
+  "result": "PASS"
+ }
+]

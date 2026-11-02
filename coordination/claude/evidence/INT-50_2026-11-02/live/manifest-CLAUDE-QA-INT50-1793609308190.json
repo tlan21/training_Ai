@@ -1,0 +1,25 @@
+{
+ "prefix": "CLAUDE-QA-INT50-1793609308190",
+ "videos": [
+  "vid_dmklft8yiqpd",
+  "vid_dmklfx4hwh1l",
+  "vid_dmklg4j8e5h2",
+  "vid_dmklg82u5qly",
+  "vid_dmklgdlcehrv",
+  "vid_dmklghk4hcj3",
+  "vid_dmklglab8ila",
+  "vid_dmklhup94guk"
+ ],
+ "clips": [
+  "clp_dmklhn6pyp6u",
+  "clp_dmklhth0keni"
+ ],
+ "categories": [],
+ "news": "vid_dmklglab8ila",
+ "short": [
+  "vid_dmklft8yiqpd",
+  "vid_dmklfx4hwh1l",
+  "vid_dmklg4j8e5h2",
+  "vid_dmklg82u5qly"
+ ]
+}

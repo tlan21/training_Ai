@@ -3,6 +3,9 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
+- **INT-50 batch (2026-11-02):** real QA 10/10 PASS (`coordination/claude/evidence/INT-50_2026-11-02/README.md`); INT-41/42/44/47/49/38 DONE; INT-50 PARTIAL (Stitch ⇒ INT-05); INT-43 PARTIAL (phân trang, bulk request). CMS chạy `int50-045988a`.
+  ⚠ Phát hiện: `D:/data_training_ai/highlight_news_v1/` (nhãn người tin tức vòng 8 + features train, KEEP theo AI-08 đợt #2) KHÔNG còn trên D:/E: — chưa rõ ai xóa; đã báo user; bản sao có thể ở Kaggle `traininghighlight/highlight-news-v1`.
+  Câu hỏi sản phẩm chờ user: danh mục chỉ còn video đã xóa mềm vẫn 409 (giữ theo thiết kế Codex).
 - **HO-05 nhận (2026-11-02):** Claude làm toàn bộ dự án; backlog `coordination/claude/OPEN_TASKS.md`. INT-50 chờ user duyệt QA thật + kiểm dung lượng ổ (E: 332 MB). Song song: đối chiếu REVIEW.
 - **HC-19 đóng (2026-11-02):** inference v3.0 chạy trong compose (Codex INT-57), Claude đã kiểm. D24 xong phía AI. Còn: AI-05 REVIEW (§7), AI-12 ⇐ INT-15, AI-04 ⇐ RTX 3060.
 - **Release #7 (2026-11-02):** AI-23 DONE (AI-API v3.0) lên master. Chờ RE:HC-19; AI-05 REVIEW chờ user chọn §7.

@@ -1,0 +1,18 @@
+[
+ {
+  "test": "INT-47 login/refresh/logout, users read-only, no recovery or role editing",
+  "step": "1440: login + refresh keeps session",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-47 login/refresh/logout, users read-only, no recovery or role editing",
+  "step": "1440: users table read-only, server search",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-47 login/refresh/logout, users read-only, no recovery or role editing",
+  "step": "1440: /forgot-password redirects to login",
+  "result": "FAIL",
+  "detail": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mpage\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nExpected pattern: \u001b[32m/\\/login/\u001b[39m\nReceived string:  \u001b[31m\"http://127.0.0.1:5173/dashboard\"\u001b[39m\nTimeout: 10000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveURL\" with timeout 10000ms\u001b[22m\n\u001b[2m    23 × locator resolved to <html lang=\"vi\">…</html>\u001b[22m\n\u001b[2m       - unexpected value \"http://127.0.0.1:5173/dashboard\"\u001b[22m\n"
+ }
+]

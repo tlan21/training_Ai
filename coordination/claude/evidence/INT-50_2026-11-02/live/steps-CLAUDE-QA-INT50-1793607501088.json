@@ -1,0 +1,22 @@
+[
+ {
+  "test": "Highlight: proposal decisions persist/restore, compilation excludes dismissed, preview, publish, manual clip",
+  "step": "news analysis",
+  "result": "NOTE",
+  "detail": {
+   "proposals": 1,
+   "clip_threshold": 51,
+   "scores": 250
+  }
+ },
+ {
+  "test": "Highlight: proposal decisions persist/restore, compilation excludes dismissed, preview, publish, manual clip",
+  "step": "threshold reported by model",
+  "result": "PASS"
+ },
+ {
+  "test": "Highlight: proposal decisions persist/restore, compilation excludes dismissed, preview, publish, manual clip",
+  "step": "1440: heatmap shows AI threshold + proposals",
+  "result": "PASS"
+ }
+]

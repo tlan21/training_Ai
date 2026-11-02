@@ -1,0 +1,121 @@
+[
+ {
+  "test": "INT-43 global search/filters/pagination + selection safety; library search/edit/open counts",
+  "step": "Videos: server search returns only own videos; date filter; clear",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-43 global search/filters/pagination + selection safety; library search/edit/open counts",
+  "step": "Videos: selection cleared on filter change (no stale IDs)",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-43 global search/filters/pagination + selection safety; library search/edit/open counts",
+  "step": "own clip view_count",
+  "result": "NOTE",
+  "detail": 0
+ },
+ {
+  "test": "INT-43 global search/filters/pagination + selection safety; library search/edit/open counts",
+  "step": "Library: clip search, rename, open-count column = API",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-43 global search/filters/pagination + selection safety; library search/edit/open counts",
+  "step": "Library: original-video tab uses server search",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-44 categories: CRUD, keywords persist, referenced delete 409 + toast, rule toggles restore",
+  "step": "create with keywords; persists after reload",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-44 categories: CRUD, keywords persist, referenced delete 409 + toast, rule toggles restore",
+  "step": "edit keywords persists",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-44 categories: CRUD, keywords persist, referenced delete 409 + toast, rule toggles restore",
+  "step": "assign to own video via Videos modal; count = API",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-44 categories: CRUD, keywords persist, referenced delete 409 + toast, rule toggles restore",
+  "step": "referenced delete → 409 toast, category kept",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-44 categories: CRUD, keywords persist, referenced delete 409 + toast, rule toggles restore",
+  "step": "design",
+  "result": "NOTE",
+  "detail": "soft-deleted videos keep category_id by design (cms_read_test \"soft-deleted reference lost\"); a category used only by deleted videos stays 409 — product question for the user"
+ },
+ {
+  "test": "INT-44 categories: CRUD, keywords persist, referenced delete 409 + toast, rule toggles restore",
+  "step": "never-used category: UI delete succeeds (204)",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-44 categories: CRUD, keywords persist, referenced delete 409 + toast, rule toggles restore",
+  "step": "rule toggles persist then restore",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-49 Dashboard metrics/storage/report match the API",
+  "step": "dashboard metrics",
+  "result": "NOTE",
+  "detail": {
+   "month": "2026-11",
+   "total_videos": 7,
+   "success_rate": 100,
+   "storage_bytes": 399781337
+  }
+ },
+ {
+  "test": "INT-49 Dashboard metrics/storage/report match the API",
+  "step": "stat cards = API values",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-49 Dashboard metrics/storage/report match the API",
+  "step": "month switch queries previous month; report download contains metrics",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /dashboard: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /videos: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /queue: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /highlight: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /subtitles: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /published: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /categories: no horizontal overflow",
+  "result": "FAIL",
+  "detail": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m146\u001b[39m"
+ }
+]

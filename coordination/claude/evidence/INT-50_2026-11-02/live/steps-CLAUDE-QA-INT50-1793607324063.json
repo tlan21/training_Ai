@@ -1,0 +1,17 @@
+[
+ {
+  "test": "Settings: actual flags/buckets, disabled tabs, dirty guard, save failure",
+  "step": "1440: shows server flags + buckets, other tabs disabled",
+  "result": "PASS"
+ },
+ {
+  "test": "Settings: actual flags/buckets, disabled tabs, dirty guard, save failure",
+  "step": "1440: dirty guard dismiss keeps page, accept leaves without saving",
+  "result": "PASS"
+ },
+ {
+  "test": "Settings: actual flags/buckets, disabled tabs, dirty guard, save failure",
+  "step": "1440: save failure shows error, server unchanged",
+  "result": "PASS"
+ }
+]

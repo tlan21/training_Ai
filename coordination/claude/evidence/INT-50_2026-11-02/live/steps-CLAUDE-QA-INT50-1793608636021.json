@@ -1,0 +1,57 @@
+[
+ {
+  "test": "INT-47 login/refresh/logout, users read-only, no recovery or role editing",
+  "step": "1440: login + refresh keeps session",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-47 login/refresh/logout, users read-only, no recovery or role editing",
+  "step": "1440: users table read-only, server search",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-47 login/refresh/logout, users read-only, no recovery or role editing",
+  "step": "1440: logout ends session",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-47 login/refresh/logout, users read-only, no recovery or role editing",
+  "step": "1440: /forgot-password (signed out) shows login, no recovery form",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-47 login/refresh/logout, users read-only, no recovery or role editing",
+  "step": "390: login + refresh keeps session",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-47 login/refresh/logout, users read-only, no recovery or role editing",
+  "step": "390: users table read-only, server search",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-47 login/refresh/logout, users read-only, no recovery or role editing",
+  "step": "390: logout ends session",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-47 login/refresh/logout, users read-only, no recovery or role editing",
+  "step": "390: /forgot-password (signed out) shows login, no recovery form",
+  "result": "PASS"
+ },
+ {
+  "test": "Settings: actual flags/buckets, disabled tabs, dirty guard, save failure",
+  "step": "1440: shows server flags + buckets, other tabs disabled",
+  "result": "PASS"
+ },
+ {
+  "test": "Settings: actual flags/buckets, disabled tabs, dirty guard, save failure",
+  "step": "1440: dirty guard dismiss keeps page, accept leaves without saving",
+  "result": "PASS"
+ },
+ {
+  "test": "Settings: actual flags/buckets, disabled tabs, dirty guard, save failure",
+  "step": "1440: save failure shows error, server unchanged",
+  "result": "PASS"
+ }
+]

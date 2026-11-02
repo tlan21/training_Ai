@@ -1,0 +1,18 @@
+[
+ {
+  "test": "INT-44 categories: CRUD, keywords persist, referenced delete 409 + toast, rule toggles restore",
+  "step": "create with keywords; persists after reload",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-44 categories: CRUD, keywords persist, referenced delete 409 + toast, rule toggles restore",
+  "step": "edit keywords persists",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-44 categories: CRUD, keywords persist, referenced delete 409 + toast, rule toggles restore",
+  "step": "assign to own video via Videos modal; count = API",
+  "result": "FAIL",
+  "detail": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Biên tập CLAUDE-QA-INT50-1793608506217-h1s1.mp4' })\u001b[22m\n"
+ }
+]

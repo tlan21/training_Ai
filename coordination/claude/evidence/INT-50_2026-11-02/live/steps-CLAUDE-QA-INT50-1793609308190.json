@@ -1,0 +1,268 @@
+[
+ {
+  "test": "INT-47 login/refresh/logout, users read-only, no recovery or role editing",
+  "step": "1440: login + refresh keeps session",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-47 login/refresh/logout, users read-only, no recovery or role editing",
+  "step": "1440: users table read-only, server search",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-47 login/refresh/logout, users read-only, no recovery or role editing",
+  "step": "1440: logout ends session",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-47 login/refresh/logout, users read-only, no recovery or role editing",
+  "step": "1440: /forgot-password (signed out) shows login, no recovery form",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-47 login/refresh/logout, users read-only, no recovery or role editing",
+  "step": "390: login + refresh keeps session",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-47 login/refresh/logout, users read-only, no recovery or role editing",
+  "step": "390: users table read-only, server search",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-47 login/refresh/logout, users read-only, no recovery or role editing",
+  "step": "390: logout ends session",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-47 login/refresh/logout, users read-only, no recovery or role editing",
+  "step": "390: /forgot-password (signed out) shows login, no recovery form",
+  "result": "PASS"
+ },
+ {
+  "test": "Settings: actual flags/buckets, disabled tabs, dirty guard, save failure",
+  "step": "1440: shows server flags + buckets, other tabs disabled",
+  "result": "PASS"
+ },
+ {
+  "test": "Settings: actual flags/buckets, disabled tabs, dirty guard, save failure",
+  "step": "1440: dirty guard dismiss keeps page, accept leaves without saving",
+  "result": "PASS"
+ },
+ {
+  "test": "Settings: actual flags/buckets, disabled tabs, dirty guard, save failure",
+  "step": "1440: save failure shows error, server unchanged",
+  "result": "PASS"
+ },
+ {
+  "test": "Settings: actual flags/buckets, disabled tabs, dirty guard, save failure",
+  "step": "390: shows server flags + buckets, other tabs disabled",
+  "result": "PASS"
+ },
+ {
+  "test": "Settings: actual flags/buckets, disabled tabs, dirty guard, save failure",
+  "step": "390: dirty guard dismiss keeps page, accept leaves without saving",
+  "result": "PASS"
+ },
+ {
+  "test": "Settings: actual flags/buckets, disabled tabs, dirty guard, save failure",
+  "step": "390: save failure shows error, server unchanged",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-41 four AI policies: snapshot, skipped stages, Queue display",
+  "step": "h1s1: save via Settings UI",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-41 four AI policies: snapshot, skipped stages, Queue display",
+  "step": "h1s1 outputs",
+  "result": "NOTE",
+  "detail": {
+   "scores": 8,
+   "subtitle_segments": 0,
+   "summary": false
+  }
+ },
+ {
+  "test": "INT-41 four AI policies: snapshot, skipped stages, Queue display",
+  "step": "h1s1: job snapshot + skipped stages + outputs",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-41 four AI policies: snapshot, skipped stages, Queue display",
+  "step": "h1s1: Queue row shows policy + skipped stages",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-41 four AI policies: snapshot, skipped stages, Queue display",
+  "step": "h1s0: save via Settings UI",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-41 four AI policies: snapshot, skipped stages, Queue display",
+  "step": "h1s0 outputs",
+  "result": "NOTE",
+  "detail": {
+   "scores": 8,
+   "subtitle_segments": 0,
+   "summary": false
+  }
+ },
+ {
+  "test": "INT-41 four AI policies: snapshot, skipped stages, Queue display",
+  "step": "h1s0: job snapshot + skipped stages + outputs",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-41 four AI policies: snapshot, skipped stages, Queue display",
+  "step": "h1s0: Queue row shows policy + skipped stages",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-41 four AI policies: snapshot, skipped stages, Queue display",
+  "step": "h0s1: save via Settings UI",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-41 four AI policies: snapshot, skipped stages, Queue display",
+  "step": "h0s1 outputs",
+  "result": "NOTE",
+  "detail": {
+   "scores": 0,
+   "subtitle_segments": 0,
+   "summary": false
+  }
+ },
+ {
+  "test": "INT-41 four AI policies: snapshot, skipped stages, Queue display",
+  "step": "h0s1: job snapshot + skipped stages + outputs",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-41 four AI policies: snapshot, skipped stages, Queue display",
+  "step": "h0s1: Queue row shows policy + skipped stages",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-41 four AI policies: snapshot, skipped stages, Queue display",
+  "step": "h0s0: save via Settings UI",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-41 four AI policies: snapshot, skipped stages, Queue display",
+  "step": "h0s0: settings changed during processing do not affect the job snapshot",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-41 four AI policies: snapshot, skipped stages, Queue display",
+  "step": "h0s0 outputs",
+  "result": "NOTE",
+  "detail": {
+   "scores": 0,
+   "subtitle_segments": 0,
+   "summary": false
+  }
+ },
+ {
+  "test": "INT-41 four AI policies: snapshot, skipped stages, Queue display",
+  "step": "h0s0: job snapshot + skipped stages + outputs",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-41 four AI policies: snapshot, skipped stages, Queue display",
+  "step": "h0s0: Queue row shows policy + skipped stages",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-42 invalid ingest, error log, retry keeps snapshot, cancel, deleted-source guard",
+  "step": "invalid upload fails job + video",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-42 invalid ingest, error log, retry keeps snapshot, cancel, deleted-source guard",
+  "step": "Queue failed filter + error log modal",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-42 invalid ingest, error log, retry keeps snapshot, cancel, deleted-source guard",
+  "step": "retry via UI keeps original processing snapshot",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-42 invalid ingest, error log, retry keeps snapshot, cancel, deleted-source guard",
+  "step": "canceled job",
+  "result": "NOTE",
+  "detail": {
+   "error_log": "canceled_by_user",
+   "stage": "splitting_frames"
+  }
+ },
+ {
+  "test": "INT-42 invalid ingest, error log, retry keeps snapshot, cancel, deleted-source guard",
+  "step": "cancel running job from Queue",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-42 invalid ingest, error log, retry keeps snapshot, cancel, deleted-source guard",
+  "step": "retry after delete",
+  "result": "NOTE",
+  "detail": 409
+ },
+ {
+  "test": "INT-42 invalid ingest, error log, retry keeps snapshot, cancel, deleted-source guard",
+  "step": "deleted source: retry rejected 409, hidden from default list",
+  "result": "PASS"
+ },
+ {
+  "test": "Highlight: proposal decisions persist/restore, compilation excludes dismissed, preview, publish, manual clip",
+  "step": "news analysis",
+  "result": "NOTE",
+  "detail": {
+   "proposals": 5,
+   "clip_threshold": 51,
+   "scores": 700
+  }
+ },
+ {
+  "test": "Highlight: proposal decisions persist/restore, compilation excludes dismissed, preview, publish, manual clip",
+  "step": "threshold reported by model",
+  "result": "PASS"
+ },
+ {
+  "test": "Highlight: proposal decisions persist/restore, compilation excludes dismissed, preview, publish, manual clip",
+  "step": "1440: heatmap shows AI threshold + proposals",
+  "result": "PASS"
+ },
+ {
+  "test": "Highlight: proposal decisions persist/restore, compilation excludes dismissed, preview, publish, manual clip",
+  "step": "390: heatmap shows AI threshold + proposals",
+  "result": "PASS"
+ },
+ {
+  "test": "Highlight: proposal decisions persist/restore, compilation excludes dismissed, preview, publish, manual clip",
+  "step": "accept #1 + dismiss #2 persist across reload, restore brings it back",
+  "result": "PASS"
+ },
+ {
+  "test": "Highlight: proposal decisions persist/restore, compilation excludes dismissed, preview, publish, manual clip",
+  "step": "compilation excludes dismissed proposal, preview + publish",
+  "result": "PASS"
+ },
+ {
+  "test": "Highlight: proposal decisions persist/restore, compilation excludes dismissed, preview, publish, manual clip",
+  "step": "manual clip draft 10–20 s",
+  "result": "PASS"
+ },
+ {
+  "test": "Subtitles: edit/persist, dirty guard, server validation, regenerate keeps title, priority, approve",
+  "step": "edit segment, dirty guard dismiss, save persists across reload",
+  "result": "PASS"
+ },
+ {
+  "test": "Subtitles: edit/persist, dirty guard, server validation, regenerate keeps title, priority, approve",
+  "step": "server rejects invalid timing (422)",
+  "result": "FAIL",
+  "detail": "Error: /api/cms/videos/vid_dmklhup94guk/subtitles\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m404\u001b[39m"
+ }
+]

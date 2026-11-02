@@ -1,0 +1,68 @@
+[
+ {
+  "test": "INT-49 Dashboard metrics/storage/report match the API",
+  "step": "dashboard metrics",
+  "result": "NOTE",
+  "detail": {
+   "month": "2026-11",
+   "total_videos": 4,
+   "success_rate": 100,
+   "storage_bytes": 399469411
+  }
+ },
+ {
+  "test": "INT-49 Dashboard metrics/storage/report match the API",
+  "step": "stat cards = API values",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-49 Dashboard metrics/storage/report match the API",
+  "step": "month switch queries previous month; report download contains metrics",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /dashboard: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /videos: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /queue: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /highlight: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /subtitles: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /published: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /categories: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /users: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /settings: no horizontal overflow",
+  "result": "PASS"
+ }
+]

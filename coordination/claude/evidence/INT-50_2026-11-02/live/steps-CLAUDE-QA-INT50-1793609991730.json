@@ -1,0 +1,28 @@
+[
+ {
+  "test": "INT-43 global search/filters/pagination + selection safety; library search/edit/open counts",
+  "step": "Videos: server search returns only own videos; date filter; clear",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-43 global search/filters/pagination + selection safety; library search/edit/open counts",
+  "step": "Videos: selection cleared on filter change (no stale IDs)",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-43 global search/filters/pagination + selection safety; library search/edit/open counts",
+  "step": "own clip view_count",
+  "result": "NOTE",
+  "detail": 0
+ },
+ {
+  "test": "INT-43 global search/filters/pagination + selection safety; library search/edit/open counts",
+  "step": "Library: clip search, rename, open-count column = API",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-43 global search/filters/pagination + selection safety; library search/edit/open counts",
+  "step": "Library: original-video tab uses server search",
+  "result": "PASS"
+ }
+]
