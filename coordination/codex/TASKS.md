@@ -7,12 +7,12 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 ## Tổng quan
 
 ### INT-54 — HC-18 consume release #6 image and verify full parity
-- Owner: CODEX | Status: IN_PROGRESS (2026-11-02)
+- Owner: CODEX | Status: REVIEW (2026-11-02; full scoped rollout/official parity PASS, evidence commit next)
 - Depends on: user explicitly requests merge master479f5d5 and HC-18 rollout; prebuilt local image ai-v1.5-000e7c1/SHA271bb4bab6f4; existing read-only checkpoint bind, Claude parity.py/features available.
 - Acceptance: receive master479f5d5; pin only existing inference-service image, no build/pull; preserve configured env/checkpointRO/all other containers; recreate only inference-service; actualhealth6real/stubfalse, released deprecated OpenAPI flags and full Claude parity source/checkpoint/real-feature HTTP behavior PASS; commit RE:HC-18 with commands/evidence. No original-video reprocessing or remote/master publication of new Codex changes.
 - Changed files: docker-compose.inference.yml; coordination/codex/{TASKS.md,SESSION.md,INTEGRATION_MATRIX.md,HANDOFF_OUT.md,verification/INT-54*}; any temporary verification runner stays in owned scope.
-- Evidence/Commits: startup fast-forward f1a8a29→479f5d5 PASS, clean tree, no manual Claude edits; imageID/revision matchHC18. Task-start commit follows.
-- Next action: baseline/config guard, selected-service recreate, actualhealth + officialparity news/soccer via existing-container HTTP without publishing a port, then HC-17 separately.
+- Evidence/Commits: starta87e623; verification/INT-54.md and10artifacts. Actual6real/stubfalse/health/OpenAPI PASS; officialparity4realfeature videos all0.0diff/identicalclips/threshold51, source103/checkpoint10match;15othercontainers unchanged, AIenv/ROmount/ports preserved, jobs0. Deployment/evidence commit follows.
+- Next action: commit verified image/parity/evidence then RE:HC-18 and markDONE; start INT-55 separately.
 
 ### INT-55 — HC-17 prove runtime does not call deprecated AI media paths
 - Owner: CODEX | Status: TODO (2026-11-02)

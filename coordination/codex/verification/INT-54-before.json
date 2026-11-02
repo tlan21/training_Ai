@@ -1,0 +1,532 @@
+{
+  "checked_at": "2026-11-02T03:32:09.613247+00:00",
+  "containers": [
+    {
+      "name": "video-ai-inference-service-1",
+      "id": "11ba8c4e8139b8d68e8c0b87d6edfed69a9a4105d702cc0a34774a6197af9466",
+      "image": "video-ai-inference:ai-v1.4-62b7e05",
+      "image_id": "sha256:53e24af8806570abb38e20b55622e97348ebbc33669f6590a5f319f3c4186254",
+      "started_at": "2026-11-02T02:55:08.515648508Z",
+      "status": "running",
+      "env_hash": "e31008f88a5fee3707763072ed2bdb20409b097cf468fb79bf6d01223d2ca453",
+      "command_hash": "49e5614def9b71b7cb72241ac38b6452f84930cd9d8d949b38315747e936f288",
+      "mounts": [
+        {
+          "Type": "bind",
+          "Source": "E:/traning_ai/ai-core/checkpoints",
+          "Destination": "/srv/ai-core/checkpoints",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        }
+      ],
+      "ports": {}
+    },
+    {
+      "name": "video-ai-cms-1",
+      "id": "6f78becfa9fd23f33ea707a2f36dc5f803fc901828cec01c5dbea3dbb17a463d",
+      "image": "video-ai-cms:int50-74344bb",
+      "image_id": "sha256:2d1b9b7f463d3251c76a869f52a1c9a0239324701202f18085af559ce88d287f",
+      "started_at": "2026-11-02T02:23:02.903815072Z",
+      "status": "running",
+      "env_hash": "0e874860ba544601b46bb81c00d0190949b00050bd8de0fa7bc850b3b706c105",
+      "command_hash": "851436a15ba3b817e0730f175435738e10e54cbf402d3aefd784b6550ad659bf",
+      "mounts": [],
+      "ports": {
+        "80/tcp": [
+          {
+            "HostIp": "",
+            "HostPort": "5173"
+          }
+        ]
+      }
+    },
+    {
+      "name": "video-ai-gateway-1",
+      "id": "e0a090b27e16471b2c3c8f68b0877c294d6bf8863d27d54029e1130d000e7c02",
+      "image": "video-ai-gateway:int50-74344bb",
+      "image_id": "sha256:5354b54657967c20e0752aec2257904ba5e8598166eb2fbfdeaf7a7bd1b5e4ec",
+      "started_at": "2026-11-02T02:22:52.804405099Z",
+      "status": "running",
+      "env_hash": "4e5ad710fc0b3b0151ad7f5f967b618b9a8cc19678ae4e42f384198ab6a1a515",
+      "command_hash": "2afff948c4b5f0c3a8dd72c7ec1f020be33386714ab48d306259b9549ae9fb68",
+      "mounts": [
+        {
+          "Type": "volume",
+          "Name": "video-ai_ingest_work",
+          "Source": "/var/lib/docker/volumes/video-ai_ingest_work/_data",
+          "Destination": "/srv/work",
+          "Driver": "local",
+          "Mode": "rw",
+          "RW": true,
+          "Propagation": ""
+        }
+      ],
+      "ports": {
+        "8000/tcp": [
+          {
+            "HostIp": "",
+            "HostPort": "8000"
+          }
+        ]
+      }
+    },
+    {
+      "name": "video-ai-client-1",
+      "id": "5a6b4536e63d2e31505d03ec57a867ada5afcacce97a7cfbe00a7848ea29a859",
+      "image": "video-ai-client:int36-c4de07e",
+      "image_id": "sha256:fa34fd3c8168e2e9788254aaefff2556c037a194dd45f8905c430acefa21f8f6",
+      "started_at": "2026-11-02T02:23:00.124622158Z",
+      "status": "running",
+      "env_hash": "eb0517a55d72924118b7c4e83338e19feddf58901b4fb40ffc3c6f0ea0e0430b",
+      "command_hash": "933f4a4402adf500a4d8e1f8c31be9b728ad64649248e0ba12981d9e05174fe6",
+      "mounts": [],
+      "ports": {
+        "3000/tcp": [
+          {
+            "HostIp": "",
+            "HostPort": "3000"
+          }
+        ]
+      }
+    },
+    {
+      "name": "video-ai-ingest-worker-1",
+      "id": "709433eefc6f7d141eb7d13f500adbda6a69d96f8bc24a81816821da3253b3fd",
+      "image": "video-ai-ingest-worker:int23-fa8a382",
+      "image_id": "sha256:97d7bcb8174283e4b30afcf6064aa44360905a3c0f4004944a062707f3ecc6b8",
+      "started_at": "2026-11-02T02:23:00.957029575Z",
+      "status": "running",
+      "env_hash": "769fec5b7fb54f13b0edfb579010f3f79b4cc65dec908c79c6c98cc7f32c07c3",
+      "command_hash": "b83a77280d45173a9026067010536407046f35f6d5e43aa313f2b56cdd4d7b5f",
+      "mounts": [
+        {
+          "Type": "volume",
+          "Name": "video-ai_ingest_work",
+          "Source": "/var/lib/docker/volumes/video-ai_ingest_work/_data",
+          "Destination": "/srv/work",
+          "Driver": "local",
+          "Mode": "rw",
+          "RW": true,
+          "Propagation": ""
+        }
+      ],
+      "ports": {}
+    },
+    {
+      "name": "video-ai-milvus-1",
+      "id": "cd7878a1ed75d890acea61c02b95ab309d406eea0e5d1fcd4afc83d5c9150c96",
+      "image": "milvusdb/milvus:v2.4.9",
+      "image_id": "sha256:ab599c8ef70f92bd8ae2b743a5830bd677076c66eedc494e81c0e0e5011aee67",
+      "started_at": "2026-11-02T02:23:28.257307055Z",
+      "status": "running",
+      "env_hash": "baed446f8498ce0f1c538c8dc6e6cada3048fc476987a22a409c0b69c2882a82",
+      "command_hash": "b0aedab59b43ccebbacaa0167af21f249d8ec823ae690bb0dd1417f0af0e168c",
+      "mounts": [
+        {
+          "Type": "volume",
+          "Name": "video-ai_milvus_data",
+          "Source": "/var/lib/docker/volumes/video-ai_milvus_data/_data",
+          "Destination": "/var/lib/milvus",
+          "Driver": "local",
+          "Mode": "rw",
+          "RW": true,
+          "Propagation": ""
+        }
+      ],
+      "ports": {
+        "19530/tcp": [
+          {
+            "HostIp": "127.0.0.1",
+            "HostPort": "19530"
+          }
+        ],
+        "9091/tcp": [
+          {
+            "HostIp": "127.0.0.1",
+            "HostPort": "9091"
+          }
+        ]
+      }
+    },
+    {
+      "name": "video-ai-etcd-1",
+      "id": "2a7a3faf4e82baf4059f8ad7e859f42aab2f3e99eeccb22cf4dea77e763a762b",
+      "image": "quay.io/coreos/etcd:v3.5.14",
+      "image_id": "sha256:42106a001d1be7fd22e48830071ceae0fe760ff2c5df8c76c0e3b586d8a1f0fc",
+      "started_at": "2026-11-02T02:23:29.686669517Z",
+      "status": "running",
+      "env_hash": "d1b963ff7f6667beb53c9c86814ee55d8e530431c7d6a4a85e03626e7ecff72b",
+      "command_hash": "b12ccd02b6e186f894ae46c196864359439f0cbbe2eb66b9f982cb85405ddb75",
+      "mounts": [
+        {
+          "Type": "volume",
+          "Name": "video-ai_etcd_data",
+          "Source": "/var/lib/docker/volumes/video-ai_etcd_data/_data",
+          "Destination": "/etcd",
+          "Driver": "local",
+          "Mode": "rw",
+          "RW": true,
+          "Propagation": ""
+        }
+      ],
+      "ports": {}
+    },
+    {
+      "name": "video-ai-kafka-init-1",
+      "id": "c29af099bef8bef8c0db73021d039e9090c2de44341ee7450a13b9cf7d2cb0ff",
+      "image": "apache/kafka:3.8.0",
+      "image_id": "sha256:c89f315cff967322c5d2021434b32271393cb193aa7ec1d43e97341924e57069",
+      "started_at": "2026-11-02T02:23:30.521266593Z",
+      "status": "exited",
+      "env_hash": "4069028e5bf717fbcacae621983975973f14f336ef503672898f4242a9a87b96",
+      "command_hash": "6872e2e7f39637168dfcd5a178c9f1010b89bb4ece1e0075af86b3390e27de30",
+      "mounts": [
+        {
+          "Type": "volume",
+          "Name": "eecfd76c3923de485dacea3e8e2f741b46ab705719257fd9d10e7c2b3668ac12",
+          "Source": "/var/lib/docker/volumes/eecfd76c3923de485dacea3e8e2f741b46ab705719257fd9d10e7c2b3668ac12/_data",
+          "Destination": "/etc/kafka/secrets",
+          "Driver": "local",
+          "Mode": "",
+          "RW": true,
+          "Propagation": ""
+        },
+        {
+          "Type": "volume",
+          "Name": "58057ec95b50e50aa23d5476faedf8d90682ab5e11dc3f42ab4a512d10c85dac",
+          "Source": "/var/lib/docker/volumes/58057ec95b50e50aa23d5476faedf8d90682ab5e11dc3f42ab4a512d10c85dac/_data",
+          "Destination": "/mnt/shared/config",
+          "Driver": "local",
+          "Mode": "",
+          "RW": true,
+          "Propagation": ""
+        },
+        {
+          "Type": "volume",
+          "Name": "8e8d2b7a29db0a7ee6aef69c57de84885a60286aaf3bb2da417b381c3d4c2326",
+          "Source": "/var/lib/docker/volumes/8e8d2b7a29db0a7ee6aef69c57de84885a60286aaf3bb2da417b381c3d4c2326/_data",
+          "Destination": "/var/lib/kafka/data",
+          "Driver": "local",
+          "Mode": "",
+          "RW": true,
+          "Propagation": ""
+        }
+      ],
+      "ports": {}
+    },
+    {
+      "name": "video-ai-minio-1",
+      "id": "1d4128cbc5c6b79d0d0ef28f98bc0c75ba02bdd620ba4148af9bca52df2a33cc",
+      "image": "video-ai-minio",
+      "image_id": "sha256:0e654a12ec1860cb6037223766a54dbd8c130890a4c5dc835506d206784cb95c",
+      "started_at": "2026-11-02T02:23:31.177252586Z",
+      "status": "running",
+      "env_hash": "571047ddac7306e28d7905119f73fa4487958d32488a59b090627207a7fde419",
+      "command_hash": "71caa59fa1b8a933a49437751791a5644fb3c2c20faaf90f4ea8c3858601d0c6",
+      "mounts": [
+        {
+          "Type": "volume",
+          "Name": "video-ai_minio_data",
+          "Source": "/var/lib/docker/volumes/video-ai_minio_data/_data",
+          "Destination": "/data",
+          "Driver": "local",
+          "Mode": "rw",
+          "RW": true,
+          "Propagation": ""
+        }
+      ],
+      "ports": {
+        "9000/tcp": [
+          {
+            "HostIp": "",
+            "HostPort": "9000"
+          }
+        ],
+        "9001/tcp": [
+          {
+            "HostIp": "",
+            "HostPort": "9001"
+          }
+        ]
+      }
+    },
+    {
+      "name": "video-ai-kafka-1",
+      "id": "8482ecba8ac6fb6c8d62a37b9ae072954646e2789d4c2407e12964f036ee774d",
+      "image": "apache/kafka:3.8.0",
+      "image_id": "sha256:c89f315cff967322c5d2021434b32271393cb193aa7ec1d43e97341924e57069",
+      "started_at": "2026-11-02T02:23:38.897875785Z",
+      "status": "running",
+      "env_hash": "1d409f0b22657459a8d97cc1b16fa7497d9ca3e4881a71c132853353ae9fd273",
+      "command_hash": "31b8620968a3adeed2eef7d687ab8a842ad293f51e06b2e8dc99fa89538398e4",
+      "mounts": [
+        {
+          "Type": "volume",
+          "Name": "41f23f9d81d62ce4a401498dc97fbb6c04a2a05af1d6fbbbeaa76b910d7dd731",
+          "Source": "/var/lib/docker/volumes/41f23f9d81d62ce4a401498dc97fbb6c04a2a05af1d6fbbbeaa76b910d7dd731/_data",
+          "Destination": "/etc/kafka/secrets",
+          "Driver": "local",
+          "Mode": "",
+          "RW": true,
+          "Propagation": ""
+        },
+        {
+          "Type": "volume",
+          "Name": "abd9a1f4187c49ecc86670b5e2be21f0dc247d71c186ff5f426f903422f9f979",
+          "Source": "/var/lib/docker/volumes/abd9a1f4187c49ecc86670b5e2be21f0dc247d71c186ff5f426f903422f9f979/_data",
+          "Destination": "/mnt/shared/config",
+          "Driver": "local",
+          "Mode": "",
+          "RW": true,
+          "Propagation": ""
+        },
+        {
+          "Type": "volume",
+          "Name": "video-ai_kafka_data",
+          "Source": "/var/lib/docker/volumes/video-ai_kafka_data/_data",
+          "Destination": "/var/lib/kafka/data",
+          "Driver": "local",
+          "Mode": "rw",
+          "RW": true,
+          "Propagation": ""
+        }
+      ],
+      "ports": {
+        "9092/tcp": [
+          {
+            "HostIp": "",
+            "HostPort": "9092"
+          }
+        ]
+      }
+    },
+    {
+      "name": "video-ai-postgres-1",
+      "id": "0aaae3e5b2db82e7da88b57db9450ffd043045d56295ae89ec97db6179cbf2fc",
+      "image": "postgres:16-alpine",
+      "image_id": "sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea",
+      "started_at": "2026-11-02T02:23:38.869494545Z",
+      "status": "running",
+      "env_hash": "4965fcd0d8d8d05671b7e625b43584ce2857431d8f47fd623008c6ba77d5f52a",
+      "command_hash": "8f03ba494332f072642e251b7fe2cdb4d931eaa9fbc4dce0a6996a93d5a2f14b",
+      "mounts": [
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/e/traning_ai/infra/postgres/init",
+          "Destination": "/docker-entrypoint-initdb.d",
+          "Mode": "ro",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "volume",
+          "Name": "video-ai_pg_data",
+          "Source": "/var/lib/docker/volumes/video-ai_pg_data/_data",
+          "Destination": "/var/lib/postgresql/data",
+          "Driver": "local",
+          "Mode": "rw",
+          "RW": true,
+          "Propagation": ""
+        }
+      ],
+      "ports": {
+        "5432/tcp": [
+          {
+            "HostIp": "",
+            "HostPort": "5432"
+          }
+        ]
+      }
+    },
+    {
+      "name": "video-ai-redis-1",
+      "id": "1e8903575c9bcb196487d6a7ce9a0ed6f7cd0d4bd009ee7453b555a118ee943d",
+      "image": "redis:7-alpine",
+      "image_id": "sha256:858f009f9709ce576febc734aa78b8f6d624b82571f9ddb6bda4377c833b3499",
+      "started_at": "2026-11-02T02:23:38.699334818Z",
+      "status": "running",
+      "env_hash": "f8895e654462872d2383bcd3e1130e3dce53c849bd08c18fcb225b78a14a5bc6",
+      "command_hash": "385d8314deb5e89f0aa8f66f1706da4ed263ec8486ef2cbc35b4e32494280188",
+      "mounts": [
+        {
+          "Type": "volume",
+          "Name": "video-ai_redis_data",
+          "Source": "/var/lib/docker/volumes/video-ai_redis_data/_data",
+          "Destination": "/data",
+          "Driver": "local",
+          "Mode": "rw",
+          "RW": true,
+          "Propagation": ""
+        }
+      ],
+      "ports": {
+        "6379/tcp": [
+          {
+            "HostIp": "",
+            "HostPort": "6379"
+          }
+        ]
+      }
+    },
+    {
+      "name": "video-ai-mongo-1",
+      "id": "cd1f54c421593613f610112d749e53e69717015cbc17ab309035788607dc81b4",
+      "image": "mongo:7",
+      "image_id": "sha256:1f995ad6fdb93244a1addab1b58f934a0bc2f5643c38e02f5e9d7f0c7d227a7b",
+      "started_at": "2026-11-02T02:23:38.929092868Z",
+      "status": "running",
+      "env_hash": "73daf8122a043be0ffee55b45372fde3b679efc9e4b0019b363bdd72ea8eaf7c",
+      "command_hash": "133006561e01d2e70855f783d5444e63708a8e1968968389d5b82cd903e81895",
+      "mounts": [
+        {
+          "Type": "volume",
+          "Name": "5f960d3c0431c54d375e8b8b6b27ed63fdd5924d06e7a2d98824b5ec2eec932c",
+          "Source": "/var/lib/docker/volumes/5f960d3c0431c54d375e8b8b6b27ed63fdd5924d06e7a2d98824b5ec2eec932c/_data",
+          "Destination": "/data/configdb",
+          "Driver": "local",
+          "Mode": "",
+          "RW": true,
+          "Propagation": ""
+        },
+        {
+          "Type": "volume",
+          "Name": "video-ai_mongo_data",
+          "Source": "/var/lib/docker/volumes/video-ai_mongo_data/_data",
+          "Destination": "/data/db",
+          "Driver": "local",
+          "Mode": "rw",
+          "RW": true,
+          "Propagation": ""
+        },
+        {
+          "Type": "bind",
+          "Source": "/run/desktop/mnt/host/e/traning_ai/infra/mongo/init",
+          "Destination": "/docker-entrypoint-initdb.d",
+          "Mode": "ro",
+          "RW": false,
+          "Propagation": "rprivate"
+        }
+      ],
+      "ports": {
+        "27017/tcp": [
+          {
+            "HostIp": "",
+            "HostPort": "27017"
+          }
+        ]
+      }
+    },
+    {
+      "name": "kafka-ui",
+      "id": "6bae4ad3a38e0588f15cc774b5e5576f5af15c0344c41da99d9280f8edf042dd",
+      "image": "provectuslabs/kafka-ui:latest",
+      "image_id": "sha256:8f2ff02d64b0a7a2b71b6b3b3148b85f66d00ec20ad40c30bdcd415d46d31818",
+      "started_at": "2026-10-29T04:58:51.282546393Z",
+      "status": "exited",
+      "env_hash": "6fe0e96f9b0123664e5a95a9db9d8d0526e0527c832ff4d29aa3ef08226b6472",
+      "command_hash": "560d8ab68bf41e55bf771e05e1087cbf0d09cdd255d584d88573127d7965d9b0",
+      "mounts": [],
+      "ports": {
+        "8080/tcp": [
+          {
+            "HostIp": "",
+            "HostPort": "8080"
+          }
+        ]
+      }
+    },
+    {
+      "name": "kafka",
+      "id": "0c3987cdc5246e598a22afb8c736ccb8997fb7a77d70ce27bdede88d4e6ef158",
+      "image": "apache/kafka:3.8.0",
+      "image_id": "sha256:c89f315cff967322c5d2021434b32271393cb193aa7ec1d43e97341924e57069",
+      "started_at": "2026-10-13T03:44:28.490860045Z",
+      "status": "exited",
+      "env_hash": "4069028e5bf717fbcacae621983975973f14f336ef503672898f4242a9a87b96",
+      "command_hash": "31b8620968a3adeed2eef7d687ab8a842ad293f51e06b2e8dc99fa89538398e4",
+      "mounts": [
+        {
+          "Type": "volume",
+          "Name": "e12d54fecb529ff38f22328568fc61c5385e0f108befbd47466e1169d7f6fc2d",
+          "Source": "/var/lib/docker/volumes/e12d54fecb529ff38f22328568fc61c5385e0f108befbd47466e1169d7f6fc2d/_data",
+          "Destination": "/etc/kafka/secrets",
+          "Driver": "local",
+          "Mode": "",
+          "RW": true,
+          "Propagation": ""
+        },
+        {
+          "Type": "volume",
+          "Name": "a57d5f26f06611fc81084619568e49719a4a32e99d1b59517f6164d6cc03846e",
+          "Source": "/var/lib/docker/volumes/a57d5f26f06611fc81084619568e49719a4a32e99d1b59517f6164d6cc03846e/_data",
+          "Destination": "/mnt/shared/config",
+          "Driver": "local",
+          "Mode": "",
+          "RW": true,
+          "Propagation": ""
+        },
+        {
+          "Type": "volume",
+          "Name": "99beb4dc7243483fd3ff064c8982456d4bfbfb1d1347581b6a88d22ab9c96da7",
+          "Source": "/var/lib/docker/volumes/99beb4dc7243483fd3ff064c8982456d4bfbfb1d1347581b6a88d22ab9c96da7/_data",
+          "Destination": "/var/lib/kafka/data",
+          "Driver": "local",
+          "Mode": "",
+          "RW": true,
+          "Propagation": ""
+        }
+      ],
+      "ports": {
+        "9092/tcp": [
+          {
+            "HostIp": "",
+            "HostPort": "9092"
+          }
+        ]
+      }
+    },
+    {
+      "name": "faktory_server",
+      "id": "acd6840d37c11c5e979ae7bfe1d67ed7008fa59b542358d5ff7e956703bda9bc",
+      "image": "contribsys/faktory:latest",
+      "image_id": "sha256:37e502a3b947e030f1688d59f69e2f8ec83165ca4d0594f69cfe1a4f767d8161",
+      "started_at": "2026-11-02T02:23:02.770397449Z",
+      "status": "running",
+      "env_hash": "1c24775fadba31bd348800df91e54a100f1b2e4936bd629e5a36e89c5c8f51f7",
+      "command_hash": "908ff82f0a89accb6328e93cec0a0ad6ecfc0e192e70f329c3f5ff5011ec8e07",
+      "mounts": [
+        {
+          "Type": "volume",
+          "Name": "faktory_faktory_data",
+          "Source": "/var/lib/docker/volumes/faktory_faktory_data/_data",
+          "Destination": "/var/lib/faktory",
+          "Driver": "local",
+          "Mode": "rw",
+          "RW": true,
+          "Propagation": ""
+        }
+      ],
+      "ports": {
+        "7419/tcp": [
+          {
+            "HostIp": "",
+            "HostPort": "7419"
+          }
+        ],
+        "7420/tcp": [
+          {
+            "HostIp": "",
+            "HostPort": "7420"
+          }
+        ]
+      }
+    }
+  ],
+  "target_image": {
+    "tag": "video-ai-inference:ai-v1.5-000e7c1",
+    "id": "sha256:271bb4bab6f4c0e8c57b8a6562adaf71e176a5a90eef2ec9edef51bd8d0c058f",
+    "revision": "000e7c1247090bbb8aba3415d47342c783699717"
+  },
+  "active_jobs": 0
+}

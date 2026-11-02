@@ -1,9 +1,9 @@
 # Explicit Docker AI deployment requested by user; source/weights remain Claude-owned.
-# Consume Claude's prebuilt, parity-verified image (HC-16); do not rebuild it.
+# Consume Claude's prebuilt, parity-verified release #6 image (HC-18); do not rebuild it.
 # Official AI runtime: this container, internal port only (HC-16).
 services:
   inference-service:
-    image: video-ai-inference:ai-v1.4-62b7e05
+    image: video-ai-inference:ai-v1.5-000e7c1
     restart: unless-stopped
     command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001"]
     environment:

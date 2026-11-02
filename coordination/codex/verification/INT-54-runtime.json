@@ -1,0 +1,51 @@
+{
+  "health": {
+    "status": "ok",
+    "gpu_vram_used": 0.0,
+    "gpu_util": 0.0,
+    "models_loaded": [
+      "asr_ctc",
+      "highlight_fusion",
+      "minigpt",
+      "siamese",
+      "two_tower",
+      "vit"
+    ],
+    "degraded": [],
+    "dependencies": {
+      "recommendation_index": "missing_collection",
+      "visual_index": "ok"
+    },
+    "queue_depth": 0,
+    "device": "cpu",
+    "stub_mode": false,
+    "load_error": null
+  },
+  "deprecated": {
+    "vision": true,
+    "asr": true,
+    "search": true,
+    "recommendation": true
+  },
+  "v2_paths": [
+    "/v2/vision/completions",
+    "/v2/search/embeddings",
+    "/v2/asr/completions",
+    "/v2/recommendation/embeddings"
+  ],
+  "gateway_status": 200,
+  "checked_at": "2026-11-02T03:33:42.383045+00:00",
+  "image": "video-ai-inference:ai-v1.5-000e7c1",
+  "image_id": "sha256:271bb4bab6f4c0e8c57b8a6562adaf71e176a5a90eef2ec9edef51bd8d0c058f",
+  "revision": "000e7c1247090bbb8aba3415d47342c783699717",
+  "container_id": "036cc8c4a304bb0a2189d2aa65b0d0d15bf40bf7fc5f764114a5023dc31ecad3",
+  "docker_health": "healthy",
+  "checkpoint_mount": {
+    "Type": "bind",
+    "Source": "E:/traning_ai/ai-core/checkpoints",
+    "Destination": "/srv/ai-core/checkpoints",
+    "Mode": "",
+    "RW": false,
+    "Propagation": "rprivate"
+  }
+}

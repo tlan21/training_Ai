@@ -1,0 +1,25 @@
+{
+  "image": "video-ai-inference:ai-v1.5-000e7c1",
+  "build_absent": true,
+  "published_ports": false,
+  "environment_keys_preserved": [
+    "AI_SERVICE_KEY",
+    "CHECKPOINT_DIR",
+    "FORCE_STUB",
+    "INFER_DEVICE",
+    "MILVUS_HOST",
+    "MILVUS_PORT",
+    "MINIO_ACCESS_KEY",
+    "MINIO_ENDPOINT",
+    "MINIO_SECRET_KEY",
+    "PYTHONDONTWRITEBYTECODE"
+  ],
+  "checkpoint_mount": {
+    "type": "bind",
+    "source": "E:/traning_ai/ai-core/checkpoints",
+    "target": "/srv/ai-core/checkpoints",
+    "read_only": true,
+    "bind": {}
+  },
+  "command_preserved": true
+}
