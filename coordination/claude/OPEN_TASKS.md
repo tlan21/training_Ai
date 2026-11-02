@@ -69,7 +69,7 @@ Các hạng mục trên là một batch nghiệm thu liên quan, không phải b
 | Check | Task | Status | Việc còn lại |
 |---|---|---|---|
 | [ ] | INT-04 | PARTIAL | Đối chiếu controls/player và phần contract/UI còn trong scope; nguồn phát/functional playback đã PASS, không coi API gốc là chưa triển khai. |
-| [ ] | INT-05 | PARTIAL | Full CMS Design Parity theoStitch/CẮT-list ở390/1440, các state/widget và phần cuối INT-50. |
+| [ ] | INT-05 | PARTIAL (Claude 2026-11-02: lượt sửa parity 8 màn đã triển khai CMS int05, live 11/11 + layout PASS; còn 8 nhóm chờ chủ dự án quyết + vài mục L) — `coordination/claude/evidence/INT-05_2026-11-02/README.md` | Full CMS Design Parity theoStitch/CẮT-list ở390/1440, các state/widget và phần cuối INT-50. |
 | [ ] | INT-06 | PARTIAL | Full Client Design Parity: cùng dữ liệu deterministic/current/reference, đo sai lệch cụ thể trước khi sửa. Các scoped feed/discovery fixes đã DONE. |
 | [ ] | INT-14 | PARTIAL | Phần presentation/fullClientparity theoINT-06; popularity/pagination/metadata/transport đã có bằng chứng, không viết lại ranking/pagination. |
 | [x] | INT-38 | DONE (Claude 2026-11-02: heatmap 'Ngưỡng AI > 51%' live 1440+390; thiết kế chung ⇒ INT-05) — `coordination/claude/evidence/INT-50_2026-11-02/README.md` | Reportedthreshold51 đã chứng minh qua actualnewupload/CMSAPI trongINT-57; còn đối chiếu actualCMSheatmap/design cùngINT-50, không còn chờ image/releaseAI. |
