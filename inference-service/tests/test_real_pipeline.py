@@ -60,9 +60,9 @@ def test_ingest_aligns_actual_frames_and_audio(tmp_path, monkeypatch):
     spec = importlib.util.spec_from_file_location("ingest", script)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    duration = module.preprocess(root / "e2e/fixtures/video.mp4", tmp_path)
+    meta = module.preprocess(root / "e2e/fixtures/video.mp4", tmp_path)   # Codex ingest now returns {duration, width, height, fps}
     features = json.loads((tmp_path / "audio_features.json").read_text())
-    assert duration == 8
+    assert meta["duration"] == 8
     assert len(list(tmp_path.glob("*.jpg"))) == len(features) == 8
     assert all(len(row) == 64 for row in features)
     assert (tmp_path / "audio.wav").stat().st_size > 16000
