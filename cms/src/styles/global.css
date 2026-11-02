@@ -697,3 +697,7 @@ body:has(.settings-page) .account-row strong { font-size: 16px; font-weight: 400
 .categories-page .breadcrumb span { color: var(--outline); }
 .category-add { box-shadow: 0 1px 2px 0 #0000000d; }
 @media (max-width: 1023px) { .categories-grid { grid-template-columns: 1fr; } .categories-grid > :first-child, .categories-grid > :last-child { grid-column: auto; } }
+.videos-page .status-chips { flex-wrap: nowrap; }
+.videos-page .filters label, .videos-page .status-chips button { white-space: nowrap; }
+.videos-page .filters select.input { min-width: 140px; }
+.status-text, .kind-cell span { white-space: nowrap; }
