@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useSystemHealth } from "../hooks/useAuth";
+import { useAuthStore } from "../stores/authStore";
 import { useCmsJobs, useClips } from "../hooks/useCms";
 import { Icon } from "../components/common/Icon";
 import { Thumbnail } from "../components/common/Media";
@@ -18,6 +19,7 @@ const [previousMonth, setPreviousMonth] = useState(false);
  const metrics=health.data?.metrics;
   const jobs = useCmsJobs();
   const clips = useClips();
+  const username = useAuthStore((state) => state.user?.username) ?? "Admin";
   const toast = useToast();
   const download = async (id: string) => {
     try { const result = await apiClient.get<components["schemas"]["Clip"]>(`/api/clips/${id}`); if (result.data.playback_url) window.open(result.data.playback_url, "_blank", "noopener"); else toast.err("Chưa có nguồn phát clip"); } catch (error) { toast.err(errorMessage(error)); }
@@ -32,7 +34,7 @@ const [previousMonth, setPreviousMonth] = useState(false);
     const url = URL.createObjectURL(blob); const link = document.createElement("a"); link.href = url; link.download = "bao-cao-cms.json"; link.click(); URL.revokeObjectURL(url);
   };
   return <div className="dashboard-page">
-    <div className="page-header"><div><h2>Tổng quan hệ thống</h2><p>Chào mừng quay trở lại. Đây là tình trạng xử lý của hệ thống.</p></div><div className="page-actions"><button className="btn-secondary" onClick={report} disabled={!metrics || !jobs.data}>Tải báo cáo</button><Link className="btn-primary" to="/queue">Tải video mới</Link></div></div>
+    <div className="page-header"><div><h2>Tổng quan hệ thống</h2><p>Chào mừng quay trở lại, {username}. Đây là hiệu suất xử lý hôm nay.</p></div><div className="page-actions"><button className="btn-secondary" onClick={report} disabled={!metrics || !jobs.data}>Tải báo cáo</button><Link className="btn-primary" to="/queue">Tải video mới</Link></div></div>
     <div className="stat-grid">
       <Stat label="Tổng video xử lý" icon="video_file" value={metrics?.total_videos ?? "—"} hint={`${metrics?.processed_videos ?? "—"} video đã xử lý · Không gồm đã xóa`} />
       <Stat label="Tỷ lệ job thành công" hintIcon="check_circle" icon="auto_awesome" value={metrics?.success_rate == null ? "—" : `${metrics.success_rate.toFixed(1)}%`} hint="Hoàn tất / (hoàn tất + lỗi)" />

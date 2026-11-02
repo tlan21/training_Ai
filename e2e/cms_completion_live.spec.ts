@@ -250,7 +250,13 @@ test('INT-42 invalid ingest, error log, retry keeps snapshot, cancel, deleted-so
     note('canceled job', { error_log: job.error_log, stage: job.current_stage });
   });
   await step('deleted source: retry rejected 409, hidden from default list', async () => {
-    expect((await api.delete(`/api/cms/videos/${invalid.video.id}`, { headers: auth })).status()).toBe(204);
+    // Queue row delete (owner decision 2026-11-02: Stitch red delete on non-completed rows; disabled while the job is active)
+    await page.goto(`${cms}/queue?video_id=${invalid.video.id}`);
+    const row = page.locator('.queue-table tbody tr').filter({ hasText: invalid.video.id });
+    const deleted = page.waitForResponse(r => r.url().includes(`/api/cms/videos/${invalid.video.id}`) && r.request().method() === 'DELETE');
+    page.once('dialog', d => void d.accept());
+    await row.getByRole('button', { name: 'Xóa video' }).click();
+    expect((await deleted).status()).toBe(204); await toast(page, 'Đã xóa video');
     const retry = (await api.post(`/api/cms/jobs/${invalid.job.id}/retry`, { headers: auth })).status();
     note('retry after delete', retry);
     expect([404, 409]).toContain(retry);
