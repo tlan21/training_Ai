@@ -88,7 +88,7 @@ Các bằng chứng runtime ngày 2026-10-27…30 là VERIFIED-HIST. Docker Engi
 | INT-50 | Complete eight operational CMS screens | BLOCKED — Docker now UP; previously rejected real-QA action still awaits explicit approval |
 | INT-51 | Authorized Git publication and master fast-forward | DONE — previous local/remote publication completed at a2e1b21; verification/INT-51.md |
 | INT-52 | HC-16 verified inference image rollout | DONE — image ai-v1.4-62b7e05, real6/stubfalse/threshold51; source103/checkpoint10 match;15othercontainers unchanged;537f6b1/328de98 |
-| INT-53 | Merge HC-16 checkpoint into local master | REVIEW — local gates and fresh actual HTTP PASS; local fast-forward verification next, verification/INT-53.md |
+| INT-53 | Merge HC-16 checkpoint into local master | DONE — all gates/current scoped HTTP PASS; local master=HEAD97687de verified, completion metadata follows; no remote push, verification/INT-53.md |
 
 ## 4. AI API
 

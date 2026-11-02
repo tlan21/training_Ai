@@ -1,6 +1,6 @@
 # INT-53 — Merge HC-16 checkpoint into local master (2026-11-02)
 
-Owner CODEX. User explicitly requested `merge vào master` after INT-52 completion. This release advances the local integration branch **master**, leaves codex/integration checked out, and performs no remote push or runtime recreation.
+Owner CODEX. Status DONE. User explicitly requested `merge vào master` after INT-52 completion. This release advances the local integration branch **master**, leaves codex/integration checked out, and performs no remote push or runtime recreation.
 
 ## Startup and scope
 
@@ -29,10 +29,22 @@ Default Go tests do not substitute for opt-in live PG/Mongo/inference E2E. Exist
 
 ## Local master update
 
-After passing gates, commit exact release metadata/evidence paths, then `git push . HEAD:master` (normal fast-forward only). Refusal means stop and merge new master before any retry; never force. Verify master=HEAD, branch still codex/integration and worktree clean. Completion result is recorded after it actually succeeds. No Git remote command/push is part of this local merge request.
+Release commit **97687de5d5e9adf4ff48c0e745532c6cf40fba13** (`chore(codex-progress): release HC-16 checkpoint to master`) created from exact release metadata/evidence paths. Commands/results:
+
+```text
+git merge-base --is-ancestor master HEAD        # exit0
+git push . HEAD:master                         # exit0
+  a2e1b21..97687de HEAD -> master
+git rev-parse HEAD master
+  97687de5d5e9adf4ff48c0e745532c6cf40fba13
+  97687de5d5e9adf4ff48c0e745532c6cf40fba13
+git status --short                            # empty
+```
+
+This documentation-only completion commit records the achieved merge, is forwarded normally to local master, and final HEAD/master equality, clean worktree, pinned image in master and unchanged application/AI source are verified again in tool output. No source changes occurred after the gates. No Git remote command/push is part of this local merge request; remote refs are not claimed updated.
 
 Lane: codex
 Changed: shared release status/tagged plan/sync log; owned tracker/session/handoff/evidence
-Verified: Go/CMS/Client release gates and current real AI health/threshold/auth/gateway PASS
+Verified: Go/CMS/Client gates +current real AI health/threshold/auth/gateway +local master fast-forward/equality/clean state PASS
 Contract touched: no (v1.4 published/v2DRAFT retained; HC-16 deployment consumed)
-Next safe task: finish local master verification; INT-50 remains subject to explicit real-QA approval
+Next safe task: INT-50 remains subject to explicit real-QA approval; HC-17 separate follow-up, no outstanding local merge task
