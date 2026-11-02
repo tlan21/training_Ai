@@ -442,6 +442,10 @@ job queue) sở hữu toàn bộ dữ liệu. AI phía Claude đã xong (REL tr�
 - Gate: inference 64/6 skip (compat v1.2 + v1.3 + v1.5: chỉ đúng 4 path + schema riêng bị xóa, cả 4 đều deprecated ở v1.5); image `video-ai-inference:ai-v3.0-48735ff` chạy KHÔNG mạng compose,
   KHÔNG env MinIO/Milvus: smoke 6/6 + 401, 4 path cũ 404, parity PASS (101 file nguồn, 6 checkpoint, highlight 4 video lệch 0.0).
 
+## 2026-11-02 REL #7 — làn AI lên `master` (AI-API **v3.0**, AI-23)
+
+- Gồm REL AI-API v3.0 bên trên. Gate: ai-core 319; inference 64/6 (compat v1.2+v1.3+v1.5); intake 9; image smoke 6/6 + 401, parity PASS. HC-19 có hiệu lực từ commit này.
+
 ## 2026-11-02 HC-19 — Triển khai image v3.0 sau release (file Codex — Claude không sửa, không `compose up`)
 
 - Image `video-ai-inference:ai-v3.0-48735ff`, id `sha256:f62671e78fd8bb4ba9fad3fb743ea4ab3aeb76723e76abd821afe0c336837b81`, label revision `48735ff…` (đã có trong Docker local).
