@@ -7,12 +7,14 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 ## Tổng quan
 
 ### INT-56 — Release and push HC-17/HC-18 integration checkpoint
-- Owner: CODEX | Status: REVIEW (2026-11-02; all release gates/current parity provenance PASS, publication next)
+- Owner: CODEX | Status: DONE (2026-11-02; local master and both remote target refs verified)
 - Depends on: INT-54/55 DONE; master479f5d5 received; existing real parity and HIST v2 E2E; normal local/remote fast-forward ancestry.
 - Acceptance: mandatory Go/CMS/Client release gates PASS; current AI health and retained full parity/readiness evidence verified; synchronize shared Codex status/tagged master-plan/sync log; commit, fast-forward master and atomically push master/integration; assert remote refs=HEAD and clean worktree. No new app/AI/contract/runtime/data operation.
 - Changed files: coordination/PROJECT_STATUS.md; .claude/plan/00_master_plan.md; coordination/codex/{TASKS.md,SESSION.md,HANDOFF_OUT.md,verification/INT-56*}.
 - Evidence/Commits: start121e59e; verification/INT-56.md,3gate logs/currentliveJSON. All Go/CMS/Client gates PASS; current6real/stubfalse/exactimage+10filesmatchsame4videoparity0.0. Local/remoteancestry PASS, sharedstatus/plansync12 prepared; source3e63056/proofcb86e0d/closurea9f1bd9 unchanged.
-- Next action: commit gated metadata/evidence, localffmaster +atomicoriginpush/assertrefs, then record actual completion. Preserve unrelated branches and incomplete CMS gates.
+- Publication: **f60d7a2e92e9e227a87b2f1ec84f87f0377ed919** release committed, local master479f5d5→f60d7a2 and atomic origin/master479f5d5→f60d7a2/originintegrationf1a8a29→f60d7a2 PASS; both targetremoteSHAs asserted equalHEAD, otherbranchesunchanged/cleantree. This documentation-only completion commit follows normally to alltargetrefs.
+- Checkpoint: Lane codex / Changed release metadata and logs / Verified all gates/currentimage+checkpoint parity/localremote refs / Contract touched no / Next separateCMSQAapproval orClaudeD24step3.
+- Next action: no pending merge/push after final completion checkpoint verification; preserve unrelated branches and incomplete CMS gates.
 
 ### INT-54 — HC-18 consume release #6 image and verify full parity
 - Owner: CODEX | Status: DONE (2026-11-02; selected rollout and full official parity PASS)

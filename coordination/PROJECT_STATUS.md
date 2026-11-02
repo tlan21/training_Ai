@@ -93,7 +93,7 @@ Các bằng chứng runtime ngày 2026-10-27…30 là VERIFIED-HIST. INT-54 tri�
 | INT-53 | Merge HC-16 checkpoint into local master | DONE — local merge then explicitly authorized origin publication f1a8a29 verified; verification/INT-53.md |
 | INT-54 | HC-18 release#6 inference image/full parity | DONE —3e63056/3807519; exactprebuilt image,4realfeaturevideos diff0.0,103source/10checkpointmatch,15othercontainers unchanged |
 | INT-55 | HC-17 current gateway/ingest deprecated-path confirmation | DONE —cb86e0d/a9f1bd9; deployedbinary/source/callchain/log evidence +Go gates; no application code edit required |
-| INT-56 | Merge/push HC-17/18 checkpoint | IN_PROGRESS — release gates and local/remote publication evidence in verification/INT-56.md |
+| INT-56 | Merge/push HC-17/18 checkpoint | DONE — all gates/current parity provenance PASS; local/remote master+integration f60d7a2 verified, completion metadata follows; verification/INT-56.md |
 
 ## 4. AI API
 

@@ -1,6 +1,6 @@
 # INT-56 — Publish HC-17/HC-18 to master and origin (2026-11-02)
 
-Owner CODEX. User explicitly requested push and merge master after the prior push request was interrupted. Startup audit found no partial uncommitted operation: clean codex/integration HEADA9f1bd9, master479f5d5, five owned commits pending local release. `git merge master` already up to date. Task start **121e59e**.
+Owner CODEX. Status DONE. User explicitly requested push and merge master after the prior push request was interrupted. Startup audit found no partial uncommitted operation: clean codex/integration HEADA9f1bd9, master479f5d5, five owned commits pending local release. `git merge master` already up to date. Task start **121e59e**, release **f60d7a2e92e9e227a87b2f1ec84f87f0377ed919**.
 
 ## Scope and remote preflight
 
@@ -26,10 +26,27 @@ Changed matrix readiness rows use **valid VERIFIED-HIST actual E2E INT-28/31 (20
 
 ## Publication
 
-After gated metadata commit, normal `git push . HEAD:master` fast-forward, then `git push --atomic origin master:master codex/integration:codex/integration`. Non-fast-forward rejection stops the push for merge/recheck; no force/history rewrite/default-branch change. Verify localmaster=HEAD and both target remote SHAs=HEAD, unrelated branches unchanged, clean tree. Actual outcomes are appended only after success.
+Executed after gated release commit f60d7a2e92e9e227a87b2f1ec84f87f0377ed919:
+
+```text
+git push . HEAD:master
+  479f5d5..f60d7a2 HEAD -> master
+git push --atomic origin master:master codex/integration:codex/integration
+  f1a8a29..f60d7a2 codex/integration -> codex/integration
+  479f5d5..f60d7a2 master -> master
+git ls-remote --heads origin
+  f60d7a2e92e9e227a87b2f1ec84f87f0377ed919 refs/heads/master
+  f60d7a2e92e9e227a87b2f1ec84f87f0377ed919 refs/heads/codex/integration
+  26c2346d61b8585c6c2627ef232fa0eb6209002a refs/heads/claude/ai-core
+  15976b3761a3c29f04fc83f9a522541fe0b015f3 refs/heads/phase1-ai-core
+HC17_HC18_PUBLICATION_VERIFIED
+git status --short  # empty
+```
+
+Both target remote refs asserted equalHEAD, unrelated branch SHAs unchanged; no force/history rewrite/default-branch change. This documentation-only completion commit records actual success, is forwarded normally to local master and both origin targets, followed by final equality/clean-state/unchanged-source assertions in tool output. Functional gates are not repeated for the documentation-only completion.
 
 Lane: codex
 Changed: release shared Codex metadata/tagged plan/sync log +owned tracker/session/handoff/logs
-Verified: all mandatory release gates, current real health/exact image+checkpoint parity provenance PASS
+Verified: all mandatory release gates, current real health/exact image+checkpoint parity provenance, localfastforward/atomicpush/remoteassertions PASS
 Contract touched: no (publishedv1.5/v2API_READY consumed, recommendationDRAFT retained)
-Next safe task: finish authorized master/origin publication; separate approvedCMSQA or Claude D24step3
+Next safe task: separate approvedCMSQA or Claude D24step3; no outstanding master/origin publication work
