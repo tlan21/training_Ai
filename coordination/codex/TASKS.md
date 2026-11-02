@@ -6,6 +6,15 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 
 ## Tổng quan
 
+### INT-59 — User-authorized transfer of remaining application work to Claude
+- Owner: CODEX | Status: IN_PROGRESS (2026-11-02; documentation handoff only)
+- Depends on: user explicitly assigns remaining work to Claude; INT-58 DONE and 32-task open inventory.
+- Acceptance: Claude-side open checklist contains exactly the existing 32 non-DONE IDs with preserved acceptance/status/dependencies; explicit sole-writer transfer prevents concurrent application changes; committed HO-05 gives pickup commands, current runtime/evidence and limits. No claim of Claude ACK or completed product QA.
+- Changed files: coordination/README.md, PROJECT_STATUS.md; new coordination/claude/OPEN_TASKS.md under explicit user instruction; owned TASKS/SESSION/OPEN_TASKS/HANDOFF and verification/INT-59.md.
+- Evidence/Commits: pending checklist and ownership consistency checks; startup branch correct, master has no incoming commits and tree was clean.
+- Checkpoint: Lane codex / Changed handoff preparation / Verified startup and source inventory / Contract touched no / Next HO-05 checklist.
+- Next action: commit assignment, verify exact ID/status inventory, freeze delegated implementation and await Claude ACK.
+
 ### INT-58 — Publish HC-19 checkpoint and current open-task checklist
 - Owner: CODEX | Status: DONE (2026-11-02; complete checklist and local/remote publication verified)
 - Depends on: INT-57 DONE, master8e6fd39 received; cleanHEAD8a37ab6; existing current actual HC-19 E2E/parity; local/remote fast-forward ancestry.
