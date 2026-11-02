@@ -3,7 +3,7 @@
 **Chỉ sửa trong release commit theo `coordination/README.md` mục 6** (user ra lệnh release cho đúng 1 làn) **hoặc khi user yêu cầu trực tiếp**.
 Ngoài ra: đọc trạng thái sống ở `coordination/claude/TASKS.md` và `coordination/codex/TASKS.md` (qua `git show`).
 
-Cập nhật lần cuối: 2026-11-02 · **Codex publication checkpoint (INT-51, user yêu cầu push/merge)**. Bao gồm release #5 của Claude; trạng thái AI bên dưới giữ theo release đó. INT-50 chưa nghiệm thu E2E thật, không công bố hoàn tất sản phẩm.
+Cập nhật lần cuối: 2026-11-02 · **Codex HC-16 master release (INT-53, user yêu cầu merge)**. Bao gồm release #5 của Claude và runtime image đã xác minh dưới INT-52; trạng thái AI API trên master giữ theo release đã nhận. INT-50 chưa nghiệm thu E2E thật, không công bố hoàn tất sản phẩm.
 
 ## 1. Cổng nghiệm thu AI (AI-GATE — master plan §0)
 
@@ -39,7 +39,7 @@ AI-GATE **không chặn** làn Codex (master §0); chỉ chặn nghiệm thu cu�
 ## 3. Làn Codex (Tích hợp)
 
 Đồng bộ từ bảng tổng quan và từng task trong `coordination/codex/TASKS.md` ngày 2026-11-02 (nguồn sống là file của Codex).
-Các bằng chứng runtime ngày 2026-10-27…30 là VERIFIED-HIST; Docker Engine chưa hoạt động trong phiên 2026-11-02 nên chưa kiểm lại runtime/E2E thật. Không nâng trạng thái AI v2 DRAFT hoặc các task PARTIAL/BLOCKED chỉ vì push code.
+Các bằng chứng runtime ngày 2026-10-27…30 là VERIFIED-HIST. Docker Engine đã hoạt động lại; INT-52 đã triển khai đúng image HC-16, INT-53 kiểm lại health/threshold/auth HTTP thật. Full CMS E2E mới vẫn chờ explicit approval cho action trước đó bị policy chặn. Không nâng trạng thái AI v2 DRAFT hoặc các task PARTIAL/BLOCKED chỉ vì merge code.
 
 | ID | Việc | Status |
 |---|---|---|
@@ -78,15 +78,17 @@ Các bằng chứng runtime ngày 2026-10-27…30 là VERIFIED-HIST; Docker Engi
 | INT-34 / INT-35 | Compilation contract / one combined highlight video | DONE — real FFmpeg/PG/API/UI HIST |
 | INT-36 | Discovery frame sizing | DONE — scoped layout fix |
 | INT-37 | Reported AI threshold product contract | DONE |
-| INT-38 | Truthful threshold/zero proposals/reference scope | REVIEW — legacy live HIST; new AI runtime feature parity pending HO-04 |
+| INT-38 | Truthful threshold/zero proposals/reference scope | REVIEW — runtime HO-04 resolved INT-52; new-upload persistence/CMS threshold acceptance still pending |
 | INT-39 | Precise single-range clip cutting | DONE — real FFmpeg HIST; full sentence snapping remains separate |
 | INT-40 / INT-45 | All-screen CMS audit / dedicated Settings audit | DONE — audit only |
 | INT-41 / INT-42 | Execute saved AI flags / consistent failure-cancel-retry state | PARTIAL — source/tests; final real acceptance pending |
 | INT-43 / INT-44 | Global library search / referenced-category conflict | PARTIAL — source/tests; final real acceptance pending |
 | INT-46 / INT-48 | Simplified CMS account contract / operational public API 0.8.0 | DONE — generated types/schema checks |
 | INT-47 / INT-49 | CMS account cleanup / real storage, read models, metrics | PARTIAL — source/adapters and historical rollout; final real acceptance pending |
-| INT-50 | Complete eight operational CMS screens | BLOCKED — Docker Engine unavailable; previously rejected real-QA action awaits explicit approval |
-| INT-51 | Authorized Git publication and master fast-forward | DONE — local/remote master + integration verified92c2335; completion metadata follows, verification/INT-51.md |
+| INT-50 | Complete eight operational CMS screens | BLOCKED — Docker now UP; previously rejected real-QA action still awaits explicit approval |
+| INT-51 | Authorized Git publication and master fast-forward | DONE — previous local/remote publication completed at a2e1b21; verification/INT-51.md |
+| INT-52 | HC-16 verified inference image rollout | DONE — image ai-v1.4-62b7e05, real6/stubfalse/threshold51; source103/checkpoint10 match;15othercontainers unchanged;537f6b1/328de98 |
+| INT-53 | Merge HC-16 checkpoint into local master | REVIEW — local gates and fresh actual HTTP PASS; local fast-forward verification next, verification/INT-53.md |
 
 ## 4. AI API
 
@@ -146,3 +148,4 @@ khi người duyệt từng mục (`HUMAN_VERIFIED`) và provenance ghi rõ ngu�
 | 7 | 2026-10-28 | claude — **release #4** | `fee83b2 →` commit release này (ff-only) | AI-02a/b, AI-03a/b/c, AI-04 (PRELIMINARY_T4), AI-12 phần độc lập; D22 | HC-08…HC-11, RE:INT-15, RE:HO-03 | ai-core 314; inference 55/7 skip (compat v1.2 PASS); smoke :8001 6/6 + 401; tool tests 64; 6 ckpt SHA = contract; AI-API v1.3 không đổi |
 | 8 | 2026-10-30 | claude — **release #5** | `26c2346 →` commit release này (ff-only) | AI-14, AI-16…AI-21 DONE; AI-15 BLOCKED ⇐ RE:HC-13; AI-08 đợt #2; D24–D26; AI-API v1.4 + v2.0 DRAFT | mở HC-13, HC-14, HC-15 | ai-core 319; inference 81/10 skip (compat v1.2+v1.3); intake 9; smoke :8001 9/9 (v1+v2, media thật) + 401; 6 ckpt SHA = contract |
 | 9 | 2026-11-02 | codex — **INT-51 publication checkpoint, user yêu cầu push/merge** | `62b7e05 →` checkpoint commit này (ff-only; kết quả refs tại verification/INT-51.md) | đồng bộ trạng thái INT-28…50; INT-50 vẫn BLOCKED, INT-05/06 PARTIAL; không nâng v2 DRAFT | giữ HO-04/runtime parity, HC-13 API_READY gate; không sửa làn AI | VERIFIED-NOW Go vet/test/build + CMS types/build + Client types/lint/build PASS; real E2E VERIFIED-HIST theo reports; fresh E2E NOT RUN vì Docker/QA blocker |
+| 10 | 2026-11-02 | codex — **INT-53 HC-16 master release, user yêu cầu merge** | `a2e1b21 →` release checkpoint này (local ff-only; kết quả refs tại verification/INT-53.md) | INT-52 DONE; runtime HO-04 resolved; INT-50 vẫn BLOCKED chỉ còn real-QA approval, INT-05/06 PARTIAL | RE:HC-16 released; HC-17 mới chỉ ghi nhận trên branch Claude, chưa triển khai | VERIFIED-NOW Go vet/test/build + CMS types/build + Client types/lint/build PASS; actual AI6/stubfalse, highlight200/threshold51, auth401/gateway200; no full CMS E2E or v2 promotion, no remote push |

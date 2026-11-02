@@ -1,0 +1,38 @@
+{
+  "health_status": 200,
+  "health": {
+    "status": "ok",
+    "gpu_vram_used": 0.0,
+    "gpu_util": 0.0,
+    "models_loaded": [
+      "asr_ctc",
+      "highlight_fusion",
+      "minigpt",
+      "siamese",
+      "two_tower",
+      "vit"
+    ],
+    "degraded": [],
+    "dependencies": {
+      "recommendation_index": "missing_collection",
+      "visual_index": "ok"
+    },
+    "queue_depth": 0,
+    "device": "cpu",
+    "stub_mode": false,
+    "load_error": null
+  },
+  "highlight_status": 200,
+  "clip_threshold": 51.0,
+  "timeline_seconds": 3,
+  "recommended_clips": 0,
+  "missing_bearer_status": 401,
+  "gateway_health_status": 200,
+  "checked_at": "2026-11-02T03:06:34.109105+00:00",
+  "container_id": "11ba8c4e8139b8d68e8c0b87d6edfed69a9a4105d702cc0a34774a6197af9466",
+  "image": "video-ai-inference:ai-v1.4-62b7e05",
+  "image_id": "sha256:53e24af8806570abb38e20b55622e97348ebbc33669f6590a5f319f3c4186254",
+  "checkpoint_read_only": true,
+  "fixture": "published master3sfeatures, diagnostic video_id; HTTP-only, no product record writes",
+  "PASS": true
+}
