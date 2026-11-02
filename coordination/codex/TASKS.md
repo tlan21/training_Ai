@@ -6,6 +6,14 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 
 ## Tổng quan
 
+### INT-57 — HC-19 release #7 compute-only runtime rollout and actual gateway E2E
+- Owner: CODEX | Status: IN_PROGRESS (2026-11-02)
+- Depends on: explicit HC-19 scope authorizes fresh test upload/real gateway search; fetched and received master8e6fd39; prebuilt ai-v3.0-48735ff exactSHAf62671...; current flags bothtrue, natural-speech/query fixtures present.
+- Acceptance: only inference image/env/dependency compose change, no build/pull; recreate only inference-service; preserve existing checkpointRO/othercontainers/originaldata; health6real/stubfalse/dependencies{} +full parity; CMS health compatible; actual freshupload→processed via v2vision/ASR+retainedhighlight/clip_threshold, backendvectors/thumbnail and visualsearch; no runtime calls to4removedpaths; cleanup own test data and record RE:HC-19/evidence/commit. No remote push, old-media reprocess or checkpoint/model/source change.
+- Changed files: docker-compose.inference.yml; backend health regression test only if alreadycompatible; e2e/ai_v2_live.spec.ts for currentDockerCLI/health/threshold evidence; owned TASKS/SESSION/HANDOFF/MATRIX/verificationINT-57*.
+- Evidence/Commits: startup ff36b8a1f→8e6fd39, imageID/revision match; health source needs no formerindexkeys; legacyGohelpers optionalcleanup deferred, no productioncaller per INT-55. Startcommit follows.
+- Next action: preservationbaseline +configguard; selectedAIrecreate/fullparity; focusedhealthtest and actualnewownedgatewayE2E, owncleanup/originalpreservation/logs; commit handoff. Earlier INT50 broadQA/globalflag action remains separately blocked, but this bounded HC-19 actualupload is explicitly authorized now.
+
 ### INT-56 — Release and push HC-17/HC-18 integration checkpoint
 - Owner: CODEX | Status: DONE (2026-11-02; local master and both remote target refs verified)
 - Depends on: INT-54/55 DONE; master479f5d5 received; existing real parity and HIST v2 E2E; normal local/remote fast-forward ancestry.
