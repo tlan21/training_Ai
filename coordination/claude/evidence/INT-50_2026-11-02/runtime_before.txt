@@ -1,0 +1,13 @@
+faktory_server contribsys/faktory:latest acd6840d37c1 Up 6 hours
+video-ai-client-1 video-ai-client:int36-c4de07e 5a6b4536e63d Up 6 hours (healthy)
+video-ai-cms-1 video-ai-cms:int50-74344bb 6f78becfa9fd Up 6 hours (healthy)
+video-ai-etcd-1 quay.io/coreos/etcd:v3.5.14 2a7a3faf4e82 Up 6 hours (healthy)
+video-ai-gateway-1 video-ai-gateway:int50-74344bb e0a090b27e16 Up 6 hours (healthy)
+video-ai-inference-service-1 video-ai-inference:ai-v3.0-48735ff c8f834f33e5d Up 3 hours (healthy)
+video-ai-ingest-worker-1 video-ai-ingest-worker:int23-fa8a382 709433eefc6f Up 6 hours
+video-ai-kafka-1 apache/kafka:3.8.0 8482ecba8ac6 Up 6 hours (healthy)
+video-ai-milvus-1 milvusdb/milvus:v2.4.9 cd7878a1ed75 Up 6 hours (healthy)
+video-ai-minio-1 video-ai-minio 1d4128cbc5c6 Up 6 hours (healthy)
+video-ai-mongo-1 mongo:7 cd1f54c42159 Up 6 hours (healthy)
+video-ai-postgres-1 postgres:16-alpine 0aaae3e5b2db Up 6 hours (healthy)
+video-ai-redis-1 redis:7-alpine 1e8903575c9b Up 6 hours (healthy)
