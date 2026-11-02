@@ -7,12 +7,13 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 ## Tổng quan
 
 ### INT-57 — HC-19 release #7 compute-only runtime rollout and actual gateway E2E
-- Owner: CODEX | Status: IN_PROGRESS (2026-11-02)
+- Owner: CODEX | Status: DONE (2026-11-02; selected rollout/fullparity/actualgatewayE2E/preservation PASS)
 - Depends on: explicit HC-19 scope authorizes fresh test upload/real gateway search; fetched and received master8e6fd39; prebuilt ai-v3.0-48735ff exactSHAf62671...; current flags bothtrue, natural-speech/query fixtures present.
 - Acceptance: only inference image/env/dependency compose change, no build/pull; recreate only inference-service; preserve existing checkpointRO/othercontainers/originaldata; health6real/stubfalse/dependencies{} +full parity; CMS health compatible; actual freshupload→processed via v2vision/ASR+retainedhighlight/clip_threshold, backendvectors/thumbnail and visualsearch; no runtime calls to4removedpaths; cleanup own test data and record RE:HC-19/evidence/commit. No remote push, old-media reprocess or checkpoint/model/source change.
 - Changed files: docker-compose.inference.yml; backend health regression test only if alreadycompatible; e2e/ai_v2_live.spec.ts for currentDockerCLI/health/threshold evidence; owned TASKS/SESSION/HANDOFF/MATRIX/verificationINT-57*.
-- Evidence/Commits: startup ff36b8a1f→8e6fd39, imageID/revision match; health source needs no formerindexkeys; legacyGohelpers optionalcleanup deferred, no productioncaller per INT-55. Startcommit follows.
-- Next action: preservationbaseline +configguard; selectedAIrecreate/fullparity; focusedhealthtest and actualnewownedgatewayE2E, owncleanup/originalpreservation/logs; commit handoff. Earlier INT50 broadQA/globalflag action remains separately blocked, but this bounded HC-19 actualupload is explicitly authorized now.
+- Evidence/Commits: startb148b6f, deployment/test/parity **11584c5**; verification/INT-57.md/logs/JSON. Exactimage/6real/deps{}, full4video parity0.0/source101/checkpoint10match, Go+healthregression/E2Etypes PASS. Actualgateway **1PASS16.8s**, ownnewvideo processed/10vectors/3segments/summary204chars/threshold51/top1.99206525; owncleanup and alloriginalPG/Mongo/MinIO/671vectors preserved,15othercontainers unchanged,0removedpathcalls. RE:HC-19/closure in this commit.
+- Checkpoint: Lane codex / Changed inferenceimage/env/dependencies +healthregression/E2Everifier/evidence / Verified fullparity/currentrawupload/backendstorage/search/cleanup/originalpreservation / Contract touched no(public0.8 unchanged, AIv3consumed) / Next separateapprovedCMSQA.
+- Next action: HC-19 complete, no more model/service change needed; optionallegacyGohelpers retained, no productioncalls. Earlier INT50 broadQA/globalflag action remains separately blocked; no old-video reprocess, checkpoint change or remote push.
 
 ### INT-56 — Release and push HC-17/HC-18 integration checkpoint
 - Owner: CODEX | Status: DONE (2026-11-02; local master and both remote target refs verified)
@@ -669,7 +670,7 @@ T2.5, T3.1, T3.2 = PARTIAL.
 - Changed: backend domain/ports/AIHTTP/Mongo/mock/orchestrator/CMS analysis DTO and tests; CMS HighlightPage/SettingsPage; e2e/cms_design.spec.ts; owned schema/subplans/coordination/evidence.
 - Commits: **f709b94** contract; **43e45a1** source. Evidence: native Go vet/test/build PASS, actual Mongo roundtrip51/0/null +cleanup PASS0.07s, CMS types/build/E2Etypes PASS,14focusedUI PASS12.3s +41CMSregression PASS51.4s +4originalStitch references PASS7.0s; actual deployed CMS/API legacy compatibility **2PASS5.3s**. Scoped10pointreview and screenshots inspected.
 - Deployment: only gateway/CMS int38-43e45a1/latest, unchanged gateway environment, live binary SHA verified/health200; rollback tags retained. Other14containers/hostAI state unchanged,106videos/58clips and4original analysis hashes unchanged, jobs0; ownQA21800 stopped/5174closed. No migration/backfill/reprocessing.
-- Next action (updated2026-11-02): publishedv1.4 and current AI runtime parity consumed under INT-52/537f6b1; authenticated service now proves clip_threshold51. Full new-upload backend persistence/CMS heatmap proof belongs to INT-50 after real-QA approval, not an automatic old-video reprocess. Existing product analyses stay unknown until explicitly reprocessed; no blanket DONE/model-quality claim. Settings execution source is INT-41, final real acceptance still pending.
+- Next action (updated2026-11-02): latestAIv3 parity and **actual new-upload stored clip_threshold51/CMSsystemhealth** now proven INT-57/11584c5 +realE2E. Full actual CMSheatmap/design acceptance remains INT-50, separate from this API/storage proof; no oldvideo reprocess. Existing product analyses stay unknown until explicitly reprocessed; no blanketDONE/modelquality claim. Settings execution source INT-41, finalfourpolicy acceptance stillpending.
 
 ### INT-39 — HC-14 precise single-clip cutting
 - Owner: CODEX | Status: DONE (2026-10-30; backend cut precision only, not complete HC-14 sentence snapping)

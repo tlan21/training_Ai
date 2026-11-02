@@ -1,6 +1,6 @@
 # INT-57 — HC-19 compute-only v3.0 runtime + real gateway acceptance
 
-Owner CODEX. IN_PROGRESS, 2026-11-02. Task startb148b6f. User explicitly authorized receiving master8e6fd39, replacing only inference-service with the provided image without build, removing its storage env/dependencies, full parity and actual new-upload/search gateway checks. This is separate from the earlier blocked broad INT-50/global-flag/eight-screen QA action.
+Owner CODEX. DONE, 2026-11-02. Task startb148b6f; deployment/test/parity source **11584c5**; actual E2E/preservation/handoff closure in this commit. User explicitly authorized receiving master8e6fd39, replacing only inference-service with the provided image without build, removing its storage env/dependencies, full parity and actual new-upload/search gateway checks. This is separate from the earlier blocked broad INT-50/global-flag/eight-screen QA action.
 
 Startup: fetched origin, clean codex/integration fast-forward36b8a1f→8e6fd39 (release#7), no incoming Codex source changes. Read current coordination rules/Claude handoff/AI contracts. Existing inference definition is docker-compose.inference.yml, not root; only that service is edited. No manual Claude-file change.
 
@@ -22,12 +22,36 @@ docker compose -p video-ai -f docker-compose.yml -f docker-compose.inference.yml
 
 Corrected early verification attempts: baseline initially queried nonexistent interactions table; readonly query failed before any deploy/QA and was fixed to actual user_interactions before baseline capture. Initial immediate health check encountered connection-refused while Docker health=starting; bounded retry then passed, no additional recreation. No falsePASS recorded for those attempts.
 
-## Remaining before DONE
+## Actual real gateway E2E — VERIFIED-NOW
 
-Run actual Playwright newownedupload→processed/v2vision+ASR/retainedhighlight/summary, CMShealth/threshold, backend MinIO+Milvus/search, own publication only as required for search privacy, delete own test video/media/vectors/documents and logout. Then original-data/othercontainer fingerprints and model HTTP path counters must PASS; add RE:HC-19 with evidence+commit. No original-video reprocess/globalflag change/checkpoint change/remote push. Broad CMS full feature/quality acceptance is not implied.
+Ran the existing updated test against current gateway8000 and v3DockerAI; no browser/API response mocks, no new QA server or other service restart:
+
+```text
+E2E_GATEWAY_URL=http://127.0.0.1:8000
+E2E_AI_DOCKER_CONTAINER=video-ai-inference-service-1
+E2E_AI_EXPECT_COMPUTE_ONLY=1
+E2E_AI_V2_VIDEO=E:/traning_ai-codex/backend/.tmp/int28-natural.mp4
+E2E_AI_V2_FRAME=E:/traning_ai-codex/backend/.tmp/int28-query.jpg
+E2E_AI_EVIDENCE_FILE=E:/traning_ai-codex/coordination/codex/verification/INT-57-e2e-counts.json
+node node_modules/@playwright/test/cli.js test e2e/ai_v2_live.spec.ts --output=backend/.tmp/int57-e2e --reporter=list
+```
+
+**1 PASS16.8s**, test15.5s, no retry. Natural-speech10.08s fixture uploaded as new **vid_dmkgihquce5o** → job completed/video processed. Actual CMS/systemhealth200/ai_availabletrue/sixmodels with AIdependencies{}. Categoryca_nhac, **3nonempty ASRsegments**, summary204characters/statusdraft, timeline populated/**clip_threshold51**, **10backend-written vectors** and private thumbnail/raw/clip URLs200.
+
+Own manual3sclip created/reviewed/published only to satisfy real search visibility; visualsearch by fixtureframe returns ownvideo **top1score0.99206525** through /v2/search/embeddings and backendMilvus. Feedmodepopularity. This is a fresh actual upload/persistence/search/cleanup check, not the historical feature-only parity proof and not model-quality acceptance.
+
+## Cleanup, original-data preservation and HTTP paths
+
+- Test deletes only its own newvideo, repeatsDELETE204, verifies ownvectors0, all3ownmediaURLs404 and ownMongoanalysis empty; own auth session logged out204. Newmetadata tombstones retained by product design: video vid_dmkgihquce5o, clip clp_dmkgimbbupej and its job; no manual SQL deletion.
+- After counts:120videos/62clips/51users/10categories/120jobs/67interactions/8settings. **Every pre-existing row hash/ID in the seven monitored business/settings tables unchanged**; only ownvideo/clip/job rows added. No setting/role/category/globalflag change.
+- Both Mongo collections return to **5+5original documents**, hashes equal. All original MinIO **97raw/52clip/550thumbnail** key/size/ETags identical, no extra QAobjects. All **671original Milvus vector IDs/values/payloads identical**, no extra QA vector, no drop/reindex.
+- **15other containers unchanged**: IDs/images/start/state/envhash/command/mounts/ports. Only inferenceID replaced; its remaining envhash equals oldenv minus the5explicitly removed storage keys, same command/checkpointbindRO/ports. Activejobs0before/after. No gateway/CMS/Client/worker/database recreation.
+- Actual gateway log since ready: **one each** /v2/vision/completions, /v2/asr/completions, /v1/highlight/completions, /v1/completions and /v2/search/embeddings; /health1. Inference logs include the same plus4official parity highlight calls. **0 calls to all four removed paths** in gateway/ingest/currentAI logs, not merely absence in source. No negative404probes were mixed into that window.
+
+Artifacts: INT-57-e2e-counts.json, -real-e2e.log, -after.json, -runtime-paths.json and the earlier baseline/config/runtime/fullparity/Go logs. Preservation helper reads only; assertions checked. The source changes between tested11584c5 and closure are evidence/coordination only. No full CMS UI/flag-matrix/GPU/load/soak acceptance or checkpoint/oldanalysis reprocess, and no remote push. Optional legacy Go client/mock cleanup deferred because current production has no callers (INT-55 and actualv3E2E prove it); future API removals in tests can be scoped separately.
 
 Lane: codex
 Changed: inference compose image/env/dependency cleanup; CMS health regression; existing realE2E verifier; owned coordination/evidence
-Verified: source/checkpoint/full4video parity, actual compute-only health, Go gates/E2Etypes PASS; new gatewayE2E/preservation pending
+Verified: source101/checkpoint10/full4video parity, compute-only CMS/AIhealth, Go gates/E2Etypes, actualnewgatewayE2E1PASS16.8s, originaldata/15othercontainers/HTTPpath proof PASS
 Contract touched: no (consumes publishedAIv3.0, public0.8.0 unchanged)
-Next safe task: run user-authorized bounded HC-19 real E2E and preservation, then handoff/closure
+Next safe task: separate approved CMS QA or future versioned AI handoff; HC-19 scoped acceptance complete
