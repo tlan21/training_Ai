@@ -86,7 +86,7 @@ Các bằng chứng runtime ngày 2026-10-27…30 là VERIFIED-HIST; Docker Engi
 | INT-46 / INT-48 | Simplified CMS account contract / operational public API 0.8.0 | DONE — generated types/schema checks |
 | INT-47 / INT-49 | CMS account cleanup / real storage, read models, metrics | PARTIAL — source/adapters and historical rollout; final real acceptance pending |
 | INT-50 | Complete eight operational CMS screens | BLOCKED — Docker Engine unavailable; previously rejected real-QA action awaits explicit approval |
-| INT-51 | Authorized Git publication and master fast-forward | REVIEW — all local gates PASS; publication verification next (verification/INT-51.md) |
+| INT-51 | Authorized Git publication and master fast-forward | DONE — local/remote master + integration verified92c2335; completion metadata follows, verification/INT-51.md |
 
 ## 4. AI API
 

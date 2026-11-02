@@ -7,13 +7,14 @@ Claude chỉ đọc (`git show codex/integration:coordination/codex/TASKS.md`).
 ## Tổng quan
 
 ### INT-51 — Publish the integration checkpoint and fast-forward master
-- Owner: CODEX | Status: REVIEW (2026-11-02; release gates PASS, normal fast-forward/push next)
+- Owner: CODEX | Status: DONE (2026-11-02; release gates PASS, local/remote master and integration verified)
 - Depends on: master release #5 received at ab9e4d9; clean codex/integration; existing historical real integration evidence; normal remote fast-forward access.
 - Acceptance: rerun Go vet/test/build, CMS types/build, Client types/lint/build; inspect current refs and release diff; sync shared Codex status/master-plan entries without promoting unfinished work; fast-forward local master and push integration/master without force; verify remote SHAs. No runtime deployment, AI edits, new live-data QA or branch-default changes.
 - Changed files: coordination/codex/{TASKS.md,SESSION.md,HANDOFF_OUT.md,verification/INT-51*}; coordination/PROJECT_STATUS.md; .claude/plan/00_master_plan.md (release-authorized shared updates only).
 - Evidence: verification/INT-51.md and INT-51-{go,cms,client}.log. VERIFIED-NOW Go vet/test/build, CMS types/build, Client types/lint/build PASS. INT-50 remains BLOCKED; v2 remains DRAFT/REAL_PENDING; historical live proofs are not relabeled VERIFIED-NOW.
-- Commits: source 7c7dd74, startup master merge ab9e4d9; publication checkpoint follows.
-- Next action: commit reviewed publication metadata, fast-forward local master and push integration/master under explicit user Git authorization; verify refs and record actual results.
+- Commits: source 7c7dd74, startup master merge ab9e4d9, task start f7a43c5, publication 92c23352842bf4b76a90f23df178efa6da352b40; this completion evidence commit follows without source changes.
+- Checkpoint: Lane codex / Changed release metadata and retained gate logs / Verified all local release gates, normal local fast-forward and atomic remote push, both remote refs=92c2335, other branches unchanged / Contract touched no / Next safe task INT-50 after its existing blockers clear.
+- Next action: publish this documentation-only completion checkpoint to both refs, verify final equality; then resume INT-50 only after Docker Engine recovery and explicit approval of the previously rejected real-QA action. No further Git publication implementation remains.
 
 ### INT-46 — User scope change: simplify CMS account contract
 - Owner: CODEX | Status: DONE (2026-10-30)

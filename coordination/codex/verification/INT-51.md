@@ -40,10 +40,30 @@ No matrix row is promoted by this publication. Current-source/current-runtime AI
 
 ## Publication
 
-All local release gates passed. Shared Codex status/tagged master-plan lines and sync log synchronized without promoting unfinished functional work. Next: commit exact owned/shared-release paths, then `git push . HEAD:master` (fast-forward only), followed by normal pushes of integration/master to origin. Verify both remote SHAs and preserve other remote branches. Explicit user Git authorization is already present; no additional confirmation is required for these normal pushes. Actual publication results will be appended after success.
+All local release gates passed. Shared Codex status/tagged master-plan lines and sync log synchronized without promoting unfinished functional work. Exact owned/shared-release paths committed as **92c23352842bf4b76a90f23df178efa6da352b40** (`chore(codex-progress): publish verified integration checkpoint`). Explicit user Git authorization covered the normal pushes; no additional confirmation was required.
+
+Executed successfully:
+
+```text
+git push . HEAD:master
+  62b7e05..92c2335 HEAD -> master
+git push --atomic origin codex/integration:codex/integration master:master
+  6a6a982..92c2335 codex/integration -> codex/integration
+  [new branch] master -> master
+git ls-remote --heads origin
+  92c23352842bf4b76a90f23df178efa6da352b40 refs/heads/codex/integration
+  92c23352842bf4b76a90f23df178efa6da352b40 refs/heads/master
+  26c2346d61b8585c6c2627ef232fa0eb6209002a refs/heads/claude/ai-core
+  15976b3761a3c29f04fc83f9a522541fe0b015f3 refs/heads/phase1-ai-core
+REMOTE_PUBLICATION_VERIFIED
+```
+
+Both target remote refs were asserted equal to HEAD; `git status --short` empty after publication. No force/reset/stash/clean, AI-lane edit, default-branch change or container/data/model action. The first staged whitespace check stopped before commit because Windows log normalization introduced duplicate carriage returns; the three owned logs were corrected to UTF-8/LF, PASS markers preserved, and staged diff check then PASS. No failed functional gate was hidden or bypassed.
+
+This final documentation-only completion checkpoint records the verified publication and marks INT-51 DONE. It is committed and forwarded normally to local master and both remote refs; the final HEAD/local-master/remote-master/remote-integration equality is checked again in the tool output. Source remains7c7dd74 with no code changes after the completed gates.
 
 Lane: codex
 Changed: release-authorized Codex status/master-plan metadata, owned tracker/session/handoff/evidence only
-Verified: Go vet/test/build and CMS/Client release gates PASS; existing real evidence HIST; fresh real E2E not run
+Verified: Go vet/test/build and CMS/Client gates PASS; local fast-forward + atomic remote push/ref assertions PASS; existing real evidence HIST; fresh real E2E not run
 Contract touched: no (public0.8.0 consumed, AI v1.4 published/v2DRAFT unchanged)
-Next safe task: finish INT-51 publication; INT-50 after Docker Engine recovery and explicit approval of the previously rejected real-QA action
+Next safe task: INT-50 after Docker Engine recovery and explicit approval of the previously rejected real-QA action; INT-51 publication DONE
