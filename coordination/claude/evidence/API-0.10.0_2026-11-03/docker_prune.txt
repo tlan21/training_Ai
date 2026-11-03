@@ -1,0 +1,14 @@
+## before 2026-11-03T16:18:04+07:00
+TYPE            TOTAL     ACTIVE    SIZE      RECLAIMABLE
+Images          68        14        41.89GB   34.67GB (82%)
+Containers      16        13        90.81MB   1.29MB (1%)
+Local Volumes   21        18        1.303GB   2.696MB (0%)
+Build Cache     231       0         5.03GB    5.03GB
+C:              223G  221G  1.9G 100% /c
+## after 2026-11-03T16:18:35+07:00
+TYPE            TOTAL     ACTIVE    SIZE      RECLAIMABLE
+Images          68        14        25.52GB   18.3GB (71%)
+Containers      16        13        90.81MB   1.29MB (1%)
+Local Volumes   21        18        1.303GB   2.696MB (0%)
+Build Cache     0         0         0B        0B
+C:              223G  221G  1.9G 100% /c

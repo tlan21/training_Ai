@@ -217,6 +217,15 @@ test('INT-21 metadata save failure retains the editor draft and stops later muta
   expect(summaryWrites).toEqual([]);
 });
 
+test('0.10.0 low transcript_quality shows a label that clears once editors change the subtitles', async ({ page }) => {
+  await setupUI(page);
+  await page.route(`**/api/videos/${videoId}/subtitles`, route => route.fulfill({ json: { segments: [{ segment_index: 0, start_time: 0, end_time: 4, text: 'U ƯỚ R N', confidence: .4 }], transcript_quality: .5 } }));
+  await page.goto(`${cms}/subtitles?video_id=${videoId}`);
+  await expect(page.getByTestId('transcript-low-quality')).toContainText('Chỉ 50% từ là âm tiết tiếng Việt');
+  await page.getByLabel('Nội dung phụ đề 1').fill('Bàn thắng đẹp');
+  await expect(page.getByTestId('transcript-low-quality')).toHaveCount(0);
+});
+
 test('INT-21 editorial metadata can save while AI analysis is unavailable', async ({ page }) => {
   await setupUI(page);
   await page.route(`**/api/cms/videos/${videoId}/analysis`, route => route.fulfill({ status: 503, json: { error: { code: 'AI_UNAVAILABLE', message: 'AI unavailable' } } }));
