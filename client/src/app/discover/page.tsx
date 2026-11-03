@@ -27,7 +27,7 @@ export default function DiscoverPage() {
     const categories = useCategories();
     const newest = useVideos(category, "newest");
     const trending = useVideos(category, "trending");
-    const feed = useClipPage("/api/feed");
+    const feed = useClipPage("/api/feed", category);
     const history = useHistory();
     const mode = feed.data?.pages[0]?.recommendation_mode;
     const router = useRouter();
@@ -39,7 +39,7 @@ export default function DiscoverPage() {
     const published = new Set(clips.map(c => c.video_id));
     const hero = newItems[0];
     const analysis = useQuery({ queryKey: ["analysis", hero?.id], enabled: !!hero?.id, queryFn: async () => (await apiClient.get<components["schemas"]["PublicAnalysis"]>(`/api/videos/${hero?.id}/analysis`)).data });
-    const filteredClips = category ? clips.filter(c => newItems.some(v => v.id === c.video_id) || trendItems.some(v => v.id === c.video_id)) : clips;
+    const filteredClips = clips; // 0.9.0: /api/feed filters by category server-side
     const newestState = newest.isPending || newest.error || !newItems.length;
     const recommendation = feed.isPending || feed.error || !filteredClips.length;
     return <div className="content-page discovery-page"><AppNav active="discover"/><MobileHeader />

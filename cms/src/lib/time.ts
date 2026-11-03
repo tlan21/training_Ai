@@ -12,3 +12,7 @@ export function fmtISO(iso: string): string {
 }
 
 export const fmtBytes = (bytes?: number | null) => bytes == null ? "—" : `${(bytes / 1024 ** 2).toLocaleString("vi-VN", { maximumFractionDigits: 1 })} MB`;
+export function fmtAgo(iso: string, now = Date.now()): string {
+  const minutes = Math.max(0, Math.floor((now - new Date(iso).getTime()) / 60000));
+  return minutes < 1 ? "vừa xong" : minutes < 60 ? `${minutes} phút trước` : minutes < 1440 ? `${Math.floor(minutes / 60)} giờ trước` : `${Math.floor(minutes / 1440)} ngày trước`;
+}

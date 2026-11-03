@@ -571,3 +571,15 @@ test('INT-05 L per-status video actions, library AI badge, queue overlay and has
   await expect(page.getByLabel('Thẻ Hashtag', { exact: true })).toHaveValue('Highlight');
   await page.getByRole('button', { name: '+ Thêm', exact: true }).click(); await expect(page.getByLabel('Thẻ Hashtag', { exact: true })).toBeFocused();
 });
+
+test('0.9.0 categories recent list uses assignment time', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 }); await setupUI(page);
+  const sorted = page.waitForRequest(request => request.url().includes('/api/cms/videos') && request.url().includes('sort=category_assigned'));
+  await page.route(url => url.pathname === '/api/cms/videos' && url.searchParams.get('sort') === 'category_assigned', route => route.fulfill({ json: { total: 2, page: 1, items: [
+    { ...videos[0], category_assigned_at: new Date(Date.now() - 5 * 60_000).toISOString() },
+    { ...videos[1], category: categories[1] },
+  ] } }));
+  await page.goto(`${cms}/categories`); await sorted;
+  await expect(page.locator('.recent-video').first().locator('.recent-ago')).toHaveText('• 5 phút trước');
+  await expect(page.locator('.recent-video').nth(1).locator('.recent-ago')).toHaveCount(0);
+});

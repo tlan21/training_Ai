@@ -440,7 +440,7 @@ test('T3.2 register validates confirmation before API',async({page})=>{
 test('T3.2 discovery category chips keep label width and filter API',async({page})=>{
  await page.setViewportSize({width:390,height:844});await setup(page);await page.goto(client+'/discover');
  const chip=page.getByRole('button',{name:'Bóng đá',exact:true});await expect(chip).toBeVisible();expect(await chip.evaluate(el=>el.scrollWidth<=el.clientWidth)).toBe(true);
- const request=page.waitForRequest(r=>r.url().includes('/api/videos?')&&r.url().includes('cat_football'));await chip.click();await request;await noOverflow(page);
+ const request=page.waitForRequest(r=>r.url().includes('/api/videos?')&&r.url().includes('cat_football'));const feedRequest=page.waitForRequest(r=>r.url().includes('/api/feed?')&&r.url().includes('category_id=cat_football'));await chip.click();await request;await feedRequest;await noOverflow(page);
 });
 test('T3.2 draft summary hidden and saved list gap is clear',async({page})=>{
  await setup(page);await page.route('**/api/videos/vid_ui1/analysis',r=>r.fulfill({json:{timeline_scores:analysis.timeline_scores,summary:null,key_moments:[],hashtags:[]}}));await page.goto(client+'/videos/vid_ui1');await expect(page.getByRole('heading',{name:videos[0].title,exact:true})).toBeVisible();await expect(page.locator('#ai-summary')).toHaveCount(0);
@@ -448,4 +448,12 @@ test('T3.2 draft summary hidden and saved list gap is clear',async({page})=>{
 });
 test('T3.2 refresh restores session without persisting access token',async({page})=>{
  const {requests}=await setup(page);await page.goto(client+'/feed');await expect(page.locator('.feed-clip')).toHaveCount(3);await page.reload();await expect(page.locator('.feed-clip')).toHaveCount(3);expect(requests.filter(p=>p==='/api/auth/refresh')).toHaveLength(2);expect(await page.evaluate(()=>localStorage.getItem('client-auth'))).toBeNull();
+});
+test('0.9.0 header inline search suggestions open the matched moment',async({page})=>{
+ await page.setViewportSize({width:1440,height:900});await setup(page);await page.goto(client+'/feed');
+ const box=page.getByRole('textbox',{name:'Tìm kiếm video'});await box.fill('quan trọng');
+ const list=page.getByRole('listbox',{name:'Gợi ý tìm kiếm'});await expect(list.getByRole('option')).toHaveCount(2);
+ await expect(list.getByRole('option').first()).toContainText('00:24 · Đây là khoảnh khắc quan trọng.');
+ await box.press('Escape');await expect(list).toHaveCount(0);
+ await box.fill('quan trọng!');await list.getByRole('option').first().click();await expect(page).toHaveURL(/\/videos\/vid_ui1\?t=24$/);
 });
