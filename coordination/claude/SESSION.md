@@ -3,6 +3,9 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
+- **2026-11-03 ("tiếp tục task"):** INT-05 owner decisions áp dụng (CMS `int05-fd0b418`). INT-06/04/14 batch Stitch Client xong một lượt: client `int06-a52a911`,
+  gateway `int06-d41fe71` (sửa `/api/videos` 500), regression 96/96 PASS, QA viewer đã xóa, preservation OK (`evidence/INT-06_2026-11-02/README.md`).
+  INT-04/06/14 vẫn PARTIAL: 7 quyết định owner + L items. Kế tiếp: đối chiếu REVIEW (16 task) → gate INT-03/07/08/09 → AI-05 §7, AI-12, AI-04.
 - **2026-11-02 (user "kéo lại 2 cho phép xóa…"):** `D:/data_training_ai/highlight_news_v1/` khôi phục từ Kaggle `traininghighlight/highlight-news-v1`
   (highlight_news_labeled.pt sha256 49dca3e1…, intake_report.json; xem PROVENANCE.md tại đó — export JSON gốc/features_news/proposals không khôi phục được).
   Xóa danh mục chỉ còn video đã xóa: DONE (gateway int50-83bacd4). INT-43 DONE. Đang: INT-05 đối chiếu Stitch (4 agent soát 8 màn).
