@@ -17,7 +17,7 @@ export function AuthFrame({ mode, children }: {
     {children}
     <footer className="auth-footer">{mode === "login" ? <p>Chưa có tài khoản? <Link href="/register">Đăng ký ngay</Link></p> : mode === "register" ? <p>Đã có tài khoản? <Link href="/login">Đăng nhập ngay</Link></p> : <Link href="/login" className="back-login"><Icon name="arrow_back" size={18}/>Quay lại đăng nhập</Link>}
     {mode === "login" && <div className="legal-links mobile-only"><span>Điều khoản</span><span>Bảo mật</span><span>Trợ giúp</span></div>}
-    {mode === "register" && <p className="legal-copy mobile-only">Bằng cách đăng ký, bạn đồng ý với Điều khoản và Chính sách bảo mật của VidsAI.</p>}
+    {mode === "register" && <p className="legal-copy mobile-only">Bằng cách đăng ký, bạn đồng ý với <u>Điều khoản</u> và <u>Chính sách bảo mật</u> của VidsAI.</p>}
       {mode === "forgot" && <p className="auth-copyright mobile-only">© 2024 VidsAI. Nền tảng video thông minh.</p>}
     </footer>
   </div></main>;
@@ -32,5 +32,5 @@ export function AuthField({ id, label, icon, desktopIcon, desktopPlaceholder, ac
 } & React.InputHTMLAttributes<HTMLInputElement>) {
     const [desktop, setDesktop] = useState(false);
     useEffect(() => { const media = window.matchMedia("(min-width:1024px)"); const update = () => setDesktop(media.matches); update(); media.addEventListener("change", update); return () => media.removeEventListener("change", update); }, []);
-    return <div className="auth-field"><label htmlFor={id}>{label}</label><div className="input-wrap"><span className="input-icon input-icon--left"><Icon name={desktop && desktopIcon ? desktopIcon : icon} size={22}/></span><input id={id} {...props} placeholder={desktop && desktopPlaceholder ? desktopPlaceholder : props.placeholder} className={`input input--with-left-icon ${action ? "input--with-right-icon" : ""}`}/>{action}</div></div>;
+    return <div className="auth-field"><label htmlFor={id}>{label}</label><div className="input-wrap"><span className="input-icon input-icon--left"><Icon name={desktop && desktopIcon ? desktopIcon : icon} size={24}/></span><input id={id} {...props} placeholder={desktop && desktopPlaceholder ? desktopPlaceholder : props.placeholder} className={`input input--with-left-icon ${action ? "input--with-right-icon" : ""}`}/>{action}</div></div>;
 }

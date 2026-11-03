@@ -49,7 +49,7 @@ export default function OnboardingPage() {
     };
     const skip = () => { sessionStorage.setItem(`onboarding-skipped-${user?.id}`, "1"); router.push("/feed"); };
     return <div className="onboarding-page">
-  <div className="onboard-progress"><div style={{ width: "40%" }}/></div>
+  <div className="onboard-progress"><div style={{ width: `${40 + Math.min(3, selected.length) / 3 * 20}%` }}/></div>
   <div className="onboard-desktop-header desktop-only"><span className="brand">VidsAI</span><div className="onboard-desktop-step"><i className="step-dot"/><i className="step-dot"/><i className="step-dot"/><span>Bước 1 / 3</span></div></div>
   <header className="onboard-header">
    <div className="onboard-step mobile-only"><button className="icon-button" onClick={() => router.back()} aria-label="Quay lại"><Icon name="arrow_back"/></button><span>BƯỚC 2/5</span><span style={{ width: 40 }}/></div>
@@ -67,8 +67,8 @@ export default function OnboardingPage() {
   </main> : <PageState empty="Chưa có chủ đề"/>}
   <footer className="onboard-footer"><div className="onboard-footer-inner">
    {error && <p className="error-banner" role="alert">{error}</p>}
-   <div className="onboard-count"><span>Đã chọn: <b>{selected.length}</b>/3</span><div className="onboard-progress-bottom desktop-only"><div style={{ width: `${Math.min(100, selected.length / 3 * 100)}%` }}/></div><button onClick={skip} disabled={saving}>Bỏ qua</button></div>
-   <button className="btn-primary onboard-complete" disabled={selected.length < 3 || saving} onClick={complete}>{saving ? "Đang lưu…" : <><span className="mobile-only">Hoàn tất</span><span className="desktop-only">Hoàn tất và khám phá</span></>}<Icon name="chevron_right" size={20}/></button>
+   <div className={`onboard-count ${selected.length >= 3 ? "done" : ""}`}><span>Đã chọn: <b>{selected.length}</b>/3</span><div className="onboard-progress-bottom desktop-only"><div style={{ width: `${Math.min(100, selected.length / 3 * 100)}%` }}/></div><button onClick={skip} disabled={saving}>Bỏ qua</button></div>
+   <button className="btn-primary onboard-complete" disabled={selected.length < 3 || saving} onClick={complete}>{saving ? "Đang cá nhân hóa..." : <><span className="mobile-only">Hoàn tất</span><span className="desktop-only">Hoàn tất và khám phá</span></>}<span className="mobile-only"><Icon name="chevron_right" size={20}/></span><span className="desktop-only"><Icon name="arrow_forward" size={18}/></span></button>
   </div></footer>
  </div>;
 }
