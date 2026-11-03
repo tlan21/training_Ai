@@ -37,8 +37,18 @@ final client `int06-a52a911` only changes the feed up-next meta text). Four read
   3 user_interactions by a real user (already noted in INT-50) and 10 vectors of `vid_dmkgihquce5o` (Codex `e2e-int28`, ingested 04:57Z, before
   the baseline) — the baseline Milvus query under-counted. Script fixed: base64 JSON payloads decoded, vectors compared by hash.
 
+## Owner decisions applied (user 2026-11-03: "hãy làm theo đề xuất của bạn")
+- Kept and approved: (1) disabled quick-login "Digital Creator", (2) feed mute button + mobile play overlay, (3) "Xem video gốc",
+  (5) library per-clip score semantics.
+- (4) Follow Stitch (73b13e3, client `int06-73b13e3`): avatar already circular; sizes now match every screen (feed 36, discover 40 + 2px
+  `surface-variant` border, library/profile/detail/search 32, mobile header 32). Bottom nav already matched Stitch structure (centre "+" only on
+  the feed, 16px lift); now label 11/14px 500 +0.02em, item padding 4×12, nav padding 16, active bold + scale .95, FAB `shadow-lg`.
+  Regression 96/96 PASS after the change.
+- Deferred (need API changes): (6) inline header search results, (7) category filter for clips.
+- Not adopted: Stitch feed creator avatar with "+" follow badge (follow is not an approved feature).
+
 ## Still open (INT-06 / INT-04 / INT-14 stay PARTIAL)
-Owner decisions (kept as is until decided):
+Original owner-decision list (for reference):
 1. Login quick-login "Digital Creator" (Stitch) — shown disabled; no such auth method.
 2. Feed mute button and mobile play overlay — not in Stitch; needed for muted autoplay / paused state.
 3. "Xem video gốc" link on feed clips — not in Stitch; links clip → source video.

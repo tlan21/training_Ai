@@ -6,4 +6,4 @@ services:
   cms:
     image: video-ai-cms:int05-fd0b418
   client:
-    image: video-ai-client:int06-a52a911
+    image: video-ai-client:int06-73b13e3
