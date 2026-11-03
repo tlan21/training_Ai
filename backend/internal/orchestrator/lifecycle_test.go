@@ -2,6 +2,7 @@ package orchestrator
 
 import (
 	"context"
+	"strings"
 	"testing"
 	"traning_ai/backend/internal/domain"
 	"traning_ai/backend/internal/mocks"
@@ -28,7 +29,9 @@ func TestCancelDuringLastStageCannotCompleteVideo(t *testing.T) {
 	videos, jobs := mocks.NewVideoRepoMem(), mocks.NewJobRepoMem()
 	_ = videos.Create(ctx, &domain.Video{ID: "vid_cancel", Status: domain.VideoUploaded})
 	job, _ := jobs.Create(ctx, "vid_cancel")
-	ai := &mocks.AIClientMem{SummarizeFn: func(string, int) (*domain.SummaryResult, error) {
+	ai := &mocks.AIClientMem{ASRFn: func(string, string) (*domain.ASRResult, error) {
+		return &domain.ASRResult{FullTranscript: strings.Repeat("lời thoại ", 10), Segments: []domain.Segment{{Text: "lời thoại"}}}, nil
+	}, SummarizeFn: func(string, int) (*domain.SummaryResult, error) {
 		_ = jobs.RequestCancel(ctx, job.ID)
 		return &domain.SummaryResult{Text: "late result"}, nil
 	}}

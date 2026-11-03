@@ -354,8 +354,8 @@ func (h *VideoHandlers) RegenerateSummary(c *gin.Context) {
 		handlers.ErrorEnvelope(c, http.StatusNotFound, "VIDEO_NOT_FOUND", "Video not found")
 		return
 	}
-	if strings.TrimSpace(sub.FullTranscript) == "" {
-		handlers.ErrorEnvelope(c, 422, "VALIDATION_ERROR", "No transcript available for AI summary")
+	if !domain.Summarizable(sub.FullTranscript) {
+		handlers.ErrorEnvelope(c, 422, "VALIDATION_ERROR", "Không đủ lời thoại để AI tóm tắt (cần ít nhất 20 từ trong phụ đề)")
 		return
 	}
 	res, err := h.ai.Summarize(c.Request.Context(), sub.FullTranscript, 256)

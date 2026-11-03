@@ -3,6 +3,7 @@ package orchestrator
 import (
 	"context"
 	"fmt"
+	"strings"
 	"testing"
 	"traning_ai/backend/internal/domain"
 	"traning_ai/backend/internal/mocks"
@@ -24,7 +25,7 @@ func TestProcessingSnapshotControlsActualCallsAndRetry(t *testing.T) {
 					VisionFn: func([]string) (*domain.VisionResult, error) { calls["vision"]++; return &domain.VisionResult{}, nil },
 					ASRFn: func(string, string) (*domain.ASRResult, error) {
 						calls["asr"]++
-						return &domain.ASRResult{FullTranscript: "xin chào", Segments: []domain.Segment{{Text: "xin chào"}}}, nil
+						return &domain.ASRResult{FullTranscript: strings.Repeat("xin chào ", 10), Segments: []domain.Segment{{Text: "xin chào"}}}, nil // ≥ MinSummaryWords
 					},
 					HighlightFn: func(string, [][]float32, [][]float32) (*domain.HighlightResult, error) {
 						calls["highlight"]++

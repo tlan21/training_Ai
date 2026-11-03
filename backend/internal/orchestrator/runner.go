@@ -305,7 +305,7 @@ func (r *Runner) doASR(ctx context.Context, videoID, audioPath string) error {
 	if err != nil {
 		return err
 	}
-	return r.subs.Put(ctx, videoID, "vi", res.FullTranscript, res.Segments)
+	return r.subs.Put(ctx, videoID, "vi", res.FullTranscript, domain.SpokenSegments(res.Segments))
 }
 
 func (r *Runner) doHighlight(ctx context.Context, videoID string, vision, audio [][]float32, duration float64) error {
@@ -327,6 +327,9 @@ func (r *Runner) doSummary(ctx context.Context, videoID string) error {
 	sub, err := r.subs.Get(ctx, videoID)
 	if err != nil {
 		return err
+	}
+	if !domain.Summarizable(sub.FullTranscript) {
+		return r.analysis.SetSummary(ctx, videoID, "", "draft")
 	}
 	res, err := r.ai.Summarize(ctx, sub.FullTranscript, 256)
 	if err != nil {
