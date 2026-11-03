@@ -566,6 +566,7 @@ test('INT-05 L per-status video actions, library AI badge, queue overlay and has
   await expect(page.locator('.ai-state--running')).toHaveText('AI ĐANG XỬ LÝ');
   await page.goto(`${cms}/queue`); await expect(page.locator('.queue-thumb--failed')).toHaveCount(1);
   await page.goto(`${cms}/subtitles?video_id=${videoId}`);
+  await page.getByLabel('Thẻ Hashtag', { exact: true }).fill('BongDa, Highlight');
   await page.getByRole('button', { name: 'Bỏ thẻ BongDa', exact: true }).click();
   await expect(page.getByLabel('Thẻ Hashtag', { exact: true })).toHaveValue('Highlight');
   await page.getByRole('button', { name: '+ Thêm', exact: true }).click(); await expect(page.getByLabel('Thẻ Hashtag', { exact: true })).toBeFocused();
