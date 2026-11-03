@@ -3,6 +3,9 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
+- **2026-11-03 ("tiếp tục theo bạn đề xuất"):** INT-06 quyết định owner áp dụng (client `int06-73b13e3`); REVIEW 15 task INT đóng
+  (`evidence/REVIEW_2026-11-03/README.md`), INT-17 vá follow-redirects (client `int06-e33e956`, 96/96 PASS). Gate: INT-03 chặn (NO_DATA, AI-12/D19),
+  INT-07/08 chặn (máy này không có GPU; cần RTX 3060/GPU user chấp nhận), INT-09 chỉ chuẩn bị được phần ổn định. Chờ user chọn hướng.
 - **2026-11-03 ("tiếp tục task"):** INT-05 owner decisions áp dụng (CMS `int05-fd0b418`). INT-06/04/14 batch Stitch Client xong một lượt: client `int06-a52a911`,
   gateway `int06-d41fe71` (sửa `/api/videos` 500), regression 96/96 PASS, QA viewer đã xóa, preservation OK (`evidence/INT-06_2026-11-02/README.md`).
   INT-04/06/14 vẫn PARTIAL: 7 quyết định owner + L items. Kế tiếp: đối chiếu REVIEW (16 task) → gate INT-03/07/08/09 → AI-05 §7, AI-12, AI-04.
