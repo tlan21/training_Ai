@@ -13,9 +13,14 @@ bundles = glob.glob("/kaggle/input/**/football_bundle.json", recursive=True)
 news = glob.glob("/kaggle/input/**/news_manifest.json", recursive=True)
 assert len(bundles) == 1 and len(news) == 1, (bundles, news)
 bundle, general = Path(bundles[0]).parent, Path(news[0]).parent
-with zipfile.ZipFile(bundle / "ai_core.zip") as archive:
-    archive.extractall("/tmp/football_code")
-sys.path.insert(0, "/tmp/football_code")
+if (bundle / "ai_core.zip").exists():
+    with zipfile.ZipFile(bundle / "ai_core.zip") as archive:
+        archive.extractall("/tmp/football_code")
+    sys.path.insert(0, "/tmp/football_code")
+else:  # Kaggle may auto-extract uploaded archives.
+    packages = [p for p in bundle.rglob("__init__.py") if p.parent.name == "ai_core" and (p.parent / "training").is_dir()]
+    assert len(packages) == 1, packages
+    sys.path.insert(0, str(packages[0].parent.parent))
 
 import torch
 from ai_core.tests.test_gradient_check import test_rmsnorm_gradient, test_swiglu_gradient, test_mha_gradient
@@ -35,7 +40,7 @@ print("SANITY PASS", flush=True)
 sha256 = lambda path: hashlib.sha256(Path(path).read_bytes()).hexdigest()
 meta = json.loads((bundle / "football_bundle.json").read_text(encoding="utf-8"))
 for name, digest in meta["sha256"].items():
-    assert sha256(bundle / name) == digest, name
+    assert sha256(bundle / name) == digest if (bundle / name).exists() else name == "ai_core.zip", name
 assert meta["sha256"]["active.pt"] == "cf9cfa7141d40f9d40b0065ae68855ff39ffe750260ee7b42c7c0eac719330ac"
 assert torch.cuda.is_available(), "GPU required"
 
