@@ -217,9 +217,13 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - Dữ liệu: Binhvq News (`category == "Thể thao"` + từ khóa bóng đá ở tiêu đề/sapo); target = tiêu đề/sapo biên tập báo (không pseudo-label, không nhãn Claude).
   Test bóng đá 1000 bài đóng băng từ file test chính thức, tách khỏi test1000 chung; dedup body như T1.6c. Train: shard train HF + replay tin chung 1:1.
 - Cổng đăng ký trước (chấm test 1 lần, sau khi chọn checkpoint chỉ bằng val):
-  1. Test bóng đá: ROUGE-L ứng viên > Lead-1 và > `cf9cfa71`, CI95 paired Δ(ứng viên − cf9cfa71) cận dưới > 0 (clean và ASR-noisy).
-  2. Test1000 chung: ROUGE-L ứng viên ≥ `cf9cfa71` − 0.005 (clean và noisy).
-  3. Không tăng tỉ lệ lặp n-gram/thiếu EOS so với `cf9cfa71`.
+  (chốt trước khi train; code `ai-core/ai_core/scripts/compare_football_candidate.py`; format chính `sum` = format sản phẩm dùng cho tóm tắt)
+  1. Test bóng đá `sum`: ROUGE-L ứng viên > Lead-1 và > `cf9cfa71`, CI95 paired Δ(ứng viên − cf9cfa71) cận dưới > 0 (clean và ASR-noisy).
+  2. Test1000 chung `sum`+`title` và test bóng đá `title`: ROUGE-L ứng viên ≥ `cf9cfa71` − 0.005 (clean và noisy).
+  3. `sum` clean cả hai tập: tỉ lệ trigram lặp và cap-hit (thiếu EOS) ≤ `cf9cfa71` + 0.01.
+  Target: bóc thẻ nguồn đầu sapo ("(VTC News) -", "TPO -"; ~24% bài) ở mọi tập — nguồn gốc lỗi active bịa "(Dân Việt) - …".
+  Test bóng đá đóng băng 2026-11-03 trước train: 1000 bài, sha1 `db367114…`, sha256 `968f8c95…` (`D:/data_training_ai/minigpt_football_v1/football_test.json`).
+  Train: shard `train-00001` (sha256 `a476229f…`, active chưa thấy), 20k bài bóng đá → 95/5 + replay chung 1:1; khởi từ `cf9cfa71`; Kaggle `ai-core-minigpt-football-v1`.
   Đạt cả 3 → đề xuất user thay checkpoint (image inference mới + parity). Human ≥3/5 (3 người, 30 tóm tắt) vẫn mở — không thay bằng điểm tự động.
 - Giới hạn biết trước: video bóng đá thật bị chặn ở ASR (transcript_quality 0.5–0.6, API 0.10.0 không tóm tắt) → lợi ích thấy được trên sản phẩm cần AI-25.
 
