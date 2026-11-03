@@ -15,7 +15,7 @@ func contentPageDB(t *testing.T) *pgxpool.Pool {
 	t.Helper()
 	db := integrationDB(t)
 	ctx := context.Background()
-	for _, table := range []string{"videos", "clips", "user_interactions", "categories"} {
+	for _, table := range []string{"videos", "clips", "user_interactions", "categories", "users"} {
 		if _, err := db.Exec(ctx, "CREATE TEMP TABLE "+table+" (LIKE public."+table+" INCLUDING DEFAULTS)"); err != nil {
 			t.Fatal(err)
 		}
@@ -48,7 +48,7 @@ func TestContentPages_RealFeedSnapshotPrivacyAndColdTail(t *testing.T) {
 	db := contentPageDB(t)
 	ctx := context.Background()
 	repo := &ClipRepo{DB: db}
-	items, next, err := repo.ListPopularPage(ctx, "", 3)
+	items, next, err := repo.ListPopularPage(ctx, "", "", 3)
 	if err != nil || len(items) != 3 || next == nil || items[0].VideoID != "vid_page_00" || items[1].VideoID != "vid_page_00" {
 		t.Fatalf("first page %+v %v %v", items, next, err)
 	}
@@ -76,7 +76,7 @@ func TestContentPages_RealFeedSnapshotPrivacyAndColdTail(t *testing.T) {
 		seen[c.ID] = true
 	}
 	for page := 0; next != nil && page < 20; page++ {
-		items, next, err = repo.ListPopularPage(ctx, *next, 4)
+		items, next, err = repo.ListPopularPage(ctx, "", *next, 4)
 		if err != nil || len(items) > 4 {
 			t.Fatal(items, err)
 		}
@@ -93,7 +93,7 @@ func TestContentPages_RealFeedSnapshotPrivacyAndColdTail(t *testing.T) {
 	if next != nil || len(seen) != 21 || !updated {
 		t.Fatalf("incomplete traversal count%d next%v updated%v", len(seen), next, updated)
 	}
-	if _, _, err := repo.ListPopularPage(ctx, "bad!", 3); err != domain.ErrValidation {
+	if _, _, err := repo.ListPopularPage(ctx, "", "bad!", 3); err != domain.ErrValidation {
 		t.Fatal("invalid cursor accepted", err)
 	}
 	t.Log("24 original clips traversed; unseen hidden/deleted3 excluded, seen-row deletion/new50interactions/newclip did not shift cursor; cold tail/current metadata PASS")
@@ -158,5 +158,45 @@ func TestContentPages_RealCatalogCategorySnapshotAndExhaustion(t *testing.T) {
 			}
 			t.Log("category6 rows, stable tied ordering, snapshot after new interaction/video, deletion of seen anchor, changed-filter422 and exhaustion PASS")
 		})
+	}
+}
+
+// 0.9.0: category filter uses the clip's own category, else its video's; view_count counts client clicks only; cursor is bound to the category.
+func TestContentPages_RealFeedCategoryAndViewCount(t *testing.T) {
+	db := contentPageDB(t)
+	ctx := context.Background()
+	exec := func(sql string, args ...any) {
+		t.Helper()
+		if _, err := db.Exec(ctx, sql, args...); err != nil {
+			t.Fatal(err)
+		}
+	}
+	exec(`INSERT INTO users(id,username,email,password_hash,role) VALUES('usr_viewer','v','v@test','x','client'),('usr_staff','s','s@test','x','editor')`)
+	exec(`INSERT INTO user_interactions(id,user_id,video_id,clip_id,interaction_type) VALUES(900,'usr_viewer','vid_page_01','clp_page_01_0','click'),(901,'usr_viewer','vid_page_01','clp_page_01_0','click'),(902,'usr_staff','vid_page_01','clp_page_01_0','click')`)
+	exec(`UPDATE clips SET category_id='cat_a' WHERE id='clp_page_01_1'`) // own category overrides the video's cat_b
+	repo := &ClipRepo{DB: db}
+	items, next, err := repo.ListPopularPage(ctx, "cat_b", "", 50)
+	if err != nil || next != nil {
+		t.Fatal(err, next)
+	}
+	views := map[string]int64{}
+	for _, c := range items {
+		views[c.ID] = c.ViewCount
+		if c.ID == "clp_page_01_1" || c.VideoID == "vid_page_00" {
+			t.Fatal("wrong category", c.ID)
+		}
+	}
+	if len(items) != 11 || views["clp_page_01_0"] != 2 {
+		t.Fatalf("cat_b items%d views%v", len(items), views["clp_page_01_0"])
+	}
+	_, next, err = repo.ListPopularPage(ctx, "cat_a", "", 2)
+	if err != nil || next == nil {
+		t.Fatal(err)
+	}
+	if _, _, err := repo.ListPopularPage(ctx, "cat_b", *next, 2); err != domain.ErrValidation {
+		t.Fatal("cursor reused across categories", err)
+	}
+	if _, _, err := repo.ListPopularPage(ctx, "", *next, 2); err != domain.ErrValidation {
+		t.Fatal("category cursor accepted by unfiltered feed", err)
 	}
 }

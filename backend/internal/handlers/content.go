@@ -56,7 +56,8 @@ func (h *ContentHandlers) Feed(c *gin.Context) {
 		handleDomainErr(c, err)
 		return
 	}
-	if h.ai == nil {
+	// category filter is popularity-only (personalized stays single-page, INT-03)
+	if h.ai == nil || c.Query("category_id") != "" {
 		h.popularityFeed(c, gen.Popularity, limit)
 		return
 	}
@@ -139,14 +140,16 @@ func (h *ContentHandlers) Feed(c *gin.Context) {
 }
 
 func (h *ContentHandlers) popularityFeed(c *gin.Context, mode gen.FeedPageRecommendationMode, limit int) {
-	clips, next, err := h.clips.ListPopularPage(c.Request.Context(), c.Query("cursor"), limit)
+	clips, next, err := h.clips.ListPopularPage(c.Request.Context(), c.Query("category_id"), c.Query("cursor"), limit)
 	if err != nil {
 		contentPageError(c, err)
 		return
 	}
 	items := make([]gin.H, 0, len(clips))
 	for i := range clips {
-		items = append(items, toClipH(&clips[i], h.storage))
+		item := toClipH(&clips[i], h.storage)
+		item["view_count"] = clips[i].ViewCount // computed only on popularity pages
+		items = append(items, item)
 	}
 	c.JSON(http.StatusOK, gin.H{"items": items, "next_cursor": next, "recommendation_mode": mode})
 }

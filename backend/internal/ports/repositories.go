@@ -28,7 +28,7 @@ type ClipRepository interface {
 	Get(ctx context.Context, id string) (*domain.Clip, error)
 	GetPublished(ctx context.Context, id string) (*domain.Clip, error)
 	ListPublishedByVideo(ctx context.Context, videoID string) ([]domain.Clip, error)
-	ListPopularPage(ctx context.Context, cursor string, limit int) ([]domain.Clip, *string, error)
+	ListPopularPage(ctx context.Context, categoryID, cursor string, limit int) ([]domain.Clip, *string, error)
 	List(ctx context.Context, videoID, status *string) ([]domain.Clip, error)
 	ListCMS(ctx context.Context, videoID, status *string, query string) ([]domain.Clip, error)
 	SetStatus(ctx context.Context, id string, s domain.ClipStatus) error

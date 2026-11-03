@@ -7,6 +7,7 @@ type CMSVideoFilter struct {
 	Query, CategoryID string
 	From, To          *time.Time
 	IncludeDeleted    bool
+	SortAssigned      bool // newest category assignment first (Categories "recent")
 	Page, Size        int
 }
 

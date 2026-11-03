@@ -161,7 +161,12 @@ func (h *VideoHandlers) List(c *gin.Context) {
 		handlers.ErrorEnvelope(c, 422, "VALIDATION_ERROR", "Invalid include_deleted")
 		return
 	}
-	filter := domain.CMSVideoFilter{Status: statusPtr, Query: c.Query("q"), CategoryID: c.Query("category_id"), IncludeDeleted: includeDeleted, Page: page, Size: size}
+	sort := c.DefaultQuery("sort", "newest")
+	if sort != "newest" && sort != "category_assigned" {
+		handlers.ErrorEnvelope(c, 422, "VALIDATION_ERROR", "Invalid sort")
+		return
+	}
+	filter := domain.CMSVideoFilter{Status: statusPtr, Query: c.Query("q"), CategoryID: c.Query("category_id"), IncludeDeleted: includeDeleted, SortAssigned: sort == "category_assigned", Page: page, Size: size}
 	for _, key := range []string{"date_from", "date_to"} {
 		if value := c.Query(key); value != "" {
 			date, err := time.Parse("2006-01-02", value)
@@ -482,6 +487,9 @@ func toVideoCMS(v *domain.Video, storage ports.ObjectStorage) gin.H {
 			category["name"] = *v.CategoryName
 		}
 		result["category"] = category
+	}
+	if v.CategoryAssignedAt != nil {
+		result["category_assigned_at"] = v.CategoryAssignedAt.UTC().Format(time.RFC3339)
 	}
 	return result
 }

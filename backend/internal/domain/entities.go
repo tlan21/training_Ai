@@ -35,6 +35,7 @@ type Video struct {
 	EditorialPriority string      `json:"editorial_priority" bson:"editorial_priority"`
 	CategoryName      *string     `json:"-" bson:"-"`
 	UploadedByName    *string     `json:"-" bson:"-"`
+	CategoryAssignedAt *time.Time `json:"-" bson:"-"`
 	ID                string      `json:"id" bson:"id"`
 	Title             string      `json:"title" bson:"title"`
 	Description       *string     `json:"description" bson:"description"`

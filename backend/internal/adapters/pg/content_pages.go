@@ -10,19 +10,25 @@ const popularityWindow = `WITH popularity AS (
 	WHERE created_at>$1::timestamptz-interval '7 days' AND created_at<=$1 GROUP BY video_id
 )`
 
-func (r *ClipRepo) ListPopularPage(ctx context.Context, cursor string, limit int) ([]domain.Clip, *string, error) {
-	p, err := domain.ParseContentCursor(cursor, "feed", limit)
+func (r *ClipRepo) ListPopularPage(ctx context.Context, categoryID, cursor string, limit int) ([]domain.Clip, *string, error) {
+	scope := "feed"
+	if categoryID != "" {
+		scope += "/" + categoryID
+	}
+	p, err := domain.ParseContentCursor(cursor, scope, limit)
 	if err != nil {
 		return nil, nil, err
 	}
 	rows, err := r.DB.Query(ctx, popularityWindow+`, ranked AS (
-		SELECT clips.*,COALESCE(p.score,0) AS rank
-		FROM clips LEFT JOIN popularity p ON p.video_id=clips.video_id
+		SELECT clips.*,COALESCE(p.score,0) AS rank,
+		(SELECT count(*) FROM user_interactions i JOIN users viewer ON viewer.id=i.user_id WHERE i.clip_id=clips.id AND i.interaction_type='click' AND viewer.role='client') AS views
+		FROM clips JOIN videos v ON v.id=clips.video_id LEFT JOIN popularity p ON p.video_id=clips.video_id
 		WHERE clips.status='published' AND clips.created_at<=$1
-		AND EXISTS(SELECT 1 FROM videos v WHERE v.id=clips.video_id AND v.status='processed' AND v.deleted_at IS NULL AND v.created_at<=$1)
-	) SELECT `+clipColumns+`,rank FROM ranked
+		AND v.status='processed' AND v.deleted_at IS NULL AND v.created_at<=$1
+		AND ($6='' OR coalesce(clips.category_id,v.category_id)=$6)
+	) SELECT `+clipColumns+`,rank,views FROM ranked
 	WHERE ($2='' OR (rank,created_at,id)<($3::bigint,$4::timestamptz,$2::text))
-	ORDER BY rank DESC,created_at DESC,id DESC LIMIT $5`, p.Snapshot, p.ID, p.Rank, p.CreatedAt, limit+1)
+	ORDER BY rank DESC,created_at DESC,id DESC LIMIT $5`, p.Snapshot, p.ID, p.Rank, p.CreatedAt, limit+1, categoryID)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -32,7 +38,7 @@ func (r *ClipRepo) ListPopularPage(ctx context.Context, cursor string, limit int
 	for rows.Next() {
 		var c domain.Clip
 		var rank int64
-		err := rows.Scan(&c.ID, &c.VideoID, &c.Title, &c.StartTime, &c.EndTime, &c.AverageScore, &c.ClipFilePath, &c.ThumbnailURL, &c.Status, &c.CreatedBy, &c.CategoryID, &c.CreatedAt, &c.UpdatedAt, &c.SourceSegments, &rank)
+		err := rows.Scan(&c.ID, &c.VideoID, &c.Title, &c.StartTime, &c.EndTime, &c.AverageScore, &c.ClipFilePath, &c.ThumbnailURL, &c.Status, &c.CreatedBy, &c.CategoryID, &c.CreatedAt, &c.UpdatedAt, &c.SourceSegments, &rank, &c.ViewCount)
 		if err != nil {
 			return nil, nil, err
 		}

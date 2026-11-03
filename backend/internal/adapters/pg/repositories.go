@@ -84,7 +84,7 @@ func (r *VideoRepo) SetStatus(ctx context.Context, id string, status domain.Vide
 	return update(ctx, r.DB, `UPDATE videos SET status=$2,updated_at=now() WHERE id=$1 AND status!='deleted'`, id, status)
 }
 func (r *VideoRepo) SetCategory(ctx context.Context, id, category string) error {
-	err := update(ctx, r.DB, `UPDATE videos SET category_id=$2,updated_at=now() WHERE id=$1 AND status!='deleted'`, id, category)
+	err := update(ctx, r.DB, `UPDATE videos SET category_assigned_at=CASE WHEN category_id IS DISTINCT FROM $2 THEN now() ELSE category_assigned_at END,category_id=$2,updated_at=now() WHERE id=$1 AND status!='deleted'`, id, category)
 	if errors.Is(err, domain.ErrNotFound) {
 		return domain.ErrVideoNotFound
 	}
@@ -323,7 +323,7 @@ func (r *CategoryRepo) Delete(ctx context.Context, id string) error {
 	if _, err = tx.Exec(ctx, `UPDATE clips SET category_id=NULL WHERE category_id=$1 AND video_id IN (SELECT id FROM videos WHERE status='deleted')`, id); err != nil {
 		return err
 	}
-	if _, err = tx.Exec(ctx, `UPDATE videos SET category_id=NULL WHERE category_id=$1 AND status='deleted'`, id); err != nil {
+	if _, err = tx.Exec(ctx, `UPDATE videos SET category_id=NULL,category_assigned_at=NULL WHERE category_id=$1 AND status='deleted'`, id); err != nil {
 		return err
 	}
 	tag, err := tx.Exec(ctx, `DELETE FROM categories WHERE id=$1`, id)

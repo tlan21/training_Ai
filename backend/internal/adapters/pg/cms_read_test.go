@@ -27,6 +27,15 @@ func TestCMSOperationsRealPersistence(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
+	assigned, err := os.ReadFile("../../../../infra/postgres/migrations/007_category_assigned_at.sql")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for i := 0; i < 2; i++ {
+		if _, err := db.Exec(ctx, string(assigned)); err != nil {
+			t.Fatal(err)
+		}
+	}
 	_, err = db.Exec(ctx, `INSERT INTO users(id,username,email,password_hash,role) VALUES('usr_admin','CMS user','cms@test.local','x','admin'),('usr_viewer','Viewer','viewer@test.local','x','client');
  INSERT INTO categories(id,name,keywords) VALUES('cat_news','News',ARRAY['news']);
  INSERT INTO videos(id,title,raw_file_path,status,uploaded_by,category_id,created_at,duration_seconds) VALUES
@@ -53,6 +62,30 @@ func TestCMSOperationsRealPersistence(t *testing.T) {
 	items, total, err = videos.ListCMS(ctx, f)
 	if err != nil || total != 2 || len(items) != 1 || items[0].ID != "vid_b" {
 		t.Fatalf("pagination/default deleted: %+v %d %v", items, total, err)
+	}
+	// 0.9.0: assignment time recorded on change only, kept on a same-category save, used by sort=category_assigned
+	if err := videos.SetCategory(ctx, "vid_b", "cat_news"); err != nil {
+		t.Fatal(err)
+	}
+	assignedB, err := videos.Get(ctx, "vid_b")
+	if err != nil || assignedB.CategoryAssignedAt == nil {
+		t.Fatalf("assigned_at not recorded: %+v %v", assignedB, err)
+	}
+	if err := videos.SetCategory(ctx, "vid_b", "cat_news"); err != nil {
+		t.Fatal(err)
+	}
+	if again, err := videos.Get(ctx, "vid_b"); err != nil || !again.CategoryAssignedAt.Equal(*assignedB.CategoryAssignedAt) {
+		t.Fatalf("same-category save moved assigned_at: %v", err)
+	}
+	if a, err := videos.Get(ctx, "vid_a"); err != nil || a.CategoryAssignedAt != nil {
+		t.Fatalf("pre-0.9.0 assignment must stay NULL: %v", err)
+	}
+	sorted, _, err := videos.ListCMS(ctx, domain.CMSVideoFilter{SortAssigned: true, Page: 1, Size: 20})
+	if err != nil || len(sorted) != 2 || sorted[0].ID != "vid_b" {
+		t.Fatalf("sort=category_assigned: %+v %v", sorted, err)
+	}
+	if _, err := db.Exec(ctx, `UPDATE videos SET category_id=NULL,category_assigned_at=NULL WHERE id='vid_b'`); err != nil {
+		t.Fatal(err)
 	}
 	f.IncludeDeleted = true
 	_, total, err = videos.ListCMS(ctx, f)

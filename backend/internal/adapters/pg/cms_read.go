@@ -21,12 +21,12 @@ func videoTargets(v *domain.Video) []any {
 }
 func scanCMSVideo(row pgx.Row) (*domain.Video, error) {
 	var v domain.Video
-	fields := append(videoTargets(&v), &v.CategoryName, &v.UploadedByName)
+	fields := append(videoTargets(&v), &v.CategoryName, &v.UploadedByName, &v.CategoryAssignedAt)
 	err := row.Scan(fields...)
 	return &v, notFound(err, domain.ErrVideoNotFound)
 }
 func videoCMSSelect() string {
-	return `SELECT ` + qualified(videoColumns, "v") + `,c.name,u.username FROM videos v LEFT JOIN categories c ON c.id=v.category_id LEFT JOIN users u ON u.id=v.uploaded_by `
+	return `SELECT ` + qualified(videoColumns, "v") + `,c.name,u.username,v.category_assigned_at FROM videos v LEFT JOIN categories c ON c.id=v.category_id LEFT JOIN users u ON u.id=v.uploaded_by `
 }
 func (r *VideoRepo) ListCMS(ctx context.Context, f domain.CMSVideoFilter) ([]domain.Video, int, error) {
 	where := ` WHERE ($1::text IS NULL OR v.status=$1) AND ($2::bool OR v.status!='deleted' OR $1::text='deleted')
@@ -37,7 +37,11 @@ func (r *VideoRepo) ListCMS(ctx context.Context, f domain.CMSVideoFilter) ([]dom
 	if err := r.DB.QueryRow(ctx, `SELECT count(*) FROM videos v`+where, args...).Scan(&total); err != nil {
 		return nil, 0, err
 	}
-	rows, err := r.DB.Query(ctx, videoCMSSelect()+where+` ORDER BY v.created_at DESC,v.id DESC LIMIT $7 OFFSET $8`, append(args, f.Size, (f.Page-1)*f.Size)...)
+	order := ` ORDER BY v.created_at DESC,v.id DESC`
+	if f.SortAssigned {
+		order = ` ORDER BY v.category_assigned_at DESC NULLS LAST,v.created_at DESC,v.id DESC`
+	}
+	rows, err := r.DB.Query(ctx, videoCMSSelect()+where+order+` LIMIT $7 OFFSET $8`, append(args, f.Size, (f.Page-1)*f.Size)...)
 	if err != nil {
 		return nil, 0, err
 	}

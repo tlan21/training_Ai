@@ -22,8 +22,12 @@ func contentRanks(repo *InteractionRepoMem, snapshot time.Time) map[string]int64
 	return ranks
 }
 
-func (r *ClipRepoMem) ListPopularPage(ctx context.Context, cursor string, limit int) ([]domain.Clip, *string, error) {
-	p, err := domain.ParseContentCursor(cursor, "feed", limit)
+func (r *ClipRepoMem) ListPopularPage(ctx context.Context, categoryID, cursor string, limit int) ([]domain.Clip, *string, error) {
+	scope := "feed"
+	if categoryID != "" {
+		scope += "/" + categoryID
+	}
+	p, err := domain.ParseContentCursor(cursor, scope, limit)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -38,6 +42,9 @@ func (r *ClipRepoMem) ListPopularPage(ctx context.Context, cursor string, limit 
 		if r.Videos != nil {
 			v, err := r.Videos.GetProcessed(ctx, c.VideoID)
 			if err != nil || v.DeletedAt != nil || v.CreatedAt.After(p.Snapshot) {
+				continue
+			}
+			if categoryID != "" && (c.CategoryID == nil || *c.CategoryID != categoryID) && (c.CategoryID != nil || v.CategoryID == nil || *v.CategoryID != categoryID) {
 				continue
 			}
 		}

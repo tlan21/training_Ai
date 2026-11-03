@@ -30,6 +30,7 @@ CREATE TABLE videos (
     fps DOUBLE PRECISION CHECK (fps > 0 AND fps < 'Infinity'::float8),
     hashtags TEXT[] CHECK (cardinality(hashtags) <= 30),
     editorial_priority VARCHAR(8) NOT NULL DEFAULT 'normal' CHECK(editorial_priority IN ('low','normal','high')),
+    category_assigned_at TIMESTAMPTZ,
     status VARCHAR(20) NOT NULL DEFAULT 'uploaded'
         CHECK (status IN ('uploaded', 'processing', 'processed', 'failed', 'deleted')),
     uploaded_by VARCHAR(50) REFERENCES users(id) ON DELETE SET NULL,
