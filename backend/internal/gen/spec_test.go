@@ -13,7 +13,7 @@ func TestCMSPlanAContract(t *testing.T) {
 	if err := spec.Validate(context.Background()); err != nil {
 		t.Fatal(err)
 	}
-	if spec.Info.Version != "0.8.0" {
+	if spec.Info.Version != "0.9.0" {
 		t.Fatalf("version %s", spec.Info.Version)
 	}
 	put := spec.Paths.Find("/api/cms/videos/{id}").Put
@@ -113,5 +113,23 @@ func TestVideoDeletionStorageContract(t *testing.T) {
 		if op.Responses.Status(code) == nil {
 			t.Fatalf("missing delete %d", code)
 		}
+	}
+}
+
+func TestDiscoveryCategoryContract(t *testing.T) {
+	spec, err := GetSwagger()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if spec.Paths.Find("/api/feed").Get.Parameters.GetByInAndName("query", "category_id") == nil {
+		t.Fatal("feed category filter missing")
+	}
+	sort := spec.Paths.Find("/api/cms/videos").Get.Parameters.GetByInAndName("query", "sort")
+	if sort == nil || len(sort.Schema.Value.Enum) != 2 {
+		t.Fatal("CMS video sort missing")
+	}
+	assigned := spec.Components.Schemas["Video"].Value.Properties["category_assigned_at"]
+	if assigned == nil || !assigned.Value.Nullable || !assigned.Value.ReadOnly {
+		t.Fatal("category_assigned_at must be nullable read-only")
 	}
 }

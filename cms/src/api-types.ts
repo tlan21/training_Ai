@@ -470,11 +470,12 @@ export interface paths {
         };
         /**
          * Feed clip published với mode gợi ý thực tế (D18)
-         * @description Primary popularity pages use an opaque next_cursor bound to this route. Ranking uses the first page's fixed seven-day interaction window and creation cutoff; current publication/deletion visibility is checked on every page. Forward the cursor unchanged. next_cursor is null when exhausted. Invalid cursor or limit returns 422.
+         * @description Primary popularity pages use an opaque next_cursor bound to this route. Ranking uses the first page's fixed seven-day interaction window and creation cutoff; current publication/deletion visibility is checked on every page. Forward the cursor unchanged. next_cursor is null when exhausted. Invalid cursor or limit returns 422. With category_id the feed is popularity-ranked clips whose own category, or else their video's category, matches; the cursor is bound to that category. Popularity pages include view_count.
          */
         get: {
             parameters: {
                 query?: {
+                    category_id?: string;
                     cursor?: components["parameters"]["Cursor"];
                     limit?: components["parameters"]["Limit"];
                 };
@@ -907,6 +908,8 @@ export interface paths {
                     /** @description Inclusive UTC day */
                     date_to?: string;
                     include_deleted?: boolean;
+                    /** @description category_assigned = latest category assignment first; videos without a recorded assignment last. */
+                    sort?: "newest" | "category_assigned";
                     page?: components["parameters"]["Page"];
                 };
                 header?: never;
@@ -2031,6 +2034,11 @@ export interface components {
             uploaded_by_name?: string | null;
             /** @enum {string} */
             editorial_priority?: "low" | "normal" | "high";
+            /**
+             * Format: date-time
+             * @description CMS only. When the current category was assigned; null for assignments made before 0.9.0 (not backfilled).
+             */
+            readonly category_assigned_at?: string | null;
             /** Format: date-time */
             created_at?: string;
         };
@@ -2057,7 +2065,7 @@ export interface components {
             end_time: number;
         };
         Clip: {
-            /** @description Count of validated Client click/open events for this clip. */
+            /** @description Count of validated Client click/open events for this clip. Returned by CMS clip lists and popularity feed pages only. */
             readonly view_count?: number;
             readonly created_by_name?: string | null;
             readonly category_name?: string | null;
