@@ -249,7 +249,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
         await expect(page.locator('.proposal-card.is-selected')).toContainText('98% Match');
         await expect(page.locator('.highlight-player .player-time')).toContainText('00:41:05');
         await expect(page.locator('.highlight-player .player-time')).toContainText('01:30:00');
-        await expect(page.locator('.proposal-card.is-selected .proposal-meta .mono')).toHaveText('00:41:05 - 00:42:30');
+        await expect(page.locator('.proposal-card.is-selected .proposal-meta .proposal-time')).toHaveText('00:41:05 - 00:42:30');
         await expect(page.locator('.proposal-actions .icon-button').first()).toHaveCSS('width', '32px');
       }
       await page.evaluate(() => document.fonts.ready);
@@ -277,7 +277,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
         if (screen === 'categories') {
           await expect(page.locator('.category-recent')).toHaveCSS('height', '400px');
           await expect(page.locator('.page-header .btn-primary')).toHaveCSS('height', '44px');
-          await expect(page.locator('.category-table td.micro').first()).toHaveCSS('font-size', '12px');
+          await expect(page.locator('.category-table td.category-description').first()).toHaveCSS('font-size', '12px');
         }
         if (route.startsWith('highlight')) expect(await page.locator('.proposal-panel > .panel-heading').evaluate(element => element.getBoundingClientRect().height)).toBe(57);
         expect(await page.locator('.cms-sidebar').evaluate((element) => element.getBoundingClientRect().width)).toBe(260);
@@ -343,7 +343,7 @@ for (const width of [390, 1440]) {
     await expect.poll(() => video.evaluate((media: HTMLVideoElement) => media.readyState)).toBeGreaterThan(0);
     await expect(page.getByRole('button', { name: 'Phát video', exact: true })).toHaveCSS('width', '48px');
     await expect(page.getByRole('button', { name: 'Phát video', exact: true })).toHaveCSS('border-radius', '12px');
-    await page.getByRole('button', { name: '00:04 – 00:08', exact: true }).click();
+    await page.getByRole('button', { name: '00:04 - 00:08', exact: true }).click();
     await expect.poll(() => video.evaluate((media: HTMLVideoElement) => media.currentTime)).toBeCloseTo(4, 1);
     await expect(page.locator('.player-scrubber')).toHaveCSS('height', '4px');
     await expect.poll(() => page.locator('.player-scrubber > span').evaluate(element => element.getBoundingClientRect().width / element.parentElement!.getBoundingClientRect().width)).toBeCloseTo(.5, 1);
@@ -373,7 +373,7 @@ test('T3.1 transcript warning, seek, save and summary approval', async ({ page }
   await setupUI(page);
   await page.goto(`${cms}/subtitles?video_id=${videoId}`);
   await expect(page.getByText('62% tin cậy')).toHaveClass(/confidence-low/);
-  await page.getByRole('button', { name: '00:04 – 00:08', exact: true }).click();
+  await page.getByRole('button', { name: '00:04 - 00:08', exact: true }).click();
   await expect(page.locator('.transcript-row.is-active')).toContainText('62%');
   await page.getByLabel('Nội dung phụ đề 2').fill('Phụ đề đã sửa');
   const saved = page.waitForRequest((request) => request.url().endsWith('/subtitles') && request.method() === 'PUT');
@@ -549,4 +549,24 @@ for(const width of [390,1440]) test(`INT-50 ${width} cancellation waits for work
 
 test('INT-50 regenerate without an AI title preserves editorial title',async({page})=>{
  await setupUI(page);await page.route('**/summary/regenerate',route=>route.fulfill({json:{summary:'AI draft',suggested_title:''}}));await page.goto(`${cms}/subtitles?video_id=${videoId}`);await expect(page.getByLabel('Tiêu đề đề xuất',{exact:true})).toHaveValue(videos[0].title!);await page.getByRole('button',{name:'Tạo lại bản nháp AI',exact:true}).click();await expect(page.getByLabel('Tiêu đề đề xuất',{exact:true})).toHaveValue(videos[0].title!);
+});
+
+test('INT-05 L per-status video actions, library AI badge, queue overlay and hashtag chips', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 }); await setupUI(page);
+  const retried = page.waitForRequest(request => request.url().endsWith('/api/cms/jobs/job_design03/retry') && request.method() === 'POST');
+  await page.route('**/api/cms/jobs/job_design03/retry', route => route.fulfill({ json: {} }));
+  await page.goto(`${cms}/videos`);
+  await expect(page.getByRole('button', { name: 'Dừng xử lý Phỏng vấn độc quyền: Tương lai Web3', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Xóa Hướng dẫn sử dụng hệ thống v2', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Biên tập Hướng dẫn sử dụng hệ thống v2', exact: true })).toHaveCount(0);
+  await page.getByRole('button', { name: 'Thử lại Hướng dẫn sử dụng hệ thống v2', exact: true }).click(); await retried;
+  await page.goto(`${cms}/published`); await page.getByRole('tab', { name: /Video gốc/ }).click();
+  await expect(page.locator('.ai-state--done').first()).toHaveText('AI HOÀN TẤT');
+  await expect(page.locator('.ai-state--failed')).toHaveText('AI LỖI');
+  await expect(page.locator('.ai-state--running')).toHaveText('AI ĐANG XỬ LÝ');
+  await page.goto(`${cms}/queue`); await expect(page.locator('.queue-thumb--failed')).toHaveCount(1);
+  await page.goto(`${cms}/subtitles?video_id=${videoId}`);
+  await page.getByRole('button', { name: 'Bỏ thẻ BongDa', exact: true }).click();
+  await expect(page.getByLabel('Thẻ Hashtag', { exact: true })).toHaveValue('Highlight');
+  await page.getByRole('button', { name: '+ Thêm', exact: true }).click(); await expect(page.getByLabel('Thẻ Hashtag', { exact: true })).toBeFocused();
 });

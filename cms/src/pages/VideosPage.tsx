@@ -36,7 +36,7 @@ const search = params.get("q")?.trim() ?? "";
   const jobAction = async (videoId: string, action: "retry" | "cancel") => {
     if (action === "cancel" && !confirm("Dừng xử lý video này?")) return;
     try {
-      const job = (await apiClient.get<components["schemas"]["Job"][]>("/api/cms/jobs", { params: { video_id: videoId } })).data[0];
+      const job = (await apiClient.get<components["schemas"]["Job"][]>("/api/cms/jobs", { params: { video_id: videoId } })).data.find(item => item.video_id === videoId);
       if (!job?.id) throw new Error("Không tìm thấy job xử lý của video");
       await apiClient.post(`/api/cms/jobs/${job.id}/${action}`);
       toast.ok(action === "cancel" ? "Đã gửi yêu cầu dừng xử lý" : "Đã xếp lại video vào hàng đợi");
