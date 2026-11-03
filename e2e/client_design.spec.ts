@@ -449,11 +449,12 @@ test('T3.2 draft summary hidden and saved list gap is clear',async({page})=>{
 test('T3.2 refresh restores session without persisting access token',async({page})=>{
  const {requests}=await setup(page);await page.goto(client+'/feed');await expect(page.locator('.feed-clip')).toHaveCount(3);await page.reload();await expect(page.locator('.feed-clip')).toHaveCount(3);expect(requests.filter(p=>p==='/api/auth/refresh')).toHaveLength(2);expect(await page.evaluate(()=>localStorage.getItem('client-auth'))).toBeNull();
 });
-test('0.9.0 header inline search suggestions open the matched moment',async({page})=>{
+test('0.9.0 header inline search suggestions open the matched moment',async({page},info)=>{
  await page.setViewportSize({width:1440,height:900});await setup(page);await page.goto(client+'/feed');
  const box=page.getByRole('textbox',{name:'Tìm kiếm video'});await box.fill('quan trọng');
  const list=page.getByRole('listbox',{name:'Gợi ý tìm kiếm'});await expect(list.getByRole('option')).toHaveCount(2);
  await expect(list.getByRole('option').first()).toContainText('00:24 · Đây là khoảnh khắc quan trọng.');
+ await page.screenshot({path:info.outputPath('suggest-1440.png')});
  await box.press('Escape');await expect(list).toHaveCount(0);
  await box.fill('quan trọng!');await list.getByRole('option').first().click();await expect(page).toHaveURL(/\/videos\/vid_ui1\?t=24$/);
 });

@@ -3,6 +3,7 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
+- **2026-11-03 (API 0.9.0, user "làm mục A"):** feed category_id + view_count, CMS sort/category_assigned_at (migration 007 áp live, dữ liệu không đổi), header search inline. Gateway `int09-85436a3`, CMS/Client `int09-32083e5`, 175 PASS. INT-05/06/14/50 DONE. Còn mở: INT-03 (AI-12/D19), INT-07/08 (GPU), INT-09 docs, AI-05 §7, AI-12, AI-04.
 - **2026-11-03 (L items UI):** INT-04 DONE (client `int06-387ec2a`); INT-05 L xong (CMS `int05-0316dc6`, fixture 77 PASS), còn Danh mục 'N phút trước' cần field API. Còn mở chỉ là mục cần đổi API/owner: view_count feed, search inline, lọc clip theo danh mục, mốc gán danh mục.
 - **2026-11-03 ("tiếp tục theo bạn đề xuất"):** INT-06 quyết định owner áp dụng (client `int06-73b13e3`); REVIEW 15 task INT đóng
   (`evidence/REVIEW_2026-11-03/README.md`), INT-17 vá follow-redirects (client `int06-e33e956`, 96/96 PASS). Gate: INT-03 chặn (NO_DATA, AI-12/D19),
