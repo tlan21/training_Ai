@@ -1,0 +1,153 @@
+[
+ {
+  "test": "INT-42 invalid ingest, error log, retry keeps snapshot, cancel, deleted-source guard",
+  "step": "invalid upload fails job + video",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-42 invalid ingest, error log, retry keeps snapshot, cancel, deleted-source guard",
+  "step": "Queue failed filter + error log modal",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-42 invalid ingest, error log, retry keeps snapshot, cancel, deleted-source guard",
+  "step": "retry via UI keeps original processing snapshot",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-42 invalid ingest, error log, retry keeps snapshot, cancel, deleted-source guard",
+  "step": "canceled job",
+  "result": "NOTE",
+  "detail": {
+   "error_log": "canceled_by_user",
+   "stage": "splitting_frames"
+  }
+ },
+ {
+  "test": "INT-42 invalid ingest, error log, retry keeps snapshot, cancel, deleted-source guard",
+  "step": "cancel running job from Queue",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-42 invalid ingest, error log, retry keeps snapshot, cancel, deleted-source guard",
+  "step": "retry after delete",
+  "result": "NOTE",
+  "detail": 409
+ },
+ {
+  "test": "INT-42 invalid ingest, error log, retry keeps snapshot, cancel, deleted-source guard",
+  "step": "deleted source: retry rejected 409, hidden from default list",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-49 Dashboard metrics/storage/report match the API",
+  "step": "dashboard metrics",
+  "result": "NOTE",
+  "detail": {
+   "month": "2026-11",
+   "total_videos": 5,
+   "success_rate": 80,
+   "storage_bytes": 405455814
+  }
+ },
+ {
+  "test": "INT-49 Dashboard metrics/storage/report match the API",
+  "step": "stat cards = API values",
+  "result": "PASS"
+ },
+ {
+  "test": "INT-49 Dashboard metrics/storage/report match the API",
+  "step": "month switch queries previous month; report download contains metrics",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /dashboard: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /videos: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /queue: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /highlight: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /subtitles: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /published: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /categories: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /users: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "1440 /settings: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "390 /dashboard: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "390 /videos: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "390 /queue: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "390 /highlight: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "390 /subtitles: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "390 /published: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "390 /categories: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "390 /users: no horizontal overflow",
+  "result": "PASS"
+ },
+ {
+  "test": "Layout pass: 9 screens at 390/1440 — no horizontal overflow, screenshots for Stitch review",
+  "step": "390 /settings: no horizontal overflow",
+  "result": "PASS"
+ }
+]

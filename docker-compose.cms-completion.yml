@@ -1,7 +1,9 @@
-# Local app release INT-50 (gateway 83bacd4 = 74344bb + category delete fix; CMS int05-fd0b418 = INT-05 Stitch parity, Claude HO-05). Use with root + docker-compose.inference.yml.
+# Local app release INT-50/INT-06 (gateway d41fe71 = 83bacd4 + public video list scan fix; CMS int05-fd0b418 = INT-05 Stitch parity, Claude HO-05). Use with root + docker-compose.inference.yml.
 # Pins only owned app images; AI, workers, databases, ports and volumes inherit existing configuration.
 services:
   gateway:
-    image: video-ai-gateway:int50-83bacd4
+    image: video-ai-gateway:int06-d41fe71
   cms:
     image: video-ai-cms:int05-fd0b418
+  client:
+    image: video-ai-client:int06-a52a911

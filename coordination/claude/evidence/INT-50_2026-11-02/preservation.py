@@ -5,6 +5,7 @@ Original rows/documents/objects/vectors must be byte-identical after QA. The onl
 videos/categories whose title/name starts with "CLAUDE-QA", and clips/jobs/interactions/Mongo docs/MinIO keys/vectors tied to those videos.
 system_settings compare key+value (restoring a flag rewrites updated_at). No secret is printed (settings values are hashed).
 """
+import base64
 import datetime
 import hashlib
 import json
@@ -66,7 +67,10 @@ def _video_id(payload):
         try:
             payload = json.loads(payload)
         except json.JSONDecodeError:
-            return None
+            try:                                    # JSON field may come back base64-encoded
+                payload = json.loads(base64.b64decode(payload))
+            except (ValueError, json.JSONDecodeError):
+                return None
     return (payload or {}).get("video_id")
 
 
@@ -106,7 +110,7 @@ else:
         report["extras"][f"minio.{bucket}"] = new
         report["problems"] += [f"unexpected object {bucket}/{k}" for k in new if not any(v in k for v in own_videos)]
     cur = {v["id"]: v for v in result["milvus"]}
-    report["problems"] += [f"original vector changed: {v['id']}" for v in before["milvus"] if cur.get(v["id"]) != v]
+    report["problems"] += [f"original vector changed: {v['id']}" for v in before["milvus"] if cur.get(v["id"], {}).get("hash") != v["hash"]]
     ids = {v["id"] for v in before["milvus"]}
     report["extras"]["milvus"] = [v["id"] for v in cur.values() if v["id"] not in ids]
     report["problems"] += [f"unexpected vector {v['id']}" for v in cur.values() if v["id"] not in ids and v["video_id"] not in own_videos]
