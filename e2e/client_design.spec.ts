@@ -363,6 +363,8 @@ for(const width of [390,1440]){
   await page.setViewportSize({width,height:width===390?844:900});await setup(page);await page.goto(client+'/videos/vid_ui1?t=22');
   const player=page.locator('.detail-player video');await expect.poll(()=>player.evaluate((el:HTMLVideoElement)=>el.currentTime)).toBeCloseTo(2,0);
   await expect(page.locator('.subtitle-overlay')).toContainText('Bản nháp phụ đề AI');
+  if(width===390){const sub=(await page.locator('.subtitle-overlay').boundingBox())!,ctl=(await page.locator('.detail-center-controls').boundingBox())!;expect(sub.y+sub.height).toBeLessThanOrEqual(ctl.y+1);}
+  await page.getByRole('button',{name:'Đến 00:24, điểm 94',exact:true}).hover();await expect(page.getByRole('tooltip')).toHaveText('Độ nóng: 94%');
   await page.getByRole('button',{name:'Đến 00:24, điểm 94',exact:true}).click();await expect.poll(()=>player.evaluate((el:HTMLVideoElement)=>el.currentTime)).toBeCloseTo(4,0);
   if(width===390)await page.getByRole('button',{name:'Bản ghi',exact:true}).click();
   const panel=page.locator(width===390?'.transcript-dialog':'.transcript-desktop');
