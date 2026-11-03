@@ -84,7 +84,7 @@ func (r *VideoRepo) ListPublicPage(ctx context.Context, categoryID, sort, cursor
 	for rows.Next() {
 		var v domain.Video
 		var rank int64
-		err := rows.Scan(&v.ID, &v.Title, &v.Description, &v.RawFilePath, &v.ThumbnailURL, &v.DurationSeconds, &v.Status, &v.UploadedBy, &v.CategoryID, &v.DeletedAt, &v.CreatedAt, &v.UpdatedAt, &v.Width, &v.Height, &v.FPS, &v.Hashtags, &rank)
+		err := rows.Scan(&v.ID, &v.Title, &v.Description, &v.RawFilePath, &v.ThumbnailURL, &v.DurationSeconds, &v.Status, &v.UploadedBy, &v.CategoryID, &v.DeletedAt, &v.CreatedAt, &v.UpdatedAt, &v.Width, &v.Height, &v.FPS, &v.Hashtags, &v.EditorialPriority, &rank)   // videoColumns gained editorial_priority (migration 006)
 		if err != nil {
 			return nil, nil, err
 		}
