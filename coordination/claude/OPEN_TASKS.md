@@ -90,21 +90,21 @@ Settings trong scope hiện tại là tab Cấu hình AI: executionflags/actualb
 
 | Check | Task | Nội dung / hướng đối chiếu |
 |---|---|---|
-| [ ] | INT-00 | Hạ tầng/dependency/mock khởi tạo; so bằng chứng cleanimage/worker và các actual runtime releases đã có. |
-| [ ] | INT-01 | Backend trên stack thật; đã có actualE2E, đối chiếu acceptance và release hiện tại. |
-| [ ] | INT-02 | Persistence Postgres nghiệp vụ; đối chiếu adapter/restart và live chứng cứ, không quay lại memory. |
-| [ ] | INT-11 | HTTP media Docker↔AI; mô tả host cũ là lịch sử, runtime hiện officialcontainer/v3 đã kiểm. |
-| [ ] | INT-12 | CMS accessJWT-in-RAM/refresh; đối chiếu security convention và tests đã có. |
-| [ ] | INT-13 | Ingest image/clean build; deployedworker và pipeline đã chạy, xem còn acceptance clean-machine nào thật sự thiếu. |
-| [ ] | INT-15 | Interaction/export choTwoTower; schema/provenance accepted khác với dataquality gate. Cập nhật NO_DATA cũ bằng snapshot hợp lệ trước quyết định tiếp. |
-| [ ] | INT-16 | Same-origin Client API transport; đối chiếu deployedimage/liveauth evidence. |
-| [ ] | INT-17 | Client framework migration; đối chiếu build/lint/audit/runtime evidence và acceptance, không tự nâng framework lại. |
-| [ ] | INT-18 | Bounded dependency startup; cold-start thật đã có ởINT-27, đối chiếu đủ acceptance trước đóng. |
-| [ ] | INT-19 | Cursor/error contract; kiểm provenance schema/generatedtypes và pagination evidence, không mở endpoint mới. |
-| [ ] | INT-20 | CMS metadata contract; đã có public0.4…0.8, đối chiếu release/schema evidence. |
-| [ ] | INT-21 | Approved CMSplanA persistence/mapping;006/004 và deploy liên quan đã có, final UI/live acceptance phải nêu rõ scope. |
-| [ ] | INT-24 | Draftsubtitle/summaryapproval; actual source/deployedproof đã có, đối chiếu full acceptance và liên kếtINT-26/50/57. |
-| [ ] | INT-29 | Unified deletion contract; generatedschema và actual repeateddelete/backend cleanup đã có, đối chiếu trước đóng. |
+| [x] | INT-00 | DONE (Claude 2026-11-03, REVIEW đối chiếu — `coordination/claude/evidence/REVIEW_2026-11-03/README.md`). Hạ tầng/dependency/mock khởi tạo; so bằng chứng cleanimage/worker và các actual runtime releases đã có. |
+| [x] | INT-01 | DONE (Claude 2026-11-03, REVIEW đối chiếu — `coordination/claude/evidence/REVIEW_2026-11-03/README.md`). Backend trên stack thật; đã có actualE2E, đối chiếu acceptance và release hiện tại. |
+| [x] | INT-02 | DONE (Claude 2026-11-03, REVIEW đối chiếu — `coordination/claude/evidence/REVIEW_2026-11-03/README.md`). Persistence Postgres nghiệp vụ; đối chiếu adapter/restart và live chứng cứ, không quay lại memory. |
+| [x] | INT-11 | DONE (Claude 2026-11-03, REVIEW đối chiếu — `coordination/claude/evidence/REVIEW_2026-11-03/README.md`). HTTP media Docker↔AI; mô tả host cũ là lịch sử, runtime hiện officialcontainer/v3 đã kiểm. |
+| [x] | INT-12 | DONE (Claude 2026-11-03, REVIEW đối chiếu — `coordination/claude/evidence/REVIEW_2026-11-03/README.md`). CMS accessJWT-in-RAM/refresh; đối chiếu security convention và tests đã có. |
+| [x] | INT-13 | DONE (Claude 2026-11-03, REVIEW đối chiếu — `coordination/claude/evidence/REVIEW_2026-11-03/README.md`). Ingest image/clean build; deployedworker và pipeline đã chạy, xem còn acceptance clean-machine nào thật sự thiếu. |
+| [x] | INT-15 | DONE (Claude 2026-11-03, REVIEW đối chiếu — `coordination/claude/evidence/REVIEW_2026-11-03/README.md`). Interaction/export choTwoTower; schema/provenance accepted khác với dataquality gate. Cập nhật NO_DATA cũ bằng snapshot hợp lệ trước quyết định tiếp. |
+| [x] | INT-16 | DONE (Claude 2026-11-03, REVIEW đối chiếu — `coordination/claude/evidence/REVIEW_2026-11-03/README.md`). Same-origin Client API transport; đối chiếu deployedimage/liveauth evidence. |
+| [x] | INT-17 | DONE (Claude 2026-11-03, REVIEW đối chiếu — `coordination/claude/evidence/REVIEW_2026-11-03/README.md`). Client framework migration; đối chiếu build/lint/audit/runtime evidence và acceptance, không tự nâng framework lại. |
+| [x] | INT-18 | DONE (Claude 2026-11-03, REVIEW đối chiếu — `coordination/claude/evidence/REVIEW_2026-11-03/README.md`). Bounded dependency startup; cold-start thật đã có ởINT-27, đối chiếu đủ acceptance trước đóng. |
+| [x] | INT-19 | DONE (Claude 2026-11-03, REVIEW đối chiếu — `coordination/claude/evidence/REVIEW_2026-11-03/README.md`). Cursor/error contract; kiểm provenance schema/generatedtypes và pagination evidence, không mở endpoint mới. |
+| [x] | INT-20 | DONE (Claude 2026-11-03, REVIEW đối chiếu — `coordination/claude/evidence/REVIEW_2026-11-03/README.md`). CMS metadata contract; đã có public0.4…0.8, đối chiếu release/schema evidence. |
+| [x] | INT-21 | DONE (Claude 2026-11-03, REVIEW đối chiếu — `coordination/claude/evidence/REVIEW_2026-11-03/README.md`). Approved CMSplanA persistence/mapping;006/004 và deploy liên quan đã có, final UI/live acceptance phải nêu rõ scope. |
+| [x] | INT-24 | DONE (Claude 2026-11-03, REVIEW đối chiếu — `coordination/claude/evidence/REVIEW_2026-11-03/README.md`). Draftsubtitle/summaryapproval; actual source/deployedproof đã có, đối chiếu full acceptance và liên kếtINT-26/50/57. |
+| [x] | INT-29 | DONE (Claude 2026-11-03, REVIEW đối chiếu — `coordination/claude/evidence/REVIEW_2026-11-03/README.md`). Unified deletion contract; generatedschema và actual repeateddelete/backend cleanup đã có, đối chiếu trước đóng. |
 
 INT-38 ở nhóm giao diện phía trên là task REVIEW thứ16. Các ghi chú “chờ release user”, “Docker chưa lên”, “áp006”, “deploycancel”, “PID3392 đang chạy” trong checkpoint cũ không phải chỉ dẫn hiện tại: runtime đã được cập nhật, PID cũ không được tự dừng hoặc giả định còn thuộc QA. Luôn xác minh PID/port/command trước thao tác.
 
