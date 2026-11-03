@@ -3632,9 +3632,11 @@ input[type=checkbox] {
 .heatmap { height: 24px; }
 .heatmap > .hm-low { background: #630ed466; }
 .heatmap > .hm-mid { background: #fea61999; }
-.heatmap > .hm-peak { background: #c6252bcc; animation: hm-pulse 2s ease-in-out infinite; transform-origin: bottom; }
+.heatmap > .hm-peak { background: #c6252bcc; }
+/* pulse on an overlay so the clickable bar itself stays still (pointer targets must be stable) */
+.heatmap > .hm-peak::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: inherit; animation: hm-pulse 2s ease-in-out infinite; transform-origin: bottom; pointer-events: none; }
 @keyframes hm-pulse { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.05); } }
-@media (prefers-reduced-motion: reduce) { .heatmap > .hm-peak { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .heatmap > .hm-peak::after { animation: none; } }
 @media(max-width:1023px) { .heatmap { gap: 1px; } .heatmap > button { border-radius: 1px 1px 0 0; } .detail-center-controls { gap: 24px; justify-content: center; } }
 @media(min-width:1024px) {
   .heatmap > .hm-low { background: #630ed44d; }

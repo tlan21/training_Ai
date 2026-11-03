@@ -379,7 +379,7 @@ for(const width of [390,1440]){
   const pending=page.waitForRequest(r=>r.url().endsWith('/api/search/visual'));
   await page.locator('input[aria-label="Ảnh từ thư viện"]').setInputFiles(path.join(__dirname,'../client/public/stitch/interest_onboarding_mobile-0.jpg'));
   expect((await pending).postData()).toContain('0.85');await expect(page.locator('.search-result')).toHaveCount(2);
-  await expect(page.getByText('98% TƯƠNG ĐỒNG')).toBeVisible();
+  await expect(page.getByText(width===390?'98% TƯƠNG ĐỒNG':'Khớp: 98.2%')).toBeVisible();
   const changed=page.waitForRequest(r=>r.url().endsWith('/api/search/visual')&&!!r.postData()?.includes('0.9'));
   await page.getByLabel('Mức độ tương đồng:',{exact:false}).fill('90');await changed;
   await page.screenshot({path:info.outputPath('visual-'+width+'.png'),fullPage:true});await noOverflow(page);
