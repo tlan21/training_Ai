@@ -27,6 +27,8 @@ Backlog ứng dụng 32 ID INT: `coordination/claude/OPEN_TASKS.md` (tick + evid
 | AI-21 | T1.5 | Xác nhận vòng 8 ×10 trên test tin tức độc lập (kênh mới, nhãn mù); đổi khi test tin tức +0.05 và bóng đá ≥ −0.01 | DONE (2026-10-30, release #5; ×10 ACTIVE) | AI-20; user 2026-10-30 (hướng 1) |
 | AI-22 | T1.8 | HO-04: runtime AI chính thức = container Docker (user 2026-11-02) — image bất biến từ source hiện hành (v1.4 + AI-19 + recipe) + bằng chứng readiness/parity checkpoint–source; Codex đổi tag compose (HC-16) | DONE (2026-11-02; Codex triển khai `ai-v1.4-62b7e05` = RE:HC-16; image release #6 ⇐ HC-18) | HO-04; Docker engine UP |
 | AI-23 | T1.8 | D24 bước 3: gỡ 4 path `/v1` deprecated + MinIO/Milvus khỏi inference-service (AI-API v3.0), image mới + parity | DONE (release #7, 2026-11-02); Codex đã triển khai (RE:HC-19, INT-57) | AI-15; RE:HC-17 (Codex INT-55: không còn gọi) |
+| AI-24 | T1.6 | D29-A: MiniGPT thích nghi bóng đá — tiếp tục từ `cf9cfa71` trên bài báo Thể thao/bóng đá (Binhvq, nhãn biên tập báo) + replay tin chung, staged clean→ASR-noise; cổng đăng ký trước bên dưới | IN_PROGRESS (2026-11-03) | D29 (user 2026-11-03) |
+| AI-25 | T1.4 | D29-B: ASR bóng đá — Claude tìm video bình luận bóng đá tiếng Việt giấy phép mở (CC BY/BY-SA), gửi danh sách user duyệt trước khi tải; phụ đề người sửa trong CMS → HUMAN_VERIFIED → fine-tune có guard | TODO (chờ AI-24; tải chờ user duyệt danh sách + ổ D:) | D29; user duyệt nguồn |
 | AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | BLOCKED ⇐ bundle INT-13 (phần độc lập xong 2026-10-26) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | DONE (2026-10-26; sandbox + artifact; product → AI-12 theo D18) | HC-04 (sandbox READY) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | DONE (02a 2026-10-27 · 02b user duyệt 51/60 2026-10-28 · 02c guard loại, không promote) · D23 dừng cho MVP | — |
@@ -207,6 +209,19 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   Contract touched: yes (v1.2-rc1, chỉ thêm VisionRequest.video_id)
   Next safe task: release #2 (user duyệt push)
   ```
+
+### AI-24 — D29-A: MiniGPT thích nghi domain bóng đá
+- T gốc: T1.6 | Owner: claude | Status: IN_PROGRESS (2026-11-03)
+- Quyết định D29 (user 2026-11-03, "làm bước tiếp theo training tóm tắt cải thiện cho domain bóng đá" + chọn "A ngay, B khi có audio", "Claude tìm nguồn CC"):
+  mở lại D23 riêng domain bóng đá; guard không nới. Ghi vào PROJECT_STATUS ở release kế.
+- Dữ liệu: Binhvq News (`category == "Thể thao"` + từ khóa bóng đá ở tiêu đề/sapo); target = tiêu đề/sapo biên tập báo (không pseudo-label, không nhãn Claude).
+  Test bóng đá 1000 bài đóng băng từ file test chính thức, tách khỏi test1000 chung; dedup body như T1.6c. Train: shard train HF + replay tin chung 1:1.
+- Cổng đăng ký trước (chấm test 1 lần, sau khi chọn checkpoint chỉ bằng val):
+  1. Test bóng đá: ROUGE-L ứng viên > Lead-1 và > `cf9cfa71`, CI95 paired Δ(ứng viên − cf9cfa71) cận dưới > 0 (clean và ASR-noisy).
+  2. Test1000 chung: ROUGE-L ứng viên ≥ `cf9cfa71` − 0.005 (clean và noisy).
+  3. Không tăng tỉ lệ lặp n-gram/thiếu EOS so với `cf9cfa71`.
+  Đạt cả 3 → đề xuất user thay checkpoint (image inference mới + parity). Human ≥3/5 (3 người, 30 tóm tắt) vẫn mở — không thay bằng điểm tự động.
+- Giới hạn biết trước: video bóng đá thật bị chặn ở ASR (transcript_quality 0.5–0.6, API 0.10.0 không tóm tắt) → lợi ích thấy được trên sản phẩm cần AI-25.
 
 ### AI-23 — D24 bước 3: inference-service chỉ tính toán hoàn toàn
 - T gốc: T1.8 | Owner: claude | Status: DONE (release #7, 2026-11-02); triển khai xong (RE:HC-19, Codex INT-57, VERIFIED-NOW Claude: container `ai-v3.0-48735ff`, 0 env MinIO/Milvus, /health 6 model `stub_mode=false` `dependencies={}`)
