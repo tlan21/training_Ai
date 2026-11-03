@@ -59,3 +59,11 @@ Original owner-decision list (for reference):
 Larger items (L): player seek bar position/tooltip/thumb per Stitch; mobile caption overlaps center controls when paused (390);
 public feed `view_count` (OpenAPI change); remaining per-screen micro spacing.
 AI lane note: Vietnamese ASR drafts in the captures are low quality (dropped letters) — model issue (AI-05/AI-12), not UI.
+
+## L items (2026-11-03) — client `int06-387ec2a` (+ INT-17 lockfile fix e33e956)
+- Player (INT-04) per Stitch: on mobile the AI-draft subtitle (max 2 lines) and the controls row (replay_10 · play_circle · forward_10 left,
+  fullscreen right) are stacked in the bottom block above the heatmap — no overlap at 390 (asserted in `client_design`); thin 3px seek line with
+  primary fill and 12px thumb with a white ring; "Độ nóng: X%" tooltip on heatmap hover/focus (primary chip on mobile, white card on desktop).
+- Regression 96/96 PASS on `int06-387ec2a`.
+- Still open: public feed `view_count` (OpenAPI change), header inline search (6) and clip category filter (7) — deferred by the owner.
+

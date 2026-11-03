@@ -59,3 +59,20 @@ Subtitles hashtag chip close + "+ Thêm", monitor-card fine details.
   "Chào mừng quay trở lại, {username}. Đây là hiệu suất xử lý hôm nay."
 - Remaining for full PASS: the L items listed above (playhead marker, per-status Videos actions, Library AI badge, Categories time-ago,
   Queue thumbnail overlays, hashtag chip controls).
+
+## L items (user 2026-11-03: "Hạng mục lớn còn lại về giao diện") — CMS `int05-0316dc6`
+- Highlight: playhead diamond 12px + `HH:MM:SS` label (mono 10px, primary, clamped at both ends, 36px room above the canvas); selection grips
+  12×24 / 2px radius with two white lines. The canvas still draws the 2px playhead line (pixel test unchanged).
+- Library: AI badge per Stitch — "AI HOÀN TẤT" / "AI ĐANG XỬ LÝ" (spinning `sync`) / "AI LỖI". Honest mapping: clips can only be created from
+  processed videos (AI done), a clip in `processing` is still being cut; originals follow the job outcome; deleted shows none. Clips have no failed state.
+- Videos: per-status actions — processed: view/edit/delete; uploaded/processing: progress/edit/**stop** (`POST /api/cms/jobs/{id}/cancel`,
+  confirm); failed: **retry** (`.../retry`) + delete. Job looked up by `video_id` at click time (no extra list load).
+- Queue: thumbnail overlays — running: dark 40% + spinning `sync`; failed: grey 50% + 2px error ring.
+- Subtitles: hashtag chips get a remove (×) button; dashed "+ Thêm" focuses the input (text field kept — existing flows/tests rely on it).
+- Not done: Categories "N phút trước" — the API has no category-assignment timestamp (video `updated_at` changes on any edit), so showing it
+  would mislead. Needs an API field (OpenAPI change) — owner decision.
+- Verified: CMS `tsc` + image build; fixture suites `cms_design` + `cms_auth` + `cms_account_scope` + `cms_operational_search` +
+  `cms_settings_faults` **77 passed / 4 skipped** (new test: per-status actions + retry request, AI badges, queue overlay, hashtag chips; 6 stale
+  INT-05 expectations updated: `.proposal-time`, `td.category-description`, timecode " - "). Read-only live captures `after-L/` (real data).
+  Live upload suite not re-run (creates data; this pass was UI-only by user choice).
+
