@@ -3,6 +3,10 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
+- **2026-11-03 (D29, user "xóa tóm tắt và làm bước tiếp theo training tóm tắt… bóng đá"):** xóa 5 tóm tắt bịa (c0c4261, `evidence/SUMMARY-CLEANUP_2026-11-03/`).
+  AI-24 IN_PROGRESS: Kaggle `traininghighlight/ai-core-minigpt-football-v1` v1 RUNNING (dataset `minigpt-football-v1`, code 807079d/8ef8e07).
+  Xong → TẢI OUTPUT NGAY (Kaggle chỉ giữ bản mới nhất) vào `D:/data_training_ai/minigpt_football_v1/output_v1/`, đọc `football_run/gate/football_gate.json`.
+  Gate PASS → đề xuất user thay checkpoint (image inference mới + parity); FAIL → báo số liệu, không promote. AI-25: tìm nguồn CC (chỉ metadata) chờ user duyệt.
 - **2026-11-03 (API 0.10.0 transcript_quality, "tiếp tục task"):** C: đầy → Docker treo, 7 container infra exit 255 → `docker start` lại, healthy. Commit 6601bd0:
   tỉ lệ âm tiết tiếng Việt (VIVOS 4.859) trong phụ đề; <0.7 không tóm tắt AI, CMS/Client nhãn "CHẤT LƯỢNG THẤP". Go vet/test/build, CMS tsc, Client tsc PASS (lint host lệch ESLint 8.57 → chạy trong Docker build).
   User duyệt prune build cache (20,26 GB trong ổ Docker). Gateway/CMS/Client `int10-6601bd0` deployed healthy; CMS fixture 64 PASS; live regenerate 422 (a51464d,
