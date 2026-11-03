@@ -1,0 +1,79 @@
+[
+ {
+  "id": "vid_dm3nf6fi23us",
+  "title": "T4.1-REAL-AI-SMOKE",
+  "status": "processed",
+  "sub_http": 200,
+  "quality": null,
+  "an_http": 200,
+  "summary": "",
+  "summary_status": "draft",
+  "suggested_title": null
+ },
+ {
+  "id": "vid_dm46jsx30bah",
+  "title": "Tạo video chiến đấu.mp4",
+  "status": "processed",
+  "sub_http": 200,
+  "quality": 0.6,
+  "an_http": 200,
+  "summary": "",
+  "summary_status": "draft",
+  "suggested_title": null
+ },
+ {
+  "id": "vid_dmh4b8ymqbtw",
+  "title": "sample_01.mp4",
+  "status": "processed",
+  "sub_http": 200,
+  "quality": 0.647,
+  "an_http": 200,
+  "summary": "",
+  "summary_status": "draft",
+  "suggested_title": null
+ },
+ {
+  "id": "vid_dmh5o652juum",
+  "title": "dom_-1Is0o2ZWk0_1.mp4",
+  "status": "processed",
+  "sub_http": 200,
+  "quality": 0.495,
+  "an_http": 200,
+  "summary": "",
+  "summary_status": "draft",
+  "suggested_title": null
+ },
+ {
+  "id": "vid_dmlehrop97km",
+  "title": "bongda_penalty_griezmann.mp4",
+  "status": "processed",
+  "sub_http": 200,
+  "quality": null,
+  "an_http": 200,
+  "summary": "",
+  "summary_status": "draft",
+  "suggested_title": null
+ },
+ {
+  "id": "vid_dmleq6qbdg2w",
+  "title": "bongda_phap_duc_2018_tong_hop.mp4",
+  "status": "processed",
+  "sub_http": 200,
+  "quality": 0.5,
+  "an_http": 200,
+  "summary": "",
+  "summary_status": "draft",
+  "suggested_title": null
+ },
+ {
+  "id": "vid_dmlfc92ipi6w",
+  "title": "vleague_danang_haiphong_5phut.mp4",
+  "status": "processed",
+  "sub_http": 200,
+  "quality": 0.6,
+  "an_http": 200,
+  "summary": "",
+  "summary_status": "draft",
+  "suggested_title": null
+ }
+]
