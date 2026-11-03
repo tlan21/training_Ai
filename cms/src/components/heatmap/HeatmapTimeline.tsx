@@ -45,7 +45,11 @@ export function HeatmapTimeline({ scores, duration, currentTime, onSeek, height 
       const right = (selection.end - start) / visibleDuration * width;
       ctx.fillStyle = "rgba(70,21,153,.10)"; ctx.fillRect(left, 0, right - left, height);
       ctx.fillStyle = primary; ctx.fillRect(left, 0, 2, height); ctx.fillRect(right - 2, 0, 2, height);
-      ctx.fillRect(left - 4, height / 2 - 12, 10, 24); ctx.fillRect(right - 6, height / 2 - 12, 10, 24);
+      // Stitch grip: 12×24, 2px radius, two 1px white/50 lines
+      for (const x of [left + 1, right - 1]) {
+        ctx.fillStyle = primary; ctx.beginPath(); ctx.roundRect(x - 6, height / 2 - 12, 12, 24, 2); ctx.fill();
+        ctx.fillStyle = "rgba(255,255,255,.5)"; ctx.fillRect(x - 2, height / 2 - 6, 1, 12); ctx.fillRect(x + 1, height / 2 - 6, 1, 12);
+      }
     }
     const marker = duration > 0 ? (currentTime - start) / visibleDuration * width : 0;
     ctx.fillStyle = primary; ctx.fillRect(marker, 0, 2, height);
@@ -60,7 +64,9 @@ export function HeatmapTimeline({ scores, duration, currentTime, onSeek, height 
     else if (selection && onSelectionChange && dragging.current === "end") onSelectionChange({ ...selection, end: Math.min(duration, Math.max(selection.start + .1, time)) });
     else if (dragging.current === "seek") onSeek(time);
   };
-  return <div className="heatmap-canvas"><canvas ref={ref} style={{ width: "100%", height, display: "block", touchAction: "none", cursor: "ew-resize" }} role="slider" tabIndex={0} aria-label="Timeline highlight" aria-valuemin={0} aria-valuemax={duration} aria-valuenow={currentTime}
+  const markerPct = duration > 0 ? (currentTime - start) / visibleDuration * 100 : -1;
+  const hms = [currentTime / 3600, currentTime % 3600 / 60, currentTime % 60].map(v => Math.floor(v).toString().padStart(2, "0")).join(":");
+  return <div className="heatmap-canvas">{markerPct >= 0 && markerPct <= 100 && <div className="hm-playhead" style={{ left: `${markerPct}%`, height }} aria-hidden="true"><i /><span>{hms}</span></div>}<canvas ref={ref} style={{ width: "100%", height, display: "block", touchAction: "none", cursor: "ew-resize" }} role="slider" tabIndex={0} aria-label="Timeline highlight" aria-valuemin={0} aria-valuemax={duration} aria-valuenow={currentTime}
     onPointerDown={(event) => { event.currentTarget.setPointerCapture(event.pointerId); const rect = event.currentTarget.getBoundingClientRect(); const x = event.clientX - rect.left; const left = selection ? Math.abs(x - (selection.start - start) / visibleDuration * rect.width) : Infinity; const right = selection ? Math.abs(x - (selection.end - start) / visibleDuration * rect.width) : Infinity; dragging.current = onSelectionChange && Math.min(left, right) <= 10 ? left <= right ? "start" : "end" : "seek"; move(event); }}
     onPointerMove={(event) => { const time = position(event); const nearest = scores.reduce<{ second: number; score: number } | undefined>((best, score) => !best || Math.abs(score.second - time) < Math.abs(best.second - time) ? score : best, undefined); setTooltip(`${time.toFixed(0)}s · ${nearest?.score.toFixed(0) ?? "—"} điểm`); if (event.buttons === 1) move(event); }}
     onPointerUp={() => { dragging.current = null; }}
