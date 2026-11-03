@@ -13,7 +13,7 @@ func TestCMSPlanAContract(t *testing.T) {
 	if err := spec.Validate(context.Background()); err != nil {
 		t.Fatal(err)
 	}
-	if spec.Info.Version != "0.9.0" {
+	if spec.Info.Version != "0.10.0" {
 		t.Fatalf("version %s", spec.Info.Version)
 	}
 	put := spec.Paths.Find("/api/cms/videos/{id}").Put
@@ -131,5 +131,16 @@ func TestDiscoveryCategoryContract(t *testing.T) {
 	assigned := spec.Components.Schemas["Video"].Value.Properties["category_assigned_at"]
 	if assigned == nil || !assigned.Value.Nullable || !assigned.Value.ReadOnly {
 		t.Fatal("category_assigned_at must be nullable read-only")
+	}
+}
+
+func TestTranscriptQualityContract(t *testing.T) {
+	spec, err := GetSwagger()
+	if err != nil {
+		t.Fatal(err)
+	}
+	q := spec.Components.Schemas["Subtitles"].Value.Properties["transcript_quality"]
+	if q == nil || !q.Value.Nullable || !q.Value.ReadOnly || *q.Value.Max != 1 {
+		t.Fatal("transcript_quality must be a nullable read-only 0..1 number")
 	}
 }

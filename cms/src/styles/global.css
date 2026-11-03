@@ -292,6 +292,7 @@ body:has(.settings-page) .account-row strong { font-size: 16px; font-weight: 400
 .transcript-panel .panel-heading h4 { line-height: 20px; }
 .transcript-panel .row-actions { gap: 0; }
 .transcript-draft-note { padding: 8px 16px; color: var(--on-surface-variant); font-size: 12px; line-height: 18px; }
+.transcript-draft-note.low-quality { color: var(--error); }
 .transcript-list { padding: 8px 16px 16px; max-height: calc(100dvh - 235px); min-height: 300px; overflow-y: auto; flex: 1; }
 .transcript-row { border: 1px solid var(--outline-variant); padding: 8px; margin-bottom: 8px; border-radius: 2px; }
 .transcript-row.is-active { border: 2px solid var(--primary); padding: 7px; background: #4615990d; }

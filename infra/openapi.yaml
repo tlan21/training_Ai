@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Video AI Platform — Public + CMS API
-  version: 0.9.0
+  version: 0.10.0
   description: >
     Contract-first (master plan §2). Nguồn sự thật cho gateway Go (oapi-codegen)
     và FE types (openapi-typescript). Điểm highlight thang 0–100; similarity/score 0–1.
@@ -1257,6 +1257,16 @@ components:
         segments:
           type: array
           items: { $ref: "#/components/schemas/SubtitleSegment" }
+        transcript_quality:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          nullable: true
+          readOnly: true
+          description: >
+            Share of words in the current segment text that are known Vietnamese syllables (VIVOS inventory); null when there is no text.
+            Below 0.7 the machine draft is low quality and no AI summary is generated until editors correct the subtitles.
 
     VisualSearchResult:
       type: object

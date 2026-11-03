@@ -4,8 +4,9 @@ import type { components } from "@/api-types";
 import { Icon } from "@/components/Icon";
 import { PageState } from "@/components/Media";
 import { formatTime } from "@/lib/content";
-export function Transcript({ segments, loading, error, currentTime, seek, close, retry, videoId }: {
+export function Transcript({ segments, quality, loading, error, currentTime, seek, close, retry, videoId }: {
     segments: components["schemas"]["SubtitleSegment"][];
+    quality?: number | null;
     loading: boolean;
     error: unknown;
     currentTime: number;
@@ -26,6 +27,7 @@ export function Transcript({ segments, loading, error, currentTime, seek, close,
     const filtered = segments.map((s, i) => ({ s, i })).filter(({ s }) => s.text?.toLocaleLowerCase("vi").includes(q.toLocaleLowerCase("vi")));
     return <section className="transcript-panel"><header className="transcript-heading"><h2><Icon name="description"/><span className="desktop-only">Bản ghi phụ đề</span><span className="mobile-only">Bản ghi Nội dung</span></h2>{close && <button className="icon-button" onClick={close} aria-label="Đóng bản ghi"><Icon name="close"/></button>}</header>
  <p className="transcript-draft-note"><strong>BẢN NHÁP MÁY</strong> · Phụ đề AI có thể có sai sót, cần kiểm tra.</p>
+ {quality != null && quality < 0.7 && <p className="transcript-draft-note low-quality" role="note" data-testid="transcript-low-quality"><strong>CHẤT LƯỢNG THẤP</strong> · Âm thanh có thể không phải tiếng Việt, phụ đề tự động khó đọc.</p>}
  <div className="transcript-search"><div className="input-wrap"><span className="input-icon input-icon--left"><Icon name="search" size={18}/></span><input className="input input--with-left-icon" placeholder="Tìm trong bản ghi..." aria-label="Tìm trong bản ghi" value={q} onChange={e => setQ(e.target.value)}/></div></div>
  <div className="transcript-list" ref={rows}>{loading || error || !segments.length ? <PageState loading={loading} error={error} empty="Chưa có phụ đề." retry={retry}/> : !filtered.length ? <PageState empty="Không có câu khớp."/> : filtered.map(({ s, i }) => <button key={s.segment_index ?? i} aria-current={i === active ? "true" : undefined} className={`transcript-row ${i === active ? "active" : ""} ${s.warning ? "warning" : ""}`} onClick={() => seek(s.start_time || 0)}><time>{formatTime(s.start_time)}</time><span>{s.text}</span></button>)}</div>
  <footer className="transcript-footer"><button onClick={download} disabled={!segments.length}><Icon name="file_download" size={18}/>Tải bản ghi (.txt)</button></footer></section>;

@@ -2183,6 +2183,11 @@ export interface components {
         };
         Subtitles: {
             segments?: components["schemas"]["SubtitleSegment"][];
+            /**
+             * Format: float
+             * @description Share of words in the current segment text that are known Vietnamese syllables (VIVOS inventory); null when there is no text. Below 0.7 the machine draft is low quality and no AI summary is generated until editors correct the subtitles.
+             */
+            readonly transcript_quality?: number | null;
         };
         VisualSearchResult: {
             video_id?: string;

@@ -2202,6 +2202,7 @@ input[type=checkbox] {
   font-size: 12px;
   line-height: 18px;
 }
+.transcript-draft-note.low-quality { color: var(--error); }
 .transcript-search .input {
   height: 40px;
   background: var(--surface-container-low);

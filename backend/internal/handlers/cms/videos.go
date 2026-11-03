@@ -355,7 +355,7 @@ func (h *VideoHandlers) RegenerateSummary(c *gin.Context) {
 		return
 	}
 	if !domain.Summarizable(sub.FullTranscript) {
-		handlers.ErrorEnvelope(c, 422, "VALIDATION_ERROR", "Không đủ lời thoại để AI tóm tắt (cần ít nhất 20 từ trong phụ đề)")
+		handlers.ErrorEnvelope(c, 422, "VALIDATION_ERROR", "Phụ đề chưa đủ lời thoại tiếng Việt để AI tóm tắt (cần ít nhất 20 từ và 70% là âm tiết tiếng Việt)")
 		return
 	}
 	res, err := h.ai.Summarize(c.Request.Context(), sub.FullTranscript, 256)

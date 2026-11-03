@@ -110,7 +110,7 @@ function VideoDetail() {
     const segments = compilationSubtitles(subs.data?.segments || [], sources || []);
     const moments = (analysis.data?.key_moments || []).flatMap(moment => { const timestamp = sources?.length ? sourceClipTime(sources, moment.timestamp || 0) : moment.timestamp; return timestamp === null ? [] : [{ ...moment, timestamp }]; });
     const currentSegment = segments.find(s => store.currentTime >= (s.start_time || 0) && store.currentTime < (s.end_time || 0));
-    const transcriptProps = { segments, loading: subs.isPending, error: subs.error, currentTime: store.currentTime, seek, retry: () => { void subs.refetch(); }, videoId: id };
+    const transcriptProps = { segments, quality: subs.data?.transcript_quality, loading: subs.isPending, error: subs.error, currentTime: store.currentTime, seek, retry: () => { void subs.refetch(); }, videoId: id };
     if (video.isPending || video.error)
         return <div className="content-page"><AppNav active="discover" variant="detail"/><MobileHeader center back/><PageState loading={video.isPending} error={video.error} retry={() => video.refetch()}/><BottomNav active="library"/></div>;
     const data = video.data;

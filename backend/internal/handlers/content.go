@@ -5,8 +5,10 @@ import (
 	"encoding/json"
 	"errors"
 	"log"
+	"math"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -286,13 +288,18 @@ func (h *ContentHandlers) GetVideoSubtitles(c *gin.Context) {
 		return
 	}
 	segs := make([]gin.H, 0, len(sub.Segments))
+	texts := make([]string, 0, len(sub.Segments))
 	for _, s := range sub.Segments {
 		segs = append(segs, gin.H{
 			"segment_index": s.SegmentIndex, "start_time": s.StartTime, "end_time": s.EndTime,
 			"text": s.Text, "confidence": s.Confidence, "warning": s.Warning,
 		})
+		texts = append(texts, s.Text)
 	}
-	resp := gin.H{"segments": segs}
+	resp := gin.H{"segments": segs, "transcript_quality": nil}
+	if q, ok := domain.TranscriptQuality(strings.Join(texts, " ")); ok {
+		resp["transcript_quality"] = math.Round(q*1000) / 1000
+	}
 	if h.cache != nil {
 		if b, err := json.Marshal(resp); err == nil {
 			_ = h.cache.Set(c.Request.Context(), cacheKey, string(b), 300*time.Second)
