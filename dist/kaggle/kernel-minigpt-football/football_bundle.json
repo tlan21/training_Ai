@@ -1,6 +1,6 @@
 {
-  "task": "AI-24 (D29-A)",
-  "code_base_commit": "6ec218a (+ uncommitted AI-24 scripts, committed with this bundle)",
+  "task": "AI-24 (D29-A) v2",
+  "code_base_commit": "see git commit adding v2 bundle",
   "limit": 20000,
   "train_shard": {
     "url": "https://huggingface.co/datasets/ademax/binhvq-news-corpus/resolve/3347fc072b366e468feaa42b5ef9b99012b0b0d4/data/train-00001-of-00011-56cb80236db67400.parquet",
@@ -9,9 +9,11 @@
     "sha256": "a476229fe3f20fa494f1660ea316c38dd57a58038ced80bdf1f862bb7a660ea7"
   },
   "sha256": {
-    "ai_core.zip": "1ef90cbda9f9688843b150412cc87789082abb2cde134908daddb003640d8483",
+    "ai_core.zip": "01dad26b46a0ef738d88037714aa63b5410441854073f4cc1748c4982320c056",
     "active.pt": "cf9cfa7141d40f9d40b0065ae68855ff39ffe750260ee7b42c7c0eac719330ac",
     "bpe_vocab.json": "649ffc66d05bdda9c4586fe5500284dc5feef90414a8762ef4d541331937d713",
     "football_test.json": "968f8c95fef60fea3c44b9bd67ae1db87b1171f60db8a61b3f4a1abdeb02b373"
-  }
+  },
+  "replay_ratio": 2,
+  "select_sum": true
 }

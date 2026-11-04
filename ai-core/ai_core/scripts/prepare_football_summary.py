@@ -71,7 +71,7 @@ def build(args):
     train = [r for r in rows if splits[r["id"]] == "train"]
     val = [r for r in rows if splits[r["id"]] == "val"]
     rng = random.Random(1337)
-    replay = rng.sample([r for r in general_train if r["id"] not in excluded and r["id"] not in splits], len(train) + len(val))
+    replay = rng.sample([r for r in general_train if r["id"] not in excluded and r["id"] not in splits], args.replay_ratio * len(train) + len(val))
     general_val, replay = replay[:len(val)], replay[len(val):]
     train = train + replay
     rng.shuffle(train)
@@ -88,7 +88,7 @@ def build(args):
         "source": SOURCE, "revision": REVISION, "seed": 1337, "task": "AI-24 (D29-A) football summary adaptation",
         "license": "Unspecified news-content rights; upstream MIT applies to scripts only. Private research, no redistribution.",
         "selection": (f"Football = category 'Thể thao' + keyword regex on title/sapo. First {args.limit} eligible unique football "
-                      f"articles of {Path(args.train_parquet).name}; 95/5 group split; train mixed 1:1 with general News train "
+                      f"articles of {Path(args.train_parquet).name}; 95/5 group split; train mixed 1:{args.replay_ratio} with general News train "
                       "replay; val alternates football/general. Test = frozen football test1000 from the official test file."),
         "football_regex": FOOTBALL.pattern,
         "dedup": "sha256(casefold(normalized body)[:2000]); both test sets excluded from train/val",
@@ -117,6 +117,7 @@ def main():
     b.add_argument("--general-train", required=True)
     b.add_argument("--output", required=True)
     b.add_argument("--limit", type=int, default=20000)
+    b.add_argument("--replay-ratio", type=int, default=1, help="general replay articles per football train article")
     args = p.parse_args()
     (freeze_test if args.cmd == "freeze-test" else build)(args)
 

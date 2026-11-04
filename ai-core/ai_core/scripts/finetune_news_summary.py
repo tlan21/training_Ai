@@ -197,6 +197,7 @@ def main():
     p.add_argument("--baseline", help="Same-GPU initialization evaluation, required for mixed replay")
     p.add_argument("--domain", help="AI-03c: accepted domain_train.json added to both mixed-replay pools")
     p.add_argument("--domain-repeat", type=int, default=8)
+    p.add_argument("--select-sum", action="store_true", help="AI-24 v2: validation selection also averages <sum> clean/noisy ROUGE-L")
     args = p.parse_args()
     torch.set_num_threads(4)
     data, out = Path(args.data), Path(args.output)
@@ -299,10 +300,14 @@ def main():
             details = {"stage": stage, "clean_rouge_l": mean(clean, "rouge_l"),
                        "asr_rouge_l": mean(noise, "rouge_l"),
                        "lead1_clean": mean(clean, "lead1_rouge_l")}
+            if args.select_sum:  # AI-24 v2: select on the product summary format too, not only titles.
+                details["clean_sum_rouge_l"] = mean(evaluate(current, val[:64], tok, device, fmt="sum"), "rouge_l")
+                details["asr_sum_rouge_l"] = mean(evaluate(current, val[64:], tok, device, noisy=True, fmt="sum"), "rouge_l")
             with (out / "validation.jsonl").open("a", encoding="utf-8") as f:
                 f.write(json.dumps(details) + "\n")
             print("validation", json.dumps(details), flush=True)
-            return (details["clean_rouge_l"] + details["asr_rouge_l"]) / 2
+            scores = [v for k, v in details.items() if k.endswith("rouge_l") and not k.startswith("lead1")]
+            return sum(scores) / len(scores)
 
         trainer = Trainer(model, loader, val, cfg, minigpt_loss, model_cfg=model_cfg,
                           compute_metric=metric, bpe_vocab=vocab,

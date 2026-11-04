@@ -22,6 +22,9 @@ def test_gate_needs_a_real_football_gain_and_no_style_regression():
     assert not gate(scores(rows(0.2)))[1]  # no gain over active
     assert not gate(scores(rows(0.25, lead=0.3)))[1]  # below Lead-1
     assert not gate(scores(rows(0.25, rep=0.5)))[1]  # repetition regression
+    clean_below_lead = scores(rows(0.25))
+    clean_below_lead[("football", "sum", False)]["candidate"] = rows(0.25, lead=0.3)
+    assert gate(clean_below_lead)[1]  # v2: Lead-1 only binds on ASR-noisy input
 
 
 def test_football_filter_and_source_tag():

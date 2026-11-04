@@ -1,7 +1,8 @@
 """AI-24 (D29-A) pre-registered gate: candidate vs active MiniGPT on football test1000 and general test1000.
 
 Gate (coordination/claude/TASKS.md AI-24), test sets scored once after validation-only checkpoint selection:
-1. football `sum` clean and noisy: candidate > Lead-1, candidate > active, paired CI95 lower bound of (candidate - active) > 0;
+1. football `sum` clean and noisy: candidate > active, paired CI95 lower bound of (candidate - active) > 0;
+   noisy also candidate > Lead-1 (v2, user 2026-11-04: clean > Lead-1 dropped — active fails it too; product input is ASR text);
 2. general `sum`/`title` and football `title`, clean and noisy: candidate >= active - 0.005;
 3. `sum` clean on both sets: repeated-trigram fraction and cap-hit rate <= active + 0.01.
 """
@@ -47,7 +48,7 @@ def gate(scores):
         checks[f"1_football_sum_{'noisy' if noisy else 'clean'}"] = {
             "candidate": mean(cand, "rouge_l"), "active": mean(act, "rouge_l"), "lead1": mean(cand, "lead1_rouge_l"),
             "delta": delta, "ci95": ci,
-            "pass": mean(cand, "rouge_l") > mean(cand, "lead1_rouge_l") and delta > 0 and ci[0] > 0}
+            "pass": (not noisy or mean(cand, "rouge_l") > mean(cand, "lead1_rouge_l")) and delta > 0 and ci[0] > 0}
     for key in [("general", "sum"), ("general", "title"), ("football", "title")]:
         for noisy in (False, True):
             s = scores[(*key, noisy)]

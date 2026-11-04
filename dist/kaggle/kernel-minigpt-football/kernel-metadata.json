@@ -1,6 +1,6 @@
 {
-  "id": "traininghighlight/ai-core-minigpt-football-v1",
-  "title": "ai-core-minigpt-football-v1",
+  "id": "traininghighlight/ai-core-minigpt-football-v2",
+  "title": "ai-core-minigpt-football-v2",
   "code_file": "run_football.py",
   "language": "python",
   "kernel_type": "script",
@@ -8,7 +8,7 @@
   "enable_gpu": true,
   "enable_internet": true,
   "dataset_sources": [
-    "traininghighlight/minigpt-football-v1",
+    "traininghighlight/minigpt-football-v2",
     "traininghighlight/minigpt-news-research"
   ],
   "competition_sources": [],

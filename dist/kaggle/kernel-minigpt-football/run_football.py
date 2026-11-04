@@ -1,4 +1,4 @@
-"""AI-24 (D29-A): MiniGPT football adaptation from active cf9cfa71 + pre-registered gate vs active."""
+"""AI-24 (D29-A): MiniGPT football adaptation from active cf9cfa71 + pre-registered gate vs active (v1/v2 via football_bundle.json)."""
 import glob
 import hashlib
 import json
@@ -55,7 +55,7 @@ from ai_core.scripts import prepare_football_summary, finetune_news_summary, com
 
 sys.argv = ["prepare", "build", "--train-parquet", str(shard), "--football-test", str(bundle / "football_test.json"),
             "--general-test", str(general / "news_test.json"), "--general-train", str(general / "news_train.json"),
-            "--output", str(data), "--limit", str(meta["limit"])]
+            "--output", str(data), "--limit", str(meta["limit"]), "--replay-ratio", str(meta.get("replay_ratio", 1))]
 prepare_football_summary.main()
 shard.unlink()
 out.mkdir(parents=True, exist_ok=True)
@@ -63,7 +63,7 @@ shutil.copy2(data / "news_manifest.json", out / "news_manifest.json")
 
 torch.manual_seed(1337)
 sys.argv = ["finetune", "--data", str(data), "--pretrain", str(bundle / "active.pt"), "--vocab", str(bundle / "bpe_vocab.json"),
-            "--output", str(out)]
+            "--output", str(out)] + (["--select-sum"] if meta.get("select_sum") else [])
 finetune_news_summary.main()
 
 sys.argv = ["compare", "--data", str(data), "--vocab", str(bundle / "bpe_vocab.json"), "--active", str(bundle / "active.pt"),
