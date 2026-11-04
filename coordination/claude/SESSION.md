@@ -3,6 +3,9 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
+- **2026-11-04 (AI-25 đợt 2):** user: đợt 1 "giống bản tin" → đợt 2 = 19 video trận đấu CC (5,06 h) duyệt + tải `audio2/`; trang lọc
+  `http://127.0.0.1:8892/screen_v2/index.html` (2×20 s/video) chờ user báo số video KHÔNG có bình luận → cắt clip + trang chép lời đợt 2 (ưu tiên trước đợt 1).
+  Server tĩnh: `D:	mpi25\serve.cmd` (cổng 8892, gốc `D:/data_training_ai/football_asr_sources`).
 - **2026-11-04:** AI-24 v1 cổng FAIL (evidence/AI-24_2026-11-04). User: "Chạy v2, sửa cổng" + AI-25 "Chỉ nhóm A, tải thử 5 giờ".
   v2 Kaggle `traininghighlight/ai-core-minigpt-football-v2` RUNNING (commit a76ffa2) → xong TẢI NGAY vào `D:/data_training_ai/minigpt_football_v2/output_v2/`, đọc gate.
   AI-25: 26 audio 4,91 h ở `D:/data_training_ai/football_asr_sources/audio/`, danh sách `evidence/AI-25_2026-11-04/PILOT_REVIEW.md` chờ user duyệt trước khi đưa CMS.
