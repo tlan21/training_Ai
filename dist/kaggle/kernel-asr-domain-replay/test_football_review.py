@@ -13,3 +13,9 @@ def test_plan_holds_out_whole_channels_without_overlap():
         starts = sorted(r['start_seconds'] for r in rows if r['source'] is s)
         assert all(b - a >= CLIP_S for a, b in zip(starts, starts[1:]))
         assert starts[0] >= 10 and starts[-1] + CLIP_S <= s['duration_s'] - 10
+
+
+def test_usable_limits_clips_to_first_part():
+    sources = [{'id': 'a', 'channel': 'x', 'duration_s': 600, 'usable_s': 300}, {'id': 'b', 'channel': 'y', 'duration_s': 600}]
+    rows = plan(sources, clips=20, val_clips=5)
+    assert all(r['start_seconds'] + CLIP_S <= 290 for r in rows if r['source']['id'] == 'a')

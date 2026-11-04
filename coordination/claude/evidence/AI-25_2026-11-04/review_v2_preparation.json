@@ -1,0 +1,16 @@
+{
+  "status": "REVIEW_READY_ZERO_LABELS",
+  "clips": 119,
+  "split": {
+    "val": 31,
+    "train": 88
+  },
+  "val_channels": [
+    "InternShip 2024 Xuân Bách",
+    "Lê Hiển",
+    "PHỦI 27"
+  ],
+  "packet_sha256": "b0d41798bd9e50456480b10242222147136bceaee09b8cc808a956dcb674ce6a",
+  "index_sha256": "e1b6023a19048e767bca8a6acb0ca7718537b20e8e17b2f8a5bd530930a3e94a",
+  "training_ready": false
+}
