@@ -27,7 +27,7 @@ Backlog ứng dụng 32 ID INT: `coordination/claude/OPEN_TASKS.md` (tick + evid
 | AI-21 | T1.5 | Xác nhận vòng 8 ×10 trên test tin tức độc lập (kênh mới, nhãn mù); đổi khi test tin tức +0.05 và bóng đá ≥ −0.01 | DONE (2026-10-30, release #5; ×10 ACTIVE) | AI-20; user 2026-10-30 (hướng 1) |
 | AI-22 | T1.8 | HO-04: runtime AI chính thức = container Docker (user 2026-11-02) — image bất biến từ source hiện hành (v1.4 + AI-19 + recipe) + bằng chứng readiness/parity checkpoint–source; Codex đổi tag compose (HC-16) | DONE (2026-11-02; Codex triển khai `ai-v1.4-62b7e05` = RE:HC-16; image release #6 ⇐ HC-18) | HO-04; Docker engine UP |
 | AI-23 | T1.8 | D24 bước 3: gỡ 4 path `/v1` deprecated + MinIO/Milvus khỏi inference-service (AI-API v3.0), image mới + parity | DONE (release #7, 2026-11-02); Codex đã triển khai (RE:HC-19, INT-57) | AI-15; RE:HC-17 (Codex INT-55: không còn gọi) |
-| AI-24 | T1.6 | D29-A: MiniGPT thích nghi bóng đá — tiếp tục từ `cf9cfa71` trên bài báo Thể thao/bóng đá (Binhvq, nhãn biên tập báo) + replay tin chung, staged clean→ASR-noise; cổng đăng ký trước bên dưới | IN_PROGRESS (2026-11-03) | D29 (user 2026-11-03) |
+| AI-24 | T1.6 | D29-A: MiniGPT thích nghi bóng đá — tiếp tục từ `cf9cfa71` trên bài báo Thể thao/bóng đá (Binhvq, nhãn biên tập báo) + replay tin chung, staged clean→ASR-noise; cổng đăng ký trước bên dưới | REVIEW (2026-11-04) — v1 cổng FAIL (sum clean < Lead-1; title chung −0.017/−0.026), không promote; chờ user chọn v2 | D29 (user 2026-11-03) |
 | AI-25 | T1.4 | D29-B: ASR bóng đá — Claude tìm video bình luận bóng đá tiếng Việt giấy phép mở (CC BY/BY-SA), gửi danh sách user duyệt trước khi tải; phụ đề người sửa trong CMS → HUMAN_VERIFIED → fine-tune có guard | TODO (chờ AI-24; tải chờ user duyệt danh sách + ổ D:) | D29; user duyệt nguồn |
 | AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | BLOCKED ⇐ bundle INT-13 (phần độc lập xong 2026-10-26) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | DONE (2026-10-26; sandbox + artifact; product → AI-12 theo D18) | HC-04 (sandbox READY) |
@@ -211,7 +211,9 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   ```
 
 ### AI-24 — D29-A: MiniGPT thích nghi domain bóng đá
-- T gốc: T1.6 | Owner: claude | Status: IN_PROGRESS (2026-11-03)
+- T gốc: T1.6 | Owner: claude | Status: REVIEW (2026-11-04) — v1 cổng FAIL, không promote (`evidence/AI-24_2026-11-04/README.md`)
+- Kết quả v1 (VERIFIED-NOW): football sum noisy PASS (+0.015, CI>0), clean +0.017 nhưng < Lead-1 0.163 (active cũng dưới); title chung tụt 0.017/0.026;
+  lặp/cap-hit giảm; thẻ nguồn bịa 209→0 (bóng đá), 392→1 (chung). Ứng viên `48621926…` lưu D:, không active.
 - Quyết định D29 (user 2026-11-03, "làm bước tiếp theo training tóm tắt cải thiện cho domain bóng đá" + chọn "A ngay, B khi có audio", "Claude tìm nguồn CC"):
   mở lại D23 riêng domain bóng đá; guard không nới. Ghi vào PROJECT_STATUS ở release kế.
 - Dữ liệu: Binhvq News (`category == "Thể thao"` + từ khóa bóng đá ở tiêu đề/sapo); target = tiêu đề/sapo biên tập báo (không pseudo-label, không nhãn Claude).

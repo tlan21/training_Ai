@@ -1,0 +1,82 @@
+{
+  "seed": 1337,
+  "n_test": 1000,
+  "selected_stage": "asr",
+  "selected_step": 2000,
+  "validation_metric": 0.17946351131213573,
+  "rouge_l": 0.18060025381736441,
+  "lead1_rouge_l": 0.15913487230823173,
+  "delta": 0.021465381509132655,
+  "delta_ci95": [
+    0.011236755299494122,
+    0.0317863056172083
+  ],
+  "automatic_threshold_pass": true,
+  "human_evaluation": "PENDING: 30 real ASR transcripts, 3 raters, mean >=3/5",
+  "elapsed_hours": 2.772194892499182,
+  "checkpoint_sha1": "c3d0e62c908f4b13aee2d103279104701a45711f",
+  "dataset": {
+    "source": "https://huggingface.co/datasets/ademax/binhvq-news-corpus",
+    "revision": "3347fc072b366e468feaa42b5ef9b99012b0b0d4",
+    "seed": 1337,
+    "task": "AI-24 (D29-A) football summary adaptation",
+    "license": "Unspecified news-content rights; upstream MIT applies to scripts only. Private research, no redistribution.",
+    "selection": "Football = category 'Thể thao' + keyword regex on title/sapo. First 20000 eligible unique football articles of train-00001-of-00011-56cb80236db67400.parquet; 95/5 group split; train mixed 1:1 with general News train replay; val alternates football/general. Test = frozen football test1000 from the official test file.",
+    "football_regex": "bóng đá|cầu thủ|bàn thắng|thủ môn|tiền đạo|tiền vệ|hậu vệ|trung vệ|HLV|V\\.?-?League|VFF|Ngoại hạng|Premier League|La Liga|Serie A|Bundesliga|Champions League|Europa League|World Cup|Euro 20\\d\\d|AFF|SEA Games|tuyển Việt Nam|ĐT Việt Nam|U\\.?2[0-3]\\b|penalty|phạt đền|việt vị|hat-trick|cú đúp|ghi bàn|chuyển nhượng|Man Utd|Man City|\\bM\\.?U\\b|Arsenal|Chelsea|Liverpool|Real Madrid|Barcelona|Barca|Juventus|Bayern|PSG|Messi|Ronaldo",
+    "dedup": "sha256(casefold(normalized body)[:2000]); both test sets excluded from train/val",
+    "target_cleaning": "Leading agency tag stripped from every sapo target (football, replay, general test): ^\\s*(?:\\([^)]{2,40}\\)\\s*[-–—:]*|[A-ZĐ][\\w.]*(?: [A-ZĐ][\\w.]*){0,2}\\s+[-–—]+)\\s*",
+    "raw_files": {
+      "train-00001-of-00011-56cb80236db67400.parquet": "27a3f7ca3932cca8c3e15df0e75156f15b743057"
+    },
+    "splits": {
+      "train": {
+        "count": 38000,
+        "sha1": "654234c13d2d2278a71b430e4fad150ddc5f9039"
+      },
+      "val": {
+        "count": 2000,
+        "sha1": "ad081c03658a9bfb818b164cd8ca49f05e3d6601"
+      },
+      "test": {
+        "count": 1000,
+        "sha1": "db367114967d3793037155cb90e0e97b075f1c09"
+      }
+    },
+    "general_test": {
+      "count": 1000,
+      "sha1": "c692dfc65e42369832880201d3f0d11aae6b36cc"
+    },
+    "n_football_train": 19000,
+    "evaluation": {
+      "val_count": 128,
+      "test_count": 1000,
+      "metric": "word ROUGE-L F1, existing scorer",
+      "baseline": "Full first sentence of identical visible clean input; and active checkpoint cf9cfa71",
+      "context_tokens": 512,
+      "max_new_tokens": 96,
+      "decode": "greedy, EOS stop"
+    }
+  },
+  "stages": [
+    {
+      "stage": "clean",
+      "metric": 0.16094808812408323,
+      "train": {
+        "final_loss": 0.8116844263859093,
+        "step": 16000,
+        "seed": 1337
+      },
+      "best_step": 7000
+    },
+    {
+      "stage": "asr",
+      "metric": 0.17946351131213573,
+      "train": {
+        "final_loss": 1.7322077453136444,
+        "step": 4000,
+        "seed": 1337
+      },
+      "best_step": 2000
+    }
+  ]
+}

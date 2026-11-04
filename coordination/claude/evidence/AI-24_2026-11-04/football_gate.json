@@ -1,0 +1,81 @@
+{
+  "active_sha256": "cf9cfa7141d40f9d40b0065ae68855ff39ffe750260ee7b42c7c0eac719330ac",
+  "candidate_sha256": "48621926c6dcbfe96fc527b2a297200608f60d37b293b85f1d672eb55a8410e5",
+  "data_manifest_sha1": "e170caa97b38939a6bdf8facad6405a87827c063",
+  "checks": {
+    "1_football_sum_clean": {
+      "candidate": 0.1425272567934678,
+      "active": 0.1256243143742384,
+      "lead1": 0.16339379097288423,
+      "delta": 0.016902942419229443,
+      "ci95": [
+        0.011136743902214308,
+        0.022839711089825583
+      ],
+      "pass": false
+    },
+    "1_football_sum_noisy": {
+      "candidate": 0.11962876753145614,
+      "active": 0.10468804621279054,
+      "lead1": 0.05368736725407833,
+      "delta": 0.014940721318665598,
+      "ci95": [
+        0.010060677975216533,
+        0.019925949152738237
+      ],
+      "pass": true
+    },
+    "2_general_sum_clean": {
+      "candidate": 0.14219668841979954,
+      "active": 0.13877501394034664,
+      "pass": true
+    },
+    "2_general_sum_noisy": {
+      "candidate": 0.10869474564337309,
+      "active": 0.10660276951621785,
+      "pass": true
+    },
+    "2_general_title_clean": {
+      "candidate": 0.18509881013999085,
+      "active": 0.20229974826355318,
+      "pass": false
+    },
+    "2_general_title_noisy": {
+      "candidate": 0.12967510331758758,
+      "active": 0.1560212080725778,
+      "pass": false
+    },
+    "2_football_title_clean": {
+      "candidate": 0.18060025381736441,
+      "active": 0.15160964044363903,
+      "pass": true
+    },
+    "2_football_title_noisy": {
+      "candidate": 0.14103891259393572,
+      "active": 0.12275547212476536,
+      "pass": true
+    },
+    "3_football_sum_repeated_trigram_fraction": {
+      "candidate": 0.039979098648961084,
+      "active": 0.04732205842166783,
+      "pass": true
+    },
+    "3_football_sum_cap_hit": {
+      "candidate": 0.021,
+      "active": 0.025,
+      "pass": true
+    },
+    "3_general_sum_repeated_trigram_fraction": {
+      "candidate": 0.10358764915256971,
+      "active": 0.12590147064495844,
+      "pass": true
+    },
+    "3_general_sum_cap_hit": {
+      "candidate": 0.076,
+      "active": 0.115,
+      "pass": true
+    }
+  },
+  "gate_pass": false,
+  "human_evaluation": "PENDING: 30 real ASR transcripts, 3 raters, mean >=3/5 (not replaced by this gate)"
+}
