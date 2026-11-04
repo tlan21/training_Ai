@@ -1,0 +1,19 @@
+{
+  "status": "REVIEW_READY_ZERO_LABELS",
+  "clips": 119,
+  "split": {
+    "val": 31,
+    "train": 88
+  },
+  "val_channels": [
+    "Báo Nghệ An",
+    "Bóng đá online",
+    "CHUYỆN WC2026",
+    "KỸ THUẬT TRỒNG MÍT",
+    "Truyền hình Lạng Sơn - LSTV",
+    "Trường Đinh (DVT test)"
+  ],
+  "packet_sha256": "4fa3a123137320142204b2e6231463ceaaf3286b5ea7009abc3c50f80435892f",
+  "index_sha256": "2c685a821526cc419be912dc258834d39cd08da302c36e8e278c4b27fc41c79f",
+  "training_ready": false
+}
