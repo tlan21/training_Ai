@@ -1,0 +1,369 @@
+{
+ "asr_checkpoint": "active 8f879867",
+ "summary": {
+  "val": {
+   "n": 30,
+   "cer": 0.8447198006261158,
+   "wer": 1.3854677134201898
+  },
+  "train": {
+   "n": 14,
+   "cer": 0.8867028694510077,
+   "wer": 1.6930341432412628
+  }
+ },
+ "rows": [
+  {
+   "sample_id": "fb_0wj7UbonB3Q_00074",
+   "split": "val",
+   "reference": "ĐIỂM MẠNH GIÚP CÁC CÂU LẠC BỘ(CLB) DUY TRÌ ĐỀU ĐẶN NHIỀU NĂM NAY, VỚI TIÊU CHÍ VUI KHỎE CÁC CLB TRỞ THÀNH ĐIỂM HẸN QUEN THUỘC, CHO NHỮNG NGƯỜI CÙNG ĐAM MÊ BÓNG ĐÁ TRÊN ĐỊA BÀN. \"BÔ MÔN BÓNG ĐÁ LÀ BỘ MÔN THỂ THAO VUA MÀ AI CŨNG YÊU THÍCH, TÔI THÌ CŨNG KHÔNG PHẢI LÀ 1 NGOẠI LỆ NÀO ĐẤY, NÓ CŨNG LÀ 1 BỘ MÔN ĐÃ ĐAM MÊ TỪ NHỎ\"",
+   "hypothesis": "ĐỀN Ạ C CÁC LUỘT M ỘN HI T ĐỀU ĐẶT LNHƯỀU NĂM LÂY VỚI Ê CÁC C L VU CHỞ TÀN GIỀM HÀN AN THUẬC RÒ NHỮNG NGYỆ CUỒN ĐAM MÊN BÔN ĐÃ TR VIỆC BÀN MÔN Đ LÀ Ộ BM MA ỜỂ ĐAU V BÀ AN YÊU ÔI G KHUG HẠI LM VLI LẼY ẠO LÒ N LÀ M Ộ MU LÀ ĐẠO TÂ MY TẦN D N T Ộ ĐÂNG A",
+   "cer": 0.5403726708074534,
+   "wer": 0.8933333333333333
+  },
+  {
+   "sample_id": "fb_0wj7UbonB3Q_00200",
+   "split": "val",
+   "reference": "GIẢI U11 TOÀN QUỐC NĂM 2025, THÌ CHÚNG TÔI ĐÃ CÓ NHỮNG CÁI THỜI GIAN CHUẨN BỊ CHO GIẢI ĐẤU THỰC SỰ LÀ KỸ CÀNG, CHÚNG TÔI ĐÃ CHO CÁC CON TẬP NHỮNG BÀI TẤN CÔNG, PHÒNG NGỰ, PHỐI HỢP DI CHUYỂN, XEN KẼ LÀ NHỮNG BÀI TẬP THỂ LỰC, SỨC MẠNH, SỨC NHANH, SỨC BỀN",
+   "hypothesis": "I ÀI M QUỐ A ÂM RỒ N Đ I ẢNH YN HO GIẢI Đ LÀ LÀ C NG A Â A QN N BẠ T R NG C ANG T A ĐÂ LỘI RƯAC BÀ ỌC N N",
+   "cer": 0.7142857142857143,
+   "wer": 0.9642857142857143
+  },
+  {
+   "sample_id": "fb_0wj7UbonB3Q_00328",
+   "split": "val",
+   "reference": "LỨA TUỔI THANH THIẾU NIÊN, TRƯỚC MẮT ƯU TIÊN CHO BÓNG ĐÁ NAM, CHÚ TRỌNG ĐÀO TẠO BÓNG ĐÁ CẤP TỈNH CÁC TUYẾN TỪ U10 ĐẾN U13 THEO ĐÓ, HẰNG NĂM THÔNG QUA CÁC LỚP NĂNG KHIẾU HÈ, CÁC GIẢI BÓNG ĐÁ TỪ CẤP TRƯỜNG, CÁC CƠ QUAN CHUYÊN MÔN PHỐI HỢP VỚI NGÀNH GIÁO DỤC, TUYỂN CHỌN",
+   "hypothesis": "C V THANG CH N NH HN ẮC ÊN T N VỌN ĐÃ NAM HỦ CHON NH HỆ THUẨN ĐÀU TÀO BONG ĐÃ C DOAH DI Đ NG T T CÁC HIYỂN TỪ U M I MI B THEO ĐÓ HÀNH NĂM THUNG VU CÁC LƯỚC NĂNG KHIỂU HÈ CÁC TÀI BÓNG Đ TỢ CẤP RẦNG CÁ C QUAN TRƯYN CỦ VỮN NÀNH GIÁ V ĐO ÀO N T ÒG BU N I EM ỦA NĂNG KIỂU THA",
+   "cer": 0.5543071161048689,
+   "wer": 1.1724137931034482
+  },
+  {
+   "sample_id": "fb_FT4cHDbbTwo_00086",
+   "split": "val",
+   "reference": "ĐÓ LÀ PHA DÂNG CAO CỦA HẬU VỆ BÊN PHẢI VĂN THÀNH, NHƯNG CÚ ĐÁ LÀ HƠI LỆCH VÀ KHẢ NĂNG THÀNH CÔNG LÀ CHƯA THỰC SỰ CAO, NHƯNG RẤT ĐÁNG KHEN CHO TÌNH HUỐNG VỪA RỒI VÀ VĂN THÀNH ĐÃ CÓ 1 PHA DÂNG CAO",
+   "hypothesis": "N CN M N Ạ BÃI ANH LẬT V H THÔI G N N N Ở N O QÀN N NNI VÀO Ặ N NU Ơ",
+   "cer": 0.7628865979381443,
+   "wer": 1.0
+  },
+  {
+   "sample_id": "fb_FT4cHDbbTwo_00239",
+   "split": "val",
+   "reference": "KHÔNG ĐƯỢC,",
+   "hypothesis": "Đ TẦ L LÓ N L LẠ TĐ ƠN ÁA RA ĐB",
+   "cer": 2.5454545454545454,
+   "wer": 6.0
+  },
+  {
+   "sample_id": "fb_FT4cHDbbTwo_00392",
+   "split": "val",
+   "reference": "VĂN TOÀN, HAY, PHA CAN THIỆP RẤT KỊP THỜI TỶ SỐ ĐANG LÀ 1 ĐỀU.",
+   "hypothesis": "T N AN N T V C RẬ N DẦ T N C N A NAN NẠI ẢN L L Đ U ƠNN N M N Ắ",
+   "cer": 0.7741935483870968,
+   "wer": 1.8
+  },
+  {
+   "sample_id": "fb_FT4cHDbbTwo_00544",
+   "split": "val",
+   "reference": "ĐÁ RẤT NHANH, KHÔNG THỂ VƯỢT QUA ĐƯỢC HÀNG PHÒNG NGỰ CỦA CÁC CẦU THỦ ÁO CAM. VĂN LỰC, VĂN THÀNH, NÉM BIÊN DÀNH CHO CÁC CẦU THỦ",
+   "hypothesis": "C U T TH Ơ A TH BT Ỏ N N M HO R T Ở N M U B T T YN",
+   "cer": 0.753968253968254,
+   "wer": 1.0
+  },
+  {
+   "sample_id": "fb_NuxXieeTQho_00070",
+   "split": "val",
+   "reference": "VÀ XUYÊN SUỐT KỲ CHUYỂN NHƯỢNG HÈ NÀY, ANH ĐƯỢC ĐỒN ĐOÁN SẼ RỜI KHỎI SÂN VẬN ĐỘNG OLD TRANFORD VỚI ĐIỂM ĐẾN TIỀM NĂNG LÀ TOTTENHAM HOTSPUR NƠI LINGARD CÓ THỂ TÁI NGỘ VỚI ÔNG THẦY CŨ, JOSE MOURINHO . DÙ VẬY, THEO BÁO CHÍ ANH, MU ĐANG CÂN NHẮC KÍCH HOẠT ĐIỀU KHOẢN GIA HẠN 1 NĂM VỚI JESSE LINGARD VTỨC LÀ TỚI TẬN MÙA HÈ NĂM 2022. NẾU ĐIỀU NÀY XẢY RA, ĐÂY SẼ LÀ ĐIỀU CHẲNG MẤY TỐT LÀNH.",
+   "hypothesis": "C N N Ố T T RƯNG Ạ R L N M NH T UỐC UỚI M Ữ YU N N H N N T N RÁT UN HU TẠI UN RỘNG TUYN UỐT I D Ù Ố QU IẤ M N M UNY N ẮC HẾ UÀA YƯ ÒNG I Ắ Ư Ể TNP Ộ HÀN NAN NHỆ U T ÀN N Ế N Â R Y NG G N",
+   "cer": 0.7101827676240209,
+   "wer": 1.0
+  },
+  {
+   "sample_id": "fb_NuxXieeTQho_00192",
+   "split": "val",
+   "reference": "SỐ 9, SAU SƠ ĐỒ 4-2-3-1 KHI HLV RONAL KOEMAN QUAY LẠI VỚI SƠ ĐỒ 4-3-3, TIỀN ĐẠO NÀY CÓ THỂ GIAO VỊ TRÍ Ở BÊN CÁNH TRÁI, RONALDO VÀ MESSI KHÔNG CÓ MẶT TRONG TOP CẦU THỦ HAY NHẤT UEFA",
+   "hypothesis": "S ỂN Ố Ó YÊU UÊ TU N N Ề MÀẠN QUA Ạ I VỚI SƯ U I YÊU N GI Ị THÍ Ở VỚI KỸ GHÃY HỐ Đ À Ó Á HÔNG CÓ MT TRONG ỐN Ê U U I T ÁT UI À Ở UYT",
+   "cer": 0.6243093922651933,
+   "wer": 1.0975609756097562
+  },
+  {
+   "sample_id": "fb_dqBu7-cakE4_00088",
+   "split": "val",
+   "reference": "VÀ TOAN TÍNH CỦA SCANOLI CHẮC CHẮN VƯỢT XA 1 CHIẾN THẮNG ĐƠN THUẦN, NẾU BẢO VỆ NGÔI VƯƠNG HỌ SẼ LÀ ĐỘI VÔ ĐỊCH LIÊN TIẾP KỂ TỪ SAU BRAZIL NĂM 1962. MỘT CỘT MỐC VĨ ĐẠI TRONG LỊCH SỬ BÓNG ĐÁ HIỆN ĐẠI. KHI CHÚNG TA CÙNG NHÌN VÀO MÀN TRÌNH DIỄN CỦA ALBISELESTE TẠI GIẢI ĐẤU NĂM NAY, KHÔNG AI GẠCH TÊN HỌ, HỌ VẪN CHO THẤY SỰ ỔN ĐỊNH ĐÁNG KINH NGẠC",
+   "hypothesis": "V Ự C HẮC NM TAN HN N HN UO À V N G ĐỘ ĐƯ N U T ẾP C Ự S N H N NTI G G AC ÔONG U ỘNG Ạ ÚNG C N H OLMÀ T IN TẠI IẠI NỔ N M A NG AI C ỌO NH A HO ỰC N G T N T A H",
+   "cer": 0.6637426900584795,
+   "wer": 0.9868421052631579
+  },
+  {
+   "sample_id": "fb_dqBu7-cakE4_00242",
+   "split": "val",
+   "reference": "HỌ RẤT ĐÁNG QUÝ NHƯNG KHÔNG ĐỦ KHỎA LẤP KHOẢNG CÁCH MÊNH MÔNG VỀ ĐẲNG CẤP. KỊCH BẢN TRẬN ĐẤU NÀY THỰC SỰ RẤT DỄ ĐOÁN, KIỂM SOÁT HOÀN TOÀN THẾ TRẬN ARGENTINA SẼ CHỦ ĐỘNG DÃN BIÊN TRƯỚC KHI TUNG RA NHỮNG ĐƯỜNG TRUYỀN XẺ NÁCH TRUNG LỘ HƯỚNG THẲNG VÀO KHI VỰC HOẠT ĐỘNG ƯA THÍCH CỦA MESSI. STEPVERT NHIỀU KHẢ NĂNG CHƠI LÙI SÂU CHỜ ĐỢI KHẢ NĂNG PHẢN CÔNG",
+   "hypothesis": "TH T T ĐẠN UÝ NG HÙ Đ P H HVÀ CÁC HU N N ĐNẠ ÓO IT ANH ÁC NÀY Ự T Đ HÒNG TÒN THỶ CH ÂN RAN GSẼ DỤ ĐỘN G NH TRƯICT H UN IA NHỮNG HƯỜNG C N SN NC T UƯN Ầ N H Ự H NTC QU T C A HẠN T Ế L NHIỀU Ạ ĂN U SO NG N T T T I TẠN ỒNG H",
+   "cer": 0.5988538681948424,
+   "wer": 1.0
+  },
+  {
+   "sample_id": "fb_o56u9lB-v_s_00078",
+   "split": "val",
+   "reference": "Ở CHIẾN DỊCH U23 CHÂU Á TẠI TRUNG QUỐC, CÙNG VỚI ĐÓ CÓ LỤC XUÂN HƯNG NGƯỜI ĐÃ ĐƯỢC TRIỆU TẬP NHƯNG LỠ HẸN ASIAN CUP Ở PHÚT CHÓT DO ĐỨT DÂY CHẰNG. Ở 2 CÁNH CÓ TRỌNG HOÀNG VÀ VĂN THANH NHỮNG CHẤN THƯƠNG CỦA CÁC HẬU VỆ CÁNH ĐÃ KHIẾN HLV PARK HANG SEO ĐAU ĐẦU TRƯỚC KHI BƯỚC VÀO ASIAN CUP. TIỀN VỆ TRUNG TÂM CÓ TRỌNG ĐẠI",
+   "hypothesis": "C IẾH TIẾ TAI B HU UẢ QUỐCUNG VỚI Đ U C Ư NG NGƯỜI ĐÃ ƯỢCG CU TỘC NƯ G ƯỚN HÁC A C CHDO NƯỚC THỜI RHN Ô ĐÁI NH QU TCỒNG QNI V O QUAN THAN VẤN CÂN TƯƠNG QVY TNG C THƯNG T ƯI T THÀ SÔ NG AU LỒN CẾ HU N UỚI VÀ N THIÊM VỚNI THUN C TÔI R M CON",
+   "cer": 0.5886075949367089,
+   "wer": 0.9577464788732394
+  },
+  {
+   "sample_id": "fb_o56u9lB-v_s_00215",
+   "split": "val",
+   "reference": "ĐÃ KHIẾN NHIỀU NGƯỜI CHÁN NẢN. VÀ ĐIỀU ĐÁNG SỢ HƠN LÀ SAU KHI TRẢI QUA TẤT CẢ NHỮNG GIAN NAN ĐÓ, CÁI ĐẦU GÓI VẪN SẼ CHẲNG BAO GIỜ ĐƯỢC NHƯ XƯA. KHI NÓI ĐẾN CHẤN THƯƠNG, ĐIỀU ĐẦU TIÊN LUÔN LÀ SỰ KHÔNG MAY KHÔNG AI MONG MUỐN CŨNG KHÔNG AI BIẾT TRƯỚC ĐƯỢC CẢ. NHƯNG KHI 1 CHUỖI NHỮNG SỰ KIÊN KHÔNG MAY GIỐNG NHAU",
+   "hypothesis": "L N VÀ HIỆU N I LÀ SAU KH RẠI QU TẤ C I N L À Đ VUI VN SÁC CHNG VO KI LOI ĐƠN SINH HƯƠNG LỀU ĐÙ U Ạ KHÔNG AI MÔNG U I T C NH N KHI MÀ CS NH NG DƯ KIẾN N A N LÊN Ế N VỚ NG Đ CON N",
+   "cer": 0.6116504854368932,
+   "wer": 0.9558823529411765
+  },
+  {
+   "sample_id": "fb_o56u9lB-v_s_00351",
+   "split": "val",
+   "reference": "ĐÀO TẠO CHUYÊN MÔN THEO ĐÚNG CÁI, CÓ THỂ LÀ KỸ THUẬT VIÊN CŨNG CÓ THỂ LÀ BÁC SĨ HỢP ĐỒNG THEO THỜI VỤ TỪ NHỮNG ĐƠN VỊ KHÁC VÀ HỌ CHƯA QUA ĐÀO TẠO TRONG 1 ĐỘI BÓNG VÀ CƠ CẤU NHÂN VIÊN Y TẾ THÌ PHẢI CÓ KỸ THUẬT VIÊN BÁC SĨ VẬT LÝ TRỊ LIỆU",
+   "hypothesis": "ĐẦU TẠO TUYÊ LUỒN CÀO ĐÚNG H Ó THÌ SẼ L ÝẾ ƯỢC RI N U CUA I Ạ TI BÁT UIẾ O Đ NG T TỪN N IN HẮC ẠV H THƯA QUÀN KỂI ĐẠO CHO M Đ I M VỀ Q CƠ RA UY Ể ÝY K TẾ I N VÀ S VÀ A RỀÊU NẦY C QA CH MƯI ĐY LÀN RƯI CƯ Ế",
+   "cer": 0.6101694915254238,
+   "wer": 1.0862068965517242
+  },
+  {
+   "sample_id": "fb_o56u9lB-v_s_00488",
+   "split": "val",
+   "reference": "SỐ TRẬN MÀ ANH KHÔNG ĐƯỢC SỬ DỤNG MỘT PHÚT NÀO CHỈ ĐẾM TRÊN ĐẦU NGÓN TAY, ĐIỀU NÀY NÓI LÊN RẰNG VỚI ÔNG PARK XUÂN TRƯỜNG KHÔNG PHẢI LÀ MẪU TIỀN VỆ LÚC NÀO CŨNG ĐỨNG TRÊN SÂN NHƯ HÙNG DŨNG, NHƯNG Ở PHẦN LỚN CÁC TRẬN ĐẤU SẼ CÓ LÚC ÔNG CẦN XUÂN TRƯỜNG TRÊN SÂN TỪ BẢNG SỐ LIỆU NÀY CHO THẤY CÁCH ÔNG PARK SỬ DỤNG XUÂN TRƯỜNG TRONG VÒNG 2 NĂM CŨNG CÓ SỰ THAY ĐỔI",
+   "hypothesis": "TẮT CU CHT M I CN C QUN Q VỐ NẠO T IỂM THỊU UN T I NÊU N NÓI L TN ỖI BÁ TÔI TRƯỜNU THÚT MU TÌNH VỊ LÚC NÀO QU C T DH T N NH NH Ư V N LỚN N CRỰC ĐẤU CẾ Ố LÚC HƯ N T ƯU BAO T LẦN LAN CUỐ THIỆ U NẾ N QB T Ự RHN HƯ NG CH NG HAI NONG ỐN Q ĐÔI",
+   "cer": 0.6106442577030813,
+   "wer": 0.9382716049382716
+  },
+  {
+   "sample_id": "fb_o56u9lB-v_s_00624",
+   "split": "val",
+   "reference": "GIỜ LÀ LÚC XUÂN TRƯỜNG CẦN ĐẾN NHỮNG SỰ ĐỘNG VIÊN HƠN LÚC NÀO HẾT ĐỂ CÓ THỂ VƯỢT QUA",
+   "hypothesis": "BẠI N DO LÀ LT S N Ư N ẾN NƯỚC SỨC NẤT HIYÊN ÔN LÚC NÀO V ẾT Ể THIỆP VỊI QUÀTÂN VUN Ô NHNG CA RÊNH THN TỪ NƯI NG Đ N VƠNGĐ ÂY Ợ N U ẾU ĐẮN C Ý L N MHN VƯUN TUỐN GỜI BN ƯƠNG RƯNG A MÌ ẤY RH T ÔNM HOÀN TÀNH KHỔ H H Ạ CN T I T T ÊN I N NÊU SNH HƯ",
+   "cer": 2.3095238095238093,
+   "wer": 3.6
+  },
+  {
+   "sample_id": "fb_o56u9lB-v_s_00761",
+   "split": "val",
+   "reference": "MỖI ĐÊM NGỦ EM THƯỜNG SUY NGHĨ VÀ MẤT NGỦ RẤT NHIỀU. CẢM GIÁC NHỚ SÂN CỎ RẤT RẤT LÀ NHIỀU",
+   "hypothesis": "OÀN HẠN MỐN ĐÊM HI AN HA I TƯỜN C HÔN LỚN NN U HUAN ÊN VÀ HO MÙA KHÔNG VI GHEM Ạ ÔN M LNG LÚỚC ĐÃN LIỆ ĐINH YẾN L N ẠI RỒI LI LÀ NVỚN Y N NU N LUỢI Y N TẠ ƯN TÔI Y C M NƯỢU N ẠI Đ N",
+   "cer": 1.5393258426966292,
+   "wer": 2.5238095238095237
+  },
+  {
+   "sample_id": "fb_o56u9lB-v_s_00897",
+   "split": "val",
+   "reference": "LUÔN LUÔN HÔ HÀO RẤT LÀ TUYỆT VỜI. GOOD, YES, VERY GOOD. TRỌNG CÓ THỂ NÓI GÌ VỚI NHỮNG ĐỒNG ĐỘI ĐÃ BỊ CHẤN THƯƠNG GIỐNG NHƯ XUÂN TRƯỜNG MỚI ĐÂY ĐỂ HỌ CÓ THỂ LẠC QUAN NHƯ TRỌNG BÂY GIỜ",
+   "hypothesis": "UAN N Â O N TÔ I N Á Á Ế THƯIL Ế H Ế OA SH TÀ G VỚ H NG ĐỒN Đ T ĐÃ B C CƯƠNG Ở GING D U RU NG L ÂI N H LẠC QUÀN ĐŨNG CẾ C EM TẾ N À M Á",
+   "cer": 0.6120218579234973,
+   "wer": 1.170731707317073
+  },
+  {
+   "sample_id": "fb_o56u9lB-v_s_01034",
+   "split": "val",
+   "reference": "ĐÃ QUA KIỂM DUYỆT NƯỚC BẠN TRƯỚC KHI NGỦ ĐI VÀ CHÚNG TÔI CÓ THỂ GIÚP CÁC BẠN HÌNH DUNG KHÁN GIẢ VIỆT NAM ĐÃ XEM TRẬN ĐẤU ĐÓ NHƯ THẾ NÀO",
+   "hypothesis": "ĐÁ QUẢ Ư C B N C N VÔI LĐÃ CÓ T UỐT BN HNH DUN ÁN ÀM VẾT NA ĐÃ XEN CÁC ĐÂU ĐÓ N N I",
+   "cer": 0.5481481481481482,
+   "wer": 0.90625
+  },
+  {
+   "sample_id": "fb_o56u9lB-v_s_01170",
+   "split": "val",
+   "reference": "KÍNH CHÀO QUÝ VỊ KHÁN GIẢ",
+   "hypothesis": "T N VN ĐẬN RÂA À N T H L RẾ",
+   "cer": 0.88,
+   "wer": 1.8333333333333333
+  },
+  {
+   "sample_id": "fb_o56u9lB-v_s_01307",
+   "split": "val",
+   "reference": "ĐẦY KHÁT KHAO ĐỂ KHOÁC LÊN MÀU ÁO ĐỘI TUYỂN QUỐC GIA, TỰ TIN VÀO NĂNG LỰC BẢN THÂN THẾ NHƯNG, CHẤN THƯƠNG ĐÃ KHIẾN TIỀN VỆ NÀY TẬP GIÁO ÁN RIÊNG TỪ NGÀY LÊN ĐỘI TUYỂN ĐỂ THỰC HIỆN GIẤC MƠ. XIN CHÀO TẠM BIỆT, HẸN GẶP LẠI. ĐỒNG CẢNH NGỘ VỚI NHỮNG TUYỂN THỦ TRÊN CÒN CÓ VÕ HUY TOÀN GẦN 3 NĂM",
+   "hypothesis": "TING ÔNG HÁC HO Đ MÀC D MA VẬT ỆN CÚỐ RA TƯÔA TI M H ƯC ẠNH T H THUY NH N CƯNH CƯU N KIM TƯ NG NÀI VÔI Ạ TẬP ÀI ƯUC ĐỊNH Ứ M CIYN SƠ T Ị H O ẠIĐẤU TRÊN RÔI Q I HƯỚC Ư H N V ÀM UÁI HÂM ẠC Ở",
+   "cer": 0.6840277777777778,
+   "wer": 1.0
+  },
+  {
+   "sample_id": "fb_pTgsfjwqzXk_00084",
+   "split": "val",
+   "reference": "BÀN THUA CỦA HỌ TRONG TRẬN ĐẤU GẶP INDONESIA HỌ ĐÃ THUA TRƯỚC RỒI GẶP ĐỘI TUYỂN CÁC VƯƠNG QUỐC Ả RẬP THỐNG NHẤT THÌ HỌ ĐÃ BỊ THUA NGƯỢC. ĐIỀU ĐẤY ĐÃ CHỨNG MINH ĐƯỢC RẰNG KHÔNG PHẢI LÀ HỌ ĐÃ HOÀN THIỆN ĐƯỢC TẤT NHIÊN, BÓNG ĐÁ LÀ NHƯ THẾ, KHÔNG CÓ NGHĨA LÀ ĐÃ CẢI THIỆN ĐÃ TIẾN BỘ",
+   "hypothesis": "Đ Ở I I ƯI CI H MÊN RẦNG VÀ À NH H NGỐ ĨA CẠI R C",
+   "cer": 0.8561151079136691,
+   "wer": 1.0
+  },
+  {
+   "sample_id": "fb_pTgsfjwqzXk_00232",
+   "split": "val",
+   "reference": "VÀ ĐÂY LÀ ĐIỂM MÀ ĐỘI BÓNG CỦA CHÚNG TA, ĐỘI BÓNG CỦA PARK HANG SEO BAO GIỜ CŨNG ĐÃ LÀM TỐT NHẤT ĐÓ LÀ CÁI TÍNH ỔN ĐỊNH CƯỜNG ĐỘ CAO",
+   "hypothesis": "LẦN BỘNG QUỐC ẬT T À ÀN R AO À B Y T",
+   "cer": 0.8257575757575758,
+   "wer": 1.0
+  },
+  {
+   "sample_id": "fb_pTgsfjwqzXk_00380",
+   "split": "val",
+   "reference": "SAU KHI ĐÃ HOÀN THÀNH NHIỆM VỤ CỦA CLB HÀ NỘI, TẤT CẢ NHƯ GIẢI QUỐC GIA, CŨNG NHƯ LÀ AFC CUP THÌ TÔI NGHĨ ĐÂY LÀ LÚC MÀ HẢI HOÀN TOÀN CÓ THỂ TẬP TRUNG TOÀN TÂM TOÀN Ý VỚI TRẬN ĐẤU CỦA ĐỘI TUYỂN VIỆT NAM, THẾ NÊN TỚI ĐÂY VAI TRÒ CỦA QUANG HẢI ĐƯỢC KỲ VỌNG SẼ KHIẾN ANH LÀM ĐƯỢC NHIỀU HƠN KHÁC VỚI TRẬN ĐẤU Ở THÁI LAN",
+   "hypothesis": "N H C Ò ĐA LOẠ N N Ề L C À N NG N ĐỦ I IVÀ À CÓ",
+   "cer": 0.8761904761904762,
+   "wer": 0.9864864864864865
+  },
+  {
+   "sample_id": "fb_pTgsfjwqzXk_00528",
+   "split": "val",
+   "reference": "NHỚ RẰNG CHÚNG TA ĐANG ĐẤU Ở TƯ THẾ NHÀ VÔ ĐỊCH CẢU MỘT CÁI ĐỘI BÓNG DÙ SAO ĐI NỮA LÀ ĐỘI BÓNG ĐẲNG CẤP, Ở 1 CÁI TIÊU CHUẨN Ở VỊ THẾ NHỈNH HƠN,",
+   "hypothesis": "A ÒÀ ĐỒNG Y N ỆU LL I ĐI",
+   "cer": 0.8811188811188811,
+   "wer": 0.9722222222222222
+  },
+  {
+   "sample_id": "fb_pTgsfjwqzXk_00676",
+   "split": "val",
+   "reference": "CÓ THỂ TẠO RA ĐƯỢC NHỮNG RẮC RỐI TRƯỚC KHUNG THÀNH CỦA VĂN LÂM, THƯỜNG THÌ NHỮNG QUẢ ĐẤY TRƯỚC ĐÂY CÓ ĐÌNH TRỌNG THÌ BÂY GIỜ ANH CÓ NGHĨ GÌ KHI ĐÌNH TRỌNG VẮNG KHÔNG",
+   "hypothesis": "ẠI N A I ỂU Đ AN L LÀ I ĐIỀU U ỒI Y",
+   "cer": 0.8606060606060606,
+   "wer": 1.0
+  },
+  {
+   "sample_id": "fb_uTG9wbjfczo_00086",
+   "split": "val",
+   "reference": "TRONG NGÀY TRỞ THÀNH NGƯỜI HÀ LAN THỨ 13 RA SÂN CHO MANCHESTER UNITED VAN DE BEEK ĐÃ LẬP TỨC ĐÁNH DẤU SỰ KIỆN NÀY BẰNG MỘT BÀN THẮNG. TUY NHIÊN CHỪNG ĐÓ LÀ KHÔNG ĐỦ ĐỂ MU CÓ ĐƯỢC ĐIỂM ĐẦU TIÊN CỦA HỌ TRONG MÙA GIẢI MỚI 2020-2021, Ở TRẬN ĐẤU KỂ TRÊN THÌ DONY VAN DE BEEK CHỈ RA SÂN TỪ BĂNG GHẾ DỰ BỊ",
+   "hypothesis": "T N HỰ H L H NU MÀ N O T M T Đ T C N G U K N N T N HẮ N ƯN N U N O S Ư U N N D NG N N HAI HÔN N I N Ố Ố HC Ấ K U U HOAN H N U N N Ệ ỚI MÀ H T N Y Ạ T C TNÀN N Ô A ÀO ÀN",
+   "cer": 0.6812080536912751,
+   "wer": 1.088235294117647
+  },
+  {
+   "sample_id": "fb_uTG9wbjfczo_00239",
+   "split": "val",
+   "reference": "ĐÃ KHÔNG CÒN NẰM TRONG KẾ HOẠCH CỦA HLV OLE GUNNAR SOLSKJÆR DÙ HOÀN TOÀN KHỎE MẠNH, BÌNH THƯỜNG NHƯNG ANH ĐÃ KHÔNG GÓP MẶT TRONG TRẬN THI ĐẤU CỦA MU, Ở TRẬN MỞ MÀN PREMIER LEAGUE MÙA GIẢI MỚI TRƯỚC CRYSTAL PALACE. LINGARD ĐÃ CẢM THẤY VÔ CÙNG THẤT VỌNG KHI KHÔNG NẰM TRONG KẾ HOẠCH VÀ MUỐN RA ĐI ĐỂ TÌM CƠ HỘI MỚI",
+   "hypothesis": "U U N U N Ư TU TIU A M I TIÊN R ON ẾÊN HN NG N H T TUYU Ở ƯNG ÀO MA UỀU RUYẾT N UY CTƯC UY T Ợ À Đ I A Á C Ể N T AT H M I T GN M CỦ T H A I HO UC Y N M U",
+   "cer": 0.7115384615384616,
+   "wer": 1.0
+  },
+  {
+   "sample_id": "fb_uTG9wbjfczo_00391",
+   "split": "val",
+   "reference": "RONALDO CHỈ ĐỂ LẠI ĐÚNG 1 CẢM XÚC CHỌC GHẸO TRONG PHẦN MÔ TẢ. ẢNH CỦA RONALDO SAU HƠN 10 TIẾNG ĐÃ GIÚP ANH THU VỀ HƠN SÁU TRIỆU LƯỢT THẢ TIM. MỌI THỨ ĐANG RẤT THÀNH CÔNG CHO ĐẾN KHI FAN TÌM ĐƯỢC ĐIỀU BẤT THƯỜNG TRONG PHẦN BÌNH LUẬN, THÔNG THƯỜNG TRONG NHỮNG BỨC ẢNH CỦA CRISTIANO RONALDO FAN SẼ VÀO CA NGỢI",
+   "hypothesis": "I U RÔ Ư IU ẠI N N N ON O Ở Ư TẠ AN L L N A N I Y N GNH HU Ề Ư N LƯẦ HẠ MỌ ƯH LA C T ÀH NG T H HNG H M LR N RI N HƯ N THƯỐNG HƯƠN TON H Ế À ÊN N L Ù AN AN VÀO H I N N VỜ A À N Y NÀ N",
+   "cer": 0.6601307189542484,
+   "wer": 1.1076923076923078
+  },
+  {
+   "sample_id": "fb_uTG9wbjfczo_00544",
+   "split": "val",
+   "reference": "REAL HÒA NHẠT NHẼO TRONG TRẬN RA QUÂN LALIGA. REAL KHÔNG CÓ SỰ PHỤC VỤ CỦA EDEN HAZARD, LUCAS VAZQUEST, ISCO DO CHẤN THƯƠNG, NGAY TỪ KHI TIẾNG CÒI VANG LÊN REAL SOCIEDAD CHỦ ĐỘNG CHƠI CO CỤM, NHƯỜNG THẾ TRẬN CHO REAL MARID",
+   "hypothesis": "V I HO I NA THO TỰN T V L GARỐÉN Ấ CỐC VU V NHIE HA GA LÚU S CU LÝ BMÁ VỤA H U Y UR NNAY Ư H CIỆC C ÀN V À O Ề RLOÁ SÂN Ê OÁ CỤ LẬN TRI LỂ DU CH DHÀN HỌ Ò VÀ ẾT UỐI SƯL T Ữ LO Á SÂ RÁC TẠO HO VỮẢ ON V TÔ",
+   "cer": 0.7522522522522522,
+   "wer": 1.5227272727272727
+  },
+  {
+   "sample_id": "fb_6X3Q1TiueZw_00081",
+   "split": "train",
+   "reference": "ĐỪNG GỬI NHỮNG BÀN THUA ĐẦU TIÊN CỦA CHÚNG TÔI VÀ CŨNG LÀ BÀN THẮNG GỠ HÒA CỦA ĐỐI THỦ, VÌ NÓ XUẤT PHÁT TỪ 1 ĐƯỜNG CĂNG NGANG ĐI XUYÊN QUA 4 CẦU THỦ MÀ ĐÁNG LẼ RA BẤT CỨ AI TRONG 4 SỐ HỌ ĐỀU CÓ THỂ PHÁ RA ĐƯỜNG BIÊN, VỚI THẾ TRẬN ÁP ĐẢO MANCHESTER CITY CÓ CHIẾN THẮNG ÁP ĐẢO TRƯỚC WATFORD",
+   "hypothesis": "N Ư HNG BT V MÀ U LÀ BN THẨN U ÀO Ụ Ó TNG Ộ ĐƯỜNG CAM TA D S N V UỐN VUỤ MÀ ĐÓ DA MƯỨC R CH NG HỌ M CỦ I Ỏ Ư NG I CÁ ÀT À THỜN ÁI Y NỖ N Đ ƯN H H U",
+   "cer": 0.6805555555555556,
+   "wer": 0.9402985074626866
+  },
+  {
+   "sample_id": "fb_6X3Q1TiueZw_00222",
+   "split": "train",
+   "reference": "ĐÓ LÀ TẤT CẢ, BẠN PHẢI CHẤP NHẬN PHẢN ỨNG TỪ NGƯỜI HÂM MỘ, PHẢI TÔN TRỌNG Ý KIẾN CỦA HỌ. CHÚNG TÔI CÁC ĐỒNG ĐỘI CŨNG NHƯ TOÀN THỂ THÀNH VIÊN CỦA CLB ĐANG DÀNH CHO COUTINHO SỰ HỖ TRỢ TUYỆT NHẤT",
+   "hypothesis": "C Ư À TẠ QU TÀ CHN À N MỘT VÀI T HNG ỮN CH NG TÔI C Đ N ĐỔI H DƯ CN T T NH NG A N Đ U U D ƯẤT ỔI N CÔ C Y G Y NÓ ƯC N N CAO TỘI T I C N D CH À ƯIU N NG N",
+   "cer": 0.6875,
+   "wer": 1.372093023255814
+  },
+  {
+   "sample_id": "fb_6X3Q1TiueZw_00363",
+   "split": "train",
+   "reference": "KHI MÌNH CÓ MÀN CHÀO SÂN Ở GIẢI K-LEAGUE MÙA GIẢI 2019 DÙ CHỈ ĐƯỢC THI ĐẤU KHOẢNG 2 PHÚT",
+   "hypothesis": "T M C N C I Á Ế GẢ HẢN N IỂ U AI VU ÔI Ế ĐƯỢC N Ế ẠN UỐC ÔOG G O YN HỮG ỜI ƠN A M H ÀI NG N I ÔNG M NH A N I N N Y U R T A N ỢƯC Ể C TÓ ỢN",
+   "cer": 1.2272727272727273,
+   "wer": 2.7
+  },
+  {
+   "sample_id": "fb_6X3Q1TiueZw_00504",
+   "split": "train",
+   "reference": "ANH CÔNG VINH ƠI, ANH CÔNG VINH ƠI VẬY LÀ ĐỘI NÀO CHIẾN THẮNG ĐÂY",
+   "hypothesis": "T L LUẤN N R LÀ",
+   "cer": 0.8615384615384616,
+   "wer": 0.9333333333333333
+  },
+  {
+   "sample_id": "fb_83Lx4s-c1Ts_00080",
+   "split": "train",
+   "reference": "REAL MADRID ĐÃ TRẢI QUA 90 PHÚT KINH HOÀNG TRÊN SVĐ BENABEU LÉP VỀ HOÀN TOÀN SO VỚI 1 AJAX ĐẦY KHÁT KHAO",
+   "hypothesis": "NỚ THÁI ÀẠI QUA TIÊM U U N LÀN HỰ A ƯỢ NÓ R HOI CÀN S MÔ HẤC HÁ H U NẾNG NO NƯẾC CÚHU I I HẠ À YÊ ÀY VƯU ĐỀ L LỚ T L N N M LO C M HƯI HƯỚ L HIẾN CỐ HÁ HU U N A HUN UY QV H",
+   "cer": 1.2596153846153846,
+   "wer": 2.5217391304347827
+  },
+  {
+   "sample_id": "fb_83Lx4s-c1Ts_00220",
+   "split": "train",
+   "reference": "BẠN CHỈ CẦN THOẢI MÁI VÀ TẬN HƯỞNG TRẬN ĐẤU CỦA MÌNH. VỚI THẤT BẠI 0-3 Ở LƯỢT ĐI DORTMUND ĐÃ CHƠI NỖ LỰC Ở TRẬN LƯỢT VỀ TRÊN SÂN NHÀ",
+   "hypothesis": "M T O I VU Ư I N MYMI CỨC MÀI KHÔNG BA LÀ IÊN ĐÔNG MUN ĐÃ CHƯO NƯÓ LƯC ĐÃ LƯC VỀ À RÊA UI AN V V I ĐÓ TÔNG DO SNH ẾN MÔI CO ÔN C T L UIYỆI N Ư M I ÔI L VÔ S I LÀ Ô AN R O HƠ ỐI VỚI T Ớ ĐÂU T IA VÀ O À",
+   "cer": 1.1363636363636365,
+   "wer": 2.161290322580645
+  },
+  {
+   "sample_id": "fb_83Lx4s-c1Ts_00361",
+   "split": "train",
+   "reference": "MU CÒN KHÔNG CÓ SỰ PHỤC VỤ CỦA JESE LINGARD, ANDER HERRERA, MATIC, JUAN MATA VÀ ALEXIS SANCHEZ CŨNG BỊ CHẤN THƯƠNG KHÔNG CHỈ 6 CẦU THỦ TRÊN OLE CŨNG KHÔNG CÓ ĐƯỢC SỰ PHỤC VỤ CỦA PAUL POGBA",
+   "hypothesis": "B N PHOC N TUN ỐN V G I UYỆN ÁC NH RƠI ƠN MÀ TÀ M T VU I SĨẼT ÁC U C NH TƯỢG HUÔNG CH S UN T L C HI SƠN A HÔNG CÓ CU V QU SAU ĐANM C HÔN ĐỔI CUỚC CAO VUNG BAN BÀ V IN Ò LỀM U ĐẤT HO SỬ THI U U LƯ C N TO NÀY NG CA ÔI U M UN D",
+   "cer": 0.898936170212766,
+   "wer": 1.8717948717948718
+  },
+  {
+   "sample_id": "fb_83Lx4s-c1Ts_00501",
+   "split": "train",
+   "reference": "TẠI SEAGAME 30 ÔNG PARK HANG SEO KHÔNG TRỰC TIẾP DẪN DẮT ĐỘI TUYỂN VIỆT NAM NHƯNG VẪN CÓ MẶT Ở PHILIPINE LÀM GIÁM ĐỐC KỸ THUẬT CHO HLV LEE JONG JEAN. DO BÓNG ĐÁ NAM VIỆT NAM CHƯA TỪNG DÀNH HUY CHƯƠNG VÀNG(HCV) TẠI ĐẠI HỘI BÓNG ĐÁ ĐÔNG NAM Á NÊN VFF RẤT KỲ VỌNG",
+   "hypothesis": "T Y EN ÔN QU T AN SƠ KHÔNG HƯN CHẤU IN C QUA BÀ VỆN AO NH NG VẪN C G MT U HUC YI LÀM GỐMĐẤ THẬN RN ƯUỢ RÌNG LIỜU RHNG TIYỆ GÒN BÔNG Đ NAM VÌỆ NÀA CHO TƯNG ÂY UY CHUN V LẠ I I T NG Ê RÁT RẤT Ọ ƯỢ Ở ỜI Đ N O À CHỨ ƯC DON H Q AY SỐT T TCN HƯỜ",
+   "cer": 0.6230769230769231,
+   "wer": 1.2105263157894737
+  },
+  {
+   "sample_id": "fb_9Z2xP1uS6F0_00082",
+   "split": "train",
+   "reference": "PHẢI THẮNG CÁC TIỂU VƯƠNG QUỐC Ả RẬP THỐNG NHẤT VÌ ĐÂY CHƯA PHẢI ĐỐI THỦ MẠNH NHẤT MÀ TA TỪNG GẶP. TUYỂN VIỆT NAM VẪN ĐANG TẠM DẪN BẢNG G VỚI 17 ĐIỂM NHƯNG LỢI THẾ VẪN CHƯA HOÀN TOÀN CHẮC CHẮN NẾU THUA UAE VÀO TRẬN ĐẤU VÀO TỐI NGÀY HÔM NAY THẦY TRÒ HLV PARK HANG SEO SẼ MẤT NGÔI ĐẦU BẢNG VÀO TAY CỦA ĐỐI THỦ CÓ NGUY CƠ MẤT QUYỀN TỰ QUYẾT",
+   "hypothesis": "TI HẢNGCÁC Ụ ÔN UÀ P U RY OA PHN ĐỦ ITU N N ÁC VÀ TỰ RỌN UY N M MVN A N TẠ SN AU VÀ N LÀI NHƯU TH N Ư ÀN CHO CẢN Ệ ĐIỂU U QA CON S VÀ U ÀẦY TỰẾ HO VLA S ẮT N Ữ V VẠ Ư Ơ MI ỦAC T HN I V A À O ÁN YU UY A N C U L Ư A A CN N",
+   "cer": 0.6409495548961425,
+   "wer": 1.025974025974026
+  },
+  {
+   "sample_id": "fb_9Z2xP1uS6F0_00226",
+   "split": "train",
+   "reference": "TOÀN ĐỘ SẼ TUÂN THỦ ĐẤU PHÁP CỦA BAN HUẤN LUYỆN ĐỂ CÓ KẾT QUẢ TỐT NHẤT. TRẬN ĐẤU NGÀY MAI RẤT KHÓ KHĂN VỚI ĐỘI TUYỂN VIỆT NAM",
+   "hypothesis": "THẠN T SẼ N UỘC U C T L ẤP U L MAI CÁT H N T M TITN Ầ ĐẾ GÁ ĐẤU VU CUN TH T Đ I TỬ AT AI M C U ỌC Đ CỤ À ƯU I U Ư H N NAU N N U N Á L LỢ IỀU ÀA ĐÓ U Ự TUT V Ế Ư T Đ Ó CH",
+   "cer": 0.96,
+   "wer": 2.206896551724138
+  },
+  {
+   "sample_id": "fb_9Z2xP1uS6F0_00370",
+   "split": "train",
+   "reference": "THƯA QUÝ VỊ BAN ĐẦU TRẬN ĐẤU GIỮA ĐỘI TUYỂN AUSTRALIA VÀ ĐỘI TUYỂN JORDAN DIỄN RA VÀO LÚC 2H NGÀY 16-06 THEO GIỜ VIỆT NAM TỨC LÀ SAU KHI TRẬN ĐẤU GIỮA ĐỘI TUYỂN VIỆT NAM VÀ UAE KHÉP LẠI. TUY NHIÊN, THEO THÔNG BÁO MỚI NHẤT FIFA ĐÃ THAY ĐỔI THỜI GIAN DIỄN RA TRẬN ĐẤU NÀY",
+   "hypothesis": "VO VN SẦU TƯỨC V NMAN HẦU RỰT U ÔIL N TRƯNG UNC À GI RAO LUC HAI CO HAY MI CHNG SU UI ÀM ƯỚC LA AU IY CÁỢT Đ U THỜI HIỆP V A OẠI LẾU AN CƯC O NH I NHI N THE ÔI NHẮ HUÊ TOAC HY Đ TỪA AN H Ữ A C U ÀY CU TRO CHO ĐU SÂU A VÀ ỐU SNG LC MLI H ƯO HỀ N À N H N",
+   "cer": 0.7286245353159851,
+   "wer": 1.3389830508474576
+  },
+  {
+   "sample_id": "fb_AKqRhSVSlRc_00080",
+   "split": "train",
+   "reference": "BAYERN MUNICH ĐÃ TẮT LỊM HY VỌNG ĐI TIẾP Ở PHÚT 84 KHI MANE GHI BÀN CHO ĐỘI KHÁCH",
+   "hypothesis": "VU L A N TỐT NẾT Đ T UI VNG YIU Ư TẢ Y T HƯO UO N N H I VÀO TÔ BÀ THỦ ĐƯỢN H ẤN O RHNG UÔ CN T NG Ư A Ư N R Đ M I QO DU NY À À Ư ÁT",
+   "cer": 1.2345679012345678,
+   "wer": 2.5789473684210527
+  },
+  {
+   "sample_id": "fb_AKqRhSVSlRc_00220",
+   "split": "train",
+   "reference": "BÀN THẮNG THỨ 2 CỦA MESSI ĐẾN TỪ TÌNH HUỐNG SỞ TRƯỜNG TRƯỚC MẶT LÀ 2 HẬU VỆ LYON MESSI KHÉO LÉO DÙNG ĐỘNG TÁC GIẢ LOẠI BỎ CẢ 2 TRƯỚC KHI DỨT ĐIỂM TUNG LƯỚI GHI BÀN",
+   "hypothesis": "VQ N MU T A N T T U N T THƯƠNG SỀU HOIT Á T N THẠO RẤ N TÁN TL Ở H N A T I TƯ MA KHNGT ƯU VÔ SO Y MÀ L N N T THA CAO VÀ TƯ THƯN T Ế N T V C N ÁC TIÊN TÓN T N Á",
+   "cer": 0.754601226993865,
+   "wer": 1.5263157894736843
+  },
+  {
+   "sample_id": "fb_AKqRhSVSlRc_00361",
+   "split": "train",
+   "reference": "TỶ SỐ 3-0 NHỜ CÁC PHA LẬP CÔNG CỦA PEDRO, WILLIAM, VÀ TÀI NĂNG TRẺ HUDSON ODOI CÚ KHẢI HOÀN TRÊN GIÚP ĐẠI DIỆN PREMIER LEAGUE MỞ TOANG CÁNH CỬA VÀO TỨ KẾT EUROPA LEAGUE",
+   "hypothesis": "T V N N I MÀN TÀN ÁO TẠ TH S N À N HÀN TÀ C CUỐ L N N LN MI N I N H THAI H N MỚI I THẬN H THM T Ế N TH UN Á NT BÀ U H N",
+   "cer": 0.7202380952380952,
+   "wer": 1.3142857142857143
+  }
+ ]
+}

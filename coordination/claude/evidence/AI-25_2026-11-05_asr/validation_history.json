@@ -1,0 +1,256 @@
+[
+  {
+    "step": 0,
+    "phase": "original_baseline",
+    "domains": {
+      "vivos": {
+        "samples": 1093,
+        "wer": 0.3152398301277671,
+        "cer": 0.12385016460952461,
+        "corpus_wer": 0.2942739399197484,
+        "corpus_cer": 0.11394348504650366
+      },
+      "fleurs": {
+        "samples": 361,
+        "wer": 0.7704156445009384,
+        "cer": 0.5260638024896935,
+        "corpus_wer": 0.7865612648221344,
+        "corpus_cer": 0.5485215579002214
+      },
+      "minilibrispeech": {
+        "samples": 580,
+        "wer": 1.2242889630307872,
+        "cer": 0.7612547860191997,
+        "corpus_wer": 1.1622540434737818,
+        "corpus_cer": 0.7506864360241625
+      },
+      "real_domain_user_review": {
+        "samples": 10,
+        "wer": 0.9713438049725251,
+        "cer": 0.662732015175387,
+        "corpus_wer": 0.9697256385998108,
+        "corpus_cer": 0.6618793598686911
+      }
+    }
+  },
+  {
+    "step": 0,
+    "phase": "expanded_initial",
+    "domains": {
+      "vivos": {
+        "samples": 1093,
+        "wer": 0.3152398301277671,
+        "cer": 0.12385016460952461,
+        "corpus_wer": 0.2942739399197484,
+        "corpus_cer": 0.11394348504650366
+      },
+      "fleurs": {
+        "samples": 361,
+        "wer": 0.7704156445009384,
+        "cer": 0.5260638024896935,
+        "corpus_wer": 0.7865612648221344,
+        "corpus_cer": 0.5485215579002214
+      },
+      "minilibrispeech": {
+        "samples": 580,
+        "wer": 1.2242889630307872,
+        "cer": 0.7612547860191997,
+        "corpus_wer": 1.1622540434737818,
+        "corpus_cer": 0.7506864360241625
+      },
+      "real_domain_user_review": {
+        "samples": 10,
+        "wer": 0.9713438049725251,
+        "cer": 0.662732015175387,
+        "corpus_wer": 0.9697256385998108,
+        "corpus_cer": 0.6618793598686911
+      }
+    },
+    "selection_wer": 0.8203220606580044
+  },
+  {
+    "step": 100,
+    "phase": "finetune",
+    "domains": {
+      "vivos": {
+        "samples": 1093,
+        "wer": 0.3179387856574096,
+        "cer": 0.1234599136057507,
+        "corpus_wer": 0.29823229584643746,
+        "corpus_cer": 0.11377853345345193
+      },
+      "fleurs": {
+        "samples": 361,
+        "wer": 0.7540043042812874,
+        "cer": 0.3801588631119099,
+        "corpus_wer": 0.7707509881422925,
+        "corpus_cer": 0.3950762016412661
+      },
+      "minilibrispeech": {
+        "samples": 580,
+        "wer": 1.1964272322214533,
+        "cer": 0.701688811756594,
+        "corpus_wer": 1.1271247553312043,
+        "corpus_cer": 0.6912410763316859
+      },
+      "real_domain_user_review": {
+        "samples": 10,
+        "wer": 0.9657776866756766,
+        "cer": 0.6320037056407269,
+        "corpus_wer": 0.9659413434247871,
+        "corpus_cer": 0.6331555190808371
+      }
+    },
+    "raw_mean_wer": 0.8085370022089567,
+    "guard_eligible": false,
+    "selection_wer": 0.8203220606580044
+  },
+  {
+    "step": 200,
+    "phase": "finetune",
+    "domains": {
+      "vivos": {
+        "samples": 1093,
+        "wer": 0.31600721930267306,
+        "cer": 0.12234699064573405,
+        "corpus_wer": 0.29557531721071467,
+        "corpus_cer": 0.11239547778863357
+      },
+      "fleurs": {
+        "samples": 361,
+        "wer": 0.7335303077437636,
+        "cer": 0.366195727159233,
+        "corpus_wer": 0.7508917381663935,
+        "corpus_cer": 0.38094307672267813
+      },
+      "minilibrispeech": {
+        "samples": 580,
+        "wer": 1.1491189349800204,
+        "cer": 0.6942768788015923,
+        "corpus_wer": 1.0906562274647162,
+        "corpus_cer": 0.6889268063073665
+      },
+      "real_domain_user_review": {
+        "samples": 10,
+        "wer": 0.9562921357349075,
+        "cer": 0.615931370270648,
+        "corpus_wer": 0.956480605487228,
+        "corpus_cer": 0.6175625769388593
+      }
+    },
+    "raw_mean_wer": 0.7887371494403411,
+    "guard_eligible": false,
+    "selection_wer": 0.8203220606580044
+  },
+  {
+    "step": 300,
+    "phase": "finetune",
+    "domains": {
+      "vivos": {
+        "samples": 1093,
+        "wer": 0.31076345804962585,
+        "cer": 0.12087940040570226,
+        "corpus_wer": 0.2899360156165275,
+        "corpus_cer": 0.11082209336260167
+      },
+      "fleurs": {
+        "samples": 361,
+        "wer": 0.7111023517280027,
+        "cer": 0.346718036550713,
+        "corpus_wer": 0.7271763231466307,
+        "corpus_cer": 0.35958056532499677
+      },
+      "minilibrispeech": {
+        "samples": 580,
+        "wer": 1.1457573661572324,
+        "cer": 0.6930544759593428,
+        "corpus_wer": 1.0837539919645616,
+        "corpus_cer": 0.6878677335843728
+      },
+      "real_domain_user_review": {
+        "samples": 10,
+        "wer": 0.9455382046203287,
+        "cer": 0.5943668035943085,
+        "corpus_wer": 0.945127719962157,
+        "corpus_cer": 0.5962248666393106
+      }
+    },
+    "raw_mean_wer": 0.7782903451387975,
+    "guard_eligible": true,
+    "selection_wer": 0.7782903451387975
+  },
+  {
+    "step": 400,
+    "phase": "finetune",
+    "domains": {
+      "vivos": {
+        "samples": 1093,
+        "wer": 0.31056877425384455,
+        "cer": 0.12044149591547886,
+        "corpus_wer": 0.2897733434551567,
+        "corpus_cer": 0.11045412442425549
+      },
+      "fleurs": {
+        "samples": 361,
+        "wer": 0.7007302680144812,
+        "cer": 0.334036211193281,
+        "corpus_wer": 0.7148365950062663,
+        "corpus_cer": 0.3448178541965177
+      },
+      "minilibrispeech": {
+        "samples": 580,
+        "wer": 1.1599739127564304,
+        "cer": 0.6846124618749944,
+        "corpus_wer": 1.0985886473678788,
+        "corpus_cer": 0.6774535184749353
+      },
+      "real_domain_user_review": {
+        "samples": 10,
+        "wer": 0.9375968779494196,
+        "cer": 0.5649132399743122,
+        "corpus_wer": 0.9366130558183539,
+        "corpus_cer": 0.5658596635207221
+      }
+    },
+    "raw_mean_wer": 0.7772174582435439,
+    "guard_eligible": true,
+    "selection_wer": 0.7772174582435439
+  },
+  {
+    "step": 500,
+    "phase": "finetune",
+    "domains": {
+      "vivos": {
+        "samples": 1093,
+        "wer": 0.309371533423982,
+        "cer": 0.11994303461393165,
+        "corpus_wer": 0.2891226548096736,
+        "corpus_cer": 0.11006077831774752
+      },
+      "fleurs": {
+        "samples": 361,
+        "wer": 0.7000416550113053,
+        "cer": 0.3354892163786074,
+        "corpus_wer": 0.7153186156367493,
+        "corpus_cer": 0.3468368720420303
+      },
+      "minilibrispeech": {
+        "samples": 580,
+        "wer": 1.1373720154060194,
+        "cer": 0.6851258053220238,
+        "corpus_wer": 1.0810755125167404,
+        "corpus_cer": 0.6801992625715855
+      },
+      "real_domain_user_review": {
+        "samples": 10,
+        "wer": 0.9384040891361545,
+        "cer": 0.5808681834358105,
+        "corpus_wer": 0.9375591296121097,
+        "corpus_cer": 0.5824784571194092
+      }
+    },
+    "raw_mean_wer": 0.7712973232443653,
+    "guard_eligible": true,
+    "selection_wer": 0.7712973232443653
+  }
+]
