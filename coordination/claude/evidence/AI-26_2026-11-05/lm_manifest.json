@@ -1,0 +1,21 @@
+{
+ "sources": {
+  "news": "D:/data_training_ai/minigpt_news/dataset/news_train.json",
+  "news_sha256": "fec637037f36e2e2dea5d0aa29d2be1544ba846b1f452ba4781daee5f82630f2",
+  "vivos": "D:/data_training_ai/data/manifests/vivos.json",
+  "vivos_sha256": "9761aaf493c47cbf1587a2a7e9eca5ac99529c49a77f5438e21dccc31e13d9ec"
+ },
+ "articles": 30000,
+ "football_articles": 4539,
+ "vivos_train_utterances": 10567,
+ "tokens": 17883968,
+ "unigrams": 36884,
+ "bigram_contexts": 20862,
+ "bigrams": 733510,
+ "min_counts": {
+  "unigram": 2,
+  "bigram": 2
+ },
+ "discount": 0.75,
+ "lm_sha256": "f521a3cdc09240ae0fb9618a6af9fdee5d7447a694f81f1b45699803577ae525"
+}
