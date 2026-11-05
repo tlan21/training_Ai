@@ -45,8 +45,12 @@ def stage_audio(root, data, payload, staging):
         archives.append((english, 'english_audio', 'english_archive_sha256'))
     if any(i['extra']['source'] == 'real_domain_user_review' for i in payload['items']):
         archives.append((data, 'domain_audio', 'domain_archive_sha256'))
+    if any(i['extra']['source'] in ('fosd', 'commonvoice') for i in payload['items']):  # AI-27 public read speech
+        archives.append((data, 'public_audio', 'public_archive_sha256'))
     for parent, folder, fingerprint in archives:
         archive = parent / (folder + '.zip')
+        if not archive.exists() and (parent / (folder + '.pack')).exists():
+            archive = parent / (folder + '.pack')  # AI-27: renamed so Kaggle does not auto-extract ~29k files
         if archive.exists():
             assert sha(archive) == payload['meta'][fingerprint]
             extract(archive, staging)
@@ -58,7 +62,7 @@ def stage_audio(root, data, payload, staging):
         relative = Path(item['path'])
         assert not relative.is_absolute() and '..' not in relative.parts and '\\' not in item['path']
         target = staging / relative
-        assert target.is_file()
+        assert target.is_file(), f'missing staged audio: {relative}'
         if 'audio_sha256' in item['extra']:
             assert sha(target) == item['extra']['audio_sha256']
         item['path'] = str(target)
