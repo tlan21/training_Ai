@@ -3,6 +3,10 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
+- **2026-11-05 (AI-26/27):** AI-26 từ điển+LM: dev không cải thiện đáng kể → không triển khai (e9af468). AI-27 FOSD+CV19: Kaggle
+  `traininghighlight/asr-public-expansion-guarded-v1` (slug theo title) RUNNING, dataset `asr-public-expand-v1` (commit 3416262), ~2 h.
+  Xong → tải ngay vào `D:/data_training_ai/asr_public_expand_v1_20261105/output/`; chấm 30 đoạn bóng đá bằng
+  `football_intake.py eval <best.pt> received_v1/intake/approved.json <out>` so active `7c497d43` (CER 73,56%); test VIVOS/FLEURS trong báo cáo.
 - **2026-11-05:** AI-25 DONE — ASR active `7c497d43…` (AI-API v3.2; bóng đá CER 84,5→73,6%, VIVOS/FLEURS tốt hơn; parity 44/44; rollback `_archive/asr_ctc_8f879867/`).
   Còn: user chép tiếp review_v1 (75) / review_v2 (119) → vòng ASR sau; human ≥3/5 MiniGPT chưa chấm.
 - **2026-11-05 (AI-25, user "Train ngay với 14 đoạn"):** Kaggle `traininghighlight/asr-football-replay-guarded-v1` RUNNING (commit be348a0).
