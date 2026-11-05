@@ -249,3 +249,12 @@ def test_domain_vocab_only_appends_after_parent133():
                      ('asr-domain-replay-v2', ['?'] + parent), ('asr-domain-replay-v2', parent[:-1] + ['?'])):
         with pytest.raises(AssertionError):
             check_domain_vocab(rid, parent, new)
+
+
+def test_football_recipe_starts_from_active_93_symbols():
+    from ai_core.scripts.finetune_asr_robust import check_domain_vocab
+    active = [chr(0x4E00 + i) for i in range(93)]
+    check_domain_vocab('asr-football-replay-v1', active, active + ['(', ','])
+    for parent, new in ((active + ['x'] * 40, active + ['x'] * 41), (active, active), (active, ['?'] + active)):
+        with pytest.raises(AssertionError):
+            check_domain_vocab('asr-football-replay-v1', parent, new)

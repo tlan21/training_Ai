@@ -1,0 +1,123 @@
+{
+  "status": "PACKED_NOT_UPLOADED_OR_TRAINED",
+  "packet": "D:\\data_training_ai\\asr_football_replay_v1_20261105\\kaggle_dataset",
+  "recipe": {
+    "id": "asr-football-replay-v1",
+    "seed": 1337,
+    "steps": 500,
+    "eval_every": 100,
+    "sampling_probabilities": {
+      "vivos": 0.4,
+      "fleurs": 0.3,
+      "minilibrispeech": 0.2,
+      "real_domain_user_review": 0.1
+    },
+    "initial_checkpoint_sha256": "8f87986781cfb3d4716691f2051e5798187693e2452f9f41b28ca4a753ea5531",
+    "vocab_sha256": "f6278933f12b9cf9456397d57d367876e88f249f16af1395a39a7e146cd960b7",
+    "manifest_sha256": "e6b07e87b642319c59471d3e03b4d330118c467c36be158b428308c892135664",
+    "data_identity_sha256": "7a30adce9a5f86a8e50c3de0593e81cdc83b31218262bb82b00e557ddfd161c3",
+    "frozen_validation_sha256": "25b34fb687b01965028cc5b7a796246dcabd8dfc821dbc35fd2fa2e5d605cfa3",
+    "domain_validation_identity_sha256": "6108d9efb8fedaea2489b51e279cde32491088f5bc0ffbdf4011b226a5c87978",
+    "selection": "all-domain-wer-cer-nonregression-and-domain-wer-cer-improvement"
+  },
+  "domain_train_clips": {
+    "v1_verbatim": 30,
+    "expansion_reviewed": 51,
+    "football_typed": 14
+  },
+  "domain_val_clips": 10,
+  "expansion_pending": [
+    {
+      "sample_id": "ext2__9FWeRZBOSQ_6",
+      "exclude_reason": "chưa thể xác minh vì không có tiếng và lời thoại"
+    },
+    {
+      "sample_id": "ext2_TeE0V-91_OU_1",
+      "exclude_reason": "không có lời thoại"
+    },
+    {
+      "sample_id": "ext2_TeE0V-91_OU_2",
+      "exclude_reason": "không có lời thoại"
+    },
+    {
+      "sample_id": "ext2_TeE0V-91_OU_3",
+      "exclude_reason": "không có lời thoại"
+    },
+    {
+      "sample_id": "ext2_TeE0V-91_OU_4",
+      "exclude_reason": "không có lời thoại"
+    },
+    {
+      "sample_id": "ext2_TeE0V-91_OU_5",
+      "exclude_reason": "không có thoại"
+    },
+    {
+      "sample_id": "ext2_TeE0V-91_OU_6",
+      "exclude_reason": "không có thoại"
+    },
+    {
+      "sample_id": "ext2_TeE0V-91_OU_7",
+      "exclude_reason": "không có thoại"
+    },
+    {
+      "sample_id": "ext2_TeE0V-91_OU_8",
+      "exclude_reason": "không có thoại"
+    }
+  ],
+  "new_chars": [
+    "(",
+    ")",
+    "?"
+  ],
+  "vocab_size_with_blank": 136,
+  "ctc_retained_training": 15171,
+  "exclusions": [
+    {
+      "path": "vivos_waves/VIVOSSPK23/VIVOSSPK23_001.wav",
+      "reason": "original audio too short for CTC alignment",
+      "available_steps": 67,
+      "required_steps": 75
+    },
+    {
+      "path": "vivos_waves/VIVOSSPK26/VIVOSSPK26_300.wav",
+      "reason": "original audio too short for CTC alignment",
+      "available_steps": 76,
+      "required_steps": 104
+    },
+    {
+      "path": "vivos_waves/VIVOSSPK43/VIVOSSPK43_063.wav",
+      "reason": "original audio too short for CTC alignment",
+      "available_steps": 64,
+      "required_steps": 66
+    },
+    {
+      "path": "vivos_waves/VIVOSSPK43/VIVOSSPK43_112.wav",
+      "reason": "original audio too short for CTC alignment",
+      "available_steps": 55,
+      "required_steps": 56
+    }
+  ],
+  "source_sampling_counts": {
+    "vivos": 10563,
+    "fleurs": 2994,
+    "minilibrispeech": 1519,
+    "real_domain_user_review": 95
+  },
+  "packet_hashes": {
+    "ai_core.zip": "59390d197b01ddcb9c6fbf9478f4d785e5ebd0d52c0abded5ff482b9cf9a4694",
+    "asr_domain_manifest.json": "e6b07e87b642319c59471d3e03b4d330118c467c36be158b428308c892135664",
+    "code_manifest.json": "403c45342db883ab810b057e7acd5e216704899437fa30b291647764e1096028",
+    "dataset-metadata.json": "c304c340d45e39c621692ab4da77ee87982996dc68944cd42a95450f664c37d6",
+    "domain_audio.zip": "10bfec036d34ee3956da16ee24d9aff21c2fd33475b08938f7a21e221ed74767",
+    "frozen_validation.json": "25b34fb687b01965028cc5b7a796246dcabd8dfc821dbc35fd2fa2e5d605cfa3",
+    "recipe.json": "4c7f33d2334739b322c1e45bd91f87e8bc5e98febf30b2d555504ff191d10591",
+    "robust_vocab.json": "f6278933f12b9cf9456397d57d367876e88f249f16af1395a39a7e146cd960b7",
+    "source_asr.pt": "8f87986781cfb3d4716691f2051e5798187693e2452f9f41b28ca4a753ea5531"
+  },
+  "training_started": false,
+  "checkpoint_deployed": false,
+  "limitations": [
+    "Only 14 football train clips (4.7 min); football share of samples ~1.5%: little change expected.",
+    "Selection domain val = 10 news clips; football 30-clip test kept outside and scored once against the active ASR."
+  ]
+}

@@ -26,7 +26,9 @@ from ai_core.training.trainer import Trainer, set_seed
 THREE_SOURCES = ('vivos', 'fleurs', 'minilibrispeech')
 DOMAIN_SOURCE = 'real_domain_user_review'
 # Domain-replay recipes: identical budget/sampling/guard; v2 (AI-02c) only adds 51 reviewed expansion train clips.
-DOMAIN_TRAIN_CLIPS = {'asr-domain-replay-v1': 30, 'asr-domain-replay-v2': 81}
+DOMAIN_TRAIN_CLIPS = {'asr-domain-replay-v1': 30, 'asr-domain-replay-v2': 81, 'asr-football-replay-v1': 95}
+# AI-25: v2 recipe/guard + 14 football clips typed from audio (no draft); parent = ACTIVE asr (93 symbols), not parent133.
+FOOTBALL_RECIPE, ACTIVE_VOCAB = 'asr-football-replay-v1', 93
 
 
 def data_identity(payload):
@@ -56,8 +58,10 @@ def validate_recipe(recipe, payload, vocab_sha, initial_sha, steps):
     if domain:
         domain_rows = [r for r in rows if r['extra']['source'] == DOMAIN_SOURCE]
         assert collections.Counter(r['split'] for r in domain_rows) == {'train': DOMAIN_TRAIN_CLIPS[recipe['id']], 'val': 10}
-        assert all(r['extra']['label_origin'] == 'human_reviewed_external_asr'
-                   and r['extra']['draft_origin'] == 'EXTERNAL_ASR_DRAFT_UNVERIFIED'
+        origins = {('human_reviewed_external_asr', 'EXTERNAL_ASR_DRAFT_UNVERIFIED')}
+        if recipe['id'] == FOOTBALL_RECIPE:
+            origins.add(('HUMAN_VERIFIED', 'NONE'))  # football: typed from audio, played to the end (football_intake)
+        assert all((r['extra']['label_origin'], r['extra']['draft_origin']) in origins
                    and r['extra']['annotator'].strip() for r in domain_rows), 'missing domain attestation/provenance'
         references = [{'sample_id': Path(r['path']).stem, 'audio_sha256': r['extra']['audio_sha256'],
                        'transcript': r['extra']['transcript']} for r in sorted(domain_rows, key=lambda r: Path(r['path']).stem)
@@ -77,8 +81,11 @@ def validate_recipe(recipe, payload, vocab_sha, initial_sha, steps):
 
 
 def check_domain_vocab(recipe_id, source_itos, vocab_itos):
-    """Parent133 symbols keep their IDs; new train-only symbols may only be appended (v1 added exactly '?')."""
-    assert len(source_itos) == 133 and list(vocab_itos[:133]) == list(source_itos) and len(vocab_itos) > 133
+    """Parent symbols keep their IDs; new train-only symbols may only be appended (v1 added exactly '?').
+
+    Parent = parent133, except the football recipe which starts from the active 93-symbol ASR."""
+    parent = ACTIVE_VOCAB if recipe_id == FOOTBALL_RECIPE else 133
+    assert len(source_itos) == parent and list(vocab_itos[:parent]) == list(source_itos) and len(vocab_itos) > parent
     if recipe_id == 'asr-domain-replay-v1':
         assert list(vocab_itos[133:]) == ['?']
 
