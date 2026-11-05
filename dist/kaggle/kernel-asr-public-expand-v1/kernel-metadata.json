@@ -1,5 +1,5 @@
 {
-  "id": "traininghighlight/asr-public-expand-guarded-v1",
+  "id": "traininghighlight/asr-public-expansion-guarded-v1",
   "title": "ASR public expansion guarded v1",
   "code_file": "run_asr_domain_replay.py",
   "language": "python",
