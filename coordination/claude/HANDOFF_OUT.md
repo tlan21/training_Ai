@@ -470,3 +470,8 @@ job queue) sở hữu toàn bộ dữ liệu. AI phía Claude đã xong (REL tr�
       trước đây bị automatic approval review chặn, bàn giao không thay quyền này;
   (b) triển khai riêng CMS `7c7dd74` (+ test handler) cần build image — **dung lượng ổ thấp** (E: 332 MB, C: 1,9 GB, D: 7,3 GB lúc nhận) phải kiểm trước.
 - Trong khi chờ (a): đối chiếu 16 task REVIEW bằng bằng chứng sẵn có (không cần thay đổi runtime).
+
+## 2026-11-05 REL AI-API v3.1 — checkpoint MiniGPT thích nghi bóng đá (AI-24 / D29-A, user "Thay ngay"; trên `claude/ai-core`)
+- Chỉ đổi checkpoint `minigpt` `cf9cfa71…` → `8a62e953…`; path/schema/status code/prompt không đổi; image `ai-v3.0-48735ff` giữ nguyên (mount checkpoint chỉ đọc), container đã restart.
+- Bằng chứng: `coordination/claude/evidence/AI-24_2026-11-05_v2/README.md` (cổng 12/12, parity 3/3). Rollback: `ai-core/checkpoints/_archive/minigpt_cf9cfa71/`.
+- Phía ứng dụng không phải đổi gì; tóm tắt vẫn là bản nháp cho admin (human ≥3/5 chưa chấm).

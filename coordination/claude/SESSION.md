@@ -3,6 +3,8 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
+- **2026-11-05:** AI-24 DONE — MiniGPT active `8a62e953…` (AI-API v3.1, cổng v2 12/12, parity 3/3, rollback `_archive/minigpt_cf9cfa71/`).
+  AI-25: user đang chép lời; export đợt 1 hiện 25/119 xác nhận (`C:/Users/PC/Downloads/asr_football_review_v1.json`, 2026-11-04 16:57). Intake + fine-tune ASR khi ~70 đoạn (có đủ val).
 - **2026-11-04 (AI-25 đợt 2):** user: đợt 1 "giống bản tin" → đợt 2 = 19 video trận đấu CC (5,06 h) duyệt + tải `audio2/`; trang lọc
   `http://127.0.0.1:8892/screen_v2/index.html` (2×20 s/video) chờ user báo số video KHÔNG có bình luận → cắt clip + trang chép lời đợt 2 (ưu tiên trước đợt 1).
   Server tĩnh: `D:	mpi25\serve.cmd` (cổng 8892, gốc `D:/data_training_ai/football_asr_sources`).
