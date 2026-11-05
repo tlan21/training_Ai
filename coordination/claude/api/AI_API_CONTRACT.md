@@ -1,6 +1,6 @@
 # AI API Contract — inference-service :8001
 
-**Version: AI-API v3.0 (2026-11-02, AI-23 — D24 bước 3; hiệu lực khi release).** v3.0 = major: **xóa** 4 path `/v1/vision|asr|search|recommendation` (trả 404) và mọi MinIO/Milvus khỏi inference-service; còn `/v1/highlight/completions`, `/v1/completions`, `GET /health` (file này) + `/v2/*` (`AI_API_CONTRACT_V2.md`). `/health.dependencies` = `{}` (chỉ có `model_worker` khi dùng worker từ xa). Compat test: `inference-service/tests/test_contract_compat.py` (snapshot v1.2, v1.3, v1.5; chỉ cho phép xóa đúng 4 path + schema riêng).
+**Version: AI-API v3.1 (2026-11-05, AI-24 — chỉ đổi checkpoint `minigpt`, path/schema/status code không đổi; xem §3).** Trước đó: **AI-API v3.0 (2026-11-02, AI-23 — D24 bước 3).** v3.0 = major: **xóa** 4 path `/v1/vision|asr|search|recommendation` (trả 404) và mọi MinIO/Milvus khỏi inference-service; còn `/v1/highlight/completions`, `/v1/completions`, `GET /health` (file này) + `/v2/*` (`AI_API_CONTRACT_V2.md`). `/health.dependencies` = `{}` (chỉ có `model_worker` khi dùng worker từ xa). Compat test: `inference-service/tests/test_contract_compat.py` (snapshot v1.2, v1.3, v1.5; chỉ cho phép xóa đúng 4 path + schema riêng).
 **Trước đó — AI-API v1.5 (2026-11-02, release #6):** v1.5 không đổi schema/path: 4 path `/v1/vision|asr|search|recommendation` → `DEPRECATED` (OpenAPI `deprecated: true`), thay bằng `/v2` (`AI_API_CONTRACT_V2.md`, `API_READY`); vẫn phục vụ tới khi Codex xác nhận ngừng gọi (HC-17), sau đó mới gỡ.
 **Trước đó: AI-API v1.4 (2026-10-30) — release #5.** v1.4 chỉ THÊM field (highlight: `asr_segments` tùy chọn, `clip_threshold`) + sửa lỗi `embeddings_256` (backbone Siamese) + model highlight vòng 8 ×10; 6 endpoint `API_READY` không đổi path/field bắt buộc. Tương thích ngược khóa bằng `inference-service/tests/test_contract_compat.py` (snapshot v1.2 + v1.3). v2.0 `DRAFT` song song: `AI_API_CONTRACT_V2.md`. Owner: Claude. Codex chỉ đọc
 (`git show claude/ai-core:coordination/claude/api/AI_API_CONTRACT.md`, hoặc bản trên `master` sau release).
@@ -55,7 +55,7 @@ thành công thật; Codex được dùng mock, chưa được đánh `INTEGRATE
 | `siamese` | `/v1/search/completions` (+ index frame) | `primitive-siamese-vit` | `b4ded465b8eea134a01652811008656b9e0c59716431136bb161216310bbcebb` |
 | `asr_ctc` | `/v1/asr/completions` | `primitive-asr-transformer` | `8f87986781cfb3d4716691f2051e5798187693e2452f9f41b28ca4a753ea5531` |
 | `highlight_fusion` | `/v1/highlight/completions` | `primitive-seq2seq-highlighter` | `5aecd5c4eecd37a25c8c5c2fd515f268700041987ce38df4ffbf01724fbd052e` |
-| `minigpt` | `/v1/completions` | `primitive-gpt-summarizer` | `cf9cfa7141d40f9d40b0065ae68855ff39ffe750260ee7b42c7c0eac719330ac` |
+| `minigpt` | `/v1/completions` | `primitive-gpt-summarizer` | `8a62e953140e601f386322e5a84172ca2e38663bb8316b1b329c2ee4ff4b3282` |
 | `two_tower` | `/v1/recommendation/completions` | `primitive-two-tower-recommender` | `f28c37943ec499d168f43b5281879273af326a97ee47e571100c93dee0c91695` |
 
 Nguồn canonical: `E:/traning_ai/ai-core/checkpoints` (AI-06). Claude chỉ thay `best.pt` active khi phát hành AI API version mới.
@@ -97,7 +97,7 @@ media thật 6/6 + synthetic 6/6; `/health` → `stub_mode=false`, 6 model, `deg
 | vit | ✓ | ✓ `192d90e4…` | ✓ | ✓ | ✓ | |
 | asr_ctc | ✓ | ✓ `8f879867…` | ✓ | ✓ | ✓ | chất lượng video thật kém (transcript nhiễu, AI-02) |
 | highlight_fusion | ✓ | ✓ `5aecd5c4…` (vòng 8 ×10, 3 seed) | ✓ | ✓ | ✓ | |
-| minigpt | ✓ | ✓ `cf9cfa71…` | ✓ | ✓ | ✓ | chất lượng human 1.6/5 (AI-03), chỉ dùng làm draft cho admin |
+| minigpt | ✓ | ✓ `8a62e953…` (AI-24 v2, bóng đá; cũ `cf9cfa71` ở `_archive/minigpt_cf9cfa71/`) | ✓ | ✓ | ✓ | chưa có điểm người chấm cho bản mới (bản cũ 1.6/5, AI-03); vẫn bịa nội dung — chỉ là draft cho admin |
 | siamese | ✓ | ✓ `b4ded465…` | ✓ | ✓ | ✓ | Milvus `video_frame_embeddings` 280 vector, HNSW/COSINE/M16/efC200; index qua `video_id` + data URI (AI-11) |
 | two_tower | ✓ | ✓ `f28c3794…` | ✓ | ✗ | ✗ | collection `user_recommendation_embeddings` chưa có → 503 |
 
@@ -236,6 +236,12 @@ Resp: `{"status":"ok","gpu_vram_used": MB,"gpu_util": %,"models_loaded":[...],"d
   `/health` tự thử lại dependency chưa `ok` tối đa mỗi 30 s → trạng thái tự phục hồi khi Milvus/collection được sửa. `FORCE_STUB=1` → `{}`.
 
 ## 3. Changelog
+- **v3.1 (2026-11-05, AI-24 / D29-A, user "Thay ngay")** — chỉ đổi checkpoint `minigpt`: `cf9cfa71…` → `8a62e953…` (thích nghi bóng đá từ `cf9cfa71`,
+  19k bài bóng đá + replay tin chung 1:2, bóc thẻ nguồn đầu sapo). Cổng đăng ký trước PASS 12/12 (`coordination/claude/evidence/AI-24_2026-11-05_v2/`):
+  football `<sum>` +0.014 clean / +0.018 ASR-noisy (CI95 > 0), title/sum tin chung không tụt; mở đầu "(Báo X) -" bịa 209→1 (bóng đá), 392→2 (chung) /1000.
+  Path, schema, status code, prompt/format không đổi; image `ai-v3.0-48735ff` giữ nguyên (checkpoint mount chỉ đọc), container restart;
+  parity: `/v1/completions` trong container = ai_core cùng checkpoint trên host 3/3 giống hệt. `examples/completions.response.json` sinh lại.
+  Giới hạn: human ≥3/5 chưa chấm; vẫn bịa nội dung. Rollback: chép `_archive/minigpt_cf9cfa71/best.pt` về `minigpt/best.pt` + restart container.
 - **v3.0 (2026-11-02, AI-23)** — D24 bước 3 sau RE:HC-17 (Codex INT-55): xóa 4 path `/v1` deprecated + schema riêng (`VisionRequest/Response`, `ASRRequest`, `Search*`, `Recommendation*`); gỡ `visual_index.py`, `index_frames.py`, warmup/probe Milvus, `minio`/`pymilvus`; `/health.dependencies` còn `{}`; startup không cần Milvus. `/v1/highlight`, `/v1/completions`, `/v2/*` không đổi. Examples v1 tương ứng đã xóa, examples còn lại sinh lại từ image v3.0.
 - **v1.5 (2026-11-02, AI-15)** — cutover D24 bước 2 sau RE:HC-13 E2E PASS: 4 path `/v1` media/search/reco `DEPRECATED` (chỉ thêm `deprecated: true` vào OpenAPI, test `test_v1_paths_replaced_by_v2_are_deprecated_in_openapi`); schema/hành vi không đổi; compat v1.2 + v1.3 PASS.
 - **v1.4 — ghi chú 2026-11-02 (AI-22, HO-04)** — không đổi version/schema: runtime chính thức = container image `ai-v1.4-62b7e05` (mục 1c) + bằng chứng parity.

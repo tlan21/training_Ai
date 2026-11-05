@@ -18,3 +18,12 @@ Gate v2 (registered 2026-11-04 before training; only change vs v1 = clean-sum > 
 Extra: invented agency-tag openings ("(Dân Việt) - …") football 209→1, general 392→2 per 1000 (active → candidate).
 Still open: content hallucination (small 14M model); human evaluation (3 raters, 30 summaries, mean ≥3/5) not replaced by this gate;
 real football videos remain mostly blocked by ASR transcript quality (API 0.10.0) until AI-25 improves ASR.
+
+## Promotion (user 2026-11-05 "Thay ngay") — VERIFIED-NOW
+- `ai-core/checkpoints/minigpt/best.pt` = `8a62e953…`; previous `cf9cfa71…` + vocab moved to `ai-core/checkpoints/_archive/minigpt_cf9cfa71/`. Vocab unchanged (`649ffc66…`).
+- Container `video-ai-inference-service-1` (image `ai-v3.0-48735ff`, checkpoints mounted read-only) restarted → healthy; `/health` 6 models, `stub_mode=false`;
+  sha256 of mounted `minigpt/best.pt` inside the container = `8a62e953…` = contract §1 (AI-API v3.1).
+- Parity: `/v1/completions` in the container vs ai_core with the same checkpoint on the host (CPU, greedy, `<sum>`, 3 short football test articles): 3/3 identical.
+- `coordination/claude/api/examples/completions.response.json` regenerated from the live container with the unchanged request.
+- Rollback: copy `_archive/minigpt_cf9cfa71/best.pt` back to `minigpt/best.pt`, `docker restart video-ai-inference-service-1`, revert contract §1.
+- Not rerun: inference-service pytest (no code change; image has no tests/pytest, host venv lacks fastapi).
