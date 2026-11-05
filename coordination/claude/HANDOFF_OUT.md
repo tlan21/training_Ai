@@ -475,3 +475,8 @@ job queue) sở hữu toàn bộ dữ liệu. AI phía Claude đã xong (REL tr�
 - Chỉ đổi checkpoint `minigpt` `cf9cfa71…` → `8a62e953…`; path/schema/status code/prompt không đổi; image `ai-v3.0-48735ff` giữ nguyên (mount checkpoint chỉ đọc), container đã restart.
 - Bằng chứng: `coordination/claude/evidence/AI-24_2026-11-05_v2/README.md` (cổng 12/12, parity 3/3). Rollback: `ai-core/checkpoints/_archive/minigpt_cf9cfa71/`.
 - Phía ứng dụng không phải đổi gì; tóm tắt vẫn là bản nháp cho admin (human ≥3/5 chưa chấm).
+
+## 2026-11-05 REL AI-API v3.2 — checkpoint ASR domain bóng đá (AI-25 / D29-B, user "Thay ngay"; trên `claude/ai-core`)
+- Chỉ đổi checkpoint `asr_ctc` `8f879867…` → `7c497d43…` (bộ ký tự 136, trong checkpoint); path/schema/status code không đổi; image giữ nguyên, container đã restart.
+- Bằng chứng: `coordination/claude/evidence/AI-25_2026-11-05_asr/README.md` (cổng 3/3, parity 44/44). Rollback: `ai-core/checkpoints/_archive/asr_ctc_8f879867/`.
+- Phía ứng dụng không phải đổi gì; video cũ giữ phụ đề cũ, video mới dùng ASR mới.

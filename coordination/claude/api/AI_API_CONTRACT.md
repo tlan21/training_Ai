@@ -1,6 +1,6 @@
 # AI API Contract — inference-service :8001
 
-**Version: AI-API v3.1 (2026-11-05, AI-24 — chỉ đổi checkpoint `minigpt`, path/schema/status code không đổi; xem §3).** Trước đó: **AI-API v3.0 (2026-11-02, AI-23 — D24 bước 3).** v3.0 = major: **xóa** 4 path `/v1/vision|asr|search|recommendation` (trả 404) và mọi MinIO/Milvus khỏi inference-service; còn `/v1/highlight/completions`, `/v1/completions`, `GET /health` (file này) + `/v2/*` (`AI_API_CONTRACT_V2.md`). `/health.dependencies` = `{}` (chỉ có `model_worker` khi dùng worker từ xa). Compat test: `inference-service/tests/test_contract_compat.py` (snapshot v1.2, v1.3, v1.5; chỉ cho phép xóa đúng 4 path + schema riêng).
+**Version: AI-API v3.2 (2026-11-05, AI-25 — chỉ đổi checkpoint `asr_ctc`, path/schema/status code không đổi; xem §3).** Trước đó: v3.1 (2026-11-05, AI-24 — checkpoint `minigpt`). Trước đó: **AI-API v3.0 (2026-11-02, AI-23 — D24 bước 3).** v3.0 = major: **xóa** 4 path `/v1/vision|asr|search|recommendation` (trả 404) và mọi MinIO/Milvus khỏi inference-service; còn `/v1/highlight/completions`, `/v1/completions`, `GET /health` (file này) + `/v2/*` (`AI_API_CONTRACT_V2.md`). `/health.dependencies` = `{}` (chỉ có `model_worker` khi dùng worker từ xa). Compat test: `inference-service/tests/test_contract_compat.py` (snapshot v1.2, v1.3, v1.5; chỉ cho phép xóa đúng 4 path + schema riêng).
 **Trước đó — AI-API v1.5 (2026-11-02, release #6):** v1.5 không đổi schema/path: 4 path `/v1/vision|asr|search|recommendation` → `DEPRECATED` (OpenAPI `deprecated: true`), thay bằng `/v2` (`AI_API_CONTRACT_V2.md`, `API_READY`); vẫn phục vụ tới khi Codex xác nhận ngừng gọi (HC-17), sau đó mới gỡ.
 **Trước đó: AI-API v1.4 (2026-10-30) — release #5.** v1.4 chỉ THÊM field (highlight: `asr_segments` tùy chọn, `clip_threshold`) + sửa lỗi `embeddings_256` (backbone Siamese) + model highlight vòng 8 ×10; 6 endpoint `API_READY` không đổi path/field bắt buộc. Tương thích ngược khóa bằng `inference-service/tests/test_contract_compat.py` (snapshot v1.2 + v1.3). v2.0 `DRAFT` song song: `AI_API_CONTRACT_V2.md`. Owner: Claude. Codex chỉ đọc
 (`git show claude/ai-core:coordination/claude/api/AI_API_CONTRACT.md`, hoặc bản trên `master` sau release).
@@ -53,7 +53,7 @@ thành công thật; Codex được dùng mock, chưa được đánh `INTEGRATE
 |---|---|---|---|
 | `vit` | `/v1/vision/completions` | `primitive-vit-classifier` | `192d90e4fad893cec1542c5630715cc3bc22197e8cd8ba22a6fb84a64a88ad7f` |
 | `siamese` | `/v1/search/completions` (+ index frame) | `primitive-siamese-vit` | `b4ded465b8eea134a01652811008656b9e0c59716431136bb161216310bbcebb` |
-| `asr_ctc` | `/v1/asr/completions` | `primitive-asr-transformer` | `8f87986781cfb3d4716691f2051e5798187693e2452f9f41b28ca4a753ea5531` |
+| `asr_ctc` | `/v1/asr/completions` | `primitive-asr-transformer` | `7c497d43ce9ca9fbb4d29f80e2d86e777d11f7eea6828062e581fce4aa794934` |
 | `highlight_fusion` | `/v1/highlight/completions` | `primitive-seq2seq-highlighter` | `5aecd5c4eecd37a25c8c5c2fd515f268700041987ce38df4ffbf01724fbd052e` |
 | `minigpt` | `/v1/completions` | `primitive-gpt-summarizer` | `8a62e953140e601f386322e5a84172ca2e38663bb8316b1b329c2ee4ff4b3282` |
 | `two_tower` | `/v1/recommendation/completions` | `primitive-two-tower-recommender` | `f28c37943ec499d168f43b5281879273af326a97ee47e571100c93dee0c91695` |
@@ -95,7 +95,7 @@ media thật 6/6 + synthetic 6/6; `/health` → `stub_mode=false`, 6 model, `deg
 | Model | DECLARED | CKPT_PRESENT | LOADED | ENDPOINT_OK | API_READY | Ghi chú |
 |---|---|---|---|---|---|---|
 | vit | ✓ | ✓ `192d90e4…` | ✓ | ✓ | ✓ | |
-| asr_ctc | ✓ | ✓ `8f879867…` | ✓ | ✓ | ✓ | chất lượng video thật kém (transcript nhiễu, AI-02) |
+| asr_ctc | ✓ | ✓ `7c497d43…` (AI-25, 136 ký hiệu; cũ `8f879867` ở `_archive/asr_ctc_8f879867/`) | ✓ | ✓ | ✓ | vẫn kém trên video thật: bóng đá CER 73,6% (30 đoạn người chép), transcript_quality thường < 0,7 |
 | highlight_fusion | ✓ | ✓ `5aecd5c4…` (vòng 8 ×10, 3 seed) | ✓ | ✓ | ✓ | |
 | minigpt | ✓ | ✓ `8a62e953…` (AI-24 v2, bóng đá; cũ `cf9cfa71` ở `_archive/minigpt_cf9cfa71/`) | ✓ | ✓ | ✓ | chưa có điểm người chấm cho bản mới (bản cũ 1.6/5, AI-03); vẫn bịa nội dung — chỉ là draft cho admin |
 | siamese | ✓ | ✓ `b4ded465…` | ✓ | ✓ | ✓ | Milvus `video_frame_embeddings` 280 vector, HNSW/COSINE/M16/efC200; index qua `video_id` + data URI (AI-11) |
@@ -236,6 +236,13 @@ Resp: `{"status":"ok","gpu_vram_used": MB,"gpu_util": %,"models_loaded":[...],"d
   `/health` tự thử lại dependency chưa `ok` tối đa mỗi 30 s → trạng thái tự phục hồi khi Milvus/collection được sửa. `FORCE_STUB=1` → `{}`.
 
 ## 3. Changelog
+- **v3.2 (2026-11-05, AI-25 / D29-B, user "Thay ngay")** — chỉ đổi checkpoint `asr_ctc`: `8f879867…` → `7c497d43…` (domain-replay từ ASR active:
+  81 đoạn tin tức + 14 đoạn bóng đá người chép từ audio, guard VIVOS/FLEURS/MLS; bộ ký tự 93 → 136, có sẵn trong checkpoint). Cổng đăng ký trước 3/3
+  (`coordination/claude/evidence/AI-25_2026-11-05_asr/`): bóng đá 30 đoạn (kênh giữ riêng) CER 84,47% → 73,56% (CI95 ΔCER [−23,6; −1,8] điểm),
+  WER 138,6% → 106,0%; VIVOS test WER/CER 36,05/13,55 → 34,92/13,00; FLEURS 76,74/50,51 → 70,08/33,93. Path/schema/status code không đổi;
+  image `ai-v3.0-48735ff` giữ nguyên, container restart; parity `/v2/asr` container = decode trên host 44/44 giống hệt.
+  `examples/v2_asr.response.json` sinh lại từ cùng `clip.wav` (đã xác nhận đúng clip bằng checkpoint cũ). Rollback: chép
+  `_archive/asr_ctc_8f879867/best.pt` về `asr_ctc/best.pt` + restart container.
 - **v3.1 (2026-11-05, AI-24 / D29-A, user "Thay ngay")** — chỉ đổi checkpoint `minigpt`: `cf9cfa71…` → `8a62e953…` (thích nghi bóng đá từ `cf9cfa71`,
   19k bài bóng đá + replay tin chung 1:2, bóc thẻ nguồn đầu sapo). Cổng đăng ký trước PASS 12/12 (`coordination/claude/evidence/AI-24_2026-11-05_v2/`):
   football `<sum>` +0.014 clean / +0.018 ASR-noisy (CI95 > 0), title/sum tin chung không tụt; mở đầu "(Báo X) -" bịa 209→1 (bóng đá), 392→2 (chung) /1000.

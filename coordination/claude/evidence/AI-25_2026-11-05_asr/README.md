@@ -17,3 +17,12 @@ Honest limits: football output is still mostly unreadable (CER 74%) — API 0.10
 The gain cannot be attributed to the 14 football clips alone (the same run also replays FLEURS/MLS/news; parent133 `d03ef0a9`, trained on
 VIVOS+FLEURS only, is WORSE on football: CER 99.3%). Checkpoint metadata `label_origin` is the recipe's static news value; football rows are
 HUMAN_VERIFIED/draft NONE (see packet manifest). 30-clip test is small (wide CI).
+
+## Promotion (user 2026-11-05 "Thay ngay") — VERIFIED-NOW
+- `ai-core/checkpoints/asr_ctc/best.pt` = `7c497d43…`; previous `8f879867…` moved to `ai-core/checkpoints/_archive/asr_ctc_8f879867/` (`last.pt` untouched, only a missing-best fallback).
+- Container restarted → healthy, `/health` 6 models, `stub_mode=false`; sha256 of mounted `asr_ctc/best.pt` = `7c497d43…` = contract §1 (AI-API v3.2).
+- Parity: `/v2/asr` in the container vs host decode of the same checkpoint on all 44 reviewed clips: 44/44 identical transcripts
+  (`football_container_after_promote.json`: val CER 73.56% / WER 106.04%, same as the scored test).
+- `examples/v2_asr.response.json` regenerated from the same `clip.wav` (rebuilt from `-1Is0o2ZWk0.mp4` 60–70 s, 320078 bytes; old checkpoint reproduces the old example exactly).
+- Rollback: copy `_archive/asr_ctc_8f879867/best.pt` back, `docker restart video-ai-inference-service-1`, revert contract §1.
+- Existing videos keep their stored subtitles (no reprocessing of old data); new uploads use the new ASR.

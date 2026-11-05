@@ -3,6 +3,8 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
+- **2026-11-05:** AI-25 DONE — ASR active `7c497d43…` (AI-API v3.2; bóng đá CER 84,5→73,6%, VIVOS/FLEURS tốt hơn; parity 44/44; rollback `_archive/asr_ctc_8f879867/`).
+  Còn: user chép tiếp review_v1 (75) / review_v2 (119) → vòng ASR sau; human ≥3/5 MiniGPT chưa chấm.
 - **2026-11-05 (AI-25, user "Train ngay với 14 đoạn"):** Kaggle `traininghighlight/asr-football-replay-guarded-v1` RUNNING (commit be348a0).
   Xong → tải ngay vào `D:/data_training_ai/asr_football_replay_v1_20261105/output/`, chấm 30 đoạn bóng đá bằng
   `football_intake.py eval <best.pt> received_v1/intake/approved.json <out>` (chỉ dòng split val) so active CER 84,47%; đọc test VIVOS/FLEURS trong báo cáo.

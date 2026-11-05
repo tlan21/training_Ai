@@ -28,7 +28,7 @@ Backlog ứng dụng 32 ID INT: `coordination/claude/OPEN_TASKS.md` (tick + evid
 | AI-22 | T1.8 | HO-04: runtime AI chính thức = container Docker (user 2026-11-02) — image bất biến từ source hiện hành (v1.4 + AI-19 + recipe) + bằng chứng readiness/parity checkpoint–source; Codex đổi tag compose (HC-16) | DONE (2026-11-02; Codex triển khai `ai-v1.4-62b7e05` = RE:HC-16; image release #6 ⇐ HC-18) | HO-04; Docker engine UP |
 | AI-23 | T1.8 | D24 bước 3: gỡ 4 path `/v1` deprecated + MinIO/Milvus khỏi inference-service (AI-API v3.0), image mới + parity | DONE (release #7, 2026-11-02); Codex đã triển khai (RE:HC-19, INT-57) | AI-15; RE:HC-17 (Codex INT-55: không còn gọi) |
 | AI-24 | T1.6 | D29-A: MiniGPT thích nghi bóng đá — tiếp tục từ `cf9cfa71` trên bài báo Thể thao/bóng đá (Binhvq, nhãn biên tập báo) + replay tin chung, staged clean→ASR-noise; cổng đăng ký trước bên dưới | DONE (2026-11-05) — v2 cổng PASS 12/12, user "Thay ngay": minigpt active `8a62e953…` (AI-API v3.1), parity 3/3; human ≥3/5 vẫn mở | D29 (user 2026-11-03) |
-| AI-25 | T1.4 | D29-B: ASR bóng đá — Claude tìm video bình luận bóng đá tiếng Việt giấy phép mở (CC BY/BY-SA), gửi danh sách user duyệt trước khi tải; phụ đề người sửa trong CMS → HUMAN_VERIFIED → fine-tune có guard | REVIEW (2026-11-05) — cổng 3/3 PASS: bóng đá CER 84,5→73,6% (CI<0), VIVOS/FLEURS test tốt hơn; ứng viên `7c497d43…` chờ user duyệt thay ASR (`evidence/AI-25_2026-11-05_asr/`) | D29; user duyệt nguồn |
+| AI-25 | T1.4 | D29-B: ASR bóng đá — Claude tìm video bình luận bóng đá tiếng Việt giấy phép mở (CC BY/BY-SA), gửi danh sách user duyệt trước khi tải; phụ đề người sửa trong CMS → HUMAN_VERIFIED → fine-tune có guard | DONE (2026-11-05) — football replay v1 cổng 3/3, user "Thay ngay": asr active `7c497d43…` (AI-API v3.2), parity 44/44; đợt nhãn tiếp (75 đoạn v1 + 119 đoạn v2) cho vòng sau | D29; user duyệt nguồn |
 | AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | BLOCKED ⇐ bundle INT-13 (phần độc lập xong 2026-10-26) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | DONE (2026-10-26; sandbox + artifact; product → AI-12 theo D18) | HC-04 (sandbox READY) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | DONE (02a 2026-10-27 · 02b user duyệt 51/60 2026-10-28 · 02c guard loại, không promote) · D23 dừng cho MVP | — |
@@ -211,7 +211,7 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   ```
 
 ### AI-25 — D29-B: ASR bóng đá (football replay v1)
-- Status: REVIEW (2026-11-05) — cổng 3/3 PASS, chờ user duyệt promote. Export `asr_football_review_v1_20261105.json` (sha256 `67b54987…`), intake chặt `football_intake.py`: 44 đạt / 75 chờ.
+- Status: DONE (2026-11-05) — cổng 3/3 PASS, ACTIVE `7c497d43…` (AI-API v3.2, user "Thay ngay"); rollback `_archive/asr_ctc_8f879867/`. Export `asr_football_review_v1_20261105.json` (sha256 `67b54987…`), intake chặt `football_intake.py`: 44 đạt / 75 chờ.
 - Baseline (VERIFIED-NOW, 30 đoạn đánh giá, 6 kênh giữ riêng): active `8f879867` CER 84,47% / WER 138,55% (container = decode trên host, khớp);
   parent133 `d03ef0a9` CER 99,30% / WER 149,97% → KHÔNG dùng làm điểm khởi đầu.
 - Công thức `asr-football-replay-v1` (pack `pack_football_v1.py`): như domain-replay v2 (500 bước, seed 1337, lấy mẫu .4/.3/.2/.1, chọn theo guard),
