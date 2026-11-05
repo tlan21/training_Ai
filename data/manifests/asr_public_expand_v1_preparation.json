@@ -1,0 +1,91 @@
+{
+  "status": "PACKED_NOT_UPLOADED_OR_TRAINED",
+  "recipe": {
+    "id": "asr-public-expand-v1",
+    "seed": 1337,
+    "steps": 3000,
+    "eval_every": 500,
+    "sampling_probabilities": {
+      "vivos": 0.25,
+      "fleurs": 0.2,
+      "minilibrispeech": 0.1,
+      "real_domain_user_review": 0.1,
+      "fosd": 0.25,
+      "commonvoice": 0.1
+    },
+    "initial_checkpoint_sha256": "7c497d43ce9ca9fbb4d29f80e2d86e777d11f7eea6828062e581fce4aa794934",
+    "vocab_sha256": "f7da73333d592a50a1fdeccd4273df5106d85fc449a072498159ae23ac619544",
+    "manifest_sha256": "081e89128baf3e3cd4b45b7d1987377ebf6976bbb7a24269670bdeeee8dbca7c",
+    "data_identity_sha256": "29787be4361c53466b577e88fddce499d1717b071f67bae00c67c467072ab408",
+    "frozen_validation_sha256": "25b34fb687b01965028cc5b7a796246dcabd8dfc821dbc35fd2fa2e5d605cfa3",
+    "domain_validation_identity_sha256": "6108d9efb8fedaea2489b51e279cde32491088f5bc0ffbdf4011b226a5c87978",
+    "selection": "all-domain-wer-cer-nonregression-and-domain-wer-cer-improvement"
+  },
+  "public_counts": {
+    "fosd_train": 24970,
+    "fosd_test": 292,
+    "fosd_val": 299,
+    "fosd_transcript_mismatch_vs_mendeley": 1,
+    "fosd_duplicate_audio": 355,
+    "commonvoice_train": 2239,
+    "commonvoice_val": 300,
+    "commonvoice_test": 1088
+  },
+  "original_items": 19345,
+  "public_items": 29188,
+  "new_chars": [
+    "@",
+    "\\",
+    "Ń",
+    "ǀ",
+    "“"
+  ],
+  "ctc_retained_training_by_source": {
+    "vivos": 10563,
+    "fleurs": 2994,
+    "minilibrispeech": 1519,
+    "real_domain_user_review": 95,
+    "fosd": 24969,
+    "commonvoice": 2239
+  },
+  "exclusions": [
+    {
+      "path": "vivos_waves/VIVOSSPK23/VIVOSSPK23_001.wav",
+      "reason": "original audio too short for CTC alignment",
+      "available_steps": 67,
+      "required_steps": 75
+    },
+    {
+      "path": "vivos_waves/VIVOSSPK26/VIVOSSPK26_300.wav",
+      "reason": "original audio too short for CTC alignment",
+      "available_steps": 76,
+      "required_steps": 104
+    },
+    {
+      "path": "vivos_waves/VIVOSSPK43/VIVOSSPK43_063.wav",
+      "reason": "original audio too short for CTC alignment",
+      "available_steps": 64,
+      "required_steps": 66
+    },
+    {
+      "path": "vivos_waves/VIVOSSPK43/VIVOSSPK43_112.wav",
+      "reason": "original audio too short for CTC alignment",
+      "available_steps": 55,
+      "required_steps": 56
+    },
+    {
+      "path": "public_audio/fosd/FPTOpenSpeechData_Set001_V0.1_011213.mp3",
+      "reason": "original audio too short for CTC alignment",
+      "available_steps": 29,
+      "required_steps": 30
+    }
+  ],
+  "excluded_total": 5,
+  "training_started": false,
+  "checkpoint_deployed": false,
+  "limitations": [
+    "FOSD has no speaker ids: val/test split by file, speakers may overlap across splits.",
+    "Common Voice vi train has a single speaker (official split); dev/test are other speakers.",
+    "Both are read speech; no football commentary in the public data."
+  ]
+}

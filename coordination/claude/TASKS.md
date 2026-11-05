@@ -30,6 +30,7 @@ Backlog ứng dụng 32 ID INT: `coordination/claude/OPEN_TASKS.md` (tick + evid
 | AI-24 | T1.6 | D29-A: MiniGPT thích nghi bóng đá — tiếp tục từ `cf9cfa71` trên bài báo Thể thao/bóng đá (Binhvq, nhãn biên tập báo) + replay tin chung, staged clean→ASR-noise; cổng đăng ký trước bên dưới | DONE (2026-11-05) — v2 cổng PASS 12/12, user "Thay ngay": minigpt active `8a62e953…` (AI-API v3.1), parity 3/3; human ≥3/5 vẫn mở | D29 (user 2026-11-03) |
 | AI-25 | T1.4 | D29-B: ASR bóng đá — Claude tìm video bình luận bóng đá tiếng Việt giấy phép mở (CC BY/BY-SA), gửi danh sách user duyệt trước khi tải; phụ đề người sửa trong CMS → HUMAN_VERIFIED → fine-tune có guard | DONE (2026-11-05) — football replay v1 cổng 3/3, user "Thay ngay": asr active `7c497d43…` (AI-API v3.2), parity 44/44; đợt nhãn tiếp (75 đoạn v1 + 119 đoạn v2) cho vòng sau | D29; user duyệt nguồn |
 | AI-26 | T1.4 | ASR giải mã beam search + từ điển âm tiết + n-gram tự train trên văn bản công khai (không đổi checkpoint); đổi cổng chất lượng phụ đề sang độ tin cậy | REVIEW (2026-11-05) — dev: CER 69,4→66,9% nhưng WER tăng; KHÔNG chạy test, không triển khai (ASR âm học quá yếu); `evidence/AI-26_2026-11-05/` | user 2026-11-05 "Từ điển + mô hình ngôn ngữ" |
+| AI-27 | T1.4 | ASR mở rộng dữ liệu công khai lời chép người làm: FOSD (CC BY 4.0, ~30 h) + Common Voice 19 vi (CC0); từ ASR active `7c497d43` | IN_PROGRESS (2026-11-05) | user 2026-11-05 "FOSD + Common Voice" |
 | AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | BLOCKED ⇐ bundle INT-13 (phần độc lập xong 2026-10-26) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | DONE (2026-10-26; sandbox + artifact; product → AI-12 theo D18) | HC-04 (sandbox READY) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | DONE (02a 2026-10-27 · 02b user duyệt 51/60 2026-10-28 · 02c guard loại, không promote) · D23 dừng cho MVP | — |
@@ -210,6 +211,17 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   Contract touched: yes (v1.2-rc1, chỉ thêm VisionRequest.video_id)
   Next safe task: release #2 (user duyệt push)
   ```
+
+### AI-27 — ASR: dữ liệu công khai FOSD + Common Voice
+- Status: IN_PROGRESS (2026-11-05). PhoAudiobook/Bud500/viVoice/GigaSpeech2 loại: lời chép do model (Whisper/Zipformer) tạo → vi phạm §0.
+- FOSD: nhãn = file gốc Mendeley `transcriptAll.txt` (bỏ ký hiệu `-N`, `
+`, khoảng trắng trước dấu câu), mirror HF chỉ cấp audio, khớp từng từ;
+  1 câu lệch (mirror sửa chính tả) bị loại, 355 audio trùng bị loại. Chia theo file val 299 / test 292 / train 24.969 (không có mã người nói).
+  CV19 vi: chia chính thức train 2.239 (1 người nói) / val 300 / test 1.088.
+- Recipe `asr-public-expand-v1`: 3000 bước, đánh giá mỗi 500, lấy mẫu vivos .25 / fleurs .2 / mls .1 / domain .1 / fosd .25 / cv .1,
+  guard không tụt trên mọi nguồn + domain cải thiện; khởi tạo active `7c497d43` (136 ký hiệu + 5 ký tự mới).
+- Cổng đăng ký trước (2026-11-05): (1) guard kernel có bước đạt; (2) test bóng đá 30 đoạn chấm 1 lần: CER và WER < active (73,56% / 106,04%),
+  CI95 ΔCER cận trên < 0; (3) VIVOS/FLEURS test ≤ active (34,92/13,00; 70,08/33,93). Đạt → đề xuất user thay ASR.
 
 ### AI-26 — ASR: từ điển + mô hình ngôn ngữ khi giải mã
 - Status: REVIEW (2026-11-05) — không cải thiện đáng kể trên dev → không chạy test/không triển khai. User hỏi cách nhanh hơn chép tay / "nạp từ điển"; chọn "Từ điển + mô hình ngôn ngữ".
