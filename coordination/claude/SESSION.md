@@ -3,6 +3,9 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
+- **2026-11-05 (AI-25, user "Train ngay với 14 đoạn"):** Kaggle `traininghighlight/asr-football-replay-guarded-v1` RUNNING (commit be348a0).
+  Xong → tải ngay vào `D:/data_training_ai/asr_football_replay_v1_20261105/output/`, chấm 30 đoạn bóng đá bằng
+  `football_intake.py eval <best.pt> received_v1/intake/approved.json <out>` (chỉ dòng split val) so active CER 84,47%; đọc test VIVOS/FLEURS trong báo cáo.
 - **2026-11-05:** AI-24 DONE — MiniGPT active `8a62e953…` (AI-API v3.1, cổng v2 12/12, parity 3/3, rollback `_archive/minigpt_cf9cfa71/`).
   AI-25: user đang chép lời; export đợt 1 hiện 25/119 xác nhận (`C:/Users/PC/Downloads/asr_football_review_v1.json`, 2026-11-04 16:57). Intake + fine-tune ASR khi ~70 đoạn (có đủ val).
 - **2026-11-04 (AI-25 đợt 2):** user: đợt 1 "giống bản tin" → đợt 2 = 19 video trận đấu CC (5,06 h) duyệt + tải `audio2/`; trang lọc
