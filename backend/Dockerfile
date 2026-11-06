@@ -13,7 +13,7 @@ RUN --mount=type=cache,target=/go/pkg/mod --mount=type=cache,target=/root/.cache
     CGO_ENABLED=0 GOOS=linux go build -o /out/ai-mock ./cmd/ai-mock && \
     CGO_ENABLED=0 GOOS=linux go build -o /out/frame-backfill ./cmd/frame-backfill
 
-FROM alpine:3.20
+FROM alpine:3.24
 RUN apk add --no-cache ca-certificates ffmpeg
 WORKDIR /srv
 COPY --from=builder /out/gateway /out/orchestrator /out/ffmpeg-cutter /usr/local/bin/
