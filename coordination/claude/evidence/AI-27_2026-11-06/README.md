@@ -11,3 +11,11 @@ minilibrispeech (English) 114/69 → 118/64 — English WER rose at every step (
 Pre-registered decision: no candidate (gate item 1), football test NOT scored, nothing deployed. The step-3000 weights are kept on D:
 (`output_v2/asr_domain_replay_run/asr_ctc/last.pt`). Any relaxation of the English guard is a user decision and must be registered before
 scoring the football / VIVOS / FLEURS tests.
+
+## Amended gate (user 2026-11-06 "Tiếng Anh chỉ xét CER", registered in TASKS before scoring, d1db113)
+- Item 1: step 3000 eligible when English is judged on CER only — PASS.
+- Tests scored once, same greedy decode as inference-service for both models (`test_eval.json`, script `eval_asr_tests.py`):
+  football 30: active CER 73.56% / WER 106.04% → step 3000 CER 73.73% / WER 114.20% — FAIL (no improvement, WER worse);
+  VIVOS test 12.99/34.91 → 12.19/32.99; FLEURS test 34.01/70.06 → 30.42/65.47 — PASS.
+- Decision by rule: NOT promoted. Public read speech (FOSD, Common Voice) improves general Vietnamese ASR but does not transfer to football
+  commentary (crowd noise, fast/excited speech). Active ASR `7c497d43` unchanged. Step-3000 weights kept on D: for the thesis.

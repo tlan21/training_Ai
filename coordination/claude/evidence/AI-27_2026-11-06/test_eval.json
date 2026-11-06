@@ -1,0 +1,54 @@
+{
+ "active": "E:\\traning_ai\\ai-core\\checkpoints\\asr_ctc\\best.pt",
+ "candidate": "D:\\data_training_ai\\asr_public_expand_v1_20261105\\output_v2\\asr_domain_replay_run\\asr_ctc\\last.pt",
+ "sizes": {
+  "football": 30,
+  "vivos_test": 760,
+  "fleurs_test": 857
+ },
+ "football": {
+  "active": {
+   "cer": 0.735564379793579,
+   "wer": 1.0603544244389562
+  },
+  "candidate": {
+   "cer": 0.7372988422875123,
+   "wer": 1.1419798564807295
+  },
+  "delta_cer": 0.0017344624939335362,
+  "delta_cer_ci95": [
+   -0.04977112257001958,
+   0.059518818939221584
+  ]
+ },
+ "vivos_test": {
+  "active": {
+   "cer": 0.12991309852608848,
+   "wer": 0.34909864623680414
+  },
+  "candidate": {
+   "cer": 0.12192529519359872,
+   "wer": 0.32992643139024713
+  },
+  "delta_cer": -0.00798780333248978,
+  "delta_cer_ci95": [
+   -0.011066088107317648,
+   -0.005012742993274998
+  ]
+ },
+ "fleurs_test": {
+  "active": {
+   "cer": 0.34006979974665713,
+   "wer": 0.7005802599427262
+  },
+  "candidate": {
+   "cer": 0.304198227272039,
+   "wer": 0.6547368325436922
+  },
+  "delta_cer": -0.035871572474618224,
+  "delta_cer_ci95": [
+   -0.039555388718285,
+   -0.03223760567502481
+  ]
+ }
+}

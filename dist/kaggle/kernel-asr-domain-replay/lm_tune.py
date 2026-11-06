@@ -37,7 +37,7 @@ def acoustic(checkpoint):
     vocab = ckpt.get('char_vocab') or ckpt['metadata']['char_vocab']
 
     def rows(path):
-        signal = torch.tensor(sf.read(str(path), dtype='float32')[0])
+        signal = torch.tensor(sf.read(path if hasattr(path, 'read') else str(path), dtype='float32')[0])
         mel = log_mel_spectrogram(signal, n_mels=80, sr=16000).unsqueeze(0)
         with torch.no_grad():
             lp, n = model(mel, torch.tensor([mel.shape[2]]))
