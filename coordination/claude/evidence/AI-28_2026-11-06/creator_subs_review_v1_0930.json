@@ -1,0 +1,56 @@
+{
+ "protocol": "creator-subs-channel-review-v1",
+ "reviewer": "khoatm",
+ "channels": [
+  {
+   "channel": "Red United TV",
+   "voice": "other",
+   "subs": "match"
+  },
+  {
+   "channel": "Lam Nguyen POV",
+   "voice": "human",
+   "subs": null
+  },
+  {
+   "channel": "Thy Freestyle Soccer",
+   "voice": null,
+   "subs": "wrong"
+  },
+  {
+   "channel": "Phương Cào XL",
+   "voice": "human",
+   "subs": null
+  },
+  {
+   "channel": "JB.Nguyễn Hùng",
+   "voice": "tts",
+   "subs": "match"
+  },
+  {
+   "channel": "thoibao.de",
+   "voice": "human",
+   "subs": "match"
+  },
+  {
+   "channel": "BLV PHƯƠNG HẰNG",
+   "voice": "human",
+   "subs": "loose"
+  },
+  {
+   "channel": "G87",
+   "voice": "human",
+   "subs": "match"
+  },
+  {
+   "channel": "Star Sport",
+   "voice": "human",
+   "subs": "match"
+  },
+  {
+   "channel": "AnyTime Soccer",
+   "voice": "human",
+   "subs": "match"
+  }
+ ]
+}
