@@ -31,7 +31,7 @@ Backlog ứng dụng 32 ID INT: `coordination/claude/OPEN_TASKS.md` (tick + evid
 | AI-25 | T1.4 | D29-B: ASR bóng đá — Claude tìm video bình luận bóng đá tiếng Việt giấy phép mở (CC BY/BY-SA), gửi danh sách user duyệt trước khi tải; phụ đề người sửa trong CMS → HUMAN_VERIFIED → fine-tune có guard | DONE (2026-11-05) — football replay v1 cổng 3/3, user "Thay ngay": asr active `7c497d43…` (AI-API v3.2), parity 44/44; đợt nhãn tiếp (75 đoạn v1 + 119 đoạn v2) cho vòng sau | D29; user duyệt nguồn |
 | AI-26 | T1.4 | ASR giải mã beam search + từ điển âm tiết + n-gram tự train trên văn bản công khai (không đổi checkpoint); đổi cổng chất lượng phụ đề sang độ tin cậy | REVIEW (2026-11-05) — dev: CER 69,4→66,9% nhưng WER tăng; KHÔNG chạy test, không triển khai (ASR âm học quá yếu); `evidence/AI-26_2026-11-05/` | user 2026-11-05 "Từ điển + mô hình ngôn ngữ" |
 | AI-27 | T1.4 | ASR mở rộng dữ liệu công khai lời chép người làm: FOSD (CC BY 4.0, ~30 h) + Common Voice 19 vi (CC0); từ ASR active `7c497d43` | REVIEW (2026-11-06) — guard loại mọi bước (WER tiếng Anh MLS tụt 1–5 điểm, mọi nguồn khác tốt hơn); không thay ASR; DONE (2026-11-06) — cổng sửa: mục 1 PASS, test bóng đá FAIL (CER 73,56→73,73%, WER 106→114%), VIVOS/FLEURS tốt hơn → KHÔNG thay ASR | user 2026-11-05 "FOSD + Common Voice" |
-| AI-28 | T1.4 | Phụ đề creator (thủ công) trên video bóng đá CC, user duyệt mẫu theo kênh → dữ liệu ASR bóng đá nhanh hơn chép tay | IN_PROGRESS (2026-11-06) — 6 kênh đạt, 294 đoạn creator (65 phút); Kaggle `asr-football-replay-guarded-v2`; cổng đăng ký trước ở mục AI-28 | user 2026-11-06 "Làm" |
+| AI-28 | T1.4 | Phụ đề creator (thủ công) trên video bóng đá CC, user duyệt mẫu theo kênh → dữ liệu ASR bóng đá nhanh hơn chép tay | DONE (2026-11-06) — guard đạt (bước 900) nhưng test bóng đá FAIL (CER 73,56→73,32%, WER 106→116%); VIVOS/FLEURS tốt hơn → KHÔNG thay ASR | user 2026-11-06 "Làm" |
 | AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | BLOCKED ⇐ bundle INT-13 (phần độc lập xong 2026-10-26) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | DONE (2026-10-26; sandbox + artifact; product → AI-12 theo D18) | HC-04 (sandbox READY) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | DONE (02a 2026-10-27 · 02b user duyệt 51/60 2026-10-28 · 02c guard loại, không promote) · D23 dừng cho MVP | — |
@@ -214,7 +214,7 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   ```
 
 ### AI-28 — ASR: phụ đề creator duyệt theo kênh (football replay v2)
-- Status: IN_PROGRESS (2026-11-06). Evidence `evidence/AI-28_2026-11-06/` (tìm, tải, duyệt kênh, quyết định).
+- Status: DONE (2026-11-06) — không promote (bóng đá không cải thiện). Evidence `evidence/AI-28_2026-11-06/` (tìm, tải, duyệt kênh, quyết định).
 - Dữ liệu: 6 kênh đạt (người thật + khớp từng từ): Lam Nguyen POV, Phương Cào XL, thoibao.de, G87, Star Sport, AnyTime Soccer → `creator_segments.py`
   gộp câu liền nhau 3–20 s (đệm 0,15 s), bỏ câu `[âm nhạc]`; `pack_football_v2.py` bỏ đoạn > 30 s (1) và câu rác 1 ký tự (3) → 294 đoạn ~65 phút,
   provenance `CREATOR_SUBTITLE_CHANNEL_VERIFIED`. Không kênh nào thuộc 6 kênh test bóng đá.

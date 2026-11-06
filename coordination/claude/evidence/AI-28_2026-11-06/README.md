@@ -17,3 +17,11 @@ Accepted (human voice + verbatim subtitles): thoibao.de, G87, Star Sport, AnyTim
 từng từ" — the music sample is the cue "[âm nhạc]", so bracketed non-speech cues are dropped), Phương Cào XL ("Khớp gần từng từ").
 Rejected: Red United TV (not Vietnamese audio), JB.Nguyễn Hùng (TTS), BLV PHƯƠNG HẰNG (loose), Thy Freestyle Soccer (subtitles wrong).
 None of the accepted channels is among the 6 football test channels.
+
+## Training + gate (football replay v2, Kaggle `asr-football-replay-guarded-v2`, 1,946 s, commit 08419e8)
+- Item 1 PASS: guard (English on CER only) selected step 900 (`best.pt` sha256 f7595630…); domain val CER 58.1% → 49.2%.
+- Tests scored once (`test_eval_v2.json`, `eval_asr_tests.py`, same greedy decode):
+  football 30: CER 73.56% → 73.32%, WER 106.0% → 116.1% — FAIL (CER change within noise, WER worse);
+  VIVOS 12.99/34.91 → 12.81/33.87; FLEURS 34.01/70.06 → 30.59/65.24 — PASS.
+- Decision: NOT promoted; active ASR `7c497d43` unchanged. Creator speech here is calm vlog/analysis voice-over; the test is bulletin/7-a-side
+  commentary with crowd noise — the gain does not transfer. Candidate kept on D: for the thesis.
