@@ -220,7 +220,11 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   domain .15 / fosd .3 / cv .1; lr 5e-4, batch 8×2, 12.000 bước, đánh giá mỗi 2.000 trên val ≤300/nguồn; chọn theo trung bình WER 5 nguồn tiếng Việt).
 - Luật chạy tiếp (đăng ký trước 2026-11-06): chạy phiên 2 (khởi từ last.pt, lịch lr mới) chỉ khi (a) 2 lần đánh giá cuối vẫn giảm và
   (b) WER chọn ≤ 0,85 (active `7c497d43` trên cùng val ≈ 0,72 = trung bình vivos .31 / fleurs .70 / domain .94 / fosd .80 / cv .85).
-  Phiên thử KHÔNG chấm test. Cổng thay ASR (khi xong): như AI-27/28 (bóng đá 30 CER+WER < active, CI ΔCER < 0; VIVOS/FLEURS ≤ active).
+  Phiên thử KHÔNG chấm test.
+- **Phiên 1 (VERIFIED-NOW, Kaggle `asr-scratch-guarded-v1`, 12.763 s):** WER chọn 0,873 → 0,733 → 0,679 → 0,613 → 0,569 → 0,552 (mỗi 2k bước);
+  bước 12k: vivos 21,8/7,4, fleurs 56,1/24,6, fosd 58,5/27,5, cv 64,4/28,2, domain 75,1/36,1 (WER/CER %). Luật chạy tiếp ĐẠT.
+- **Phiên 2 (đăng ký trước):** khởi từ `last.pt` phiên 1, 12.000 bước, lr 3e-4 (lịch warmup 5% + cosine mới), cùng dữ liệu/lấy mẫu/đánh giá;
+  Kaggle `asr-scratch-guarded-v2` (kernel_sources = phiên 1). Sau phiên 2: chọn best theo val, chấm test 1 lần theo cổng thay ASR. Cổng thay ASR (khi xong): như AI-27/28 (bóng đá 30 CER+WER < active, CI ΔCER < 0; VIVOS/FLEURS ≤ active).
 
 ### AI-28 — ASR: phụ đề creator duyệt theo kênh (football replay v2)
 - Status: DONE (2026-11-06) — không promote (bóng đá không cải thiện). Evidence `evidence/AI-28_2026-11-06/` (tìm, tải, duyệt kênh, quyết định).
