@@ -1,0 +1,1044 @@
+=== Symbol Results ===
+
+Vulnerability #1: GO-2026-6865
+    Panic on two-block frames in github.com/klauspost/compress
+  More info: https://pkg.go.dev/vuln/GO-2026-6865
+  Module: github.com/klauspost/compress
+    Found in: github.com/klauspost/compress@v1.19.2
+    Fixed in: github.com/klauspost/compress@v1.20.2
+    Example traces found:
+      #1: internal/adapters/mongo/store.go:35:59: mongo.New calls mongo.IndexView.List, which eventually calls fse.Compress
+      #2: internal/adapters/mongo/store.go:35:59: mongo.New calls mongo.IndexView.List, which eventually calls fse.Decompress
+      #3: internal/adapters/mongo/store.go:35:59: mongo.New calls mongo.IndexView.List, which eventually calls huff0.Compress1X
+      #4: internal/adapters/mongo/store.go:35:59: mongo.New calls mongo.IndexView.List, which eventually calls huff0.Compress4X
+      #5: internal/adapters/mongo/store.go:35:59: mongo.New calls mongo.IndexView.List, which eventually calls huff0.ReadTable
+
+Vulnerability #2: GO-2026-6809
+    Distrust compromised intermediate certificates in crypto/x509
+  More info: https://pkg.go.dev/vuln/GO-2026-6809
+  Standard library
+    Found in: crypto/x509@go1.26
+    Fixed in: crypto/x509@go1.26.10
+    Example traces found:
+      #1: cmd/ai-mock/main.go:20:33: ai.main calls http.Server.ListenAndServe, which eventually calls x509.Certificate.Verify
+
+Vulnerability #3: GO-2026-6795
+    kin-openapi: YAML NaN/Inf Values Bypass Built-in Guards and Panic via OAS
+    3.1 Validation Path in github.com/getkin/kin-openapi
+  More info: https://pkg.go.dev/vuln/GO-2026-6795
+  Module: github.com/getkin/kin-openapi
+    Found in: github.com/getkin/kin-openapi@v0.145.0
+    Fixed in: github.com/getkin/kin-openapi@v0.148.0
+    Example traces found:
+      #1: internal/gen/api.gen.go:1458:36: gen.GetSpec calls openapi3.Loader.LoadFromData
+      #2: internal/adapters/pg/repositories.go:218:14: pg.UserRepo.Create calls errors.As, which eventually calls openapi3.MultiError.As
+      #3: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls openapi3.MultiError.Error
+      #4: internal/handlers/cms/videos.go:464:15: cms.VideoHandlers.UpdateSubtitles calls errors.Is, which eventually calls openapi3.MultiError.Is
+      #5: internal/gen/api.gen.go:1441:30: gen.GetSpec calls openapi3.NewLoader
+      #6: internal/adapters/aihttp/v2.go:144:28: aihttp.Client.ASRV2 calls exec.CommandContext, which eventually calls openapi3.attachOriginToResolved
+      #7: internal/gen/api.gen.go:16:2: gen.init calls openapi3.init
+      #8: internal/mocks/mem.go:338:12: mocks.UserRepoMem.List calls sort.Slice, which eventually calls openapi3.recordMapKeyLocations
+      #9: internal/adapters/aihttp/v2.go:144:28: aihttp.Client.ASRV2 calls exec.CommandContext, which eventually calls openapi3.resolveComponent
+
+Vulnerability #4: GO-2026-6617
+    HTTP/2 server crash due to HPACK encoder race in net/http
+  More info: https://pkg.go.dev/vuln/GO-2026-6617
+  Standard library
+    Found in: net/http@go1.26
+    Fixed in: net/http@go1.26.9
+    Example traces found:
+      #1: internal/adapters/minio/object_storage.go:55:34: minio.Client.GetObject calls minio.Client.GetObject, which eventually calls http.CanonicalHeaderKey
+      #2: internal/adapters/minio/object_storage.go:55:34: minio.Client.GetObject calls minio.Client.GetObject, which eventually calls http.CanonicalHeaderKey
+      #3: internal/adapters/aihttp/v2.go:210:23: aihttp.Client.asrChunk calls http.Client.Do
+      #4: internal/adapters/aihttp/v2.go:210:23: aihttp.Client.asrChunk calls http.Client.Do
+      #5: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Header.Add
+      #6: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Header.Add
+      #7: internal/adapters/minio/object_storage.go:41:32: minio.Client.PutStream calls minio.Client.PutObject, which eventually calls http.Header.Del
+      #8: internal/adapters/minio/object_storage.go:41:32: minio.Client.PutStream calls minio.Client.PutObject, which eventually calls http.Header.Del
+      #9: internal/adapters/minio/object_storage.go:55:34: minio.Client.GetObject calls minio.Client.GetObject, which calls http.Header.Get
+      #10: internal/adapters/minio/object_storage.go:55:34: minio.Client.GetObject calls minio.Client.GetObject, which calls http.Header.Get
+      #11: internal/adapters/aihttp/v2.go:207:16: aihttp.Client.asrChunk calls http.Header.Set
+      #12: internal/adapters/aihttp/v2.go:207:16: aihttp.Client.asrChunk calls http.Header.Set
+      #13: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Header.Values
+      #14: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Header.Values
+      #15: internal/gen/api.gen.go:1458:36: gen.GetSpec calls openapi3.Loader.LoadFromData, which eventually calls http.NewRequest
+      #16: internal/gen/api.gen.go:1458:36: gen.GetSpec calls openapi3.Loader.LoadFromData, which eventually calls http.NewRequest
+      #17: internal/adapters/aihttp/v2.go:203:40: aihttp.Client.asrChunk calls http.NewRequestWithContext
+      #18: internal/adapters/aihttp/v2.go:203:40: aihttp.Client.asrChunk calls http.NewRequestWithContext
+      #19: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.ReadRequest
+      #20: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.ReadRequest
+      #21: internal/handlers/auth.go:107:20: handlers.AuthHandlers.Logout calls gin.Context.Cookie, which calls http.Request.Cookie
+      #22: internal/handlers/auth.go:107:20: handlers.AuthHandlers.Logout calls gin.Context.Cookie, which calls http.Request.Cookie
+      #23: internal/handlers/cms/videos.go:67:38: cms.VideoHandlers.Create calls http.Request.FormFile
+      #24: internal/handlers/cms/videos.go:67:38: cms.VideoHandlers.Create calls http.Request.FormFile
+      #25: internal/handlers/cms/videos.go:52:40: cms.VideoHandlers.Create calls http.Request.ParseMultipartForm
+      #26: internal/handlers/cms/videos.go:52:40: cms.VideoHandlers.Create calls http.Request.ParseMultipartForm
+      #27: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Response.Write
+      #28: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Response.Write
+      #29: cmd/ai-mock/main.go:20:33: ai.main calls http.Server.ListenAndServe
+      #30: cmd/ai-mock/main.go:20:33: ai.main calls http.Server.ListenAndServe
+      #31: internal/handlers/auth.go:109:13: handlers.AuthHandlers.Logout calls gin.Context.SetCookie, which calls http.SetCookie
+      #32: internal/handlers/auth.go:109:13: handlers.AuthHandlers.Logout calls gin.Context.SetCookie, which calls http.SetCookie
+      #33: internal/adapters/mongo/store.go:24:24: mongo.New calls mongo.Client.Disconnect, which eventually calls http.Transport.CloseIdleConnections
+      #34: internal/adapters/mongo/store.go:24:24: mongo.New calls mongo.Client.Disconnect, which eventually calls http.Transport.CloseIdleConnections
+      #35: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Transport.RoundTrip
+      #36: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Transport.RoundTrip
+      #37: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.body.Close
+      #38: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.body.Close
+      #39: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.body.Read
+      #40: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.body.Read
+      #41: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.bodyEOFSignal.Close
+      #42: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.bodyEOFSignal.Close
+      #43: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.bodyEOFSignal.Read
+      #44: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.bodyEOFSignal.Read
+      #45: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.bodyLocked.Read
+      #46: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.bodyLocked.Read
+      #47: internal/productexport/export.go:129:27: productexport.writeRows calls io.multiWriter.Write, which calls http.bufioFlushWriter.Write
+      #48: internal/productexport/export.go:129:27: productexport.writeRows calls io.multiWriter.Write, which calls http.bufioFlushWriter.Write
+      #49: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.cancelTimerBody.Close
+      #50: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.cancelTimerBody.Close
+      #51: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.cancelTimerBody.Read
+      #52: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.cancelTimerBody.Read
+      #53: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.checkConnErrorWriter.Write
+      #54: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.checkConnErrorWriter.Write
+      #55: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.chunkWriter.Write
+      #56: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.chunkWriter.Write
+      #57: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.connReader.Read
+      #58: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.connReader.Read
+      #59: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.expectContinueReader.Close
+      #60: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.expectContinueReader.Close
+      #61: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.expectContinueReader.Read
+      #62: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.expectContinueReader.Read
+      #63: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.gzipReader.Close
+      #64: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.gzipReader.Close
+      #65: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.gzipReader.Read
+      #66: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.gzipReader.Read
+      #67: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2ConnectionError.Error
+      #68: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2ConnectionError.Error
+      #69: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2ErrCode.String
+      #70: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2ErrCode.String
+      #71: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2FrameHeader.String
+      #72: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2FrameHeader.String
+      #73: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2FrameType.String
+      #74: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2FrameType.String
+      #75: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2FrameWriteRequest.String
+      #76: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2FrameWriteRequest.String
+      #77: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2GoAwayError.Error
+      #78: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2GoAwayError.Error
+      #79: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2Setting.String
+      #80: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2Setting.String
+      #81: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2SettingID.String
+      #82: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2SettingID.String
+      #83: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2StreamError.Error
+      #84: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2StreamError.Error
+      #85: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.http2bufferedWriterTimeoutWriter.Write
+      #86: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.http2bufferedWriterTimeoutWriter.Write
+      #87: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.http2chunkWriter.Write
+      #88: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.http2chunkWriter.Write
+      #89: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2connError.Error
+      #90: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2connError.Error
+      #91: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2duplicatePseudoHeaderError.Error
+      #92: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2duplicatePseudoHeaderError.Error
+      #93: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.http2gzipReader.Close
+      #94: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.http2gzipReader.Close
+      #95: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.http2gzipReader.Read
+      #96: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.http2gzipReader.Read
+      #97: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2headerFieldNameError.Error
+      #98: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2headerFieldNameError.Error
+      #99: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2headerFieldValueError.Error
+      #100: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2headerFieldValueError.Error
+      #101: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2pseudoHeaderError.Error
+      #102: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2pseudoHeaderError.Error
+      #103: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.http2requestBody.Close
+      #104: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.http2requestBody.Close
+      #105: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.http2requestBody.Read
+      #106: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.http2requestBody.Read
+      #107: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls driver.WriteErrors.Error, which eventually calls http.http2responseWriter.Write
+      #108: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls driver.WriteErrors.Error, which eventually calls http.http2responseWriter.Write
+      #109: internal/handlers/cms/videos.go:370:8: cms.VideoHandlers.RegenerateSummary calls gin.Context.JSON, which eventually calls http.http2responseWriter.WriteHeader
+      #110: internal/handlers/cms/videos.go:370:8: cms.VideoHandlers.RegenerateSummary calls gin.Context.JSON, which eventually calls http.http2responseWriter.WriteHeader
+      #111: internal/productexport/export.go:129:27: productexport.writeRows calls io.multiWriter.Write, which eventually calls http.http2responseWriter.WriteString
+      #112: internal/productexport/export.go:129:27: productexport.writeRows calls io.multiWriter.Write, which eventually calls http.http2responseWriter.WriteString
+      #113: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.http2stickyErrWriter.Write
+      #114: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.http2stickyErrWriter.Write
+      #115: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.http2transportResponseBody.Close
+      #116: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.http2transportResponseBody.Close
+      #117: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.http2transportResponseBody.Read
+      #118: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.http2transportResponseBody.Read
+      #119: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2writeData.String
+      #120: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2writeData.String
+      #121: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.loggingConn.Read
+      #122: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.loggingConn.Read
+      #123: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which calls http.loggingConn.Write
+      #124: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which calls http.loggingConn.Write
+      #125: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.maxBytesReader.Close
+      #126: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.maxBytesReader.Close
+      #127: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.maxBytesReader.Read
+      #128: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.maxBytesReader.Read
+      #129: cmd/gateway/main.go:36:2: gateway.main calls pgxpool.Pool.Close, which eventually calls http.onceCloseListener.Close
+      #130: cmd/gateway/main.go:36:2: gateway.main calls pgxpool.Pool.Close, which eventually calls http.onceCloseListener.Close
+      #131: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.persistConn.Read
+      #132: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.persistConn.Read
+      #133: internal/adapters/aihttp/v2.go:191:21: aihttp.Client.asrChunk calls io.Copy, which eventually calls http.persistConnWriter.ReadFrom
+      #134: internal/adapters/aihttp/v2.go:191:21: aihttp.Client.asrChunk calls io.Copy, which eventually calls http.persistConnWriter.ReadFrom
+      #135: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.persistConnWriter.Write
+      #136: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.persistConnWriter.Write
+      #137: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.readTrackingBody.Close
+      #138: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.readTrackingBody.Close
+      #139: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.readTrackingBody.Read
+      #140: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.readTrackingBody.Read
+      #141: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.readWriteCloserBody.Read
+      #142: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.readWriteCloserBody.Read
+      #143: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls driver.WriteErrors.Error, which eventually calls http.response.Write
+      #144: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls driver.WriteErrors.Error, which eventually calls http.response.Write
+      #145: internal/handlers/cms/videos.go:370:8: cms.VideoHandlers.RegenerateSummary calls gin.Context.JSON, which eventually calls http.response.WriteHeader
+      #146: internal/handlers/cms/videos.go:370:8: cms.VideoHandlers.RegenerateSummary calls gin.Context.JSON, which eventually calls http.response.WriteHeader
+      #147: internal/productexport/export.go:129:27: productexport.writeRows calls io.multiWriter.Write, which eventually calls http.response.WriteString
+      #148: internal/productexport/export.go:129:27: productexport.writeRows calls io.multiWriter.Write, which eventually calls http.response.WriteString
+      #149: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.transportReadFromServerError.Error
+      #150: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.transportReadFromServerError.Error
+
+Vulnerability #5: GO-2026-6613
+    HTTP/1 server connection desynchronization after 2xx CONNECT response in
+    net/http
+  More info: https://pkg.go.dev/vuln/GO-2026-6613
+  Standard library
+    Found in: net/http@go1.26
+    Fixed in: net/http@go1.26.9
+    Example traces found:
+      #1: internal/adapters/minio/object_storage.go:55:34: minio.Client.GetObject calls minio.Client.GetObject, which eventually calls http.CanonicalHeaderKey
+      #2: internal/adapters/aihttp/v2.go:210:23: aihttp.Client.asrChunk calls http.Client.Do
+      #3: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Header.Add
+      #4: internal/adapters/minio/object_storage.go:41:32: minio.Client.PutStream calls minio.Client.PutObject, which eventually calls http.Header.Del
+      #5: internal/adapters/minio/object_storage.go:55:34: minio.Client.GetObject calls minio.Client.GetObject, which calls http.Header.Get
+      #6: internal/adapters/aihttp/v2.go:207:16: aihttp.Client.asrChunk calls http.Header.Set
+      #7: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Header.Values
+      #8: internal/gen/api.gen.go:1458:36: gen.GetSpec calls openapi3.Loader.LoadFromData, which eventually calls http.NewRequest
+      #9: internal/adapters/aihttp/v2.go:203:40: aihttp.Client.asrChunk calls http.NewRequestWithContext
+      #10: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.ReadRequest
+      #11: internal/handlers/auth.go:107:20: handlers.AuthHandlers.Logout calls gin.Context.Cookie, which calls http.Request.Cookie
+      #12: internal/handlers/cms/videos.go:67:38: cms.VideoHandlers.Create calls http.Request.FormFile
+      #13: internal/handlers/cms/videos.go:52:40: cms.VideoHandlers.Create calls http.Request.ParseMultipartForm
+      #14: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Response.Write
+      #15: cmd/ai-mock/main.go:20:33: ai.main calls http.Server.ListenAndServe
+      #16: internal/handlers/auth.go:109:13: handlers.AuthHandlers.Logout calls gin.Context.SetCookie, which calls http.SetCookie
+      #17: internal/adapters/mongo/store.go:24:24: mongo.New calls mongo.Client.Disconnect, which eventually calls http.Transport.CloseIdleConnections
+      #18: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Transport.RoundTrip
+      #19: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.body.Close
+      #20: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.body.Read
+      #21: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.bodyEOFSignal.Close
+      #22: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.bodyEOFSignal.Read
+      #23: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.bodyLocked.Read
+      #24: internal/productexport/export.go:129:27: productexport.writeRows calls io.multiWriter.Write, which calls http.bufioFlushWriter.Write
+      #25: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.cancelTimerBody.Close
+      #26: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.cancelTimerBody.Read
+      #27: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.checkConnErrorWriter.Write
+      #28: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.chunkWriter.Write
+      #29: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.connReader.Read
+      #30: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.expectContinueReader.Close
+      #31: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.expectContinueReader.Read
+      #32: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.gzipReader.Close
+      #33: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.gzipReader.Read
+      #34: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.loggingConn.Read
+      #35: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which calls http.loggingConn.Write
+      #36: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.maxBytesReader.Close
+      #37: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.maxBytesReader.Read
+      #38: cmd/gateway/main.go:36:2: gateway.main calls pgxpool.Pool.Close, which eventually calls http.onceCloseListener.Close
+      #39: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.persistConn.Read
+      #40: internal/adapters/aihttp/v2.go:191:21: aihttp.Client.asrChunk calls io.Copy, which eventually calls http.persistConnWriter.ReadFrom
+      #41: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.persistConnWriter.Write
+      #42: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.readTrackingBody.Close
+      #43: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.readTrackingBody.Read
+      #44: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.readWriteCloserBody.Read
+      #45: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls driver.WriteErrors.Error, which eventually calls http.response.Write
+      #46: internal/handlers/cms/videos.go:370:8: cms.VideoHandlers.RegenerateSummary calls gin.Context.JSON, which eventually calls http.response.WriteHeader
+      #47: internal/productexport/export.go:129:27: productexport.writeRows calls io.multiWriter.Write, which eventually calls http.response.WriteString
+      #48: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.transportReadFromServerError.Error
+
+Vulnerability #6: GO-2026-6612
+    Double flow control refund on HTTP/2 server streams in net/http
+  More info: https://pkg.go.dev/vuln/GO-2026-6612
+  Standard library
+    Found in: net/http@go1.26
+    Fixed in: net/http@go1.26.9
+    Example traces found:
+      #1: internal/adapters/minio/object_storage.go:55:34: minio.Client.GetObject calls minio.Client.GetObject, which eventually calls http.CanonicalHeaderKey
+      #2: internal/adapters/minio/object_storage.go:55:34: minio.Client.GetObject calls minio.Client.GetObject, which eventually calls http.CanonicalHeaderKey
+      #3: internal/adapters/aihttp/v2.go:210:23: aihttp.Client.asrChunk calls http.Client.Do
+      #4: internal/adapters/aihttp/v2.go:210:23: aihttp.Client.asrChunk calls http.Client.Do
+      #5: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Header.Add
+      #6: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Header.Add
+      #7: internal/adapters/minio/object_storage.go:41:32: minio.Client.PutStream calls minio.Client.PutObject, which eventually calls http.Header.Del
+      #8: internal/adapters/minio/object_storage.go:41:32: minio.Client.PutStream calls minio.Client.PutObject, which eventually calls http.Header.Del
+      #9: internal/adapters/minio/object_storage.go:55:34: minio.Client.GetObject calls minio.Client.GetObject, which calls http.Header.Get
+      #10: internal/adapters/minio/object_storage.go:55:34: minio.Client.GetObject calls minio.Client.GetObject, which calls http.Header.Get
+      #11: internal/adapters/aihttp/v2.go:207:16: aihttp.Client.asrChunk calls http.Header.Set
+      #12: internal/adapters/aihttp/v2.go:207:16: aihttp.Client.asrChunk calls http.Header.Set
+      #13: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Header.Values
+      #14: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Header.Values
+      #15: internal/gen/api.gen.go:1458:36: gen.GetSpec calls openapi3.Loader.LoadFromData, which eventually calls http.NewRequest
+      #16: internal/gen/api.gen.go:1458:36: gen.GetSpec calls openapi3.Loader.LoadFromData, which eventually calls http.NewRequest
+      #17: internal/adapters/aihttp/v2.go:203:40: aihttp.Client.asrChunk calls http.NewRequestWithContext
+      #18: internal/adapters/aihttp/v2.go:203:40: aihttp.Client.asrChunk calls http.NewRequestWithContext
+      #19: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.ReadRequest
+      #20: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.ReadRequest
+      #21: internal/handlers/auth.go:107:20: handlers.AuthHandlers.Logout calls gin.Context.Cookie, which calls http.Request.Cookie
+      #22: internal/handlers/auth.go:107:20: handlers.AuthHandlers.Logout calls gin.Context.Cookie, which calls http.Request.Cookie
+      #23: internal/handlers/cms/videos.go:67:38: cms.VideoHandlers.Create calls http.Request.FormFile
+      #24: internal/handlers/cms/videos.go:67:38: cms.VideoHandlers.Create calls http.Request.FormFile
+      #25: internal/handlers/cms/videos.go:52:40: cms.VideoHandlers.Create calls http.Request.ParseMultipartForm
+      #26: internal/handlers/cms/videos.go:52:40: cms.VideoHandlers.Create calls http.Request.ParseMultipartForm
+      #27: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Response.Write
+      #28: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Response.Write
+      #29: cmd/ai-mock/main.go:20:33: ai.main calls http.Server.ListenAndServe
+      #30: cmd/ai-mock/main.go:20:33: ai.main calls http.Server.ListenAndServe
+      #31: internal/handlers/auth.go:109:13: handlers.AuthHandlers.Logout calls gin.Context.SetCookie, which calls http.SetCookie
+      #32: internal/handlers/auth.go:109:13: handlers.AuthHandlers.Logout calls gin.Context.SetCookie, which calls http.SetCookie
+      #33: internal/adapters/mongo/store.go:24:24: mongo.New calls mongo.Client.Disconnect, which eventually calls http.Transport.CloseIdleConnections
+      #34: internal/adapters/mongo/store.go:24:24: mongo.New calls mongo.Client.Disconnect, which eventually calls http.Transport.CloseIdleConnections
+      #35: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Transport.RoundTrip
+      #36: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Transport.RoundTrip
+      #37: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.body.Close
+      #38: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.body.Close
+      #39: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.body.Read
+      #40: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.body.Read
+      #41: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.bodyEOFSignal.Close
+      #42: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.bodyEOFSignal.Close
+      #43: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.bodyEOFSignal.Read
+      #44: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.bodyEOFSignal.Read
+      #45: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.bodyLocked.Read
+      #46: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.bodyLocked.Read
+      #47: internal/productexport/export.go:129:27: productexport.writeRows calls io.multiWriter.Write, which calls http.bufioFlushWriter.Write
+      #48: internal/productexport/export.go:129:27: productexport.writeRows calls io.multiWriter.Write, which calls http.bufioFlushWriter.Write
+      #49: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.cancelTimerBody.Close
+      #50: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.cancelTimerBody.Close
+      #51: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.cancelTimerBody.Read
+      #52: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.cancelTimerBody.Read
+      #53: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.checkConnErrorWriter.Write
+      #54: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.checkConnErrorWriter.Write
+      #55: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.chunkWriter.Write
+      #56: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.chunkWriter.Write
+      #57: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.connReader.Read
+      #58: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.connReader.Read
+      #59: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.expectContinueReader.Close
+      #60: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.expectContinueReader.Close
+      #61: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.expectContinueReader.Read
+      #62: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.expectContinueReader.Read
+      #63: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.gzipReader.Close
+      #64: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.gzipReader.Close
+      #65: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.gzipReader.Read
+      #66: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.gzipReader.Read
+      #67: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2ConnectionError.Error
+      #68: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2ConnectionError.Error
+      #69: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2ErrCode.String
+      #70: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2ErrCode.String
+      #71: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2FrameHeader.String
+      #72: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2FrameHeader.String
+      #73: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2FrameType.String
+      #74: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2FrameType.String
+      #75: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2FrameWriteRequest.String
+      #76: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2FrameWriteRequest.String
+      #77: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2GoAwayError.Error
+      #78: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2GoAwayError.Error
+      #79: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2Setting.String
+      #80: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2Setting.String
+      #81: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2SettingID.String
+      #82: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2SettingID.String
+      #83: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2StreamError.Error
+      #84: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2StreamError.Error
+      #85: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.http2bufferedWriterTimeoutWriter.Write
+      #86: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.http2bufferedWriterTimeoutWriter.Write
+      #87: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.http2chunkWriter.Write
+      #88: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.http2chunkWriter.Write
+      #89: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2connError.Error
+      #90: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2connError.Error
+      #91: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2duplicatePseudoHeaderError.Error
+      #92: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2duplicatePseudoHeaderError.Error
+      #93: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.http2gzipReader.Close
+      #94: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.http2gzipReader.Close
+      #95: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.http2gzipReader.Read
+      #96: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.http2gzipReader.Read
+      #97: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2headerFieldNameError.Error
+      #98: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2headerFieldNameError.Error
+      #99: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2headerFieldValueError.Error
+      #100: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2headerFieldValueError.Error
+      #101: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2pseudoHeaderError.Error
+      #102: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2pseudoHeaderError.Error
+      #103: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.http2requestBody.Close
+      #104: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.http2requestBody.Close
+      #105: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.http2requestBody.Read
+      #106: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.http2requestBody.Read
+      #107: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls driver.WriteErrors.Error, which eventually calls http.http2responseWriter.Write
+      #108: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls driver.WriteErrors.Error, which eventually calls http.http2responseWriter.Write
+      #109: internal/handlers/cms/videos.go:370:8: cms.VideoHandlers.RegenerateSummary calls gin.Context.JSON, which eventually calls http.http2responseWriter.WriteHeader
+      #110: internal/handlers/cms/videos.go:370:8: cms.VideoHandlers.RegenerateSummary calls gin.Context.JSON, which eventually calls http.http2responseWriter.WriteHeader
+      #111: internal/productexport/export.go:129:27: productexport.writeRows calls io.multiWriter.Write, which eventually calls http.http2responseWriter.WriteString
+      #112: internal/productexport/export.go:129:27: productexport.writeRows calls io.multiWriter.Write, which eventually calls http.http2responseWriter.WriteString
+      #113: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.http2stickyErrWriter.Write
+      #114: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.http2stickyErrWriter.Write
+      #115: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.http2transportResponseBody.Close
+      #116: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.http2transportResponseBody.Close
+      #117: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.http2transportResponseBody.Read
+      #118: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.http2transportResponseBody.Read
+      #119: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2writeData.String
+      #120: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2writeData.String
+      #121: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.loggingConn.Read
+      #122: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.loggingConn.Read
+      #123: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which calls http.loggingConn.Write
+      #124: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which calls http.loggingConn.Write
+      #125: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.maxBytesReader.Close
+      #126: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.maxBytesReader.Close
+      #127: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.maxBytesReader.Read
+      #128: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.maxBytesReader.Read
+      #129: cmd/gateway/main.go:36:2: gateway.main calls pgxpool.Pool.Close, which eventually calls http.onceCloseListener.Close
+      #130: cmd/gateway/main.go:36:2: gateway.main calls pgxpool.Pool.Close, which eventually calls http.onceCloseListener.Close
+      #131: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.persistConn.Read
+      #132: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.persistConn.Read
+      #133: internal/adapters/aihttp/v2.go:191:21: aihttp.Client.asrChunk calls io.Copy, which eventually calls http.persistConnWriter.ReadFrom
+      #134: internal/adapters/aihttp/v2.go:191:21: aihttp.Client.asrChunk calls io.Copy, which eventually calls http.persistConnWriter.ReadFrom
+      #135: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.persistConnWriter.Write
+      #136: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.persistConnWriter.Write
+      #137: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.readTrackingBody.Close
+      #138: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.readTrackingBody.Close
+      #139: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.readTrackingBody.Read
+      #140: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.readTrackingBody.Read
+      #141: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.readWriteCloserBody.Read
+      #142: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.readWriteCloserBody.Read
+      #143: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls driver.WriteErrors.Error, which eventually calls http.response.Write
+      #144: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls driver.WriteErrors.Error, which eventually calls http.response.Write
+      #145: internal/handlers/cms/videos.go:370:8: cms.VideoHandlers.RegenerateSummary calls gin.Context.JSON, which eventually calls http.response.WriteHeader
+      #146: internal/handlers/cms/videos.go:370:8: cms.VideoHandlers.RegenerateSummary calls gin.Context.JSON, which eventually calls http.response.WriteHeader
+      #147: internal/productexport/export.go:129:27: productexport.writeRows calls io.multiWriter.Write, which eventually calls http.response.WriteString
+      #148: internal/productexport/export.go:129:27: productexport.writeRows calls io.multiWriter.Write, which eventually calls http.response.WriteString
+      #149: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.transportReadFromServerError.Error
+      #150: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.transportReadFromServerError.Error
+
+Vulnerability #7: GO-2026-6611
+    Excessive CPU consumption from repeated initial window changes in net/http
+  More info: https://pkg.go.dev/vuln/GO-2026-6611
+  Standard library
+    Found in: net/http@go1.26
+    Fixed in: net/http@go1.26.9
+    Example traces found:
+      #1: internal/adapters/minio/object_storage.go:55:34: minio.Client.GetObject calls minio.Client.GetObject, which eventually calls http.CanonicalHeaderKey
+      #2: internal/adapters/minio/object_storage.go:55:34: minio.Client.GetObject calls minio.Client.GetObject, which eventually calls http.CanonicalHeaderKey
+      #3: internal/adapters/aihttp/v2.go:210:23: aihttp.Client.asrChunk calls http.Client.Do
+      #4: internal/adapters/aihttp/v2.go:210:23: aihttp.Client.asrChunk calls http.Client.Do
+      #5: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Header.Add
+      #6: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Header.Add
+      #7: internal/adapters/minio/object_storage.go:41:32: minio.Client.PutStream calls minio.Client.PutObject, which eventually calls http.Header.Del
+      #8: internal/adapters/minio/object_storage.go:41:32: minio.Client.PutStream calls minio.Client.PutObject, which eventually calls http.Header.Del
+      #9: internal/adapters/minio/object_storage.go:55:34: minio.Client.GetObject calls minio.Client.GetObject, which calls http.Header.Get
+      #10: internal/adapters/minio/object_storage.go:55:34: minio.Client.GetObject calls minio.Client.GetObject, which calls http.Header.Get
+      #11: internal/adapters/aihttp/v2.go:207:16: aihttp.Client.asrChunk calls http.Header.Set
+      #12: internal/adapters/aihttp/v2.go:207:16: aihttp.Client.asrChunk calls http.Header.Set
+      #13: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Header.Values
+      #14: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Header.Values
+      #15: internal/gen/api.gen.go:1458:36: gen.GetSpec calls openapi3.Loader.LoadFromData, which eventually calls http.NewRequest
+      #16: internal/gen/api.gen.go:1458:36: gen.GetSpec calls openapi3.Loader.LoadFromData, which eventually calls http.NewRequest
+      #17: internal/adapters/aihttp/v2.go:203:40: aihttp.Client.asrChunk calls http.NewRequestWithContext
+      #18: internal/adapters/aihttp/v2.go:203:40: aihttp.Client.asrChunk calls http.NewRequestWithContext
+      #19: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.ReadRequest
+      #20: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.ReadRequest
+      #21: internal/handlers/auth.go:107:20: handlers.AuthHandlers.Logout calls gin.Context.Cookie, which calls http.Request.Cookie
+      #22: internal/handlers/auth.go:107:20: handlers.AuthHandlers.Logout calls gin.Context.Cookie, which calls http.Request.Cookie
+      #23: internal/handlers/cms/videos.go:67:38: cms.VideoHandlers.Create calls http.Request.FormFile
+      #24: internal/handlers/cms/videos.go:67:38: cms.VideoHandlers.Create calls http.Request.FormFile
+      #25: internal/handlers/cms/videos.go:52:40: cms.VideoHandlers.Create calls http.Request.ParseMultipartForm
+      #26: internal/handlers/cms/videos.go:52:40: cms.VideoHandlers.Create calls http.Request.ParseMultipartForm
+      #27: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Response.Write
+      #28: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Response.Write
+      #29: cmd/ai-mock/main.go:20:33: ai.main calls http.Server.ListenAndServe
+      #30: cmd/ai-mock/main.go:20:33: ai.main calls http.Server.ListenAndServe
+      #31: internal/handlers/auth.go:109:13: handlers.AuthHandlers.Logout calls gin.Context.SetCookie, which calls http.SetCookie
+      #32: internal/handlers/auth.go:109:13: handlers.AuthHandlers.Logout calls gin.Context.SetCookie, which calls http.SetCookie
+      #33: internal/adapters/mongo/store.go:24:24: mongo.New calls mongo.Client.Disconnect, which eventually calls http.Transport.CloseIdleConnections
+      #34: internal/adapters/mongo/store.go:24:24: mongo.New calls mongo.Client.Disconnect, which eventually calls http.Transport.CloseIdleConnections
+      #35: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Transport.RoundTrip
+      #36: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Transport.RoundTrip
+      #37: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.body.Close
+      #38: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.body.Close
+      #39: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.body.Read
+      #40: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.body.Read
+      #41: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.bodyEOFSignal.Close
+      #42: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.bodyEOFSignal.Close
+      #43: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.bodyEOFSignal.Read
+      #44: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.bodyEOFSignal.Read
+      #45: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.bodyLocked.Read
+      #46: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.bodyLocked.Read
+      #47: internal/productexport/export.go:129:27: productexport.writeRows calls io.multiWriter.Write, which calls http.bufioFlushWriter.Write
+      #48: internal/productexport/export.go:129:27: productexport.writeRows calls io.multiWriter.Write, which calls http.bufioFlushWriter.Write
+      #49: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.cancelTimerBody.Close
+      #50: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.cancelTimerBody.Close
+      #51: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.cancelTimerBody.Read
+      #52: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.cancelTimerBody.Read
+      #53: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.checkConnErrorWriter.Write
+      #54: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.checkConnErrorWriter.Write
+      #55: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.chunkWriter.Write
+      #56: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.chunkWriter.Write
+      #57: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.connReader.Read
+      #58: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.connReader.Read
+      #59: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.expectContinueReader.Close
+      #60: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.expectContinueReader.Close
+      #61: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.expectContinueReader.Read
+      #62: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.expectContinueReader.Read
+      #63: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.gzipReader.Close
+      #64: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.gzipReader.Close
+      #65: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.gzipReader.Read
+      #66: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.gzipReader.Read
+      #67: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2ConnectionError.Error
+      #68: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2ConnectionError.Error
+      #69: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2ErrCode.String
+      #70: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2ErrCode.String
+      #71: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2FrameHeader.String
+      #72: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2FrameHeader.String
+      #73: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2FrameType.String
+      #74: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2FrameType.String
+      #75: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2FrameWriteRequest.String
+      #76: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2FrameWriteRequest.String
+      #77: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2GoAwayError.Error
+      #78: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2GoAwayError.Error
+      #79: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2Setting.String
+      #80: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2Setting.String
+      #81: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2SettingID.String
+      #82: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2SettingID.String
+      #83: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2StreamError.Error
+      #84: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2StreamError.Error
+      #85: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.http2bufferedWriterTimeoutWriter.Write
+      #86: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.http2bufferedWriterTimeoutWriter.Write
+      #87: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.http2chunkWriter.Write
+      #88: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.http2chunkWriter.Write
+      #89: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2connError.Error
+      #90: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2connError.Error
+      #91: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2duplicatePseudoHeaderError.Error
+      #92: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2duplicatePseudoHeaderError.Error
+      #93: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.http2gzipReader.Close
+      #94: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.http2gzipReader.Close
+      #95: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.http2gzipReader.Read
+      #96: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.http2gzipReader.Read
+      #97: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2headerFieldNameError.Error
+      #98: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2headerFieldNameError.Error
+      #99: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2headerFieldValueError.Error
+      #100: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2headerFieldValueError.Error
+      #101: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2pseudoHeaderError.Error
+      #102: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2pseudoHeaderError.Error
+      #103: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.http2requestBody.Close
+      #104: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.http2requestBody.Close
+      #105: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.http2requestBody.Read
+      #106: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.http2requestBody.Read
+      #107: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls driver.WriteErrors.Error, which eventually calls http.http2responseWriter.Write
+      #108: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls driver.WriteErrors.Error, which eventually calls http.http2responseWriter.Write
+      #109: internal/handlers/cms/videos.go:370:8: cms.VideoHandlers.RegenerateSummary calls gin.Context.JSON, which eventually calls http.http2responseWriter.WriteHeader
+      #110: internal/handlers/cms/videos.go:370:8: cms.VideoHandlers.RegenerateSummary calls gin.Context.JSON, which eventually calls http.http2responseWriter.WriteHeader
+      #111: internal/productexport/export.go:129:27: productexport.writeRows calls io.multiWriter.Write, which eventually calls http.http2responseWriter.WriteString
+      #112: internal/productexport/export.go:129:27: productexport.writeRows calls io.multiWriter.Write, which eventually calls http.http2responseWriter.WriteString
+      #113: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.http2stickyErrWriter.Write
+      #114: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.http2stickyErrWriter.Write
+      #115: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.http2transportResponseBody.Close
+      #116: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.http2transportResponseBody.Close
+      #117: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.http2transportResponseBody.Read
+      #118: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.http2transportResponseBody.Read
+      #119: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2writeData.String
+      #120: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2writeData.String
+      #121: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.loggingConn.Read
+      #122: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.loggingConn.Read
+      #123: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which calls http.loggingConn.Write
+      #124: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which calls http.loggingConn.Write
+      #125: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.maxBytesReader.Close
+      #126: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.maxBytesReader.Close
+      #127: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.maxBytesReader.Read
+      #128: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.maxBytesReader.Read
+      #129: cmd/gateway/main.go:36:2: gateway.main calls pgxpool.Pool.Close, which eventually calls http.onceCloseListener.Close
+      #130: cmd/gateway/main.go:36:2: gateway.main calls pgxpool.Pool.Close, which eventually calls http.onceCloseListener.Close
+      #131: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.persistConn.Read
+      #132: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.persistConn.Read
+      #133: internal/adapters/aihttp/v2.go:191:21: aihttp.Client.asrChunk calls io.Copy, which eventually calls http.persistConnWriter.ReadFrom
+      #134: internal/adapters/aihttp/v2.go:191:21: aihttp.Client.asrChunk calls io.Copy, which eventually calls http.persistConnWriter.ReadFrom
+      #135: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.persistConnWriter.Write
+      #136: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.persistConnWriter.Write
+      #137: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.readTrackingBody.Close
+      #138: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.readTrackingBody.Close
+      #139: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.readTrackingBody.Read
+      #140: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.readTrackingBody.Read
+      #141: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.readWriteCloserBody.Read
+      #142: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.readWriteCloserBody.Read
+      #143: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls driver.WriteErrors.Error, which eventually calls http.response.Write
+      #144: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls driver.WriteErrors.Error, which eventually calls http.response.Write
+      #145: internal/handlers/cms/videos.go:370:8: cms.VideoHandlers.RegenerateSummary calls gin.Context.JSON, which eventually calls http.response.WriteHeader
+      #146: internal/handlers/cms/videos.go:370:8: cms.VideoHandlers.RegenerateSummary calls gin.Context.JSON, which eventually calls http.response.WriteHeader
+      #147: internal/productexport/export.go:129:27: productexport.writeRows calls io.multiWriter.Write, which eventually calls http.response.WriteString
+      #148: internal/productexport/export.go:129:27: productexport.writeRows calls io.multiWriter.Write, which eventually calls http.response.WriteString
+      #149: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.transportReadFromServerError.Error
+      #150: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.transportReadFromServerError.Error
+
+Vulnerability #8: GO-2026-6610
+    HTTP/2 transport accepts malformed framing-related headers in net/http
+  More info: https://pkg.go.dev/vuln/GO-2026-6610
+  Standard library
+    Found in: net/http@go1.26
+    Fixed in: net/http@go1.26.9
+    Example traces found:
+      #1: internal/adapters/aihttp/v2.go:210:23: aihttp.Client.asrChunk calls http.Client.Do
+      #2: internal/adapters/aihttp/v2.go:210:23: aihttp.Client.asrChunk calls http.Client.Do
+      #3: internal/adapters/mongo/store.go:24:24: mongo.New calls mongo.Client.Disconnect, which eventually calls http.Transport.CloseIdleConnections
+      #4: internal/adapters/mongo/store.go:24:24: mongo.New calls mongo.Client.Disconnect, which eventually calls http.Transport.CloseIdleConnections
+      #5: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Transport.RoundTrip
+      #6: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Transport.RoundTrip
+
+Vulnerability #9: GO-2026-6608
+    Memory limit bypass when parsing MIME headers in net/textproto,
+    mime/multipart
+  More info: https://pkg.go.dev/vuln/GO-2026-6608
+  Standard library
+    Found in: net/textproto@go1.26
+    Fixed in: net/textproto@go1.26.9
+    Example traces found:
+      #1: internal/handlers/cms/videos.go:52:40: cms.VideoHandlers.Create calls http.Request.ParseMultipartForm, which calls multipart.Reader.ReadForm
+      #2: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls textproto.Reader.ReadMIMEHeader
+
+Vulnerability #10: GO-2026-6607
+    Reject malformed ECH outer extension references in crypto/tls
+  More info: https://pkg.go.dev/vuln/GO-2026-6607
+  Standard library
+    Found in: crypto/tls@go1.26
+    Fixed in: crypto/tls@go1.26.9
+    Example traces found:
+      #1: internal/adapters/kafka/event_bus.go:33:34: kafka.Bus.Consume calls kafka.Reader.FetchMessage, which eventually calls tls.Conn.Handshake
+      #2: cmd/ai-mock/main.go:20:33: ai.main calls http.Server.ListenAndServe, which eventually calls tls.Conn.HandshakeContext
+      #3: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls tls.Conn.Read
+      #4: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which calls tls.Conn.Write
+      #5: internal/adapters/mongo/store.go:35:59: mongo.New calls mongo.IndexView.List, which eventually calls tls.Dial
+      #6: internal/adapters/redis/cache.go:14:26: redis.New calls redis.NewClient, which eventually calls tls.DialWithDialer
+      #7: internal/adapters/aihttp/v2.go:210:23: aihttp.Client.asrChunk calls http.Client.Do, which eventually calls tls.Dialer.DialContext
+
+Vulnerability #11: GO-2026-6605
+    HTTP/1 client connection desynchronization after CONNECT rejection in
+    net/http
+  More info: https://pkg.go.dev/vuln/GO-2026-6605
+  Standard library
+    Found in: net/http@go1.26
+    Fixed in: net/http@go1.26.9
+    Example traces found:
+      #1: internal/adapters/aihttp/v2.go:210:23: aihttp.Client.asrChunk calls http.Client.Do
+      #2: internal/adapters/mongo/store.go:24:24: mongo.New calls mongo.Client.Disconnect, which eventually calls http.Transport.CloseIdleConnections
+      #3: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Transport.RoundTrip
+      #4: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls httputil.DumpRequestOut
+
+Vulnerability #12: GO-2026-6603
+    HTTP/2 server memory exhaustion due to Trailer headers in net/http
+  More info: https://pkg.go.dev/vuln/GO-2026-6603
+  Standard library
+    Found in: net/http@go1.26
+    Fixed in: net/http@go1.26.9
+    Example traces found:
+      #1: internal/adapters/minio/object_storage.go:55:34: minio.Client.GetObject calls minio.Client.GetObject, which eventually calls http.CanonicalHeaderKey
+      #2: internal/adapters/minio/object_storage.go:55:34: minio.Client.GetObject calls minio.Client.GetObject, which eventually calls http.CanonicalHeaderKey
+      #3: internal/adapters/aihttp/v2.go:210:23: aihttp.Client.asrChunk calls http.Client.Do
+      #4: internal/adapters/aihttp/v2.go:210:23: aihttp.Client.asrChunk calls http.Client.Do
+      #5: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Header.Add
+      #6: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Header.Add
+      #7: internal/adapters/minio/object_storage.go:41:32: minio.Client.PutStream calls minio.Client.PutObject, which eventually calls http.Header.Del
+      #8: internal/adapters/minio/object_storage.go:41:32: minio.Client.PutStream calls minio.Client.PutObject, which eventually calls http.Header.Del
+      #9: internal/adapters/minio/object_storage.go:55:34: minio.Client.GetObject calls minio.Client.GetObject, which calls http.Header.Get
+      #10: internal/adapters/minio/object_storage.go:55:34: minio.Client.GetObject calls minio.Client.GetObject, which calls http.Header.Get
+      #11: internal/adapters/aihttp/v2.go:207:16: aihttp.Client.asrChunk calls http.Header.Set
+      #12: internal/adapters/aihttp/v2.go:207:16: aihttp.Client.asrChunk calls http.Header.Set
+      #13: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Header.Values
+      #14: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Header.Values
+      #15: internal/gen/api.gen.go:1458:36: gen.GetSpec calls openapi3.Loader.LoadFromData, which eventually calls http.NewRequest
+      #16: internal/gen/api.gen.go:1458:36: gen.GetSpec calls openapi3.Loader.LoadFromData, which eventually calls http.NewRequest
+      #17: internal/adapters/aihttp/v2.go:203:40: aihttp.Client.asrChunk calls http.NewRequestWithContext
+      #18: internal/adapters/aihttp/v2.go:203:40: aihttp.Client.asrChunk calls http.NewRequestWithContext
+      #19: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.ReadRequest
+      #20: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.ReadRequest
+      #21: internal/handlers/auth.go:107:20: handlers.AuthHandlers.Logout calls gin.Context.Cookie, which calls http.Request.Cookie
+      #22: internal/handlers/auth.go:107:20: handlers.AuthHandlers.Logout calls gin.Context.Cookie, which calls http.Request.Cookie
+      #23: internal/handlers/cms/videos.go:67:38: cms.VideoHandlers.Create calls http.Request.FormFile
+      #24: internal/handlers/cms/videos.go:67:38: cms.VideoHandlers.Create calls http.Request.FormFile
+      #25: internal/handlers/cms/videos.go:52:40: cms.VideoHandlers.Create calls http.Request.ParseMultipartForm
+      #26: internal/handlers/cms/videos.go:52:40: cms.VideoHandlers.Create calls http.Request.ParseMultipartForm
+      #27: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Response.Write
+      #28: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Response.Write
+      #29: cmd/ai-mock/main.go:20:33: ai.main calls http.Server.ListenAndServe
+      #30: cmd/ai-mock/main.go:20:33: ai.main calls http.Server.ListenAndServe
+      #31: internal/handlers/auth.go:109:13: handlers.AuthHandlers.Logout calls gin.Context.SetCookie, which calls http.SetCookie
+      #32: internal/handlers/auth.go:109:13: handlers.AuthHandlers.Logout calls gin.Context.SetCookie, which calls http.SetCookie
+      #33: internal/adapters/mongo/store.go:24:24: mongo.New calls mongo.Client.Disconnect, which eventually calls http.Transport.CloseIdleConnections
+      #34: internal/adapters/mongo/store.go:24:24: mongo.New calls mongo.Client.Disconnect, which eventually calls http.Transport.CloseIdleConnections
+      #35: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Transport.RoundTrip
+      #36: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Transport.RoundTrip
+      #37: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.body.Close
+      #38: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.body.Close
+      #39: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.body.Read
+      #40: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.body.Read
+      #41: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.bodyEOFSignal.Close
+      #42: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.bodyEOFSignal.Close
+      #43: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.bodyEOFSignal.Read
+      #44: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.bodyEOFSignal.Read
+      #45: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.bodyLocked.Read
+      #46: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.bodyLocked.Read
+      #47: internal/productexport/export.go:129:27: productexport.writeRows calls io.multiWriter.Write, which calls http.bufioFlushWriter.Write
+      #48: internal/productexport/export.go:129:27: productexport.writeRows calls io.multiWriter.Write, which calls http.bufioFlushWriter.Write
+      #49: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.cancelTimerBody.Close
+      #50: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.cancelTimerBody.Close
+      #51: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.cancelTimerBody.Read
+      #52: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.cancelTimerBody.Read
+      #53: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.checkConnErrorWriter.Write
+      #54: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.checkConnErrorWriter.Write
+      #55: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.chunkWriter.Write
+      #56: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.chunkWriter.Write
+      #57: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.connReader.Read
+      #58: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.connReader.Read
+      #59: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.expectContinueReader.Close
+      #60: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.expectContinueReader.Close
+      #61: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.expectContinueReader.Read
+      #62: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.expectContinueReader.Read
+      #63: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.gzipReader.Close
+      #64: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.gzipReader.Close
+      #65: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.gzipReader.Read
+      #66: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.gzipReader.Read
+      #67: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2ConnectionError.Error
+      #68: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2ConnectionError.Error
+      #69: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2ErrCode.String
+      #70: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2ErrCode.String
+      #71: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2FrameHeader.String
+      #72: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2FrameHeader.String
+      #73: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2FrameType.String
+      #74: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2FrameType.String
+      #75: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2FrameWriteRequest.String
+      #76: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2FrameWriteRequest.String
+      #77: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2GoAwayError.Error
+      #78: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2GoAwayError.Error
+      #79: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2Setting.String
+      #80: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2Setting.String
+      #81: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2SettingID.String
+      #82: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2SettingID.String
+      #83: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2StreamError.Error
+      #84: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2StreamError.Error
+      #85: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.http2bufferedWriterTimeoutWriter.Write
+      #86: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.http2bufferedWriterTimeoutWriter.Write
+      #87: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.http2chunkWriter.Write
+      #88: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.http2chunkWriter.Write
+      #89: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2connError.Error
+      #90: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2connError.Error
+      #91: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2duplicatePseudoHeaderError.Error
+      #92: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2duplicatePseudoHeaderError.Error
+      #93: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.http2gzipReader.Close
+      #94: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.http2gzipReader.Close
+      #95: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.http2gzipReader.Read
+      #96: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.http2gzipReader.Read
+      #97: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2headerFieldNameError.Error
+      #98: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2headerFieldNameError.Error
+      #99: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2headerFieldValueError.Error
+      #100: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2headerFieldValueError.Error
+      #101: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2pseudoHeaderError.Error
+      #102: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.http2pseudoHeaderError.Error
+      #103: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.http2requestBody.Close
+      #104: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.http2requestBody.Close
+      #105: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.http2requestBody.Read
+      #106: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.http2requestBody.Read
+      #107: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls driver.WriteErrors.Error, which eventually calls http.http2responseWriter.Write
+      #108: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls driver.WriteErrors.Error, which eventually calls http.http2responseWriter.Write
+      #109: internal/handlers/cms/videos.go:370:8: cms.VideoHandlers.RegenerateSummary calls gin.Context.JSON, which eventually calls http.http2responseWriter.WriteHeader
+      #110: internal/handlers/cms/videos.go:370:8: cms.VideoHandlers.RegenerateSummary calls gin.Context.JSON, which eventually calls http.http2responseWriter.WriteHeader
+      #111: internal/productexport/export.go:129:27: productexport.writeRows calls io.multiWriter.Write, which eventually calls http.http2responseWriter.WriteString
+      #112: internal/productexport/export.go:129:27: productexport.writeRows calls io.multiWriter.Write, which eventually calls http.http2responseWriter.WriteString
+      #113: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.http2stickyErrWriter.Write
+      #114: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.http2stickyErrWriter.Write
+      #115: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.http2transportResponseBody.Close
+      #116: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.http2transportResponseBody.Close
+      #117: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.http2transportResponseBody.Read
+      #118: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.http2transportResponseBody.Read
+      #119: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2writeData.String
+      #120: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls http.http2writeData.String
+      #121: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.loggingConn.Read
+      #122: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.loggingConn.Read
+      #123: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which calls http.loggingConn.Write
+      #124: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which calls http.loggingConn.Write
+      #125: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.maxBytesReader.Close
+      #126: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.maxBytesReader.Close
+      #127: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.maxBytesReader.Read
+      #128: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.maxBytesReader.Read
+      #129: cmd/gateway/main.go:36:2: gateway.main calls pgxpool.Pool.Close, which eventually calls http.onceCloseListener.Close
+      #130: cmd/gateway/main.go:36:2: gateway.main calls pgxpool.Pool.Close, which eventually calls http.onceCloseListener.Close
+      #131: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.persistConn.Read
+      #132: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http.persistConn.Read
+      #133: internal/adapters/aihttp/v2.go:191:21: aihttp.Client.asrChunk calls io.Copy, which eventually calls http.persistConnWriter.ReadFrom
+      #134: internal/adapters/aihttp/v2.go:191:21: aihttp.Client.asrChunk calls io.Copy, which eventually calls http.persistConnWriter.ReadFrom
+      #135: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.persistConnWriter.Write
+      #136: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which eventually calls http.persistConnWriter.Write
+      #137: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.readTrackingBody.Close
+      #138: internal/adapters/aihttp/v2.go:214:2: aihttp.Client.asrChunk calls http.readTrackingBody.Close
+      #139: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.readTrackingBody.Read
+      #140: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.readTrackingBody.Read
+      #141: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.readWriteCloserBody.Read
+      #142: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which calls http.readWriteCloserBody.Read
+      #143: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls driver.WriteErrors.Error, which eventually calls http.response.Write
+      #144: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls driver.WriteErrors.Error, which eventually calls http.response.Write
+      #145: internal/handlers/cms/videos.go:370:8: cms.VideoHandlers.RegenerateSummary calls gin.Context.JSON, which eventually calls http.response.WriteHeader
+      #146: internal/handlers/cms/videos.go:370:8: cms.VideoHandlers.RegenerateSummary calls gin.Context.JSON, which eventually calls http.response.WriteHeader
+      #147: internal/productexport/export.go:129:27: productexport.writeRows calls io.multiWriter.Write, which eventually calls http.response.WriteString
+      #148: internal/productexport/export.go:129:27: productexport.writeRows calls io.multiWriter.Write, which eventually calls http.response.WriteString
+      #149: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.transportReadFromServerError.Error
+      #150: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http.transportReadFromServerError.Error
+
+Vulnerability #13: GO-2026-6218
+    Avoid quadratic complexity in resolvePath in net/url
+  More info: https://pkg.go.dev/vuln/GO-2026-6218
+  Standard library
+    Found in: net/url@go1.26
+    Fixed in: net/url@go1.26.6
+    Example traces found:
+      #1: internal/adapters/aihttp/v2.go:210:23: aihttp.Client.asrChunk calls http.Client.Do, which eventually calls url.URL.Parse
+      #2: internal/gen/api.gen.go:16:2: gen.init calls openapi3.init, which eventually calls url.URL.ResolveReference
+
+Vulnerability #14: GO-2026-6090
+    Limit handshake messages we are willing to accept post-handshake in
+    crypto/tls
+  More info: https://pkg.go.dev/vuln/GO-2026-6090
+  Standard library
+    Found in: crypto/tls@go1.26
+    Fixed in: crypto/tls@go1.26.6
+    Example traces found:
+      #1: internal/adapters/kafka/event_bus.go:33:34: kafka.Bus.Consume calls kafka.Reader.FetchMessage, which eventually calls tls.Conn.Handshake
+      #2: cmd/ai-mock/main.go:20:33: ai.main calls http.Server.ListenAndServe, which eventually calls tls.Conn.HandshakeContext
+      #3: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls tls.Conn.Read
+      #4: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which calls tls.Conn.Write
+      #5: internal/adapters/mongo/store.go:35:59: mongo.New calls mongo.IndexView.List, which eventually calls tls.Dial
+      #6: internal/adapters/redis/cache.go:14:26: redis.New calls redis.NewClient, which eventually calls tls.DialWithDialer
+      #7: internal/adapters/aihttp/v2.go:210:23: aihttp.Client.asrChunk calls http.Client.Do, which eventually calls tls.Dialer.DialContext
+
+Vulnerability #15: GO-2026-6089
+    Apply ReadHeaderTimeout when doing unencrypted HTTP/2 check in net/http
+  More info: https://pkg.go.dev/vuln/GO-2026-6089
+  Standard library
+    Found in: net/http@go1.26
+    Fixed in: net/http@go1.26.6
+    Example traces found:
+      #1: cmd/ai-mock/main.go:20:33: ai.main calls http.Server.ListenAndServe
+
+Vulnerability #16: GO-2026-6088
+    Add recursion depth guard during decode in encoding/xml
+  More info: https://pkg.go.dev/vuln/GO-2026-6088
+  Standard library
+    Found in: encoding/xml@go1.26
+    Fixed in: encoding/xml@go1.26.6
+    Example traces found:
+      #1: internal/adapters/minio/object_storage.go:41:32: minio.Client.PutStream calls minio.Client.PutObject, which eventually calls xml.Decoder.Decode
+      #2: internal/productexport/export.go:74:66: productexport.Export calls pgx.connRow.Scan, which eventually calls xml.Unmarshal
+
+Vulnerability #17: GO-2026-5972
+    Enforce maximum recursion depth in encoding/asn1
+  More info: https://pkg.go.dev/vuln/GO-2026-5972
+  Standard library
+    Found in: encoding/asn1@go1.26
+    Fixed in: encoding/asn1@go1.26.6
+    Example traces found:
+      #1: internal/adapters/mongo/store.go:19:56: mongo.New calls options.ClientOptions.ApplyURI, which eventually calls asn1.Unmarshal
+
+Vulnerability #18: GO-2026-5856
+    Invoking Encrypted Client Hello privacy leak in crypto/tls
+  More info: https://pkg.go.dev/vuln/GO-2026-5856
+  Standard library
+    Found in: crypto/tls@go1.26
+    Fixed in: crypto/tls@go1.26.5
+    Example traces found:
+      #1: internal/adapters/kafka/event_bus.go:33:34: kafka.Bus.Consume calls kafka.Reader.FetchMessage, which eventually calls tls.Conn.Handshake
+      #2: cmd/ai-mock/main.go:20:33: ai.main calls http.Server.ListenAndServe, which eventually calls tls.Conn.HandshakeContext
+      #3: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls tls.Conn.Read
+      #4: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which calls tls.Conn.Write
+      #5: internal/adapters/mongo/store.go:35:59: mongo.New calls mongo.IndexView.List, which eventually calls tls.Dial
+      #6: internal/adapters/redis/cache.go:14:26: redis.New calls redis.NewClient, which eventually calls tls.DialWithDialer
+      #7: internal/adapters/aihttp/v2.go:210:23: aihttp.Client.asrChunk calls http.Client.Do, which eventually calls tls.Dialer.DialContext
+
+Vulnerability #19: GO-2026-5676
+    HTTP/3 QPACK Trailer Expansion Memory Exhaustion in
+    github.com/quic-go/quic-go
+  More info: https://pkg.go.dev/vuln/GO-2026-5676
+  Module: github.com/quic-go/quic-go
+    Found in: github.com/quic-go/quic-go@v0.59.0
+    Fixed in: github.com/quic-go/quic-go@v0.59.1
+    Example traces found:
+      #1: cmd/ai-mock/main.go:20:33: ai.main calls http.Server.ListenAndServe, which eventually calls http3.ConfigureTLSConfig
+      #2: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http3.Error.Error
+      #3: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls http3.countingByteReader.Read
+      #4: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls http3.qpackError.Error
+
+Vulnerability #20: GO-2026-5039
+    Arbitrary inputs are included in errors without any escaping in
+    net/textproto
+  More info: https://pkg.go.dev/vuln/GO-2026-5039
+  Standard library
+    Found in: net/textproto@go1.26
+    Fixed in: net/textproto@go1.26.4
+    Example traces found:
+      #1: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls textproto.Reader.ReadMIMEHeader
+
+Vulnerability #21: GO-2026-5038
+    Quadratic complexity in WordDecoder.DecodeHeader in mime
+  More info: https://pkg.go.dev/vuln/GO-2026-5038
+  Standard library
+    Found in: mime@go1.26
+    Fixed in: mime@go1.26.4
+    Example traces found:
+      #1: internal/adapters/minio/object_storage.go:55:34: minio.Client.GetObject calls minio.Client.GetObject, which eventually calls mime.WordDecoder.DecodeHeader
+
+Vulnerability #22: GO-2026-5037
+    Inefficient candidate hostname parsing in crypto/x509
+  More info: https://pkg.go.dev/vuln/GO-2026-5037
+  Standard library
+    Found in: crypto/x509@go1.26
+    Fixed in: crypto/x509@go1.26.4
+    Example traces found:
+      #1: cmd/ai-mock/main.go:20:33: ai.main calls http.Server.ListenAndServe, which eventually calls x509.Certificate.Verify
+      #2: cmd/ai-mock/main.go:20:33: ai.main calls http.Server.ListenAndServe, which eventually calls x509.Certificate.VerifyHostname
+      #3: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls x509.HostnameError.Error
+
+Vulnerability #23: GO-2026-5026
+    Invoking failure to reject ASCII-only Punycode-encoded labels in
+    golang.org/x/net/idna
+  More info: https://pkg.go.dev/vuln/GO-2026-5026
+  Standard library
+    Found in: net/http@go1.26
+    Fixed in: net/http@go1.26.6
+    Example traces found:
+      #1: internal/adapters/aihttp/v2.go:210:23: aihttp.Client.asrChunk calls http.Client.Do
+      #2: internal/adapters/mongo/store.go:24:24: mongo.New calls mongo.Client.Disconnect, which eventually calls http.Transport.CloseIdleConnections
+      #3: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Transport.RoundTrip
+
+Vulnerability #24: GO-2026-4986
+    Quadratic string concatentation in consumeComment in net/mail
+  More info: https://pkg.go.dev/vuln/GO-2026-4986
+  Standard library
+    Found in: net/mail@go1.26
+    Fixed in: net/mail@go1.26.3
+    Example traces found:
+      #1: internal/handlers/cms/videos.go:451:28: cms.VideoHandlers.UpdateSubtitles calls gin.Context.ShouldBindJSON, which eventually calls mail.ParseAddress
+
+Vulnerability #25: GO-2026-4977
+    Quadratic string concatenation in consumePhrase in net/mail
+  More info: https://pkg.go.dev/vuln/GO-2026-4977
+  Standard library
+    Found in: net/mail@go1.26
+    Fixed in: net/mail@go1.26.3
+    Example traces found:
+      #1: internal/handlers/cms/videos.go:451:28: cms.VideoHandlers.UpdateSubtitles calls gin.Context.ShouldBindJSON, which eventually calls mail.ParseAddress
+
+Vulnerability #26: GO-2026-4971
+    Panic in Dial and LookupPort when handling NUL byte on Windows in net
+  More info: https://pkg.go.dev/vuln/GO-2026-4971
+  Standard library
+    Found in: net@go1.26
+    Fixed in: net@go1.26.3
+    Example traces found:
+      #1: internal/productexport/export.go:88:13: productexport.Export calls pgx.baseRows.Close, which eventually calls net.Dialer.DialContext
+      #2: cmd/ai-mock/main.go:20:33: ai.main calls http.Server.ListenAndServe, which calls net.Listen
+      #3: internal/adapters/mongo/store.go:19:30: mongo.New calls mongo.Connect, which eventually calls net.LookupSRV
+      #4: internal/adapters/mongo/store.go:19:30: mongo.New calls mongo.Connect, which eventually calls net.LookupTXT
+      #5: internal/handlers/cms/videos.go:451:28: cms.VideoHandlers.UpdateSubtitles calls gin.Context.ShouldBindJSON, which eventually calls net.ResolveIPAddr
+      #6: internal/handlers/cms/videos.go:451:28: cms.VideoHandlers.UpdateSubtitles calls gin.Context.ShouldBindJSON, which eventually calls net.ResolveTCPAddr
+      #7: internal/handlers/cms/videos.go:451:28: cms.VideoHandlers.UpdateSubtitles calls gin.Context.ShouldBindJSON, which eventually calls net.ResolveUDPAddr
+      #8: internal/adapters/pg/pool.go:10:24: pg.New calls pgxpool.New, which eventually calls net.Resolver.LookupHost
+      #9: internal/adapters/redis/cache.go:14:26: redis.New calls redis.NewClient, which eventually calls net.Resolver.LookupIPAddr
+
+Vulnerability #27: GO-2026-4947
+    Unexpected work during chain building in crypto/x509
+  More info: https://pkg.go.dev/vuln/GO-2026-4947
+  Standard library
+    Found in: crypto/x509@go1.26
+    Fixed in: crypto/x509@go1.26.2
+    Example traces found:
+      #1: cmd/ai-mock/main.go:20:33: ai.main calls http.Server.ListenAndServe, which eventually calls x509.Certificate.Verify
+
+Vulnerability #28: GO-2026-4946
+    Inefficient policy validation in crypto/x509
+  More info: https://pkg.go.dev/vuln/GO-2026-4946
+  Standard library
+    Found in: crypto/x509@go1.26
+    Fixed in: crypto/x509@go1.26.2
+    Example traces found:
+      #1: cmd/ai-mock/main.go:20:33: ai.main calls http.Server.ListenAndServe, which eventually calls x509.Certificate.Verify
+
+Vulnerability #29: GO-2026-4918
+    Infinite loop in HTTP/2 transport when given bad SETTINGS_MAX_FRAME_SIZE in
+    net/http/internal/http2 in golang.org/x/net
+  More info: https://pkg.go.dev/vuln/GO-2026-4918
+  Standard library
+    Found in: net/http@go1.26
+    Fixed in: net/http@go1.26.3
+    Example traces found:
+      #1: internal/adapters/aihttp/v2.go:210:23: aihttp.Client.asrChunk calls http.Client.Do
+      #2: internal/adapters/mongo/store.go:24:24: mongo.New calls mongo.Client.Disconnect, which eventually calls http.Transport.CloseIdleConnections
+      #3: internal/adapters/minio/object_storage.go:48:41: minio.Client.GetPresigned calls minio.Client.PresignedGetObject, which eventually calls http.Transport.RoundTrip
+
+Vulnerability #30: GO-2026-4870
+    Unauthenticated TLS 1.3 KeyUpdate record can cause persistent connection
+    retention and DoS in crypto/tls
+  More info: https://pkg.go.dev/vuln/GO-2026-4870
+  Standard library
+    Found in: crypto/tls@go1.26
+    Fixed in: crypto/tls@go1.26.2
+    Example traces found:
+      #1: internal/adapters/kafka/event_bus.go:33:34: kafka.Bus.Consume calls kafka.Reader.FetchMessage, which eventually calls tls.Conn.Handshake
+      #2: cmd/ai-mock/main.go:20:33: ai.main calls http.Server.ListenAndServe, which eventually calls tls.Conn.HandshakeContext
+      #3: internal/mocks/mem.go:918:22: mocks.ObjectStorageMem.PutStream calls io.ReadAll, which eventually calls tls.Conn.Read
+      #4: internal/cutter/compilation.go:38:13: cutter.realCompilation calls fmt.Fprintf, which calls tls.Conn.Write
+      #5: internal/adapters/mongo/store.go:35:59: mongo.New calls mongo.IndexView.List, which eventually calls tls.Dial
+      #6: internal/adapters/redis/cache.go:14:26: redis.New calls redis.NewClient, which eventually calls tls.DialWithDialer
+      #7: internal/adapters/aihttp/v2.go:210:23: aihttp.Client.asrChunk calls http.Client.Do, which eventually calls tls.Dialer.DialContext
+
+Vulnerability #31: GO-2026-4866
+    Case-sensitive excludedSubtrees name constraints cause Auth Bypass in
+    crypto/x509
+  More info: https://pkg.go.dev/vuln/GO-2026-4866
+  Standard library
+    Found in: crypto/x509@go1.26
+    Fixed in: crypto/x509@go1.26.2
+    Example traces found:
+      #1: cmd/ai-mock/main.go:20:33: ai.main calls http.Server.ListenAndServe, which eventually calls x509.Certificate.Verify
+
+Vulnerability #32: GO-2026-4865
+    JsBraceDepth Context Tracking Bugs (XSS) in html/template
+  More info: https://pkg.go.dev/vuln/GO-2026-4865
+  Standard library
+    Found in: html/template@go1.26
+    Fixed in: html/template@go1.26.2
+    Example traces found:
+      #1: internal/handlers/cms/videos.go:452:90: cms.VideoHandlers.UpdateSubtitles calls template.Error.Error
+      #2: internal/mocks/ai_http.go:7:2: mocks.init calls gin.init, which eventually calls template.Template.Parse
+      #3: internal/adapters/aihttp/v2.go:146:62: aihttp.Client.ASRV2 calls fmt.Sprintf, which eventually calls template.context.String
+
+Vulnerability #33: GO-2026-4601
+    Incorrect parsing of IPv6 host literals in net/url
+  More info: https://pkg.go.dev/vuln/GO-2026-4601
+  Standard library
+    Found in: net/url@go1.26
+    Fixed in: net/url@go1.26.1
+    Example traces found:
+      #1: internal/adapters/aihttp/v2.go:203:40: aihttp.Client.asrChunk calls http.NewRequestWithContext, which calls url.Parse
+      #2: cmd/ai-mock/main.go:20:33: ai.main calls http.Server.ListenAndServe, which eventually calls url.ParseRequestURI
+      #3: internal/adapters/aihttp/v2.go:210:23: aihttp.Client.asrChunk calls http.Client.Do, which eventually calls url.URL.Parse
+
+Vulnerability #34: GO-2026-4600
+    Panic in name constraint checking for malformed certificates in crypto/x509
+  More info: https://pkg.go.dev/vuln/GO-2026-4600
+  Standard library
+    Found in: crypto/x509@go1.26
+    Fixed in: crypto/x509@go1.26.1
+    Example traces found:
+      #1: cmd/ai-mock/main.go:20:33: ai.main calls http.Server.ListenAndServe, which eventually calls x509.Certificate.Verify
+
+Vulnerability #35: GO-2026-4599
+    Incorrect enforcement of email constraints in crypto/x509
+  More info: https://pkg.go.dev/vuln/GO-2026-4599
+  Standard library
+    Found in: crypto/x509@go1.26
+    Fixed in: crypto/x509@go1.26.1
+    Example traces found:
+      #1: cmd/ai-mock/main.go:20:33: ai.main calls http.Server.ListenAndServe, which eventually calls x509.Certificate.Verify
+
+Your code is affected by 35 vulnerabilities from 3 modules and the Go standard library.
+This scan also found 15 vulnerabilities in packages you import and 8
+vulnerabilities in modules you require, but your code doesn't appear to call
+these vulnerabilities.
+Use '-show verbose' for more details.
