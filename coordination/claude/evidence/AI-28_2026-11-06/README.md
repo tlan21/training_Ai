@@ -11,3 +11,9 @@ auto-caption tool (e.g. CapCut) — not detectable from metadata, hence a per-ch
 - Review page `http://127.0.0.1:8892/creator_review/index.html` (`packet.json`): 10 channels × 3 clips (cues 3–12 s at 25/50/75 %),
   reviewer marks voice (human / TTS / not Vietnamese) and subtitle fit (verbatim / loose / wrong). Only "human + verbatim" channels become data.
 - Label provenance if accepted: CREATOR_SUBTITLE_CHANNEL_VERIFIED (distinct from per-clip HUMAN_VERIFIED); thesis must state it.
+
+## Channel decisions (reviewer khoatm, export 09:30 sha256 e1cc7398… + chat answers 2026-11-06)
+Accepted (human voice + verbatim subtitles): thoibao.de, G87, Star Sport, AnyTime Soccer, Lam Nguyen POV ("có 1 file âm nhạc còn lại là chính xác
+từng từ" — the music sample is the cue "[âm nhạc]", so bracketed non-speech cues are dropped), Phương Cào XL ("Khớp gần từng từ").
+Rejected: Red United TV (not Vietnamese audio), JB.Nguyễn Hùng (TTS), BLV PHƯƠNG HẰNG (loose), Thy Freestyle Soccer (subtitles wrong).
+None of the accepted channels is among the 6 football test channels.
