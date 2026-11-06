@@ -1,0 +1,19 @@
+{
+  "id": "traininghighlight/asr-scratch-guarded-v1",
+  "title": "ASR scratch guarded v1",
+  "code_file": "run_asr_scratch.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": false,
+  "dataset_sources": [
+    "traininghighlight/asr-scratch-v1",
+    "traininghighlight/asr-public-expand-v1",
+    "traininghighlight/asr-three-source-v1",
+    "traininghighlight/asr-robust-human",
+    "traininghighlight/vivos-asr"
+  ],
+  "competition_sources": [],
+  "kernel_sources": []
+}

@@ -1,0 +1,28 @@
+{
+  "status": "PACKED_NOT_UPLOADED_OR_TRAINED",
+  "items": 48827,
+  "counts": {
+    "commonvoice/test": 1088,
+    "commonvoice/train": 2239,
+    "commonvoice/val": 300,
+    "fleurs/test": 857,
+    "fleurs/train": 2994,
+    "fleurs/val": 361,
+    "fosd/test": 292,
+    "fosd/train": 24970,
+    "fosd/val": 299,
+    "minilibrispeech/test": 509,
+    "minilibrispeech/train": 1519,
+    "minilibrispeech/val": 580,
+    "real_domain_user_review/train": 389,
+    "real_domain_user_review/val": 10,
+    "vivos/test": 760,
+    "vivos/train": 10567,
+    "vivos/val": 1093
+  },
+  "vocab_size_with_blank": 142,
+  "new_chars": [
+    "¾"
+  ],
+  "manifest_sha256": "75c2b0d6eab9459a3145364fcb15f13489d5d412244b8a1742898255fa9c3d90"
+}

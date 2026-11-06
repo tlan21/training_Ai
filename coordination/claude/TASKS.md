@@ -32,6 +32,7 @@ Backlog ứng dụng 32 ID INT: `coordination/claude/OPEN_TASKS.md` (tick + evid
 | AI-26 | T1.4 | ASR giải mã beam search + từ điển âm tiết + n-gram tự train trên văn bản công khai (không đổi checkpoint); đổi cổng chất lượng phụ đề sang độ tin cậy | REVIEW (2026-11-05) — dev: CER 69,4→66,9% nhưng WER tăng; KHÔNG chạy test, không triển khai (ASR âm học quá yếu); `evidence/AI-26_2026-11-05/` | user 2026-11-05 "Từ điển + mô hình ngôn ngữ" |
 | AI-27 | T1.4 | ASR mở rộng dữ liệu công khai lời chép người làm: FOSD (CC BY 4.0, ~30 h) + Common Voice 19 vi (CC0); từ ASR active `7c497d43` | REVIEW (2026-11-06) — guard loại mọi bước (WER tiếng Anh MLS tụt 1–5 điểm, mọi nguồn khác tốt hơn); không thay ASR; DONE (2026-11-06) — cổng sửa: mục 1 PASS, test bóng đá FAIL (CER 73,56→73,73%, WER 106→114%), VIVOS/FLEURS tốt hơn → KHÔNG thay ASR | user 2026-11-05 "FOSD + Common Voice" |
 | AI-28 | T1.4 | Phụ đề creator (thủ công) trên video bóng đá CC, user duyệt mẫu theo kênh → dữ liệu ASR bóng đá nhanh hơn chép tay | DONE (2026-11-06) — guard đạt (bước 900) nhưng test bóng đá FAIL (CER 73,56→73,32%, WER 106→116%); VIVOS/FLEURS tốt hơn → KHÔNG thay ASR | user 2026-11-06 "Làm" |
+| AI-29 | T1.4 | ASR lớn hơn (384×12, 25,6M) train TỪ ĐẦU trên toàn bộ dữ liệu hợp lệ (~50 h); phiên thử 1 (12k bước) trước | IN_PROGRESS (2026-11-06) | user 2026-11-06 "Train ASR lớn hơn từ đầu" + "Chạy thử 1 phiên trước" |
 | AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | BLOCKED ⇐ bundle INT-13 (phần độc lập xong 2026-10-26) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | DONE (2026-10-26; sandbox + artifact; product → AI-12 theo D18) | HC-04 (sandbox READY) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | DONE (02a 2026-10-27 · 02b user duyệt 51/60 2026-10-28 · 02c guard loại, không promote) · D23 dừng cho MVP | — |
@@ -212,6 +213,14 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   Contract touched: yes (v1.2-rc1, chỉ thêm VisionRequest.video_id)
   Next safe task: release #2 (user duyệt push)
   ```
+
+### AI-29 — ASR lớn hơn train từ đầu (phiên thử)
+- Status: IN_PROGRESS (2026-11-06). Model asr_ctc 384×12×6 (25,58M, vocab 142), không checkpoint khởi đầu; dữ liệu gộp `pack_scratch_v1.py`
+  (VIVOS/FLEURS/MLS/FOSD/CV + 389 domain gồm 294 creator; 48.827 mục); `train_asr_scratch.py` (lấy mẫu vivos .25 / fleurs .15 / mls .05 /
+  domain .15 / fosd .3 / cv .1; lr 5e-4, batch 8×2, 12.000 bước, đánh giá mỗi 2.000 trên val ≤300/nguồn; chọn theo trung bình WER 5 nguồn tiếng Việt).
+- Luật chạy tiếp (đăng ký trước 2026-11-06): chạy phiên 2 (khởi từ last.pt, lịch lr mới) chỉ khi (a) 2 lần đánh giá cuối vẫn giảm và
+  (b) WER chọn ≤ 0,85 (active `7c497d43` trên cùng val ≈ 0,72 = trung bình vivos .31 / fleurs .70 / domain .94 / fosd .80 / cv .85).
+  Phiên thử KHÔNG chấm test. Cổng thay ASR (khi xong): như AI-27/28 (bóng đá 30 CER+WER < active, CI ΔCER < 0; VIVOS/FLEURS ≤ active).
 
 ### AI-28 — ASR: phụ đề creator duyệt theo kênh (football replay v2)
 - Status: DONE (2026-11-06) — không promote (bóng đá không cải thiện). Evidence `evidence/AI-28_2026-11-06/` (tìm, tải, duyệt kênh, quyết định).
