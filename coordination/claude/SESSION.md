@@ -3,6 +3,9 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
+- **2026-11-06:** AI-28 DONE không promote. AI-29 ASR 25,6M từ đầu — phiên thử Kaggle `traininghighlight/asr-scratch-guarded-v1` RUNNING
+  từ ~11:30 (commit 4a1aad9, 12k bước, ~9 h). Xong → tải `D:/data_training_ai/asr_scratch_v1_20261106/output/`, đọc `asr_scratch/history.json`,
+  áp luật chạy tiếp (2 eval cuối giảm + WER chọn ≤ 0,85). KHÔNG chấm test ở phiên thử.
 - **2026-11-06:** AI-27 DONE không promote (bóng đá không cải thiện). AI-28 phụ đề creator: 6 kênh user duyệt, 294 đoạn 65 phút; Kaggle
   `traininghighlight/asr-football-replay-guarded-v2` RUNNING (commit 08419e8, ~30–40 phút). Xong → tải vào `D:/data_training_ai/asr_football_replay_v2_20261106/output/`,
   đọc guard (MLS chỉ CER), rồi `eval_asr_tests.py <active> <best.pt> <out>` chấm bóng đá 30 + VIVOS/FLEURS một lần.
