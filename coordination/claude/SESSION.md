@@ -3,6 +3,9 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
+- **2026-11-06:** AI-27 DONE không promote (bóng đá không cải thiện). AI-28 phụ đề creator: 6 kênh user duyệt, 294 đoạn 65 phút; Kaggle
+  `traininghighlight/asr-football-replay-guarded-v2` RUNNING (commit 08419e8, ~30–40 phút). Xong → tải vào `D:/data_training_ai/asr_football_replay_v2_20261106/output/`,
+  đọc guard (MLS chỉ CER), rồi `eval_asr_tests.py <active> <best.pt> <out>` chấm bóng đá 30 + VIVOS/FLEURS một lần.
 - **2026-11-05 (AI-26/27):** AI-26 từ điển+LM: dev không cải thiện đáng kể → không triển khai (e9af468). AI-27 FOSD+CV19: Kaggle
   `traininghighlight/asr-public-expansion-guarded-v1` (slug theo title) RUNNING, dataset `asr-public-expand-v1` (commit 3416262), ~2 h.
   Xong → tải ngay vào `D:/data_training_ai/asr_public_expand_v1_20261105/output/`; chấm 30 đoạn bóng đá bằng
