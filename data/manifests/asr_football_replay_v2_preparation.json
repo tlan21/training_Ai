@@ -1,0 +1,45 @@
+{
+  "status": "PACKED_NOT_UPLOADED_OR_TRAINED",
+  "recipe": {
+    "id": "asr-football-replay-v2",
+    "seed": 1337,
+    "steps": 1000,
+    "eval_every": 100,
+    "sampling_probabilities": {
+      "vivos": 0.35,
+      "fleurs": 0.25,
+      "minilibrispeech": 0.2,
+      "real_domain_user_review": 0.2
+    },
+    "initial_checkpoint_sha256": "7c497d43ce9ca9fbb4d29f80e2d86e777d11f7eea6828062e581fce4aa794934",
+    "vocab_sha256": "c8230d37b85c13ff4313ef944290e914bf22d4d487e3216e4eaf55054ef6e7c8",
+    "manifest_sha256": "72ebbc37826def6177770d636e0557c58795c6ea2e3210e85cba86ee4c4b9447",
+    "data_identity_sha256": "a0d606eb6bf75fe544ab96fb9508746111e952451eb2eadd324c7351392f8691",
+    "frozen_validation_sha256": "25b34fb687b01965028cc5b7a796246dcabd8dfc821dbc35fd2fa2e5d605cfa3",
+    "domain_validation_identity_sha256": "6108d9efb8fedaea2489b51e279cde32491088f5bc0ffbdf4011b226a5c87978",
+    "selection": "all-domain-wer-cer-nonregression-and-domain-wer-cer-improvement"
+  },
+  "creator": {
+    "creator_train": 294,
+    "creator_no_latin_word_excluded": 3,
+    "creator_over_30s_excluded": 1
+  },
+  "original_items": 19345,
+  "new_chars": [
+    "¾",
+    "“"
+  ],
+  "ctc_retained_training_by_source": {
+    "vivos": 10563,
+    "fleurs": 2994,
+    "minilibrispeech": 1519,
+    "real_domain_user_review": 389
+  },
+  "excluded_total": 4,
+  "training_started": false,
+  "checkpoint_deployed": false,
+  "limitations": [
+    "Creator subtitles verified per channel (3 samples each), not per clip; cue timing from the creator.",
+    "Selection domain val = 10 news clips; the 30-clip football test is scored once outside the kernel."
+  ]
+}

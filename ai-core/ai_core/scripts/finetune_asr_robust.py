@@ -26,13 +26,17 @@ from ai_core.training.trainer import Trainer, set_seed
 THREE_SOURCES = ('vivos', 'fleurs', 'minilibrispeech')
 DOMAIN_SOURCE = 'real_domain_user_review'
 # Domain-replay recipes: identical budget/sampling/guard; v2 (AI-02c) only adds 51 reviewed expansion train clips.
-DOMAIN_TRAIN_CLIPS = {'asr-domain-replay-v1': 30, 'asr-domain-replay-v2': 81, 'asr-football-replay-v1': 95, 'asr-public-expand-v1': 95}
+DOMAIN_TRAIN_CLIPS = {'asr-domain-replay-v1': 30, 'asr-domain-replay-v2': 81, 'asr-football-replay-v1': 95, 'asr-public-expand-v1': 95, 'asr-football-replay-v2': 389}
 # AI-25: v2 recipe/guard + 14 football clips typed from audio (no draft); parent = ACTIVE asr (93 symbols), not parent133.
 FOOTBALL_RECIPE, ACTIVE_VOCAB = 'asr-football-replay-v1', 93
 # AI-27: + public human-transcribed Vietnamese speech (FOSD CC BY 4.0, Common Voice vi CC0) from the active 136-symbol ASR.
 PUBLIC_RECIPE, PUBLIC_SOURCES = 'asr-public-expand-v1', ('fosd', 'commonvoice')
 PUBLIC_PROBABILITIES = {'vivos': .25, 'fleurs': .2, 'minilibrispeech': .1, 'real_domain_user_review': .1, 'fosd': .25, 'commonvoice': .1}
-PARENT_VOCAB = {FOOTBALL_RECIPE: ACTIVE_VOCAB, PUBLIC_RECIPE: 136}
+# AI-28: football replay v1 domain rows + 297 channel-verified creator-subtitle clips; English judged on CER only (user 2026-11-06).
+FOOTBALL2_RECIPE = 'asr-football-replay-v2'
+FOOTBALL2_PROBABILITIES = {'vivos': .35, 'fleurs': .25, 'minilibrispeech': .2, 'real_domain_user_review': .2}
+CREATOR_ORIGIN = ('CREATOR_SUBTITLE_CHANNEL_VERIFIED', 'NONE')
+PARENT_VOCAB = {FOOTBALL_RECIPE: ACTIVE_VOCAB, PUBLIC_RECIPE: 136, FOOTBALL2_RECIPE: 136}
 
 
 def recipe_sources(recipe_id):
@@ -51,8 +55,8 @@ def validate_recipe(recipe, payload, vocab_sha, initial_sha, steps):
     domain = recipe['id'] in DOMAIN_TRAIN_CLIPS
     assert domain or recipe['id'] == 'asr-three-source-v1'
     sources = recipe_sources(recipe['id'])
-    public = recipe['id'] == PUBLIC_RECIPE
-    assert recipe['seed'] == 1337 and recipe['steps'] == steps == (3000 if public else 500 if domain else 2000)
+    public, football2 = recipe['id'] == PUBLIC_RECIPE, recipe['id'] == FOOTBALL2_RECIPE
+    assert recipe['seed'] == 1337 and recipe['steps'] == steps == (3000 if public else 1000 if football2 else 500 if domain else 2000)
     assert recipe['eval_every'] == (500 if public else 100 if domain else 500)
     assert recipe['initial_checkpoint_sha256'] == initial_sha == payload['meta']['source_checkpoint_sha256']
     assert recipe['vocab_sha256'] == vocab_sha
@@ -60,7 +64,7 @@ def validate_recipe(recipe, payload, vocab_sha, initial_sha, steps):
     assert recipe['selection'] == ('all-domain-wer-cer-nonregression-and-domain-wer-cer-improvement' if domain
                                     else 'all-domain-wer-cer-nonregression-and-english-wer-improvement')
     probabilities = recipe['sampling_probabilities']
-    assert probabilities == (PUBLIC_PROBABILITIES if public else dict(zip(sources, (.4, .3, .2, .1) if domain else (.4, .4, .2))))
+    assert probabilities == (PUBLIC_PROBABILITIES if public else FOOTBALL2_PROBABILITIES if football2 else dict(zip(sources, (.4, .3, .2, .1) if domain else (.4, .4, .2))))
     rows = payload['items']
     assert len({r['path'] for r in rows}) == len(rows), 'duplicate audio path'
     for split in ('train', 'val', 'test'):
@@ -70,8 +74,10 @@ def validate_recipe(recipe, payload, vocab_sha, initial_sha, steps):
         domain_rows = [r for r in rows if r['extra']['source'] == DOMAIN_SOURCE]
         assert collections.Counter(r['split'] for r in domain_rows) == {'train': DOMAIN_TRAIN_CLIPS[recipe['id']], 'val': 10}
         origins = {('human_reviewed_external_asr', 'EXTERNAL_ASR_DRAFT_UNVERIFIED')}
-        if recipe['id'] in (FOOTBALL_RECIPE, PUBLIC_RECIPE):
-            origins.add(('HUMAN_VERIFIED', 'NONE'))  # football: typed from audio, played to the end (football_intake)
+        if recipe['id'] in (FOOTBALL_RECIPE, PUBLIC_RECIPE, FOOTBALL2_RECIPE):
+            origins.add(('HUMAN_VERIFIED', 'NONE'))
+        if football2:
+            origins.add(CREATOR_ORIGIN)  # football: typed from audio, played to the end (football_intake)
         assert all((r['extra']['label_origin'], r['extra']['draft_origin']) in origins
                    and r['extra']['annotator'].strip() for r in domain_rows), 'missing domain attestation/provenance'
         references = [{'sample_id': Path(r['path']).stem, 'audio_sha256': r['extra']['audio_sha256'],
@@ -109,14 +115,14 @@ def sampling_weights(items, probabilities):
     return [probabilities[i.extra['source']] / counts[i.extra['source']] for i in items]
 
 
-def guarded_selection(domains, baseline, target='minilibrispeech', sources=None):
+def guarded_selection(domains, baseline, target='minilibrispeech', sources=None, wer_exempt=()):
     assert target in ('minilibrispeech', DOMAIN_SOURCE)
     sources = sources or (THREE_SOURCES + (DOMAIN_SOURCE,) if target == DOMAIN_SOURCE else THREE_SOURCES)
     assert set(domains) == set(baseline) == set(sources)
     for scores in (domains, baseline):
         assert all(math.isfinite(v[m]) and v[m] >= 0 for v in scores.values() for m in ('wer', 'cer')), 'invalid validation metrics'
     value = sum(v['wer'] for v in domains.values()) / len(domains)
-    eligible = (all(domains[s][m] <= baseline[s][m] for s in sources for m in ('wer', 'cer'))
+    eligible = (all(domains[s][m] <= baseline[s][m] for s in sources for m in ('wer', 'cer') if not (m == 'wer' and s in wer_exempt))
                 and domains[target]['wer'] < baseline[target]['wer']
                 and (target != DOMAIN_SOURCE or domains[target]['cer'] < baseline[target]['cer'])
                 and value < sum(v['wer'] for v in baseline.values()) / len(baseline))
@@ -241,6 +247,7 @@ def main():
     recipe = json.loads(args.recipe.read_text(encoding='utf-8')) if args.recipe else None
     domain = recipe is not None and recipe['id'] in DOMAIN_TRAIN_CLIPS
     sources = recipe_sources(recipe['id']) if recipe else ('vivos', 'fleurs')
+    wer_exempt = ('minilibrispeech',) if recipe and recipe['id'] == FOOTBALL2_RECIPE else ()
     assert {i['extra']['source'] for i in payload['items']} == set(sources)
     expected = payload['meta']['source_checkpoint_sha256']
     assert hashlib.sha256(args.initial.read_bytes()).hexdigest() == expected
@@ -330,7 +337,7 @@ def main():
         value = sum(v['wer'] for v in domains.values()) / len(sources)
         eligible = True
         if recipe:
-            value, eligible = guarded_selection(domains, baseline, DOMAIN_SOURCE if domain else 'minilibrispeech', sources)
+            value, eligible = guarded_selection(domains, baseline, DOMAIN_SOURCE if domain else 'minilibrispeech', sources, wer_exempt)
         # Rejected metrics return the initial score, which can never replace an eligible best.
         selection_score = value if eligible else initial_metric
         history.append({'step': evaluation_calls * tcfg.eval_every, 'phase': 'finetune', 'domains': domains,
@@ -375,7 +382,7 @@ def main():
               'checkpoint_sha256': hashlib.sha256((output / 'asr_ctc/best.pt').read_bytes()).hexdigest(),
               'youtube_human_wer_cer': None, 'limitation': 'Read speech still does not certify noisy YouTube performance; frozen video human references remain required.'}
     if recipe:
-        report.update(recipe=recipe, recommended_by_validation=guarded_selection(candidate_val, baseline, DOMAIN_SOURCE if domain else 'minilibrispeech', sources)[1],
+        report.update(recipe=recipe, recommended_by_validation=guarded_selection(candidate_val, baseline, DOMAIN_SOURCE if domain else 'minilibrispeech', sources, wer_exempt)[1],
                       baseline_retained=candidate['metrics']['step'] == 0)
     if domain:
         report.update(label_origin='human_reviewed_external_asr', selected_vocab_size=selected_vocab.size,
