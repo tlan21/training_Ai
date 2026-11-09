@@ -3,6 +3,9 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
+- **2026-11-09:** bản vá bảo mật đã triển khai (gateway/client int11-843a56e, cms int11-6288d60, fixture 64/64; infra restart unless-stopped).
+  AI-29: phiên 2 xong (bóng đá FAIL do bịa chữ trên đoạn nhạc), phiên 3 "dạy im lặng" Kaggle `traininghighlight/asr-scratch-guarded-v3` RUNNING từ ~09:40
+  (commit 82847b6, 8k bước ~2,5 h). Xong → tải `D:/data_training_ai/asr_scratch_v2_20261109/output/`, `eval_asr_tests.py <active> <best.pt> <out>` chấm 1 lần.
 - **2026-11-06:** AI-28 DONE không promote. AI-29 ASR 25,6M từ đầu — phiên thử Kaggle `traininghighlight/asr-scratch-guarded-v1` RUNNING
   từ ~11:30 (commit 4a1aad9, 12k bước, ~9 h). Xong → tải `D:/data_training_ai/asr_scratch_v1_20261106/output/`, đọc `asr_scratch/history.json`,
   áp luật chạy tiếp (2 eval cuối giảm + WER chọn ≤ 0,85). KHÔNG chấm test ở phiên thử.
