@@ -1,0 +1,11 @@
+{
+  "status": "PACKED_NOT_UPLOADED_OR_TRAINED",
+  "nonspeech": {
+    "USER_SCREENED_NO_COMMENTARY_train": 206,
+    "USER_SCREENED_NO_COMMENTARY_val": 23,
+    "CREATOR_BRACKET_NONSPEECH_train": 43
+  },
+  "nonspeech_minutes": 63.2,
+  "items_total": 49099,
+  "manifest_sha256": "72940af51176891073afa93fdef868a4f8d6db9a86b8b62d0a03e663e4432e76"
+}

@@ -47,6 +47,8 @@ def stage_audio(root, data, payload, staging):
         archives.append((data, 'domain_audio', 'domain_archive_sha256'))
     if any(i['extra']['source'] in ('fosd', 'commonvoice') for i in payload['items']):  # AI-27 public read speech
         archives.append((data, 'public_audio', 'public_archive_sha256'))
+    if any(i['extra']['source'] == 'nonspeech' for i in payload['items']):  # AI-29 session 3 empty-target clips
+        archives.append((data, 'nonspeech_audio', 'nonspeech_archive_sha256'))
     for parent, folder, fingerprint in archives:
         archive = parent / (folder + '.zip')
         if not archive.exists() and (parent / (folder + '.pack')).exists():

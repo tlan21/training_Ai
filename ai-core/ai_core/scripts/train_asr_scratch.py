@@ -26,6 +26,7 @@ from .finetune_asr_robust import RobustASRDataset, evaluate, sampling_weights
 PROBABILITIES = {'vivos': .25, 'fleurs': .15, 'minilibrispeech': .05, 'real_domain_user_review': .15, 'fosd': .3, 'commonvoice': .1}
 SELECT = ('vivos', 'fleurs', 'real_domain_user_review', 'fosd', 'commonvoice')
 VAL_CAP = 300  # per source, first-N in manifest order, to bound evaluation time
+NONSPEECH_P = .06  # session 3: empty-target music/crowd clips (their CTC loss is not length-normalised, so keep the share small)
 
 
 def main():
@@ -56,10 +57,13 @@ def main():
     params = sum(t.numel() for t in model.parameters())
     train = RobustASRDataset(str(args.manifest), 'train', vocab, augment=True)
     val = ReferenceASRDataset(str(args.manifest), 'val', vocab)
-    sources = sorted(PROBABILITIES)
+    probabilities = dict(PROBABILITIES)
+    if any(i.extra['source'] == 'nonspeech' for i in train.items):
+        probabilities = {s: p * (1 - NONSPEECH_P) for s, p in PROBABILITIES.items()} | {'nonspeech': NONSPEECH_P}
+    sources = sorted(s for s in probabilities if any(it.extra['source'] == s for it in val.items))
     val_loaders = {s: DataLoader(Subset(val, [i for i, it in enumerate(val.items) if it.extra['source'] == s][:VAL_CAP]),
                                  batch_size=1, num_workers=2, collate_fn=collate_references) for s in sources}
-    weights = sampling_weights(train.items, PROBABILITIES)
+    weights = sampling_weights(train.items, probabilities)
     sampler = WeightedRandomSampler(weights, len(train), replacement=True, generator=torch.Generator().manual_seed(1337))
     loader = DataLoader(train, batch_size=8, sampler=sampler, num_workers=2, persistent_workers=True, pin_memory=True,
                         drop_last=True, collate_fn=collate_ctc)
@@ -80,7 +84,7 @@ def main():
     tcfg = TrainConfig(model='asr_ctc', lr=args.lr, weight_decay=.01, batch_size=8, grad_accum=2, max_steps=args.steps, warmup_ratio=.05,
                        precision='bf16' if precision == torch.bfloat16 else 'fp16', seed=1337, eval_every=args.eval_every,
                        metric_name='wer', ckpt_dir=str(args.output), log_dir=str(args.output / 'runs'))
-    metadata = {'char_vocab': vocab.itos, 'task': 'AI-29 scratch ASR', 'params': params, 'sampling_probabilities': PROBABILITIES,
+    metadata = {'char_vocab': vocab.itos, 'task': 'AI-29 scratch ASR', 'params': params, 'sampling_probabilities': probabilities,
                 'selection': 'mean val WER over ' + ','.join(SELECT), 'init': str(args.init) if args.init else None,
                 'training_counts': dict(collections.Counter(i.extra['source'] for i in train.items)), 'training_exclusions': len(train.excluded)}
     print('MODEL', json.dumps({'params': params, 'd_model': args.d_model, 'layers': args.layers, 'heads': args.heads}), metadata['training_counts'], flush=True)

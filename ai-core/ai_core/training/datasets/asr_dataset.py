@@ -68,7 +68,8 @@ class ASRDataset(Dataset):
         for item in self.items:
             text = item.extra.get("transcript", "")
             try:
-                if not isinstance(text, str) or not text.strip():
+                # AI-29 session 3: explicit non-speech clips (music/crowd) teach the model to emit only blanks.
+                if not isinstance(text, str) or (not text.strip() and item.extra.get("source") != "nonspeech"):
                     raise ValueError("missing/empty ASR transcript")
                 self.vocab.encode(text)
             except ValueError as error:
