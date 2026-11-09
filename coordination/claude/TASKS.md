@@ -33,6 +33,7 @@ Backlog ứng dụng 32 ID INT: `coordination/claude/OPEN_TASKS.md` (tick + evid
 | AI-27 | T1.4 | ASR mở rộng dữ liệu công khai lời chép người làm: FOSD (CC BY 4.0, ~30 h) + Common Voice 19 vi (CC0); từ ASR active `7c497d43` | REVIEW (2026-11-06) — guard loại mọi bước (WER tiếng Anh MLS tụt 1–5 điểm, mọi nguồn khác tốt hơn); không thay ASR; DONE (2026-11-06) — cổng sửa: mục 1 PASS, test bóng đá FAIL (CER 73,56→73,73%, WER 106→114%), VIVOS/FLEURS tốt hơn → KHÔNG thay ASR | user 2026-11-05 "FOSD + Common Voice" |
 | AI-28 | T1.4 | Phụ đề creator (thủ công) trên video bóng đá CC, user duyệt mẫu theo kênh → dữ liệu ASR bóng đá nhanh hơn chép tay | DONE (2026-11-06) — guard đạt (bước 900) nhưng test bóng đá FAIL (CER 73,56→73,32%, WER 106→116%); VIVOS/FLEURS tốt hơn → KHÔNG thay ASR | user 2026-11-06 "Làm" |
 | AI-29 | T1.4 | ASR lớn hơn (384×12, 25,6M) train TỪ ĐẦU trên toàn bộ dữ liệu hợp lệ (~50 h); phiên thử 1 (12k bước) trước | REVIEW (2026-11-09) — 2 phiên 24k bước: VIVOS/FLEURS test tốt hơn nhiều (FLEURS CER 34→20,5%) nhưng bóng đá FAIL (73,6→78,4%, 5 đoạn bịa chữ trên nhạc/tiếng sân); phiên 3 "dạy im lặng": bóng đá CER 73,6→70,4%, WER 106→97%, nhưng CI ΔCER [−12,6; +7,6] chạm 0 → FAIL; không thay ASR | user 2026-11-06 "Train ASR lớn hơn từ đầu" + "Chạy thử 1 phiên trước" |
+| AI-30 | T1.4 | Mở rộng test ASR bóng đá 30 → ~61 đoạn (9 kênh) bằng nhãn người: review_v2 #1–31 (3 kênh test mới, chưa từng train) → chấm lại 1 lần AI-29 phiên 3 theo cổng đăng ký trước | IN_PROGRESS (2026-11-09) — chờ user chép review_v2 #1–31 và xuất JSON | user 2026-11-09 "hãy làm theo bạn đề xuất" |
 | AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | BLOCKED ⇐ bundle INT-13 (phần độc lập xong 2026-10-26) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | DONE (2026-10-26; sandbox + artifact; product → AI-12 theo D18) | HC-04 (sandbox READY) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | DONE (02a 2026-10-27 · 02b user duyệt 51/60 2026-10-28 · 02c guard loại, không promote) · D23 dừng cho MVP | — |
@@ -213,6 +214,18 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   Contract touched: yes (v1.2-rc1, chỉ thêm VisionRequest.video_id)
   Next safe task: release #2 (user duyệt push)
   ```
+
+### AI-30 — Mở rộng test ASR bóng đá (đăng ký trước 2026-11-09, trước khi có nhãn)
+- Status: IN_PROGRESS — trang `http://127.0.0.1:8892/review_v2/index.html`, đoạn #1–31 (split val: InternShip 2024 Xuân Bách 17, Lê Hiển 8, PHỦI 27 6;
+  4 video `3IYKR6FRx_o`, `4VpmnSBcwD8`, `vLB4Dj_V4ss`, `yBXgFoqbh9w`). Kiểm rò rỉ: 0 video trùng dữ liệu train AI-25…AI-29 (kể cả 272 đoạn non-speech).
+  Trang không có bản nháp máy (chép thẳng từ audio, §0).
+- Nhập nhãn: `football_intake.py <export> review_v2 <out>` (strict như v1). Đoạn user ghi "không lời/chỉ nhạc" bị loại khỏi test (không đổi được sau khi chấm).
+- Test bóng đá v2 = 30 đoạn hiện tại + mọi đoạn #1–31 được xác nhận. Chấm 1 lần (`eval_asr_tests.py` mở rộng đọc thêm approved v2):
+  active `7c497d43` vs AI-29 phiên 3 `2c6b7fab`. Cổng giữ nguyên: CER trung bình + WER < active, CI95 bootstrap ghép cặp ΔCER cận trên < 0;
+  VIVOS/FLEURS ≤ active (đã đạt, không chấm lại). Báo kèm (phụ, không quyết định) riêng phần đoạn mới.
+- Minh bạch: phiên 3 đã chấm trên 30 đoạn cũ (FAIL do CI). Đây là lần nhìn thứ 2 và CUỐI cho phiên 3; FAIL → đóng AI-29, không thử ứng viên khác trên test v2 khi chưa đăng ký.
+  Kỳ vọng thật: Δ ≈ −3 điểm, gấp đôi test thu CI còn ~±7–9 điểm → vẫn có thể FAIL; kết quả nào cũng là câu trả lời đáng tin hơn.
+- Ngoài phạm vi: 74 đoạn kênh train review_v1 + 88 đoạn kênh train review_v2 (chỉ dùng train, làm sau nếu user muốn).
 
 ### AI-29 — ASR lớn hơn train từ đầu (phiên thử)
 - Status: REVIEW (2026-11-09) — cổng bóng đá FAIL cả phiên 2 và phiên 3, không promote (`evidence/AI-29_2026-11-06/README.md`).
