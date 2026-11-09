@@ -8,7 +8,7 @@ Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên 
   lần 1 ERROR ở eval đầu (step 2000, ZeroDivisionError: val non-speech có 0 từ tham chiếu; chưa chấm test, không có ckpt; log
   `D:/data_training_ai/asr_scratch_v2_20261109/output_err/`). Sửa `evaluate()` mẫu số max(1,…) + test (263e7a3); dataset asr-scratch-v2
   version mới; kernel version 2 COMPLETE 13:54, test chấm 1 lần: bóng đá 70,4/97,1 < active nhưng CI ΔCER cận trên +7,6 → FAIL, không thay
-  (evidence `AI-29_2026-11-06/README.md` §Session 3). Dọn đĩa 2026-11-09: Docker build cache + 48 image cũ, cache C: → C: 0,2→2,3 GB.
+  (evidence `AI-29_2026-11-06/README.md` §Session 3). Dọn đĩa 2026-11-09: Docker build cache + 48 image cũ, cache C:, nén docker_data.vhdx 49,3→29,2 GB (Optimize-VHD) → C: 0,2→21 GB; stack bật lại đủ 13 container, healthy.
   (cũ) Xong → tải `D:/data_training_ai/asr_scratch_v2_20261109/output/`, `eval_asr_tests.py <active> <best.pt> <out>` chấm 1 lần.
 - **2026-11-06:** AI-28 DONE không promote. AI-29 ASR 25,6M từ đầu — phiên thử Kaggle `traininghighlight/asr-scratch-guarded-v1` RUNNING
   từ ~11:30 (commit 4a1aad9, 12k bước, ~9 h). Xong → tải `D:/data_training_ai/asr_scratch_v1_20261106/output/`, đọc `asr_scratch/history.json`,
