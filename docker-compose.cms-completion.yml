@@ -2,8 +2,8 @@
 # Pins only owned app images; AI, workers, databases, ports and volumes inherit existing configuration.
 services:
   gateway:
-    image: video-ai-gateway:int10-6601bd0
+    image: video-ai-gateway:int11-843a56e
   cms:
-    image: video-ai-cms:int10-6601bd0
+    image: video-ai-cms:int11-6288d60
   client:
-    image: video-ai-client:int10-6601bd0
+    image: video-ai-client:int11-843a56e
