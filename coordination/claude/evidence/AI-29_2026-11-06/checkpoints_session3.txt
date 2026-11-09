@@ -1,0 +1,1 @@
+2c6b7fab556e446048eb25b5ff5de25ba4c1ba0585fa4999bac9835440ce28f0  best.pt session 3 (asr-scratch-guarded-v3 version 2, step 8000)
