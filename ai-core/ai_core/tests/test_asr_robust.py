@@ -101,3 +101,5 @@ def test_evaluation_preserves_reference_characters_outside_vocab():
     batch = (torch.zeros(1, 80, 1), torch.tensor([1]), None, None, ['AÑ'])
     result = evaluate(FixedPrediction(), [batch], CharVocab(['A']), torch.device('cpu'), torch.float32)
     assert result['cer'] == .5 and result['predictions'][0]['reference'] == 'AÑ'
+    silent = evaluate(FixedPrediction(), [batch[:4] + ([''],)], CharVocab(['A']), torch.device('cpu'), torch.float32)
+    assert silent['wer'] == silent['corpus_wer'] == 1  # empty reference: emitted words per clip, no ZeroDivisionError

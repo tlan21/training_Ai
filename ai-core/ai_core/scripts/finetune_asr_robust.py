@@ -208,8 +208,9 @@ def evaluate(model, loader, vocab, device, precision):
     assert rows
     return {'samples': len(rows), 'wer': sum(r['wer'] for r in rows) / len(rows),
             'cer': sum(r['cer'] for r in rows) / len(rows),
-            'corpus_wer': sum(r['word_errors'] for r in rows) / sum(r['reference_words'] for r in rows),
-            'corpus_cer': sum(r['char_errors'] for r in rows) / sum(r['reference_chars'] for r in rows),
+            # max(1, ...): AI-29 non-speech val has empty references, so its "wer" = words emitted per silent clip.
+            'corpus_wer': sum(r['word_errors'] for r in rows) / max(1, sum(r['reference_words'] for r in rows)),
+            'corpus_cer': sum(r['char_errors'] for r in rows) / max(1, sum(r['reference_chars'] for r in rows)),
             'predictions': rows}
 
 
