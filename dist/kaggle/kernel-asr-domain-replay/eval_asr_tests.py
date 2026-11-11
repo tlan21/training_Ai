@@ -1,6 +1,6 @@
 """AI-27: score active vs candidate ASR once on the registered tests with the same greedy decode as inference-service.
 
-  python eval_asr_tests.py <active best.pt> <candidate .pt> <out.json>
+  python eval_asr_tests.py <active best.pt> <candidate .pt> <out.json> [<extra held-out approved.json> (AI-30)]
 football = 30 held-out-channel clips (AI-25 export); VIVOS test 760; FLEURS test 857 (read from fleurs_audio.zip).
 """
 import io
@@ -18,18 +18,26 @@ VIVOS = Path('D:/data_training_ai/data/manifests/vivos.json')
 ROBUST = Path('D:/data_training_ai/asr_robust/kaggle_dataset')
 
 
+def held_out(path):
+    return [{'src': a['path'], 'ref': a['extra']['transcript']}
+            for a in json.loads(Path(path).read_text(encoding='utf-8')) if a['split'] == 'val']
+
+
 def main():
     active, candidate, out = sys.argv[1:4]
     zf = zipfile.ZipFile(ROBUST / 'fleurs_audio.zip')
     robust = json.loads((ROBUST / 'asr_robust_manifest.json').read_text(encoding='utf-8'))
-    sets = {
-        'football': [{'src': a['path'], 'ref': a['extra']['transcript']}
-                     for a in json.loads(FOOTBALL.read_text(encoding='utf-8')) if a['split'] == 'val'],
-        'vivos_test': [{'src': i['path'], 'ref': i['extra']['transcript']}
-                       for i in json.loads(VIVOS.read_text(encoding='utf-8'))['items'] if i['split'] == 'test'],
-        'fleurs_test': [{'src': i['path'], 'ref': i['extra']['transcript']}
-                        for i in robust['items'] if i['extra']['source'] == 'fleurs' and i['split'] == 'test'],
-    }
+    if len(sys.argv) > 4:  # AI-30: football test v2 = v1 30 + extra held-out channels; VIVOS/FLEURS not re-scored (registered)
+        new = held_out(sys.argv[4])
+        sets = {'football': held_out(FOOTBALL) + new, 'football_new': new}
+    else:
+        sets = {
+            'football': held_out(FOOTBALL),
+            'vivos_test': [{'src': i['path'], 'ref': i['extra']['transcript']}
+                           for i in json.loads(VIVOS.read_text(encoding='utf-8'))['items'] if i['split'] == 'test'],
+            'fleurs_test': [{'src': i['path'], 'ref': i['extra']['transcript']}
+                            for i in robust['items'] if i['extra']['source'] == 'fleurs' and i['split'] == 'test'],
+        }
     report = {'active': active, 'candidate': candidate, 'sizes': {k: len(v) for k, v in sets.items()}}
     per = {}
     for role, ckpt in (('active', active), ('candidate', candidate)):
