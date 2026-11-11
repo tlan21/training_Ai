@@ -219,6 +219,9 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
 - Status: IN_PROGRESS — trang `http://127.0.0.1:8892/review_v2/index.html`, đoạn #1–31 (split val: InternShip 2024 Xuân Bách 17, Lê Hiển 8, PHỦI 27 6;
   4 video `3IYKR6FRx_o`, `4VpmnSBcwD8`, `vLB4Dj_V4ss`, `yBXgFoqbh9w`). Kiểm rò rỉ: 0 video trùng dữ liệu train AI-25…AI-29 (kể cả 272 đoạn non-speech).
   Trang không có bản nháp máy (chép thẳng từ audio, §0).
+- **Nhãn nhận 2026-11-10 (khóa TRƯỚC khi chấm):** export `received_v2/asr_football_review_v2.json` sha256 `e61abe25…`; intake → `received_v2/intake/approved.json`
+  sha256 `dbba6f52…` (36 duyệt: 29 test + 7 kênh train; 83 chờ). Loại #14, #15 (`fb_vLB4Dj_V4ss_00294/00407`, user: "audio câm không có tiếng").
+  Test bóng đá v2 = 30 + 29 = **59 đoạn, 9 kênh**. Lệnh chấm: `eval_asr_tests.py <active> <s3 best.pt> <out> received_v2/intake/approved.json`.
 - Nhập nhãn: `football_intake.py <export> review_v2 <out>` (strict như v1). Đoạn user ghi "không lời/chỉ nhạc" bị loại khỏi test (không đổi được sau khi chấm).
 - Test bóng đá v2 = 30 đoạn hiện tại + mọi đoạn #1–31 được xác nhận. Chấm 1 lần (`eval_asr_tests.py` mở rộng đọc thêm approved v2):
   active `7c497d43` vs AI-29 phiên 3 `2c6b7fab`. Cổng giữ nguyên: CER trung bình + WER < active, CI95 bootstrap ghép cặp ΔCER cận trên < 0;
