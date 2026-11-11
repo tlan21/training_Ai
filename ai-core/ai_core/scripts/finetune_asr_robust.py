@@ -26,7 +26,7 @@ from ai_core.training.trainer import Trainer, set_seed
 THREE_SOURCES = ('vivos', 'fleurs', 'minilibrispeech')
 DOMAIN_SOURCE = 'real_domain_user_review'
 # Domain-replay recipes: identical budget/sampling/guard; v2 (AI-02c) only adds 51 reviewed expansion train clips.
-DOMAIN_TRAIN_CLIPS = {'asr-domain-replay-v1': 30, 'asr-domain-replay-v2': 81, 'asr-football-replay-v1': 95, 'asr-public-expand-v1': 95, 'asr-football-replay-v2': 389}
+DOMAIN_TRAIN_CLIPS = {'asr-domain-replay-v1': 30, 'asr-domain-replay-v2': 81, 'asr-football-replay-v1': 95, 'asr-public-expand-v1': 95, 'asr-football-replay-v2': 389, 'asr-football-replay-v3': 109}
 # AI-25: v2 recipe/guard + 14 football clips typed from audio (no draft); parent = ACTIVE asr (93 symbols), not parent133.
 FOOTBALL_RECIPE, ACTIVE_VOCAB = 'asr-football-replay-v1', 93
 # AI-27: + public human-transcribed Vietnamese speech (FOSD CC BY 4.0, Common Voice vi CC0) from the active 136-symbol ASR.
@@ -36,7 +36,9 @@ PUBLIC_PROBABILITIES = {'vivos': .25, 'fleurs': .2, 'minilibrispeech': .1, 'real
 FOOTBALL2_RECIPE = 'asr-football-replay-v2'
 FOOTBALL2_PROBABILITIES = {'vivos': .35, 'fleurs': .25, 'minilibrispeech': .2, 'real_domain_user_review': .2}
 CREATOR_ORIGIN = ('CREATOR_SUBTITLE_CHANNEL_VERIFIED', 'NONE')
-PARENT_VOCAB = {FOOTBALL_RECIPE: ACTIVE_VOCAB, PUBLIC_RECIPE: 136, FOOTBALL2_RECIPE: 136}
+# AI-31: v2 budget/sampling/guard, domain = v1 rows + 14 more football clips typed from audio (28 total); no creator rows.
+FOOTBALL3_RECIPE = 'asr-football-replay-v3'
+PARENT_VOCAB = {FOOTBALL_RECIPE: ACTIVE_VOCAB, PUBLIC_RECIPE: 136, FOOTBALL2_RECIPE: 136, FOOTBALL3_RECIPE: 136}
 
 
 def recipe_sources(recipe_id):
@@ -55,7 +57,7 @@ def validate_recipe(recipe, payload, vocab_sha, initial_sha, steps):
     domain = recipe['id'] in DOMAIN_TRAIN_CLIPS
     assert domain or recipe['id'] == 'asr-three-source-v1'
     sources = recipe_sources(recipe['id'])
-    public, football2 = recipe['id'] == PUBLIC_RECIPE, recipe['id'] == FOOTBALL2_RECIPE
+    public, football2 = recipe['id'] == PUBLIC_RECIPE, recipe['id'] in (FOOTBALL2_RECIPE, FOOTBALL3_RECIPE)
     assert recipe['seed'] == 1337 and recipe['steps'] == steps == (3000 if public else 1000 if football2 else 500 if domain else 2000)
     assert recipe['eval_every'] == (500 if public else 100 if domain else 500)
     assert recipe['initial_checkpoint_sha256'] == initial_sha == payload['meta']['source_checkpoint_sha256']
@@ -74,9 +76,9 @@ def validate_recipe(recipe, payload, vocab_sha, initial_sha, steps):
         domain_rows = [r for r in rows if r['extra']['source'] == DOMAIN_SOURCE]
         assert collections.Counter(r['split'] for r in domain_rows) == {'train': DOMAIN_TRAIN_CLIPS[recipe['id']], 'val': 10}
         origins = {('human_reviewed_external_asr', 'EXTERNAL_ASR_DRAFT_UNVERIFIED')}
-        if recipe['id'] in (FOOTBALL_RECIPE, PUBLIC_RECIPE, FOOTBALL2_RECIPE):
+        if recipe['id'] in (FOOTBALL_RECIPE, PUBLIC_RECIPE, FOOTBALL2_RECIPE, FOOTBALL3_RECIPE):
             origins.add(('HUMAN_VERIFIED', 'NONE'))
-        if football2:
+        if recipe['id'] == FOOTBALL2_RECIPE:
             origins.add(CREATOR_ORIGIN)  # football: typed from audio, played to the end (football_intake)
         assert all((r['extra']['label_origin'], r['extra']['draft_origin']) in origins
                    and r['extra']['annotator'].strip() for r in domain_rows), 'missing domain attestation/provenance'
@@ -102,7 +104,8 @@ def check_domain_vocab(recipe_id, source_itos, vocab_itos):
 
     Parent = parent133, except the football recipe which starts from the active 93-symbol ASR."""
     parent = PARENT_VOCAB.get(recipe_id, 133)
-    assert len(source_itos) == parent and list(vocab_itos[:parent]) == list(source_itos) and len(vocab_itos) > parent
+    assert len(source_itos) == parent and list(vocab_itos[:parent]) == list(source_itos)
+    assert len(vocab_itos) > parent or recipe_id == FOOTBALL3_RECIPE  # v3 training text adds no symbol
     if recipe_id == 'asr-domain-replay-v1':
         assert list(vocab_itos[133:]) == ['?']
 
@@ -248,7 +251,7 @@ def main():
     recipe = json.loads(args.recipe.read_text(encoding='utf-8')) if args.recipe else None
     domain = recipe is not None and recipe['id'] in DOMAIN_TRAIN_CLIPS
     sources = recipe_sources(recipe['id']) if recipe else ('vivos', 'fleurs')
-    wer_exempt = ('minilibrispeech',) if recipe and recipe['id'] == FOOTBALL2_RECIPE else ()
+    wer_exempt = ('minilibrispeech',) if recipe and recipe['id'] in (FOOTBALL2_RECIPE, FOOTBALL3_RECIPE) else ()
     assert {i['extra']['source'] for i in payload['items']} == set(sources)
     expected = payload['meta']['source_checkpoint_sha256']
     assert hashlib.sha256(args.initial.read_bytes()).hexdigest() == expected

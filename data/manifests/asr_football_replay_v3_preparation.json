@@ -1,0 +1,37 @@
+{
+  "status": "PACKED_NOT_UPLOADED_OR_TRAINED",
+  "recipe": {
+    "id": "asr-football-replay-v3",
+    "seed": 1337,
+    "steps": 1000,
+    "eval_every": 100,
+    "sampling_probabilities": {
+      "vivos": 0.35,
+      "fleurs": 0.25,
+      "minilibrispeech": 0.2,
+      "real_domain_user_review": 0.2
+    },
+    "initial_checkpoint_sha256": "7c497d43ce9ca9fbb4d29f80e2d86e777d11f7eea6828062e581fce4aa794934",
+    "vocab_sha256": "f6278933f12b9cf9456397d57d367876e88f249f16af1395a39a7e146cd960b7",
+    "manifest_sha256": "4224516bb726c37c9167552128d1cfa13e5d85e52b66ad79af6776d24910649b",
+    "data_identity_sha256": "e237083e07d0e95773b8dd9dc813f56c6f1272bc2b8da1a9d6c44c4e8522cfe9",
+    "frozen_validation_sha256": "25b34fb687b01965028cc5b7a796246dcabd8dfc821dbc35fd2fa2e5d605cfa3",
+    "domain_validation_identity_sha256": "6108d9efb8fedaea2489b51e279cde32491088f5bc0ffbdf4011b226a5c87978",
+    "selection": "all-domain-wer-cer-nonregression-and-domain-wer-cer-improvement"
+  },
+  "football_added": 14,
+  "original_items": 19345,
+  "ctc_retained_training_by_source": {
+    "vivos": 10563,
+    "fleurs": 2994,
+    "minilibrispeech": 1519,
+    "real_domain_user_review": 109
+  },
+  "excluded_total": 4,
+  "training_started": false,
+  "checkpoint_deployed": false,
+  "limitations": [
+    "28 football train clips (~9 min), ~5% of samples: small change expected.",
+    "Selection domain val = 10 news clips; the 59-clip football test v2 is scored once outside the kernel."
+  ]
+}
