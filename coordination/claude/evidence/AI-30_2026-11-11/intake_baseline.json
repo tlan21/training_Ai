@@ -1,0 +1,305 @@
+{
+ "asr_checkpoint": "active 8f879867",
+ "summary": {
+  "val": {
+   "n": 29,
+   "cer": 0.757189393904043,
+   "wer": 1.0045246787070214
+  },
+  "train": {
+   "n": 7,
+   "cer": 0.7224651778572587,
+   "wer": 1.0124362878723343
+  }
+ },
+ "rows": [
+  {
+   "sample_id": "fb_3IYKR6FRx_o_00059",
+   "split": "val",
+   "reference": "BÀN THẮNG CỦA FC MƯỜNG ẲNG VÀO PHÚT THỨ 44 DO CÔNG CỦA PHONG VĂN CHIẾN VÀ NGAY LẬP TỨC THÌ ANH ĐÃ RA SÂN NHƯỜNG VỊ TRÍ CHO SỐ 9",
+   "hypothesis": "TO ETHEBÁI LÀN TAN D A DNE VỚT AN AANỜNG CHNN RO A DIN",
+   "cer": 0.7795275590551181,
+   "wer": 1.0
+  },
+  {
+   "sample_id": "fb_3IYKR6FRx_o_00158",
+   "split": "val",
+   "reference": "VÂNG HIỆP THI ĐẤU THỨ 2 CỦA CHÚNG TA CHỈ CÒN 5 PHÚT NỮA MÀ THÔI. VÀO BÀN THẮNG QUÁ ĐẸP, 1 CHÚT MAY MẮN NỮA, ĐÓ LÀ BÀN THẮNG CỦA LÊ CƯỜNG SỐ 66 CỦA 27A",
+   "hypothesis": "T C I MÀN TẤT DÀI N THAI C S C TÀN ROT MVỚCB ĐÓÓ AY VCO CÓP",
+   "cer": 0.7933333333333333,
+   "wer": 1.0
+  },
+  {
+   "sample_id": "fb_3IYKR6FRx_o_00256",
+   "split": "val",
+   "reference": "NHỮNG BÀN THẮNG ĐẾN VỚI FC ANH EM TRONG TRẬN NÀY, CỤ THỂ TRONG NHỮNG PHÚT ĐÃ QUA KHÁ ĐƠN GIẢN VÀ THẬT KHÓ ĐỂ CÓ THỂ BỎ LỠ Ở TRONG NHỮNG TÌNH HUỐNG GHI BÀN NHƯ VẬY 1 PHA DỨT ĐIỂM PENATY DÀNH CHO ĐỐI THỦ 2-0 CHO FC ANH EM",
+   "hypothesis": "ÁN Đ T ATRONG C NÀY N À LO TRONG GN CỐEBỘL TRONG ỮN TÌN I Ứ ĐỤNG VLDNG V SCH NAM",
+   "cer": 0.730593607305936,
+   "wer": 0.9615384615384616
+  },
+  {
+   "sample_id": "fb_3IYKR6FRx_o_00354",
+   "split": "val",
+   "reference": "VÀ TIẾP TỤC CÓ 1 QUẢ PENALTY THỨ 2 Ở TRONG TRẬN NÀY DÀNH CHO CÁC CẦU THỦ FC ANH EM VÀ TỶ SỐ LÀ 5-0 DÀNH CHO FC ANH EM, QUÁ TUYỆT VỜI 1 KHOẢNG CÁCH CÓ THỂ NÓI LÀ QUÁ LỚN MÀ DO ANH EM ĐÃ TẠO RA",
+   "hypothesis": "CÁ TTỐ QAI THỨAIỀU TRONG CHNCO TNMM A COCSAVN CÁCH T NÓI LO CÓ N MÀ ỦI NGHỀ NÃ BẠO",
+   "cer": 0.6910994764397905,
+   "wer": 0.92
+  },
+  {
+   "sample_id": "fb_3IYKR6FRx_o_00452",
+   "split": "val",
+   "reference": "XIN LỖI QUÝ VỊ VÀ CÁC BẠN VỪA RỒI LÀ TÌNH HUỐNG GHI BÀN CỦA CẦU THỦ MANG ÁO SỐ 20 ĐỨC E VÀ NHỮNG SAI LẦM, NHỮNG SỰ MẤT TẬP TRUNG NHƯ VẬY LÀ KHÔNG ĐÁNG CÓ. HOÀNG LONG DỨT ĐIỂM 1 - 1 DÀNH CHO CÁC CẦU THỦ THỤY ĐIỂN 86",
+   "hypothesis": "TH RẤ AN VỪTỒI LÀ T I TOÀN U OSTỨN A NTAILNVI NN TN I LÀ ON ĐOL CHCEC",
+   "cer": 0.7663551401869159,
+   "wer": 0.9622641509433962
+  },
+  {
+   "sample_id": "fb_3IYKR6FRx_o_00551",
+   "split": "val",
+   "reference": "SAI LẦM CỦA CẦU THỦ ĐƯỢC COI LÀ CHỐT CHẶN, ĐƯỢC COI LÀ THỦ LĨNH CỦA CÁC CẦU THỦ 86 BÁO HẠI CHO CHÍNH ĐỘI BÓNG CỦA ANH. MỘT ĐƯỜNG BÓNG ĐIỆU ĐÀ KHÔNG ĐÁNG CÓ CỦA HOÀNG LONG VÀ NHƯ VẬY, CHỈ CẦN NHƯ VẬY THÔI",
+   "hypothesis": "TĐ CHOT CAY T MỐI N TA TN T Ể THTOTONG SNG T THT CO CÓ T T T ỆN TĐƯỢC T BẢM D N TON T CHỮ C TINH S ÃO T",
+   "cer": 0.7241379310344828,
+   "wer": 1.0
+  },
+  {
+   "sample_id": "fb_4VpmnSBcwD8_00064",
+   "split": "val",
+   "reference": "CẦU THỦ NÀY THI ĐẤU TRONG. RẤT NGUY HIỂM CƠ HỘI NHƯ VẬY LÀ TỶ SỐ ĐÃ ĐƯỢC MỞ CHO FC ĐẠI ĐỘ VÀ NGƯỜI GHI BÀN VỪA RỒI ĐÓ LÀ THÀNH LUÂN, BÓNG VỪA RỒI CHẠM XÀ NGANG VÀ SAU ĐÓ NẨY RA ĐÚNG VỊ TRÍ MÀ THÀNH LUÂN ĐÃ CHỌN VÀ CÚ ĐÁNH ĐẦU NHẸ NHÀNG CỦA THÀNH LUÂN",
+   "hypothesis": "T NY C ĐNG P T T NƯN AI C VỞ NI I BÀ MÀ DA Y L CÁI BDỒI O DAN ANA ĐẦI DO G IT E ĐẦN NA A NƯ N TÀ MN ĐO E BỀ BÀ BÀ T CAN ƠNBÁN B",
+   "cer": 0.712,
+   "wer": 1.0
+  },
+  {
+   "sample_id": "fb_4VpmnSBcwD8_00172",
+   "split": "val",
+   "reference": "TIẾN MINH, PHA BÓNG 1 CHẠM CỦA CẦU THỦ SAI LẦM, NHƯ VẬY LÀ TỶ SỐ ĐÃ ĐƯỢC NÂNG LÊN LÀ 2 - 0 DÀNH CHO ĐỘI CHỦ NHÀ. SAI LẦM CỦA THỦ THÀNH VĂN CÔNG ĐÃ BIẾU KHÔNG CHO VĂN VƯƠNG MỘT BÀN THẮNG",
+   "hypothesis": "TỈMÌNH Ủ CỦ TỌN R Ủ Ộ DALOA LÀ TÌ SONÊN A L AI CON VAN CHDOI LÀC Ủ ÀNVĂN ANDAN N ANTN QA",
+   "cer": 0.7081081081081081,
+   "wer": 0.9777777777777777
+  },
+  {
+   "sample_id": "fb_4VpmnSBcwD8_00280",
+   "split": "val",
+   "reference": "THÍCH CHƠI Ở VỊ TRÍ HẬU VỆ BIÊN CÁNH PHẢI. CƠ HỘI CHO TRIỆU MOON, LANH SHIT KHÔNG VÀO, VỪA RỒI LÀ CƠ HỘI ĐẾN TỪ ĐỘI TRƯỞNG LANH SHIT",
+   "hypothesis": "ỊT TO HO V ĐỀ CÁ VỚI E N MA A AEENT LA Ề B TRỜIB ES",
+   "cer": 0.7803030303030303,
+   "wer": 1.0
+  },
+  {
+   "sample_id": "fb_4VpmnSBcwD8_00388",
+   "split": "val",
+   "reference": "XÀ NGANG LẠI RUNG CHUYỂN RỒI. ĐÃ HAI LẦN TRONG NGÀY HÔM NAY BÓNG TÌM ĐẾN XÀ NGANG KHUNG THÀNH CỦA THỦ MÔM VĂN CHUNG. MINH HÙNG, HOÀNG MINH MINH HÙNG QUÁ THIẾU CHÍNH XÁC",
+   "hypothesis": "ALAI DÂN SỜ N ĐÃ AY LẦN ÒNG LÀNÀY BÁNG TÌĐÊNS ẰN ŨNG TỆN C VAN TONNNLAỚCO LA Ứ N Q TONEN THO BÀO SAI EA LE",
+   "cer": 0.6488095238095238,
+   "wer": 0.9428571428571428
+  },
+  {
+   "sample_id": "fb_4VpmnSBcwD8_00496",
+   "split": "val",
+   "reference": "CÁCH BIỆT ĐÃ LÀ HAI BÀN, SAU KHI ĐỘI TRƯỞNG VĂN LANH RỜI SÂN THÌ ĐỘI BÓNG SÁP MAI ĐÃ PHẢI NHẬN BÀN THUA THỨ BA",
+   "hypothesis": "DCÁI ỆC ĐALÀOAND Y ĐỒ HỰI VAN LAN DỜ DAN VÌĐÓEO SO Y ĐÓ VÀ L BAN TỨB BÊN RBÊN VÀ À ĐÃ VIỆ Đ N TR DÀL",
+   "cer": 0.7363636363636363,
+   "wer": 1.0769230769230769
+  },
+  {
+   "sample_id": "fb_vLB4Dj_V4ss_00067",
+   "split": "val",
+   "reference": "PHONG ĐỘ RẤT CAO CỦA LAM SINH VIÊN",
+   "hypothesis": "THLỜN LỀ LƯỜNG HỚN Ờ ENLÀN IN",
+   "cer": 0.7352941176470589,
+   "wer": 1.0
+  },
+  {
+   "sample_id": "fb_vLB4Dj_V4ss_00180",
+   "split": "val",
+   "reference": "CÁC BẠN KHÁN GIẢ ĐÃ ĐẾN SÂN VÀ CHÚNG TA SẼ TẠM NGHỈ TRƯỚC KHI BƯỚC VÀO HIỆP THI ĐẤU THỨ HAI",
+   "hypothesis": "N H ĐU ĐẾ CHỦ TỜ H N U ÀN Ó",
+   "cer": 0.7802197802197802,
+   "wer": 1.0
+  },
+  {
+   "sample_id": "fb_vLB4Dj_V4ss_00520",
+   "split": "val",
+   "reference": "HIỆP THỨ HAI ĐÃ BẮT ĐẦU. TRONG HIỆP 2, THÌ CÁC CẦU THỦ HOÀNG HƯƠNG TRONG MÀU ÁO XANH SẼ CHẤN GIỮ KHUNG THÀNH BÊN TAY TRÁI CÁC BẠN VÀ LÂM SPORT TRONG MÀU ÁO CAM SẼ GIỮ KHUNG THÀNH BÊN TAY PHẢI QUÝ VỊ TỶ SỐ HIỆP 1 LÀ 5-1 NGHIÊNG VỀ HOÀNG HƯƠNG",
+   "hypothesis": "ĐỂ LTONG T CHN CN SÁN ELAE TẢM ƯỢN DÂNE GNNONLỐT HAO DHỤNG TANTHAINSỐ Y LÀ ĐÓBVLO L TLÀM BỰC T TỰ CA CTTM SUT",
+   "cer": 0.7842323651452282,
+   "wer": 1.0
+  },
+  {
+   "sample_id": "fb_vLB4Dj_V4ss_00634",
+   "split": "val",
+   "reference": "KHANH LỰC, TRỌNG LÂM LÝ NGÂN ĐỘT PHÁ DỨT ĐIỂM",
+   "hypothesis": "HN COLILÀÀ CẦN ALƠ ELEÁN L",
+   "cer": 0.7777777777777778,
+   "wer": 1.0
+  },
+  {
+   "sample_id": "fb_vLB4Dj_V4ss_00747",
+   "split": "val",
+   "reference": "CÁC KHÁN GIẢ ĐANG ĐỘNG VIÊN CHO LÂM SPORT VÀ VÀ HÃY SỚM SỬ DỤNG CHIẾN THUẬT BALLEY",
+   "hypothesis": "C DAEM ĐẢN IN CHƠÂM S NR CHONÓ ỀY AYDSNCHỨ TỰ LL NTISA ĐE GIỜLMO NT",
+   "cer": 0.7317073170731707,
+   "wer": 1.0
+  },
+  {
+   "sample_id": "fb_vLB4Dj_V4ss_00861",
+   "split": "val",
+   "reference": "KHÔNG ĐƯỢC, VĂN THUẬN ĐÃ DÀNH CHO LƯƠNG BĂNG VINH, QUANG HUY VÀ THÀNH LUÂN DỨT ĐIỂM, CƠ HỘI, DỨT ĐIỂM",
+   "hypothesis": "N R SE TE HNMN TỞ THỦ L DN DÀ NỜI MM HƠN ETNSE LỜ",
+   "cer": 0.7722772277227723,
+   "wer": 1.0
+  },
+  {
+   "sample_id": "fb_vLB4Dj_V4ss_00974",
+   "split": "val",
+   "reference": "BÓNG THUỘC VỀ CÁC CẦU THỦ LÂM SPORT, KHÔNG CÓ LỖI TỪ CÁC CẦU THỦ. CƯỜNG ĐEN KHÔNG ĐƯỢC TIẾP TỤC LÀ NÉM BIÊN CHO HOÀNG HƯƠNG",
+   "hypothesis": "VẪN O LLE M ỪNGC D N RNOI HO N",
+   "cer": 0.8373983739837398,
+   "wer": 1.0
+  },
+  {
+   "sample_id": "fb_vLB4Dj_V4ss_01087",
+   "split": "val",
+   "reference": "VĂN LỰC KHÔNG ĐƯỢC, VĂN MINH VẪN CHƯA CÓ BÀN THẮNG CHO CÁC CẦU THỦ LÂM SPORT",
+   "hypothesis": "HỰ ĐC LM THỜ L DAN TR NƯHHẬ NO",
+   "cer": 0.7631578947368421,
+   "wer": 1.0
+  },
+  {
+   "sample_id": "fb_vLB4Dj_V4ss_01201",
+   "split": "val",
+   "reference": "NÉM BIÊN DÀNH CHO CÁC CẦU THỦ LÂM SPORT TIẾP TỤC ĐÁ",
+   "hypothesis": "NNRTLM TE T M NTR CHO CB A DON",
+   "cer": 0.803921568627451,
+   "wer": 1.0
+  },
+  {
+   "sample_id": "fb_vLB4Dj_V4ss_01314",
+   "split": "val",
+   "reference": "CHIA SẺ, CÁC BẠN HÃY TIẾP TỤC CHIA SẺ ĐI. ĐÂY LÀ TRẬN ĐẤU ĐƯỢC PHÁT SÓNG VÀ BÌNH LUẬN TRỰC TIẾP TRÊN TRUYỀN THÔNG VIETTEL",
+   "hypothesis": "ATIẾT T LÀ T ĐÓ COM NG THỰ TI ENOIM AT THON N CÍN ĐYĐ N N AYCCLN CT CH LCÔNNONG MÓN HNTTHTEE L TH",
+   "cer": 0.743801652892562,
+   "wer": 1.0
+  },
+  {
+   "sample_id": "fb_vLB4Dj_V4ss_01428",
+   "split": "val",
+   "reference": "ĐÓ SẼ LÀ QUANG HUY, BÓNG ĐƯỢC CHIA VỀ TUYẾN HAI.",
+   "hypothesis": "I N SN E E TH A",
+   "cer": 0.7916666666666666,
+   "wer": 1.0
+  },
+  {
+   "sample_id": "fb_vLB4Dj_V4ss_01541",
+   "split": "val",
+   "reference": "VẪN LÀ CÁC CẦU THỦ HOÀNG HƯƠNG SỦ DỤNG CẦU THỦ, RẤT CẢM ƠN CÁC KHÁN GIẢ",
+   "hypothesis": "N A E A CANCAAN DAAIN CT THẾĐHA TACHÍ CỦLÀƠNÔNG CHONG E EN SO",
+   "cer": 0.7887323943661971,
+   "wer": 1.0
+  },
+  {
+   "sample_id": "fb_vLB4Dj_V4ss_01654",
+   "split": "val",
+   "reference": "VẪN ĐANG THI ĐẤU ĐẦY NỖ LỰC VÀ RẤT XUẤT SẮC TRONG KHUNG THÀNH CỦA HOÀNG HƯƠNG FC",
+   "hypothesis": "ỞN EÀL RN NL RÀ H DT ONG ÔNG THENÓÁO RƠNANGEÀIỨT THM",
+   "cer": 0.7,
+   "wer": 1.0
+  },
+  {
+   "sample_id": "fb_vLB4Dj_V4ss_01768",
+   "split": "val",
+   "reference": "CHỈ NÊN XEM KHÔNG NÊN PHÁT BIỂU LINH TINH LÀM ẢNH HƯỞNG ĐẾN THỦ MÔN CÙNG XEM PHA ĐÁ PHẠT NÀY LÀ CỦA CÁC CẦU THỦ HOÀNG HƯƠNG VÀ NGƯỜI THỰC HIỆN PHA ĐÁ PHẠT NÀY LÀ TRẦN LÂM",
+   "hypothesis": "T TA N DO E T THN N HT E ĐANH LM NNT THN SAMAN CÁ ƠN I THỰ IN E NSTE",
+   "cer": 0.7294117647058823,
+   "wer": 1.0
+  },
+  {
+   "sample_id": "fb_vLB4Dj_V4ss_01881",
+   "split": "val",
+   "reference": "VĂN LỰC CƠ HỘI KHÔNG VÀO",
+   "hypothesis": "Ớ TR SỬ H LNLI A C MÁN",
+   "cer": 0.8333333333333334,
+   "wer": 1.3333333333333333
+  },
+  {
+   "sample_id": "fb_yBXgFoqbh9w_00069",
+   "split": "val",
+   "reference": "HIỆP 1 SẼ KHÉP LẠI VỚI 1 THẬM CHÍ LÀ HÒA HIỂN LA, SÚT XA KHÔNG VÀO. VẪN ĐANG LÀ HIỂN LA CÚ SÚT HƠI NHẸ,",
+   "hypothesis": "HỪNG TẼ CÀ VẬY ỢN NẬN THẬT Đ LÓ ÀN RỨC TVỚ TỀLNG DNNT ẦN ĐÀNĐẦ RĐỚI",
+   "cer": 0.7184466019417476,
+   "wer": 1.0
+  },
+  {
+   "sample_id": "fb_yBXgFoqbh9w_00186",
+   "split": "val",
+   "reference": "NHƯ VẬY THÌ HỌ ĐANG CỰC KỲ GẶP KHÓ KHĂN. ĐÁNH ĐẦU LẠI MỘT LẦN NỮA THÌ CƠ HỘI DỨT ĐIỂM, KHÔNG VÀO",
+   "hypothesis": "BÓLAY MÌM LẬY ĐÃOẠN CẦP ĐT N Ơ LẠI LÀ NE VÌNMTỚ VE PHẬN VỞIBN Ự TẦ I ĐVẢYD",
+   "cer": 0.7604166666666666,
+   "wer": 0.9565217391304348
+  },
+  {
+   "sample_id": "fb_yBXgFoqbh9w_00303",
+   "split": "val",
+   "reference": "UI DỒI ÔI, BÀN THẮNG RÚT NGẮN CÁCH BIỆT 1-2 DÀNH CHO ĐOÀN KẾT",
+   "hypothesis": "ĐỔI BẢ ĐÃN D LÀ LAY L",
+   "cer": 0.8360655737704918,
+   "wer": 1.0
+  },
+  {
+   "sample_id": "fb_17a1wyZnUw8_00066",
+   "split": "train",
+   "reference": "DỨT ĐIỂM KHÔNG VÀO 1 TÌNH HUỐNG NÉM BÓNG RẤT MẠNH, ĐÁNH ĐẦU.",
+   "hypothesis": "NCANAT TLE BÁN ĐÓMẢN ÃESBỐNMÀNÀO SỖ BÀNH QUAN M HỌC TÓY OAVÊN DY CÓ Ì",
+   "cer": 0.9,
+   "wer": 1.1538461538461537
+  },
+  {
+   "sample_id": "fb_17a1wyZnUw8_00290",
+   "split": "train",
+   "reference": "KHUNG THÀNH BÊN PHÍA TAY PHẢI, VÀ HIỆM 2 CỦA TRẬN ĐẤU NÀY THÌ HOÀNG FC SẼ LÀ ĐỘI GIAO BÓNG",
+   "hypothesis": "ANHBÊHTTHẢI AIĐOAY Ô CHO L T AÔIN",
+   "cer": 0.7555555555555555,
+   "wer": 1.0
+  },
+  {
+   "sample_id": "fb_17a1wyZnUw8_00402",
+   "split": "train",
+   "reference": "BÓNG HƯỚNG ĐẾN VỊ TRÍ CỦA SỐ 9. TRỌNG TÀI, CÁC CẦU THỦ BÊN PHÍA HOÀNG FC CHỦ ĐỘNG CHƠI PRESSING TẦM CAO, HỌ ĐANG CHOI ÁP SÁT BÊN PHÍA PHẦN SÂN ĐỐI PHƯƠNG",
+   "hypothesis": "BỎ NHƯĐẾN M Ô O THOC BẠI CỞ ÊMỀUDU ĐỒN TỒI VỚTI ĐỒNG CO B CHU R Ề B Đ VỰ",
+   "cer": 0.738562091503268,
+   "wer": 1.0
+  },
+  {
+   "sample_id": "fb_17a1wyZnUw8_00513",
+   "split": "train",
+   "reference": "VĂN KHỈ, BÂY GIỜ LÀ QUẢ NÉM BIÊN DÀNH CHO CÁC CẦU THỦ TUẤN LINH FC. NGỌC TÀI, ĐỪNG CHUYỀN CỦA SỐ 3 ĐÌNH QUANG ĐÃ KHÔNG THỂ VƯỢT QUA ĐƯỢC CÁC CẦU THỦ HOÀNG FC",
+   "hypothesis": "ML L LÀ CÒ ĐÃ BILOAI NDO CÁO T LT ÁNY ĐỢC TRƯỜNG CÓ U N QUAN ĐÃ CN TEVI QA ĐỢC N TNG",
+   "cer": 0.6496815286624203,
+   "wer": 0.9444444444444444
+  },
+  {
+   "sample_id": "fb_17a1wyZnUw8_00625",
+   "split": "train",
+   "reference": "TRONG CHÂN CÁC CẦU THỦ ÁO ĐỎ. THÁI TRỌNG CHUYỀN BÓNG CHO NGỌC TÀI, ĐƯỜNG TRUYỀN CỦA NGỌC TÀI HƯỚNG ĐẾN VỊ TRÍ CỦA ĐÌNH QUANG ĐỂ CÁC HẬU VỆ BÊN PHÍA HOÀNG FC ĐANG THEO KÈM RẤT SÁT HỌ ĐANG THI ĐẤU VỚI MỘT LỐI CHƠI PHÒNG NGỰ ĐẦY KÍN KẼ",
+   "hypothesis": "N ĐAN D N CHA BNU TẠI ĐỢNG TRƯN VNGON TOI HƯN N V CA ĐẾN QUẨN C NH NIRAÊN LẰNG TAO BAM NỚT ANMỚI B LCHOBIA",
+   "cer": 0.6810344827586207,
+   "wer": 0.9807692307692307
+  },
+  {
+   "sample_id": "fb_17a1wyZnUw8_00737",
+   "split": "train",
+   "reference": "VẬY LÀ SỐ 3 LÂM ĐỖ ĐÌNH QUANG, CÒN BÊN PHÍA HOÀNG FC NGƯỜI GHI BÀN LÀ SỐ 3 NGUYỄN PHƯỚC CHÔNG. LÚC NÀY THÌ SỐ 7 BÊN PHÍA HOÀNG FC VẪN CHƯA THỂ DỨNG DẬY. TRẬN ĐẤU VẪN CHƯA THỂ TIẾP TỤC",
+   "hypothesis": "VÀN LÀ TÀL NÓINH QON NĐADÌ R BÀ LÀNỚI TẤT TỘLÚU VÀY Ì LUÀYRNU THẤN CHOT ĐẾN Ạ COVAN COE CHẤT",
+   "cer": 0.7213114754098361,
+   "wer": 0.9767441860465116
+  },
+  {
+   "sample_id": "fb_17a1wyZnUw8_00849",
+   "split": "train",
+   "reference": "CẢ 2 ĐỘI ĐỀU ĐANG ĐẦY NỖ LỰC, ĐẦY QUYẾT TÂM VÀ CỐNG HIẾN CHO KHÁN GIẢ NHỮNGKHOẢNH KHẮC CỦA CÁC CẦU THỦ. BÓNG NẰM TRONG CHÂN CÁC CẦU THỦ HOÀNG FC",
+   "hypothesis": "DNTH A ĐI ĐIỀU ĐANG ĐÂY ĐỐI LỰC B T TÔN V CÓ HYÊN CO Đ NHỮNG VÀ NBÁTBỌN BA Đ I ĐIỢC CON CÔ ÁN ÔN C TCỦA AN IO ÂN ĐÂU ỒA",
+   "cer": 0.6111111111111112,
+   "wer": 1.03125
+  }
+ ]
+}

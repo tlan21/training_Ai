@@ -3,6 +3,7 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
+- **2026-11-11:** AI-30 DONE — test ASR bóng đá v2 59 đoạn/9 kênh (user chép 29 đoạn mới); AI-29 phiên 3 FAIL (CER 74,6→81,2%, im quá mức trên tiếng ồn sân) → AI-29 đóng, ASR active vẫn `7c497d43`. Không task AI nào IN_PROGRESS. Server :8892 (review) chạy bằng `D:/tmp/ai25/review_server.cmd`.
 - **2026-11-09:** bản vá bảo mật đã triển khai (gateway/client int11-843a56e, cms int11-6288d60, fixture 64/64; infra restart unless-stopped).
   AI-29: phiên 2 xong (bóng đá FAIL do bịa chữ trên đoạn nhạc), phiên 3 "dạy im lặng" Kaggle `traininghighlight/asr-scratch-guarded-v3`
   lần 1 ERROR ở eval đầu (step 2000, ZeroDivisionError: val non-speech có 0 từ tham chiếu; chưa chấm test, không có ckpt; log

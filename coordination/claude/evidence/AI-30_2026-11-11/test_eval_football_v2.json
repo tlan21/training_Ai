@@ -1,0 +1,38 @@
+{
+ "active": "E:\\traning_ai\\ai-core\\checkpoints\\asr_ctc\\best.pt",
+ "candidate": "D:\\data_training_ai\\asr_scratch_v2_20261109\\output\\asr_scratch\\asr_ctc\\best.pt",
+ "sizes": {
+  "football": 59,
+  "football_new": 29
+ },
+ "football": {
+  "active": {
+   "cer": 0.7461936240173662,
+   "wer": 1.0329126850113954
+  },
+  "candidate": {
+   "cer": 0.8117255112491261,
+   "wer": 0.9825802114878616
+  },
+  "delta_cer": 0.06553188723175966,
+  "delta_cer_ci95": [
+   0.006451455151126665,
+   0.12760655990667238
+  ]
+ },
+ "football_new": {
+  "active": {
+   "cer": 0.7571893939040429,
+   "wer": 1.0045246787070214
+  },
+  "candidate": {
+   "cer": 0.9228136741471669,
+   "wer": 0.9941976414390207
+  },
+  "delta_cer": 0.16562428024312423,
+  "delta_cer_ci95": [
+   0.12195350491092453,
+   0.20240364432914706
+  ]
+ }
+}
