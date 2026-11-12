@@ -1,0 +1,16 @@
+{
+  "id": "traininghighlight/ai-core-vit-ablation-postln",
+  "title": "ai-core-vit-ablation-postln",
+  "code_file": "run_vit_postln.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": false,
+  "dataset_sources": [
+    "traininghighlight/ai-core-ablation",
+    "traininghighlight/vit-4cls-jpg"
+  ],
+  "competition_sources": [],
+  "kernel_sources": []
+}

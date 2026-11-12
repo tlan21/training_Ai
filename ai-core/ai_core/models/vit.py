@@ -18,10 +18,11 @@ class ViT(nn.Module):
         self.pos_embed = PositionalEmbedding2D(n_patches, cfg.d_model)
         self.blocks = nn.ModuleList([
             TransformerBlock(cfg.d_model, cfg.n_heads, causal=False, use_rope=False,
-                             n_layers_total=cfg.n_layers, dropout=cfg.dropout)
+                             n_layers_total=cfg.n_layers, dropout=cfg.dropout, block_style=cfg.block_style)
             for _ in range(cfg.n_layers)
         ])
-        self.norm = RMSNorm(cfg.d_model)
+        # post-LN: mỗi block đã kết thúc bằng LayerNorm (Transformer 2017) → không thêm norm cuối
+        self.norm = nn.Identity() if cfg.block_style == "postln" else RMSNorm(cfg.d_model)
         self.head = nn.Linear(cfg.d_model, cfg.n_classes)
 
     def forward(self, images: torch.Tensor, return_embedding: bool = False):

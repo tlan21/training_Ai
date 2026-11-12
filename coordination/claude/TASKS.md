@@ -605,6 +605,13 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   (4) Siamese Recall@1/5/mAP nếu dựng lại được tập query từ frame còn trên đĩa (không đủ → ghi limitation, không bịa);
   (5) ablation kiến trúc trên Kaggle — thiết kế + cổng đăng ký TRƯỚC khi chạy, mỗi biến thể cùng seed/dữ liệu/ngân sách với bản active.
   Không đổi checkpoint active, không hạ ngưỡng; số mới đánh dấu ★ kèm script + JSON.
+- **Ablation A1 (đăng ký 2026-11-12 TRƯỚC khi train):** ViT 4 lớp, block Post-LN + LayerNorm + GELU-MLP 4d (Transformer 2017,
+  `ModelConfig.block_style="postln"`, ViT bỏ norm cuối) vs bản dự án Pre-Norm RMSNorm + SwiGLU. Biến thể DUY NHẤT; giữ nguyên `vit.yaml`
+  (20k bước, lr 3e-4, wd 0.1, batch 128, warmup 3%), dữ liệu `vit-4cls-jpg` (63.784 frame / 123 video), seed 1337/1338/1339, `eval_vit`.
+  Đối chứng = 3 seed Pre-Norm đã có (`dist/kaggle/output/vit/vit_eval.json`: Top-1 0.7430 ± 0.0496, macro-F1 0.7801/0.6809/0.7006).
+  Báo: Top-1 + macro-F1 mean ± std, Welch t (3 vs 3, công suất thấp — nói rõ), đường val (ổn định/phân kỳ), số tham số. Chỉ để luận án,
+  KHÔNG thay ViT active. Hạn chế đã biết: đối chứng train ở lần chạy trước (môi trường Kaggle có thể khác). Kaggle
+  `traininghighlight/ai-core-vit-ablation-postln`, code dataset riêng `traininghighlight/ai-core-ablation` (không đổi dataset `ai-core`).
 
 ### AI-08 — Dọn dẹp dữ liệu/artefact làn AI an toàn (yêu cầu user 2026-10-26)
 - T gốc: — | Owner: claude | Status: TODO (task lặp lại: chạy sau mỗi đợt train xong, hoặc khi một ổ chạm `BLOCKED_RESOURCE`)

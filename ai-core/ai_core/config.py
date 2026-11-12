@@ -18,6 +18,9 @@ class ModelConfig:
     context_len: int = 1024
     use_rope: bool = False
     causal: bool = False
+    # ablation evaluation_plan §2.2: "prenorm" = RMSNorm + SwiGLU pre-norm (bản của dự án, mặc định);
+    # "postln" = Post-LN + LayerNorm + GELU MLP 4d (Transformer 2017 gốc). Checkpoint cũ không có field → prenorm.
+    block_style: str = "prenorm"
     # vision
     img_size: int = 224
     patch_size: int = 16
