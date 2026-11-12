@@ -393,6 +393,18 @@ func (r *SessionRepoMem) DeleteByUser(_ context.Context, uid string) error {
 	}
 	return nil
 }
+func (r *SessionRepoMem) DeleteByUserExcept(_ context.Context, uid, keepHash string) (int, error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	n := 0
+	for k, v := range r.M {
+		if v.UserID == uid && v.RefreshTokenHash != keepHash {
+			delete(r.M, k)
+			n++
+		}
+	}
+	return n, nil
+}
 
 type PasswordResetRepoMem struct {
 	mu sync.Mutex

@@ -275,6 +275,10 @@ func (r *SessionRepo) DeleteByUser(ctx context.Context, id string) error {
 	_, err := r.DB.Exec(ctx, `DELETE FROM user_sessions WHERE user_id=$1`, id)
 	return err
 }
+func (r *SessionRepo) DeleteByUserExcept(ctx context.Context, id, keepHash string) (int, error) {
+	tag, err := r.DB.Exec(ctx, `DELETE FROM user_sessions WHERE user_id=$1 AND refresh_token_hash<>$2`, id, keepHash)
+	return int(tag.RowsAffected()), err
+}
 
 func (r *CategoryRepo) List(ctx context.Context) ([]domain.Category, error) {
 	rows, err := r.DB.Query(ctx, `SELECT c.id,c.name,c.created_at,c.description,c.keywords,(SELECT count(*) FROM videos v WHERE v.category_id=c.id AND v.status!='deleted') FROM categories c ORDER BY c.name,c.id`)

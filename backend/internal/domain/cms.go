@@ -61,6 +61,7 @@ type CMSMetrics struct {
 	RunningJobs              int               `json:"running_jobs"`
 	CompletedJobs            int               `json:"completed_jobs"`
 	FailedJobs               int               `json:"failed_jobs"`
+	UncategorizedVideos      int               `json:"uncategorized_videos"`
 	TotalUsers               int               `json:"total_users"`
 	ActiveUsers              int               `json:"active_users"`
 	ViewsMonth               int64             `json:"views_month"`

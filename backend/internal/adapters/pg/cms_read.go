@@ -89,7 +89,8 @@ func (r *CMSRepo) Overview(ctx context.Context, month time.Time) (*domain.CMSMet
 	m := &domain.CMSMetrics{DailyProcessing: []domain.DailyProcessing{}}
 	err := r.DB.QueryRow(ctx, `WITH vs AS (
 	 SELECT count(*) FILTER(WHERE status!='deleted') total,count(*) FILTER(WHERE status='processed') processed,
-	 count(*) FILTER(WHERE status='failed') failed,count(*) FILTER(WHERE status='deleted') deleted FROM videos),
+	 count(*) FILTER(WHERE status='failed') failed,count(*) FILTER(WHERE status='deleted') deleted,
+	 count(*) FILTER(WHERE status='processed' AND category_id IS NULL) uncategorized FROM videos),
 	 js AS (SELECT count(*) FILTER(WHERE j.status='pending') pending,count(*) FILTER(WHERE j.status='running') running,
 	 count(*) FILTER(WHERE j.status='completed') completed,count(*) FILTER(WHERE j.status='failed') failed,
 	 avg(extract(epoch FROM j.completed_at-j.started_at)) FILTER(WHERE j.status='completed' AND j.started_at IS NOT NULL AND j.completed_at>=j.started_at)::float8 elapsed
@@ -101,9 +102,10 @@ func (r *CMSRepo) Overview(ctx context.Context, month time.Time) (*domain.CMSMet
 	 SELECT vs.total,vs.processed,vs.failed,vs.deleted,
 	 (SELECT count(*) FROM clips c JOIN videos v ON v.id=c.video_id WHERE c.status='published' AND v.status='processed'),
 	 js.pending,js.running,js.completed,js.failed,(SELECT count(*) FROM users),ix.active,ix.month_views,ix.views,
-	 js.completed::float8/nullif(js.completed+js.failed,0)*100,js.elapsed FROM vs,js,ix`, month, end).Scan(
+	 js.completed::float8/nullif(js.completed+js.failed,0)*100,js.elapsed,vs.uncategorized FROM vs,js,ix`, month, end).Scan(
 		&m.TotalVideos, &m.ProcessedVideos, &m.FailedVideos, &m.DeletedVideos, &m.PublishedClips, &m.PendingJobs, &m.RunningJobs,
-		&m.CompletedJobs, &m.FailedJobs, &m.TotalUsers, &m.ActiveUsers, &m.ViewsMonth, &m.TotalViews, &m.SuccessRate, &m.AverageProcessingSeconds)
+		&m.CompletedJobs, &m.FailedJobs, &m.TotalUsers, &m.ActiveUsers, &m.ViewsMonth, &m.TotalViews, &m.SuccessRate, &m.AverageProcessingSeconds,
+		&m.UncategorizedVideos)
 	if err != nil {
 		return nil, err
 	}

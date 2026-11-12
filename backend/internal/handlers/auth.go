@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 
@@ -29,6 +30,7 @@ type authService interface {
 	Logout(ctx context.Context, rawRefresh string) error
 	ForgotPassword(ctx context.Context, email string) (string, error)
 	ResetPassword(ctx context.Context, token, newPassword string) error
+	RefreshTTL(ctx context.Context) time.Duration
 }
 type userRepo interface {
 	Get(ctx context.Context, id string) (*domain.User, error)
@@ -61,7 +63,7 @@ func (h *AuthHandlers) Register(c *gin.Context) {
 		handleDomainErr(c, err)
 		return
 	}
-	c.SetCookie("refresh", refresh, 604800, "/", "", false, true)
+	c.SetCookie("refresh", refresh, int(h.authSvc.RefreshTTL(c.Request.Context()).Seconds()), "/", "", false, true)
 	c.JSON(http.StatusCreated, gin.H{"user": toUserMe(u, nil), "access_token": access})
 }
 
@@ -84,7 +86,7 @@ func (h *AuthHandlers) Login(c *gin.Context) {
 		handleDomainErr(c, err)
 		return
 	}
-	c.SetCookie("refresh", refresh, 604800, "/", "", false, true)
+	c.SetCookie("refresh", refresh, int(h.authSvc.RefreshTTL(c.Request.Context()).Seconds()), "/", "", false, true)
 	c.JSON(http.StatusOK, gin.H{"user": toUserMe(u, prefs), "access_token": access})
 }
 
@@ -99,7 +101,7 @@ func (h *AuthHandlers) Refresh(c *gin.Context) {
 		ErrorEnvelope(c, http.StatusUnauthorized, "UNAUTHORIZED", "Invalid refresh token")
 		return
 	}
-	c.SetCookie("refresh", refresh, 604800, "/", "", false, true)
+	c.SetCookie("refresh", refresh, int(h.authSvc.RefreshTTL(c.Request.Context()).Seconds()), "/", "", false, true)
 	c.JSON(http.StatusOK, gin.H{"access_token": access})
 }
 

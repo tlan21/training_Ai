@@ -123,6 +123,12 @@ type SystemSettings struct {
 	AutoSubtitleEnabled       bool
 	DefaultSubtitleLang       string
 	AIServiceAPIKey           string
+	// INT-59 (admin-only writes)
+	SystemName                string
+	DisplayTimezone           string
+	NotifyFailedJobs          bool
+	NotifyUncategorizedVideos bool
+	SessionTTLDays            int
 }
 
 type HistoryItem struct {

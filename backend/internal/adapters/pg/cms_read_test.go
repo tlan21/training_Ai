@@ -213,6 +213,16 @@ func TestCMSOperationsRealPersistence(t *testing.T) {
 	if m.TotalVideos != 2 || m.DeletedVideos != 1 || m.ProcessedVideos != 1 || m.FailedVideos != 1 || m.PublishedClips != 1 || m.TotalUsers != 2 || m.ActiveUsers != 1 || m.ViewsMonth != 1 || m.TotalViews != 1 || m.CompletedJobs != 1 || m.FailedJobs != 1 || m.SuccessRate == nil || *m.SuccessRate != 50 || m.AverageProcessingSeconds == nil || *m.AverageProcessingSeconds != 20 || len(m.DailyProcessing) != 31 || m.DailyProcessing[1].Count != 1 {
 		t.Fatalf("metrics: %+v", m)
 	}
+	// INT-59: processed + no category (deleted/failed excluded) feeds the CMS notification bell.
+	if m.UncategorizedVideos != 0 {
+		t.Fatalf("uncategorized with category set: %d", m.UncategorizedVideos)
+	}
+	if _, err := db.Exec(ctx, `UPDATE videos SET category_id=NULL`); err != nil {
+		t.Fatal(err)
+	}
+	if m, err = (&CMSRepo{DB: db}).Overview(ctx, month); err != nil || m.UncategorizedVideos != 1 {
+		t.Fatalf("uncategorized: %+v %v", m, err)
+	}
 	var count int
 	if err := db.QueryRow(ctx, `SELECT count(*) FROM videos`).Scan(&count); err != nil || count != 3 {
 		t.Fatalf("rows changed: %d %v", count, err)

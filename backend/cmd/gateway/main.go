@@ -71,7 +71,7 @@ func main() {
 	wirePipeline(videoRepo, jobRepo, clipRepo, analysisStore, subtitleStore, aiClient, eventBus, objectStorage, vectorStore, &pg.SettingsRepo{DB: db}, categoryRepo)
 
 	resetRepo := mocks.NewPasswordResetRepoMem()
-	authSvc := auth.NewWithResets(userRepo, sessionRepo, resetRepo, jwtSvc)
+	authSvc := auth.NewWithResets(userRepo, sessionRepo, resetRepo, jwtSvc).WithSettings(&pg.SettingsRepo{DB: db})
 	authH := handlers.NewAuthHandlers(authSvc, userRepo, &pg.PreferenceRepo{DB: db}, categoryRepo, interactionRepo, objectStorage)
 	// D18: use product popularity for MVP; enable the recommender after the v2 production gate.
 	contentH := handlers.NewContentHandlers(videoRepo, clipRepo, categoryRepo, interactionRepo, analysisStore, subtitleStore, cache, nil, objectStorage)
@@ -187,7 +187,13 @@ func main() {
 	cmsGroup.PUT("/categories/:id", catCMS.Update)
 	cmsGroup.DELETE("/categories/:id", catCMS.Delete)
 
-	cmsGroup.GET("/users", userCMS.List)
+	// INT-59: own account (every CMS account); user management admin-only, checked here (403).
+	accountCMS := cms.NewAccountHandlers(authSvc)
+	cmsGroup.POST("/me/password", accountCMS.ChangePassword)
+	cmsGroup.POST("/me/sessions/revoke-others", accountCMS.RevokeOtherSessions)
+	adminCMS := cmsGroup.Group("", handlers.RequireRole(string("admin")))
+	adminCMS.GET("/users", userCMS.List)
+	adminCMS.POST("/users/:id/password", accountCMS.ResetUserPassword)
 
 	log.Printf("gateway :%s (PostgreSQL/Mongo/MinIO/Kafka/Redis) → AI %s", cfg.Port, cfg.AIBaseURL)
 	if err := r.Run(":" + cfg.Port); err != nil {

@@ -58,6 +58,8 @@ type SessionRepository interface {
 	GetByHash(ctx context.Context, refreshHash string) (*domain.Session, error)
 	Delete(ctx context.Context, sessionID string) error
 	DeleteByUser(ctx context.Context, userID string) error
+	// DeleteByUserExcept revokes the user's sessions other than keepHash; returns how many were removed.
+	DeleteByUserExcept(ctx context.Context, userID, keepHash string) (int, error)
 }
 
 type JobRepository interface {

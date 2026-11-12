@@ -10,6 +10,8 @@ import (
 	"strings"
 	"sync"
 	"time"
+	"unicode/utf8"
+
 	"traning_ai/backend/internal/domain"
 
 	"github.com/gin-gonic/gin"
@@ -163,7 +165,49 @@ func (h *SystemHandlers) GetSettings(c *gin.Context) {
 		"auto_highlight_enabled": s.AutoHighlightEnabled, "auto_subtitle_enabled": s.AutoSubtitleEnabled,
 		"category_suggestion_enabled": s.CategorySuggestionEnabled, "category_keyword_enabled": s.CategoryKeywordEnabled,
 		"default_subtitle_lang": s.DefaultSubtitleLang, "ai_service_api_key": "sk-local-••••",
+		"system_name": s.SystemName, "display_timezone": s.DisplayTimezone, "notify_failed_jobs": s.NotifyFailedJobs,
+		"notify_uncategorized_videos": s.NotifyUncategorizedVideos, "session_ttl_days": s.SessionTTLDays,
 	})
+}
+
+// adminSettings validates the INT-59 admin-only fields; ok=false means a response was already written.
+func adminSettings(c *gin.Context, req gen.SettingsUpdate, values map[string]string) bool {
+	if req.SystemName == nil && req.DisplayTimezone == nil && req.NotifyFailedJobs == nil && req.NotifyUncategorizedVideos == nil && req.SessionTtlDays == nil {
+		return true
+	}
+	if c.GetString("user_role") != "admin" {
+		handlers.ErrorEnvelope(c, http.StatusForbidden, "FORBIDDEN", "Only admin can change general, notification and session settings")
+		return false
+	}
+	if req.SystemName != nil {
+		name := strings.TrimSpace(*req.SystemName)
+		if n := utf8.RuneCountInString(name); n < 1 || n > 60 {
+			handlers.ErrorEnvelope(c, http.StatusUnprocessableEntity, "VALIDATION_ERROR", "system_name 1..60 characters")
+			return false
+		}
+		values["system_name"] = name
+	}
+	if req.DisplayTimezone != nil {
+		if !gen.SettingsDisplayTimezone(*req.DisplayTimezone).Valid() {
+			handlers.ErrorEnvelope(c, http.StatusUnprocessableEntity, "VALIDATION_ERROR", "display_timezone not supported")
+			return false
+		}
+		values["display_timezone"] = string(*req.DisplayTimezone)
+	}
+	if req.SessionTtlDays != nil {
+		if *req.SessionTtlDays < 1 || *req.SessionTtlDays > 30 {
+			handlers.ErrorEnvelope(c, http.StatusUnprocessableEntity, "VALIDATION_ERROR", "session_ttl_days 1..30")
+			return false
+		}
+		values["session_ttl_days"] = strconv.Itoa(*req.SessionTtlDays)
+	}
+	if req.NotifyFailedJobs != nil {
+		values["notify_failed_jobs"] = strconv.FormatBool(*req.NotifyFailedJobs)
+	}
+	if req.NotifyUncategorizedVideos != nil {
+		values["notify_uncategorized_videos"] = strconv.FormatBool(*req.NotifyUncategorizedVideos)
+	}
+	return true
 }
 
 func (h *SystemHandlers) UpdateSettings(c *gin.Context) {
@@ -181,6 +225,9 @@ func (h *SystemHandlers) UpdateSettings(c *gin.Context) {
 		return
 	}
 	values := map[string]string{}
+	if !adminSettings(c, req, values) {
+		return
+	}
 	if req.HighlightThreshold != nil {
 		values["highlight_threshold"] = strconv.Itoa(*req.HighlightThreshold)
 	}
