@@ -12,15 +12,26 @@ import ClipsPage from "./pages/ClipsPage";
 import CategoriesPage from "./pages/CategoriesPage";
 import UsersPage from "./pages/UsersPage";
 import SettingsPage from "./pages/SettingsPage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSettings } from "./hooks/useCms";
+import { setDisplayTimeZone } from "./lib/time";
 
 function Guard({ children }: { children: React.ReactNode }) {
   const { accessToken, user } = useAuthStore();
   if (!accessToken || !user || !["admin", "editor"].includes(user.role ?? "")) return <Navigate to="/login" replace />;
   return <>{children}</>;
 }
+// INT-59: user management is admin-only (server also answers 403).
+function AdminOnly({ children }: { children: React.ReactNode }) {
+  const role = useAuthStore((state) => state.user?.role);
+  return role === "admin" ? <>{children}</> : <Navigate to="/dashboard" replace />;
+}
 function Shell() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const settings = useSettings();
+  const zone = settings.data?.display_timezone;
+  setDisplayTimeZone(zone); // before children render; Outlet key below re-renders pages when it changes
+  useEffect(() => { document.title = settings.data?.system_name || "AI Video CMS"; }, [settings.data?.system_name]);
   return (
     <div className="cms-shell">
       <Sidebar open={menuOpen} onClose={() => setMenuOpen(false)} />
@@ -28,7 +39,7 @@ function Shell() {
       <div className="cms-workspace">
         <TopBar onMenu={() => setMenuOpen((open) => !open)} />
         <main className="cms-main">
-          <Outlet />
+          <Outlet key={zone ?? "browser"} />
         </main>
       </div>
     </div>
@@ -49,7 +60,7 @@ export const router = createBrowserRouter([
       { path: "/subtitles", element: <SubtitlesPage /> },
       { path: "/published", element: <ClipsPage /> },
       { path: "/settings", element: <SettingsPage /> },
-      { path: "/users", element: <UsersPage /> },
+      { path: "/users", element: <AdminOnly><UsersPage /></AdminOnly> },
     ],
   },
 ]);

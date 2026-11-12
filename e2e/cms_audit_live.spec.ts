@@ -146,7 +146,7 @@ test('INT-40 detailed CMS clicks against deployed services, without API mocks', 
       await button('Trạng thái hệ thống').click(); await expect(page.locator('.health-popover')).toContainText('6/6'); await page.locator('.health-popover').getByRole('button', { name: 'Đóng', exact: true }).click(); await expect(page.locator('.health-popover')).toHaveCount(0);
     });
     await step('shared', 'Notification and dashboard navigation links', async () => {
-      await page.getByRole('link', { name: 'Cảnh báo hệ thống', exact: true }).click(); await expect(page).toHaveURL(/queue\?status=failed$/);
+      await page.getByRole('button', { name: /^Cảnh báo hệ thống/ }).click(); await page.getByRole('dialog', { name: 'Thông báo' }).getByRole('link', { name: /Job xử lý lỗi/ }).click(); await expect(page).toHaveURL(/queue\?status=failed$/); // INT-59 bell popover
       await page.getByRole('link', { name: 'Tổng quan hệ thống', exact: true }).click(); await expect(page).toHaveURL(/dashboard$/);
     });
     for (const [route, label] of [['dashboard', 'Tổng quan'], ['videos', 'Video'], ['queue', 'Hàng đợi xử lý'], ['highlight', 'Highlight AI'], ['categories', 'Danh mục'], ['subtitles', 'Phụ đề & Tóm tắt'], ['published', 'Nội dung đã xuất bản'], ['settings', 'Cài đặt'], ['users', 'Người dùng']]) {

@@ -77,9 +77,8 @@ test('INT-45 every Settings control and four actual AI execution combinations', 
     writeFileSync(path.join(output, 'baseline.json'), JSON.stringify(baseline, null, 2)); save();
     for (const width of [1440, 390]) await check(`${width}px every tab, static/readonly field, button and explanatory text`, async () => {
       await page.setViewportSize({ width, height: width === 390 ? 844 : 900 }); await goSettings();
-      for (const name of ['Cài đặt chung', 'Thông báo', 'Bảo mật']) {
-        const tab = page.getByRole('tab', { name, exact: true }); await expect(tab).toBeDisabled(); await expect(tab).toHaveAttribute('title', 'Chưa hỗ trợ cấu hình mục này'); const box = (await tab.boundingBox())!; await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
-        await expect(page.getByRole('tab', { name: 'Cấu hình AI', exact: true })).toHaveAttribute('aria-selected', 'true');
+      for (const name of ['Cài đặt chung', 'Thông báo', 'Bảo mật']) { // INT-59: tabs enabled (user 2026-11-12)
+        const tab = page.getByRole('tab', { name, exact: true }); await expect(tab).toBeEnabled(); await tab.click(); await expect(tab).toHaveAttribute('aria-selected', 'true');
       }
       await page.getByRole('tab', { name: 'Cấu hình AI', exact: true }).click(); await expect(page.getByRole('tab', { name: 'Cấu hình AI', exact: true })).toHaveAttribute('aria-selected', 'true');
       const key = page.getByLabel('AI Service API Key'); const keyBefore = await key.inputValue(); expect(keyBefore).toBe('sk-local-••••'); await expect(key).toHaveAttribute('readonly', ''); await expect(key).toHaveAttribute('title', 'Key được cấu hình trên máy chủ'); await key.focus(); await page.keyboard.press('Control+A'); await page.keyboard.type('INT45-not-a-key'); await expect(key).toHaveValue(keyBefore);

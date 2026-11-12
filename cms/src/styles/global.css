@@ -743,3 +743,19 @@ body:has(.settings-page) .account-row strong { font-size: 16px; font-weight: 400
 /* 0.9.0: Categories recent assignments — "• N phút trước" (Stitch), only when the assignment time was recorded */
 .recent-meta { display: flex; align-items: center; gap: 4px; min-width: 0; }
 .recent-ago { flex-shrink: 0; font-size: 10px; color: #7b7484; }
+
+/* INT-59: Settings general/notifications/security tabs + Users password reset + notification bell.
+   No Stitch design for these tabs — reuse the AI tab tokens (field/toggle-card/threshold-card/settings-submit). */
+.bell-wrap .icon-button { position: relative; }
+.bell-badge { position: absolute; top: 2px; right: 2px; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 8px; background: var(--error); color: var(--on-error); font-size: 10px; font-weight: 700; line-height: 16px; text-align: center; }
+.bell-item { display: flex; align-items: center; gap: 8px; margin-top: 8px; padding: 8px; border-radius: 8px; color: var(--on-surface); font-size: 14px; }
+.bell-item:hover { background: var(--surface-container-low); }
+.bell-item b { margin-left: auto; }
+.settings-note { font-size: 14px; color: var(--on-surface-variant); }
+.settings-form .field-error { font-size: 12px; color: var(--error); }
+.settings-form .input:disabled, .modal .input:disabled { opacity: .6; cursor: not-allowed; }
+.switch:has(input:disabled) { opacity: .5; }
+.switch input:disabled { cursor: not-allowed; }
+.settings-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.sidebar-brand h1 { overflow-wrap: anywhere; }
+.users-table .row-actions { justify-content: end; }@media (max-width: 760px) { .settings-row > .btn-outline { width: 100%; } }

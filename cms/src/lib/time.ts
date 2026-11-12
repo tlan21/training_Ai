@@ -3,9 +3,12 @@ export function fmtSec(s: number, hours = false): string {
   const sec = Math.floor(s % 60);
   return `${hours ? `${String(Math.floor(s / 3600)).padStart(2, "0")}:` : ""}${String(m).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
 }
+// INT-59: Settings > Cài đặt chung > display_timezone; undefined = browser zone until settings load.
+let displayTimeZone: string | undefined;
+export const setDisplayTimeZone = (zone?: string) => { displayTimeZone = zone; };
 export function fmtISO(iso: string): string {
   try {
-    return new Date(iso).toLocaleString("vi-VN");
+    return new Date(iso).toLocaleString("vi-VN", { timeZone: displayTimeZone });
   } catch {
     return iso;
   }

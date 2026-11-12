@@ -68,6 +68,20 @@ export function useCmsUsers(page = 1, q = "") {
 export function useSettings(enabled = true) {
   return useQuery({ queryKey: qk.settings(), queryFn: async () => (await apiClient.get<components["schemas"]["Settings"]>("/api/cms/settings" )).data, enabled, refetchOnWindowFocus:false });
 }
+// INT-59 account security
+export function useChangePassword() {
+  return useMutation({ mutationFn: async (b: components["schemas"]["ChangePasswordRequest"]) => { await apiClient.post("/api/cms/me/password", b); } });
+}
+export function useRevokeOtherSessions() {
+  return useMutation({ mutationFn: async () => (await apiClient.post<{ revoked: number }>("/api/cms/me/sessions/revoke-others")).data });
+}
+export function useResetUserPassword() {
+  return useMutation({ mutationFn: async ({ id, ...b }: { id: string } & components["schemas"]["AdminPasswordReset"]) => { await apiClient.post(`/api/cms/users/${id}/password`, b); } });
+}
+// Bell counts: own key and 30 s cadence so metrics SQL is not polled every 5 s on every page.
+export function useNotificationCounts() {
+  return useQuery({ queryKey: ["notifications"], queryFn: async () => (await apiClient.get<components["schemas"]["SystemHealth"]>("/api/cms/system/health", { params: { include_metrics: true } })).data.metrics ?? null, refetchInterval: 30000, refetchIntervalInBackground: false });
+}
 export function useUpdateSettings() {
   const qc = useQueryClient();
   return useMutation({ mutationFn: async (b: components["schemas"]["SettingsUpdate"]) => (await apiClient.put("/api/cms/settings", b)).data, onSuccess: () => qc.invalidateQueries({ queryKey: qk.settings() }) });

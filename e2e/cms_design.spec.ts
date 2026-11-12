@@ -434,7 +434,7 @@ test('T3.1 library tabs and shared CMS management access', async ({ page }) => {
   await expect(page.locator('tbody')).toContainText('Pha cản phá xuất sắc');
   await expect(page.locator('tbody')).not.toContainText('Bàn thắng đẹp');
   await page.goto(`${cms}/users`);
-  await expect(page).toHaveURL(`${cms}/users`);
+  await expect(page).toHaveURL(`${cms}/dashboard`); // INT-59: Users admin-only
   await page.goto(`${cms}/settings`);
   await expect(page).toHaveURL(`${cms}/settings`);
 });

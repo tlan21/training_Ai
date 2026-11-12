@@ -21,8 +21,15 @@ for (const role of ['admin', 'editor'] as const) for (const width of [390, 1440]
     await expect(page.getByRole('link', { name: 'Quên mật khẩu?' })).toHaveCount(0); await expect(page.getByText('Đăng nhập nhanh')).toHaveCount(0);
     await page.getByLabel('Tên đăng nhập hoặc Email').fill(user.email); await page.getByLabel('Mật khẩu', { exact: true }).fill('fixture-password'); await page.getByRole('button', { name: 'Đăng nhập', exact: true }).click(); await expect(page).toHaveURL(/dashboard$/);
     if (width === 390) await page.getByRole('button', { name: 'Mở điều hướng', exact: true }).click();
+    // INT-59 (user 2026-11-12): Users is admin-only; editors get no link and are redirected.
+    if (role === 'editor') {
+      await expect(page.getByRole('navigation', { name: 'Điều hướng CMS' }).getByRole('link', { name: 'Người dùng', exact: true })).toHaveCount(0);
+      await page.goto(cms + '/users'); await expect(page).toHaveURL(/(dashboard|login)$/);
+      return;
+    }
     await page.getByRole('navigation', { name: 'Điều hướng CMS' }).getByRole('link', { name: 'Người dùng', exact: true }).click();
     await expect(page.getByRole('heading', { name: 'Quản lý người dùng', exact: true })).toBeVisible();
+    await expect(page.getByRole('button', { name: `Đặt lại mật khẩu cho ${user.username}` })).toBeDisabled(); // own account → Settings › Bảo mật
     await expect(page.getByRole('columnheader', { name: 'Ngày tạo', exact: true })).toBeVisible();
     await expect(page.locator('.users-table select')).toHaveCount(0); await expect(page.getByRole('columnheader', { name: 'Vai trò' })).toHaveCount(0);
     await expect(page.getByRole('button', { name: /Xóa tài khoản|Lưu vai trò/ })).toHaveCount(0);

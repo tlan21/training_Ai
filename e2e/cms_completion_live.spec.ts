@@ -339,7 +339,7 @@ test('Subtitles: edit/persist, dirty guard, server validation, regenerate keeps 
     const text = `${(await first.inputValue()).trim()} [QA]`;
     await first.fill(text);
     page.once('dialog', d => { expect(d.message()).toBe('Bạn có thay đổi chưa lưu. Rời màn biên tập?'); void d.dismiss(); });
-    await page.getByRole('link', { name: 'Cảnh báo hệ thống' }).click(); await expect(page).toHaveURL(/\/subtitles/);
+    await page.getByRole('link', { name: 'Tổng quan hệ thống' }).click(); await expect(page).toHaveURL(/\/subtitles/); // INT-59: bell is a popover button now
     await page.getByRole('button', { name: 'Lưu thay đổi phụ đề' }).click(); await toast(page, 'Đã lưu phụ đề');
     await page.reload(); await expect(page.getByLabel('Nội dung phụ đề 1', { exact: true })).toHaveValue(text);
   });

@@ -2,6 +2,32 @@ import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useSystemHealth } from "../../hooks/useAuth";
 import { Icon } from "./Icon";
+import { useNotificationCounts, useSettings } from "../../hooks/useCms";
+
+// INT-59: in-app alerts only (no email/push); each kind follows its Settings > Thông báo switch.
+function NotificationBell() {
+  const [open, setOpen] = useState(false);
+  const { pathname, search } = useLocation();
+  const settings = useSettings();
+  const counts = useNotificationCounts();
+  useEffect(() => setOpen(false), [pathname, search]);
+  const alerts = [
+    { on: settings.data?.notify_failed_jobs ?? true, count: counts.data?.failed_jobs ?? 0, label: "Job xử lý lỗi", to: "/queue?status=failed", icon: "error" },
+    { on: settings.data?.notify_uncategorized_videos ?? true, count: counts.data?.uncategorized_videos ?? 0, label: "Video đã xử lý chưa gán danh mục", to: "/videos?status=processed", icon: "category" },
+  ].filter((alert) => alert.on);
+  const total = alerts.reduce((sum, alert) => sum + alert.count, 0);
+  return <div className="bell-wrap">
+    <button className="icon-button" aria-label={total ? `Cảnh báo hệ thống (${total})` : "Cảnh báo hệ thống"} aria-expanded={open} onClick={() => setOpen((value) => !value)}><Icon name="notifications" />{total > 0 && <span className="bell-badge" aria-hidden="true">{total > 99 ? "99+" : total}</span>}</button>
+    {open && <div className="health-popover bell-popover card" role="dialog" aria-label="Thông báo">
+      <strong>Thông báo</strong>
+      {!alerts.length ? <p className="muted">Đã tắt thông báo. Bật lại tại Cài đặt › Thông báo.</p>
+        : counts.isError ? <p className="error-text">Không đọc được số liệu thông báo</p>
+        : counts.isLoading ? <p className="muted">Đang tải…</p>
+        : alerts.map((alert) => <Link key={alert.to} to={alert.to} className="bell-item"><Icon name={alert.icon} size={18} /><span>{alert.label}</span><b>{alert.count}</b></Link>)}
+      <button className="btn-text" onClick={() => setOpen(false)}>Đóng</button>
+    </div>}
+  </div>;
+}
 export function TopBar({ onMenu }: { onMenu: () => void }) {
   const { pathname } = useLocation();
   const [params] = useSearchParams();
@@ -22,7 +48,7 @@ export function TopBar({ onMenu }: { onMenu: () => void }) {
     <div className="topbar-actions">
       {(pathname === "/queue" || pathname === "/published") && <Link to="/queue" className="btn-primary topbar-upload"><Icon name="cloud_upload" size={18} />{pathname === "/queue" ? "Tải lên" : "Tải lên video"}</Link>}
       {!systemLast && system}
-      <Link to="/queue?status=failed" className="icon-button" aria-label="Cảnh báo hệ thống"><Icon name="notifications" /></Link>
+      <NotificationBell />
       <Link to="/dashboard" className="icon-button" aria-label="Tổng quan hệ thống"><Icon name="analytics" /></Link>
       {systemLast && system}
       {pathname === "/dashboard" && <span className="topbar-avatar" aria-label="Tài khoản CMS"><Icon name="person" size={20} /></span>}
