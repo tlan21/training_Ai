@@ -612,6 +612,9 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   Báo: Top-1 + macro-F1 mean ± std, Welch t (3 vs 3, công suất thấp — nói rõ), đường val (ổn định/phân kỳ), số tham số. Chỉ để luận án,
   KHÔNG thay ViT active. Hạn chế đã biết: đối chứng train ở lần chạy trước (môi trường Kaggle có thể khác). Kaggle
   `traininghighlight/ai-core-vit-ablation-postln`, code dataset riêng `traininghighlight/ai-core-ablation` (không đổi dataset `ai-core`).
+  **Kết quả 2026-11-12:** kernel dừng ở SANITY (đúng quy tắc, không train): overfit 1 batch thật (32 ảnh, lr 1e-3 không warmup, 300 bước)
+  Post-LN loss 1.2606 FAIL vs Pre-Norm 0.0001 PASS (log gốc `kernel-vit`); 3 sanity còn lại PASS. Ghi ở `SO_LIEU_LUAN_AN_v2.md` §6 +
+  `ablation_A1_postln_kaggle.log`. Không có Top-1 Post-LN; không nới cổng. Bản A1b (Post-LN + warmup trong sanity) chỉ chạy nếu user duyệt.
 
 ### AI-08 — Dọn dẹp dữ liệu/artefact làn AI an toàn (yêu cầu user 2026-10-26)
 - T gốc: — | Owner: claude | Status: TODO (task lặp lại: chạy sau mỗi đợt train xong, hoặc khi một ổ chạm `BLOCKED_RESOURCE`)
