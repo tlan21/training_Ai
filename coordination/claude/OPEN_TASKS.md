@@ -75,6 +75,28 @@ Các hạng mục trên là một batch nghiệm thu liên quan, không phải b
 | [x] | INT-38 | DONE (Claude 2026-11-02: heatmap 'Ngưỡng AI > 51%' live 1440+390; thiết kế chung ⇒ INT-05) — `coordination/claude/evidence/INT-50_2026-11-02/README.md` | Reportedthreshold51 đã chứng minh qua actualnewupload/CMSAPI trongINT-57; còn đối chiếu actualCMSheatmap/design cùngINT-50, không còn chờ image/releaseAI. |
 
 Settings trong scope hiện tại là tab Cấu hình AI: executionflags/actualbuckets/dirtyguard/model-ownedthreshold. Ba tab Settings còn disabled không được tự mở rộng thành email/security infrastructure. Không có scope thêm training/detection/translation/role editor.
+**Mở rộng bởi INT-59 (user duyệt 2026-11-12)** — chỉ đúng phạm vi dưới đây; role editor, tạo/khóa/xóa tài khoản, email/push vẫn ngoài scope.
+
+### INT-59 — CMS Settings 3 tab + Users đặt lại mật khẩu (user duyệt 2026-11-12)
+
+| Trường | Giá trị |
+|---|---|
+| Owner | CLAUDE (làn ứng dụng; phiên training song song không đụng path này) |
+| Status | IN_PROGRESS |
+| Depends on | INT-47/INT-50 (DONE) — mở rộng phạm vi đã khóa ở đó |
+| Quyết định user | Users: **không phân role, không tạo/khóa/xóa tài khoản**; admin **đặt lại mật khẩu** cho tài khoản khác. Xóa tài khoản: **không cho**. Users **chỉ admin**. Settings mở **Cài đặt chung, Thông báo (trong app), Bảo mật: đổi mật khẩu, Bảo mật: phiên đăng nhập**. Stitch chỉ có thiết kế tab Cấu hình AI → 3 tab mới dùng lại component/token của tab đó. |
+| Contract | OpenAPI-first `infra/openapi.yaml` (minor bump) → regenerate `backend/internal/gen` + `cms/src/api-types.ts` trước code. Không migration (system_settings key-value; mặc định đọc bằng coalesce). |
+
+Acceptance:
+1. **Users (admin only)** — `GET /api/cms/users` và `POST /api/cms/users/{id}/password` `{new_password ≥8}` chỉ role admin, server trả 403 cho editor; sidebar/route CMS ẩn và chặn Users với editor. Đặt lại mật khẩu: hash bcrypt cost 12 như auth hiện có, thu hồi **mọi** refresh session của user đích; không áp cho chính mình (409 → dùng tab Bảo mật); 404 user không tồn tại. Không trả hash/password trong response.
+2. **Cài đặt chung (admin ghi)** — `system_name` (1–60 ký tự, mặc định "AI Video CMS", hiển thị sidebar + `document.title`), `display_timezone` (enum Asia/Ho_Chi_Minh, Asia/Bangkok, Asia/Singapore, Asia/Tokyo, UTC; mặc định Asia/Ho_Chi_Minh; mọi giờ hiển thị `fmtISO` dùng múi này). Bỏ "số dòng mỗi trang" (đang cố định trong từng API list — đổi cần sửa mọi endpoint; ghi rõ, làm khi user yêu cầu).
+3. **Thông báo trong app (admin ghi)** — `notify_failed_jobs`, `notify_uncategorized_videos` (bool, mặc định true). Chuông TopBar hiện badge = tổng các cảnh báo đang bật, popover liệt kê từng loại kèm link (job lỗi → `/queue?status=failed`; video đã xử lý chưa gán danh mục → `/videos?status=processed`); cả hai tắt → không badge, popover ghi "Đã tắt thông báo". Số liệu thật từ metrics (thêm `uncategorized_videos`). Không email/push.
+4. **Bảo mật: đổi mật khẩu (mọi tài khoản CMS, của chính mình)** — `POST /api/cms/me/password` `{current_password, new_password ≥8, khác cũ}`; sai mật khẩu hiện tại → 422 (không 401 để không kích hoạt refresh/logout); thành công thu hồi các phiên khác, giữ phiên hiện tại.
+5. **Bảo mật: phiên đăng nhập** — `session_ttl_days` (1–30, mặc định 7, admin ghi) áp cho refresh token + cookie của **phiên mới** (auth dùng chung nên áp mọi tài khoản; ghi rõ trên UI). `POST /api/cms/me/sessions/revoke-others` → `{revoked}` đăng xuất mọi thiết bị khác của chính mình.
+6. `PUT /api/cms/settings`: trường mới (chung/thông báo/phiên) chỉ admin (editor gửi → 403); cờ AI giữ hành vi cũ. Key AI luôn mask. Giới hạn đã biết: access JWT 15 phút còn hiệu lực tới hết hạn sau khi thu hồi phiên.
+7. Gate: Go vet/test/build; CMS `tsc --noEmit && build`; integration Postgres thật (settings mới, reset/đổi mật khẩu, thu hồi phiên); browser thật trên stack (đổi tab, lưu, reset mật khẩu tài khoản test, đăng nhập lại bằng mật khẩu mới, 403 editor); Design Parity 390×844 + 1440×900 gồm loading/empty/error/disabled. Dữ liệu test chỉ tài khoản QA tự tạo (manifest trước/sau, dọn sạch, khôi phục mọi setting về giá trị ban đầu).
+
+Evidence: `coordination/claude/evidence/INT-59_2026-11-12/`. Commits: (điền khi xong).
 
 ## Các gate riêng / việc phụ thuộc
 
