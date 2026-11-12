@@ -68,6 +68,7 @@ def main():
                                 'histogram': metrics(norm(histogram_features(A), dim=-1), norm(histogram_features(B), dim=-1)),
                                 'template16': metrics(norm(downscale(A, 16), dim=-1), norm(downscale(B, 16), dim=-1))}
         print(seed, json.dumps(report['runs'][seed]), flush=True)
+        out.write_text(json.dumps(report, indent=1), encoding='utf-8')  # partial results survive a killed process
     report['mean_std'] = {m: {k: [statistics.mean(r[m][k] for r in report['runs'].values()), statistics.stdev(r[m][k] for r in report['runs'].values())]
                               for k in ('R@1', 'R@5', 'R@10', 'median_rank', 'mAP_MRR')} for m in ('siamese', 'histogram', 'template16')}
     out.write_text(json.dumps(report, indent=1), encoding='utf-8')
