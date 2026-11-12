@@ -42,5 +42,39 @@ Mọi cổng đăng ký trước khi train; test chấm 1 lần; FAIL không đ�
 3. Test 30 đoạn quá nhỏ: AI-29 s3 −3.1 điểm trên 30 đoạn nhưng +6.6 trên 59 đoạn → mở rộng test là cần thiết trước mọi kết luận.
 4. Lỗi lan truyền: transcript bóng đá CER ~74% → cổng chất lượng API 0.10.0 ẩn tóm tắt phần lớn video bóng đá thật.
 
-## 3–6. Đo bổ sung §7 (user 2026-11-12 chọn đo cả 4 nhóm)
-(điền khi đo xong)
+## 3. Two-Tower — coverage, CI, latency ★ (`two_tower_extra.py` → `two_tower_extra.json`)
+Cùng protocol v14 (leave-last-10 hai lần, đã-xem = fit, 876/876 user, 1.682 item). Tái lập **khớp chính xác** log v14
+(`dist/kaggle/output/v14/ai-core-train.log`): NDCG/Recall 0.1019/0.0944, 0.0969/0.0889, 0.0983/0.0906.
+Checkpoint active `f28c3794` cho kết quả **trùng hệt** seed 1337 v14 (khác SHA file, cùng trọng số dự đoán).
+
+| | NDCG@10 | ΔNDCG vs popularity (CI95, bootstrap ghép cặp theo user, 2.000 lần) | Coverage@10 | Latency CPU 1 luồng p50 / p95 |
+|---|---|---|---|---|
+| seed 1337 (= active) | 0.1019 | +0.0259 [+0.0163, +0.0355] | 31.3% | 1.35 / 3.59 ms |
+| seed 7 | 0.0969 | +0.0209 [+0.0110, +0.0309] | 39.7% | 1.08 / 2.81 ms |
+| seed 2024 | 0.0983 | +0.0223 [+0.0128, +0.0324] | 28.3% | 1.03 / 2.69 ms |
+| popularity | 0.0760 | — | **3.6%** | — |
+- Cả 3 seed vượt popularity có ý nghĩa (CI không chứa 0); coverage gấp ~8–11 lần popularity (chỉ lặp ~61 phim phổ biến).
+- Latency = brute-force (user tower + điểm 1.682 item + top-10), không gồm Milvus/HTTP; endpoint thật ghi "~10 ms warm" (đợt 1 §2.6).
+
+## 4. ASR — real-time factor ★ (`asr_rtf.py` → `asr_rtf.json`)
+RTF = thời gian xử lý / thời lượng audio; cùng đường worker.asr (log-mel → model → CTC greedy), CPU (runtime triển khai: container
+`INFER_DEVICE=cpu`), torch 2.13 CPU, máy dev 6 luồng; khởi động loại trừ.
+
+| Model | Tham số | VIVOS 200 câu (6 / 1 luồng) | Bóng đá 59 đoạn 20 s (6 / 1 luồng) |
+|---|---|---|---|
+| active `7c497d43` | 8.37 M | 0.029 / 0.035 | **0.017** / 0.031 |
+| AI-29 s3 `2c6b7fab` | 25.58 M | 0.060 / 0.121 | 0.036 / 0.042 |
+- Active nhanh hơn thời gian thực ~35–60 lần trên CPU: video 10 phút → ASR ≈ 10–20 s. Model 25.6M chậm ~2× (vẫn ≥ 8× thời gian thực).
+- Câu ngắn (VIVOS ~3 s) RTF cao hơn do chi phí cố định mỗi lần gọi. GPU không đo (runtime triển khai là CPU; venv không có CUDA).
+
+## 5. Siamese — Recall@1/5 (VERIFIED-HIST) và mAP
+Log Kaggle gốc còn trên đĩa: `D:/data_training_ai/kout3/ai-core-train.log` dòng 179–181 (1.000 query lấy ngẫu nhiên seed 0 từ split test
+4 hiệp g07h2/g13h1/g20h2/g25h2 = 10.227 frame; mỗi query 1 ảnh dương cùng shot cách 1–10 s; gallery = 1.000 ảnh dương).
+| | R@1 | R@5 | R@10 | median rank |
+|---|---|---|---|---|
+| Siamese (`b4ded465`) | **0.362** | **0.722** | 0.804 | 2 |
+| histogram màu | 0.026 | 0.060 | 0.095 | 472 |
+| template 16×16 | 0.094 | 0.178 | 0.226 | 100 |
+Split theo hiệp: train 82.482 / val 10.339 / test 10.227 frame (8.650 shot). Checkpoint chọn theo R@10 trên **val** (0.425, 10.339 cặp,
+gallery lớn hơn) ≠ tập báo cáo → không rò rỉ test. mAP (= MRR vì 1 dương/query): (điền khi đo lại)
+
