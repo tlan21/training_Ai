@@ -40,7 +40,7 @@ Backlog ứng dụng 32 ID INT: `coordination/claude/OPEN_TASKS.md` (tick + evid
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | DONE (02a 2026-10-27 · 02b user duyệt 51/60 2026-10-28 · 02c guard loại, không promote) · D23 dừng cho MVP | — |
 | AI-03 | T1.6 | Mini-GPT: 03a Claude soạn summary 40 clip · 03b người duyệt · 03c train/eval | DONE (03a 2026-10-26 · 03b Claude duyệt theo D22 2026-10-27 · 03c không promote, người chấm 1.6/5) · D23 dừng cho MVP | — |
 | AI-04 | T1.8 / T4.3 | Đo VRAM sơ bộ Kaggle T4 (PRELIMINARY) | DONE — PRELIMINARY_T4 (2026-10-26; nghiệm thu 3060 vẫn mở) | AI-06 (DONE) |
-| AI-05 | T5.3 | Số liệu evaluation cho luận án | REVIEW (2026-11-02) — bảng 6 model + baseline + CI + limitation xong; 7 nhóm thiếu chờ user chọn đo thêm hay ghi limitation | AI-02, AI-03, AI-04 |
+| AI-05 | T5.3 | Số liệu evaluation cho luận án | IN_PROGRESS (2026-11-12) — user chọn đo cả 4 nhóm §7 (highlight mAP/ρ/IoU, ASR RTF + Two-Tower, Siamese R@1/5/mAP, ablation GPU) + cập nhật bảng theo ASR `7c497d43`/MiniGPT `8a62e953` + AI-24…31 | AI-02, AI-03, AI-04 |
 | AI-08 | — | Dọn dẹp dữ liệu/artefact làn AI an toàn (lặp lại sau mỗi đợt train) | TODO lặp lại (đợt #1 2026-10-26, đợt #2 2026-10-30 DONE) | không job/server nào đang dùng; user duyệt danh sách |
 
 Thứ tự đề xuất (tối đa 1 IN_PROGRESS, cập nhật D14–D17): AI-10 → AI-07 → release (user duyệt) → AI-01 công bố API_READY; song song khi chờ: AI-09 (phần không cần mapping: schema/version/test), AI-03a, AI-02a, AI-04.
@@ -598,6 +598,13 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   (ensemble tính lại 0.3222 = AI-21); SHA 6 checkpoint = contract; 4 test toán học 13 passed. §7 liệt kê 7 nhóm thiếu, §8 mâu thuẫn nguồn.
   Contract: sửa 2 dòng lỗi thời (tiêu đề §1, ngưỡng 75 → `clip_threshold`), không đổi API.
 - Commits: e3fa5f6, (commit này) | Checkpoint: —
+- **Đợt 2 (2026-11-12, user: "hãy chuyển sang việc khác" → chọn đo cả 4 nhóm):** thứ tự
+  (1) bảng §1–2 theo checkpoint active hiện tại + kết quả âm AI-24…31 (chỉ đọc evidence);
+  (2) highlight: mAP, Spearman ρ, IoU đoạn, CI ×10 vs baseline trên test bóng đá 27 hiệp — từ điểm đã lưu, không train, không chọn lại gì;
+  (3) ASR RTF (CPU + GPU local, checkpoint active) + Two-Tower coverage/CI bootstrap/latency trên test đã có;
+  (4) Siamese Recall@1/5/mAP nếu dựng lại được tập query từ frame còn trên đĩa (không đủ → ghi limitation, không bịa);
+  (5) ablation kiến trúc trên Kaggle — thiết kế + cổng đăng ký TRƯỚC khi chạy, mỗi biến thể cùng seed/dữ liệu/ngân sách với bản active.
+  Không đổi checkpoint active, không hạ ngưỡng; số mới đánh dấu ★ kèm script + JSON.
 
 ### AI-08 — Dọn dẹp dữ liệu/artefact làn AI an toàn (yêu cầu user 2026-10-26)
 - T gốc: — | Owner: claude | Status: TODO (task lặp lại: chạy sau mỗi đợt train xong, hoặc khi một ổ chạm `BLOCKED_RESOURCE`)
