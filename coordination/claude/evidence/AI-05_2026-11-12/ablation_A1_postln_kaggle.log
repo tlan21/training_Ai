@@ -1,0 +1,18 @@
+[{"stream_name":"stdout","time":35.036968664,"data":"torch 2.11.0+cu130 | Tesla T4\n"}
+,{"stream_name":"stdout","time":35.037036693,"data":"precision: fp16\n"}
+,{"stream_name":"stdout","time":3498.443111885,"data":"copy /kaggle/input/datasets/traininghighlight/vit-4cls-jpg/vit_4cls_jpg/vit_4cls_jpg -\u003e /tmp/vit_4cls_jpg trong 57.6 phut\n"}
+,{"stream_name":"stdout","time":3504.088928384,"data":"DATA OK: 63,784 frame | 123 video | {'bong_da': 16855, 'ca_nhac': 16711, 'the_thao': 13909, 'tin_tuc': 16309}\n"}
+,{"stream_name":"stderr","time":3529.581534628,"data":"/tmp/code/ai_core/training/datasets/vit_dataset.py:62: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at /pytorch/torch/csrc/utils/tensor_numpy.cpp:213.)\n"}
+,{"stream_name":"stderr","time":3529.581600436,"data":"  arr = torch.from_numpy(np.asarray(img)).float() / 255.0    # (H, W, 3)\n"}
+,{"stream_name":"stdout","time":3560.79462272,"data":"SANITY gradient check \u003c 1e-4: PASS | 3 passed in 2.05s\n"}
+,{"stream_name":"stdout","time":3560.794674762,"data":"SANITY AdamW parity \u003c 1e-6: PASS | 1 passed in 7.69s\n"}
+,{"stream_name":"stdout","time":3560.794682338,"data":"SANITY overfit ViT nho (synthetic): PASS | 1 passed in 4.35s\n"}
+,{"stream_name":"stdout","time":3560.794687863,"data":"SANITY overfit 1 batch that (config vit.yaml, 32 anh, 300 buoc): FAIL | loss 1.2606\n"}
+,{"stream_name":"stderr","time":3560.794637078,"data":"Sanity FAIL — khong train\n"}
+,{"stream_name":"stderr","time":3566.189873911,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":3566.189901546,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":3566.490141479,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":3566.490249456,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":3567.354104945,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":3568.473898069,"data":"[NbConvertApp] Writing 317269 bytes to __results__.html\n"}
+]

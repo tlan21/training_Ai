@@ -78,3 +78,16 @@ Log Kaggle gốc còn trên đĩa: `D:/data_training_ai/kout3/ai-core-train.log`
 Split theo hiệp: train 82.482 / val 10.339 / test 10.227 frame (8.650 shot). Checkpoint chọn theo R@10 trên **val** (0.425, 10.339 cặp,
 gallery lớn hơn) ≠ tập báo cáo → không rò rỉ test. mAP (= MRR vì 1 dương/query): (điền khi đo lại)
 
+
+## 6. Ablation A1 — ViT Post-LN (Transformer 2017) vs Pre-Norm RMSNorm + SwiGLU ★
+Đăng ký trước khi chạy: `coordination/claude/TASKS.md` AI-05 "Ablation A1". Kernel `traininghighlight/ai-core-vit-ablation-postln`
+(2026-11-12, T4) dừng ở bước SANITY bắt buộc của skill train (hỏng 1 mục → không train), log: `ablation_A1_postln_kaggle.log`.
+Cùng một phép thử: 32 ảnh train thật (`randperm` seed 0), `vit.yaml`, AdamW lr 1e-3 cố định, không warmup, wd 0, 300 bước.
+| Block | Overfit 1 batch thật (loss cuối) | Sanity | Nguồn |
+|---|---|---|---|
+| Pre-Norm RMSNorm + SwiGLU (dự án) | **0.0001** | PASS | `dist/kaggle/output/vit/ai-core-vit.log` |
+| Post-LN LayerNorm + GELU-MLP 4d | 1.2606 (4 lớp: ln 4 = 1.386 là đoán đều) | **FAIL** | `ablation_A1_postln_kaggle.log` |
+Gradient check, AdamW parity, overfit ViT nhỏ synthetic (d32, 2 lớp) của biến thể đều PASS → code đúng; lỗi là tối ưu hóa:
+Post-LN (ViT d256, 6 lớp) không học được với lr không warmup, Pre-Norm học thuộc ngay. Khớp với lý thuyết (Xiong et al. 2020, "On Layer
+Normalization in the Transformer Architecture": gradient gần đầu ra của Post-LN lớn lúc khởi tạo → cần warmup). Đây là lý do thực
+nghiệm cho lựa chọn Pre-Norm. Không có Top-1/macro-F1 cho Post-LN vì không train (đúng quy tắc sanity, không nới cổng sau khi thấy kết quả).
