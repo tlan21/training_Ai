@@ -13,7 +13,7 @@ func TestCMSPlanAContract(t *testing.T) {
 	if err := spec.Validate(context.Background()); err != nil {
 		t.Fatal(err)
 	}
-	if spec.Info.Version != "0.10.0" {
+	if spec.Info.Version != "0.11.0" {
 		t.Fatalf("version %s", spec.Info.Version)
 	}
 	put := spec.Paths.Find("/api/cms/videos/{id}").Put
@@ -142,5 +142,35 @@ func TestTranscriptQualityContract(t *testing.T) {
 	q := spec.Components.Schemas["Subtitles"].Value.Properties["transcript_quality"]
 	if q == nil || !q.Value.Nullable || !q.Value.ReadOnly || *q.Value.Max != 1 {
 		t.Fatal("transcript_quality must be a nullable read-only 0..1 number")
+	}
+}
+
+// INT-59: admin password reset + own-account security, no role/account lifecycle routes.
+func TestAccountSecurityContract(t *testing.T) {
+	spec, err := GetSwagger()
+	if err != nil {
+		t.Fatal(err)
+	}
+	reset := spec.Paths.Find("/api/cms/users/{id}/password")
+	if reset == nil || reset.Post == nil || reset.Post.Responses.Status(409) == nil || reset.Post.Responses.Status(403) == nil {
+		t.Fatal("missing admin password reset with self-reset conflict")
+	}
+	if spec.Paths.Find("/api/cms/users/{id}") != nil {
+		t.Fatal("account deletion/lock route must not exist")
+	}
+	if p := spec.Paths.Find("/api/cms/me/password"); p == nil || p.Post.Responses.Status(422) == nil {
+		t.Fatal("missing own password change")
+	}
+	if spec.Paths.Find("/api/cms/me/sessions/revoke-others") == nil {
+		t.Fatal("missing revoke other sessions")
+	}
+	update := spec.Components.Schemas["SettingsUpdate"].Value
+	for _, name := range []string{"system_name", "display_timezone", "notify_failed_jobs", "notify_uncategorized_videos", "session_ttl_days"} {
+		if update.Properties[name] == nil || spec.Components.Schemas["Settings"].Value.Properties[name] == nil {
+			t.Fatalf("missing setting %s", name)
+		}
+	}
+	if *update.Properties["session_ttl_days"].Value.Max != 30 || spec.Components.Schemas["CmsMetrics"].Value.Properties["uncategorized_videos"] == nil {
+		t.Fatal("session ttl bound / uncategorized metric")
 	}
 }

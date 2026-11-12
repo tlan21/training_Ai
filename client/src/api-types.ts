@@ -1537,7 +1537,10 @@ export interface paths {
                 403: components["responses"]["Forbidden"];
             };
         };
-        /** Cập nhật settings bằng tài khoản quản lý CMS tạo sẵn */
+        /**
+         * Cập nhật settings bằng tài khoản quản lý CMS tạo sẵn
+         * @description Cờ AI (auto_*, category_*, ngưỡng) giữ hành vi cũ (admin|editor). Trường INT-59 (system_name, display_timezone, notify_*, session_ttl_days) chỉ role admin — editor gửi bất kỳ trường nào trong nhóm này → 403, không lưu gì.
+         */
         put: {
             parameters: {
                 query?: never;
@@ -1559,9 +1562,97 @@ export interface paths {
                     content?: never;
                 };
                 403: components["responses"]["Forbidden"];
+                422: components["responses"]["ValidationError"];
             };
         };
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/cms/me/password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Đổi mật khẩu của chính mình; thu hồi các phiên khác, giữ phiên hiện tại (cookie refresh) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["ChangePasswordRequest"];
+                };
+            };
+            responses: {
+                /** @description Đã đổi mật khẩu */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                403: components["responses"]["Forbidden"];
+                /** @description Mật khẩu hiện tại sai (code INVALID_CURRENT_PASSWORD, không dùng 401) hoặc mật khẩu mới không hợp lệ */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/cms/me/sessions/revoke-others": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Đăng xuất mọi thiết bị khác của chính mình (xóa refresh session trừ phiên của cookie hiện tại) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description số phiên đã thu hồi */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            revoked: number;
+                        };
+                    };
+                };
+                403: components["responses"]["Forbidden"];
+            };
+        };
         delete?: never;
         options?: never;
         head?: never;
@@ -1925,7 +2016,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Danh sách tài khoản chỉ đọc, không có quản lý vai trò hay xóa tài khoản */
+        /** Danh sách tài khoản (chỉ role admin); không quản lý vai trò, không tạo/khóa/xóa tài khoản */
         get: {
             parameters: {
                 query?: {
@@ -1957,6 +2048,58 @@ export interface paths {
         };
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/cms/users/{id}/password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Admin đặt lại mật khẩu cho tài khoản khác (không phải chính mình); thu hồi mọi phiên của tài khoản đó */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: components["parameters"]["PathId"];
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["AdminPasswordReset"];
+                };
+            };
+            responses: {
+                /** @description Đã đặt lại mật khẩu */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                403: components["responses"]["Forbidden"];
+                404: components["responses"]["NotFound"];
+                /** @description Không đặt lại cho chính mình — dùng POST /api/cms/me/password */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                422: components["responses"]["ValidationError"];
+            };
+        };
         delete?: never;
         options?: never;
         head?: never;
@@ -2220,6 +2363,19 @@ export interface components {
             default_subtitle_lang?: string;
             /** @description masked "sk-local-••••" */
             ai_service_api_key?: string;
+            /** @description Tên hệ thống hiển thị trên CMS (mặc định AI Video CMS). */
+            system_name?: string;
+            /**
+             * @description Múi giờ hiển thị thời gian trên CMS.
+             * @enum {string}
+             */
+            display_timezone?: "Asia/Ho_Chi_Minh" | "Asia/Bangkok" | "Asia/Singapore" | "Asia/Tokyo" | "UTC";
+            /** @description Chuông CMS cảnh báo job xử lý lỗi. */
+            notify_failed_jobs?: boolean;
+            /** @description Chuông CMS cảnh báo video đã xử lý chưa gán danh mục. */
+            notify_uncategorized_videos?: boolean;
+            /** @description Thời hạn refresh token cho phiên đăng nhập mới (mọi tài khoản). */
+            session_ttl_days?: number;
         };
         SettingsUpdate: {
             category_suggestion_enabled?: boolean;
@@ -2233,6 +2389,27 @@ export interface components {
             auto_highlight_enabled?: boolean;
             auto_subtitle_enabled?: boolean;
             ai_service_api_key?: string;
+            /** @description Chỉ admin. Cắt khoảng trắng hai đầu trước khi kiểm. */
+            system_name?: string;
+            /**
+             * @description Chỉ admin.
+             * @enum {string}
+             */
+            display_timezone?: "Asia/Ho_Chi_Minh" | "Asia/Bangkok" | "Asia/Singapore" | "Asia/Tokyo" | "UTC";
+            /** @description Chỉ admin. */
+            notify_failed_jobs?: boolean;
+            /** @description Chỉ admin. */
+            notify_uncategorized_videos?: boolean;
+            /** @description Chỉ admin. Áp cho phiên mới. */
+            session_ttl_days?: number;
+        };
+        ChangePasswordRequest: {
+            current_password: string;
+            /** @description Khác mật khẩu hiện tại. bcrypt giới hạn 72 byte. */
+            new_password: string;
+        };
+        AdminPasswordReset: {
+            new_password: string;
         };
         SystemHealth: {
             ai_available?: boolean;
@@ -2292,6 +2469,8 @@ export interface components {
             running_jobs?: number;
             completed_jobs?: number;
             failed_jobs?: number;
+            /** @description Video processed chưa gán danh mục (không tính video đã xóa). */
+            uncategorized_videos?: number;
             total_users?: number;
             /** @description Distinct Client users with a validated interaction during the last15minutes. */
             active_users?: number;
