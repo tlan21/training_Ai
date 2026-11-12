@@ -1,0 +1,6 @@
+# INT-59 overlay: dist built on host from commit b0959f5 (tsc + vite build, VITE_API_BASE empty as in cms/Dockerfile).
+FROM video-ai-cms:int11-6288d60
+RUN rm -rf /usr/share/nginx/html/*
+COPY dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+LABEL org.opencontainers.image.revision="b0959f5" int59.overlay.base="video-ai-cms:int11-6288d60"

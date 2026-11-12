@@ -1,9 +1,10 @@
 # Local app release INT-50/INT-06 (gateway d41fe71 = 83bacd4 + public video list scan fix; CMS int05-fd0b418 = INT-05 Stitch parity, Claude HO-05). Use with root + docker-compose.inference.yml.
 # Pins only owned app images; AI, workers, databases, ports and volumes inherit existing configuration.
 services:
+  # INT-59 (b0959f5): overlay images on int11-843a56e / int11-6288d60 (gateway binary + CMS dist built on host; C: nearly full).
   gateway:
-    image: video-ai-gateway:int11-843a56e
+    image: video-ai-gateway:int59-b0959f5
   cms:
-    image: video-ai-cms:int11-6288d60
+    image: video-ai-cms:int59-b0959f5
   client:
     image: video-ai-client:int11-843a56e

@@ -1,0 +1,14 @@
+setting | ai_service_api_key | <masked>
+setting | asr_warning_threshold | 65
+setting | auto_highlight_enabled | true
+setting | auto_subtitle_enabled | true
+setting | category_keyword_enabled | false
+setting | category_suggestion_enabled | true
+setting | default_subtitle_lang | vi
+setting | highlight_threshold | 75
+count | users | 51
+count | admins | 1
+count | editors | 0
+count | sessions | 376
+count | qa_int59_users | 0
+fingerprint | users_pw | 363755428c67c3f8b160a10d40e3607c

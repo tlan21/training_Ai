@@ -1,0 +1,16 @@
+--- PASS: TestAccountSecurity_RealPostgres (2.34s)
+--- PASS: TestCMSOperationsRealPersistence (0.30s)
+--- PASS: TestCMSFreshSchemaAndSeed (0.20s)
+    content_pages_test.go:99: 24 original clips traversed; unseen hidden/deleted3 excluded, seen-row deletion/new50interactions/newclip did not shift cursor; cold tail/current metadata PASS
+--- PASS: TestContentPages_RealFeedSnapshotPrivacyAndColdTail (0.08s)
+    content_pages_test.go:159: category6 rows, stable tied ordering, snapshot after new interaction/video, deletion of seen anchor, changed-filter422 and exhaustion PASS
+    content_pages_test.go:159: category6 rows, stable tied ordering, snapshot after new interaction/video, deletion of seen anchor, changed-filter422 and exhaustion PASS
+--- PASS: TestContentPages_RealCatalogCategorySnapshotAndExhaustion (0.13s)
+--- PASS: TestContentPages_RealFeedCategoryAndViewCount (0.07s)
+--- PASS: TestInteractionRepository_RealPersistencePaginationAndPrivacy (0.13s)
+--- PASS: TestCMSMetadataRealPersistenceAndMigration (0.09s)
+--- PASS: TestPreferenceRepository_RealReplaceRollbackAndIsolation (0.04s)
+--- PASS: TestJobRepository_RealTransitions (0.05s)
+--- PASS: TestSettingsRepository_RealAtomicPatch (0.03s)
+--- PASS: TestClipThumbnailReferenceRealPersistence (0.04s)
+PASS

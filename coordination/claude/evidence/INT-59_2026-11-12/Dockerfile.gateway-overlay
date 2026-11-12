@@ -1,0 +1,6 @@
+# INT-59 overlay: C: has ~2.9 GB free, so no golang base pull. Gateway binary cross-compiled on host
+# (go1.26.10, CGO_ENABLED=0 GOOS=linux, same flags as backend/Dockerfile) from commit b0959f5.
+# orchestrator/ffmpeg-cutter/ai-mock/frame-backfill stay as in 843a56e (not redeployed).
+FROM video-ai-gateway:int11-843a56e
+COPY gateway /usr/local/bin/gateway
+LABEL org.opencontainers.image.revision="b0959f5" int59.overlay.base="video-ai-gateway:int11-843a56e" int59.overlay.binaries="gateway"

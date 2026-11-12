@@ -82,7 +82,7 @@ Settings trong scope hiện tại là tab Cấu hình AI: executionflags/actualb
 | Trường | Giá trị |
 |---|---|
 | Owner | CLAUDE (làn ứng dụng; phiên training song song không đụng path này) |
-| Status | IN_PROGRESS |
+| Status | [x] **DONE** (Claude 2026-11-12, VERIFIED-NOW: Go vet/test, real-PG 12/12, CMS tsc/build, fixture 390/1440 6/6, live 3/3 on `int59-b0959f5`, manifest trước = sau) — `coordination/claude/evidence/INT-59_2026-11-12/README.md` |
 | Depends on | INT-47/INT-50 (DONE) — mở rộng phạm vi đã khóa ở đó |
 | Quyết định user | Users: **không phân role, không tạo/khóa/xóa tài khoản**; admin **đặt lại mật khẩu** cho tài khoản khác. Xóa tài khoản: **không cho**. Users **chỉ admin**. Settings mở **Cài đặt chung, Thông báo (trong app), Bảo mật: đổi mật khẩu, Bảo mật: phiên đăng nhập**. Stitch chỉ có thiết kế tab Cấu hình AI → 3 tab mới dùng lại component/token của tab đó. |
 | Contract | OpenAPI-first `infra/openapi.yaml` (minor bump) → regenerate `backend/internal/gen` + `cms/src/api-types.ts` trước code. Không migration (system_settings key-value; mặc định đọc bằng coalesce). |
@@ -96,7 +96,8 @@ Acceptance:
 6. `PUT /api/cms/settings`: trường mới (chung/thông báo/phiên) chỉ admin (editor gửi → 403); cờ AI giữ hành vi cũ. Key AI luôn mask. Giới hạn đã biết: access JWT 15 phút còn hiệu lực tới hết hạn sau khi thu hồi phiên.
 7. Gate: Go vet/test/build; CMS `tsc --noEmit && build`; integration Postgres thật (settings mới, reset/đổi mật khẩu, thu hồi phiên); browser thật trên stack (đổi tab, lưu, reset mật khẩu tài khoản test, đăng nhập lại bằng mật khẩu mới, 403 editor); Design Parity 390×844 + 1440×900 gồm loading/empty/error/disabled. Dữ liệu test chỉ tài khoản QA tự tạo (manifest trước/sau, dọn sạch, khôi phục mọi setting về giá trị ban đầu).
 
-Evidence: `coordination/claude/evidence/INT-59_2026-11-12/`. Commits: (điền khi xong).
+Evidence: `coordination/claude/evidence/INT-59_2026-11-12/`. Commits: `7612400` scope · `24307ab` contract 0.11.0 · `bd6c294` backend · `b0959f5` CMS/e2e · commit evidence/deploy pin kế tiếp.
+Runtime: gateway + CMS `int59-b0959f5` (overlay trên int11 — C: gần đầy, xem README); AI/orchestrator/cutter/client không đổi.
 
 ## Các gate riêng / việc phụ thuộc
 
