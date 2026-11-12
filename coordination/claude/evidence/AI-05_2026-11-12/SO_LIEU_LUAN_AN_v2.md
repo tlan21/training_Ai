@@ -102,3 +102,16 @@ Gradient check, AdamW parity, overfit ViT nhỏ synthetic (d32, 2 lớp) của b
 Post-LN (ViT d256, 6 lớp) không học được với lr không warmup, Pre-Norm học thuộc ngay. Khớp với lý thuyết (Xiong et al. 2020, "On Layer
 Normalization in the Transformer Architecture": gradient gần đầu ra của Post-LN lớn lúc khởi tạo → cần warmup). Đây là lý do thực
 nghiệm cho lựa chọn Pre-Norm. Không có Top-1/macro-F1 cho Post-LN vì không train (đúng quy tắc sanity, không nới cổng sau khi thấy kết quả).
+
+## 7. Highlight Fusion — AP, Spearman ρ, IoU đoạn, bootstrap ★ (`highlight_extra.py` → `highlight_extra.json`)
+Test bóng đá 27 hiệp / 14 trận; điểm từ ensemble r8_rep10 (3 seed) đã lưu, k/τ giữ nguyên như đã chọn trên val (không chọn lại).
+Script tính lại F1 trước và assert khớp số đã báo (0.3222 / 0.1440 / 0.1052) → PASS. Tỉ lệ giây dương = 4,16% (= AP của đoán ngẫu nhiên).
+| | F1/giây | AP gộp | AP TB/hiệp | Spearman ρ gộp | ρ TB/hiệp | Đoạn IoU≥0.5: P / R / F1 |
+|---|---|---|---|---|---|---|
+| Fusion (dự án) | **0.322** | **0.273** | **0.335** | **0.251** | **0.254** | 0.163 / 0.310 / **0.213** (84 TP; 516 dự đoán, 271 thật) |
+| RMS năng lượng âm thanh | 0.144 | 0.109 | 0.161 | 0.132 | 0.140 | 0.043 / 0.052 / 0.047 |
+| Frame-diff hình | 0.105 | 0.055 | 0.067 | 0.079 | 0.088 | 0.005 / 0.011 / 0.007 |
+Đoạn dựng như inference-service (`_peaks_to_clips`: gộp khoảng cách ≤ 1 s, đoạn ≥ 3 s). Bootstrap ghép cặp theo trận (10.000 lần, seed 0),
+hiệu F1 Fusion − baseline: vs RMS **+0.178** [CI95 0.137, 0.222], P(hiệu ≥ 0.10) = 0.9999; vs frame-diff **+0.217** [0.179, 0.255], P = 1.0.
+Nhận xét: AP 0.273 ≈ 6,6× mức ngẫu nhiên; ρ thấp (0.25) vì điểm liên tục chỉ cần xếp đúng vùng đỉnh, phần lớn giây là nền. F1 đoạn 0.21 thấp
+hơn F1/giây do ranh giới đoạn dự đoán lệch (recall đoạn 0.31, precision 0.16 → nhiều đoạn thừa) — hạn chế ghi trong luận án.
