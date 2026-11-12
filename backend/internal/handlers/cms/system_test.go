@@ -17,7 +17,7 @@ type settingsFixture struct {
 }
 
 func (s *settingsFixture) Get(context.Context) (*domain.SystemSettings, error) {
-	return &domain.SystemSettings{HighlightThreshold: 42, AIServiceAPIKey: "sk-local-private"}, s.err
+	return &domain.SystemSettings{HighlightThreshold: 42}, s.err
 }
 func (s *settingsFixture) Update(_ context.Context, values map[string]string) error {
 	s.values = values
@@ -32,7 +32,7 @@ func TestSettings_ValidationMaskAndPersistenceErrors(t *testing.T) {
 	r.PUT("/settings", h.UpdateSettings)
 	get := httptest.NewRecorder()
 	r.ServeHTTP(get, httptest.NewRequest("GET", "/settings", nil))
-	if get.Code != 200 || strings.Contains(get.Body.String(), "sk-local-private") || !strings.Contains(get.Body.String(), "sk-local-••••") {
+	if get.Code != 200 || !strings.Contains(get.Body.String(), "sk-local-••••") { // deprecated field: constant mask, the stored key is never read
 		t.Fatalf("key not masked: %d %s", get.Code, get.Body)
 	}
 	for _, tc := range []struct {

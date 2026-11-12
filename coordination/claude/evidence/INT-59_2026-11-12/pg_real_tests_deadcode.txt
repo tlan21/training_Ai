@@ -1,0 +1,13 @@
+--- PASS: TestAccountSecurity_RealPostgres (2.44s)
+--- PASS: TestCMSOperationsRealPersistence (3.17s)
+--- PASS: TestCMSFreshSchemaAndSeed (0.23s)
+--- PASS: TestContentPages_RealFeedSnapshotPrivacyAndColdTail (0.14s)
+--- PASS: TestContentPages_RealCatalogCategorySnapshotAndExhaustion (0.21s)
+--- PASS: TestContentPages_RealFeedCategoryAndViewCount (0.10s)
+--- PASS: TestInteractionRepository_RealPersistencePaginationAndPrivacy (0.10s)
+--- PASS: TestCMSMetadataRealPersistenceAndMigration (0.08s)
+--- PASS: TestPreferenceRepository_RealReplaceRollbackAndIsolation (0.04s)
+--- PASS: TestJobRepository_RealTransitions (0.04s)
+--- PASS: TestSettingsRepository_RealAtomicPatch (0.03s)
+--- PASS: TestClipThumbnailReferenceRealPersistence (0.03s)
+PASS

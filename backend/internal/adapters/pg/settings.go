@@ -17,7 +17,7 @@ func (r *SettingsRepo) Get(ctx context.Context) (*domain.SystemSettings, error) 
 		(max(value) FILTER(WHERE key='asr_warning_threshold'))::int,
 		(max(value) FILTER(WHERE key='auto_highlight_enabled'))::boolean,
 		(max(value) FILTER(WHERE key='auto_subtitle_enabled'))::boolean,
-		max(value) FILTER(WHERE key='default_subtitle_lang'),max(value) FILTER(WHERE key='ai_service_api_key'),
+		max(value) FILTER(WHERE key='default_subtitle_lang'),
  coalesce((max(value) FILTER(WHERE key='category_suggestion_enabled'))::boolean,true),
  coalesce((max(value) FILTER(WHERE key='category_keyword_enabled'))::boolean,false),
  coalesce(max(value) FILTER(WHERE key='system_name'),'AI Video CMS'),
@@ -26,7 +26,7 @@ func (r *SettingsRepo) Get(ctx context.Context) (*domain.SystemSettings, error) 
  coalesce((max(value) FILTER(WHERE key='notify_uncategorized_videos'))::boolean,true),
  coalesce((max(value) FILTER(WHERE key='session_ttl_days'))::int,7)
 		FROM system_settings`).Scan(&s.HighlightThreshold, &s.ASRWarningThreshold, &s.AutoHighlightEnabled,
-		&s.AutoSubtitleEnabled, &s.DefaultSubtitleLang, &s.AIServiceAPIKey, &s.CategorySuggestionEnabled, &s.CategoryKeywordEnabled,
+		&s.AutoSubtitleEnabled, &s.DefaultSubtitleLang, &s.CategorySuggestionEnabled, &s.CategoryKeywordEnabled,
 		&s.SystemName, &s.DisplayTimezone, &s.NotifyFailedJobs, &s.NotifyUncategorizedVideos, &s.SessionTTLDays)
 	return &s, err
 }

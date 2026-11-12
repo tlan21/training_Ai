@@ -16,11 +16,11 @@ func TestSettingsRepository_RealAtomicPatch(t *testing.T) {
 		t.Fatal(err)
 	}
 	repo := &SettingsRepo{DB: db}
-	if err := repo.Update(ctx, map[string]string{"highlight_threshold": "0", "auto_highlight_enabled": "false", "ai_service_api_key": "sk-local-test-updated"}); err != nil {
+	if err := repo.Update(ctx, map[string]string{"highlight_threshold": "0", "auto_highlight_enabled": "false", "default_subtitle_lang": "vi-test"}); err != nil {
 		t.Fatal(err)
 	}
 	stored, err := (&SettingsRepo{DB: db}).Get(ctx)
-	if err != nil || stored.HighlightThreshold != 0 || stored.AutoHighlightEnabled || stored.ASRWarningThreshold != 65 || !stored.AutoSubtitleEnabled || stored.AIServiceAPIKey != "sk-local-test-updated" {
+	if err != nil || stored.HighlightThreshold != 0 || stored.AutoHighlightEnabled || stored.ASRWarningThreshold != 65 || !stored.AutoSubtitleEnabled || stored.DefaultSubtitleLang != "vi-test" {
 		t.Fatalf("patch not persisted: %v", err)
 	}
 	if err := repo.Update(ctx, map[string]string{"highlight_threshold": "42", strings.Repeat("z", 51): "bad"}); err == nil {

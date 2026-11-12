@@ -122,7 +122,6 @@ type SystemSettings struct {
 	AutoHighlightEnabled      bool
 	AutoSubtitleEnabled       bool
 	DefaultSubtitleLang       string
-	AIServiceAPIKey           string
 	// INT-59 (admin-only writes)
 	SystemName                string
 	DisplayTimezone           string
