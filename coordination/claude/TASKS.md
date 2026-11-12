@@ -615,6 +615,10 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   **Kết quả 2026-11-12:** kernel dừng ở SANITY (đúng quy tắc, không train): overfit 1 batch thật (32 ảnh, lr 1e-3 không warmup, 300 bước)
   Post-LN loss 1.2606 FAIL vs Pre-Norm 0.0001 PASS (log gốc `kernel-vit`); 3 sanity còn lại PASS. Ghi ở `SO_LIEU_LUAN_AN_v2.md` §6 +
   `ablation_A1_postln_kaggle.log`. Không có Top-1 Post-LN; không nới cổng. Bản A1b (Post-LN + warmup trong sanity) chỉ chạy nếu user duyệt.
+- **Ablation A1b (user duyệt "đồng ý" 2026-11-12; đăng ký TRƯỚC khi chạy):** giống A1, khác DUY NHẤT sanity overfit 1 batch thật:
+  lr warmup tuyến tính 0→1e-3 trong 100 bước đầu rồi giữ 1e-3 (tổng 300 bước, 32 ảnh seed 0, wd 0), ngưỡng loss < 0.05 GIỮ NGUYÊN.
+  Train/eval y hệt A1 (`vit.yaml` đã có warmup 3%). Báo cả hai: A1 (không warmup → FAIL) là kết quả chính về độ ổn định; A1b chỉ trả lời
+  "Post-LN có warmup đạt Top-1 bao nhiêu". Nếu A1b sanity vẫn FAIL → ghi kết quả, dừng, không đổi thêm. Kernel cùng id (version 2).
 
 ### AI-08 — Dọn dẹp dữ liệu/artefact làn AI an toàn (yêu cầu user 2026-10-26)
 - T gốc: — | Owner: claude | Status: TODO (task lặp lại: chạy sau mỗi đợt train xong, hoặc khi một ổ chạm `BLOCKED_RESOURCE`)

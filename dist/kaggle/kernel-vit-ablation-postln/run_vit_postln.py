@@ -1,4 +1,4 @@
-"""AI-05 ablation A1 (evaluation_plan §2.2): ViT 4 lop voi block Post-LN + LayerNorm + GELU (Transformer 2017) — 3 seed + cham test.
+"""AI-05 ablation A1b = A1 + warmup 100 buoc trong sanity overfit (A1 v1 FAIL o sanity khong warmup). A1 (evaluation_plan §2.2): ViT 4 lop voi block Post-LN + LayerNorm + GELU (Transformer 2017) — 3 seed + cham test.
 Copy cua kernel-vit/run_vit.py; khac DUY NHAT: model.block_style = "postln" (moi thu khac giu nguyen vit.yaml, seed, du lieu, eval).
 Doi chung = 3 seed Pre-Norm da co (dist/kaggle/output/vit/vit_eval.json). Ban goc:
 
@@ -124,13 +124,15 @@ x = torch.stack([ds[i][0] for i in idx]).cuda()
 y = torch.stack([ds[i][1] for i in idx]).cuda()
 model = build_model('vit', model_cfg).cuda()
 opt = AdamW(split_decay_params(model), lr=1e-3, weight_decay=0.0)
-for _ in range(300):
+for step in range(300):
+    for g in opt.param_groups:   # AI-05 A1b: warmup tuyen tinh 0->1e-3 trong 100 buoc dau (A1 khong warmup -> FAIL loss 1.2606)
+        g['lr'] = 1e-3 * min(1.0, (step + 1) / 100)
     opt.zero_grad()
     loss = torch.nn.functional.cross_entropy(model(x), y)
     loss.backward()
     opt.step()
 ok = loss.item() < 0.05
-lines.append(f"SANITY overfit 1 batch that (config vit.yaml, 32 anh, 300 buoc): "
+lines.append(f"SANITY overfit 1 batch that (config vit.yaml, 32 anh, 300 buoc, warmup 100): "
              f"{'PASS' if ok else 'FAIL'} | loss {loss.item():.4f}")
 del model, opt, x, y
 torch.cuda.empty_cache()
