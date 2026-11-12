@@ -2361,7 +2361,10 @@ export interface components {
             auto_highlight_enabled?: boolean;
             auto_subtitle_enabled?: boolean;
             default_subtitle_lang?: string;
-            /** @description masked "sk-local-••••" */
+            /**
+             * @deprecated
+             * @description Luôn trả masked "sk-local-••••". Không dùng: gateway lấy key từ biến môi trường AI_SERVICE_KEY; CMS không còn hiển thị (0.11.1).
+             */
             ai_service_api_key?: string;
             /** @description Tên hệ thống hiển thị trên CMS (mặc định AI Video CMS). */
             system_name?: string;
@@ -2388,6 +2391,10 @@ export interface components {
             asr_warning_threshold?: number;
             auto_highlight_enabled?: boolean;
             auto_subtitle_enabled?: boolean;
+            /**
+             * @deprecated
+             * @description Bị bỏ qua (0.11.1) — key AI cấu hình bằng biến môi trường trên máy chủ, không đổi qua API.
+             */
             ai_service_api_key?: string;
             /** @description Chỉ admin. Cắt khoảng trắng hai đầu trước khi kiểm. */
             system_name?: string;

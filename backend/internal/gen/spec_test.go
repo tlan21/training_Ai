@@ -13,7 +13,7 @@ func TestCMSPlanAContract(t *testing.T) {
 	if err := spec.Validate(context.Background()); err != nil {
 		t.Fatal(err)
 	}
-	if spec.Info.Version != "0.11.0" {
+	if spec.Info.Version != "0.11.1" {
 		t.Fatalf("version %s", spec.Info.Version)
 	}
 	put := spec.Paths.Find("/api/cms/videos/{id}").Put
@@ -172,5 +172,9 @@ func TestAccountSecurityContract(t *testing.T) {
 	}
 	if *update.Properties["session_ttl_days"].Value.Max != 30 || spec.Components.Schemas["CmsMetrics"].Value.Properties["uncategorized_videos"] == nil {
 		t.Fatal("session ttl bound / uncategorized metric")
+	}
+	// 0.11.1: AI key lives in the server environment; the settings field is deprecated and ignored.
+	if !update.Properties["ai_service_api_key"].Value.Deprecated || !spec.Components.Schemas["Settings"].Value.Properties["ai_service_api_key"].Value.Deprecated {
+		t.Fatal("ai_service_api_key must be deprecated")
 	}
 }

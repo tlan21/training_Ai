@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Video AI Platform — Public + CMS API
-  version: 0.11.0
+  version: 0.11.1
   description: >
     Contract-first (master plan §2). Nguồn sự thật cho gateway Go (oapi-codegen)
     và FE types (openapi-typescript). Điểm highlight thang 0–100; similarity/score 0–1.
@@ -1354,7 +1354,7 @@ components:
         auto_highlight_enabled: { type: boolean }
         auto_subtitle_enabled: { type: boolean }
         default_subtitle_lang: { type: string }
-        ai_service_api_key: { type: string, description: masked "sk-local-••••" }
+        ai_service_api_key: { type: string, deprecated: true, description: "Luôn trả masked \"sk-local-••••\". Không dùng: gateway lấy key từ biến môi trường AI_SERVICE_KEY; CMS không còn hiển thị (0.11.1)." }
         system_name: { type: string, description: "Tên hệ thống hiển thị trên CMS (mặc định AI Video CMS)." }
         display_timezone: { type: string, enum: [Asia/Ho_Chi_Minh, Asia/Bangkok, Asia/Singapore, Asia/Tokyo, UTC], description: Múi giờ hiển thị thời gian trên CMS. }
         notify_failed_jobs: { type: boolean, description: Chuông CMS cảnh báo job xử lý lỗi. }
@@ -1370,7 +1370,7 @@ components:
         asr_warning_threshold: { type: integer, minimum: 0, maximum: 100 }
         auto_highlight_enabled: { type: boolean }
         auto_subtitle_enabled: { type: boolean }
-        ai_service_api_key: { type: string }
+        ai_service_api_key: { type: string, deprecated: true, description: "Bị bỏ qua (0.11.1) — key AI cấu hình bằng biến môi trường trên máy chủ, không đổi qua API." }
         system_name: { type: string, minLength: 1, maxLength: 60, description: Chỉ admin. Cắt khoảng trắng hai đầu trước khi kiểm. }
         display_timezone: { type: string, enum: [Asia/Ho_Chi_Minh, Asia/Bangkok, Asia/Singapore, Asia/Tokyo, UTC], description: Chỉ admin. }
         notify_failed_jobs: { type: boolean, description: Chỉ admin. }
