@@ -59,7 +59,7 @@ docker compose -f infra/docker-compose.yml down -v       # xóa sạch volume (i
 
 ## Lưu ý
 
-- Đổi `MINIO_ROOT_*`, mật khẩu Postgres/Mongo, và `ai_service_api_key` (seed placeholder `sk-local-CHANGE-ME`)
-  trước khi chạy production.
+- Đổi `MINIO_ROOT_*`, mật khẩu Postgres/Mongo, và `AI_SERVICE_KEY` (biến môi trường, cùng giá trị ở gateway và inference-service)
+  trước khi chạy production. Dòng seed `system_settings.ai_service_api_key` (`sk-local-CHANGE-ME`) không còn được dùng (API 0.11.1).
 - Admin seed `admin123` chỉ để dev — đổi ngay ở môi trường thật.
 - Milvus dùng chung MinIO (bucket `milvus`), tách với bucket `videos` của app.

@@ -87,6 +87,7 @@ Hệ thống CMS đóng vai trò là "Trung tâm kiểm duyệt dữ liệu AI" 
 *   **Thành phần UI (theo `stitch_ai_video_cms/c_i_t_h_th_ng/`):**
     *   Toggle "Tự động đánh dấu highlight" (`auto_highlight_enabled`), toggle "Tạo phụ đề tự động" (`auto_subtitle_enabled`).
     *   Slider "Ngưỡng gợi ý AI" 0–100, mặc định 75 (`highlight_threshold`) — heatmap vùng đỏ + gom clip đọc giá trị này.
-    *   **AI Service API Key** (input password, masked `sk-local-••••`) — key của inference-service :8001 **tự dựng** (KHÔNG phải OpenAI như label Stitch gốc).
     *   Ngôn ngữ phụ đề: chỉ "Tiếng Việt".
+    *   **Đã bỏ khối "Kết nối & Lưu trữ" của Stitch** (AI Service API Key, Storage Provider, S3 Bucket Name — user 2026-11-12, API 0.11.1): key inference-service :8001 cấu hình bằng biến môi trường `AI_SERVICE_KEY` trên máy chủ; lưu trữ cố định MinIO, bucket `raw-videos`/`clips`/`thumbnails` trong code. CMS không hiển thị/đổi các mục này.
+    *   3 tab còn lại (INT-59): Cài đặt chung (tên hệ thống, múi giờ hiển thị), Thông báo (chuông trong CMS), Bảo mật (đổi mật khẩu, thời hạn phiên, đăng xuất thiết bị khác) — xem `coordination/claude/OPEN_TASKS.md` INT-59.
 *   **Ghi chú đồng bộ:** màn "Quản lý Phụ đề & Tóm tắt AI" (mục 2.3) dựng GỘP thành 1 màn 3 cột theo Stitch; transcript hiển thị `confidence` % per-segment + cảnh báo. Chi tiết binding + CẮT-list: @plan/03_cms_ui_plan.md mục 7.

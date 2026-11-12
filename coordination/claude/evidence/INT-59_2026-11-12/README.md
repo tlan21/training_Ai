@@ -49,6 +49,19 @@ Task + acceptance: `coordination/claude/OPEN_TASKS.md` (INT-59). Stitch only des
   the 5 new setting keys (absent before) deleted after the API put defaults back; 1 orphan admin@local session from the first live run
   (see below) deleted → `live/cleanup.txt`.
 
+## Follow-up 0.11.1 — "Kết nối & Lưu trữ" removed (user 2026-11-12: "bỏ hẳn và cập nhật tài liệu cho khớp")
+- Why: the block was display-only — AI key shown as a fixed mask (gateway reads env `AI_SERVICE_KEY`; DB row `ai_service_api_key`
+  unused), Storage Provider a locked one-option select, bucket names hard-coded (`raw-videos`/`clips`/`thumbnails`).
+- `e9323d2` contract 0.11.1: `ai_service_api_key` `deprecated` in `Settings`/`SettingsUpdate`; `3c3b33b` gateway ignores writes, CMS AI tab
+  without the block (Settings no longer polls `/system/health`); old specs assert absence. Docs: `.claude/cms_ui_spec.md`, `features.md`,
+  `database_schema.md`, `plan/00_master_plan.md`, `plan/03_cms_ui_plan.md` (incl. CẮT-list), `infra/README.md`. `.opencode/**` is an old
+  mirror (last change 20e9b9f) and was not edited.
+- Verified: go vet + handler/contract tests PASS (key sent → not saved), CMS tsc/build, fixture 74 passed / 4 skipped (`fixture/settings-ai-admin-*.png`),
+  deployed `int59-3c3b33b` (env hash unchanged `56e23179db570721`), live: PUT key → 200 with `md5(value)`+`updated_at` unchanged, GET masked,
+  live parity 390 PASS (AI tab without the block). `live/manifest_after_0.11.1.txt` = before except sessions 376→377: one admin@local
+  session created 09:53:46 UTC while no command of mine ran (assumed the user's own login) — left untouched.
+- Superseded own images `int59-b0959f5` removed; seed row kept (no data deletion).
+
 ## Notes / limits
 - Access JWT (15 min) stays valid until expiry after a reset/revoke; refresh is revoked immediately.
 - Observed (pre-existing, not changed): two back-to-back page loads race refresh-token rotation and can log the user out; the first live

@@ -81,7 +81,7 @@ Mọi mô hình AI nguyên thủy dưới đây đều được xây dựng từ
 
 ## 4. Cập nhật đồng bộ Stitch design (2026-07-17)
 
-1. **API Key AI = key tự dựng:** field "API Key" tại màn Cài đặt CMS là key của **AI Inference Service :8001 tự dựng** (format `sk-local-...`, header `Authorization: Bearer`) — hệ thống KHÔNG gọi OpenAI hay AI ngoài nào. Interface `/v1/*` OpenAI-style chỉ là quy ước schema.
+1. **API Key AI = key tự dựng:** key của **AI Inference Service :8001 tự dựng** (format `sk-local-...`, header `Authorization: Bearer`) — hệ thống KHÔNG gọi OpenAI hay AI ngoài nào. Interface `/v1/*` OpenAI-style chỉ là quy ước schema. Key cấu hình bằng biến môi trường `AI_SERVICE_KEY` trên máy chủ; **màn Cài đặt CMS không còn hiển thị key/Storage/bucket** (bỏ khối "Kết nối & Lưu trữ", user 2026-11-12, API 0.11.1).
 2. **Bổ sung output AI:** phụ đề kèm `confidence` per-segment (CTC posterior); analysis kèm `key_moments` (điểm nhấn có timestamp), `suggested_title` (regenerate được), `hashtags` (TF-IDF, không phải model).
 3. **Tính năng Stitch bị CẮT** (ngoài phạm vi from-scratch): dịch AI phụ đề, object detection/tracking, nhận diện nhân vật, phụ đề Nhật/Hàn, comment/follow, quên mật khẩu. Danh sách đầy đủ: @plan/03_cms_ui_plan.md mục 7.2, @plan/04_client_ui_plan.md mục 8.2.
 4. Contract chi tiết (settings, jobs retry/cancel, min_similarity, interaction `save`, browse videos): bảng mục 2 @plan/00_master_plan.md — file đó là nguồn sự thật, mục này chỉ là bối cảnh.

@@ -127,6 +127,7 @@ test('INT-59 live parity 390 (read-only)', async ({ page }) => {
   await page.getByRole('button', { name: /^Cảnh báo hệ thống/ }).click(); await expect(page.getByRole('dialog', { name: 'Thông báo' })).toBeVisible(); await shot(page, 'bell-390');
   for (const tab of ['general', 'ai', 'notifications', 'security']) {
     await page.goto(cms + `/settings?tab=${tab}`); await expect(page.getByRole('tabpanel')).toBeVisible(); await noOverflow(page); await shot(page, `settings-${tab}-admin-390`);
+    if (tab === 'ai') { await expect(page.getByText('Theo model', { exact: true })).toBeVisible(); await expect(page.getByText('Kết nối & Lưu trữ')).toHaveCount(0); } // removed 0.11.1
   }
   await page.goto(cms + '/users'); await expect(page.getByRole('heading', { name: 'Quản lý người dùng' })).toBeVisible(); await noOverflow(page); await shot(page, 'users-admin-390');
   note('parity_390', 'bell, 4 tabs, users — no horizontal overflow');

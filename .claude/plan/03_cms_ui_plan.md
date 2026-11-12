@@ -558,7 +558,7 @@ Audit 2 chiều Stitch export ↔ AI core đã chốt. Quy tắc: **HTML trong `
 - **THÊM Màn 11 — Cài đặt** theo `c_i_t_h_th_ng/`, tab "Cấu hình AI":
   - Toggle "Tự động đánh dấu highlight" ↔ `auto_highlight_enabled`; toggle "Tạo phụ đề tự động" ↔ `auto_subtitle_enabled`.
   - Slider "Ngưỡng gợi ý AI" 0–100 mặc định 75 ↔ `highlight_threshold` (heatmap vùng đỏ + gom clip dùng giá trị này thay hằng số 75).
-  - Input password "AI Service API Key" (masked `sk-local-••••`) ↔ `ai_service_api_key` — **key của inference-service :8001 tự dựng, ĐỔI label khỏi "OpenAI API Key" của Stitch**.
+  - ~~Input password "AI Service API Key" ↔ `ai_service_api_key`~~ — **đã bỏ (user 2026-11-12, API 0.11.1)** cùng cả khối "Kết nối & Lưu trữ": key :8001 nằm ở biến môi trường `AI_SERVICE_KEY` của gateway; field API deprecated và bị bỏ qua.
   - Select ngôn ngữ phụ đề: CHỈ "Tiếng Việt" (xóa Anh/Nhật/Hàn của Stitch — ASR chỉ train tiếng Việt).
   - API: `GET/PUT /api/cms/settings` (admin only). Hooks: `useSettings`, `useUpdateSettings`.
   - User Manager (màn 10) giữ nguyên màn riêng — Stitch thiếu, dựng theo wireframe mục 3.
@@ -574,7 +574,7 @@ Audit 2 chiều Stitch export ↔ AI core đã chốt. Quy tắc: **HTML trong `
 | Ngôn ngữ phụ đề Nhật/Hàn/Anh | Chỉ giữ Tiếng Việt |
 | "Model Vision-X v2.4" (Dashboard) | Thay bằng tên checkpoint thật từ `/health.models_loaded` |
 | "GPU H100 / VRAM 80GB" | Số thật từ `/api/cms/system/health` (RTX 3060 12GB) |
-| Storage Provider AWS/GCS/Azure (Settings) | Chỉ MinIO (đọc từ env, hiển thị read-only) |
+| Khối "Kết nối & Lưu trữ" (Settings): API Key, Storage Provider AWS/GCS/Azure, S3 Bucket Name | Bỏ hẳn (user 2026-11-12): key AI ở env máy chủ, lưu trữ cố định MinIO 3 bucket trong code — không có gì để cấu hình |
 
 ### 7.3. Task bổ sung
 
@@ -586,7 +586,7 @@ User bổ sung 2026-10-29 (INT-34/35): màn Highlight thêm nút “Tạo video 
 
 | # | Sub-task | ≤ | DoD |
 |---|---|---|---|
-| T3.1.15 | Màn 11 Settings: hooks settings, form 2 toggle + slider + key masked | 0.5d | PUT stub ok; slider đổi 75→80 thì heatmap/clip panel dùng 80 (đọc settings, bỏ hằng số) |
+| T3.1.15 | Màn 11 Settings: hooks settings, form 2 toggle + slider (key masked: đã bỏ 2026-11-12) | 0.5d | PUT stub ok; slider đổi 75→80 thì heatmap/clip panel dùng 80 (đọc settings, bỏ hằng số) |
 | T3.1.16 | Gộp màn 6+7 theo layout 3 cột Stitch; confidence % + warning đỏ; nút regenerate | 0.5d | Segment 62% hiện đỏ; regenerate thay draft; layout khớp `ph_t_m_t_t_ai/code.html` |
 
 ## 2026-10-28 — User-approved CMS planA override (INT-20/21)

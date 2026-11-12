@@ -167,7 +167,10 @@ CREATE TABLE system_settings (
 --   'auto_highlight_enabled'   = 'true'
 --   'auto_subtitle_enabled'    = 'true'
 --   'default_subtitle_lang'    = 'vi'   (chỉ 'vi' — ASR from-scratch chỉ train tiếng Việt)
---   'ai_service_api_key'       = 'sk-local-<random>' (key của inference-service :8001 TỰ DỰNG — không phải OpenAI; API GET trả masked)
+--   'ai_service_api_key'       = 'sk-local-<random>' — KHÔNG DÙNG (API 0.11.1, 2026-11-12): gateway lấy key từ env AI_SERVICE_KEY;
+--                                API GET vẫn trả masked để tương thích, PUT bỏ qua. Dòng seed giữ nguyên (không xóa dữ liệu).
+--   INT-59 (2026-11-12, không cần migration, thiếu dòng → mặc định): 'system_name'='AI Video CMS', 'display_timezone'='Asia/Ho_Chi_Minh',
+--                                'notify_failed_jobs'='true', 'notify_uncategorized_videos'='true', 'session_ttl_days'='7'
 
 -- Field trả API nhưng không lưu DB:
 -- playback_url được backend sinh từ raw_file_path/clip_file_path bằng MinIO presigned URL.

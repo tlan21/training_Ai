@@ -104,8 +104,8 @@ traning_ai/
 | GET | `/api/cms/jobs/{id}` | Chi tiết + `error_log` |
 | POST | `/api/cms/jobs/{id}/retry` | Chỉ khi `failed` → reset `pending`, re-produce Kafka từ stage lỗi |
 | POST | `/api/cms/jobs/{id}/cancel` | Chỉ khi `pending\|running` → `failed`, `error_log='canceled_by_user'` |
-| GET | `/api/cms/settings` | → `system_settings` (key AI trả masked `sk-local-••••`) |
-| PUT | `/api/cms/settings` | `{highlight_threshold?, asr_warning_threshold?, auto_highlight_enabled?, auto_subtitle_enabled?, ai_service_api_key?}` — **admin only** |
+| GET | `/api/cms/settings` | → `system_settings` (`ai_service_api_key` deprecated, luôn masked `sk-local-••••`; key thật ở env gateway) |
+| PUT | `/api/cms/settings` | `{highlight_threshold?, asr_warning_threshold?, auto_highlight_enabled?, auto_subtitle_enabled?, …}` — `ai_service_api_key` bị bỏ qua (0.11.1). Trường INT-59 (`system_name`, `display_timezone`, `notify_*`, `session_ttl_days`) **admin only**. Nguồn sự thật: `infra/openapi.yaml` |
 | GET | `/api/cms/system/health` | Proxy `GET :8001/health` → `{gpu_vram_used,gpu_util,models_loaded,queue_depth}` (số thật RTX 3060 12GB — không hard-code H100 như mock Stitch) |
 | POST | `/api/cms/clips` | `{video_id,title,start_time,end_time}` → row `clips(draft→processing)`, Kafka `clip.cut.requested` |
 | POST | `/api/cms/clips/{id}/publish` | Chỉ khi cut xong → `status='published'` |
