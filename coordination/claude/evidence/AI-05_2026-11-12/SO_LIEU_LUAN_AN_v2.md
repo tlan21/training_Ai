@@ -76,7 +76,18 @@ Log Kaggle gốc còn trên đĩa: `D:/data_training_ai/kout3/ai-core-train.log`
 | histogram màu | 0.026 | 0.060 | 0.095 | 472 |
 | template 16×16 | 0.094 | 0.178 | 0.226 | 100 |
 Split theo hiệp: train 82.482 / val 10.339 / test 10.227 frame (8.650 shot). Checkpoint chọn theo R@10 trên **val** (0.425, 10.339 cặp,
-gallery lớn hơn) ≠ tập báo cáo → không rò rỉ test. mAP (= MRR vì 1 dương/query): (điền khi đo lại)
+gallery lớn hơn) ≠ tập báo cáo → không rò rỉ test. mAP (= MRR vì 1 dương/query): đo lại bên dưới.
+
+**Đo lại ★ (`siamese_eval.py` → `siamese_eval.json`, CPU local, 2026-11-12).** Cùng giao thức: dựng lại shot test từ `frames_jpg_80.json`
+(ảnh đọc từ `frames_jpg_100`, cùng file) → đúng 4 hiệp / 10.227 frame; 1.000 query `randperm` seed 0. Việc bốc ảnh dương + jitter dùng RNG
+toàn cục (bản gốc không cố định) → lặp 5 lượt seed 0–4; lượt 0 dùng lại rng dataset 1337 như bản gốc.
+| mean ± std (5 lượt) | R@1 | R@5 | R@10 | median rank | **mAP (MRR)** |
+|---|---|---|---|---|---|
+| Siamese (`b4ded465`) | 0.361 ± 0.007 | 0.718 ± 0.009 | 0.806 ± 0.011 | 2 | **0.521 ± 0.007** |
+| histogram màu | 0.033 ± 0.006 | 0.068 ± 0.009 | 0.092 ± 0.008 | 487 | 0.055 ± 0.006 |
+| template 16×16 | 0.097 ± 0.011 | 0.182 ± 0.019 | 0.225 ± 0.016 | 112 | 0.145 ± 0.012 |
+Lượt 0: Siamese R@1 0.367 / R@5 0.725 / R@10 0.804 / mAP 0.526 — khớp log gốc (0.362 / 0.722 / 0.804) trong sai số jitter. Số chính thức cho
+luận án: giữ R@1/5 gốc (VERIFIED-HIST) + mAP 0.521 ± 0.007 (đo lại); Siamese hơn baseline tốt nhất (template) ~3,6× ở mAP.
 
 
 ## 6. Ablation A1 — ViT Post-LN (Transformer 2017) vs Pre-Norm RMSNorm + SwiGLU ★
