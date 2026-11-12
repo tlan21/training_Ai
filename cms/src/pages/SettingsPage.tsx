@@ -6,7 +6,6 @@ import { useChangePassword, useRevokeOtherSessions, useSettings, useUpdateSettin
 import { useToast } from "../components/common/Toast";
 import { Icon } from "../components/common/Icon";
 import { Skeleton, ErrorState } from "../components/common/Skeleton";
-import { useSystemHealth } from "../hooks/useAuth";
 import { useAuthStore } from "../stores/authStore";
 import { apiClient, errorMessage } from "../lib/apiClient";
 
@@ -33,7 +32,6 @@ export default function SettingsPage() {
   const isAdmin = useAuthStore((state) => state.user?.role) === "admin";
   const settings = useSettings();
   const update = useUpdateSettings();
-  const health = useSystemHealth({ include_metrics: true });
   const toast = useToast();
   const [draft, setDraft] = useState<Draft>(fromServer());
   const server = fromServer(settings.data);
@@ -74,9 +72,7 @@ export default function SettingsPage() {
           <div className="field"><label htmlFor="ui-language">Ngôn ngữ giao diện</label><div className="input-wrap"><select id="ui-language" className="input input--with-right-icon" defaultValue="vi" disabled><option value="vi">Tiếng Việt</option></select><span className="input-icon input-icon--right"><Icon name="expand_more" /></span></div></div>
         </section>}
         {tab === "ai" && <><section><h3>Tính năng AI</h3><ToggleCard icon="magic_button" title="Tự động đánh dấu (Auto-highlighting)" description="Tự động nhận diện các đoạn quan trọng bằng phân tích đa phương thức." checked={draft.auto_highlight_enabled} onChange={(value) => set("auto_highlight_enabled", value)} /><ToggleCard icon="closed_caption" title="Tạo phụ đề tự động" description="Bật tính năng tạo phụ đề tiếng Việt cho video." checked={draft.auto_subtitle_enabled} onChange={(value) => set("auto_subtitle_enabled", value)} /><div className="field"><label htmlFor="subtitle-language">Ngôn ngữ phụ đề mặc định</label><div className="input-wrap"><select id="subtitle-language" className="input input--with-right-icon" defaultValue="vi" disabled><option value="vi">Tiếng Việt</option></select><span className="input-icon input-icon--right"><Icon name="expand_more" /></span></div></div></section>
-          <section><div className="threshold-heading"><h3>Ngưỡng gợi ý AI</h3><span className="threshold-value">Theo model</span></div><div className="threshold-card"><p>Ngưỡng được AI xác định cho từng kết quả và hiển thị tại màn Highlight. Không điều chỉnh tại đây; thay đổi cài đặt không tính lại các clip đã tạo.</p></div></section>
-          <section><h3>Kết nối & Lưu trữ</h3><div className="settings-connection"><div className="field"><label htmlFor="ai-service-key"><Icon name="key" size={14} />AI Service API Key</label><input id="ai-service-key" className="input" type="password" value={settings.data?.ai_service_api_key ?? "sk-local-••••"} readOnly title="Key được cấu hình trên máy chủ" /></div><div className="field"><label htmlFor="storage-provider"><Icon name="cloud" size={14} />Storage Provider</label><div className="input-wrap"><select id="storage-provider" className="input input--with-right-icon" disabled defaultValue="MinIO"><option>MinIO</option></select><span className="input-icon input-icon--right"><Icon name="expand_more" /></span></div></div></div><div className="field"><label htmlFor="storage-buckets">S3 Bucket Name</label><input id="storage-buckets" className="input" value={health.data?.storage?.buckets.map((bucket) => bucket.name).join(" / ") ?? "Chưa đọc được bucket"} readOnly /></div></section>
-          {health.data?.storage_error && <p className="error-text" role="status">{health.data.storage_error}</p>}</>}
+          <section><div className="threshold-heading"><h3>Ngưỡng gợi ý AI</h3><span className="threshold-value">Theo model</span></div><div className="threshold-card"><p>Ngưỡng được AI xác định cho từng kết quả và hiển thị tại màn Highlight. Không điều chỉnh tại đây; thay đổi cài đặt không tính lại các clip đã tạo.</p></div></section></>}
         {tab === "notifications" && <section><h3>Thông báo trong CMS</h3>{adminNote}<p className="settings-note">Hiển thị trên chuông ở thanh công cụ CMS. Không gửi email hoặc thông báo đẩy.</p>
           <ToggleCard icon="error" title="Job xử lý lỗi" description="Báo khi có video xử lý thất bại cần thử lại hoặc kiểm tra." checked={draft.notify_failed_jobs} disabled={!isAdmin} onChange={(value) => set("notify_failed_jobs", value)} />
           <ToggleCard icon="category" title="Video chưa gán danh mục" description="Báo khi có video đã xử lý xong nhưng chưa được xác nhận danh mục." checked={draft.notify_uncategorized_videos} disabled={!isAdmin} onChange={(value) => set("notify_uncategorized_videos", value)} />

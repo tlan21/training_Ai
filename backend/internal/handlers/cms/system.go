@@ -246,9 +246,7 @@ func (h *SystemHandlers) UpdateSettings(c *gin.Context) {
 	if req.AutoSubtitleEnabled != nil {
 		values["auto_subtitle_enabled"] = strconv.FormatBool(*req.AutoSubtitleEnabled)
 	}
-	if req.AiServiceApiKey != nil && *req.AiServiceApiKey != "sk-local-••••" {
-		values["ai_service_api_key"] = *req.AiServiceApiKey
-	}
+	// 0.11.1: ai_service_api_key is deprecated and ignored — the gateway reads AI_SERVICE_KEY from its environment.
 	if err := h.settings.Update(c.Request.Context(), values); err != nil {
 		handlers.ErrorEnvelope(c, 500, "INTERNAL", "Unable to save settings")
 		return

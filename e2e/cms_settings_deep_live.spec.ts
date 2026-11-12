@@ -81,9 +81,8 @@ test('INT-45 every Settings control and four actual AI execution combinations', 
         const tab = page.getByRole('tab', { name, exact: true }); await expect(tab).toBeEnabled(); await tab.click(); await expect(tab).toHaveAttribute('aria-selected', 'true');
       }
       await page.getByRole('tab', { name: 'Cấu hình AI', exact: true }).click(); await expect(page.getByRole('tab', { name: 'Cấu hình AI', exact: true })).toHaveAttribute('aria-selected', 'true');
-      const key = page.getByLabel('AI Service API Key'); const keyBefore = await key.inputValue(); expect(keyBefore).toBe('sk-local-••••'); await expect(key).toHaveAttribute('readonly', ''); await expect(key).toHaveAttribute('title', 'Key được cấu hình trên máy chủ'); await key.focus(); await page.keyboard.press('Control+A'); await page.keyboard.type('INT45-not-a-key'); await expect(key).toHaveValue(keyBefore);
-      const bucket = page.getByLabel('S3 Bucket Name'); await expect(bucket).toHaveAttribute('readonly', ''); await bucket.focus(); await page.keyboard.press('Control+A'); await page.keyboard.type('INT45-not-a-bucket'); await expect(bucket).toHaveValue('raw-videos / clips');
-      await expect(page.getByLabel('Storage Provider')).toBeDisabled(); await expect(page.getByLabel('Storage Provider').locator('option')).toHaveCount(1); await expect(page.getByLabel('Storage Provider')).toHaveValue('MinIO');
+      // API 0.11.1 (user 2026-11-12): "Kết nối & Lưu trữ" removed — AI key is server env, storage is fixed MinIO buckets.
+      for (const label of ['AI Service API Key', 'S3 Bucket Name', 'Storage Provider']) await expect(page.getByLabel(label)).toHaveCount(0);
       await expect(page.getByLabel('Ngôn ngữ phụ đề mặc định')).toBeDisabled(); await expect(page.getByLabel('Ngôn ngữ phụ đề mặc định')).toHaveValue('vi'); await expect(page.getByLabel('Ngôn ngữ phụ đề mặc định').locator('option')).toHaveCount(1);
       await expect(page.getByText('Theo model', { exact: true })).toBeVisible(); await expect(page.getByRole('slider')).toHaveCount(0);
       await expect(button('Hủy bỏ')).toBeEnabled(); await expect(button('Lưu thay đổi')).toBeEnabled(); expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

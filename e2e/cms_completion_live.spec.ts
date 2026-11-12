@@ -143,10 +143,8 @@ test('Settings: actual flags/buckets, disabled tabs, dirty guard, save failure',
       const s = await get<Settings>('/api/cms/settings');
       await expect(page.getByLabel('Tự động đánh dấu (Auto-highlighting)', { exact: true })).toBeChecked({ checked: !!s.auto_highlight_enabled });
       await expect(page.getByLabel('Tạo phụ đề tự động', { exact: true })).toBeChecked({ checked: !!s.auto_subtitle_enabled });
-      await expect(page.locator('#storage-buckets')).toHaveValue(health.storage!.buckets.map(b => b.name).join(' / '));
-      for (const tab of ['Cài đặt chung', 'Thông báo', 'Bảo mật']) await expect(page.getByRole('tab', { name: tab })).toBeDisabled();
-      await expect(page.getByRole('tab', { name: 'Cấu hình AI' })).toBeEnabled();
-      await expect(page.locator('#ai-service-key')).toHaveAttribute('readonly', '');
+      await expect(page.locator('#storage-buckets, #ai-service-key, #storage-provider')).toHaveCount(0); // removed 0.11.1
+      for (const tab of ['Cài đặt chung', 'Cấu hình AI', 'Thông báo', 'Bảo mật']) await expect(page.getByRole('tab', { name: tab })).toBeEnabled(); // INT-59
     });
     await step(`${vp.width}: dirty guard dismiss keeps page, accept leaves without saving`, async () => {
       const before = flags(await get<Settings>('/api/cms/settings'));

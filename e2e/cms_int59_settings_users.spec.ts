@@ -78,6 +78,8 @@ for (const width of [390, 1440]) {
 
     // AI tab regression: both AI flags only
     await tab(page, 'Cấu hình AI').click(); await expect(page.getByText('Theo model', { exact: true })).toBeVisible();
+    await expect(page.getByText('Kết nối & Lưu trữ')).toHaveCount(0); await expect(page.getByLabel('AI Service API Key')).toHaveCount(0); // removed 0.11.1
+    await noOverflow(page); await shot(page, `settings-ai-admin-${width}`);
     await page.getByRole('checkbox', { name: 'Tự động đánh dấu (Auto-highlighting)' }).uncheck({ force: true }); await save.click();
     await expect.poll(() => calls.puts.length).toBe(3); expect(calls.puts.at(-1)).toEqual({ auto_highlight_enabled: false, auto_subtitle_enabled: true });
 

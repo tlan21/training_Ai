@@ -39,7 +39,7 @@ func TestSettings_ValidationMaskAndPersistenceErrors(t *testing.T) {
 		body   string
 		status int
 	}{
-		{`{"highlight_threshold":0,"auto_highlight_enabled":false,"ai_service_api_key":"sk-local-••••"}`, 200},
+		{`{"highlight_threshold":0,"auto_highlight_enabled":false,"ai_service_api_key":"sk-local-attempted-new-key"}`, 200}, // 0.11.1: key ignored
 		{`{"highlight_threshold":101}`, 422},
 		{`{"asr_warning_threshold":-1}`, 422},
 	} {

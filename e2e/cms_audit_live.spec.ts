@@ -330,7 +330,8 @@ test('INT-40 detailed CMS clicks against deployed services, without API mocks', 
     });
     await step('settings', 'Disabled tabs/read-only server config, cancel toggles, save/reload/restore', async () => {
       await goto('/settings'); for (const name of ['Cài đặt chung', 'Thông báo', 'Bảo mật']) await expect(page.getByRole('tab', { name, exact: true })).toBeDisabled();
-      await expect(page.getByLabel('AI Service API Key')).toHaveAttribute('readonly', ''); await expect(page.getByLabel('Storage Provider')).toBeDisabled(); await expect(page.getByLabel('S3 Bucket Name')).toHaveValue('raw-videos / clips'); await expect(page.getByLabel('Ngôn ngữ phụ đề mặc định')).toBeDisabled();
+      for (const label of ['AI Service API Key', 'Storage Provider', 'S3 Bucket Name']) await expect(page.getByLabel(label)).toHaveCount(0); // removed 0.11.1
+      await expect(page.getByLabel('Ngôn ngữ phụ đề mặc định')).toBeDisabled();
       const h = page.getByLabel('Tự động đánh dấu (Auto-highlighting)', { exact: true }); const s = page.getByLabel('Tạo phụ đề tự động', { exact: true });
       await h.setChecked(!settingsBefore!.auto_highlight_enabled); await s.setChecked(!settingsBefore!.auto_subtitle_enabled); await button('Hủy bỏ').click(); await expect(h).toBeChecked({ checked: settingsBefore!.auto_highlight_enabled });
       await h.setChecked(!settingsBefore!.auto_highlight_enabled); await s.setChecked(!settingsBefore!.auto_subtitle_enabled); await clickAPI('Lưu thay đổi', '/api/cms/settings', 'PUT'); await page.reload();
