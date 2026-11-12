@@ -1,0 +1,441 @@
+[
+  {
+    "step": 0,
+    "phase": "original_baseline",
+    "domains": {
+      "vivos": {
+        "samples": 1093,
+        "wer": 0.309371533423982,
+        "cer": 0.11994303461393165,
+        "corpus_wer": 0.2891226548096736,
+        "corpus_cer": 0.11006077831774752
+      },
+      "fleurs": {
+        "samples": 361,
+        "wer": 0.7000416550113053,
+        "cer": 0.3354892163786074,
+        "corpus_wer": 0.7153186156367493,
+        "corpus_cer": 0.3468368720420303
+      },
+      "minilibrispeech": {
+        "samples": 580,
+        "wer": 1.1373720154060194,
+        "cer": 0.6851258053220238,
+        "corpus_wer": 1.0810755125167404,
+        "corpus_cer": 0.6801992625715855
+      },
+      "real_domain_user_review": {
+        "samples": 10,
+        "wer": 0.9384040891361545,
+        "cer": 0.5808681834358105,
+        "corpus_wer": 0.9375591296121097,
+        "corpus_cer": 0.5824784571194092
+      }
+    }
+  },
+  {
+    "step": 0,
+    "phase": "expanded_initial",
+    "domains": {
+      "vivos": {
+        "samples": 1093,
+        "wer": 0.309371533423982,
+        "cer": 0.11994303461393165,
+        "corpus_wer": 0.2891226548096736,
+        "corpus_cer": 0.11006077831774752
+      },
+      "fleurs": {
+        "samples": 361,
+        "wer": 0.7000416550113053,
+        "cer": 0.3354892163786074,
+        "corpus_wer": 0.7153186156367493,
+        "corpus_cer": 0.3468368720420303
+      },
+      "minilibrispeech": {
+        "samples": 580,
+        "wer": 1.1373720154060194,
+        "cer": 0.6851258053220238,
+        "corpus_wer": 1.0810755125167404,
+        "corpus_cer": 0.6801992625715855
+      },
+      "real_domain_user_review": {
+        "samples": 10,
+        "wer": 0.9384040891361545,
+        "cer": 0.5808681834358105,
+        "corpus_wer": 0.9375591296121097,
+        "corpus_cer": 0.5824784571194092
+      }
+    },
+    "selection_wer": 0.7712973232443653
+  },
+  {
+    "step": 100,
+    "phase": "finetune",
+    "domains": {
+      "vivos": {
+        "samples": 1093,
+        "wer": 0.3103041243238352,
+        "cer": 0.12132052359825844,
+        "corpus_wer": 0.28923110291725407,
+        "corpus_cer": 0.1109997335397343
+      },
+      "fleurs": {
+        "samples": 361,
+        "wer": 0.7090207593673609,
+        "cer": 0.3399273735339748,
+        "corpus_wer": 0.7233201581027668,
+        "corpus_cer": 0.3494854760974339
+      },
+      "minilibrispeech": {
+        "samples": 580,
+        "wer": 1.1591459300585827,
+        "cer": 0.6740820045472545,
+        "corpus_wer": 1.1037395693829195,
+        "corpus_cer": 0.6663528673413353
+      },
+      "real_domain_user_review": {
+        "samples": 10,
+        "wer": 0.9244058654221238,
+        "cer": 0.5355319319636614,
+        "corpus_wer": 0.924314096499527,
+        "corpus_cer": 0.536315141567501
+      }
+    },
+    "raw_mean_wer": 0.7757191697929756,
+    "guard_eligible": false,
+    "selection_wer": 0.7712973232443653
+  },
+  {
+    "step": 200,
+    "phase": "finetune",
+    "domains": {
+      "vivos": {
+        "samples": 1093,
+        "wer": 0.3142010902265935,
+        "cer": 0.12181015572294719,
+        "corpus_wer": 0.29340635505910423,
+        "corpus_cer": 0.11173567141642664
+      },
+      "fleurs": {
+        "samples": 361,
+        "wer": 0.7190616145678119,
+        "cer": 0.35185844435237673,
+        "corpus_wer": 0.7345030367299721,
+        "corpus_cer": 0.36500803265164344
+      },
+      "minilibrispeech": {
+        "samples": 580,
+        "wer": 1.068036350799107,
+        "cer": 0.6892491670468944,
+        "corpus_wer": 1.027608942000618,
+        "corpus_cer": 0.690789989801522
+      },
+      "real_domain_user_review": {
+        "samples": 10,
+        "wer": 0.9307419620303323,
+        "cer": 0.609155294692964,
+        "corpus_wer": 0.9318826868495743,
+        "corpus_cer": 0.6116126384899466
+      }
+    },
+    "raw_mean_wer": 0.7580102544059613,
+    "guard_eligible": false,
+    "selection_wer": 0.7712973232443653
+  },
+  {
+    "step": 300,
+    "phase": "finetune",
+    "domains": {
+      "vivos": {
+        "samples": 1093,
+        "wer": 0.3105970472532194,
+        "cer": 0.12082101371767028,
+        "corpus_wer": 0.2889057585945125,
+        "corpus_cer": 0.11045412442425549
+      },
+      "fleurs": {
+        "samples": 361,
+        "wer": 0.6948560417971896,
+        "cer": 0.3276073653931814,
+        "corpus_wer": 0.7077990938012146,
+        "corpus_cer": 0.33708914072337287
+      },
+      "minilibrispeech": {
+        "samples": 580,
+        "wer": 1.1133037324523924,
+        "cer": 0.6674376354284077,
+        "corpus_wer": 1.0619140826207891,
+        "corpus_cer": 0.6649015454616772
+      },
+      "real_domain_user_review": {
+        "samples": 10,
+        "wer": 0.9155318146753718,
+        "cer": 0.5537138243203874,
+        "corpus_wer": 0.9167455061494797,
+        "corpus_cer": 0.5549856380796061
+      }
+    },
+    "raw_mean_wer": 0.7585721590445433,
+    "guard_eligible": false,
+    "selection_wer": 0.7712973232443653
+  },
+  {
+    "step": 400,
+    "phase": "finetune",
+    "domains": {
+      "vivos": {
+        "samples": 1093,
+        "wer": 0.307896220030356,
+        "cer": 0.12084671147153829,
+        "corpus_wer": 0.2878212775187073,
+        "corpus_cer": 0.11087284769892528
+      },
+      "fleurs": {
+        "samples": 361,
+        "wer": 0.6699561226771013,
+        "cer": 0.3120443405352766,
+        "corpus_wer": 0.6800347054853948,
+        "corpus_cer": 0.319113368937519
+      },
+      "minilibrispeech": {
+        "samples": 580,
+        "wer": 1.1769633661492227,
+        "cer": 0.6473808524741144,
+        "corpus_wer": 1.124446275883383,
+        "corpus_cer": 0.6399741115556602
+      },
+      "real_domain_user_review": {
+        "samples": 10,
+        "wer": 0.8970905380971386,
+        "cer": 0.5038599514378815,
+        "corpus_wer": 0.8978240302743614,
+        "corpus_cer": 0.5049240869922035
+      }
+    },
+    "raw_mean_wer": 0.7629765617384546,
+    "guard_eligible": false,
+    "selection_wer": 0.7712973232443653
+  },
+  {
+    "step": 500,
+    "phase": "finetune",
+    "domains": {
+      "vivos": {
+        "samples": 1093,
+        "wer": 0.30499508158470534,
+        "cer": 0.11917416751915472,
+        "corpus_wer": 0.28467628239887216,
+        "corpus_cer": 0.1094009719455406
+      },
+      "fleurs": {
+        "samples": 361,
+        "wer": 0.6697009795991217,
+        "cer": 0.3123555627088025,
+        "corpus_wer": 0.6793598766027186,
+        "corpus_cer": 0.3192436281533585
+      },
+      "minilibrispeech": {
+        "samples": 580,
+        "wer": 1.1343574905055458,
+        "cer": 0.6498101869827646,
+        "corpus_wer": 1.0832388997630575,
+        "corpus_cer": 0.6446418765199655
+      },
+      "real_domain_user_review": {
+        "samples": 10,
+        "wer": 0.8925101279442529,
+        "cer": 0.49974577760458755,
+        "corpus_wer": 0.8940397350993378,
+        "corpus_cer": 0.5006155108740254
+      }
+    },
+    "raw_mean_wer": 0.7503909199084065,
+    "guard_eligible": true,
+    "selection_wer": 0.7503909199084065
+  },
+  {
+    "step": 600,
+    "phase": "finetune",
+    "domains": {
+      "vivos": {
+        "samples": 1093,
+        "wer": 0.30521815223169657,
+        "cer": 0.11945610832109003,
+        "corpus_wer": 0.2853269710443553,
+        "corpus_cer": 0.10974356371572497
+      },
+      "fleurs": {
+        "samples": 361,
+        "wer": 0.6649562869332337,
+        "cer": 0.3111889190269832,
+        "corpus_wer": 0.6755037115588547,
+        "corpus_cer": 0.31835352351178847
+      },
+      "minilibrispeech": {
+        "samples": 580,
+        "wer": 1.1316952486803131,
+        "cer": 0.6473426473876719,
+        "corpus_wer": 1.0823117338003503,
+        "corpus_cer": 0.6425433435318114
+      },
+      "real_domain_user_review": {
+        "samples": 10,
+        "wer": 0.8902913746047497,
+        "cer": 0.4992716919439085,
+        "corpus_wer": 0.8921475875118259,
+        "corpus_cer": 0.5010258514567091
+      }
+    },
+    "raw_mean_wer": 0.7480402656124983,
+    "guard_eligible": true,
+    "selection_wer": 0.7480402656124983
+  },
+  {
+    "step": 700,
+    "phase": "finetune",
+    "domains": {
+      "vivos": {
+        "samples": 1093,
+        "wer": 0.30398075555768767,
+        "cer": 0.1186218225133266,
+        "corpus_wer": 0.2842967140223403,
+        "corpus_cer": 0.10909644592759894
+      },
+      "fleurs": {
+        "samples": 361,
+        "wer": 0.668576072213289,
+        "cer": 0.3129354432608593,
+        "corpus_wer": 0.678781451846139,
+        "corpus_cer": 0.3199600538404759
+      },
+      "minilibrispeech": {
+        "samples": 580,
+        "wer": 1.1251197543254983,
+        "cer": 0.6413418275914333,
+        "corpus_wer": 1.0766457195838055,
+        "corpus_cer": 0.6364438691456813
+      },
+      "real_domain_user_review": {
+        "samples": 10,
+        "wer": 0.9015776471029533,
+        "cer": 0.517111728887482,
+        "corpus_wer": 0.902554399243141,
+        "corpus_cer": 0.5184653262207632
+      }
+    },
+    "raw_mean_wer": 0.749813557299857,
+    "guard_eligible": true,
+    "selection_wer": 0.749813557299857
+  },
+  {
+    "step": 800,
+    "phase": "finetune",
+    "domains": {
+      "vivos": {
+        "samples": 1093,
+        "wer": 0.30370900831605874,
+        "cer": 0.1190086268497031,
+        "corpus_wer": 0.28435093807613054,
+        "corpus_cer": 0.10945172628186421
+      },
+      "fleurs": {
+        "samples": 361,
+        "wer": 0.6636599893870259,
+        "cer": 0.3088231483697062,
+        "corpus_wer": 0.6724187795237636,
+        "corpus_cer": 0.3151621727237202
+      },
+      "minilibrispeech": {
+        "samples": 580,
+        "wer": 1.1466052255111123,
+        "cer": 0.6367066516990365,
+        "corpus_wer": 1.0962192232409602,
+        "corpus_cer": 0.6311485055307131
+      },
+      "real_domain_user_review": {
+        "samples": 10,
+        "wer": 0.8881298001655585,
+        "cer": 0.496201364125458,
+        "corpus_wer": 0.8902554399243141,
+        "corpus_cer": 0.4971276159212146
+      }
+    },
+    "raw_mean_wer": 0.7505260058449389,
+    "guard_eligible": true,
+    "selection_wer": 0.7505260058449389
+  },
+  {
+    "step": 900,
+    "phase": "finetune",
+    "domains": {
+      "vivos": {
+        "samples": 1093,
+        "wer": 0.30311818992743034,
+        "cer": 0.118728127383557,
+        "corpus_wer": 0.28380869753822796,
+        "corpus_cer": 0.10913451167984164
+      },
+      "fleurs": {
+        "samples": 361,
+        "wer": 0.6664693748917186,
+        "cer": 0.3096123547585199,
+        "corpus_wer": 0.6753109033066615,
+        "corpus_cer": 0.31618253658112977
+      },
+      "minilibrispeech": {
+        "samples": 580,
+        "wer": 1.1403015664739249,
+        "cer": 0.6343456032294983,
+        "corpus_wer": 1.089626043061708,
+        "corpus_cer": 0.6279908998195654
+      },
+      "real_domain_user_review": {
+        "samples": 10,
+        "wer": 0.888418408073238,
+        "cer": 0.4986203212922581,
+        "corpus_wer": 0.8902554399243141,
+        "corpus_cer": 0.4997948297086582
+      }
+    },
+    "raw_mean_wer": 0.749576884841578,
+    "guard_eligible": true,
+    "selection_wer": 0.749576884841578
+  },
+  {
+    "step": 1000,
+    "phase": "finetune",
+    "domains": {
+      "vivos": {
+        "samples": 1093,
+        "wer": 0.30243713777301906,
+        "cer": 0.11824729476375831,
+        "corpus_wer": 0.2834291291616961,
+        "corpus_cer": 0.10881729707781909
+      },
+      "fleurs": {
+        "samples": 361,
+        "wer": 0.6624075150657172,
+        "cer": 0.30792057798494515,
+        "corpus_wer": 0.6707799093801214,
+        "corpus_cer": 0.31438061742868306
+      },
+      "minilibrispeech": {
+        "samples": 580,
+        "wer": 1.1516171780870441,
+        "cer": 0.6328881081856153,
+        "corpus_wer": 1.1010610899350983,
+        "corpus_cer": 0.6258727543735781
+      },
+      "real_domain_user_review": {
+        "samples": 10,
+        "wer": 0.8876797973914027,
+        "cer": 0.49796509547767487,
+        "corpus_wer": 0.8893093661305582,
+        "corpus_cer": 0.49917931883463273
+      }
+    },
+    "raw_mean_wer": 0.7510354070792957,
+    "guard_eligible": true,
+    "selection_wer": 0.7510354070792957
+  }
+]

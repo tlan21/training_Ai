@@ -3,6 +3,7 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
+- **2026-11-12:** AI-31 DONE — football replay v3 (28 đoạn chép tay) guard đạt nhưng test v2 FAIL (CER −0,4 điểm, WER +3,5, CI chạm 0); ASR active vẫn `7c497d43`. Không task AI nào IN_PROGRESS.
 - **2026-11-11 (nhãn bóng đá đợt 3):** user xuất review_v1 lần 2 → `received_v1_r2/` (export sha256 `5ab3daf2…`, intake approved `54b140d6…`: 51 = 30 test (không đổi chữ, baseline active khớp 73,56/106,04) + 21 train (+7 mới); 68 chờ). Nhãn train người bóng đá hiện có: v1 21 + v2 7 = 28 đoạn (~9 phút). Còn chép: v1 67 + v2 81 = 148. `received_v1/` (nguồn test khóa) KHÔNG ghi đè.
 - **2026-11-11:** AI-30 DONE — test ASR bóng đá v2 59 đoạn/9 kênh (user chép 29 đoạn mới); AI-29 phiên 3 FAIL (CER 74,6→81,2%, im quá mức trên tiếng ồn sân) → AI-29 đóng, ASR active vẫn `7c497d43`. Không task AI nào IN_PROGRESS. Server :8892 (review) chạy bằng `D:/tmp/ai25/review_server.cmd`.
 - **2026-11-09:** bản vá bảo mật đã triển khai (gateway/client int11-843a56e, cms int11-6288d60, fixture 64/64; infra restart unless-stopped).

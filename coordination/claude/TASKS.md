@@ -34,7 +34,7 @@ Backlog ứng dụng 32 ID INT: `coordination/claude/OPEN_TASKS.md` (tick + evid
 | AI-28 | T1.4 | Phụ đề creator (thủ công) trên video bóng đá CC, user duyệt mẫu theo kênh → dữ liệu ASR bóng đá nhanh hơn chép tay | DONE (2026-11-06) — guard đạt (bước 900) nhưng test bóng đá FAIL (CER 73,56→73,32%, WER 106→116%); VIVOS/FLEURS tốt hơn → KHÔNG thay ASR | user 2026-11-06 "Làm" |
 | AI-29 | T1.4 | ASR lớn hơn (384×12, 25,6M) train TỪ ĐẦU trên toàn bộ dữ liệu hợp lệ (~50 h); phiên thử 1 (12k bước) trước | DONE (2026-11-11, không promote; lần chấm cuối AI-30 FAIL) — 2 phiên 24k bước: VIVOS/FLEURS test tốt hơn nhiều (FLEURS CER 34→20,5%) nhưng bóng đá FAIL (73,6→78,4%, 5 đoạn bịa chữ trên nhạc/tiếng sân); phiên 3 "dạy im lặng": bóng đá CER 73,6→70,4%, WER 106→97%, nhưng CI ΔCER [−12,6; +7,6] chạm 0 → FAIL; không thay ASR | user 2026-11-06 "Train ASR lớn hơn từ đầu" + "Chạy thử 1 phiên trước" |
 | AI-30 | T1.4 | Mở rộng test ASR bóng đá 30 → ~61 đoạn (9 kênh) bằng nhãn người: review_v2 #1–31 (3 kênh test mới, chưa từng train) → chấm lại 1 lần AI-29 phiên 3 theo cổng đăng ký trước | DONE (2026-11-11) — test v2 59 đoạn: phiên 3 CER 74,6→81,2% (ΔCER +6,6 [+0,6; +12,8]) → FAIL, không thay; model mới im quá mức trên tiếng ồn sân; `evidence/AI-30_2026-11-11/` | user 2026-11-09 "hãy làm theo bạn đề xuất" |
-| AI-31 | T1.4 | ASR bóng đá: fine-tune từ active `7c497d43` với 28 đoạn bình luận chép tay (v1 21 + v2 7) + replay news, công thức football-replay-v2 bỏ creator | IN_PROGRESS (2026-11-11) — Kaggle `asr-football-replay-guarded-v3` RUNNING từ 17:06 (dataset `asr-football-replay-v3`) | user 2026-11-11 "C. Train ngay với 28 đoạn" |
+| AI-31 | T1.4 | ASR bóng đá: fine-tune từ active `7c497d43` với 28 đoạn bình luận chép tay (v1 21 + v2 7) + replay news, công thức football-replay-v2 bỏ creator | DONE (2026-11-12) — guard đạt (bước 600) nhưng test bóng đá v2: CER 74,6→74,2%, WER 103,3→106,8%, CI ΔCER [−2,3; +2,0] → FAIL, không thay; `evidence/AI-31_2026-11-12/` | user 2026-11-11 "C. Train ngay với 28 đoạn" |
 | AI-12 | T1.7 | D18-B: Two-Tower v2 cho sản phẩm (dữ liệu thật → train → quality gate → API) | BLOCKED ⇐ bundle INT-13 (phần độc lập xong 2026-10-26) | dữ liệu tương tác thật từ Codex (đề xuất INT-13) |
 | AI-09 | T1.7 | Two-Tower phía AI: embedding, schema, export, version, kiểm thử dữ liệu; chỉ sandbox (D14) | DONE (2026-10-26; sandbox + artifact; product → AI-12 theo D18) | HC-04 (sandbox READY) |
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | DONE (02a 2026-10-27 · 02b user duyệt 51/60 2026-10-28 · 02c guard loại, không promote) · D23 dừng cho MVP | — |
@@ -217,7 +217,7 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   ```
 
 ### AI-31 — ASR football replay v3 (đăng ký trước 2026-11-11, trước khi train)
-- Status: IN_PROGRESS. User chọn "C. Train ngay với 28 đoạn" (chép tay 176 đoạn quá lâu). Kỳ vọng thật: thay đổi nhỏ (bóng đá ~5% mẫu).
+- Status: DONE (2026-11-12) — FAIL, không promote (`evidence/AI-31_2026-11-12/README.md`). User chọn "C. Train ngay với 28 đoạn" (chép tay 176 đoạn quá lâu). Kỳ vọng thật: thay đổi nhỏ (bóng đá ~5% mẫu).
 - Dữ liệu: gói football replay v1 (VIVOS/FLEURS/MLS + 81 news + 14 bóng đá; val 10 news đóng băng) + 14 đoạn bóng đá mới HUMAN_VERIFIED
   (`received_v1_r2` 7 + `received_v2` 7, chỉ split train, kênh train) → domain train 109; không phụ đề creator, không non-speech.
 - Công thức `asr-football-replay-v3` = v2 (1000 bước, eval mỗi 100, lấy mẫu vivos .35/fleurs .25/mls .2/domain .2, seed 1337,
