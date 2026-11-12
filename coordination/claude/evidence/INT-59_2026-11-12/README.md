@@ -54,8 +54,12 @@ Task + acceptance: `coordination/claude/OPEN_TASKS.md` (INT-59). Stitch only des
   unused), Storage Provider a locked one-option select, bucket names hard-coded (`raw-videos`/`clips`/`thumbnails`).
 - `e9323d2` contract 0.11.1: `ai_service_api_key` `deprecated` in `Settings`/`SettingsUpdate`; `3c3b33b` gateway ignores writes, CMS AI tab
   without the block (Settings no longer polls `/system/health`); old specs assert absence. Docs: `.claude/cms_ui_spec.md`, `features.md`,
-  `database_schema.md`, `plan/00_master_plan.md`, `plan/03_cms_ui_plan.md` (incl. CẮT-list), `infra/README.md`. `.opencode/**` is an old
-  mirror (last change 20e9b9f) and was not edited.
+  `database_schema.md`, `plan/00_master_plan.md`, `plan/03_cms_ui_plan.md` (incl. CẮT-list), `infra/README.md`. `.opencode/**` was an old
+  mirror (last change 20e9b9f): its 19 tracked doc copies were removed on user request (OpenCode CLI install files there are untracked, kept).
+- Dead-code review: staticcheck U1000 + `tsc --noUnusedLocals` clean; removed the now-unread `SystemSettings.AIServiceAPIKey` (+ its column in
+  `SettingsRepo.Get`) and the unused CMS `cloud` icon (`226e7e6`, real-PG 12/12 → `pg_real_tests_deadcode.txt`). Pre-existing dead code left
+  as is (user picked none): `backend/internal/handlers/stubs.go` (no callers since a75ea5c), `.threshold-card input` slider CSS, role steps in
+  `e2e/cms_audit_edges_live.spec.ts`, seed row `ai_service_api_key` in `002_seed.sql`.
 - Verified: go vet + handler/contract tests PASS (key sent → not saved), CMS tsc/build, fixture 74 passed / 4 skipped (`fixture/settings-ai-admin-*.png`),
   deployed `int59-3c3b33b` (env hash unchanged `56e23179db570721`), live: PUT key → 200 with `md5(value)`+`updated_at` unchanged, GET masked,
   live parity 390 PASS (AI tab without the block). `live/manifest_after_0.11.1.txt` = before except sessions 376→377: one admin@local
