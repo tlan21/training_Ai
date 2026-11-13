@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Video AI Platform — Public + CMS API
-  version: 0.14.1
+  version: 0.15.0
   description: >
     Contract-first (master plan §2). Nguồn sự thật cho gateway Go (oapi-codegen)
     và FE types (openapi-typescript). Điểm highlight thang 0–100; similarity/score 0–1.
@@ -985,6 +985,48 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/Error" }
 
+  /api/cms/videos/apply-category-suggestions:
+    post:
+      tags: [cms-videos]
+      summary: "0.15.0: duyệt tất cả gợi ý danh mục AI — gán category_match cho mọi video đã xử lý chưa có danh mục (admin|editor)"
+      responses:
+        "200":
+          description: kết quả
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [applied, skipped]
+                properties:
+                  applied: { type: integer, minimum: 0, description: Số video vừa được gán danh mục }
+                  skipped: { type: integer, minimum: 0, description: Video chưa có danh mục nhưng không có gợi ý khớp danh mục nào }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  /api/cms/me/alerts-seen:
+    get:
+      tags: [cms-system]
+      summary: "0.15.0: số cảnh báo đã xem lần cuối của tài khoản (chuông CMS chỉ báo phần tăng thêm)"
+      responses:
+        "200":
+          description: snapshot
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/AlertsSeen" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+    put:
+      tags: [cms-system]
+      summary: "0.15.0: lưu snapshot đã xem (số job lỗi / video chưa gán danh mục đang thấy)"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/AlertsSeen" }
+      responses:
+        "204": { description: Đã lưu }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "422": { $ref: "#/components/responses/ValidationError" }
+
   /api/cms/me/sessions/revoke-others:
     parameters: [ { $ref: "#/components/parameters/AppHeader" } ]
     post:
@@ -1487,6 +1529,14 @@ components:
         created_at: { type: string, format: date-time }
         updated_at: { type: string, format: date-time }
 
+    AlertsSeen:
+      type: object
+      required: [failed_jobs, uncategorized_videos]
+      properties:
+        failed_jobs: { type: integer, minimum: 0 }
+        uncategorized_videos: { type: integer, minimum: 0 }
+        seen_at: { type: string, format: date-time, nullable: true, readOnly: true }
+
     UserNotification:
       type: object
       required: [id, kind, clip_id, video_id, title, created_at, read]
@@ -1647,6 +1697,7 @@ components:
       properties:
         category_suggestion_enabled: { type: boolean, description: "Enable mapping AI class output into an editorial category suggestion, not automatic publishing." }
         category_keyword_enabled: { type: boolean, description: Allow deterministic keyword rules to suggest a category before the AI class fallback. }
+        category_auto_apply: { type: boolean, description: "0.15.0: assign the AI/keyword category suggestion to the video when processing completes if it has no category (default true; editors can still change it)." }
         highlight_threshold: { type: integer, deprecated: true, description: Giá trị hiển thị cũ; không thay đổi ngưỡng model hoặc đề xuất AI. CMS đọc CmsAnalysis.clip_threshold theo từng video. }
         asr_warning_threshold: { type: integer }
         auto_highlight_enabled: { type: boolean }
@@ -1664,6 +1715,7 @@ components:
       properties:
         category_suggestion_enabled: { type: boolean }
         category_keyword_enabled: { type: boolean }
+        category_auto_apply: { type: boolean }
         highlight_threshold: { type: integer, minimum: 0, maximum: 100, deprecated: true, description: Giữ tương thích client cũ; không điều khiển model hoặc tính lại clip. }
         asr_warning_threshold: { type: integer, minimum: 0, maximum: 100 }
         auto_highlight_enabled: { type: boolean }

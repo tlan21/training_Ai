@@ -2247,6 +2247,110 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/cms/videos/apply-category-suggestions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 0.15.0: duyệt tất cả gợi ý danh mục AI — gán category_match cho mọi video đã xử lý chưa có danh mục (admin|editor) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description kết quả */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @description Số video vừa được gán danh mục */
+                            applied: number;
+                            /** @description Video chưa có danh mục nhưng không có gợi ý khớp danh mục nào */
+                            skipped: number;
+                        };
+                    };
+                };
+                401: components["responses"]["Unauthorized"];
+                403: components["responses"]["Forbidden"];
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/cms/me/alerts-seen": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 0.15.0: số cảnh báo đã xem lần cuối của tài khoản (chuông CMS chỉ báo phần tăng thêm) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description snapshot */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AlertsSeen"];
+                    };
+                };
+                401: components["responses"]["Unauthorized"];
+            };
+        };
+        /** 0.15.0: lưu snapshot đã xem (số job lỗi / video chưa gán danh mục đang thấy) */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["AlertsSeen"];
+                };
+            };
+            responses: {
+                /** @description Đã lưu */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                401: components["responses"]["Unauthorized"];
+                422: components["responses"]["ValidationError"];
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/cms/me/sessions/revoke-others": {
         parameters: {
             query?: never;
@@ -2896,6 +3000,12 @@ export interface components {
             /** Format: date-time */
             updated_at: string;
         };
+        AlertsSeen: {
+            failed_jobs: number;
+            uncategorized_videos: number;
+            /** Format: date-time */
+            readonly seen_at?: string | null;
+        };
         UserNotification: {
             id: string;
             /**
@@ -3023,6 +3133,8 @@ export interface components {
             category_suggestion_enabled?: boolean;
             /** @description Allow deterministic keyword rules to suggest a category before the AI class fallback. */
             category_keyword_enabled?: boolean;
+            /** @description 0.15.0: assign the AI/keyword category suggestion to the video when processing completes if it has no category (default true; editors can still change it). */
+            category_auto_apply?: boolean;
             /**
              * @deprecated
              * @description Giá trị hiển thị cũ; không thay đổi ngưỡng model hoặc đề xuất AI. CMS đọc CmsAnalysis.clip_threshold theo từng video.
@@ -3054,6 +3166,7 @@ export interface components {
         SettingsUpdate: {
             category_suggestion_enabled?: boolean;
             category_keyword_enabled?: boolean;
+            category_auto_apply?: boolean;
             /**
              * @deprecated
              * @description Giữ tương thích client cũ; không điều khiển model hoặc tính lại clip.
