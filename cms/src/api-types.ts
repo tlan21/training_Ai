@@ -415,7 +415,26 @@ export interface paths {
         };
         put?: never;
         post?: never;
-        delete?: never;
+        /** Xóa toàn bộ lịch sử xem — ẩn mọi lần xem trước thời điểm này (sự kiện giữ cho train; xem lại sau đó hiện lại) */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Đã xóa */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                401: components["responses"]["Unauthorized"];
+            };
+        };
         options?: never;
         head?: never;
         patch?: never;
@@ -456,6 +475,497 @@ export interface paths {
         put?: never;
         post?: never;
         delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/users/me/likes/{clip_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                clip_id: components["parameters"]["ClipId"];
+            };
+            cookie?: never;
+        };
+        get?: never;
+        /** Thích clip (idempotent). Lần đầu ghi thêm 1 sự kiện `like` cho Two-Tower (role client). */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    clip_id: components["parameters"]["ClipId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Đã thích */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                401: components["responses"]["Unauthorized"];
+                404: components["responses"]["NotFound"];
+            };
+        };
+        post?: never;
+        /** Bỏ thích (idempotent). Sự kiện tương tác cũ được giữ (quyết định user INT-61). */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    clip_id: components["parameters"]["ClipId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Đã bỏ thích */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                401: components["responses"]["Unauthorized"];
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/users/me/saved": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Danh sách xem sau (mới lưu trước) */
+        get: {
+            parameters: {
+                query?: {
+                    cursor?: components["parameters"]["Cursor"];
+                    limit?: components["parameters"]["Limit"];
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description items + next_cursor */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ClipPage"];
+                    };
+                };
+                401: components["responses"]["Unauthorized"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/users/me/saved/{clip_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                clip_id: components["parameters"]["ClipId"];
+            };
+            cookie?: never;
+        };
+        get?: never;
+        /** Thêm vào xem sau (idempotent). Lần đầu ghi thêm 1 sự kiện `save` (role client). */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    clip_id: components["parameters"]["ClipId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Đã lưu */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                401: components["responses"]["Unauthorized"];
+                404: components["responses"]["NotFound"];
+            };
+        };
+        post?: never;
+        /** Bỏ khỏi xem sau (idempotent) */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    clip_id: components["parameters"]["ClipId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Đã bỏ */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                401: components["responses"]["Unauthorized"];
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/users/me/clip-states": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Trạng thái thích / xem sau / danh sách của tối đa 50 clip (để vẽ nút) */
+        get: {
+            parameters: {
+                query: {
+                    /** @description Danh sách clip id phân cách bằng dấu phẩy (1–50) */
+                    clip_ids: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description một phần tử cho mỗi clip id công khai (clip không tồn tại/không công khai bị bỏ qua) */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            items: components["schemas"]["ClipState"][];
+                        };
+                    };
+                };
+                401: components["responses"]["Unauthorized"];
+                422: components["responses"]["ValidationError"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/users/me/history/{clip_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                clip_id: components["parameters"]["ClipId"];
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Xóa 1 clip khỏi lịch sử xem (ẩn các lần xem trước thời điểm này; sự kiện giữ cho train; idempotent) */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    clip_id: components["parameters"]["ClipId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Đã xóa */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                401: components["responses"]["Unauthorized"];
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/users/me/lists": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Danh sách riêng của tôi (mới cập nhật trước, tối đa 50) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description lists */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            items: components["schemas"]["UserList"][];
+                        };
+                    };
+                };
+                401: components["responses"]["Unauthorized"];
+            };
+        };
+        put?: never;
+        /** Tạo danh sách (tên 1–60 ký tự sau khi bỏ khoảng trắng đầu/cuối; trùng tên → 409; quá 50 → 409) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["UserListWrite"];
+                };
+            };
+            responses: {
+                /** @description Đã tạo */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["UserList"];
+                    };
+                };
+                401: components["responses"]["Unauthorized"];
+                409: components["responses"]["Conflict"];
+                422: components["responses"]["ValidationError"];
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/users/me/lists/{list_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                list_id: components["parameters"]["ListId"];
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Xóa danh sách (clip không bị xóa) */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    list_id: components["parameters"]["ListId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Đã xóa */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                401: components["responses"]["Unauthorized"];
+                404: components["responses"]["NotFound"];
+            };
+        };
+        options?: never;
+        head?: never;
+        /** Đổi tên danh sách */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    list_id: components["parameters"]["ListId"];
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["UserListWrite"];
+                };
+            };
+            responses: {
+                /** @description Đã đổi tên */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["UserList"];
+                    };
+                };
+                401: components["responses"]["Unauthorized"];
+                404: components["responses"]["NotFound"];
+                409: components["responses"]["Conflict"];
+                422: components["responses"]["ValidationError"];
+            };
+        };
+        trace?: never;
+    };
+    "/api/users/me/lists/{list_id}/items": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                list_id: components["parameters"]["ListId"];
+            };
+            cookie?: never;
+        };
+        /** Clip trong danh sách (mới thêm trước) */
+        get: {
+            parameters: {
+                query?: {
+                    cursor?: components["parameters"]["Cursor"];
+                    limit?: components["parameters"]["Limit"];
+                };
+                header?: never;
+                path: {
+                    list_id: components["parameters"]["ListId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description items + next_cursor */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ClipPage"];
+                    };
+                };
+                401: components["responses"]["Unauthorized"];
+                404: components["responses"]["NotFound"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/users/me/lists/{list_id}/items/{clip_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                list_id: components["parameters"]["ListId"];
+                clip_id: components["parameters"]["ClipId"];
+            };
+            cookie?: never;
+        };
+        get?: never;
+        /** Thêm clip vào danh sách (idempotent; quá 500 clip → 409) */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    list_id: components["parameters"]["ListId"];
+                    clip_id: components["parameters"]["ClipId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Đã thêm */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                401: components["responses"]["Unauthorized"];
+                404: components["responses"]["NotFound"];
+                409: components["responses"]["Conflict"];
+            };
+        };
+        post?: never;
+        /** Bỏ clip khỏi danh sách (idempotent) */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    list_id: components["parameters"]["ListId"];
+                    clip_id: components["parameters"]["ClipId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Đã bỏ */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                401: components["responses"]["Unauthorized"];
+                404: components["responses"]["NotFound"];
+            };
+        };
         options?: never;
         head?: never;
         patch?: never;
@@ -2244,6 +2754,28 @@ export interface components {
             items?: components["schemas"]["Clip"][];
             next_cursor?: string | null;
         };
+        ClipState: {
+            clip_id: string;
+            liked: boolean;
+            /** @description Có trong "Xem sau" */
+            saved: boolean;
+            /** @description Danh sách riêng của tôi đang chứa clip này */
+            list_ids: string[];
+        };
+        UserList: {
+            id: string;
+            name: string;
+            item_count: number;
+            /** @description Ảnh của clip mới thêm gần nhất */
+            cover_thumbnail_url?: string | null;
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            updated_at: string;
+        };
+        UserListWrite: {
+            name: string;
+        };
         VideoTablePage: {
             items?: components["schemas"]["Video"][];
             total?: number;
@@ -2552,6 +3084,8 @@ export interface components {
     };
     parameters: {
         PathId: string;
+        ClipId: string;
+        ListId: string;
         Cursor: string;
         Limit: number;
         Page: number;

@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Video AI Platform — Public + CMS API
-  version: 0.12.0
+  version: 0.13.0
   description: >
     Contract-first (master plan §2). Nguồn sự thật cho gateway Go (oapi-codegen)
     và FE types (openapi-typescript). Điểm highlight thang 0–100; similarity/score 0–1.
@@ -227,6 +227,12 @@ paths:
                         duration_watched: { type: integer }
                   next_cursor: { type: string, nullable: true }
         "401": { $ref: "#/components/responses/Unauthorized" }
+    delete:
+      tags: [library]
+      summary: Xóa toàn bộ lịch sử xem — ẩn mọi lần xem trước thời điểm này (sự kiện giữ cho train; xem lại sau đó hiện lại)
+      responses:
+        "204": { description: Đã xóa }
+        "401": { $ref: "#/components/responses/Unauthorized" }
 
   /api/users/me/likes:
     get:
@@ -242,6 +248,187 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/ClipPage" }
         "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /api/users/me/likes/{clip_id}:
+    parameters: [ { $ref: "#/components/parameters/ClipId" } ]
+    put:
+      tags: [library]
+      summary: Thích clip (idempotent). Lần đầu ghi thêm 1 sự kiện `like` cho Two-Tower (role client).
+      responses:
+        "204": { description: Đã thích }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+    delete:
+      tags: [library]
+      summary: Bỏ thích (idempotent). Sự kiện tương tác cũ được giữ (quyết định user INT-61).
+      responses:
+        "204": { description: Đã bỏ thích }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /api/users/me/saved:
+    get:
+      tags: [library]
+      summary: Danh sách xem sau (mới lưu trước)
+      parameters:
+        - $ref: "#/components/parameters/Cursor"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: items + next_cursor
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ClipPage" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /api/users/me/saved/{clip_id}:
+    parameters: [ { $ref: "#/components/parameters/ClipId" } ]
+    put:
+      tags: [library]
+      summary: Thêm vào xem sau (idempotent). Lần đầu ghi thêm 1 sự kiện `save` (role client).
+      responses:
+        "204": { description: Đã lưu }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+    delete:
+      tags: [library]
+      summary: Bỏ khỏi xem sau (idempotent)
+      responses:
+        "204": { description: Đã bỏ }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /api/users/me/clip-states:
+    get:
+      tags: [library]
+      summary: Trạng thái thích / xem sau / danh sách của tối đa 50 clip (để vẽ nút)
+      parameters:
+        - name: clip_ids
+          in: query
+          required: true
+          description: Danh sách clip id phân cách bằng dấu phẩy (1–50)
+          schema: { type: string, maxLength: 2600 }
+      responses:
+        "200":
+          description: một phần tử cho mỗi clip id công khai (clip không tồn tại/không công khai bị bỏ qua)
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    items: { $ref: "#/components/schemas/ClipState" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "422": { $ref: "#/components/responses/ValidationError" }
+
+  /api/users/me/history/{clip_id}:
+    parameters: [ { $ref: "#/components/parameters/ClipId" } ]
+    delete:
+      tags: [library]
+      summary: Xóa 1 clip khỏi lịch sử xem (ẩn các lần xem trước thời điểm này; sự kiện giữ cho train; idempotent)
+      responses:
+        "204": { description: Đã xóa }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /api/users/me/lists:
+    get:
+      tags: [library]
+      summary: Danh sách riêng của tôi (mới cập nhật trước, tối đa 50)
+      responses:
+        "200":
+          description: lists
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    items: { $ref: "#/components/schemas/UserList" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+    post:
+      tags: [library]
+      summary: Tạo danh sách (tên 1–60 ký tự sau khi bỏ khoảng trắng đầu/cuối; trùng tên → 409; quá 50 → 409)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/UserListWrite" }
+      responses:
+        "201":
+          description: Đã tạo
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/UserList" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "409": { $ref: "#/components/responses/Conflict" }
+        "422": { $ref: "#/components/responses/ValidationError" }
+
+  /api/users/me/lists/{list_id}:
+    parameters: [ { $ref: "#/components/parameters/ListId" } ]
+    patch:
+      tags: [library]
+      summary: Đổi tên danh sách
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/UserListWrite" }
+      responses:
+        "200":
+          description: Đã đổi tên
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/UserList" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "409": { $ref: "#/components/responses/Conflict" }
+        "422": { $ref: "#/components/responses/ValidationError" }
+    delete:
+      tags: [library]
+      summary: Xóa danh sách (clip không bị xóa)
+      responses:
+        "204": { description: Đã xóa }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /api/users/me/lists/{list_id}/items:
+    parameters: [ { $ref: "#/components/parameters/ListId" } ]
+    get:
+      tags: [library]
+      summary: Clip trong danh sách (mới thêm trước)
+      parameters:
+        - $ref: "#/components/parameters/Cursor"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: items + next_cursor
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ClipPage" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /api/users/me/lists/{list_id}/items/{clip_id}:
+    parameters:
+      - { $ref: "#/components/parameters/ListId" }
+      - { $ref: "#/components/parameters/ClipId" }
+    put:
+      tags: [library]
+      summary: Thêm clip vào danh sách (idempotent; quá 500 clip → 409)
+      responses:
+        "204": { description: Đã thêm }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "409": { $ref: "#/components/responses/Conflict" }
+    delete:
+      tags: [library]
+      summary: Bỏ clip khỏi danh sách (idempotent)
+      responses:
+        "204": { description: Đã bỏ }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
 
   # ---------------- 2.2 Client content ----------------
   /api/feed:
@@ -979,6 +1166,16 @@ components:
       in: path
       required: true
       schema: { type: string }
+    ClipId:
+      name: clip_id
+      in: path
+      required: true
+      schema: { type: string, maxLength: 50 }
+    ListId:
+      name: list_id
+      in: path
+      required: true
+      schema: { type: string, maxLength: 50 }
     Cursor:
       name: cursor
       in: query
@@ -1207,6 +1404,35 @@ components:
           type: array
           items: { $ref: "#/components/schemas/Clip" }
         next_cursor: { type: string, nullable: true }
+
+    ClipState:
+      type: object
+      required: [clip_id, liked, saved, list_ids]
+      properties:
+        clip_id: { type: string }
+        liked: { type: boolean }
+        saved: { type: boolean, description: Có trong "Xem sau" }
+        list_ids:
+          type: array
+          description: Danh sách riêng của tôi đang chứa clip này
+          items: { type: string }
+
+    UserList:
+      type: object
+      required: [id, name, item_count, created_at, updated_at]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        item_count: { type: integer, minimum: 0 }
+        cover_thumbnail_url: { type: string, nullable: true, description: Ảnh của clip mới thêm gần nhất }
+        created_at: { type: string, format: date-time }
+        updated_at: { type: string, format: date-time }
+
+    UserListWrite:
+      type: object
+      required: [name]
+      properties:
+        name: { type: string, minLength: 1, maxLength: 60 }
 
     VideoTablePage:
       type: object
