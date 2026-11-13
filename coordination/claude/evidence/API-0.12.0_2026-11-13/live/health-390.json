@@ -1,0 +1,32 @@
+[
+ {
+  "name": "asr_ctc",
+  "file": "best.pt",
+  "sha256": "7c497d43ce9ca9fbb4d29f80e2d86e777d11f7eea6828062e581fce4aa794934"
+ },
+ {
+  "name": "highlight_fusion",
+  "file": "best.pt",
+  "sha256": "5aecd5c4eecd37a25c8c5c2fd515f268700041987ce38df4ffbf01724fbd052e"
+ },
+ {
+  "name": "minigpt",
+  "file": "best.pt",
+  "sha256": "8a62e953140e601f386322e5a84172ca2e38663bb8316b1b329c2ee4ff4b3282"
+ },
+ {
+  "name": "siamese",
+  "file": "best.pt",
+  "sha256": "b4ded465b8eea134a01652811008656b9e0c59716431136bb161216310bbcebb"
+ },
+ {
+  "name": "two_tower",
+  "file": "best.pt",
+  "sha256": "f28c37943ec499d168f43b5281879273af326a97ee47e571100c93dee0c91695"
+ },
+ {
+  "name": "vit",
+  "file": "best.pt",
+  "sha256": "192d90e4fad893cec1542c5630715cc3bc22197e8cd8ba22a6fb84a64a88ad7f"
+ }
+]

@@ -3,7 +3,8 @@
 # Official AI runtime: this container, internal port only (HC-16).
 services:
   inference-service:
-    image: video-ai-inference:ai-v3.0-48735ff
+    # AI-API v3.3 (f6bc07f): overlay of ai-v3.0-48735ff with inference-service/app only (/health.models[]); rollback = ai-v3.0-48735ff.
+    image: video-ai-inference:ai-v3.3-f6bc07f
     restart: unless-stopped
     command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001"]
     environment:

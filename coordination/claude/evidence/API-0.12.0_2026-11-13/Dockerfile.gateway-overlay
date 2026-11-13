@@ -1,0 +1,5 @@
+# API 0.12.0 overlay (same method as INT-59): gateway binary cross-compiled on host from f6bc07f (CGO_ENABLED=0 GOOS=linux,
+# toolchain go1.26.10 per go.mod). orchestrator/ffmpeg-cutter/ai-mock/frame-backfill unchanged (only add a JSON field) → not redeployed.
+FROM video-ai-gateway:int59-3c3b33b
+COPY gateway /usr/local/bin/gateway
+LABEL org.opencontainers.image.revision="f6bc07f" overlay.base="video-ai-gateway:int59-3c3b33b" overlay.binaries="gateway"

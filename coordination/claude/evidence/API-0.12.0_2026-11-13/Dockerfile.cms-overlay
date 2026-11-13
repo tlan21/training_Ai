@@ -1,0 +1,6 @@
+# API 0.12.0 overlay (same method as INT-59): CMS dist built on host from f6bc07f (tsc + vite build, VITE_API_BASE empty).
+FROM video-ai-cms:int59-3c3b33b
+RUN rm -rf /usr/share/nginx/html/*
+COPY dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+LABEL org.opencontainers.image.revision="f6bc07f" overlay.base="video-ai-cms:int59-3c3b33b"

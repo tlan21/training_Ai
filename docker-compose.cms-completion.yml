@@ -2,9 +2,10 @@
 # Pins only owned app images; AI, workers, databases, ports and volumes inherit existing configuration.
 services:
   # INT-59 (3c3b33b, API 0.11.1): overlay images on int11-843a56e / int11-6288d60 (gateway binary + CMS dist built on host; C: nearly full).
+  # API 0.12.0 (f6bc07f): overlays of int59-3c3b33b (gateway binary + CMS dist; SystemHealth.ai_models). Rollback = int59-3c3b33b.
   gateway:
-    image: video-ai-gateway:int59-3c3b33b
+    image: video-ai-gateway:api012-f6bc07f
   cms:
-    image: video-ai-cms:int59-3c3b33b
+    image: video-ai-cms:api012-f6bc07f
   client:
     image: video-ai-client:int11-843a56e

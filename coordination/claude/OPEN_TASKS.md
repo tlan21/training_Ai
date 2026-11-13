@@ -99,6 +99,18 @@ Acceptance:
 Evidence: `coordination/claude/evidence/INT-59_2026-11-12/`. Commits: `7612400` scope · `24307ab` contract 0.11.0 · `bd6c294` backend · `b0959f5` CMS/e2e · commit evidence/deploy pin kế tiếp.
 Runtime: gateway + CMS `int59-b0959f5` (overlay trên int11 — C: gần đầy, xem README); AI/orchestrator/cutter/client không đổi.
 
+### INT-60 — Rà soát CMS/Client theo thay đổi + model mới nhất; CMS hiện phiên bản model AI (user 2026-11-13: "Làm đầy đủ")
+
+| Trường | Giá trị |
+|---|---|
+| Owner | CLAUDE |
+| Status | [x] **DONE** (Claude 2026-11-13, VERIFIED-NOW: inference pytest 65, Go vet + test 16 pkg, CMS/Client tsc, CMS build, fixture CMS 79/79, live 2/2 @1440+390, env hash trước = sau) — `coordination/claude/evidence/API-0.12.0_2026-11-13/README.md` |
+| Rà soát | 6 checkpoint `ai-core/checkpoints` = SHA contract §1 = file mount trong container; CMS/Client `api-types.ts` trùng OpenAPI 0.11.1 (sinh lại không diff); 3 path mới 0.11.0 chỉ CMS → Client không đổi UI. Thiếu duy nhất: CMS không biết checkpoint nào đang chạy. |
+| Thay đổi | AI-API v3.3 `/health.models[]` (chỉ thêm) → API 0.12.0 `SystemHealth.ai_models` → CMS Dashboard "Model AI" + popover "Trạng thái hệ thống" hiện 6 model + SHA rút gọn (SHA đầy đủ khi rê chuột). |
+
+Commits: `e47c9c8` AI-API v3.3 · `fd0161d` API 0.12.0 + types · `f6bc07f` CMS UI · commit evidence/deploy pin kế tiếp.
+Runtime: inference `ai-v3.3-f6bc07f`, gateway + CMS `api012-f6bc07f` (overlay, rollback = `ai-v3.0-48735ff` / `int59-3c3b33b`); client/orchestrator/cutter không đổi.
+
 ## Các gate riêng / việc phụ thuộc
 
 | Check | Task | Status | Dependency / giới hạn |

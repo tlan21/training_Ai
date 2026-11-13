@@ -1,0 +1,5 @@
+# AI-API v3.3 overlay: only inference-service/app changed since ai-v3.0-48735ff (git diff 48735ff..f6bc07f -- inference-service/app
+# = e47c9c8, /health.models[]); ai_core, torch, requirements unchanged → no python/torch base pull (C: ~6.7 GB free).
+FROM video-ai-inference:ai-v3.0-48735ff
+COPY app /srv/inference-service/app
+LABEL org.opencontainers.image.revision="f6bc07f" overlay.base="video-ai-inference:ai-v3.0-48735ff" overlay.changed="inference-service/app"
