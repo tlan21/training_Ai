@@ -2,6 +2,7 @@ package cms
 
 import (
 	"errors"
+	"log"
 	"math"
 	"net/http"
 	"strings"
@@ -215,6 +216,13 @@ func (h *ClipHandlers) Publish(c *gin.Context) {
 		return
 	}
 	h.invalidateFeed(c)
+	if cl.Status == domain.ClipDraft && h.bus != nil {
+		// INT-62: first publish only. Notifications are best effort: a Kafka outage must not undo or fail the publish.
+		event := domain.ClipPublishedEvent{ClipID: cl.ID, VideoID: cl.VideoID, PublishedAt: time.Now().UTC()}
+		if err := h.bus.Publish(c.Request.Context(), domain.TopicClipPublished, cl.ID, event); err != nil {
+			log.Printf("%s %s: publish event failed: %v", domain.TopicClipPublished, cl.ID, err)
+		}
+	}
 	c.Status(http.StatusOK)
 }
 

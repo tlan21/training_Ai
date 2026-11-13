@@ -183,3 +183,18 @@ CREATE TABLE IF NOT EXISTS user_list_items (
     PRIMARY KEY (list_id, clip_id)
 );
 CREATE INDEX IF NOT EXISTS idx_user_list_items_recent ON user_list_items (list_id, added_at DESC, clip_id DESC);
+
+-- 0.14.0 (INT-62) notifications — same as migrations/009_user_notifications.sql (existing DBs apply that file).
+CREATE TABLE IF NOT EXISTS user_notifications (
+    id         BIGSERIAL PRIMARY KEY,
+    user_id    VARCHAR(50) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    kind       VARCHAR(30) NOT NULL CHECK (kind IN ('clip_published')),
+    clip_id    VARCHAR(50) NOT NULL REFERENCES clips(id) ON DELETE CASCADE,
+    video_id   VARCHAR(50) NOT NULL REFERENCES videos(id) ON DELETE CASCADE,
+    title      VARCHAR(255) NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    read_at    TIMESTAMPTZ,
+    UNIQUE (user_id, kind, clip_id)
+);
+CREATE INDEX IF NOT EXISTS idx_user_notifications_recent ON user_notifications (user_id, id DESC);
+CREATE INDEX IF NOT EXISTS idx_user_notifications_unread ON user_notifications (user_id) WHERE read_at IS NULL;

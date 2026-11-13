@@ -68,7 +68,8 @@ func main() {
 	}); err != nil {
 		log.Fatal(err)
 	}
-	wirePipeline(videoRepo, jobRepo, clipRepo, analysisStore, subtitleStore, aiClient, eventBus, objectStorage, vectorStore, &pg.SettingsRepo{DB: db}, categoryRepo)
+	notificationRepo := &pg.NotificationRepo{DB: db}
+	wirePipeline(videoRepo, jobRepo, clipRepo, analysisStore, subtitleStore, aiClient, eventBus, objectStorage, vectorStore, &pg.SettingsRepo{DB: db}, categoryRepo, notificationRepo)
 
 	resetRepo := mocks.NewPasswordResetRepoMem()
 	authSvc := auth.NewWithResets(userRepo, sessionRepo, resetRepo, jwtSvc).WithSettings(&pg.SettingsRepo{DB: db})
@@ -154,6 +155,11 @@ func main() {
 	protected.GET("/users/me/lists/:list_id/items", libraryH.ListItems)
 	protected.PUT("/users/me/lists/:list_id/items/:clip_id", libraryH.AddListItem)
 	protected.DELETE("/users/me/lists/:list_id/items/:clip_id", libraryH.RemoveListItem)
+
+	// --- INT-62 (0.14.0) in-app notifications, filled by the Kafka consumer gateway-notifications (clip.published) ---
+	notificationsH := handlers.NewNotificationHandlers(notificationRepo, objectStorage)
+	protected.GET("/users/me/notifications", notificationsH.List)
+	protected.POST("/users/me/notifications/read", notificationsH.MarkRead)
 
 	// --- T2.5.1 content (real) ---
 	protected.GET("/feed", contentH.Feed)

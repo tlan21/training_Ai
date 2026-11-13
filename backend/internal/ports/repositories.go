@@ -97,6 +97,14 @@ type LibraryRepository interface {
 	SetListItem(ctx context.Context, userID, listID, clipID string, on bool) error
 }
 
+// NotificationRepository — INT-62: fan-out of clip.published + the user's in-app inbox.
+type NotificationRepository interface {
+	// FanOutClipPublished creates one notification per recipient (idempotent); returns how many were new.
+	FanOutClipPublished(ctx context.Context, clipID string) (int64, error)
+	List(ctx context.Context, userID string, cursor *string, limit int) ([]domain.UserNotification, *string, int, error)
+	MarkRead(ctx context.Context, userID string, ids []int64) error
+}
+
 type SettingsRepository interface {
 	Get(ctx context.Context) (*domain.SystemSettings, error)
 	Update(ctx context.Context, values map[string]string) error

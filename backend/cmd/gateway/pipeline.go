@@ -11,12 +11,13 @@ import (
 
 	"traning_ai/backend/internal/cutter"
 	"traning_ai/backend/internal/domain"
+	"traning_ai/backend/internal/handlers"
 	"traning_ai/backend/internal/orchestrator"
 	"traning_ai/backend/internal/ports"
 )
 
 // Run Go consumers in the gateway process; repositories/events/files are shared persistent adapters.
-func wirePipeline(videos ports.VideoRepository, jobs ports.JobRepository, clips ports.ClipRepository, analyses ports.AnalysisStore, subs ports.SubtitleStore, ai ports.AIClient, bus ports.EventBus, storage ports.ObjectStorage, vectors ports.VectorStore, settings ports.SettingsRepository, categories ports.CategoryRepository) {
+func wirePipeline(videos ports.VideoRepository, jobs ports.JobRepository, clips ports.ClipRepository, analyses ports.AnalysisStore, subs ports.SubtitleStore, ai ports.AIClient, bus ports.EventBus, storage ports.ObjectStorage, vectors ports.VectorStore, settings ports.SettingsRepository, categories ports.CategoryRepository, notifications ports.NotificationRepository) {
 	runner := orchestrator.New(videos, jobs, analyses, subs, ai, bus)
 	runner.WithStorage(storage, vectors)
 	runner.WithCategories(settings, categories)
@@ -88,4 +89,6 @@ func wirePipeline(videos ports.VideoRepository, jobs ports.JobRepository, clips 
 		return err
 	})
 	consume("clip.cut.requested", "gateway-cutter", cut.HandleOne)
+	// INT-62: CMS publish → Kafka clip.published → one in-app notification per interested client user.
+	consume(domain.TopicClipPublished, "gateway-notifications", handlers.ClipPublishedConsumer(notifications))
 }

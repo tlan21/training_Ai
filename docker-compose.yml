@@ -140,7 +140,7 @@ services:
     image: apache/kafka:3.8.0
     entrypoint: ["/bin/sh", "-c"]
     command:
-      - "for topic in video.uploaded video.preprocessed ai.stage.completed clip.cut.requested clip.cut.completed; do /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092 --create --if-not-exists --replication-factor 1 --partitions 1 --topic $$topic || exit 1; done"
+      - "for topic in video.uploaded video.preprocessed ai.stage.completed clip.cut.requested clip.cut.completed clip.published; do /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092 --create --if-not-exists --replication-factor 1 --partitions 1 --topic $$topic || exit 1; done"
     depends_on:
       kafka: { condition: service_healthy }
   ingest-worker:
