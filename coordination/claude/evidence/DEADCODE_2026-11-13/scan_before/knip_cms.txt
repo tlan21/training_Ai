@@ -1,0 +1,7 @@
+[93m[4mUnused files[24m[39m (1)
+src/pages/Placeholder.tsx
+[93m[4mUnused exports[24m[39m (2)
+src/components/heatmap/HeatmapTimeline.tsx: scoreToColor, xToSecond
+src/hooks/useAuth.ts: useMe
+[93m[4mUnused exported types[24m[39m (1)
+src/api-types.ts: webhooks, $defs, operations

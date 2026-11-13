@@ -6,6 +6,6 @@ services:
   gateway:
     image: video-ai-gateway:int64-9c20edf
   cms:
-    image: video-ai-cms:int64-3d9b54c
+    image: video-ai-cms:dc-8aa6534
   client:
-    image: video-ai-client:int64-9c20edf
+    image: video-ai-client:dc-8aa6534

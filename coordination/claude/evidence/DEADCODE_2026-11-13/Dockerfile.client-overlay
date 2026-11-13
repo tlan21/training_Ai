@@ -1,0 +1,7 @@
+# INT-61 client overlay: lockfile unchanged since 843a56e, so the image node_modules match; rebuild .next inside Linux
+# with the same gates as client/Dockerfile (lint + build + tsc). C: ~6 GB free, no node base pull.
+FROM video-ai-client:int11-843a56e
+COPY . /src/
+ENV NEXT_PUBLIC_API_BASE= GATEWAY_INTERNAL_URL=http://gateway:8000
+RUN rm -rf .next && npm run lint && npm run build && node node_modules/typescript/bin/tsc --noEmit
+LABEL org.opencontainers.image.revision="8aa6534" overlay.base="video-ai-client:int11-843a56e"

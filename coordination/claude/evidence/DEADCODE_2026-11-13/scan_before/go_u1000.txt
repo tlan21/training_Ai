@@ -1,0 +1,2 @@
+-: D:\dev-cache\go\mod\golang.org\toolchain@v0.0.1-go1.26.10.windows-amd64\src\vendor\golang.org\x\crypto\chacha20poly1305\fips140only_go1.26.go:7:9: file requires newer Go version go1.26 (application built with go1.25) (compile)
+-: module requires at least go1.26.0, but Staticcheck was built with go1.25.1 (compile)

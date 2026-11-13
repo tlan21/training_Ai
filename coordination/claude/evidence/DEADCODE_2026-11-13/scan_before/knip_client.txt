@@ -1,0 +1,11 @@
+[93m[4mUnused files[24m[39m (2)
+public/fonts/fonts.css
+src/app/login.css
+[93m[4mUnlisted dependencies[24m[39m (1)
+postcss.config.mjs: postcss-load-config
+[93m[4mUnused exports[24m[39m (1)
+src/stores/playerStore.ts: HIGHLIGHT_THRESHOLD
+[93m[4mUnused exported types[24m[39m (3)
+src/api-types.ts: webhooks, $defs, operations
+src/lib/content.ts: HistoryPage, VideoPage, Interaction
+src/lib/library.ts: ClipState, UserList

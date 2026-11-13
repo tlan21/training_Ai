@@ -1,0 +1,2 @@
+Installed 1 package in 44ms
+ai-core\ai_core\tests\test_models.py:12: unused variable 'tol' (100% confidence)
