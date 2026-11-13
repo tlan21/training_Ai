@@ -132,7 +132,7 @@ test('INT-40 detailed CMS clicks against deployed services, without API mocks', 
     await step('login', 'Quick administrator login, HttpOnly refresh, reload restoration', async () => {
       const result = await clickAPI('Quản trị viên', '/api/auth/login', 'POST'); headers = { Authorization: `Bearer ${(await result.json()).access_token}` };
       await expect(page).toHaveURL(/\/dashboard$/);
-      expect((await page.context().cookies()).find(c => c.name === 'refresh')?.httpOnly).toBe(true);
+      expect((await page.context().cookies()).find(c => c.name === 'cms_refresh')?.httpOnly).toBe(true);
       expect(await page.evaluate(() => JSON.stringify([Object.entries(localStorage), Object.entries(sessionStorage)]))).not.toMatch(/accessToken|access_token|cms-auth|eyJ/);
       const refreshed = page.waitForResponse(r => urlIs(r, '/api/auth/refresh')); await page.reload(); expect((await refreshed).status()).toBe(200);
     });

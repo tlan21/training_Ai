@@ -12,14 +12,14 @@ for (const remember of [true, false]) {
     await page.getByRole('button', { name: 'Đăng nhập', exact: true }).click();
     expect((await login).status()).toBe(200);
     await expect(page).toHaveURL(`${cms}/dashboard`);
-    const before = (await page.context().cookies()).find((cookie) => cookie.name === 'refresh');
+    const before = (await page.context().cookies()).find((cookie) => cookie.name === 'cms_refresh');
     expect(before?.httpOnly).toBe(true);
     expect(await page.evaluate(() => document.cookie)).not.toContain('refresh=');
     const refresh = page.waitForResponse((response) => new URL(response.url()).pathname === '/api/auth/refresh');
     await page.reload();
     expect((await refresh).status()).toBe(200);
     await expect(page.getByRole('heading', { name: 'Tổng quan hệ thống', exact: true })).toBeVisible();
-    const after = (await page.context().cookies()).find((cookie) => cookie.name === 'refresh');
+    const after = (await page.context().cookies()).find((cookie) => cookie.name === 'cms_refresh');
     expect(after?.value).toBeTruthy();
     expect(after?.value).not.toBe(before?.value);
     expect(await page.evaluate(() => JSON.stringify([Object.entries(localStorage), Object.entries(sessionStorage)]))).not.toMatch(/accessToken|access_token|cms-auth|eyJ/);
@@ -27,7 +27,7 @@ for (const remember of [true, false]) {
     await page.getByRole('button', { name: 'Đăng xuất', exact: true }).click();
     expect((await logout).status()).toBe(204);
     await expect(page).toHaveURL(`${cms}/login`);
-    expect((await page.context().cookies()).filter((cookie) => cookie.name === 'refresh')).toEqual([]);
+    expect((await page.context().cookies()).filter((cookie) => cookie.name === 'cms_refresh')).toEqual([]);
     await page.reload();
     await expect(page.getByRole('button', { name: 'Đăng nhập', exact: true })).toBeVisible();
     await expect(page).toHaveURL(`${cms}/login`);

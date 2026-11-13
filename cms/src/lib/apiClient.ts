@@ -7,9 +7,14 @@ export function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : "Không thực hiện được thao tác";
 }
 
+// INT-63: the CMS session lives in its own cookie (cms_refresh). Cookies ignore ports, so without this header the CMS
+// and the Client on one host shared one refresh cookie and logged each other in/out.
+const APP_HEADER = { "X-App": "cms" } as const;
+
 export const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE || "",
   withCredentials: true,
+  headers: APP_HEADER,
 });
 
 apiClient.interceptors.request.use((cfg) => {
@@ -26,7 +31,7 @@ export function refreshSession() {
   if (!refreshRequest) {
     const previousToken = useAuthStore.getState().accessToken;
     refreshRequest = axios.post<paths["/api/auth/refresh"]["post"]["responses"][200]["content"]["application/json"]>(
-      `${apiClient.defaults.baseURL}/api/auth/refresh`, {}, { withCredentials: true, timeout: 10_000 },
+      `${apiClient.defaults.baseURL}/api/auth/refresh`, {}, { withCredentials: true, timeout: 10_000, headers: APP_HEADER },
     ).then(({ data }) => {
       if (!data.access_token) throw new Error("Phiên đăng nhập không hợp lệ.");
       if (useAuthStore.getState().accessToken !== previousToken) throw new Error("Phiên đăng nhập đã thay đổi.");

@@ -10,7 +10,8 @@ async function sessionAPI(page: Page) {
     active: true, refreshes: 0, token: '', expire: false, rejectRefresh: false,
     beforeRefresh: async () => {}, events: [] as string[], denied: new Set<string>(),
   };
-  await page.context().addCookies([{ name: 'refresh', value: 'http-only-fixture', url: cms, httpOnly: true, sameSite: 'Lax' }]);
+  // INT-63: the CMS owns cms_refresh; a Client `refresh` cookie on the same host must never be sent as the CMS session.
+  await page.context().addCookies([{ name: 'cms_refresh', value: 'http-only-fixture', url: cms, httpOnly: true, sameSite: 'Lax' }, { name: 'refresh', value: 'client-session', url: cms, httpOnly: true, sameSite: 'Lax' }]);
   await page.route('**/api/**', async (route) => {
     const req = route.request();
     const path = new URL(req.url()).pathname;
@@ -18,15 +19,17 @@ async function sessionAPI(page: Page) {
       state.refreshes++;
       await state.beforeRefresh();
       if (!state.active || state.rejectRefresh) return route.fulfill(unauthorized);
-      expect(req.headers().cookie).toContain('refresh=http-only-fixture');
+      expect(req.headers().cookie).toContain('cms_refresh=http-only-fixture');
+      expect(req.headers()['x-app']).toBe('cms');
       state.token = `ram-token-${state.refreshes}`;
       state.expire = false;
       state.events.push('refresh');
       return route.fulfill({ json: { access_token: state.token } });
     }
     if (path === '/api/auth/logout') {
+      expect(req.headers()['x-app']).toBe('cms');
       state.events.push('logout'); state.active = false;
-      return route.fulfill({ status: 204, headers: { 'set-cookie': 'refresh=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax' } });
+      return route.fulfill({ status: 204, headers: { 'set-cookie': 'cms_refresh=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax' } });
     }
     if (!state.active || state.expire || req.headers().authorization !== `Bearer ${state.token}`) {
       state.denied.add(path);
@@ -141,7 +144,8 @@ test('INT-12 logout during refresh finishes after refresh and cannot resurrect s
   release();
   await expect(page).toHaveURL(`${cms}/login`);
   expect(state.events).toEqual(['refresh', 'refresh', 'logout']);
-  expect((await page.context().cookies()).filter((cookie) => cookie.name === 'refresh')).toEqual([]);
+  expect((await page.context().cookies()).filter((cookie) => cookie.name === 'cms_refresh')).toEqual([]);
+  expect((await page.context().cookies()).find((cookie) => cookie.name === 'refresh')?.value).toBe('client-session'); // Client session untouched
   await page.reload();
   await expect(page.getByRole('button', { name: 'Đăng nhập', exact: true })).toBeVisible();
   expect(await page.evaluate(() => sessionStorage.getItem('cms-session-active'))).toBeNull();

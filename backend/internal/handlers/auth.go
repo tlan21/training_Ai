@@ -63,7 +63,7 @@ func (h *AuthHandlers) Register(c *gin.Context) {
 		handleDomainErr(c, err)
 		return
 	}
-	c.SetCookie("refresh", refresh, int(h.authSvc.RefreshTTL(c.Request.Context()).Seconds()), "/", "", false, true)
+	c.SetCookie(RefreshCookie(c), refresh, int(h.authSvc.RefreshTTL(c.Request.Context()).Seconds()), "/", "", false, true)
 	c.JSON(http.StatusCreated, gin.H{"user": toUserMe(u, nil), "access_token": access})
 }
 
@@ -86,12 +86,12 @@ func (h *AuthHandlers) Login(c *gin.Context) {
 		handleDomainErr(c, err)
 		return
 	}
-	c.SetCookie("refresh", refresh, int(h.authSvc.RefreshTTL(c.Request.Context()).Seconds()), "/", "", false, true)
+	c.SetCookie(RefreshCookie(c), refresh, int(h.authSvc.RefreshTTL(c.Request.Context()).Seconds()), "/", "", false, true)
 	c.JSON(http.StatusOK, gin.H{"user": toUserMe(u, prefs), "access_token": access})
 }
 
 func (h *AuthHandlers) Refresh(c *gin.Context) {
-	raw, _ := c.Cookie("refresh")
+	raw, _ := c.Cookie(RefreshCookie(c))
 	if raw == "" {
 		ErrorEnvelope(c, http.StatusUnauthorized, "UNAUTHORIZED", "Missing refresh token")
 		return
@@ -101,14 +101,14 @@ func (h *AuthHandlers) Refresh(c *gin.Context) {
 		ErrorEnvelope(c, http.StatusUnauthorized, "UNAUTHORIZED", "Invalid refresh token")
 		return
 	}
-	c.SetCookie("refresh", refresh, int(h.authSvc.RefreshTTL(c.Request.Context()).Seconds()), "/", "", false, true)
+	c.SetCookie(RefreshCookie(c), refresh, int(h.authSvc.RefreshTTL(c.Request.Context()).Seconds()), "/", "", false, true)
 	c.JSON(http.StatusOK, gin.H{"access_token": access})
 }
 
 func (h *AuthHandlers) Logout(c *gin.Context) {
-	raw, _ := c.Cookie("refresh")
+	raw, _ := c.Cookie(RefreshCookie(c))
 	_ = h.authSvc.Logout(c.Request.Context(), raw)
-	c.SetCookie("refresh", "", -1, "/", "", false, true)
+	c.SetCookie(RefreshCookie(c), "", -1, "/", "", false, true)
 	c.Status(http.StatusNoContent)
 }
 
@@ -262,6 +262,16 @@ func (h *AuthHandlers) Likes(c *gin.Context) {
 		result = append(result, toClipH(&clip, h.storage))
 	}
 	c.JSON(http.StatusOK, gin.H{"items": result, "next_cursor": next})
+}
+
+// RefreshCookie is the app-scoped refresh cookie (INT-63, API 0.14.1). Browsers do not separate cookies by port, so the
+// Client (:3000) and the CMS (:5173) on one host shared a single `refresh` cookie: a login or logout in one app replaced or
+// revoked the other app's session. The CMS sends `X-App: cms`; everything else keeps the Client cookie name.
+func RefreshCookie(c *gin.Context) string {
+	if c.GetHeader("X-App") == "cms" {
+		return "cms_refresh"
+	}
+	return "refresh"
 }
 
 func handleDomainErr(c *gin.Context, err error) {

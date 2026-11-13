@@ -38,7 +38,7 @@ func (h *AccountHandlers) ChangePassword(c *gin.Context) {
 		handlers.ErrorEnvelope(c, http.StatusUnprocessableEntity, "VALIDATION_ERROR", "current_password and new_password are required")
 		return
 	}
-	raw, _ := c.Cookie("refresh")
+	raw, _ := c.Cookie(handlers.RefreshCookie(c))
 	if err := h.svc.ChangePassword(c.Request.Context(), c.GetString("user_id"), raw, req.CurrentPassword, req.NewPassword); err != nil {
 		accountError(c, err)
 		return
@@ -47,7 +47,7 @@ func (h *AccountHandlers) ChangePassword(c *gin.Context) {
 }
 
 func (h *AccountHandlers) RevokeOtherSessions(c *gin.Context) {
-	raw, _ := c.Cookie("refresh")
+	raw, _ := c.Cookie(handlers.RefreshCookie(c))
 	n, err := h.svc.RevokeOtherSessions(c.Request.Context(), c.GetString("user_id"), raw)
 	if err != nil {
 		accountError(c, err)
