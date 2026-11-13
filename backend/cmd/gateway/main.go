@@ -215,6 +215,11 @@ func main() {
 	accountCMS := cms.NewAccountHandlers(authSvc)
 	cmsGroup.POST("/me/password", accountCMS.ChangePassword)
 	cmsGroup.POST("/me/sessions/revoke-others", accountCMS.RevokeOtherSessions)
+	// INT-64 (0.15.0): bulk-approve AI category suggestions + CMS bell seen snapshot
+	categoryApplyCMS := cms.NewCategoryApplyHandlers(&pg.CMSAlertsRepo{DB: db}, videoRepo, analysisStore, categoryRepo)
+	cmsGroup.POST("/videos/apply-category-suggestions", categoryApplyCMS.ApplySuggestions)
+	cmsGroup.GET("/me/alerts-seen", categoryApplyCMS.GetSeen)
+	cmsGroup.PUT("/me/alerts-seen", categoryApplyCMS.PutSeen)
 	adminCMS := cmsGroup.Group("", handlers.RequireRole(string("admin")))
 	adminCMS.GET("/users", userCMS.List)
 	adminCMS.POST("/users/:id/password", accountCMS.ResetUserPassword)

@@ -117,6 +117,7 @@ type Interaction struct {
 type SystemSettings struct {
 	CategorySuggestionEnabled bool
 	CategoryKeywordEnabled    bool
+	CategoryAutoApply         bool // INT-64: assign the suggestion when processing completes (default true)
 	HighlightThreshold        int
 	ASRWarningThreshold       int
 	AutoHighlightEnabled      bool

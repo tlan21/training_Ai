@@ -71,19 +71,19 @@ func boolCount(value bool) int {
 func TestCategoryRulesOverrideVisionWithoutChangingSourceMetadata(t *testing.T) {
 	suggestion := "tin_tuc"
 	cats := []domain.Category{{ID: "cat_news", Name: "Tin tức"}, {ID: "cat_tech", Name: "Công nghệ", Keywords: []string{"máy tính"}}}
-	match := matchCategory(cats, &suggestion, "Tin về MÁY TÍNH", true, true)
+	match := MatchCategory(cats, &suggestion, "Tin về MÁY TÍNH", true, true)
 	if match == nil || match.CategoryID != "cat_tech" || match.Source != "keyword" {
 		t.Fatalf("keyword rule: %+v", match)
 	}
-	match = matchCategory(cats, &suggestion, "Tin về máy tính", true, false)
+	match = MatchCategory(cats, &suggestion, "Tin về máy tính", true, false)
 	if match == nil || match.CategoryID != "cat_news" || match.Source != "vision" {
 		t.Fatalf("vision mapping: %+v", match)
 	}
-	if match := matchCategory(cats, &suggestion, "Tin về máy tính", false, false); match != nil {
+	if match := MatchCategory(cats, &suggestion, "Tin về máy tính", false, false); match != nil {
 		t.Fatalf("disabled rules: %+v", match)
 	}
 	unknown := "unmapped"
-	if match := matchCategory(cats, &unknown, "", true, false); match != nil {
+	if match := MatchCategory(cats, &unknown, "", true, false); match != nil {
 		t.Fatalf("invented category: %+v", match)
 	}
 }

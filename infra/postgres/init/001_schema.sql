@@ -198,3 +198,11 @@ CREATE TABLE IF NOT EXISTS user_notifications (
 );
 CREATE INDEX IF NOT EXISTS idx_user_notifications_recent ON user_notifications (user_id, id DESC);
 CREATE INDEX IF NOT EXISTS idx_user_notifications_unread ON user_notifications (user_id) WHERE read_at IS NULL;
+
+-- 0.15.0 (INT-64) CMS bell seen snapshot — same as migrations/010_cms_alert_seen.sql.
+CREATE TABLE IF NOT EXISTS cms_alert_seen (
+    user_id              VARCHAR(50) PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+    failed_jobs          INT NOT NULL DEFAULT 0 CHECK (failed_jobs >= 0),
+    uncategorized_videos INT NOT NULL DEFAULT 0 CHECK (uncategorized_videos >= 0),
+    seen_at              TIMESTAMPTZ NOT NULL DEFAULT now()
+);

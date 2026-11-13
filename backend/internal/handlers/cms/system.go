@@ -170,6 +170,7 @@ func (h *SystemHandlers) GetSettings(c *gin.Context) {
 		"default_subtitle_lang": s.DefaultSubtitleLang, "ai_service_api_key": "sk-local-••••",
 		"system_name": s.SystemName, "display_timezone": s.DisplayTimezone, "notify_failed_jobs": s.NotifyFailedJobs,
 		"notify_uncategorized_videos": s.NotifyUncategorizedVideos, "session_ttl_days": s.SessionTTLDays,
+		"category_auto_apply": s.CategoryAutoApply,
 	})
 }
 
@@ -242,6 +243,9 @@ func (h *SystemHandlers) UpdateSettings(c *gin.Context) {
 	}
 	if req.CategoryKeywordEnabled != nil {
 		values["category_keyword_enabled"] = strconv.FormatBool(*req.CategoryKeywordEnabled)
+	}
+	if req.CategoryAutoApply != nil {
+		values["category_auto_apply"] = strconv.FormatBool(*req.CategoryAutoApply)
 	}
 	if req.AutoHighlightEnabled != nil {
 		values["auto_highlight_enabled"] = strconv.FormatBool(*req.AutoHighlightEnabled)

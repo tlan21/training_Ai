@@ -49,9 +49,19 @@ func (r *Runner) suggestCategory(ctx context.Context, videoID string) error {
 			return err
 		}
 	}
-	return r.analysis.SetCategoryMatch(ctx, videoID, matchCategory(categories, a.CategorySuggestion, text, settings.CategorySuggestionEnabled, settings.CategoryKeywordEnabled))
+	match := MatchCategory(categories, a.CategorySuggestion, text, settings.CategorySuggestionEnabled, settings.CategoryKeywordEnabled)
+	if err := r.analysis.SetCategoryMatch(ctx, videoID, match); err != nil {
+		return err
+	}
+	// INT-64 (user decision): assign the suggestion right away unless an editor already chose a category; editors can still change it.
+	if settings.CategoryAutoApply && match != nil && v.CategoryID == nil {
+		return r.videos.SetCategory(ctx, videoID, match.CategoryID)
+	}
+	return nil
 }
-func matchCategory(categories []domain.Category, suggestion *string, text string, vision, keywords bool) *domain.CategoryMatch {
+
+// MatchCategory maps a keyword hit or the ViT class (bong_da/the_thao/ca_nhac/tin_tuc) to a CMS category.
+func MatchCategory(categories []domain.Category, suggestion *string, text string, vision, keywords bool) *domain.CategoryMatch {
 	sort.Slice(categories, func(i, j int) bool {
 		if categories[i].Name == categories[j].Name {
 			return categories[i].ID < categories[j].ID
