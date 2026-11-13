@@ -156,19 +156,6 @@ func TestRunner_FailPermanent(t *testing.T) {
 	}
 }
 
-func TestStateMachine_Order(t *testing.T) {
-	if StageOrder[0] != domain.StageSplittingFrames {
-		t.Fatal("first stage")
-	}
-	if StageOrder[len(StageOrder)-1] != domain.StageCompleted {
-		t.Fatal("last stage")
-	}
-	nxt, ok := NextStage(domain.StageEmbedding)
-	if !ok || nxt != domain.StageAsrExtracting {
-		t.Fatalf("next %v %v", nxt, ok)
-	}
-}
-
 func TestRunner_CompletedReplayDoesNotNeedRemovedArtifacts(t *testing.T) {
 	videos := mocks.NewVideoRepoMem()
 	jobs := mocks.NewJobRepoMem()

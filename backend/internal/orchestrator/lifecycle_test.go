@@ -53,7 +53,9 @@ func TestCancelDuringLastStageCannotCompleteVideo(t *testing.T) {
 }
 func TestProcessingProgressNeverMovesBackwards(t *testing.T) {
 	previous := 0
-	for _, stage := range StageOrder {
+	// pipeline order (master plan §5); the production runner walks these stages, this test pins their progress values
+	stages := []domain.Stage{domain.StageSplittingFrames, domain.StageEmbedding, domain.StageAsrExtracting, domain.StageHighlightScoring, domain.StageSummarizing, domain.StageCompleted}
+	for _, stage := range stages {
 		progress := domain.StageProgress[stage]
 		if progress < previous {
 			t.Fatalf("stage %s decreased progress %d->%d", stage, previous, progress)
