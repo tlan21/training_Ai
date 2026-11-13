@@ -165,7 +165,7 @@ Acceptance: Go test tách cookie (login/refresh/logout/đổi mật khẩu/thu h
 | Trường | Giá trị |
 |---|---|
 | Owner | CLAUDE |
-| Status | IN_PROGRESS (2026-11-13) |
+| Status | [x] **DONE** (Claude 2026-11-13, VERIFIED-NOW: Go + real-PG 17/17, CMS fixture 79/79, client fixture 94/94, live 2/2 với cả 2 app đăng nhập; duyệt AI 6/6 video) — `coordination/claude/evidence/INT-64_2026-11-13/README.md` |
 | Yêu cầu user | "các thông báo khi đọc chưa được đánh dấu là đã đọc … ở cả client lẫn cms … khám phá theo các tag category chưa hiển thị highlight mới, đang thịnh hành, phổ biến … kiểm tra có phải đang dùng AI model gợi ý không … sắp phát tiếp hơi thô … frame video cần thêm play pause, mặc định tự động phát, hết tự chuyển reels khác, reels mặc định bật âm thanh" |
 | Rà soát | (1) Client đánh dấu đọc: API + UI đúng (trình duyệt mới 4→3→0); tài khoản user bị ảnh hưởng bởi bug cookie chung INT-63 (tab Client làm mới token sang phiên admin). (2) Chuông CMS = số đếm sống, không có "đã đọc". (3) Khám phá theo danh mục: API trả `[]`; 0/4 video có clip công khai được gán danh mục — AI gợi ý đúng nhưng chưa ai duyệt. (4) Feed `popularity`, Two-Tower TẮT (D18, chờ cổng v2). (5) Feed: `loop` (không tự chuyển), `muted` mặc định, nút play ẩn khi phát, "Sắp phát tiếp" thumbnail dọc lớn và rời feed. |
 | Quyết định user | Danh mục: **tự gán gợi ý AI khi xử lý xong** (cài đặt CMS, bật mặc định, admin vẫn sửa được) + nút **"Duyệt tất cả gợi ý AI"** cho video cũ (chạy cho video hiện có, manifest trước/sau). Chuông CMS: **"đã xem" = chỉ báo cái mới**, lưu theo tài khoản trên server. |

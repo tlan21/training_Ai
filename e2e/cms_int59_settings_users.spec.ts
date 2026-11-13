@@ -13,6 +13,7 @@ function mock(page: Page, role: 'admin' | 'editor', mode: Mode = {}) {
   const calls = { puts: [] as Record<string, unknown>[], password: [] as unknown[], resets: [] as unknown[], revoke: 0 };
   let releaseSettings: () => void = () => {};
   const settingsGate = new Promise<void>((resolve) => { releaseSettings = resolve; });
+  const alertsSeen = { failed_jobs: 0, uncategorized_videos: 0, seen_at: null as string | null }; // INT-64 bell snapshot
   void page.route('**/api/**', async (route: Route) => {
     const req = route.request(); const u = new URL(req.url()); const p = u.pathname;
     if (p === '/api/auth/refresh') return route.fulfill({ status: 401, json: { error: { code: 'UNAUTHORIZED', message: 'No session' } } });
@@ -28,6 +29,7 @@ function mock(page: Page, role: 'admin' | 'editor', mode: Mode = {}) {
     if (p === '/api/cms/me/sessions/revoke-others') { calls.revoke++; return route.fulfill({ json: { revoked: 2 } }); }
     if (p.startsWith('/api/cms/users/') && p.endsWith('/password')) { calls.resets.push({ path: p, body: req.postDataJSON() }); return route.fulfill({ status: 204, body: '' }); }
     if (p === '/api/cms/users') { const empty = u.searchParams.get('q') === 'absent'; return route.fulfill({ json: { items: empty ? [] : [me, other], page: 1, total: empty ? 0 : 2 } }); }
+    if (p === '/api/cms/me/alerts-seen') { if (req.method() === 'PUT') { Object.assign(alertsSeen, req.postDataJSON()); return route.fulfill({ status: 204, body: '' }); } return route.fulfill({ json: alertsSeen }); }
     if (p === '/api/cms/system/health') return route.fulfill({ json: { ai_available: true, models_loaded: ['vit'], queue_depth: 0, metrics: { failed_jobs: 3, uncategorized_videos: 2, total_videos: 10, daily_processing: [] }, storage: { buckets: [{ name: 'raw-videos', bytes: 1, objects: 1 }] } } });
     if (p === '/api/cms/videos') return route.fulfill({ json: { items: [], page: 1, total: 0 } });
     return route.fulfill({ json: [] });
@@ -54,9 +56,13 @@ for (const width of [390, 1440]) {
     // bell: badge = 3 failed + 2 uncategorized, popover links
     const bell = page.getByRole('button', { name: 'Cảnh báo hệ thống (5)' }); await expect(bell).toBeVisible(); await bell.click();
     const pop = page.getByRole('dialog', { name: 'Thông báo' });
-    await expect(pop.getByRole('link', { name: /Job xử lý lỗi\s*3/ })).toHaveAttribute('href', '/queue?status=failed');
-    await expect(pop.getByRole('link', { name: /chưa gán danh mục\s*2/ })).toHaveAttribute('href', '/videos?status=processed');
+    // INT-64: never-seen account → every alert is new; the panel keeps the '+n mới' labels while open.
+    await expect(pop.getByRole('link', { name: /Job xử lý lỗi/ })).toHaveAttribute('href', '/queue?status=failed');
+    await expect(pop.getByRole('link', { name: /Job xử lý lỗi/ })).toContainText('+3 mới');
+    await expect(pop.getByRole('link', { name: /chưa gán danh mục/ })).toHaveAttribute('href', '/videos?status=processed');
+    await expect(pop.getByRole('link', { name: /chưa gán danh mục/ })).toContainText('+2 mới');
     await shot(page, `bell-${width}`); await pop.getByRole('button', { name: 'Đóng' }).click();
+    await expect(page.getByRole('button', { name: 'Cảnh báo hệ thống', exact: true })).toBeVisible(); // seen → no badge
 
     // general tab
     await go(page, '/settings?tab=general'); await expect(tab(page, 'Cài đặt chung')).toHaveAttribute('aria-selected', 'true');
@@ -81,7 +87,7 @@ for (const width of [390, 1440]) {
     await expect(page.getByText('Kết nối & Lưu trữ')).toHaveCount(0); await expect(page.getByLabel('AI Service API Key')).toHaveCount(0); // removed 0.11.1
     await noOverflow(page); await shot(page, `settings-ai-admin-${width}`);
     await page.getByRole('checkbox', { name: 'Tự động đánh dấu (Auto-highlighting)' }).uncheck({ force: true }); await save.click();
-    await expect.poll(() => calls.puts.length).toBe(3); expect(calls.puts.at(-1)).toEqual({ auto_highlight_enabled: false, auto_subtitle_enabled: true });
+    await expect.poll(() => calls.puts.length).toBe(3); expect(calls.puts.at(-1)).toEqual({ auto_highlight_enabled: false, auto_subtitle_enabled: true, category_auto_apply: true });
 
     // security tab
     await tab(page, 'Bảo mật').click();
@@ -133,7 +139,7 @@ for (const width of [390, 1440]) {
     await noOverflow(page); await shot(page, `settings-security-editor-${width}`);
     await tab(page, 'Cấu hình AI').click(); await page.getByRole('checkbox', { name: 'Tạo phụ đề tự động' }).uncheck({ force: true });
     await page.getByRole('button', { name: 'Lưu thay đổi' }).click(); await expect.poll(() => calls.puts.length).toBe(1);
-    expect(calls.puts[0]).toEqual({ auto_highlight_enabled: true, auto_subtitle_enabled: false }); // editor never sends admin-only keys
+    expect(calls.puts[0]).toEqual({ auto_highlight_enabled: true, auto_subtitle_enabled: false, category_auto_apply: true }); // editor never sends admin-only keys
   });
 
   test(`INT-59 settings loading and error states ${width}`, async ({ page }) => {

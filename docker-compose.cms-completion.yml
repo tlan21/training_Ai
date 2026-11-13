@@ -2,10 +2,10 @@
 # Pins only owned app images; AI, workers, databases, ports and volumes inherit existing configuration.
 services:
   # INT-59 (3c3b33b, API 0.11.1): overlay images on int11-843a56e / int11-6288d60 (gateway binary + CMS dist built on host; C: nearly full).
-  # INT-63 gateway+cms int63-193bcfe (app-scoped refresh cookie; rollback = int62-e8a2498 / api012-f6bc07f). INT-62 gateway+client int62-e8a2498 (Kafka clip.published notifications; rollback = int61-017d1c6 / int61-07c0002). INT-61 gateway int61-017d1c6 (API 0.13.0, overlay of api012-f6bc07f; rollback = api012-f6bc07f), client int61-07c0002 (rebuilt .next on int11-843a56e; rollback = int11-843a56e). API 0.12.0 (f6bc07f): overlays of int59-3c3b33b (gateway binary + CMS dist; SystemHealth.ai_models). Rollback = int59-3c3b33b.
+  # INT-64 gateway+cms+client int64-9c20edf (category auto-apply, CMS bell seen, feed player; rollback = int63-193bcfe / int62-e8a2498). INT-63 gateway+cms int63-193bcfe (app-scoped refresh cookie; rollback = int62-e8a2498 / api012-f6bc07f). INT-62 gateway+client int62-e8a2498 (Kafka clip.published notifications; rollback = int61-017d1c6 / int61-07c0002). INT-61 gateway int61-017d1c6 (API 0.13.0, overlay of api012-f6bc07f; rollback = api012-f6bc07f), client int61-07c0002 (rebuilt .next on int11-843a56e; rollback = int11-843a56e). API 0.12.0 (f6bc07f): overlays of int59-3c3b33b (gateway binary + CMS dist; SystemHealth.ai_models). Rollback = int59-3c3b33b.
   gateway:
-    image: video-ai-gateway:int63-193bcfe
+    image: video-ai-gateway:int64-9c20edf
   cms:
-    image: video-ai-cms:int63-193bcfe
+    image: video-ai-cms:int64-3d9b54c
   client:
-    image: video-ai-client:int62-e8a2498
+    image: video-ai-client:int64-9c20edf

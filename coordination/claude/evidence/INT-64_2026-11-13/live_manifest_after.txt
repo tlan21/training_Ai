@@ -1,0 +1,5 @@
+users|51
+videos|198
+with_category|12
+notifications|100
+alert_seen|1

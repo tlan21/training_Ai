@@ -1,0 +1,3 @@
+FROM video-ai-gateway:int63-193bcfe
+COPY gateway /usr/local/bin/gateway
+LABEL org.opencontainers.image.revision="9c20edf" overlay.base="video-ai-gateway:int63-193bcfe" overlay.binaries="gateway"

@@ -1,0 +1,38 @@
+[
+  {
+    "step": "client",
+    "detail": {
+      "read_one": "2→1",
+      "read_all": "1→0, still 0 after reload, CMS signed in"
+    }
+  },
+  {
+    "step": "cms",
+    "detail": {
+      "badge_before": "Cảnh báo hệ thống (1)",
+      "after_open_and_reload": "no badge"
+    }
+  },
+  {
+    "step": "discover-1440",
+    "detail": {
+      "bong_da_feed_items": 2
+    }
+  },
+  {
+    "step": "feed",
+    "detail": {
+      "autoplay": true,
+      "initial_muted": false,
+      "loop": false,
+      "pause_play": true,
+      "auto_advance": "reel 1 ended → reel 2 playing"
+    }
+  },
+  {
+    "step": "discover-390",
+    "detail": {
+      "bong_da_feed_items": 2
+    }
+  }
+]
