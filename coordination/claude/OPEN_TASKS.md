@@ -111,6 +111,25 @@ Runtime: gateway + CMS `int59-b0959f5` (overlay trên int11 — C: gần đầy,
 Commits: `e47c9c8` AI-API v3.3 · `fd0161d` API 0.12.0 + types · `f6bc07f` CMS UI · commit evidence/deploy pin kế tiếp.
 Runtime: inference `ai-v3.3-f6bc07f`, gateway + CMS `api012-f6bc07f` (overlay, rollback = `ai-v3.0-48735ff` / `int59-3c3b33b`); client/orchestrator/cutter không đổi.
 
+### INT-61 — Client: thích / xem sau / danh sách riêng / chia sẻ / tốc độ phát / thư viện đầy đủ (user 2026-11-13)
+
+| Trường | Giá trị |
+|---|---|
+| Owner | CLAUDE |
+| Status | IN_PROGRESS (2026-11-13; chạy song song AI-05 vì user giao trong lúc chờ train) |
+| Yêu cầu user | "hoàn thành các tính năng phía client … trang chủ: yêu thích, lưu danh sách xem sau, chia sẻ; khám phá: frame video thiếu tốc độ phát, thêm vào xem sau; lịch sử xem: video đã thích, danh sách xem sau, lịch sử xem, Danh sách của tôi … hoàn thiện toàn bộ các tính năng" |
+| Quyết định user | Bỏ thích / bỏ xem sau / xóa lịch sử: **giữ sự kiện `user_interactions` (dữ liệu train Two-Tower), chỉ ẩn/đổi trạng thái**. "Danh sách của tôi": **đầy đủ** (tạo/đổi tên/xóa, thêm/bỏ clip, xem; 50 danh sách/người, 500 clip/danh sách, tên 1–60 ký tự). |
+| Contract | OpenAPI 0.13.0 (chỉ thêm path; `/api/users/me/likes` giữ shape, nguồn đổi sang trạng thái) → regenerate Go + TS (CMS = Client) trước code. Migration `008_user_library.sql` chỉ thêm bảng, backfill like/save cũ từ sự kiện. |
+
+Acceptance:
+1. Thích + Xem sau có trạng thái thật (PUT/DELETE từng clip, idempotent, 404 clip không công khai); lần đầu thích/lưu vẫn ghi 1 sự kiện `like`/`save` (role client) cho Two-Tower; bỏ thích/bỏ lưu không xóa sự kiện.
+2. `GET /api/users/me/saved` (ClipPage, mới nhất trước); `GET /api/users/me/likes` từ trạng thái (bỏ thích → biến mất); trạng thái hàng loạt cho ≤50 clip để vẽ nút.
+3. Lịch sử: xóa 1 clip / xóa tất cả = ẩn các lần xem trước thời điểm xóa (xem lại sau đó hiện lại); sự kiện giữ nguyên.
+4. Danh sách riêng: CRUD + thêm/bỏ clip + xem nội dung (cursor); tên trùng của cùng user → 409; vượt giới hạn → 409; chỉ chủ sở hữu (khác user → 404).
+5. Client: trang chủ (feed), khám phá, chi tiết video có Thích / Xem sau / Thêm vào danh sách / Chia sẻ với trạng thái thật; khám phá có chọn tốc độ phát (0.5–2×); Thư viện: 3 tab thật, sidebar "Danh sách của bạn" (tạo/đổi tên/xóa/mở), menu trên thẻ (bỏ khỏi tab/danh sách, thêm vào danh sách), xóa toàn bộ lịch sử có xác nhận.
+6. Gate: Go vet/test/build + real-PG; Client tsc + lint + build; E2E thật trên stack (tài khoản QA tự tạo, manifest trước/sau, dọn sạch); Design Parity 390×844 + 1440×900 gồm loading/empty/error.
+Ngoài phạm vi: chuông thông báo client (chưa có API — giữ disabled), "Phổ biến nhất" trong tìm kiếm.
+
 ## Các gate riêng / việc phụ thuộc
 
 | Check | Task | Status | Dependency / giới hạn |
