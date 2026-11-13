@@ -619,6 +619,9 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   lr warmup tuyến tính 0→1e-3 trong 100 bước đầu rồi giữ 1e-3 (tổng 300 bước, 32 ảnh seed 0, wd 0), ngưỡng loss < 0.05 GIỮ NGUYÊN.
   Train/eval y hệt A1 (`vit.yaml` đã có warmup 3%). Báo cả hai: A1 (không warmup → FAIL) là kết quả chính về độ ổn định; A1b chỉ trả lời
   "Post-LN có warmup đạt Top-1 bao nhiêu". Nếu A1b sanity vẫn FAIL → ghi kết quả, dừng, không đổi thêm. Kernel cùng id (version 2).
+  **Kết quả 2026-11-13:** sanity PASS, train đủ 3 seed. Top-1 0.7275 ± 0.0308 vs Pre-Norm 0.7430 ± 0.0496 (Welch t −0.46, p 0.67);
+  macro-F1 0.7129 vs 0.7205 (p 0.84) → không phân biệt được độ chính xác (3 vs 3); khác biệt là ổn định tối ưu (A1). Output tải về
+  `D:/data_training_ai/vit_ablation_postln/v2/`; `SO_LIEU_LUAN_AN_v2.md` §6b + `ablation_A1b_compare.{py,json}`. ViT active không đổi.
 
 ### AI-08 — Dọn dẹp dữ liệu/artefact làn AI an toàn (yêu cầu user 2026-10-26)
 - T gốc: — | Owner: claude | Status: TODO (task lặp lại: chạy sau mỗi đợt train xong, hoặc khi một ổ chạm `BLOCKED_RESOURCE`)
