@@ -8,6 +8,7 @@ import { Icon } from "@/components/Icon";
 import { useAuthStore } from "@/stores/authStore";
 import { apiClient, logoutSession, errorMessage } from "@/lib/apiClient";
 import { formatTime } from "@/lib/content";
+import { NotificationBell } from "@/components/NotificationBell";
 export type NavTab = "home" | "discover" | "library" | "profile" | "search";
 export function AppNav({ active, search = true, variant = active, children }: {
     active: NavTab;
@@ -54,7 +55,7 @@ export function AppNav({ active, search = true, variant = active, children }: {
     </form>}
     {children}</div>}
     <div className="nav-actions">
-      <button className="icon-button" disabled title="Thông báo chưa có API" aria-label="Thông báo"><Icon name="notifications"/></button>
+      <NotificationBell/>
       <Link className="icon-button" aria-label="Lịch sử xem" href="/profile?view=library&tab=history"><Icon name="history"/></Link>
       <details className="account-menu">
         <summary aria-label="Tài khoản" className="avatar">{user?.username?.[0]?.toUpperCase() || <Icon name="person" size={20}/>}</summary>
@@ -69,5 +70,5 @@ export function MobileHeader({ title = "VidsAI", back, center = false, children 
     center?: boolean;
     children?: React.ReactNode;
 }) {
-    return <header className={`mobile-header ${center ? "centered" : ""}`}>{back && <Link href="/feed" className="icon-button" aria-label="Về Trang chủ"><Icon name={center ? "arrow_back_ios" : "arrow_back"}/></Link>}<span className="mobile-brand">{title}</span><div className="mobile-header-actions">{children || <><Link href="/search" className="icon-button" aria-label="Tìm kiếm"><Icon name="search"/></Link><button className="icon-button" disabled title="Thông báo chưa có API" aria-label="Thông báo"><Icon name="notifications"/></button></>}</div></header>;
+    return <header className={`mobile-header ${center ? "centered" : ""}`}>{back && <Link href="/feed" className="icon-button" aria-label="Về Trang chủ"><Icon name={center ? "arrow_back_ios" : "arrow_back"}/></Link>}<span className="mobile-brand">{title}</span><div className="mobile-header-actions">{children || <><Link href="/search" className="icon-button" aria-label="Tìm kiếm"><Icon name="search"/></Link><NotificationBell/></>}</div></header>;
 }

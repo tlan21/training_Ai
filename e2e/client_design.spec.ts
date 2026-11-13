@@ -101,6 +101,7 @@ async function setup(page:Page,{empty=false,fail='',prefs=user.preferences,role=
   if(pathname==='/api/users/me/clip-states')return route.fulfill({json:{items:(url.searchParams.get('clip_ids')||'').split(',').filter(Boolean).map(id=>({clip_id:id,liked:marks.like.has(id),saved:marks.save.has(id),list_ids:[]}))}});
   if(pathname==='/api/users/me/saved')return route.fulfill({json:{items:empty?[]:clips.filter(c=>marks.save.has(c.id!)),next_cursor:null}});
   if(pathname==='/api/users/me/lists')return route.fulfill({json:{items:[]}});
+  if(pathname==='/api/users/me/notifications')return route.fulfill({json:{items:[],unread_count:0,next_cursor:null}}); // INT-62
   if(pathname==='/api/feed')return route.fulfill({json:{items:empty?[]:clips,next_cursor:null,recommendation_mode:'popularity'} satisfies components['schemas']['FeedPage']});
   if(pathname==='/api/users/me/likes')return route.fulfill({json:{items:empty?[]:clips,next_cursor:null}});
   if(pathname==='/api/users/me/history')return route.fulfill({json:{items:empty?[]:[{clip:clips[0],watched_at:'2026-10-14T02:00:00Z',duration_watched:3}],next_cursor:null}});
