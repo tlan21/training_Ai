@@ -13,8 +13,11 @@ func TestCMSPlanAContract(t *testing.T) {
 	if err := spec.Validate(context.Background()); err != nil {
 		t.Fatal(err)
 	}
-	if spec.Info.Version != "0.11.1" {
+	if spec.Info.Version != "0.12.0" {
 		t.Fatalf("version %s", spec.Info.Version)
+	}
+	if spec.Components.Schemas["SystemHealth"].Value.Properties["ai_models"] == nil || len(spec.Components.Schemas["AIModelCheckpoint"].Value.Required) != 3 {
+		t.Fatal("missing SystemHealth.ai_models (0.12.0)")
 	}
 	put := spec.Paths.Find("/api/cms/videos/{id}").Put
 	if put == nil || put.Responses.Status(422) == nil {

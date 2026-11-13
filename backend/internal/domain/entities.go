@@ -288,4 +288,13 @@ type AIHealth struct {
 	QueueDepth   int      `json:"queue_depth" bson:"queue_depth"`
 	Device       string   `json:"device" bson:"device"`
 	StubMode     bool     `json:"stub_mode" bson:"stub_mode"`
+
+	// AI-API v3.3: checkpoint actually loaded per model (nil from older AI images).
+	Models []AIModelCheckpoint `json:"models" bson:"models"`
+}
+
+type AIModelCheckpoint struct {
+	Name   string `json:"name" bson:"name"`
+	File   string `json:"file" bson:"file"`
+	Sha256 string `json:"sha256" bson:"sha256"`
 }

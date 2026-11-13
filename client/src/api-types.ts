@@ -2433,7 +2433,17 @@ export interface components {
             /** Format: float */
             gpu_util?: number;
             models_loaded?: string[];
+            /** @description 0.12.0: checkpoint của từng model AI đã nạp thật (AI-API v3.3 /health.models), sắp theo tên; rỗng khi AI không phản hồi hoặc image AI cũ. */
+            ai_models?: components["schemas"]["AIModelCheckpoint"][];
             queue_depth?: number;
+        };
+        AIModelCheckpoint: {
+            /** @description Khóa model: vit | siamese | asr_ctc | highlight_fusion | minigpt | two_tower */
+            name: string;
+            /** @description best.pt (hoặc last.pt khi chưa có best) */
+            file: string;
+            /** @description SHA256 đầy đủ của checkpoint đang chạy */
+            sha256: string;
         };
         /** @description Settings snapshot taken before upload is enqueued; changing settings does not rewrite existing jobs/results. */
         ProcessingOptions: {

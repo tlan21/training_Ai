@@ -59,7 +59,7 @@ func (h *SystemHandlers) Health(c *gin.Context) {
 	}
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 15*time.Second)
 	defer cancel()
-	out := gin.H{"ai_available": false, "ai_error": nil, "device": nil, "cpu_util": h.cpuUsage()}
+	out := gin.H{"ai_available": false, "ai_error": nil, "device": nil, "cpu_util": h.cpuUsage(), "ai_models": []domain.AIModelCheckpoint{}}
 	aiCtx, aiCancel := context.WithTimeout(ctx, 5*time.Second)
 	res, err := h.ai.Health(aiCtx)
 	aiCancel()
@@ -71,6 +71,9 @@ func (h *SystemHandlers) Health(c *gin.Context) {
 		out["gpu_vram_used"] = res.GpuVramUsed
 		out["gpu_util"] = res.GpuUtil
 		out["models_loaded"] = res.ModelsLoaded
+		if res.Models != nil {
+			out["ai_models"] = res.Models
+		}
 		out["queue_depth"] = res.QueueDepth
 		if res.StubMode {
 			out["ai_error"] = "AI service is running in stub mode"

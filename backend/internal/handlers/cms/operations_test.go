@@ -26,7 +26,7 @@ func TestHealthAcceptsComputeOnlyInferenceWithoutStorageDependencies(t *testing.
 			t.Fatalf("unexpected inference path: %s", r.URL.Path)
 		}
 		w.Header().Set("Content-Type", "application/json")
-		_, _ = w.Write([]byte(`{"status":"ok","models_loaded":["vit","siamese","asr_ctc","highlight_fusion","minigpt","two_tower"],"stub_mode":false,"dependencies":{},"device":"cpu"}`))
+		_, _ = w.Write([]byte(`{"status":"ok","models_loaded":["vit","siamese","asr_ctc","highlight_fusion","minigpt","two_tower"],"stub_mode":false,"dependencies":{},"device":"cpu","models":[{"name":"vit","file":"best.pt","sha256":"192d90e4fad893cec1542c5630715cc3bc22197e8cd8ba22a6fb84a64a88ad7f"}]}`))
 	}))
 	defer upstream.Close()
 	r := gin.New()
@@ -34,12 +34,16 @@ func TestHealthAcceptsComputeOnlyInferenceWithoutStorageDependencies(t *testing.
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, httptest.NewRequest("GET", "/health", nil))
 	var response struct {
-		Available bool     `json:"ai_available"`
-		Error     *string  `json:"ai_error"`
-		Models    []string `json:"models_loaded"`
+		Available bool                       `json:"ai_available"`
+		Error     *string                    `json:"ai_error"`
+		Models    []string                   `json:"models_loaded"`
+		AIModels  []domain.AIModelCheckpoint `json:"ai_models"`
 	}
 	if err := json.Unmarshal(w.Body.Bytes(), &response); err != nil || w.Code != 200 || !response.Available || response.Error != nil || len(response.Models) != 6 {
 		t.Fatalf("compute-only inference rejected: %d %s (%v)", w.Code, w.Body, err)
+	}
+	if len(response.AIModels) != 1 || response.AIModels[0] != (domain.AIModelCheckpoint{Name: "vit", File: "best.pt", Sha256: "192d90e4fad893cec1542c5630715cc3bc22197e8cd8ba22a6fb84a64a88ad7f"}) {
+		t.Fatalf("ai_models not passed through (0.12.0): %s", w.Body)
 	}
 }
 
