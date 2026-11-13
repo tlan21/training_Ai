@@ -13,14 +13,23 @@ function NotificationBell() {
   const counts = useNotificationCounts();
   const seen = useAlertsSeen();
   const markSeen = useMarkAlertsSeen();
+  // The snapshot as it was when the panel opened: opening marks everything seen, but the panel must still show what was new.
+  const [openedWith, setOpenedWith] = useState<{ failed_jobs: number; uncategorized_videos: number } | null>(null);
   useEffect(() => setOpen(false), [pathname, search]);
+  const base = open && openedWith ? openedWith : { failed_jobs: seen.data?.failed_jobs ?? 0, uncategorized_videos: seen.data?.uncategorized_videos ?? 0 };
   const alerts = [
-    { on: settings.data?.notify_failed_jobs ?? true, count: counts.data?.failed_jobs ?? 0, seen: seen.data?.failed_jobs ?? 0, label: "Job xử lý lỗi", to: "/queue?status=failed", icon: "error" },
-    { on: settings.data?.notify_uncategorized_videos ?? true, count: counts.data?.uncategorized_videos ?? 0, seen: seen.data?.uncategorized_videos ?? 0, label: "Video đã xử lý chưa gán danh mục", to: "/videos?status=processed", icon: "category" },
+    { on: settings.data?.notify_failed_jobs ?? true, count: counts.data?.failed_jobs ?? 0, seen: base.failed_jobs, label: "Job xử lý lỗi", to: "/queue?status=failed", icon: "error" },
+    { on: settings.data?.notify_uncategorized_videos ?? true, count: counts.data?.uncategorized_videos ?? 0, seen: base.uncategorized_videos, label: "Video đã xử lý chưa gán danh mục", to: "/videos?status=processed", icon: "category" },
   ].filter((alert) => alert.on);
   // INT-64: the badge shows only what grew since this account last opened the bell (server-side snapshot); the list keeps the live counts.
-  const total = seen.isLoading ? 0 : alerts.reduce((sum, alert) => sum + Math.max(0, alert.count - alert.seen), 0);
-  const toggle = () => { setOpen((value) => !value); if (!open && counts.data) markSeen.mutate({ failed_jobs: counts.data.failed_jobs ?? 0, uncategorized_videos: counts.data.uncategorized_videos ?? 0 }); };
+  const total = open || seen.isLoading ? 0 : alerts.reduce((sum, alert) => sum + Math.max(0, alert.count - alert.seen), 0);
+  const toggle = () => {
+    if (!open && counts.data) {
+      setOpenedWith({ failed_jobs: seen.data?.failed_jobs ?? 0, uncategorized_videos: seen.data?.uncategorized_videos ?? 0 });
+      markSeen.mutate({ failed_jobs: counts.data.failed_jobs ?? 0, uncategorized_videos: counts.data.uncategorized_videos ?? 0 });
+    }
+    setOpen((value) => !value);
+  };
   return <div className="bell-wrap">
     <button className="icon-button" aria-label={total ? `Cảnh báo hệ thống (${total})` : "Cảnh báo hệ thống"} aria-expanded={open} onClick={toggle}><Icon name="notifications" />{total > 0 && <span className="bell-badge" aria-hidden="true">{total > 99 ? "99+" : total}</span>}</button>
     {open && <div className="health-popover bell-popover card" role="dialog" aria-label="Thông báo">
