@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useSystemHealth } from "../../hooks/useAuth";
 import { Icon } from "./Icon";
+import { AIModelList } from "./AIModelList";
 import { useNotificationCounts, useSettings } from "../../hooks/useCms";
 
 // INT-59: in-app alerts only (no email/push); each kind follows its Settings > Thông báo switch.
@@ -53,6 +54,6 @@ export function TopBar({ onMenu }: { onMenu: () => void }) {
       {systemLast && system}
       {pathname === "/dashboard" && <span className="topbar-avatar" aria-label="Tài khoản CMS"><Icon name="person" size={20} /></span>}
     </div>
-    {showHealth && <div className="health-popover card"><strong>Trạng thái hệ thống</strong><p className={(health.isError || health.data?.ai_available === false) ? "error-text" : "muted"}>{(health.isError || health.data?.ai_available === false) ? "Không kết nối được inference" : health.isLoading ? "Đang tải…" : `${health.data?.models_loaded?.length ?? 0}/6 model đã nạp`}</p><p>GPU: {health.data?.gpu_util ?? "—"}% · VRAM: {health.data?.gpu_vram_used ?? "—"} GB</p><p>Hàng đợi: {health.data?.queue_depth ?? "—"}</p><button className="btn-text" onClick={() => setShowHealth(false)}>Đóng</button></div>}
+    {showHealth && <div className="health-popover card"><strong>Trạng thái hệ thống</strong><p className={(health.isError || health.data?.ai_available === false) ? "error-text" : "muted"}>{(health.isError || health.data?.ai_available === false) ? "Không kết nối được inference" : health.isLoading ? "Đang tải…" : `${health.data?.models_loaded?.length ?? 0}/6 model đã nạp`}</p><AIModelList models={health.data?.ai_models} /><p>GPU: {health.data?.gpu_util ?? "—"}% · VRAM: {health.data?.gpu_vram_used ?? "—"} GB</p><p>Hàng đợi: {health.data?.queue_depth ?? "—"}</p><button className="btn-text" onClick={() => setShowHealth(false)}>Đóng</button></div>}
   </header>;
 }

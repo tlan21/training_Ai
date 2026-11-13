@@ -6,6 +6,7 @@ import { useCmsJobs, useClips } from "../hooks/useCms";
 import { Icon } from "../components/common/Icon";
 import { Thumbnail } from "../components/common/Media";
 import { StatusBadge } from "../components/common/StatusBadge";
+import { AIModelList } from "../components/common/AIModelList";
 import { Skeleton, Empty, ErrorState } from "../components/common/Skeleton";
 import { apiClient, errorMessage } from "../lib/apiClient";
 import type { components } from "../api-types";
@@ -48,7 +49,7 @@ const [previousMonth, setPreviousMonth] = useState(false);
       <section className="card panel-body"><h4>Cảnh báo hệ thống</h4><div className="system-alerts">
         {jobs.isError && <ErrorState msg={errorMessage(jobs.error)} onRetry={() => jobs.refetch()} />}
         {failures.slice(0, 2).map((job) => <Link to={`/queue?status=failed&video_id=${job.video_id}`} key={job.id} className="system-alert is-error"><Icon name="warning" size={24} /><div><strong>Lỗi xử lý video</strong><p>{job.error_log ?? job.video_id}</p>{job.updated_at && <p className="alert-time mono">{fmtISO(job.updated_at)}</p>}</div></Link>)}
-        <div className="system-alert"><Icon name="info" size={24} /><div><strong>Model AI</strong>{health.isLoading ? <Skeleton /> : <p>{health.isError || health.data?.ai_available === false ? "AI không khả dụng" : health.data?.models_loaded?.join(", ") || "Chưa nạp model"}</p>}</div></div>
+        <div className="system-alert"><Icon name="info" size={24} /><div><strong>Model AI</strong>{health.isLoading ? <Skeleton /> : <><p>{health.isError || health.data?.ai_available === false ? "AI không khả dụng" : health.data?.ai_models?.length ? `${health.data.ai_models.length}/6 model đang chạy` : health.data?.models_loaded?.join(", ") || "Chưa nạp model"}</p><AIModelList models={health.data?.ai_models} /></>}</div></div>
         <div className="system-alert neutral"><Icon name="storage" size={24} /><div><strong>Trạng thái inference</strong><p>Thiết bị: {health.data?.device ?? "—"} · CPU {health.data?.cpu_util?.toFixed(1) ?? "—"}%</p><p>Hàng đợi: {health.data?.queue_depth ?? "—"}</p></div></div>
       </div><Link className="btn-text" to="/queue">Xem tất cả log <Icon name="arrow_forward" size={16} /></Link></section>
     </div>

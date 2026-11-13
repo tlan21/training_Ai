@@ -96,6 +96,9 @@ h4 { font-size: 14px; font-weight: 600; }
 .proposal-panel .panel-heading h4 { font-size: 16px; font-weight: 400; }
 .health-popover { position: absolute; right: 24px; top: 52px; padding: 16px; max-width: calc(100vw - 32px); width: 320px; box-shadow: 0 4px 12px #1d1a221a; }
 .health-popover p { margin-top: 8px; font-size: 12px; }
+.ai-model-list { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 4px; font-size: 12px; line-height: 16px; }
+.ai-model-list li { display: flex; justify-content: space-between; gap: 8px; }
+.ai-model-list .mono { font-size: 12px; color: var(--primary); }
 .mobile-menu, .sidebar-backdrop, .sidebar-close { display: none; }
 .page-header { display: flex; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 24px; }
 .page-header p { color: var(--on-surface-variant); font-size: 14px; line-height: 20px; }
