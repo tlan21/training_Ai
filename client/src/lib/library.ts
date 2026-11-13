@@ -6,8 +6,8 @@ import { useAuthStore } from "@/stores/authStore";
 
 // INT-61 (API 0.13.0): like / watch-later state, user lists and history hiding. The server logs the like/save
 // interaction itself on the first like/save, so callers must not also track() these.
-export type ClipState = components["schemas"]["ClipState"];
-export type UserList = components["schemas"]["UserList"];
+type ClipState = components["schemas"]["ClipState"];
+type UserList = components["schemas"]["UserList"];
 type ClipPage = components["schemas"]["ClipPage"];
 
 // ponytail: one request per tick for every clip id asked in that tick (≤50 per request, the API limit).

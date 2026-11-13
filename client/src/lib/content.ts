@@ -8,8 +8,8 @@ export function recommendationLabel(mode?: RecommendationMode) {
 }
 export type Clip = components["schemas"]["Clip"];
 export type Video = components["schemas"]["Video"];
-export type HistoryPage = paths["/api/users/me/history"]["get"]["responses"][200]["content"]["application/json"];
-export type VideoPage = paths["/api/videos"]["get"]["responses"][200]["content"]["application/json"];
+type HistoryPage = paths["/api/users/me/history"]["get"]["responses"][200]["content"]["application/json"];
+type VideoPage = paths["/api/videos"]["get"]["responses"][200]["content"]["application/json"];
 export type VisualResults = paths["/api/search/visual"]["post"]["responses"][200]["content"]["application/json"];
 export type TextResults = paths["/api/search"]["get"]["responses"][200]["content"]["application/json"];
 export function useCategories() {
@@ -40,7 +40,7 @@ export function formatTime(seconds = 0) {
 export function formatDate(date?: string) {
     return date ? new Date(date).toLocaleDateString("vi-VN") : "—";
 }
-export type Interaction = paths["/api/interactions"]["post"]["requestBody"]["content"]["application/json"];
+type Interaction = paths["/api/interactions"]["post"]["requestBody"]["content"]["application/json"];
 export function track(body: Interaction, keepalive = false) {
     const { user, accessToken } = useAuthStore.getState();
     if (user?.role !== "client" || !accessToken) return;

@@ -1,7 +1,7 @@
 "use client";
 import { create } from "zustand";
 import type { components } from "../api-types";
-export const HIGHLIGHT_THRESHOLD = 75;
+const HIGHLIGHT_THRESHOLD = 75;
 type Range = {
     start: number;
     end: number;

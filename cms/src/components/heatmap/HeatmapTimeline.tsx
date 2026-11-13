@@ -1,8 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-export function scoreToColor(score: number, threshold = 75): string {
-  return score > threshold ? "var(--danger)" : "var(--primary)";
-}
-export function xToSecond(x: number, width: number, duration: number): number {
+function xToSecond(x: number, width: number, duration: number): number {
   return width > 0 ? Math.round(Math.max(0, Math.min(1, x / width)) * duration) : 0;
 }
 export function HeatmapTimeline({ scores, duration, currentTime, onSeek, height = 80, threshold = 75, selection, onSelectionChange, zoom = 1 }: {

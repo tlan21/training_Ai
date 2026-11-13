@@ -11,13 +11,6 @@ export function useLogin() {
     onSuccess: (d) => { queryClient.removeQueries(); useAuthStore.getState().setAuth({ accessToken: d.access_token, user: d.user }); },
   });
 }
-export function useMe(enabled = true) {
-  return useQuery({
-    queryKey: ["me"],
-    queryFn: async () => (await apiClient.get("/api/users/me")).data,
-    enabled,
-  });
-}
 export function useLogout() {
   return useMutation({
     mutationFn: logoutSession,
