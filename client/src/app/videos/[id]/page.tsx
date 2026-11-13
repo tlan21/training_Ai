@@ -14,6 +14,7 @@ import { Icon } from "@/components/Icon";
 import { PageState, Thumbnail } from "@/components/Media";
 import { compilationSubtitles, compilationScores, sourceClipTime } from "@/lib/clipTimeline";
 import { Transcript } from "@/components/Transcript";
+import { ListPicker, useClipActions } from "@/components/Library";
 function VideoDetail() {
     const { id } = useParams<{
         id: string;
@@ -39,8 +40,7 @@ function VideoDetail() {
     const [sheet, setSheet] = useState(false);
     const [message, setMessage] = useState("");
     const [mediaError, setMediaError] = useState(false);
-    const [liked, setLiked] = useState(false);
-    const [saved, setSaved] = useState(false);
+    const [listClip, setListClip] = useState<string | null>(null);
     const [summaryOpen, setSummaryOpen] = useState(true);
     const [rate,setRate]=useState(1);
     const [hot, setHot] = useState<number | null>(null);
@@ -103,10 +103,8 @@ function VideoDetail() {
         if (!(e instanceof DOMException && e.name === "AbortError"))
             setMessage(errorMessage(e));
     } };
-    const action = (type: "like" | "save") => { if (type === "like")
-        setLiked(v => !v);
-    else
-        setSaved(v => !v); track({ video_id: id, clip_id: selectedClip?.id, interaction_type: type }); };
+    // INT-61: like / watch-later / lists are clip-based; the original-video view (no clip selected) cannot be saved.
+    const marks = useClipActions(selectedClip?.id, setMessage);
     const segments = compilationSubtitles(subs.data?.segments || [], sources || []);
     const moments = (analysis.data?.key_moments || []).flatMap(moment => { const timestamp = sources?.length ? sourceClipTime(sources, moment.timestamp || 0) : moment.timestamp; return timestamp === null ? [] : [{ ...moment, timestamp }]; });
     const currentSegment = segments.find(s => store.currentTime >= (s.start_time || 0) && store.currentTime < (s.end_time || 0));
@@ -132,12 +130,12 @@ function VideoDetail() {
  {!original && <div className="notice detail-error">{sources?.length ? "Đang xem video tổng hợp đã xuất bản" : "Đang xem clip đã xuất bản"}{selectedClip ? ` (${formatTime(offset)}–${formatTime(end)})` : ""}.{!data?.playback_url && " Video gốc chưa có nguồn phát."}</div>}
  <section className="detail-metadata"><h1>{sources?.length ? selectedClip?.title : data?.title}</h1><div className="video-metadata-line"><span>{formatDate(data?.created_at)}</span><span>{formatTime(sources?.length ? end : data?.duration_seconds)}</span>{data?.category?.name && <span className="category">#{data.category.name}</span>}</div>
  <div className="detail-channel"><span className="avatar"><Icon name="movie_filter" size={22}/></span><div><p>VidsAI</p><small>Video đã xử lý</small></div></div>
- <div className="detail-quick-actions hide-scrollbar"><button aria-pressed={liked} className={liked ? "active" : ""} onClick={() => action("like")}><Icon name="thumb_up" size={20}/>{liked ? "Đã thích" : "Thích"}</button><button className={`mobile-action ${saved ? "active" : ""}`} aria-pressed={saved} onClick={() => action("save")}><Icon name="bookmark" size={20} filled={saved}/>Lưu lại</button><button className="mobile-action" onClick={() => { setSummaryOpen(true); document.getElementById("ai-summary")?.scrollIntoView({ behavior: "smooth" }); }} disabled={!analysis.data?.summary}><Icon name="auto_awesome" size={20}/>Tóm tắt AI</button><button className="mobile-action" onClick={() => setSheet(true)}><Icon name="description" size={20}/>Bản ghi</button><button className="desktop-only" onClick={share}><Icon name="share" size={20}/>Chia sẻ</button></div></section>
+ <div className="detail-quick-actions hide-scrollbar"><button aria-pressed={marks.liked} className={marks.liked ? "active" : ""} disabled={!marks.ready} title={marks.ready ? undefined : "Chọn một clip highlight để thích"} onClick={marks.toggleLike}><Icon name="thumb_up" size={20} filled={marks.liked}/>{marks.liked ? "Đã thích" : "Thích"}</button><button className={marks.saved ? "active" : ""} aria-pressed={marks.saved} disabled={!marks.ready} onClick={marks.toggleSave}><Icon name="schedule" size={20} filled={marks.saved}/>{marks.saved ? "Đã lưu xem sau" : "Xem sau"}</button><button className={marks.inList ? "active" : ""} disabled={!marks.ready} onClick={() => selectedClip?.id && setListClip(selectedClip.id)}><Icon name="playlist_add" size={20}/>Thêm vào danh sách</button><button className="mobile-action" onClick={() => { setSummaryOpen(true); document.getElementById("ai-summary")?.scrollIntoView({ behavior: "smooth" }); }} disabled={!analysis.data?.summary}><Icon name="auto_awesome" size={20}/>Tóm tắt AI</button><button className="mobile-action" onClick={() => setSheet(true)}><Icon name="description" size={20}/>Bản ghi</button><button className="desktop-only" onClick={share}><Icon name="share" size={20}/>Chia sẻ</button></div></section>
  {analysis.isPending ? <PageState loading/> : analysis.error ? <div className="detail-error"><PageState error={analysis.error} retry={() => analysis.refetch()}/></div> : analysis.data?.summary && <section className="summary-section" id="ai-summary"><button className="summary-heading" onClick={() => setSummaryOpen(!summaryOpen)} aria-expanded={summaryOpen}><span className="mobile-only"><Icon name="auto_awesome" filled/></span><span className="desktop-only"><Icon name="bolt"/></span><h2><span className="mobile-only">Tóm tắt Thông minh bởi AI</span><span className="desktop-only">Tóm tắt nội dung bằng AI</span></h2><Icon name="expand_more" size={18}/></button>{summaryOpen && <><p className="summary-content">{analysis.data.summary}</p>{!!moments.length && <div className="moment-grid">{moments.map((moment, i) => <button key={i} onClick={() => seek(moment.timestamp || 0)}><small><span className="mobile-only">{i === 0 ? "Điểm Nhấn" : i === 1 ? "Kết Luận" : "Điểm Nhấn"}</span><time className="desktop-only">{formatTime(moment.timestamp)}</time></small><span>{moment.text} <time className="mobile-only">({formatTime(moment.timestamp)})</time></span></button>)}</div>}{!!hashtags.length && <div className="summary-hashtags">{hashtags.map(h => <span key={h}>{h.startsWith("#") ? h : `#${h}`}</span>)}</div>}</>}</section>}
  <section className="related-section"><h2><span className="mobile-only">Đề xuất cho bạn</span><span className="desktop-only">Video liên quan</span></h2><div className="related-list">{clips.map(c => <button className="related-card" key={c.id} onClick={() => { pendingSeek.current = c.start_time || 0; setSelected(c.id || null); store.seekTo(c.start_time || 0); }}><div className="media-frame"><Thumbnail src={c.thumbnail_url}/><time className="time-badge">{formatTime((c.end_time || 0) - (c.start_time || 0))}</time></div><div><h3 className="line-clamp-2">{c.title}</h3><small>VidsAI · AI Highlight</small></div></button>)}</div>{!clips.length && <PageState empty="Chưa có clip highlight cho video này."/>}</section>
  </div><aside className="transcript-desktop"><Transcript {...transcriptProps}/></aside></main>
  <dialog ref={dialog} className="transcript-dialog" onCancel={() => setSheet(false)} onClose={() => setSheet(false)} onClick={e => { if (e.target === e.currentTarget)
         setSheet(false); }}>{sheet && <Transcript {...transcriptProps} close={() => setSheet(false)}/>}</dialog>
- <BottomNav active="library"/>{message && <div className="feed-toast" role="status">{message}</div>}</div>;
+ <BottomNav active="library"/>{message && <div className="feed-toast" role="status">{message}</div>}<ListPicker clipId={listClip} onClose={() => setListClip(null)}/></div>;
 }
 export default function VideoDetailPage() { return <Suspense fallback={<PageState loading/>}><VideoDetail /></Suspense>; }

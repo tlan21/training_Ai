@@ -11,19 +11,20 @@ import { useClipPage, formatTime, track, shareVideo, recommendationLabel, type R
 import { apiClient, errorMessage } from "@/lib/apiClient";
 import { clipSourceTime, compilationScores } from "@/lib/clipTimeline";
 import { useWatchTime } from "@/lib/useWatchTime";
-function FeedClip({ clip, active, mode, onMessage }: {
+import { ListPicker, useClipActions } from "@/components/Library";
+function FeedClip({ clip, active, mode, onMessage, onList }: {
     clip: Clip;
     mode?: RecommendationMode;
     active: boolean;
     onMessage: (s: string) => void;
+    onList: (clipId: string) => void;
 }) {
     const ref = useRef<HTMLVideoElement>(null);
     const [playing, setPlaying] = useState(false);
     const [muted, setMuted] = useState(true);
     const [time, setTime] = useState(0);
     const [duration, setDuration] = useState(0);
-    const [liked, setLiked] = useState(false);
-    const [saved, setSaved] = useState(false);
+    const marks = useClipActions(clip.id, onMessage);
     const [mediaError, setMediaError] = useState(false);
     const subs = useQuery({ queryKey: ["subtitles", clip.video_id], enabled: active && !!clip.video_id, queryFn: async () => (await apiClient.get<components["schemas"]["Subtitles"]>(`/api/videos/${clip.video_id}/subtitles`)).data });
     const analysis = useQuery({ queryKey: ["analysis", clip.video_id], enabled: active && !!clip.video_id, queryFn: async () => (await apiClient.get<components["schemas"]["PublicAnalysis"]>(`/api/videos/${clip.video_id}/analysis`)).data });
@@ -45,11 +46,6 @@ function FeedClip({ clip, active, mode, onMessage }: {
     useEffect(() => { if (active && clip.video_id)
         track({ video_id: clip.video_id, clip_id: clip.id, interaction_type: "click" }); }, [active, clip.video_id, clip.id]);
     useWatchTime(ref, clip.video_id, clip.id, active, clip.playback_url, true);
-    const action = (type: "like" | "save") => { if (type === "like")
-        setLiked(v => !v);
-    else
-        setSaved(v => !v); if (clip.video_id)
-        track({ video_id: clip.video_id, clip_id: clip.id, interaction_type: type }); };
     const share = async () => { if (!clip.video_id)
         return; try {
         await shareVideo(clip.video_id, clip.id);
@@ -72,8 +68,9 @@ function FeedClip({ clip, active, mode, onMessage }: {
     } }} style={{ opacity: playing ? 0 : 1 }}><Icon name={playing ? "pause" : "play_arrow"} size={36}/></button>
   <button className="feed-mute" aria-label={muted ? "Bật âm thanh" : "Tắt âm thanh"} onClick={() => setMuted(!muted)}><Icon name={muted ? "volume_off" : "volume_up"} size={20}/></button>
   <aside className="feed-actions">
-   <button className="feed-action" aria-label="Thích" aria-pressed={liked} onClick={() => action("like")}><span><Icon name="favorite" size={32} filled={liked}/></span><span>{liked ? "Đã thích" : "Thích"}</span></button>
-   <button className="feed-action" aria-label="Lưu clip" aria-pressed={saved} onClick={() => action("save")}><span><Icon name="bookmark" size={32} filled={saved}/></span><span>{saved ? "Đã lưu" : "Lưu"}</span></button>
+   <button className="feed-action" aria-label="Thích" aria-pressed={marks.liked} disabled={!marks.ready} onClick={marks.toggleLike}><span><Icon name="favorite" size={32} filled={marks.liked}/></span><span>{marks.liked ? "Đã thích" : "Thích"}</span></button>
+   <button className="feed-action" aria-label="Xem sau" aria-pressed={marks.saved} disabled={!marks.ready} onClick={marks.toggleSave}><span><Icon name="schedule" size={32} filled={marks.saved}/></span><span>{marks.saved ? "Đã lưu" : "Xem sau"}</span></button>
+   <button className="feed-action" aria-label="Thêm vào danh sách" aria-pressed={marks.inList} disabled={!marks.ready} onClick={() => clip.id && onList(clip.id)}><span><Icon name="playlist_add" size={32}/></span><span>Danh sách</span></button>
    <button className="feed-action" aria-label="Chia sẻ" onClick={share}><span><Icon name="share" size={32}/></span><span>Chia sẻ</span></button>
    <Link className="feed-insights" href={`/videos/${clip.video_id}`} aria-label="Phân tích AI"><Icon name="insights" size={24}/></Link>
   </aside>
@@ -90,6 +87,7 @@ export default function FeedPage() {
     const clips = feed.data?.pages.flatMap(p => p.items || []) || [];
     const [active, setActive] = useState(0);
     const [message, setMessage] = useState("");
+    const [listClip, setListClip] = useState<string | null>(null);
     const root = useRef<HTMLDivElement>(null);
     const { fetchNextPage, hasNextPage, isFetchingNextPage } = feed;
     useEffect(() => { if (!message)
@@ -110,9 +108,9 @@ export default function FeedPage() {
     return <div className="feed-page"><AppNav active="home"/><main className="feed-layout">
   <aside className="feed-trending-nav"><Link href="/discover"><span className="icon-button"><Icon name="trending_up"/></span>Xu hướng</Link></aside>
   {feed.isPending || feed.error || !clips.length ? <div className="feed-empty"><PageState loading={feed.isPending} error={feed.error} empty="Chưa có clip được xuất bản." retry={() => feed.refetch()}/>{!feed.isPending && !feed.error && <Link href="/onboarding" className="btn-primary">Chọn chủ đề yêu thích</Link>}</div> : <div className="feed-scroll" ref={root} aria-label="Video feed">
-   {clips.map((clip, i) => <div key={clip.id} data-index={i} style={{ height: "100%" }}><FeedClip clip={clip} active={active === i} mode={feed.data?.pages[0]?.recommendation_mode} onMessage={setMessage}/></div>)}
+   {clips.map((clip, i) => <div key={clip.id} data-index={i} style={{ height: "100%" }}><FeedClip clip={clip} active={active === i} mode={feed.data?.pages[0]?.recommendation_mode} onMessage={setMessage} onList={setListClip}/></div>)}
    {feed.hasNextPage && <div className="page-state"><button className="btn-primary" disabled={feed.isFetchingNextPage} onClick={() => feed.fetchNextPage()}>Tải thêm</button></div>}
   </div>}
   <section className="feed-upnext"><div className="section-heading"><h2>Sắp phát tiếp</h2><Link href="/discover" className="link">Tất cả</Link></div><div className="feed-upnext-list">{next.map(clip => <Link className="upnext-card" href={`/videos/${clip.video_id}?clip=${clip.id}`} key={clip.id}><div className="media-frame"><Thumbnail src={clip.thumbnail_url}/><time className="time-badge">{formatTime((clip.end_time || 0) - (clip.start_time || 0))}</time></div><div><h3 className="line-clamp-2">{clip.title}</h3><small>VidsAI • {clip.view_count != null ? `${clip.view_count} lượt xem` : formatTime((clip.end_time || 0) - (clip.start_time || 0))}</small><span className="ai-badge"><Icon name="bolt" size={16}/>AI Highlight</span></div></Link>)}{!next.length && <PageState empty="Chưa có clip tiếp theo"/>}</div></section>
- </main><BottomNav active="home" camera/>{message && <div className="feed-toast" role="status">{message}</div>}</div>;
+ </main><BottomNav active="home" camera/>{message && <div className="feed-toast" role="status">{message}</div>}<ListPicker clipId={listClip} onClose={() => setListClip(null)}/></div>;
 }

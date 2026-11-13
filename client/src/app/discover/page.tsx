@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
@@ -8,8 +8,9 @@ import { AppNav, MobileHeader } from "@/components/AppNav";
 import { BottomNav } from "@/components/BottomNav";
 import { Icon } from "@/components/Icon";
 import { Thumbnail, PageState } from "@/components/Media";
-import { recommendationLabel, useCategories, useVideos, useClipPage, useHistory, formatTime, formatDate, type Video, type Clip } from "@/lib/content";
-import { apiClient } from "@/lib/apiClient";
+import { recommendationLabel, useCategories, useVideos, useClipPage, useHistory, formatTime, formatDate, shareVideo, type Video, type Clip } from "@/lib/content";
+import { apiClient, errorMessage } from "@/lib/apiClient";
+import { ListPicker, useClipActions } from "@/components/Library";
 function VideoCard({ video, published }: {
     video: Video;
     published: boolean;
@@ -20,6 +21,34 @@ function ClipCard({ clip }: {
     clip: Clip;
 }) {
     return <Link className="video-card" href={`/videos/${clip.video_id}?clip=${clip.id}`}><div className="media-frame"><Thumbnail src={clip.thumbnail_url}/><span className="card-badge ai-badge"><Icon name="auto_awesome" size={12}/>AI Highlight</span><time className="time-badge">{formatTime((clip.end_time || 0) - (clip.start_time || 0))}</time></div><h3 className="line-clamp-2">{clip.title}</h3><small>VidsAI · {formatDate(clip.created_at)}</small></Link>;
+}
+const RATES = [.5, .75, 1, 1.25, 1.5, 2];
+/** INT-61: quick-watch frame for the recommended clips — playback speed + like / watch later / list / share. */
+function QuickPlayer({ clips, onList, onMessage }: { clips: Clip[]; onList: (id: string) => void; onMessage: (s: string) => void }) {
+    const ref = useRef<HTMLVideoElement>(null);
+    const [index, setIndex] = useState(0);
+    const [rate, setRate] = useState(1);
+    const clip = clips[Math.min(index, clips.length - 1)];
+    const marks = useClipActions(clip?.id, onMessage);
+    if (!clip)
+        return null;
+    const share = async () => {
+        if (!clip.video_id) return;
+        try { await shareVideo(clip.video_id, clip.id); if (!navigator.share) onMessage("Đã sao chép liên kết."); }
+        catch (e) { if (!(e instanceof DOMException && e.name === "AbortError")) onMessage(errorMessage(e)); }
+    };
+    return <section className="discovery-section quick-player" aria-label="Xem nhanh">
+        <div className="section-heading"><h2>Xem nhanh</h2><div><button className="icon-button" aria-label="Clip trước" disabled={index === 0} onClick={() => setIndex(index - 1)}><Icon name="chevron_left"/></button><button className="icon-button" aria-label="Clip tiếp theo" disabled={index >= clips.length - 1} onClick={() => setIndex(index + 1)}><Icon name="chevron_right"/></button></div></div>
+        <div className="quick-player-frame"><video key={clip.id} ref={ref} src={clip.playback_url || undefined} poster={clip.thumbnail_url || undefined} controls playsInline preload="metadata" onLoadedMetadata={e => { e.currentTarget.playbackRate = rate; }}/></div>
+        <Link className="quick-player-title line-clamp-2" href={`/videos/${clip.video_id}?clip=${clip.id}`}>{clip.title}</Link>
+        <div className="detail-quick-actions quick-player-actions">
+            <label className="quick-player-rate"><Icon name="speed" size={18}/><select aria-label="Tốc độ phát" value={rate} onChange={e => { const value = Number(e.target.value); setRate(value); if (ref.current) ref.current.playbackRate = value; }}>{RATES.map(value => <option key={value} value={value}>{value}×</option>)}</select></label>
+            <button className={marks.liked ? "active" : ""} aria-pressed={marks.liked} onClick={marks.toggleLike}><Icon name="favorite" size={20} filled={marks.liked}/>{marks.liked ? "Đã thích" : "Thích"}</button>
+            <button className={marks.saved ? "active" : ""} aria-pressed={marks.saved} onClick={marks.toggleSave}><Icon name="schedule" size={20} filled={marks.saved}/>Xem sau</button>
+            <button className={marks.inList ? "active" : ""} onClick={() => clip.id && onList(clip.id)}><Icon name="playlist_add" size={20}/>Danh sách</button>
+            <button onClick={share}><Icon name="share" size={20}/>Chia sẻ</button>
+        </div>
+    </section>;
 }
 export default function DiscoverPage() {
     const [category, setCategory] = useState("");
@@ -32,6 +61,9 @@ export default function DiscoverPage() {
     const mode = feed.data?.pages[0]?.recommendation_mode;
     const router = useRouter();
     const trendRef = useRef<HTMLDivElement>(null);
+    const [listClip, setListClip] = useState<string | null>(null);
+    const [message, setMessage] = useState("");
+    useEffect(() => { if (!message) return; const timer = setTimeout(() => setMessage(""), 4000); return () => clearTimeout(timer); }, [message]);
     const newItems = newest.data?.pages.flatMap(p => p.items || []) || [];
     const trendItems = trending.data?.pages.flatMap(p => p.items || []) || [];
     const clips = feed.data?.pages.flatMap(p => p.items || []) || [];
@@ -47,6 +79,7 @@ export default function DiscoverPage() {
  <section className="category-chips hide-scrollbar" aria-label="Danh mục"><button className={`pill ${!category ? "active" : ""}`} onClick={() => setCategory("")}>Tất cả</button>{categories.data?.map(c => <button key={c.id} className={`pill ${category === c.id ? "active" : ""}`} onClick={() => setCategory(c.id || "")}>{c.name}</button>)}</section>
  {categories.error && <div className="content-main"><PageState error={categories.error} retry={() => categories.refetch()}/></div>}
  <main className="content-main">
+ {!recommendation && <QuickPlayer clips={filteredClips.filter(c => c.playback_url)} onList={setListClip} onMessage={setMessage}/>}
  <div className="mobile-discovery">
   <section className="discovery-section"><div className="section-heading"><h2>Tiếp tục xem</h2><Link href="/profile?view=library&tab=history" className="link">Xem tất cả</Link></div>
    {history.isPending || history.error || !viewed.length ? <PageState loading={history.isPending} error={history.error} empty="Chưa có lịch sử xem." retry={() => history.refetch()}/> : <div className="continue-row hide-scrollbar">{viewed.map((item, i) => item.clip && <Link className="continue-card" href={`/videos/${item.clip.video_id}?clip=${item.clip.id}`} key={item.clip.id || i}><div className="media-frame"><Thumbnail src={item.clip.thumbnail_url}/><time className="time-badge">{formatTime((item.clip.end_time || 0) - (item.clip.start_time || 0))}</time></div><h3 className="line-clamp-2">{item.clip.title}</h3><small>VidsAI · {formatDate(item.watched_at)}</small></Link>)}</div>}
@@ -72,5 +105,5 @@ export default function DiscoverPage() {
   </section>
   <section className="discovery-section"><div className="section-heading"><h2 data-recommendation-mode={mode ?? "unknown"}>{recommendationLabel(mode)}</h2></div>{recommendation ? <PageState loading={feed.isPending} error={feed.error} empty="Chưa có clip phù hợp." retry={() => feed.refetch()}/> : <div className="video-grid">{filteredClips.map(c => <ClipCard key={c.id} clip={c}/>)}</div>}{feed.hasNextPage && <div className="load-more"><button className="btn-outline" disabled={feed.isFetchingNextPage} onClick={() => feed.fetchNextPage()}>Tải thêm</button></div>}</section>
  </div>
- </main><BottomNav active="discover"/></div>;
+ </main><BottomNav active="discover"/>{message && <div className="feed-toast" role="status">{message}</div>}<ListPicker clipId={listClip} onClose={() => setListClip(null)}/></div>;
 }

@@ -15,7 +15,7 @@ export type TextResults = paths["/api/search"]["get"]["responses"][200]["content
 export function useCategories() {
     return useQuery({ queryKey: ["categories"], queryFn: async () => (await apiClient.get<components["schemas"]["Category"][]>("/api/categories")).data });
 }
-export function useClipPage(endpoint: "/api/feed" | "/api/users/me/likes", categoryId?: string) {
+export function useClipPage(endpoint: "/api/feed" | "/api/users/me/likes" | "/api/users/me/saved", categoryId?: string) {
     const ready = useAuthStore(s => s.ready);
     return useInfiniteQuery({ queryKey: [endpoint, categoryId ?? ""], enabled: ready, initialPageParam: null as string | null,
         queryFn: async ({ pageParam }) => (await apiClient.get<components["schemas"]["ClipPage"] & Partial<components["schemas"]["FeedPage"]>>(endpoint, { params: { cursor: pageParam || undefined, limit: 10, category_id: categoryId || undefined } })).data,
