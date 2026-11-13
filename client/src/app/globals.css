@@ -1851,39 +1851,6 @@ input[type=checkbox] {
     flex-direction: column;
     gap: 16px;
   }
-  .upnext-card {
-    display: flex;
-    gap: 12px;
-    padding: 8px;
-    border-radius: 16px;
-    align-items: center;
-    min-width: 0;
-  }
-  .upnext-card:hover {
-    background: var(--surface-container);
-  }
-  .upnext-card>.media-frame {
-    width: 128px;
-    aspect-ratio: 9/16;
-    flex-shrink: 0;
-  }
-  .upnext-card h3 {
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 20px;
-  }
-  .upnext-card small {
-    display: block;
-    margin-top: 4px;
-    color: var(--on-surface-variant);
-  }
-  .upnext-card .ai-badge {
-    margin-top: 8px;
-    background: none;
-    color: var(--primary);
-    padding: 0;
-    text-transform: uppercase;
-  }
   .feed-empty {
     background: #000;
   }
@@ -3341,9 +3308,6 @@ input[type=checkbox] {
   .feed-layout {
     padding: 16px 24px;
   }
-  .upnext-card>.media-frame {
-    width: 96px;
-  }
   .feed-copy h1 {
     font-size: 20px;
   }
@@ -3678,8 +3642,6 @@ input[type=checkbox] {
   .feed-upnext .section-heading { margin: 0 0 24px; }
   .feed-upnext .section-heading h2 { font-size: 20px; line-height: 28px; }
   .feed-upnext .section-heading .link { font-weight: 700; }
-  .upnext-card:hover h3 { color: var(--primary); }
-  .upnext-card .time-badge { bottom: 4px; right: 4px; padding: 2px 6px; font-weight: 700; letter-spacing: .05em; background: #0009; backdrop-filter: blur(4px); }
 }
 
 /* Onboarding — interest_onboarding_* */
@@ -3808,3 +3770,25 @@ button.media-frame { display: block; width: 100%; border: 0; padding: 0; cursor:
 .notify-text { display: flex; flex-direction: column; min-width: 0; overflow-wrap: anywhere; }
 .notify-text small { color: var(--outline); font-size: 12px; }
 .notify-empty { padding: 16px; font-size: 14px; color: var(--on-surface-variant); }
+
+/* INT-64 — feed player: sound pill, play/pause in the controls row; "Sắp phát tiếp" as a compact queue that scrolls the feed */
+.feed-sound-hint { position: absolute; top: 84px; left: 50%; transform: translateX(-50%); z-index: 3; display: flex; align-items: center; gap: 6px; padding: 8px 14px; border: 0; border-radius: 999px; background: #000b; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; }
+.feed-progress { display: flex; align-items: center; gap: 8px; margin-top: 24px; }
+.feed-progress input[type=range] { flex: 1; min-width: 0; margin-top: 0; }
+.feed-play { flex: 0 0 auto; display: grid; place-items: center; width: 32px; height: 32px; border: 0; border-radius: 50%; background: #ffffff26; color: #fff; cursor: pointer; }
+.feed-play:hover { background: #ffffff40; }
+.upnext-queue { list-style: none; margin: 0; padding: 0; gap: 4px; }
+.upnext-row > button { display: grid; grid-template-columns: 20px 120px minmax(0, 1fr); gap: 12px; align-items: center; width: 100%; padding: 8px; border: 0; border-radius: 12px; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.upnext-row > button:hover { background: var(--surface-container); }
+.upnext-row.is-current > button { background: var(--primary-fixed); }
+.upnext-pos { display: grid; place-items: center; font-size: 12px; font-weight: 700; color: var(--on-surface-variant); font-variant-numeric: tabular-nums; }
+.upnext-row.is-current .upnext-pos { color: var(--primary); }
+.upnext-row .media-frame { width: 120px; border-radius: 8px; }
+.upnext-row .time-badge { bottom: 4px; right: 4px; padding: 1px 6px; font-size: 11px; font-weight: 700; background: #0009; }
+.upnext-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.upnext-title { font-size: 14px; font-weight: 500; line-height: 20px; overflow-wrap: anywhere; }
+.upnext-row > button:hover .upnext-title { color: var(--primary); }
+.upnext-now { font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--primary); }
+.upnext-text small { font-size: 12px; color: var(--on-surface-variant); }
+.upnext-end { padding: 8px; font-size: 13px; color: var(--on-surface-variant); }
+@media(min-width:1024px) { .feed-progress { margin-top: 4px; } }
