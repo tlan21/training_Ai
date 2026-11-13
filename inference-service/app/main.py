@@ -67,7 +67,6 @@ async def highlight(req: schemas.HighlightRequest):
 @app.get("/health", response_model=schemas.HealthResponse)
 async def health():
     vram, util = await asyncio.to_thread(worker_client.gpu_stats)
-    all_names = ["vit", "siamese", "asr_ctc", "highlight_fusion", "minigpt", "two_tower"]
     return schemas.HealthResponse(
         status="ok",
         gpu_vram_used=round(vram, 1),

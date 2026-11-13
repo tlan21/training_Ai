@@ -11,12 +11,6 @@ import torch
 _NEG_INF = -1e30
 
 
-def _logsumexp2(a: torch.Tensor, b: torch.Tensor) -> torch.Tensor:
-    m = torch.maximum(a, b)
-    m = torch.where(torch.isinf(m), torch.zeros_like(m), m)
-    return m + torch.log(torch.exp(a - m) + torch.exp(b - m))
-
-
 def _logaddexp(a: float, b: float) -> float:
     if a <= _NEG_INF:
         return b

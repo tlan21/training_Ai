@@ -9,8 +9,6 @@ from torch.utils.data import Dataset
 from ...audio.mel import log_mel_spectrogram
 from ...data import load_manifest
 
-BLANK = 0
-
 
 class CharVocab:
     """Char-level vocab: index 0 = blank (CTC), 1.. = ký tự."""

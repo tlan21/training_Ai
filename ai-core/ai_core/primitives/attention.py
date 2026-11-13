@@ -39,10 +39,6 @@ class KVCache:
             raise RuntimeError(f"KVCache vượt max_len={self.max_len}")
         return self._k[layer_idx], self._v[layer_idx]
 
-    def reset(self) -> None:
-        self._k = [None] * self.n_layers
-        self._v = [None] * self.n_layers
-
 
 class MultiHeadAttention(nn.Module):
     """softmax(QKᵀ/√Dh)V viết tay; use_sdpa=True chuyển sang F.scaled_dot_product_attention.

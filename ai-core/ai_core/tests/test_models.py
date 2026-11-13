@@ -9,7 +9,7 @@ from ai_core.config import ModelConfig
 from ai_core.models.ctc import ctc_loss
 
 
-def _overfit(step_fn, steps=250, lr=3e-3, tol=0.05):
+def _overfit(step_fn, steps=250, lr=3e-3):
     """Chạy AdamW tự viết trên 1 batch cố định, trả loss cuối."""
     from ai_core.optim import AdamW, split_decay_params
     model, batch = step_fn.model, step_fn.batch
@@ -72,7 +72,7 @@ def test_asr_ctc_shape_and_overfit():
         return ctc_loss(lp.transpose(0, 1), targets, ol, tgt_len, blank=0)
     step.model, step.batch = model, (mel, lengths)
     # CTC overfit chỉ cần giảm mạnh (chuỗi ngẫu nhiên) — ngưỡng nới
-    assert _overfit(step, steps=300, tol=0.5) < 0.5
+    assert _overfit(step, steps=300) < 0.5
 
 
 def test_highlight_fusion_shape_and_overfit():
