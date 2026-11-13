@@ -13,7 +13,7 @@ func TestCMSPlanAContract(t *testing.T) {
 	if err := spec.Validate(context.Background()); err != nil {
 		t.Fatal(err)
 	}
-	if spec.Info.Version != "0.14.0" {
+	if spec.Info.Version != "0.14.1" {
 		t.Fatalf("version %s", spec.Info.Version)
 	}
 	if spec.Components.Schemas["SystemHealth"].Value.Properties["ai_models"] == nil || len(spec.Components.Schemas["AIModelCheckpoint"].Value.Required) != 3 {

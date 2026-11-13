@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Video AI Platform — Public + CMS API
-  version: 0.14.0
+  version: 0.14.1
   description: >
     Contract-first (master plan §2). Nguồn sự thật cho gateway Go (oapi-codegen)
     và FE types (openapi-typescript). Điểm highlight thang 0–100; similarity/score 0–1.
@@ -29,6 +29,7 @@ tags:
 paths:
   # ---------------- 2.1 Auth ----------------
   /api/auth/register:
+    parameters: [ { $ref: "#/components/parameters/AppHeader" } ]
     post:
       tags: [auth]
       summary: Đăng ký
@@ -56,6 +57,7 @@ paths:
         "422": { $ref: "#/components/responses/ValidationError" }
 
   /api/auth/login:
+    parameters: [ { $ref: "#/components/parameters/AppHeader" } ]
     post:
       tags: [auth]
       summary: Đăng nhập
@@ -81,6 +83,7 @@ paths:
         "401": { $ref: "#/components/responses/Unauthorized" }
 
   /api/auth/refresh:
+    parameters: [ { $ref: "#/components/parameters/AppHeader" } ]
     post:
       tags: [auth]
       summary: Làm mới access token (dùng refresh cookie)
@@ -97,6 +100,7 @@ paths:
         "401": { $ref: "#/components/responses/Unauthorized" }
 
   /api/auth/logout:
+    parameters: [ { $ref: "#/components/parameters/AppHeader" } ]
     post:
       tags: [auth]
       summary: Đăng xuất (xóa cookie + row user_sessions)
@@ -963,6 +967,7 @@ paths:
 
   # ---------------- INT-59 CMS tài khoản của tôi (mọi tài khoản CMS) ----------------
   /api/cms/me/password:
+    parameters: [ { $ref: "#/components/parameters/AppHeader" } ]
     post:
       tags: [cms-settings]
       summary: Đổi mật khẩu của chính mình; thu hồi các phiên khác, giữ phiên hiện tại (cookie refresh)
@@ -981,6 +986,7 @@ paths:
               schema: { $ref: "#/components/schemas/Error" }
 
   /api/cms/me/sessions/revoke-others:
+    parameters: [ { $ref: "#/components/parameters/AppHeader" } ]
     post:
       tags: [cms-settings]
       summary: Đăng xuất mọi thiết bị khác của chính mình (xóa refresh session trừ phiên của cookie hiện tại)
@@ -1210,6 +1216,15 @@ components:
       in: path
       required: true
       schema: { type: string }
+    AppHeader:
+      name: X-App
+      in: header
+      required: false
+      description: >
+        0.14.1 (INT-63): app that owns the refresh session. `cms` → HttpOnly cookie `cms_refresh`; omitted → cookie `refresh`
+        (Client). Cookies ignore ports, so Client (:3000) and CMS (:5173) on one host need separate cookies or a login/logout
+        in one app replaces/revokes the other app's session.
+      schema: { type: string, enum: [cms] }
     ClipId:
       name: clip_id
       in: path

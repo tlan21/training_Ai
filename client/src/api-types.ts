@@ -7,7 +7,10 @@ export interface paths {
     "/api/auth/register": {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description 0.14.1 (INT-63): app that owns the refresh session. `cms` → HttpOnly cookie `cms_refresh`; omitted → cookie `refresh` (Client). Cookies ignore ports, so Client (:3000) and CMS (:5173) on one host need separate cookies or a login/logout in one app replaces/revokes the other app's session. */
+                "X-App"?: components["parameters"]["AppHeader"];
+            };
             path?: never;
             cookie?: never;
         };
@@ -17,7 +20,10 @@ export interface paths {
         post: {
             parameters: {
                 query?: never;
-                header?: never;
+                header?: {
+                    /** @description 0.14.1 (INT-63): app that owns the refresh session. `cms` → HttpOnly cookie `cms_refresh`; omitted → cookie `refresh` (Client). Cookies ignore ports, so Client (:3000) and CMS (:5173) on one host need separate cookies or a login/logout in one app replaces/revokes the other app's session. */
+                    "X-App"?: components["parameters"]["AppHeader"];
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -57,7 +63,10 @@ export interface paths {
     "/api/auth/login": {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description 0.14.1 (INT-63): app that owns the refresh session. `cms` → HttpOnly cookie `cms_refresh`; omitted → cookie `refresh` (Client). Cookies ignore ports, so Client (:3000) and CMS (:5173) on one host need separate cookies or a login/logout in one app replaces/revokes the other app's session. */
+                "X-App"?: components["parameters"]["AppHeader"];
+            };
             path?: never;
             cookie?: never;
         };
@@ -67,7 +76,10 @@ export interface paths {
         post: {
             parameters: {
                 query?: never;
-                header?: never;
+                header?: {
+                    /** @description 0.14.1 (INT-63): app that owns the refresh session. `cms` → HttpOnly cookie `cms_refresh`; omitted → cookie `refresh` (Client). Cookies ignore ports, so Client (:3000) and CMS (:5173) on one host need separate cookies or a login/logout in one app replaces/revokes the other app's session. */
+                    "X-App"?: components["parameters"]["AppHeader"];
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -104,7 +116,10 @@ export interface paths {
     "/api/auth/refresh": {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description 0.14.1 (INT-63): app that owns the refresh session. `cms` → HttpOnly cookie `cms_refresh`; omitted → cookie `refresh` (Client). Cookies ignore ports, so Client (:3000) and CMS (:5173) on one host need separate cookies or a login/logout in one app replaces/revokes the other app's session. */
+                "X-App"?: components["parameters"]["AppHeader"];
+            };
             path?: never;
             cookie?: never;
         };
@@ -114,7 +129,10 @@ export interface paths {
         post: {
             parameters: {
                 query?: never;
-                header?: never;
+                header?: {
+                    /** @description 0.14.1 (INT-63): app that owns the refresh session. `cms` → HttpOnly cookie `cms_refresh`; omitted → cookie `refresh` (Client). Cookies ignore ports, so Client (:3000) and CMS (:5173) on one host need separate cookies or a login/logout in one app replaces/revokes the other app's session. */
+                    "X-App"?: components["parameters"]["AppHeader"];
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -143,7 +161,10 @@ export interface paths {
     "/api/auth/logout": {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description 0.14.1 (INT-63): app that owns the refresh session. `cms` → HttpOnly cookie `cms_refresh`; omitted → cookie `refresh` (Client). Cookies ignore ports, so Client (:3000) and CMS (:5173) on one host need separate cookies or a login/logout in one app replaces/revokes the other app's session. */
+                "X-App"?: components["parameters"]["AppHeader"];
+            };
             path?: never;
             cookie?: never;
         };
@@ -153,7 +174,10 @@ export interface paths {
         post: {
             parameters: {
                 query?: never;
-                header?: never;
+                header?: {
+                    /** @description 0.14.1 (INT-63): app that owns the refresh session. `cms` → HttpOnly cookie `cms_refresh`; omitted → cookie `refresh` (Client). Cookies ignore ports, so Client (:3000) and CMS (:5173) on one host need separate cookies or a login/logout in one app replaces/revokes the other app's session. */
+                    "X-App"?: components["parameters"]["AppHeader"];
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -2172,7 +2196,10 @@ export interface paths {
     "/api/cms/me/password": {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description 0.14.1 (INT-63): app that owns the refresh session. `cms` → HttpOnly cookie `cms_refresh`; omitted → cookie `refresh` (Client). Cookies ignore ports, so Client (:3000) and CMS (:5173) on one host need separate cookies or a login/logout in one app replaces/revokes the other app's session. */
+                "X-App"?: components["parameters"]["AppHeader"];
+            };
             path?: never;
             cookie?: never;
         };
@@ -2182,7 +2209,10 @@ export interface paths {
         post: {
             parameters: {
                 query?: never;
-                header?: never;
+                header?: {
+                    /** @description 0.14.1 (INT-63): app that owns the refresh session. `cms` → HttpOnly cookie `cms_refresh`; omitted → cookie `refresh` (Client). Cookies ignore ports, so Client (:3000) and CMS (:5173) on one host need separate cookies or a login/logout in one app replaces/revokes the other app's session. */
+                    "X-App"?: components["parameters"]["AppHeader"];
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -2220,7 +2250,10 @@ export interface paths {
     "/api/cms/me/sessions/revoke-others": {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description 0.14.1 (INT-63): app that owns the refresh session. `cms` → HttpOnly cookie `cms_refresh`; omitted → cookie `refresh` (Client). Cookies ignore ports, so Client (:3000) and CMS (:5173) on one host need separate cookies or a login/logout in one app replaces/revokes the other app's session. */
+                "X-App"?: components["parameters"]["AppHeader"];
+            };
             path?: never;
             cookie?: never;
         };
@@ -2230,7 +2263,10 @@ export interface paths {
         post: {
             parameters: {
                 query?: never;
-                header?: never;
+                header?: {
+                    /** @description 0.14.1 (INT-63): app that owns the refresh session. `cms` → HttpOnly cookie `cms_refresh`; omitted → cookie `refresh` (Client). Cookies ignore ports, so Client (:3000) and CMS (:5173) on one host need separate cookies or a login/logout in one app replaces/revokes the other app's session. */
+                    "X-App"?: components["parameters"]["AppHeader"];
+                };
                 path?: never;
                 cookie?: never;
             };
@@ -3187,6 +3223,8 @@ export interface components {
     };
     parameters: {
         PathId: string;
+        /** @description 0.14.1 (INT-63): app that owns the refresh session. `cms` → HttpOnly cookie `cms_refresh`; omitted → cookie `refresh` (Client). Cookies ignore ports, so Client (:3000) and CMS (:5173) on one host need separate cookies or a login/logout in one app replaces/revokes the other app's session. */
+        AppHeader: "cms";
         ClipId: string;
         ListId: string;
         Cursor: string;
