@@ -79,7 +79,7 @@ for (const width of [390,1440,1903]) for (const [shape,w,h] of [['square',224,22
 }
 
 async function setup(page:Page,{empty=false,fail='',prefs=user.preferences,role=user.role}: {empty?:boolean;fail?:string;prefs?:string[];role?:components['schemas']['UserMe']['role']}={}){
- const interactions:Interaction[]=[];const requests:string[]=[];
+ const interactions:Interaction[]=[];const requests:string[]=[];const library:string[]=[];const marks={like:new Set<string>(),save:new Set<string>(['clp_ui2'])};
  await page.route('**/ui-fixture.mp4',route=>{
   const body=readFileSync(path.join(__dirname,'fixtures/video.mp4'));
   const range=route.request().headers().range?.match(/bytes=(\d+)-(\d*)/);
@@ -95,6 +95,12 @@ async function setup(page:Page,{empty=false,fail='',prefs=user.preferences,role=
   if(pathname==='/api/users/me'){if(req.method()==='PUT'){user.username=req.postDataJSON().username;}return route.fulfill({json:{...user,preferences:prefs,role}});}
   if(pathname==='/api/users/me/preferences')return route.fulfill({json:{}});
   if(pathname==='/api/categories')return route.fulfill({json:categories});
+  // INT-61 (0.13.0) library state: PUT/DELETE likes|saved, clip-states, saved list, user lists
+  const mark=pathname.match(/^\/api\/users\/me\/(likes|saved)\/([^/]+)$/);
+  if(mark){const kind=mark[1]==='likes'?'like':'save';library.push(`${req.method()} ${kind} ${mark[2]}`);if(req.method()==='PUT')marks[kind].add(mark[2]);else marks[kind].delete(mark[2]);return route.fulfill({status:204});}
+  if(pathname==='/api/users/me/clip-states')return route.fulfill({json:{items:(url.searchParams.get('clip_ids')||'').split(',').filter(Boolean).map(id=>({clip_id:id,liked:marks.like.has(id),saved:marks.save.has(id),list_ids:[]}))}});
+  if(pathname==='/api/users/me/saved')return route.fulfill({json:{items:empty?[]:clips.filter(c=>marks.save.has(c.id!)),next_cursor:null}});
+  if(pathname==='/api/users/me/lists')return route.fulfill({json:{items:[]}});
   if(pathname==='/api/feed')return route.fulfill({json:{items:empty?[]:clips,next_cursor:null,recommendation_mode:'popularity'} satisfies components['schemas']['FeedPage']});
   if(pathname==='/api/users/me/likes')return route.fulfill({json:{items:empty?[]:clips,next_cursor:null}});
   if(pathname==='/api/users/me/history')return route.fulfill({json:{items:empty?[]:[{clip:clips[0],watched_at:'2026-10-14T02:00:00Z',duration_watched:3}],next_cursor:null}});
@@ -110,7 +116,7 @@ async function setup(page:Page,{empty=false,fail='',prefs=user.preferences,role=
   if(pathname==='/api/auth/reset-password')return route.fulfill({json:{}});
   return route.fulfill({status:404,json:{error:{code:'NOT_FOUND',message:'UI fixture missing '+pathname}}});
  });
- return {interactions,requests};
+ return {interactions,requests,library};
 }
 
 async function expiringSession(page:Page) {
@@ -412,10 +418,13 @@ for(const route of ['feed','discover','profile?view=library']){
  test('T3.2 '+route+' empty state',async({page})=>{await setup(page,{empty:true});await page.goto(client+'/'+route);await expect(page.locator('.page-state').first()).toContainText('Chưa');await noOverflow(page);});
 }
 test('T3.2 feed actions and swipe pause inactive player',async({page})=>{
- await page.setViewportSize({width:390,height:844});const {interactions}=await setup(page);await page.goto(client+'/feed');
+ await page.setViewportSize({width:390,height:844});const {interactions,library}=await setup(page);await page.goto(client+'/feed');
  const first=page.locator('.feed-clip').first();await expect.poll(()=>first.locator('video').evaluate((el:HTMLVideoElement)=>el.currentTime)).toBeGreaterThan(1.2);
- await first.getByRole('button',{name:'Thích',exact:true}).click();await first.getByRole('button',{name:'Lưu clip',exact:true}).click();
- await expect.poll(()=>interactions.map(x=>x.interaction_type)).toContain('like');await expect.poll(()=>interactions.map(x=>x.interaction_type)).toContain('save');
+ // INT-61: like / watch later are server state (PUT); the server logs the like/save event, so the client must not post it too.
+ await first.getByRole('button',{name:'Thích',exact:true}).click();await first.getByRole('button',{name:'Xem sau',exact:true}).click();
+ await expect.poll(()=>library).toEqual(['PUT like clp_ui1','PUT save clp_ui1']);
+ await expect(first.getByRole('button',{name:'Thích',exact:true})).toHaveAttribute('aria-pressed','true');await expect(first.getByRole('button',{name:'Xem sau',exact:true})).toHaveAttribute('aria-pressed','true');
+ expect(interactions.map(x=>x.interaction_type)).not.toContain('like');expect(interactions.map(x=>x.interaction_type)).not.toContain('save');
  await page.locator('.feed-scroll').evaluate(el=>el.scrollTo({top:el.clientHeight,behavior:'instant'}));
  await expect.poll(()=>first.locator('video').evaluate((el:HTMLVideoElement)=>el.paused)).toBe(true);
  await expect.poll(()=>page.locator('.feed-clip').nth(1).locator('video').evaluate((el:HTMLVideoElement)=>el.paused)).toBe(false);
@@ -442,9 +451,9 @@ test('T3.2 discovery category chips keep label width and filter API',async({page
  const chip=page.getByRole('button',{name:'Bóng đá',exact:true});await expect(chip).toBeVisible();expect(await chip.evaluate(el=>el.scrollWidth<=el.clientWidth)).toBe(true);
  const request=page.waitForRequest(r=>r.url().includes('/api/videos?')&&r.url().includes('cat_football'));const feedRequest=page.waitForRequest(r=>r.url().includes('/api/feed?')&&r.url().includes('category_id=cat_football'));await chip.click();await request;await feedRequest;await noOverflow(page);
 });
-test('T3.2 draft summary hidden and saved list gap is clear',async({page})=>{
+test('T3.2 draft summary hidden and INT-61 watch-later list shows saved clips',async({page})=>{
  await setup(page);await page.route('**/api/videos/vid_ui1/analysis',r=>r.fulfill({json:{timeline_scores:analysis.timeline_scores,summary:null,key_moments:[],hashtags:[]}}));await page.goto(client+'/videos/vid_ui1');await expect(page.getByRole('heading',{name:videos[0].title,exact:true})).toBeVisible();await expect(page.locator('#ai-summary')).toHaveCount(0);
- await page.goto(client+'/profile?view=library');await page.locator('.library-sidebar').getByRole('button',{name:'Danh sách xem sau',exact:true}).click();await expect(page.getByRole('heading',{name:'Danh sách đã lưu chưa khả dụng',exact:true})).toBeVisible();
+ await page.goto(client+'/profile?view=library');await page.locator('.library-sidebar').getByRole('button',{name:'Danh sách xem sau',exact:true}).click();await expect(page.locator('.library-grid article')).toHaveCount(1);await expect(page.locator('.library-grid')).toContainText(clips[1].title!);
 });
 test('T3.2 refresh restores session without persisting access token',async({page})=>{
  const {requests}=await setup(page);await page.goto(client+'/feed');await expect(page.locator('.feed-clip')).toHaveCount(3);await page.reload();await expect(page.locator('.feed-clip')).toHaveCount(3);expect(requests.filter(p=>p==='/api/auth/refresh')).toHaveLength(2);expect(await page.evaluate(()=>localStorage.getItem('client-auth'))).toBeNull();
