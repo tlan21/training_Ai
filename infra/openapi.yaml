@@ -430,6 +430,50 @@ paths:
         "401": { $ref: "#/components/responses/Unauthorized" }
         "404": { $ref: "#/components/responses/NotFound" }
 
+  /api/users/me/notifications:
+    get:
+      tags: [notifications]
+      summary: Thông báo trong app (0.14.0) — clip mới publish thuộc chủ đề yêu thích; mới nhất trước; chỉ clip còn công khai
+      parameters:
+        - $ref: "#/components/parameters/Cursor"
+        - $ref: "#/components/parameters/Limit"
+      responses:
+        "200":
+          description: items + unread_count + next_cursor
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items, unread_count]
+                properties:
+                  items:
+                    type: array
+                    items: { $ref: "#/components/schemas/UserNotification" }
+                  unread_count: { type: integer, minimum: 0 }
+                  next_cursor: { type: string, nullable: true }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "422": { $ref: "#/components/responses/ValidationError" }
+
+  /api/users/me/notifications/read:
+    post:
+      tags: [notifications]
+      summary: Đánh dấu đã đọc — `ids` (tối đa 100) hoặc bỏ trống/không gửi = tất cả; idempotent
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ids:
+                  type: array
+                  maxItems: 100
+                  items: { type: string }
+      responses:
+        "204": { description: Đã đánh dấu }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "422": { $ref: "#/components/responses/ValidationError" }
+
   # ---------------- 2.2 Client content ----------------
   /api/feed:
     get:
