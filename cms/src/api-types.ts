@@ -2773,6 +2773,22 @@ export interface components {
             /** Format: date-time */
             updated_at: string;
         };
+        UserNotification: {
+            id: string;
+            /**
+             * @description Kafka clip.published → consumer gateway-notifications
+             * @enum {string}
+             */
+            kind: "clip_published";
+            clip_id: string;
+            video_id: string;
+            /** @description Tiêu đề clip lúc publish */
+            title: string;
+            thumbnail_url?: string | null;
+            /** Format: date-time */
+            created_at: string;
+            read: boolean;
+        };
         UserListWrite: {
             name: string;
         };

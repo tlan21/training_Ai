@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Video AI Platform — Public + CMS API
-  version: 0.13.0
+  version: 0.14.0
   description: >
     Contract-first (master plan §2). Nguồn sự thật cho gateway Go (oapi-codegen)
     và FE types (openapi-typescript). Điểm highlight thang 0–100; similarity/score 0–1.
@@ -1427,6 +1427,19 @@ components:
         cover_thumbnail_url: { type: string, nullable: true, description: Ảnh của clip mới thêm gần nhất }
         created_at: { type: string, format: date-time }
         updated_at: { type: string, format: date-time }
+
+    UserNotification:
+      type: object
+      required: [id, kind, clip_id, video_id, title, created_at, read]
+      properties:
+        id: { type: string }
+        kind: { type: string, enum: [clip_published], description: "Kafka clip.published → consumer gateway-notifications" }
+        clip_id: { type: string }
+        video_id: { type: string }
+        title: { type: string, description: Tiêu đề clip lúc publish }
+        thumbnail_url: { type: string, nullable: true }
+        created_at: { type: string, format: date-time }
+        read: { type: boolean }
 
     UserListWrite:
       type: object
