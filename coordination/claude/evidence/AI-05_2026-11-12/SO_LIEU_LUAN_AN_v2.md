@@ -115,3 +115,17 @@ Script tính lại F1 trước và assert khớp số đã báo (0.3222 / 0.1440
 hiệu F1 Fusion − baseline: vs RMS **+0.178** [CI95 0.137, 0.222], P(hiệu ≥ 0.10) = 0.9999; vs frame-diff **+0.217** [0.179, 0.255], P = 1.0.
 Nhận xét: AP 0.273 ≈ 6,6× mức ngẫu nhiên; ρ thấp (0.25) vì điểm liên tục chỉ cần xếp đúng vùng đỉnh, phần lớn giây là nền. F1 đoạn 0.21 thấp
 hơn F1/giây do ranh giới đoạn dự đoán lệch (recall đoạn 0.31, precision 0.16 → nhiều đoạn thừa) — hạn chế ghi trong luận án.
+
+### 6b. A1b — Post-LN có warmup trong sanity, train đủ 3 seed ★ (`ablation_A1b_compare.py` → `ablation_A1b_compare.json`)
+Đăng ký trước (TASKS "Ablation A1b", user duyệt 2026-11-12). Khác A1 DUY NHẤT: sanity overfit warmup tuyến tính 100 bước → PASS (script tự
+dừng nếu FAIL; log Kaggle tải về rỗng nên không có số loss). Train/eval y hệt bản Pre-Norm (`vit.yaml` 20k bước, lr 3e-4, warmup 3%,
+seed 1337/1338/1339, test 7.846 frame / 16 video). Checkpoint: `D:/data_training_ai/vit_ablation_postln/v2/` (không thay ViT active).
+| Block | Top-1 (mean ± std) | macro-F1 (mean ± std) | Tham số | best val acc theo seed |
+|---|---|---|---|---|
+| Pre-Norm RMSNorm + SwiGLU (dự án) | 0.7430 ± 0.0496 | 0.7205 ± 0.0525 | 5.068.804 | 0.831 / 0.871 / 0.782 |
+| Post-LN LayerNorm + GELU-MLP 4d | 0.7275 ± 0.0308 | 0.7129 ± 0.0321 | 4.980.996 | 0.846 / 0.811 / 0.826 |
+Hiệu Post-LN − Pre-Norm: Top-1 −0.016 (Welch t = −0.46, df 3.3, p = 0.67); macro-F1 −0.008 (t = −0.21, p = 0.84). 3 vs 3 seed → công suất
+rất thấp: **không kết luận được khác biệt độ chính xác**. Đường val (đo mỗi 1.000 bước) của cả hai dao động mạnh (±0.05–0.1) nhưng không
+phân kỳ; train loss cuối Post-LN ≈ 0.024 (học thuộc train, khoảng cách tổng quát hóa như nhau — giới hạn chung là 123 video).
+Kết luận cho luận án: với warmup, Post-LN đạt độ chính xác tương đương; khác biệt thực nghiệm đo được là **ổn định tối ưu hóa** — không
+warmup thì Post-LN không học được (A1, loss 1.26) còn Pre-Norm học ngay (0.0001). Pre-Norm bỏ được ràng buộc warmup → chọn Pre-Norm.
