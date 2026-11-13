@@ -8,4 +8,4 @@ services:
   cms:
     image: video-ai-cms:dc-8aa6534
   client:
-    image: video-ai-client:dc-8aa6534
+    image: video-ai-client:feedui-94e6fcf
