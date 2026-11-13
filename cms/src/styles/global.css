@@ -762,3 +762,6 @@ body:has(.settings-page) .account-row strong { font-size: 16px; font-weight: 400
 .settings-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
 .sidebar-brand h1 { overflow-wrap: anywhere; }
 .users-table .row-actions { justify-content: end; }@media (max-width: 760px) { .settings-row > .btn-outline { width: 100%; } }
+
+/* INT-64: CMS bell — count that grew since the account last opened it */
+.bell-new { color: var(--primary); font-weight: 600; font-size: 12px; }

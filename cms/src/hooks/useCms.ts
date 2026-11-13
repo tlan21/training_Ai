@@ -86,3 +86,19 @@ export function useUpdateSettings() {
   const qc = useQueryClient();
   return useMutation({ mutationFn: async (b: components["schemas"]["SettingsUpdate"]) => (await apiClient.put("/api/cms/settings", b)).data, onSuccess: () => qc.invalidateQueries({ queryKey: qk.settings() }) });
 }
+
+// INT-64 (API 0.15.0): CMS bell "seen" snapshot (badge = only what grew since) + bulk-approve AI category suggestions.
+type AlertsSeen = components["schemas"]["AlertsSeen"];
+export function useAlertsSeen() {
+  return useQuery({ queryKey: ["alerts-seen"], queryFn: async () => (await apiClient.get<AlertsSeen>("/api/cms/me/alerts-seen")).data, refetchOnWindowFocus: false });
+}
+export function useMarkAlertsSeen() {
+  const qc = useQueryClient();
+  return useMutation({ mutationFn: async (b: AlertsSeen) => { await apiClient.put("/api/cms/me/alerts-seen", b); return b; },
+    onSuccess: (b) => qc.setQueryData(["alerts-seen"], b) });
+}
+export function useApplyCategorySuggestions() {
+  const qc = useQueryClient();
+  return useMutation({ mutationFn: async () => (await apiClient.post<{ applied: number; skipped: number }>("/api/cms/videos/apply-category-suggestions")).data,
+    onSuccess: () => qc.invalidateQueries() });
+}

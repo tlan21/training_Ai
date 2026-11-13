@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate, useSearchParams } from "react-router-do
 import { useSystemHealth } from "../../hooks/useAuth";
 import { Icon } from "./Icon";
 import { AIModelList } from "./AIModelList";
-import { useNotificationCounts, useSettings } from "../../hooks/useCms";
+import { useAlertsSeen, useMarkAlertsSeen, useNotificationCounts, useSettings } from "../../hooks/useCms";
 
 // INT-59: in-app alerts only (no email/push); each kind follows its Settings > Thông báo switch.
 function NotificationBell() {
@@ -11,20 +11,24 @@ function NotificationBell() {
   const { pathname, search } = useLocation();
   const settings = useSettings();
   const counts = useNotificationCounts();
+  const seen = useAlertsSeen();
+  const markSeen = useMarkAlertsSeen();
   useEffect(() => setOpen(false), [pathname, search]);
   const alerts = [
-    { on: settings.data?.notify_failed_jobs ?? true, count: counts.data?.failed_jobs ?? 0, label: "Job xử lý lỗi", to: "/queue?status=failed", icon: "error" },
-    { on: settings.data?.notify_uncategorized_videos ?? true, count: counts.data?.uncategorized_videos ?? 0, label: "Video đã xử lý chưa gán danh mục", to: "/videos?status=processed", icon: "category" },
+    { on: settings.data?.notify_failed_jobs ?? true, count: counts.data?.failed_jobs ?? 0, seen: seen.data?.failed_jobs ?? 0, label: "Job xử lý lỗi", to: "/queue?status=failed", icon: "error" },
+    { on: settings.data?.notify_uncategorized_videos ?? true, count: counts.data?.uncategorized_videos ?? 0, seen: seen.data?.uncategorized_videos ?? 0, label: "Video đã xử lý chưa gán danh mục", to: "/videos?status=processed", icon: "category" },
   ].filter((alert) => alert.on);
-  const total = alerts.reduce((sum, alert) => sum + alert.count, 0);
+  // INT-64: the badge shows only what grew since this account last opened the bell (server-side snapshot); the list keeps the live counts.
+  const total = seen.isLoading ? 0 : alerts.reduce((sum, alert) => sum + Math.max(0, alert.count - alert.seen), 0);
+  const toggle = () => { setOpen((value) => !value); if (!open && counts.data) markSeen.mutate({ failed_jobs: counts.data.failed_jobs ?? 0, uncategorized_videos: counts.data.uncategorized_videos ?? 0 }); };
   return <div className="bell-wrap">
-    <button className="icon-button" aria-label={total ? `Cảnh báo hệ thống (${total})` : "Cảnh báo hệ thống"} aria-expanded={open} onClick={() => setOpen((value) => !value)}><Icon name="notifications" />{total > 0 && <span className="bell-badge" aria-hidden="true">{total > 99 ? "99+" : total}</span>}</button>
+    <button className="icon-button" aria-label={total ? `Cảnh báo hệ thống (${total})` : "Cảnh báo hệ thống"} aria-expanded={open} onClick={toggle}><Icon name="notifications" />{total > 0 && <span className="bell-badge" aria-hidden="true">{total > 99 ? "99+" : total}</span>}</button>
     {open && <div className="health-popover bell-popover card" role="dialog" aria-label="Thông báo">
       <strong>Thông báo</strong>
       {!alerts.length ? <p className="muted">Đã tắt thông báo. Bật lại tại Cài đặt › Thông báo.</p>
         : counts.isError ? <p className="error-text">Không đọc được số liệu thông báo</p>
         : counts.isLoading ? <p className="muted">Đang tải…</p>
-        : alerts.map((alert) => <Link key={alert.to} to={alert.to} className="bell-item"><Icon name={alert.icon} size={18} /><span>{alert.label}</span><b>{alert.count}</b></Link>)}
+        : alerts.map((alert) => <Link key={alert.to} to={alert.to} className="bell-item"><Icon name={alert.icon} size={18} /><span>{alert.label}{alert.count > alert.seen && <small className="bell-new"> +{alert.count - alert.seen} mới</small>}</span><b>{alert.count}</b></Link>)}
       <button className="btn-text" onClick={() => setOpen(false)}>Đóng</button>
     </div>}
   </div>;
