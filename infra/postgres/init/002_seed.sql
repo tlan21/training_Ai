@@ -21,7 +21,6 @@ INSERT INTO users (username, email, password_hash, role) VALUES
 ON CONFLICT (email) DO NOTHING;
 
 -- system_settings (database_schema §2 dòng 154-160)
--- ai_service_api_key: PLACEHOLDER — thay bằng key thật (python -m app.gen_key) trước khi chạy production.
 INSERT INTO system_settings (key, value) VALUES
     ('highlight_threshold',   '75'),
     ('asr_warning_threshold', '65'),
@@ -29,6 +28,5 @@ INSERT INTO system_settings (key, value) VALUES
     ('auto_subtitle_enabled', 'true'),
     ('category_suggestion_enabled', 'true'),
     ('category_keyword_enabled', 'false'),
-    ('default_subtitle_lang', 'vi'),
-    ('ai_service_api_key',    'sk-local-CHANGE-ME')
+    ('default_subtitle_lang', 'vi')
 ON CONFLICT (key) DO NOTHING;

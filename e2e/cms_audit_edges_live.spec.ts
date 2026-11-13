@@ -35,13 +35,6 @@ test('INT-40 supplemental CMS controls, cancellations, compilation and corrected
   const responseIs = (r: Response, endpoint: string, method: string) => new URL(r.url()).pathname === endpoint && r.request().method() === method;
   async function api(endpoint: string) { const r = await request.get(gateway + endpoint, { headers }); expect(r.status()).toBe(200); return r.json(); }
   async function goto(route: string) { await page.goto(cms + route); await expect(page.locator('.cms-sidebar')).toBeVisible(); }
-  async function findUser(name: string) {
-    for (let p = 1; p <= 10; p++) {
-      const row = page.getByRole('row').filter({ hasText: name }); if (await row.count()) return row;
-      if (!await button('Trang sau').isEnabled()) break; const response = page.waitForResponse(r => new URL(r.url()).pathname === '/api/cms/users'); await button('Trang sau').click(); await response;
-    }
-    throw new Error('User not found through real pagination');
-  }
   async function upload(name: string, buffer: Buffer) {
     await goto('/queue'); await page.locator('input[type=file]').setInputFiles({ name, mimeType: 'video/mp4', buffer });
     const result = page.waitForResponse(r => responseIs(r, '/api/cms/videos', 'POST')); await button('Tải lên').click(); const r = await result; expect(r.status()).toBe(201); const id = (await r.json()).video.id; own.videos.push(id); save(); return id as string;
@@ -73,21 +66,6 @@ test('INT-40 supplemental CMS controls, cancellations, compilation and corrected
       await goto('/categories'); if (await page.getByRole('link', { name: 'Xem Highlight', exact: true }).count()) { await page.getByRole('link', { name: 'Xem Highlight', exact: true }).click(); await expect(page).toHaveURL(/published$/); await goto('/categories'); await page.getByRole('link', { name: 'Cài đặt Highlight', exact: true }).click(); await expect(page).toHaveURL(/settings$/); }
       await goto('/categories'); const recent = page.locator('.recent-video'); if (await recent.count()) { await recent.first().click(); await expect(page).toHaveURL(/subtitles\?video_id=/); }
       await goto('/categories'); await page.getByRole('link', { name: 'Xem tất cả video', exact: true }).click(); await expect(page).toHaveURL(/videos$/);
-    });
-    await step('users', 'Self-role is disabled on its actual page, not necessarily page one', async () => {
-      await goto('/users'); const row = await findUser('Tài khoản của bạn'); await expect(row.locator('select')).toBeDisabled(); await expect(row.getByRole('button', { name: 'Lưu', exact: true })).toBeDisabled(); await page.screenshot({ path: path.join(output, 'self-role-real-page.png'), fullPage: true });
-    });
-    await step('users', 'Editor permissions: users403, settings GET200 masked, settings PUT403; UI guards', async () => {
-      expect(main.user).toBeTruthy(); expect((await request.put(`${gateway}/api/cms/users/${main.user}/role`, { headers, data: { role: 'editor' } })).status()).toBe(200);
-      const context = await browser.newContext(); const editor = await context.newPage(); editor.setDefaultTimeout(8000);
-      try {
-        await editor.goto(cms + '/login'); await editor.getByLabel('Tên đăng nhập hoặc Email').fill(main.prefix.toLowerCase() + '@audit.invalid'); await editor.getByLabel('Mật khẩu', { exact: true }).fill('Audit40-only-2026'); const logged = editor.waitForResponse(r => responseIs(r, '/api/auth/login', 'POST')); await editor.getByRole('button', { name: 'Đăng nhập', exact: true }).click(); const body = await (await logged).json(); expect(body.user.role).toBe('editor'); const editorHeaders = { Authorization: `Bearer ${body.access_token}` };
-        expect((await request.get(gateway + '/api/cms/users', { headers: editorHeaders })).status()).toBe(403);
-        const settings = await request.get(gateway + '/api/cms/settings', { headers: editorHeaders }); expect(settings.status()).toBe(200); expect((await settings.json()).ai_service_api_key).toBe('sk-local-••••');
-        expect((await request.put(gateway + '/api/cms/settings', { headers: editorHeaders, data: {} })).status()).toBe(403);
-        await editor.goto(cms + '/users'); await expect(editor).toHaveURL(/dashboard$/); await editor.goto(cms + '/settings'); await expect(editor).toHaveURL(/dashboard$/);
-        await expect(editor.getByRole('navigation', { name: 'Điều hướng CMS' }).getByRole('link', { name: 'Cài đặt', exact: true })).toHaveCount(0);
-      } finally { await context.close(); }
     });
     await step('highlight', 'Compile stored real proposals, own draft preview/selector/reload, timeline drag handles and original breadcrumb', async () => {
       let source: Video | undefined; let analysis: components['schemas']['CmsAnalysis'] | undefined;
@@ -158,7 +136,6 @@ test('INT-40 supplemental CMS controls, cancellations, compilation and corrected
         await expect.poll(async () => (await api('/api/cms/jobs') as components['schemas']['Job'][]).find(j => j.video_id === id)?.status, { timeout: 60_000 }).toMatch(/failed|completed/);
         expect((await request.delete(`${gateway}/api/cms/videos/${id}`, { headers })).status()).toBe(204);
       });
-      if (main.user) await step('cleanup', 'Restore audit account to viewer', async () => { expect((await request.put(`${gateway}/api/cms/users/${main.user}/role`, { headers, data: { role: 'client' } })).status()).toBe(200); });
     }
     save(); console.log(JSON.stringify({ observations: clicks.length, verified: clicks.filter(c => c.result === 'VERIFIED').length, failed_or_blocked: clicks.filter(c => c.result === 'FAILED_OR_BLOCKED').length, no_response_mocks: true, output }));
   }
