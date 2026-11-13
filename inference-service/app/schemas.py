@@ -102,6 +102,12 @@ class ASRResponse(BaseModel):
 
 # ---------------- /health ----------------
 
+class ModelCheckpoint(BaseModel):
+    name: str                          # key như trong models_loaded
+    file: str                          # "best.pt" (hoặc "last.pt" khi chưa có best)
+    sha256: str                        # SHA256 đầy đủ của file đã nạp — đối chiếu bảng §1 AI_API_CONTRACT
+
+
 class HealthResponse(BaseModel):
     status: str
     gpu_vram_used: float              # MB
@@ -114,6 +120,7 @@ class HealthResponse(BaseModel):
     device: str
     stub_mode: bool
     load_error: str | None = None
+    models: list[ModelCheckpoint] = []  # AI-API v3.3 (chỉ thêm field): checkpoint của từng model đã nạp thật
 
 
 # ================= AI-API v2 endpoints (D24; v2.0 API_READY in release #6, v3.0 removed the /v1 storage paths) =================

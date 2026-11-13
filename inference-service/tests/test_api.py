@@ -23,6 +23,7 @@ def test_health_stub():
         body = r.json()
         assert body["stub_mode"] is True
         assert body["models_loaded"] == []
+        assert body["models"] == []
         assert body["degraded"] == []
         assert body["queue_depth"] == 0
 

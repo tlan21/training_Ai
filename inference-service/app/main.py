@@ -83,4 +83,5 @@ async def health():
         device=registry.device,
         stub_mode=registry.stub_mode,
         load_error=registry.load_error,
+        models=[schemas.ModelCheckpoint(name=n, **registry.checkpoints[n]) for n in sorted(registry.loaded) if n in registry.checkpoints],
     )

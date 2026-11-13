@@ -627,6 +627,14 @@
               }
             ],
             "title": "Load Error"
+          },
+          "models": {
+            "items": {
+              "$ref": "#/components/schemas/ModelCheckpoint"
+            },
+            "type": "array",
+            "title": "Models",
+            "default": []
           }
         },
         "type": "object",
@@ -767,6 +775,29 @@
           "recommended_clips"
         ],
         "title": "HighlightResponse"
+      },
+      "ModelCheckpoint": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "file": {
+            "type": "string",
+            "title": "File"
+          },
+          "sha256": {
+            "type": "string",
+            "title": "Sha256"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "file",
+          "sha256"
+        ],
+        "title": "ModelCheckpoint"
       },
       "RecoEmbeddingRequest": {
         "properties": {

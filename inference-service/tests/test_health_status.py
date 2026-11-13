@@ -64,3 +64,18 @@ def test_health_reports_dependencies(monkeypatch):
     body = asyncio.run(main.health())
     assert body.dependencies == {"model_worker": "unavailable"}
     assert body.degraded == []
+
+
+def test_health_reports_loaded_checkpoints(monkeypatch, tmp_path):
+    # AI-API v3.3: models[] = name + file + full SHA256 of each checkpoint really loaded; only loaded models are listed.
+    from app.registry import _sha256
+    ckpt = tmp_path / "best.pt"
+    ckpt.write_bytes(b"abc")
+    monkeypatch.setattr(registry, "loaded", ["vit", "asr_ctc"])
+    monkeypatch.setattr(registry, "checkpoints", {"vit": {"file": "best.pt", "sha256": _sha256(str(ckpt))},
+                                                  "asr_ctc": {"file": "last.pt", "sha256": "0" * 64},
+                                                  "minigpt": {"file": "best.pt", "sha256": "1" * 64}})
+    body = asyncio.run(main.health())
+    assert [m.model_dump() for m in body.models] == [
+        {"name": "asr_ctc", "file": "last.pt", "sha256": "0" * 64},
+        {"name": "vit", "file": "best.pt", "sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"}]

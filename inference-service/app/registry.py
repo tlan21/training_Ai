@@ -4,6 +4,7 @@ Master plan §2.4: 1 process nạp cả 6 model (~120MB fp16). Thiếu checkpoin
 vẫn trả đúng schema (mock) để backend/UI code song song trước khi AI train xong.
 """
 
+import hashlib
 import os
 import sys
 
@@ -19,6 +20,14 @@ _MODEL_FILES = {
 }
 
 
+def _sha256(path: str) -> str:
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for block in iter(lambda: f.read(1 << 20), b""):
+            h.update(block)
+    return h.hexdigest()
+
+
 class ModelRegistry:
     def __init__(self) -> None:
         self.device = resolve_device(settings.device)
@@ -30,6 +39,7 @@ class ModelRegistry:
         self.highlight_members: list = []         # AI-16: Fusion seed ensemble (postproc.json); [] = single model
         self.highlight_postproc: dict = {}        # AI-16: evaluated scoring/clip recipe; {} = legacy (no smoothing, threshold 75)
         self.loaded: list[str] = []               # tên model nạp THẬT
+        self.checkpoints: dict[str, dict] = {}    # AI-API v3.3: name → {"file", "sha256"} của checkpoint đã nạp
         self.degraded: set[str] = set()           # model có lần inference lỗi thật, gỡ khi lần sau chạy được
         self.dependencies: dict[str, str] = {}    # AI-API v3.0: only model_worker (remote worker mode) → ok|unavailable
         self.stub_mode = True
@@ -63,6 +73,7 @@ class ModelRegistry:
         """Thử nạp thật; bất kỳ lỗi nào → giữ stub cho model đó."""
         self.models.clear()
         self.loaded.clear()
+        self.checkpoints.clear()
         self.degraded.clear()
         self.load_error = None
         self.tokenizer = None
@@ -91,6 +102,7 @@ class ModelRegistry:
                 ckpt, model = self._build(path)
                 self.models[name] = model
                 self.loaded.append(name)
+                self.checkpoints[name] = {"file": os.path.basename(path), "sha256": _sha256(path)}
                 metadata = ckpt.get("metadata") or {}
                 if name == "minigpt":
                     self.minigpt_metadata = metadata
@@ -108,6 +120,7 @@ class ModelRegistry:
             print(f"[registry] highlight postproc lỗi ({e}) → highlight_fusion không nạp")
             self.models.pop("highlight_fusion", None)
             self.loaded = [n for n in self.loaded if n != "highlight_fusion"]
+            self.checkpoints.pop("highlight_fusion", None)
 
         self.stub_mode = len(self.loaded) < len(_MODEL_FILES)
         if self.stub_mode:

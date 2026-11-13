@@ -480,3 +480,7 @@ job queue) sở hữu toàn bộ dữ liệu. AI phía Claude đã xong (REL tr�
 - Chỉ đổi checkpoint `asr_ctc` `8f879867…` → `7c497d43…` (bộ ký tự 136, trong checkpoint); path/schema/status code không đổi; image giữ nguyên, container đã restart.
 - Bằng chứng: `coordination/claude/evidence/AI-25_2026-11-05_asr/README.md` (cổng 3/3, parity 44/44). Rollback: `ai-core/checkpoints/_archive/asr_ctc_8f879867/`.
 - Phía ứng dụng không phải đổi gì; video cũ giữ phụ đề cũ, video mới dùng ASR mới.
+
+## 2026-11-13 REL AI-API v3.3 — `/health.models[]` (checkpoint + SHA256 từng model; user "Làm đầy đủ"; trên `claude/ai-core`)
+- Chỉ thêm field (tương thích ngược): `GET /health.models = [{name, file, sha256}]`, worker từ xa trả qua `/info.checkpoints`. Checkpoint, path, status code không đổi.
+- Phía ứng dụng: API 0.12.0 `SystemHealth.ai_models` (gateway chuyển tiếp), CMS Dashboard + popover "Trạng thái hệ thống" hiện 6 model + SHA rút gọn. Client chỉ sinh lại types.

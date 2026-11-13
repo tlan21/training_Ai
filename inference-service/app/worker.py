@@ -226,7 +226,8 @@ def info() -> dict:
     """What the facade needs for /health when the worker is remote."""
     vram, util = registry.gpu_stats()
     return {"models_loaded": sorted(registry.loaded), "device": registry.device, "stub_mode": registry.stub_mode,
-            "load_error": registry.load_error, "gpu_vram_used": vram, "gpu_util": util}
+            "load_error": registry.load_error, "gpu_vram_used": vram, "gpu_util": util,
+            "checkpoints": registry.checkpoints}
 
 
 OPS = {"vision": vision, "siamese": siamese, "highlight": highlight, "asr": asr, "summarize": summarize}

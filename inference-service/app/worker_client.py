@@ -74,6 +74,7 @@ def attach() -> None:
         raise RuntimeError("MODEL_WORKER_KEY must be a random key (≥24 chars), not sk-local-dev-key nor AI_SERVICE_KEY")
     info = _request("/info", timeout=30)
     registry.loaded[:] = info["models_loaded"]
+    registry.checkpoints = info.get("checkpoints", {})   # worker image cũ chưa có field → health.models = []
     registry.stub_mode, registry.load_error, registry.device = info["stub_mode"], info["load_error"], info["device"]
 
 

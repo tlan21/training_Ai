@@ -1,6 +1,6 @@
 # AI API Contract — inference-service :8001
 
-**Version: AI-API v3.2 (2026-11-05, AI-25 — chỉ đổi checkpoint `asr_ctc`, path/schema/status code không đổi; xem §3).** Trước đó: v3.1 (2026-11-05, AI-24 — checkpoint `minigpt`). Trước đó: **AI-API v3.0 (2026-11-02, AI-23 — D24 bước 3).** v3.0 = major: **xóa** 4 path `/v1/vision|asr|search|recommendation` (trả 404) và mọi MinIO/Milvus khỏi inference-service; còn `/v1/highlight/completions`, `/v1/completions`, `GET /health` (file này) + `/v2/*` (`AI_API_CONTRACT_V2.md`). `/health.dependencies` = `{}` (chỉ có `model_worker` khi dùng worker từ xa). Compat test: `inference-service/tests/test_contract_compat.py` (snapshot v1.2, v1.3, v1.5; chỉ cho phép xóa đúng 4 path + schema riêng).
+**Version: AI-API v3.3 (2026-11-13 — chỉ THÊM `GET /health.models[]` = checkpoint + SHA256 từng model đã nạp; checkpoint, path, status code không đổi; §2.7).** Trước đó: **AI-API v3.2 (2026-11-05, AI-25 — chỉ đổi checkpoint `asr_ctc`, path/schema/status code không đổi; xem §3).** Trước đó: v3.1 (2026-11-05, AI-24 — checkpoint `minigpt`). Trước đó: **AI-API v3.0 (2026-11-02, AI-23 — D24 bước 3).** v3.0 = major: **xóa** 4 path `/v1/vision|asr|search|recommendation` (trả 404) và mọi MinIO/Milvus khỏi inference-service; còn `/v1/highlight/completions`, `/v1/completions`, `GET /health` (file này) + `/v2/*` (`AI_API_CONTRACT_V2.md`). `/health.dependencies` = `{}` (chỉ có `model_worker` khi dùng worker từ xa). Compat test: `inference-service/tests/test_contract_compat.py` (snapshot v1.2, v1.3, v1.5; chỉ cho phép xóa đúng 4 path + schema riêng).
 **Trước đó — AI-API v1.5 (2026-11-02, release #6):** v1.5 không đổi schema/path: 4 path `/v1/vision|asr|search|recommendation` → `DEPRECATED` (OpenAPI `deprecated: true`), thay bằng `/v2` (`AI_API_CONTRACT_V2.md`, `API_READY`); vẫn phục vụ tới khi Codex xác nhận ngừng gọi (HC-17), sau đó mới gỡ.
 **Trước đó: AI-API v1.4 (2026-10-30) — release #5.** v1.4 chỉ THÊM field (highlight: `asr_segments` tùy chọn, `clip_threshold`) + sửa lỗi `embeddings_256` (backbone Siamese) + model highlight vòng 8 ×10; 6 endpoint `API_READY` không đổi path/field bắt buộc. Tương thích ngược khóa bằng `inference-service/tests/test_contract_compat.py` (snapshot v1.2 + v1.3). v2.0 `DRAFT` song song: `AI_API_CONTRACT_V2.md`. Owner: Claude. Codex chỉ đọc
 (`git show claude/ai-core:coordination/claude/api/AI_API_CONTRACT.md`, hoặc bản trên `master` sau release).
@@ -224,8 +224,10 @@ Resp: `{"id","object":"text_completion","created","model","choices":[{"text","in
 - Chất lượng: tóm tắt video thật còn bịa/lặp (human 1.6/5, AI-03). Chỉ dùng làm **draft** để admin duyệt.
 
 ### 2.7 `GET /health` — API_READY
-Resp: `{"status":"ok","gpu_vram_used": MB,"gpu_util": %,"models_loaded":[...],"degraded":[...],"dependencies":{str: str},"queue_depth":int,"device":"cpu|cuda","stub_mode":bool,"load_error": str|null}`
+Resp: `{"status":"ok","gpu_vram_used": MB,"gpu_util": %,"models_loaded":[...],"degraded":[...],"dependencies":{str: str},"queue_depth":int,"device":"cpu|cuda","stub_mode":bool,"load_error": str|null,"models":[{"name": str,"file": "best.pt|last.pt","sha256": hex64}]}`
 - Integration test thật phải assert `stub_mode == false` và `models_loaded` đủ 6 key ở mục 1.
+- **v3.3:** `models` = checkpoint thật sự đã nạp của từng model trong `models_loaded`, sắp theo tên; `sha256` là SHA256 đầy đủ của file lúc nạp
+  (đối chiếu bảng mục 1). Stub/không nạp được → `[]`. Mặc định `[]` → client cũ bỏ qua được. Gateway chuyển thành `SystemHealth.ai_models` (API 0.12.0).
 - `degraded` (D15, v1.1): model có **inference lỗi thật** ở lần gọi gần nhất. Input không hợp lệ (422, ảnh/audio không đọc được, sai số giây/chiều highlight)
   và lỗi dependency **không** tính. Tự gỡ khi model chạy thành công lần sau.
 - **v3.0:** `dependencies` = `{}`; chỉ còn key `model_worker` (`ok`|`unavailable`) khi `MODEL_WORKER_URL` đặt. Hai key Milvus bên dưới là lịch sử ≤ v1.5.
@@ -236,6 +238,9 @@ Resp: `{"status":"ok","gpu_vram_used": MB,"gpu_util": %,"models_loaded":[...],"d
   `/health` tự thử lại dependency chưa `ok` tối đa mỗi 30 s → trạng thái tự phục hồi khi Milvus/collection được sửa. `FORCE_STUB=1` → `{}`.
 
 ## 3. Changelog
+- **v3.3 (2026-11-13, user "Làm đầy đủ" — CMS hiện phiên bản model đang chạy)** — tương thích ngược, chỉ thêm: `GET /health.models[]`
+  (`name`, `file`, `sha256`; schema `ModelCheckpoint`), worker từ xa trả kèm qua `/info.checkpoints`. Checkpoint/path/status code không đổi.
+  Test: `tests/test_health_status.py::test_health_reports_loaded_checkpoints`, `tests/test_api.py::test_health_stub` (stub → `[]`); nạp thật 6 SHA = mục 1.
 - **v3.2 (2026-11-05, AI-25 / D29-B, user "Thay ngay")** — chỉ đổi checkpoint `asr_ctc`: `8f879867…` → `7c497d43…` (domain-replay từ ASR active:
   81 đoạn tin tức + 14 đoạn bóng đá người chép từ audio, guard VIVOS/FLEURS/MLS; bộ ký tự 93 → 136, có sẵn trong checkpoint). Cổng đăng ký trước 3/3
   (`coordination/claude/evidence/AI-25_2026-11-05_asr/`): bóng đá 30 đoạn (kênh giữ riêng) CER 84,47% → 73,56% (CI95 ΔCER [−23,6; −1,8] điểm),
