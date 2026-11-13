@@ -153,7 +153,7 @@ Ngoài phạm vi: email/push, WebSocket/SSE (poll đủ cho "đơn giản"), th�
 | Trường | Giá trị |
 |---|---|
 | Owner | CLAUDE |
-| Status | IN_PROGRESS (2026-11-13) |
+| Status | [x] **DONE** (Claude 2026-11-13, VERIFIED-NOW: Go test cookie theo app, CMS fixture 9/9, live cross-app 1/1 + auth live 4/4) — `coordination/claude/evidence/INT-63_2026-11-13/README.md` |
 | Yêu cầu user | "tại sao khi login hay đăng xuất ở client thì ở cms cũng login hoặc logout và ngược lại hãy rà bug này" |
 | Nguyên nhân | Gateway đặt MỘT cookie `refresh` (Path=/, host-only) cho mọi app. Cookie không phân biệt cổng → `localhost:3000` (Client) và `localhost:5173` (CMS) dùng chung: login bên này ghi đè phiên bên kia, logout xóa cookie + thu hồi phiên chung. |
 | Sửa | Cookie theo app: CMS gửi `X-App: cms` → cookie `cms_refresh`; Client (không header) giữ `refresh`. OpenAPI 0.14.1 (header tùy chọn, mô tả cookie). Tác dụng phụ một lần: phiên CMS hiện có phải đăng nhập lại. |
