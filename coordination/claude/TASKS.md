@@ -622,6 +622,21 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   **Kết quả 2026-11-13:** sanity PASS, train đủ 3 seed. Top-1 0.7275 ± 0.0308 vs Pre-Norm 0.7430 ± 0.0496 (Welch t −0.46, p 0.67);
   macro-F1 0.7129 vs 0.7205 (p 0.84) → không phân biệt được độ chính xác (3 vs 3); khác biệt là ổn định tối ưu (A1). Output tải về
   `D:/data_training_ai/vit_ablation_postln/v2/`; `SO_LIEU_LUAN_AN_v2.md` §6b + `ablation_A1b_compare.{py,json}`. ViT active không đổi.
+- **Ablation A2 (user duyệt 2026-11-13; đăng ký TRƯỚC khi code/chạy):** MiniGPT nhỏ (evaluation_plan §2.2) — RoPE (dự án) vs positional
+  embedding học (bảng vị trí 1024 × d, cộng vào token embedding). Biến thể DUY NHẤT: `ModelConfig.pos_encoding = rope|learned` (mặc định
+  `rope`; MiniGPT active load strict + test). Model d256, 4 lớp, 4 head, vocab 8192 (BPE active), dữ liệu `traininghighlight/viwiki-tokens-8192`
+  (train.bin / val.bin, không đổi). Train ctx 256, lr 6e-4, wd 0.1, warmup 3%, min_lr 0.1, batch = như `minigpt_pretrain.yaml`; số bước N CỐ ĐỊNH
+  chọn từ bench tốc độ ĐẦU kernel (lớn nhất vừa ngân sách 6 run ≤ 10 h), in ra trước khi train, cùng N cho cả 2 biến thể. Seed 1337/1338/1339.
+  Số đo (checkpoint cuối, không chọn theo val): perplexity val ở ctx 256 (chính), 512, 1024 (ngoại suy; PE học dùng vị trí > 255 chưa train —
+  báo nguyên trạng); mean ± std, Welch t (3 vs 3, công suất thấp), số tham số. Sanity bắt buộc (gradient check, overfit 1 batch thật cho
+  CẢ HAI biến thể); FAIL → dừng, ghi kết quả. Chỉ để luận án; không đổi MiniGPT active. Kernel riêng `ai-core-minigpt-ablation-pe`.
+- **Ablation A3 (user duyệt 2026-11-13; đăng ký TRƯỚC khi trích feature/chạy):** Highlight Fusion — nguồn token ảnh: embedding ViT phân loại
+  đóng băng (256-d, `highlight_features_140.pt`, đang dùng) vs Siamese ViT đóng băng (128-d, checkpoint active `b4ded465`, trích từ CÙNG keyframe
+  1 fps `D:/data_training_ai/data/processed/soccernet_keyframes`, cùng tiền xử lý ảnh như lúc train Siamese). Biến thể DUY NHẤT: vector ảnh mỗi
+  giây (audio, nhãn `dil5`, split theo trận seed 1337, mọi giây/hiệp giữ nguyên; hiệp thiếu keyframe → loại ở CẢ HAI nhánh). Hai nhánh train
+  trong CÙNG kernel, cùng công thức T1.5e (fusion, d256, dropout 0.3, 4000 bước), seed 1337/1338/1339. Số đo: val F1/giây với τ sweep riêng
+  từng seed (chọn τ trên val), sau đó test F1 + AP chấm ĐÚNG MỘT LẦN bằng τ đã chọn; mean ± std, Welch t, số tham số. Biến thể "unfreeze
+  2 block cuối" KHÔNG chạy (train end-to-end ~740k ảnh/epoch vượt máy + quota) → ghi hạn chế. Không đổi Fusion active.
 
 ### AI-08 — Dọn dẹp dữ liệu/artefact làn AI an toàn (yêu cầu user 2026-10-26)
 - T gốc: — | Owner: claude | Status: TODO (task lặp lại: chạy sau mỗi đợt train xong, hoặc khi một ổ chạm `BLOCKED_RESOURCE`)
