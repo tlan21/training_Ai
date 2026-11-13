@@ -160,6 +160,18 @@ Ngoài phạm vi: email/push, WebSocket/SSE (poll đủ cho "đơn giản"), th�
 
 Acceptance: Go test tách cookie (login/refresh/logout/đổi mật khẩu/thu hồi phiên khác của CMS chỉ đụng `cms_refresh`); CMS + Client E2E cập nhật; live: cùng trình duyệt đăng nhập cả hai, đăng xuất CMS → Client vẫn refresh được và ngược lại; tài khoản QA tự tạo, dọn sạch.
 
+### INT-64 — Thông báo đã đọc, danh mục AI, chuông CMS "đã xem", trình phát + "Sắp phát tiếp" trang chủ (user 2026-11-13)
+
+| Trường | Giá trị |
+|---|---|
+| Owner | CLAUDE |
+| Status | IN_PROGRESS (2026-11-13) |
+| Yêu cầu user | "các thông báo khi đọc chưa được đánh dấu là đã đọc … ở cả client lẫn cms … khám phá theo các tag category chưa hiển thị highlight mới, đang thịnh hành, phổ biến … kiểm tra có phải đang dùng AI model gợi ý không … sắp phát tiếp hơi thô … frame video cần thêm play pause, mặc định tự động phát, hết tự chuyển reels khác, reels mặc định bật âm thanh" |
+| Rà soát | (1) Client đánh dấu đọc: API + UI đúng (trình duyệt mới 4→3→0); tài khoản user bị ảnh hưởng bởi bug cookie chung INT-63 (tab Client làm mới token sang phiên admin). (2) Chuông CMS = số đếm sống, không có "đã đọc". (3) Khám phá theo danh mục: API trả `[]`; 0/4 video có clip công khai được gán danh mục — AI gợi ý đúng nhưng chưa ai duyệt. (4) Feed `popularity`, Two-Tower TẮT (D18, chờ cổng v2). (5) Feed: `loop` (không tự chuyển), `muted` mặc định, nút play ẩn khi phát, "Sắp phát tiếp" thumbnail dọc lớn và rời feed. |
+| Quyết định user | Danh mục: **tự gán gợi ý AI khi xử lý xong** (cài đặt CMS, bật mặc định, admin vẫn sửa được) + nút **"Duyệt tất cả gợi ý AI"** cho video cũ (chạy cho video hiện có, manifest trước/sau). Chuông CMS: **"đã xem" = chỉ báo cái mới**, lưu theo tài khoản trên server. |
+
+Acceptance: API 0.15.0 (chỉ thêm) + migration 010; Go/real-PG test; CMS tsc/build + fixture; Client tsc/lint/build + fixture; live: thông báo client đọc/đọc hết khi đăng nhập cả 2 app, CMS badge về 0 sau khi xem và tăng khi có cái mới, danh mục hiện trong Khám phá, feed tự phát có tiếng (hoặc fallback tắt tiếng khi trình duyệt chặn) + nút play/pause + tự chuyển reel khi hết; 390 + 1440.
+
 ## Các gate riêng / việc phụ thuộc
 
 | Check | Task | Status | Dependency / giới hạn |
