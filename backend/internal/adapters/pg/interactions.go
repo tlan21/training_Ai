@@ -32,13 +32,9 @@ func (r *InteractionRepo) History(ctx context.Context, userID string, cursor *st
 	return r.list(ctx, userID, cursor, limit, []string{"click", "watch_time"})
 }
 
+// Likes (0.13.0): from the like state (unlike removes it); like events stay in user_interactions.
 func (r *InteractionRepo) Likes(ctx context.Context, userID string, cursor *string, limit int) ([]domain.Clip, *string, error) {
-	items, next, err := r.list(ctx, userID, cursor, limit, []string{"like"})
-	clips := make([]domain.Clip, 0, len(items))
-	for _, item := range items {
-		clips = append(clips, item.Clip)
-	}
-	return clips, next, err
+	return marks(ctx, r.DB, userID, domain.MarkLike, cursor, limit)
 }
 
 func (r *InteractionRepo) list(ctx context.Context, userID string, cursor *string, limit int, types []string) ([]domain.HistoryItem, *string, error) {
@@ -60,6 +56,8 @@ func (r *InteractionRepo) list(ctx context.Context, userID string, cursor *strin
 	SELECT `+clipColumns+`,recent.interaction_id,recent.watched_at,recent.duration_watched
 	FROM clips JOIN recent ON clips.id=recent.watched_clip
 	WHERE clips.status='published' AND EXISTS(SELECT 1 FROM videos WHERE videos.id=clips.video_id AND videos.status='processed')
+	AND NOT EXISTS(SELECT 1 FROM user_history_hidden h WHERE h.user_id=$1 AND h.clip_id=recent.watched_clip AND h.hidden_at>=recent.watched_at)
+	AND NOT EXISTS(SELECT 1 FROM user_history_cleared hc WHERE hc.user_id=$1 AND hc.cleared_at>=recent.watched_at)
 	AND ($2::bigint IS NULL OR recent.interaction_id<$2) ORDER BY recent.interaction_id DESC LIMIT $3`, userID, before, limit+1, types)
 	if err != nil {
 		return nil, nil, err

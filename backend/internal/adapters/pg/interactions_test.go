@@ -78,6 +78,16 @@ func TestInteractionRepository_RealPersistencePaginationAndPrivacy(t *testing.T)
 	if err != nil || len(history) != 1 || history[0].Clip.ID != clip1 || history[0].DurationWatched != 12 || next != nil {
 		t.Fatalf("history second page: %+v %v %v", history, next, err)
 	}
+	// 0.13.0: likes come from the like state, not from like events (events alone list nothing).
+	if likes, _, err := repo.Likes(ctx, user, nil, 10); err != nil || len(likes) != 0 {
+		t.Fatalf("like events must not create like state: %+v %v", likes, err)
+	}
+	library := &LibraryRepo{DB: db}
+	for _, clip := range []string{clip1, clip1, clip2} {
+		if _, _, err := library.SetMark(ctx, user, clip, domain.MarkLike, true); err != nil {
+			t.Fatal(err)
+		}
+	}
 	likes, next, err := repo.Likes(ctx, user, nil, 1)
 	if err != nil || len(likes) != 1 || likes[0].ID != clip2 || next == nil {
 		t.Fatalf("likes first page: %+v %v %v", likes, next, err)

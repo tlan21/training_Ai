@@ -137,6 +137,24 @@ func main() {
 	protected.GET("/users/me/history", authH.History)
 	protected.GET("/users/me/likes", authH.Likes)
 
+	// --- INT-61 (0.13.0) personal library: state only; user_interactions events are kept ---
+	libraryH := handlers.NewLibraryHandlers(&pg.LibraryRepo{DB: db}, interactionRepo, objectStorage)
+	protected.PUT("/users/me/likes/:clip_id", libraryH.Like)
+	protected.DELETE("/users/me/likes/:clip_id", libraryH.Unlike)
+	protected.GET("/users/me/saved", libraryH.Saved)
+	protected.PUT("/users/me/saved/:clip_id", libraryH.Save)
+	protected.DELETE("/users/me/saved/:clip_id", libraryH.Unsave)
+	protected.GET("/users/me/clip-states", libraryH.ClipStates)
+	protected.DELETE("/users/me/history", libraryH.ClearHistory)
+	protected.DELETE("/users/me/history/:clip_id", libraryH.HideHistory)
+	protected.GET("/users/me/lists", libraryH.Lists)
+	protected.POST("/users/me/lists", libraryH.CreateList)
+	protected.PATCH("/users/me/lists/:list_id", libraryH.RenameList)
+	protected.DELETE("/users/me/lists/:list_id", libraryH.DeleteList)
+	protected.GET("/users/me/lists/:list_id/items", libraryH.ListItems)
+	protected.PUT("/users/me/lists/:list_id/items/:clip_id", libraryH.AddListItem)
+	protected.DELETE("/users/me/lists/:list_id/items/:clip_id", libraryH.RemoveListItem)
+
 	// --- T2.5.1 content (real) ---
 	protected.GET("/feed", contentH.Feed)
 	protected.GET("/videos", contentH.ListVideos)

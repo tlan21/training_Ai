@@ -81,6 +81,22 @@ type InteractionRepository interface {
 	PopularityTop(ctx context.Context, limit int) ([]string, error)
 }
 
+// LibraryRepository — INT-61: like / watch-later state, history hiding, user lists.
+type LibraryRepository interface {
+	// SetMark turns a like/save on or off; created reports a new mark (the handler then logs one interaction).
+	SetMark(ctx context.Context, userID, clipID, kind string, on bool) (created bool, videoID string, err error)
+	Marks(ctx context.Context, userID, kind string, cursor *string, limit int) ([]domain.Clip, *string, error)
+	ClipStates(ctx context.Context, userID string, clipIDs []string) ([]domain.ClipState, error)
+	HideHistory(ctx context.Context, userID, clipID string) error
+	ClearHistory(ctx context.Context, userID string) error
+	Lists(ctx context.Context, userID string) ([]domain.UserList, error)
+	CreateList(ctx context.Context, userID, name string) (*domain.UserList, error)
+	RenameList(ctx context.Context, userID, listID, name string) (*domain.UserList, error)
+	DeleteList(ctx context.Context, userID, listID string) error
+	ListItems(ctx context.Context, userID, listID string, cursor *string, limit int) ([]domain.Clip, *string, error)
+	SetListItem(ctx context.Context, userID, listID, clipID string, on bool) error
+}
+
 type SettingsRepository interface {
 	Get(ctx context.Context) (*domain.SystemSettings, error)
 	Update(ctx context.Context, values map[string]string) error
