@@ -135,7 +135,7 @@ Ngoài phạm vi: chuông thông báo client (chưa có API — giữ disabled),
 | Trường | Giá trị |
 |---|---|
 | Owner | CLAUDE |
-| Status | IN_PROGRESS (2026-11-13) |
+| Status | [x] **DONE** (Claude 2026-11-13, VERIFIED-NOW: Go vet/test, real-PG 16/16, client tsc/lint/build, fixture 94/94, live 3/3 Kafka publish→inbox ~1.7 s, manifest trước = sau) — `coordination/claude/evidence/INT-62_2026-11-13/README.md` |
 | Yêu cầu user | "hãy làm 1 luồng thông báo đơn giản qua kafka khi có event được publish gửi thông báo đến user" |
 | Quyết định user | Người nhận: **theo chủ đề yêu thích** — user client có preference = danh mục của clip (`coalesce(clip.category_id, video.category_id)`); clip chưa có danh mục → mọi user client. |
 | Contract | OpenAPI 0.14.0 (chỉ thêm) → regenerate Go + TS. Migration `009_user_notifications.sql` (chỉ thêm bảng). Kafka topic mới `clip.published`. |

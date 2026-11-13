@@ -1,0 +1,18 @@
+[
+  {
+    "step": "api",
+    "detail": {
+      "clip": "clp_int62_1794553536",
+      "publish_to_inbox_ms": 1020,
+      "fan_unread": 1,
+      "other_items": 0,
+      "republish_items": 1
+    }
+  },
+  {
+    "step": "ui",
+    "detail": {
+      "opened_clip_and_marked_read": true
+    }
+  }
+]
