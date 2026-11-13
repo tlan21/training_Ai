@@ -13,7 +13,8 @@ import { clipSourceTime, compilationScores } from "@/lib/clipTimeline";
 import { useWatchTime } from "@/lib/useWatchTime";
 import { ListPicker, useClipActions } from "@/components/Library";
 // INT-64: one sound preference for the whole feed (default ON, kept for the tab). Browsers refuse unmuted autoplay without a
-// user gesture: the reel then plays muted, `blocked` is set and a "Bật âm thanh" pill asks for the one click that unlocks sound.
+// user gesture: the reel then plays muted, `blocked` is set and the single sound button (top right) widens into a
+// "Bật âm thanh" pill asking for the one click that unlocks sound.
 const SOUND_KEY = "feed-sound";
 function FeedClip({ clip, active, mode, audible, blocked, onSound, onBlocked, onEnded, onMessage, onList }: {
     clip: Clip;
@@ -72,6 +73,8 @@ function FeedClip({ clip, active, mode, audible, blocked, onSound, onBlocked, on
         if (el.paused)
             void el.play().catch(() => setPlaying(false));
     } onSound(true); };
+    const mute = () => { if (ref.current)
+        ref.current.muted = true; onSound(false); };
     const toggle = () => { const el = ref.current; if (!el)
         return; if (el.paused)
         void el.play().catch(() => onMessage("Không thể phát video."));
@@ -96,14 +99,7 @@ function FeedClip({ clip, active, mode, audible, blocked, onSound, onBlocked, on
   <div className="feed-mobile-top"><Link href="/discover" className="icon-button" aria-label="Quay lại Khám phá"><Icon name="arrow_back" size={28}/></Link><span data-recommendation-mode={mode ?? "unknown"}>{recommendationLabel(mode)}</span><Link href="/search" className="icon-button" aria-label="Tìm kiếm"><Icon name="search" size={28}/></Link></div>
   {(!clip.playback_url || mediaError) && <div className="player-unavailable" role="alert">Không thể phát clip này.<button className="btn-outline" onClick={() => { setMediaError(false); ref.current?.load(); }}>Thử lại</button></div>}
   {!playing && <button className="feed-player-button" aria-hidden="true" tabIndex={-1} onClick={toggle}><Icon name="play_arrow" size={36}/></button>}
-  {active && blocked && <button className="feed-sound-hint" onClick={unmute}><Icon name="volume_off" size={18}/>Bật âm thanh</button>}
-  <button className="feed-mute" aria-label={audible ? "Tắt âm thanh" : "Bật âm thanh"} onClick={() => { if (audible) {
-        if (ref.current)
-            ref.current.muted = true;
-        onSound(false);
-    }
-    else
-        unmute(); }}><Icon name={audible ? "volume_up" : "volume_off"} size={20}/></button>
+  <button className={`feed-sound${active && blocked ? " is-blocked" : ""}`} aria-label={audible ? "Tắt âm thanh" : "Bật âm thanh"} onClick={audible ? mute : unmute}><Icon name={audible ? "volume_up" : "volume_off"} size={20}/>{active && blocked && <span>Bật âm thanh</span>}</button>
   <aside className="feed-actions">
    <button className="feed-action" aria-label="Thích" aria-pressed={marks.liked} disabled={!marks.ready} onClick={marks.toggleLike}><span><Icon name="favorite" size={32} filled={marks.liked}/></span><span>{marks.liked ? "Đã thích" : "Thích"}</span></button>
    <button className="feed-action" aria-label="Xem sau" aria-pressed={marks.saved} disabled={!marks.ready} onClick={marks.toggleSave}><span><Icon name="schedule" size={32} filled={marks.saved}/></span><span>{marks.saved ? "Đã lưu" : "Xem sau"}</span></button>
