@@ -148,6 +148,18 @@ Acceptance:
 5. Gate: Go vet/test + real-PG; Client tsc/lint/build; E2E thật: publish clip qua CMS API → thông báo xuất hiện cho user QA đúng chủ đề, không cho user QA khác chủ đề; dọn dữ liệu QA, khôi phục trạng thái clip, manifest trước/sau.
 Ngoài phạm vi: email/push, WebSocket/SSE (poll đủ cho "đơn giản"), thông báo CMS (đã có chuông INT-59).
 
+### INT-63 — BUG: đăng nhập/đăng xuất ở Client làm CMS đăng nhập/đăng xuất theo và ngược lại (user 2026-11-13)
+
+| Trường | Giá trị |
+|---|---|
+| Owner | CLAUDE |
+| Status | IN_PROGRESS (2026-11-13) |
+| Yêu cầu user | "tại sao khi login hay đăng xuất ở client thì ở cms cũng login hoặc logout và ngược lại hãy rà bug này" |
+| Nguyên nhân | Gateway đặt MỘT cookie `refresh` (Path=/, host-only) cho mọi app. Cookie không phân biệt cổng → `localhost:3000` (Client) và `localhost:5173` (CMS) dùng chung: login bên này ghi đè phiên bên kia, logout xóa cookie + thu hồi phiên chung. |
+| Sửa | Cookie theo app: CMS gửi `X-App: cms` → cookie `cms_refresh`; Client (không header) giữ `refresh`. OpenAPI 0.14.1 (header tùy chọn, mô tả cookie). Tác dụng phụ một lần: phiên CMS hiện có phải đăng nhập lại. |
+
+Acceptance: Go test tách cookie (login/refresh/logout/đổi mật khẩu/thu hồi phiên khác của CMS chỉ đụng `cms_refresh`); CMS + Client E2E cập nhật; live: cùng trình duyệt đăng nhập cả hai, đăng xuất CMS → Client vẫn refresh được và ngược lại; tài khoản QA tự tạo, dọn sạch.
+
 ## Các gate riêng / việc phụ thuộc
 
 | Check | Task | Status | Dependency / giới hạn |
