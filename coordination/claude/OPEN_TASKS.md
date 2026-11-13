@@ -130,6 +130,24 @@ Acceptance:
 6. Gate: Go vet/test/build + real-PG; Client tsc + lint + build; E2E thật trên stack (tài khoản QA tự tạo, manifest trước/sau, dọn sạch); Design Parity 390×844 + 1440×900 gồm loading/empty/error.
 Ngoài phạm vi: chuông thông báo client (chưa có API — giữ disabled), "Phổ biến nhất" trong tìm kiếm.
 
+### INT-62 — Thông báo clip mới qua Kafka (user 2026-11-13)
+
+| Trường | Giá trị |
+|---|---|
+| Owner | CLAUDE |
+| Status | IN_PROGRESS (2026-11-13) |
+| Yêu cầu user | "hãy làm 1 luồng thông báo đơn giản qua kafka khi có event được publish gửi thông báo đến user" |
+| Quyết định user | Người nhận: **theo chủ đề yêu thích** — user client có preference = danh mục của clip (`coalesce(clip.category_id, video.category_id)`); clip chưa có danh mục → mọi user client. |
+| Contract | OpenAPI 0.14.0 (chỉ thêm) → regenerate Go + TS. Migration `009_user_notifications.sql` (chỉ thêm bảng). Kafka topic mới `clip.published`. |
+
+Acceptance:
+1. CMS publish clip lần đầu (draft → published) → gateway publish Kafka `clip.published` `{clip_id, video_id, published_at}` (key = clip_id). Lỗi Kafka không làm hỏng publish (log); publish lại clip đã published không phát sự kiện.
+2. Consumer group `gateway-notifications` đọc sự kiện, đọc lại sự thật từ Postgres (clip còn công khai), tạo 1 thông báo/user theo quy tắc người nhận; idempotent `(user, kind, clip)` → Kafka giao lại không nhân bản.
+3. API: `GET /api/users/me/notifications` (mới nhất trước, cursor, `unread_count`, chỉ clip còn công khai), `POST /api/users/me/notifications/read` (`ids` hoặc tất cả).
+4. Client: chuông bật, badge số chưa đọc, dropdown, bấm mở clip + đánh dấu đã đọc, "Đánh dấu tất cả đã đọc"; poll 60 s; 390 + 1440 không tràn.
+5. Gate: Go vet/test + real-PG; Client tsc/lint/build; E2E thật: publish clip qua CMS API → thông báo xuất hiện cho user QA đúng chủ đề, không cho user QA khác chủ đề; dọn dữ liệu QA, khôi phục trạng thái clip, manifest trước/sau.
+Ngoài phạm vi: email/push, WebSocket/SSE (poll đủ cho "đơn giản"), thông báo CMS (đã có chuông INT-59).
+
 ## Các gate riêng / việc phụ thuộc
 
 | Check | Task | Status | Dependency / giới hạn |
