@@ -1,0 +1,51 @@
+[
+  {
+    "step": "setup",
+    "detail": {
+      "email": "int61-1794545165@int61-qa.invalid",
+      "clips": [
+        "clp_dmlfdx39q4o6",
+        "clp_dmh7evnkm3a5"
+      ]
+    }
+  },
+  {
+    "step": "marks",
+    "detail": {
+      "liked_then_unliked": "clp_dmlfdx39q4o6",
+      "saved": [
+        "clp_dmlfdx39q4o6",
+        "clp_dmh7evnkm3a5"
+      ]
+    }
+  },
+  {
+    "step": "history",
+    "detail": {
+      "hide_one_then_clear": "empty"
+    }
+  },
+  {
+    "step": "lists",
+    "detail": {
+      "id": "lst_9c0405f3af5546b3977b385ba118e154",
+      "items": 2
+    }
+  },
+  {
+    "step": "ui-1440",
+    "detail": {
+      "feed_like_toggled_and_persisted": true,
+      "saved_tab": true,
+      "discover_speed": 1.5
+    }
+  },
+  {
+    "step": "ui-390",
+    "detail": {
+      "feed_like_toggled_and_persisted": true,
+      "saved_tab": true,
+      "discover_speed": 1.5
+    }
+  }
+]

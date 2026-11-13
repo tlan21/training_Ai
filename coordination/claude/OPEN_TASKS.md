@@ -116,7 +116,7 @@ Runtime: inference `ai-v3.3-f6bc07f`, gateway + CMS `api012-f6bc07f` (overlay, r
 | Trường | Giá trị |
 |---|---|
 | Owner | CLAUDE |
-| Status | IN_PROGRESS (2026-11-13; chạy song song AI-05 vì user giao trong lúc chờ train) |
+| Status | [x] **DONE** (Claude 2026-11-13, VERIFIED-NOW: Go vet/test 16 pkg, real-PG 15/15, client tsc/lint/build, fixture 94/94, live 3/3 @1440+390, manifest trước = sau) — `coordination/claude/evidence/INT-61_2026-11-13/README.md` |
 | Yêu cầu user | "hoàn thành các tính năng phía client … trang chủ: yêu thích, lưu danh sách xem sau, chia sẻ; khám phá: frame video thiếu tốc độ phát, thêm vào xem sau; lịch sử xem: video đã thích, danh sách xem sau, lịch sử xem, Danh sách của tôi … hoàn thiện toàn bộ các tính năng" |
 | Quyết định user | Bỏ thích / bỏ xem sau / xóa lịch sử: **giữ sự kiện `user_interactions` (dữ liệu train Two-Tower), chỉ ẩn/đổi trạng thái**. "Danh sách của tôi": **đầy đủ** (tạo/đổi tên/xóa, thêm/bỏ clip, xem; 50 danh sách/người, 500 clip/danh sách, tên 1–60 ký tự). |
 | Contract | OpenAPI 0.13.0 (chỉ thêm path; `/api/users/me/likes` giữ shape, nguồn đổi sang trạng thái) → regenerate Go + TS (CMS = Client) trước code. Migration `008_user_library.sql` chỉ thêm bảng, backfill like/save cũ từ sự kiện. |

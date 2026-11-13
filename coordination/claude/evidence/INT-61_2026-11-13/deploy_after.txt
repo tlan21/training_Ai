@@ -1,0 +1,2 @@
+video-ai-gateway-1 env=56e23179db570721 image=video-ai-gateway:int61-017d1c6
+video-ai-client-1 env=b69b9cb1a53651da image=video-ai-client:int61-00b3624

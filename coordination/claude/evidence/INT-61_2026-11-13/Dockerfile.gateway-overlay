@@ -1,0 +1,3 @@
+FROM video-ai-gateway:api012-f6bc07f
+COPY gateway /usr/local/bin/gateway
+LABEL org.opencontainers.image.revision="017d1c6" overlay.base="video-ai-gateway:api012-f6bc07f" overlay.binaries="gateway"
