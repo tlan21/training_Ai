@@ -13,22 +13,36 @@ class MiniGPT(nn.Module):
         super().__init__()
         self.cfg = cfg
         d = cfg.d_model
+        if cfg.pos_encoding not in ("rope", "learned"):
+            raise ValueError(f"pos_encoding phải là rope|learned, nhận {cfg.pos_encoding!r}")
+        self.rope = cfg.pos_encoding == "rope"
         self.embed = TiedEmbedding(cfg.vocab_size, d)
+        # ablation A2: bảng vị trí học (GPT-2), chỉ dựng khi dùng — checkpoint RoPE cũ vẫn load strict.
+        self.pos = None if self.rope else nn.Parameter(torch.randn(cfg.context_len, d) * 0.02)
         self.blocks = nn.ModuleList([
-            TransformerBlock(d, cfg.n_heads, causal=True, use_rope=True,
+            TransformerBlock(d, cfg.n_heads, causal=True, use_rope=self.rope,
                              n_layers_total=cfg.n_layers, dropout=cfg.dropout)
             for _ in range(cfg.n_layers)
         ])
         self.norm = RMSNorm(d)
         self.head_dim = d // cfg.n_heads
 
+    def _encode(self, ids: torch.Tensor, start: int = 0) -> torch.Tensor:
+        x = self.embed.encode(ids)                           # (B, T, D)
+        if self.pos is not None:
+            x = x + self.pos[start:start + ids.shape[1]]     # vượt context_len → lỗi shape, không lặng lẽ cắt
+        return x
+
+    def _rope(self, T: int, device, dtype):
+        return build_rope_cache(T, self.head_dim, device=device, dtype=dtype) if self.rope else None
+
     def forward(self, ids: torch.Tensor, targets: torch.Tensor | None = None):
         # ids: (B, T) → logits (B, T, V), loss? (CE shift-by-one)
         B, T = ids.shape
-        x = self.embed.encode(ids)                           # (B, T, D)
-        cos, sin = build_rope_cache(T, self.head_dim, device=x.device, dtype=x.dtype)
+        x = self._encode(ids)
+        rope = self._rope(T, x.device, x.dtype)
         for i, blk in enumerate(self.blocks):
-            x = blk(x, rope_cache=(cos, sin), layer_idx=i)
+            x = blk(x, rope_cache=rope, layer_idx=i)
         x = self.norm(x)
         logits = self.embed.logits(x)                        # (B, T, V)
         loss = None
@@ -50,12 +64,12 @@ class MiniGPT(nn.Module):
             raise ValueError(f"prompt {prompt_ids.shape[1]} token > context_len {max_len} — "
                              f"service phải chia đoạn (map-reduce) trước khi gọi")
         cache = KVCache(max_len=max_len, n_layers=len(self.blocks))
-        cos, sin = build_rope_cache(max_len, self.head_dim, device=device, dtype=torch.float32)
+        rope = self._rope(max_len, device, torch.float32)
 
         # nạp prompt vào cache
-        x = self.embed.encode(prompt_ids)
+        x = self._encode(prompt_ids)
         for i, blk in enumerate(self.blocks):
-            x = blk(x, rope_cache=(cos, sin), kv_cache=cache, layer_idx=i)
+            x = blk(x, rope_cache=rope, kv_cache=cache, layer_idx=i)
         x = self.norm(x)
         next_logits = self.embed.logits(x[:, -1:])           # (B, 1, V)
 
@@ -74,9 +88,9 @@ class MiniGPT(nn.Module):
             out = torch.cat([out, nxt], dim=1)
             if eos_id is not None and bool((nxt == eos_id).all()):
                 break
-            x = self.embed.encode(nxt)
+            x = self._encode(nxt, start=out.shape[1] - 1)
             for i, blk in enumerate(self.blocks):
-                x = blk(x, rope_cache=(cos, sin), kv_cache=cache, layer_idx=i)
+                x = blk(x, rope_cache=rope, kv_cache=cache, layer_idx=i)
             x = self.norm(x)
             next_logits = self.embed.logits(x)
         return out

@@ -21,6 +21,8 @@ class ModelConfig:
     # ablation evaluation_plan §2.2: "prenorm" = RMSNorm + SwiGLU pre-norm (bản của dự án, mặc định);
     # "postln" = Post-LN + LayerNorm + GELU MLP 4d (Transformer 2017 gốc). Checkpoint cũ không có field → prenorm.
     block_style: str = "prenorm"
+    # ablation A2 (MiniGPT): "rope" (dự án, mặc định) | "learned" = bảng vị trí học context_len × d cộng vào token embedding (GPT-2).
+    pos_encoding: str = "rope"
     # vision
     img_size: int = 224
     patch_size: int = 16

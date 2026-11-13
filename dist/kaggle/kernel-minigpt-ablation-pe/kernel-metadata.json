@@ -1,0 +1,16 @@
+{
+  "id": "traininghighlight/ai-core-minigpt-ablation-pe",
+  "title": "ai-core-minigpt-ablation-pe",
+  "code_file": "run_pe.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": false,
+  "dataset_sources": [
+    "traininghighlight/ai-core-ablation",
+    "traininghighlight/viwiki-tokens-8192"
+  ],
+  "competition_sources": [],
+  "kernel_sources": []
+}
