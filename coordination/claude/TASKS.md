@@ -630,10 +630,14 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   Số đo (checkpoint cuối, không chọn theo val): perplexity val ở ctx 256 (chính), 512, 1024 (ngoại suy; PE học dùng vị trí > 255 chưa train —
   báo nguyên trạng); mean ± std, Welch t (3 vs 3, công suất thấp), số tham số. Sanity bắt buộc (gradient check, overfit 1 batch thật cho
   CẢ HAI biến thể); FAIL → dừng, ghi kết quả. Chỉ để luận án; không đổi MiniGPT active. Kernel riêng `ai-core-minigpt-ablation-pe`.
-- **Ablation A3 (user duyệt 2026-11-13; đăng ký TRƯỚC khi trích feature/chạy):** Highlight Fusion — nguồn token ảnh: embedding ViT phân loại
-  đóng băng (256-d, `highlight_features_140.pt`, đang dùng) vs Siamese ViT đóng băng (128-d, checkpoint active `b4ded465`, trích từ CÙNG keyframe
-  1 fps `D:/data_training_ai/data/processed/soccernet_keyframes`, cùng tiền xử lý ảnh như lúc train Siamese). Biến thể DUY NHẤT: vector ảnh mỗi
-  giây (audio, nhãn `dil5`, split theo trận seed 1337, mọi giây/hiệp giữ nguyên; hiệp thiếu keyframe → loại ở CẢ HAI nhánh). Hai nhánh train
+- **Ablation A3 (user duyệt 2026-11-13; đăng ký TRƯỚC khi trích feature/chạy; ĐÍNH CHÍNH cùng ngày trước khi trích/chạy bất cứ gì):**
+  bản đầu ghi đảo hai nhánh. Thực tế (model_spec §2, `inference-service/app/worker.py` vision(), kernel-embed-b1/b2): Fusion active dùng
+  embedding BACKBONE **Siamese** đóng băng 256-d (`highlight_features_140.pt`). Đúng là: Highlight Fusion — nguồn token ảnh: Siamese backbone
+  đóng băng (đối chứng, vector `vision` có sẵn trong `highlight_features_140.pt`) vs **ViT phân loại** backbone đóng băng (biến thể, 256-d,
+  checkpoint active `192d90e4`, `extract_vit_embeddings` cùng cách lấy backbone, trích từ CÙNG frame JPG 1 fps
+  `D:/data_training_ai/data/processed/frames_jpg_100/<hiệp>/<hiệp>_sNNNNN.jpg`). Cùng 256 chiều → không lệch dung lượng. Kiểm căn chỉnh trước:
+  Siamese backbone trên chính các JPG đó phải tái tạo `vision` đối chứng (cosine trung bình ≥ 0.99 trên 3 hiệp), không đạt → dừng.
+  Biến thể DUY NHẤT: vector ảnh mỗi giây (audio, nhãn, split, số giây mỗi hiệp giữ nguyên từ `highlight_features_140.pt`). Hai nhánh train
   trong CÙNG kernel, cùng công thức T1.5e (fusion, d256, dropout 0.3, 4000 bước), seed 1337/1338/1339. Số đo: val F1/giây với τ sweep riêng
   từng seed (chọn τ trên val), sau đó test F1 + AP chấm ĐÚNG MỘT LẦN bằng τ đã chọn; mean ± std, Welch t, số tham số. Biến thể "unfreeze
   2 block cuối" KHÔNG chạy (train end-to-end ~740k ảnh/epoch vượt máy + quota) → ghi hạn chế. Không đổi Fusion active.
