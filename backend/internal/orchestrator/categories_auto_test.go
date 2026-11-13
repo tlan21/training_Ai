@@ -11,7 +11,7 @@ import (
 type settingsFake struct{ s domain.SystemSettings }
 
 func (f settingsFake) Get(context.Context) (*domain.SystemSettings, error) { s := f.s; return &s, nil }
-func (f settingsFake) Update(context.Context, map[string]string) error   { return nil }
+func (f settingsFake) Update(context.Context, map[string]string) error     { return nil }
 
 // INT-64: with category_auto_apply on, the ViT suggestion becomes the video's category at the end of processing,
 // but an editor's existing choice is never overwritten; with it off, only the suggestion is stored.
