@@ -48,6 +48,13 @@ def game(name):
     return int(name[1:].split('h')[0])
 
 
+def frame_secs(folder, name):
+    # Control rule (extract_vit_embeddings + build_highlight_features): row i = the i-th EXISTING frame sorted by
+    # second, then cut to min(vision, audio). A missing JPG therefore shifts later rows; the variant must do the same.
+    pat = re.compile(re.escape(name) + r'_s(\d+)\.jpg$')
+    return sorted(int(m.group(1)) for f in os.listdir(folder) if (m := pat.match(f)))
+
+
 @torch.no_grad()
 def embed(backbone, size, folder, name, secs, device):
     out = []
@@ -66,15 +73,22 @@ def main():
     rows = [(h, split) for split in ('train', 'val', 'test') for h in data[split] if lo <= game(h['name']) <= hi]
     halves = [(h['name'], h['vision'].shape[0], split) for h, split in rows]
     control = {rows[i][0]['name']: rows[i][0]['vision'] for i in (0, len(rows) // 2, len(rows) - 1)}  # 3 halves spread over the range
+    for h, _ in rows:  # plus one half with a missing frame inside its first T rows (checks the shift rule)
+        present = frame_secs(frame_dir(root, h['name']), h['name'])
+        if len(present) >= h['vision'].shape[0] and present[h['vision'].shape[0] - 1] != h['vision'].shape[0] - 1:
+            control[h['name']] = h['vision']
+            break
     del data
     print(f'device {device} | halves in g{lo}..g{hi}: {len(halves)} | seconds {sum(t for _, t, _ in halves)}', flush=True)
 
     sia, size = backbone_of(sia_ckpt, device)
     cos = []
     for name, ref in control.items():
-        secs = torch.linspace(0, ref.shape[0] - 1, 200).long().tolist()
-        emb = embed(sia, size, frame_dir(root, name), name, secs, device)
-        cos.append(float(torch.nn.functional.cosine_similarity(emb, ref[secs].float()).mean()))
+        folder = frame_dir(root, name)
+        present = frame_secs(folder, name)
+        idx = torch.linspace(0, ref.shape[0] - 1, 200).long().tolist()
+        emb = embed(sia, size, folder, name, [present[i] for i in idx], device)
+        cos.append(float(torch.nn.functional.cosine_similarity(emb, ref[idx].float()).mean()))
     print(f'ALIGNMENT siamese vs control {list(control)}: mean cosine {[round(c, 4) for c in cos]}', flush=True)
     if min(cos) < 0.99:
         raise SystemExit('ALIGNMENT FAIL — frames/preprocessing do not reproduce the control features; stop (registered rule)')
@@ -85,7 +99,11 @@ def main():
         dest = os.path.join(out_dir, f'{name}.pt')
         if os.path.exists(dest):
             continue
-        emb = embed(vit, size, frame_dir(root, name), name, list(range(T)), device)
+        folder = frame_dir(root, name)
+        present = frame_secs(folder, name)
+        if len(present) < T:
+            raise SystemExit(f'{name}: {len(present)} frames < {T} control rows')
+        emb = embed(vit, size, folder, name, present[:T], device)
         assert emb.shape == (T, 256), emb.shape
         torch.save(emb, dest + '.tmp')
         os.replace(dest + '.tmp', dest)
