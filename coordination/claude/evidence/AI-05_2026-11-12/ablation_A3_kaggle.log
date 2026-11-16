@@ -1,0 +1,387 @@
+[{"stream_name":"stdout","time":40.402585625,"data":"torch 2.11.0+cu130 | Tesla T4\n"}
+,{"stream_name":"stdout","time":170.252462235,"data":"DATA OK: [218, 28, 27] halves | seconds 751,171 | mean cosine vit vs siamese per half 0.018 (different backbones expected)\n"}
+,{"stream_name":"stdout","time":214.713227765,"data":"SANITY gradient check \u003c 1e-4: PASS | 3 passed in 1.81s\n"}
+,{"stream_name":"stdout","time":214.713276044,"data":"SANITY AdamW parity \u003c 1e-6: PASS | 1 passed in 7.17s\n"}
+,{"stream_name":"stdout","time":214.713280905,"data":"SANITY highlight fusion shape + overfit: PASS | 1 passed in 8.79s\n"}
+,{"stream_name":"stdout","time":214.713284062,"data":"SANITY overfit 1 batch that (siamese, 4 x 120 s, 300 buoc): PASS | loss 0.0000\n"}
+,{"stream_name":"stdout","time":214.713287333,"data":"SANITY overfit 1 batch that (vit, 4 x 120 s, 300 buoc): PASS | loss 0.0000\n"}
+,{"stream_name":"stdout","time":215.345464577,"data":"[train] step 1/4000 | loss 1.2150 (mean 1.2150) | lr 0.00e+00 | 1.85 step/s | còn ~36 phút\n"}
+,{"stream_name":"stdout","time":225.254529427,"data":"[eval ] step 100 | f1 0.1229 | 1s\n"}
+,{"stream_name":"stdout","time":234.594090237,"data":"[train] step 200/4000 | loss 0.7354 (mean 1.1181) | lr 2.98e-04 | 10.11 step/s | còn ~6 phút\n"}
+,{"stream_name":"stdout","time":235.359067603,"data":"[eval ] step 200 | f1 0.1541 | 1s\n"}
+,{"stream_name":"stdout","time":245.544060247,"data":"[eval ] step 300 | f1 0.1802 | 1s\n"}
+,{"stream_name":"stdout","time":255.167283706,"data":"[train] step 400/4000 | loss 1.1203 (mean 1.0329) | lr 2.98e-04 | 9.91 step/s | còn ~6 phút\n"}
+,{"stream_name":"stdout","time":255.953023096,"data":"[eval ] step 400 | f1 0.1336 | 1s\n"}
+,{"stream_name":"stdout","time":266.303652926,"data":"[eval ] step 500 | f1 0.1833 | 1s\n"}
+,{"stream_name":"stdout","time":275.988293527,"data":"[train] step 600/4000 | loss 0.7900 (mean 0.9616) | lr 2.93e-04 | 9.81 step/s | còn ~6 phút\n"}
+,{"stream_name":"stdout","time":276.785284769,"data":"[eval ] step 600 | f1 0.1890 | 1s\n"}
+,{"stream_name":"stdout","time":287.551847585,"data":"[eval ] step 700 | f1 0.1714 | 1s\n"}
+,{"stream_name":"stdout","time":297.463279263,"data":"[train] step 800/4000 | loss 0.9616 (mean 0.9338) | lr 2.84e-04 | 9.68 step/s | còn ~6 phút\n"}
+,{"stream_name":"stdout","time":298.265153721,"data":"[eval ] step 800 | f1 0.1674 | 1s\n"}
+,{"stream_name":"stdout","time":309.12186024,"data":"[eval ] step 900 | f1 0.1798 | 1s\n"}
+,{"stream_name":"stdout","time":319.40940029,"data":"[train] step 1000/4000 | loss 0.9195 (mean 0.8634) | lr 2.72e-04 | 9.56 step/s | còn ~5 phút\n"}
+,{"stream_name":"stdout","time":320.248675571,"data":"[eval ] step 1000 | f1 0.1646 | 1s\n"}
+,{"stream_name":"stdout","time":331.398017578,"data":"[eval ] step 1100 | f1 0.1668 | 1s\n"}
+,{"stream_name":"stdout","time":341.845068975,"data":"[train] step 1200/4000 | loss 0.8366 (mean 0.8764) | lr 2.57e-04 | 9.45 step/s | còn ~5 phút\n"}
+,{"stream_name":"stdout","time":342.720871009,"data":"[eval ] step 1200 | f1 0.1707 | 1s\n"}
+,{"stream_name":"stdout","time":354.363788508,"data":"[eval ] step 1300 | f1 0.1819 | 1s\n"}
+,{"stream_name":"stdout","time":364.929215294,"data":"[train] step 1400/4000 | loss 0.7190 (mean 0.8002) | lr 2.39e-04 | 9.33 step/s | còn ~5 phút\n"}
+,{"stream_name":"stdout","time":365.80128735,"data":"[eval ] step 1400 | f1 0.1620 | 1s\n"}
+,{"stream_name":"stdout","time":377.048744039,"data":"[eval ] step 1500 | f1 0.1736 | 1s\n"}
+,{"stream_name":"stdout","time":387.516064739,"data":"[train] step 1600/4000 | loss 0.9216 (mean 0.7630) | lr 2.19e-04 | 9.26 step/s | còn ~4 phút\n"}
+,{"stream_name":"stdout","time":388.372757903,"data":"[eval ] step 1600 | f1 0.1629 | 1s\n"}
+,{"stream_name":"stdout","time":399.521399991,"data":"[eval ] step 1700 | f1 0.1773 | 1s\n"}
+,{"stream_name":"stdout","time":409.873040156,"data":"[train] step 1800/4000 | loss 0.6095 (mean 0.7642) | lr 1.98e-04 | 9.23 step/s | còn ~4 phút\n"}
+,{"stream_name":"stdout","time":410.718982318,"data":"[eval ] step 1800 | f1 0.1885 | 1s\n"}
+,{"stream_name":"stdout","time":422.085319202,"data":"[eval ] step 1900 | f1 0.1983 | 1s\n"}
+,{"stream_name":"stdout","time":432.52788532,"data":"[train] step 2000/4000 | loss 0.6793 (mean 0.6689) | lr 1.76e-04 | 9.19 step/s | còn ~4 phút\n"}
+,{"stream_name":"stdout","time":433.400511659,"data":"[eval ] step 2000 | f1 0.2020 | 1s\n"}
+,{"stream_name":"stdout","time":444.694446002,"data":"[eval ] step 2100 | f1 0.2174 | 1s\n"}
+,{"stream_name":"stdout","time":455.270004777,"data":"[train] step 2200/4000 | loss 0.6888 (mean 0.6380) | lr 1.54e-04 | 9.15 step/s | còn ~3 phút\n"}
+,{"stream_name":"stdout","time":456.132148604,"data":"[eval ] step 2200 | f1 0.1846 | 1s\n"}
+,{"stream_name":"stdout","time":467.331021713,"data":"[eval ] step 2300 | f1 0.1921 | 1s\n"}
+,{"stream_name":"stdout","time":477.669908459,"data":"[train] step 2400/4000 | loss 0.6203 (mean 0.6105) | lr 1.32e-04 | 9.13 step/s | còn ~3 phút\n"}
+,{"stream_name":"stdout","time":478.52255561,"data":"[eval ] step 2400 | f1 0.1692 | 1s\n"}
+,{"stream_name":"stdout","time":489.838069565,"data":"[eval ] step 2500 | f1 0.1797 | 1s\n"}
+,{"stream_name":"stdout","time":500.164753364,"data":"[train] step 2600/4000 | loss 0.4417 (mean 0.5358) | lr 1.11e-04 | 9.11 step/s | còn ~3 phút\n"}
+,{"stream_name":"stdout","time":501.016581271,"data":"[eval ] step 2600 | f1 0.1881 | 1s\n"}
+,{"stream_name":"stdout","time":512.217376457,"data":"[eval ] step 2700 | f1 0.1727 | 1s\n"}
+,{"stream_name":"stdout","time":522.710302013,"data":"[train] step 2800/4000 | loss 0.6364 (mean 0.5037) | lr 9.13e-05 | 9.09 step/s | còn ~2 phút\n"}
+,{"stream_name":"stdout","time":523.566321206,"data":"[eval ] step 2800 | f1 0.1802 | 1s\n"}
+,{"stream_name":"stdout","time":534.77178426,"data":"[eval ] step 2900 | f1 0.1788 | 1s\n"}
+,{"stream_name":"stdout","time":545.128444774,"data":"[train] step 3000/4000 | loss 0.4524 (mean 0.4753) | lr 7.36e-05 | 9.08 step/s | còn ~2 phút\n"}
+,{"stream_name":"stdout","time":545.980613996,"data":"[eval ] step 3000 | f1 0.1882 | 1s\n"}
+,{"stream_name":"stdout","time":557.352278789,"data":"[eval ] step 3100 | f1 0.1861 | 1s\n"}
+,{"stream_name":"stdout","time":567.727392871,"data":"[train] step 3200/4000 | loss 0.4129 (mean 0.4173) | lr 5.85e-05 | 9.07 step/s | còn ~1 phút\n"}
+,{"stream_name":"stdout","time":568.584874878,"data":"[eval ] step 3200 | f1 0.1826 | 1s\n"}
+,{"stream_name":"stdout","time":579.808506013,"data":"[eval ] step 3300 | f1 0.1834 | 1s\n"}
+,{"stream_name":"stdout","time":590.339564189,"data":"[train] step 3400/4000 | loss 0.2963 (mean 0.3930) | lr 4.63e-05 | 9.05 step/s | còn ~1 phút\n"}
+,{"stream_name":"stdout","time":591.204847668,"data":"[eval ] step 3400 | f1 0.1812 | 1s\n"}
+,{"stream_name":"stdout","time":602.442636162,"data":"[eval ] step 3500 | f1 0.1948 | 1s\n"}
+,{"stream_name":"stdout","time":612.825574113,"data":"[train] step 3600/4000 | loss 0.3758 (mean 0.3784) | lr 3.74e-05 | 9.04 step/s | còn ~1 phút\n"}
+,{"stream_name":"stdout","time":613.675228428,"data":"[eval ] step 3600 | f1 0.1893 | 1s\n"}
+,{"stream_name":"stdout","time":625.060483274,"data":"[eval ] step 3700 | f1 0.1865 | 1s\n"}
+,{"stream_name":"stdout","time":635.4522404,"data":"[train] step 3800/4000 | loss 0.3178 (mean 0.3453) | lr 3.19e-05 | 9.03 step/s | còn ~0 phút\n"}
+,{"stream_name":"stdout","time":636.318561379,"data":"[eval ] step 3800 | f1 0.1793 | 1s\n"}
+,{"stream_name":"stdout","time":647.580470335,"data":"[eval ] step 3900 | f1 0.1810 | 1s\n"}
+,{"stream_name":"stdout","time":658.119616714,"data":"[train] step 4000/4000 | loss 0.1959 (mean 0.3251) | lr 3.00e-05 | 9.02 step/s | còn ~0 phút\n"}
+,{"stream_name":"stdout","time":658.983443608,"data":"[eval ] step 4000 | f1 0.1790 | 1s\n"}
+,{"stream_name":"stdout","time":676.085944897,"data":"RESULT siamese s1337: best step 2100 | tau 0.55 val F1 0.2200 -\u003e TEST F1 0.2221 AP 0.1723 (per half 0.2029) | params 5,427,713 | 7.7 min\n"}
+,{"stream_name":"stdout","time":676.434432289,"data":"[train] step 1/4000 | loss 1.2985 (mean 1.2985) | lr 0.00e+00 | 3.83 step/s | còn ~17 phút\n"}
+,{"stream_name":"stdout","time":687.382626116,"data":"[eval ] step 100 | f1 0.1350 | 1s\n"}
+,{"stream_name":"stdout","time":697.800027575,"data":"[train] step 200/4000 | loss 1.1397 (mean 1.1053) | lr 2.98e-04 | 9.25 step/s | còn ~7 phút\n"}
+,{"stream_name":"stdout","time":698.674591437,"data":"[eval ] step 200 | f1 0.1203 | 1s\n"}
+,{"stream_name":"stdout","time":710.141090897,"data":"[eval ] step 300 | f1 0.1555 | 1s\n"}
+,{"stream_name":"stdout","time":720.91010642,"data":"[train] step 400/4000 | loss 1.0792 (mean 0.9911) | lr 2.98e-04 | 8.94 step/s | còn ~7 phút\n"}
+,{"stream_name":"stdout","time":721.783254981,"data":"[eval ] step 400 | f1 0.1786 | 1s\n"}
+,{"stream_name":"stdout","time":733.035027902,"data":"[eval ] step 500 | f1 0.1644 | 1s\n"}
+,{"stream_name":"stdout","time":743.287671797,"data":"[train] step 600/4000 | loss 0.8024 (mean 0.9507) | lr 2.93e-04 | 8.94 step/s | còn ~6 phút\n"}
+,{"stream_name":"stdout","time":744.121004563,"data":"[eval ] step 600 | f1 0.1690 | 1s\n"}
+,{"stream_name":"stdout","time":755.327845778,"data":"[eval ] step 700 | f1 0.1721 | 1s\n"}
+,{"stream_name":"stdout","time":765.612562946,"data":"[train] step 800/4000 | loss 0.9688 (mean 0.9301) | lr 2.84e-04 | 8.94 step/s | còn ~6 phút\n"}
+,{"stream_name":"stdout","time":766.440189989,"data":"[eval ] step 800 | f1 0.1701 | 1s\n"}
+,{"stream_name":"stdout","time":777.650524886,"data":"[eval ] step 900 | f1 0.2137 | 1s\n"}
+,{"stream_name":"stdout","time":788.239249425,"data":"[train] step 1000/4000 | loss 0.7022 (mean 0.8938) | lr 2.72e-04 | 8.92 step/s | còn ~6 phút\n"}
+,{"stream_name":"stdout","time":789.093163857,"data":"[eval ] step 1000 | f1 0.1726 | 1s\n"}
+,{"stream_name":"stdout","time":800.361838552,"data":"[eval ] step 1100 | f1 0.2012 | 1s\n"}
+,{"stream_name":"stdout","time":810.747854159,"data":"[train] step 1200/4000 | loss 1.0095 (mean 0.8562) | lr 2.57e-04 | 8.92 step/s | còn ~5 phút\n"}
+,{"stream_name":"stdout","time":811.595566741,"data":"[eval ] step 1200 | f1 0.2062 | 1s\n"}
+,{"stream_name":"stdout","time":822.951588795,"data":"[eval ] step 1300 | f1 0.1712 | 1s\n"}
+,{"stream_name":"stdout","time":833.295953391,"data":"[train] step 1400/4000 | loss 0.5265 (mean 0.8202) | lr 2.39e-04 | 8.91 step/s | còn ~5 phút\n"}
+,{"stream_name":"stdout","time":834.132750926,"data":"[eval ] step 1400 | f1 0.1839 | 1s\n"}
+,{"stream_name":"stdout","time":845.322873989,"data":"[eval ] step 1500 | f1 0.1870 | 1s\n"}
+,{"stream_name":"stdout","time":855.801894438,"data":"[train] step 1600/4000 | loss 0.6339 (mean 0.7426) | lr 2.19e-04 | 8.91 step/s | còn ~4 phút\n"}
+,{"stream_name":"stdout","time":856.646959077,"data":"[eval ] step 1600 | f1 0.1910 | 1s\n"}
+,{"stream_name":"stdout","time":867.81065386,"data":"[eval ] step 1700 | f1 0.1688 | 1s\n"}
+,{"stream_name":"stdout","time":878.140350395,"data":"[train] step 1800/4000 | loss 0.6216 (mean 0.7469) | lr 1.98e-04 | 8.91 step/s | còn ~4 phút\n"}
+,{"stream_name":"stdout","time":878.984167387,"data":"[eval ] step 1800 | f1 0.2111 | 1s\n"}
+,{"stream_name":"stdout","time":890.372196142,"data":"[eval ] step 1900 | f1 0.1830 | 1s\n"}
+,{"stream_name":"stdout","time":900.78391787,"data":"[train] step 2000/4000 | loss 0.7537 (mean 0.6739) | lr 1.76e-04 | 8.90 step/s | còn ~4 phút\n"}
+,{"stream_name":"stdout","time":901.64351415,"data":"[eval ] step 2000 | f1 0.1747 | 1s\n"}
+,{"stream_name":"stdout","time":912.917195448,"data":"[eval ] step 2100 | f1 0.1892 | 1s\n"}
+,{"stream_name":"stdout","time":923.449884447,"data":"[train] step 2200/4000 | loss 0.5604 (mean 0.6226) | lr 1.54e-04 | 8.90 step/s | còn ~3 phút\n"}
+,{"stream_name":"stdout","time":924.299605844,"data":"[eval ] step 2200 | f1 0.1922 | 1s\n"}
+,{"stream_name":"stdout","time":935.498244044,"data":"[eval ] step 2300 | f1 0.1854 | 1s\n"}
+,{"stream_name":"stdout","time":945.813606898,"data":"[train] step 2400/4000 | loss 0.6911 (mean 0.5986) | lr 1.32e-04 | 8.90 step/s | còn ~3 phút\n"}
+,{"stream_name":"stdout","time":946.642390213,"data":"[eval ] step 2400 | f1 0.1815 | 1s\n"}
+,{"stream_name":"stdout","time":957.945556356,"data":"[eval ] step 2500 | f1 0.1924 | 1s\n"}
+,{"stream_name":"stdout","time":968.298574667,"data":"[train] step 2600/4000 | loss 0.6551 (mean 0.5148) | lr 1.11e-04 | 8.90 step/s | còn ~3 phút\n"}
+,{"stream_name":"stdout","time":969.139549362,"data":"[eval ] step 2600 | f1 0.1821 | 1s\n"}
+,{"stream_name":"stdout","time":980.386974104,"data":"[eval ] step 2700 | f1 0.1933 | 1s\n"}
+,{"stream_name":"stdout","time":990.96356539,"data":"[train] step 2800/4000 | loss 0.5443 (mean 0.4675) | lr 9.13e-05 | 8.89 step/s | còn ~2 phút\n"}
+,{"stream_name":"stdout","time":991.818608194,"data":"[eval ] step 2800 | f1 0.1924 | 1s\n"}
+,{"stream_name":"stdout","time":1003.077539521,"data":"[eval ] step 2900 | f1 0.1884 | 1s\n"}
+,{"stream_name":"stdout","time":1013.443217234,"data":"[train] step 3000/4000 | loss 0.4054 (mean 0.4537) | lr 7.36e-05 | 8.89 step/s | còn ~2 phút\n"}
+,{"stream_name":"stdout","time":1014.27592725,"data":"[eval ] step 3000 | f1 0.1871 | 1s\n"}
+,{"stream_name":"stdout","time":1025.594012277,"data":"[eval ] step 3100 | f1 0.1882 | 1s\n"}
+,{"stream_name":"stdout","time":1035.917913777,"data":"[train] step 3200/4000 | loss 0.2993 (mean 0.4001) | lr 5.85e-05 | 8.90 step/s | còn ~1 phút\n"}
+,{"stream_name":"stdout","time":1036.756325759,"data":"[eval ] step 3200 | f1 0.1886 | 1s\n"}
+,{"stream_name":"stdout","time":1047.955767143,"data":"[eval ] step 3300 | f1 0.1894 | 1s\n"}
+,{"stream_name":"stdout","time":1058.515831707,"data":"[train] step 3400/4000 | loss 0.4985 (mean 0.3796) | lr 4.63e-05 | 8.89 step/s | còn ~1 phút\n"}
+,{"stream_name":"stdout","time":1059.363659695,"data":"[eval ] step 3400 | f1 0.1911 | 1s\n"}
+,{"stream_name":"stdout","time":1070.646502677,"data":"[eval ] step 3500 | f1 0.1901 | 1s\n"}
+,{"stream_name":"stdout","time":1081.085977519,"data":"[train] step 3600/4000 | loss 0.3906 (mean 0.3576) | lr 3.74e-05 | 8.89 step/s | còn ~1 phút\n"}
+,{"stream_name":"stdout","time":1081.937459142,"data":"[eval ] step 3600 | f1 0.1904 | 1s\n"}
+,{"stream_name":"stdout","time":1093.370771034,"data":"[eval ] step 3700 | f1 0.1861 | 1s\n"}
+,{"stream_name":"stdout","time":1103.752336592,"data":"[train] step 3800/4000 | loss 0.2730 (mean 0.3268) | lr 3.19e-05 | 8.89 step/s | còn ~0 phút\n"}
+,{"stream_name":"stdout","time":1104.592963768,"data":"[eval ] step 3800 | f1 0.1920 | 1s\n"}
+,{"stream_name":"stdout","time":1115.804079697,"data":"[eval ] step 3900 | f1 0.1898 | 1s\n"}
+,{"stream_name":"stdout","time":1126.323127283,"data":"[train] step 4000/4000 | loss 0.2870 (mean 0.3191) | lr 3.00e-05 | 8.89 step/s | còn ~0 phút\n"}
+,{"stream_name":"stdout","time":1127.180622324,"data":"[eval ] step 4000 | f1 0.1936 | 1s\n"}
+,{"stream_name":"stdout","time":1145.181114656,"data":"RESULT siamese s1338: best step 900 | tau 0.55 val F1 0.2204 -\u003e TEST F1 0.2244 AP 0.1721 (per half 0.1954) | params 5,427,713 | 7.8 min\n"}
+,{"stream_name":"stdout","time":1145.528031901,"data":"[train] step 1/4000 | loss 1.2577 (mean 1.2577) | lr 0.00e+00 | 3.77 step/s | còn ~18 phút\n"}
+,{"stream_name":"stdout","time":1156.558074146,"data":"[eval ] step 100 | f1 0.0989 | 1s\n"}
+,{"stream_name":"stdout","time":1167.049257331,"data":"[train] step 200/4000 | loss 0.9174 (mean 1.1210) | lr 2.98e-04 | 9.18 step/s | còn ~7 phút\n"}
+,{"stream_name":"stdout","time":1167.923900779,"data":"[eval ] step 200 | f1 0.1671 | 1s\n"}
+,{"stream_name":"stdout","time":1179.502877803,"data":"[eval ] step 300 | f1 0.1695 | 1s\n"}
+,{"stream_name":"stdout","time":1190.271629077,"data":"[train] step 400/4000 | loss 0.8024 (mean 0.9967) | lr 2.98e-04 | 8.89 step/s | còn ~7 phút\n"}
+,{"stream_name":"stdout","time":1191.146185897,"data":"[eval ] step 400 | f1 0.1485 | 1s\n"}
+,{"stream_name":"stdout","time":1202.375159639,"data":"[eval ] step 500 | f1 0.1627 | 1s\n"}
+,{"stream_name":"stdout","time":1212.651148505,"data":"[train] step 600/4000 | loss 0.7599 (mean 0.9832) | lr 2.93e-04 | 8.90 step/s | còn ~6 phút\n"}
+,{"stream_name":"stdout","time":1213.466162581,"data":"[eval ] step 600 | f1 0.1767 | 1s\n"}
+,{"stream_name":"stdout","time":1224.766807551,"data":"[eval ] step 700 | f1 0.1525 | 1s\n"}
+,{"stream_name":"stdout","time":1235.104359886,"data":"[train] step 800/4000 | loss 0.8514 (mean 0.9424) | lr 2.84e-04 | 8.90 step/s | còn ~6 phút\n"}
+,{"stream_name":"stdout","time":1235.941322653,"data":"[eval ] step 800 | f1 0.1616 | 1s\n"}
+,{"stream_name":"stdout","time":1247.222239453,"data":"[eval ] step 900 | f1 0.1501 | 1s\n"}
+,{"stream_name":"stdout","time":1257.850981058,"data":"[train] step 1000/4000 | loss 0.8619 (mean 0.8944) | lr 2.72e-04 | 8.88 step/s | còn ~6 phút\n"}
+,{"stream_name":"stdout","time":1258.729192948,"data":"[eval ] step 1000 | f1 0.1595 | 1s\n"}
+,{"stream_name":"stdout","time":1270.050891213,"data":"[eval ] step 1100 | f1 0.1514 | 1s\n"}
+,{"stream_name":"stdout","time":1280.457103896,"data":"[train] step 1200/4000 | loss 0.8988 (mean 0.8505) | lr 2.57e-04 | 8.88 step/s | còn ~5 phút\n"}
+,{"stream_name":"stdout","time":1281.303630873,"data":"[eval ] step 1200 | f1 0.1586 | 1s\n"}
+,{"stream_name":"stdout","time":1292.671255909,"data":"[eval ] step 1300 | f1 0.1784 | 1s\n"}
+,{"stream_name":"stdout","time":1303.079633692,"data":"[train] step 1400/4000 | loss 0.9014 (mean 0.8250) | lr 2.39e-04 | 8.87 step/s | còn ~5 phút\n"}
+,{"stream_name":"stdout","time":1303.913745322,"data":"[eval ] step 1400 | f1 0.1855 | 1s\n"}
+,{"stream_name":"stdout","time":1315.16709326,"data":"[eval ] step 1500 | f1 0.1582 | 1s\n"}
+,{"stream_name":"stdout","time":1325.750163114,"data":"[train] step 1600/4000 | loss 0.6979 (mean 0.7528) | lr 2.19e-04 | 8.86 step/s | còn ~5 phút\n"}
+,{"stream_name":"stdout","time":1326.610625537,"data":"[eval ] step 1600 | f1 0.1897 | 1s\n"}
+,{"stream_name":"stdout","time":1337.946694506,"data":"[eval ] step 1700 | f1 0.1845 | 1s\n"}
+,{"stream_name":"stdout","time":1348.428886591,"data":"[train] step 1800/4000 | loss 0.6035 (mean 0.7414) | lr 1.98e-04 | 8.86 step/s | còn ~4 phút\n"}
+,{"stream_name":"stdout","time":1349.282345712,"data":"[eval ] step 1800 | f1 0.1791 | 1s\n"}
+,{"stream_name":"stdout","time":1360.694431685,"data":"[eval ] step 1900 | f1 0.1741 | 1s\n"}
+,{"stream_name":"stdout","time":1371.056287788,"data":"[train] step 2000/4000 | loss 0.6871 (mean 0.6843) | lr 1.76e-04 | 8.86 step/s | còn ~4 phút\n"}
+,{"stream_name":"stdout","time":1371.903367355,"data":"[eval ] step 2000 | f1 0.1668 | 1s\n"}
+,{"stream_name":"stdout","time":1383.088015201,"data":"[eval ] step 2100 | f1 0.1822 | 1s\n"}
+,{"stream_name":"stdout","time":1393.642893235,"data":"[train] step 2200/4000 | loss 0.7754 (mean 0.6334) | lr 1.54e-04 | 8.86 step/s | còn ~3 phút\n"}
+,{"stream_name":"stdout","time":1394.500044161,"data":"[eval ] step 2200 | f1 0.1735 | 1s\n"}
+,{"stream_name":"stdout","time":1405.77853187,"data":"[eval ] step 2300 | f1 0.1700 | 1s\n"}
+,{"stream_name":"stdout","time":1416.271299741,"data":"[train] step 2400/4000 | loss 0.4111 (mean 0.5899) | lr 1.32e-04 | 8.86 step/s | còn ~3 phút\n"}
+,{"stream_name":"stdout","time":1417.123983754,"data":"[eval ] step 2400 | f1 0.1743 | 1s\n"}
+,{"stream_name":"stdout","time":1428.606447112,"data":"[eval ] step 2500 | f1 0.1775 | 1s\n"}
+,{"stream_name":"stdout","time":1439.032548149,"data":"[train] step 2600/4000 | loss 0.6605 (mean 0.5342) | lr 1.11e-04 | 8.85 step/s | còn ~3 phút\n"}
+,{"stream_name":"stdout","time":1439.870946932,"data":"[eval ] step 2600 | f1 0.1640 | 1s\n"}
+,{"stream_name":"stdout","time":1451.13639756,"data":"[eval ] step 2700 | f1 0.1650 | 1s\n"}
+,{"stream_name":"stdout","time":1461.682674883,"data":"[train] step 2800/4000 | loss 0.4482 (mean 0.4964) | lr 9.13e-05 | 8.85 step/s | còn ~2 phút\n"}
+,{"stream_name":"stdout","time":1462.539407054,"data":"[eval ] step 2800 | f1 0.1698 | 1s\n"}
+,{"stream_name":"stdout","time":1473.847559231,"data":"[eval ] step 2900 | f1 0.1744 | 1s\n"}
+,{"stream_name":"stdout","time":1484.36023953,"data":"[train] step 3000/4000 | loss 0.3726 (mean 0.4636) | lr 7.36e-05 | 8.85 step/s | còn ~2 phút\n"}
+,{"stream_name":"stdout","time":1485.21811652,"data":"[eval ] step 3000 | f1 0.1642 | 1s\n"}
+,{"stream_name":"stdout","time":1496.724421877,"data":"[eval ] step 3100 | f1 0.1747 | 1s\n"}
+,{"stream_name":"stdout","time":1507.160609001,"data":"[train] step 3200/4000 | loss 0.3557 (mean 0.4098) | lr 5.85e-05 | 8.84 step/s | còn ~2 phút\n"}
+,{"stream_name":"stdout","time":1508.007657643,"data":"[eval ] step 3200 | f1 0.1741 | 1s\n"}
+,{"stream_name":"stdout","time":1519.273995076,"data":"[eval ] step 3300 | f1 0.1692 | 1s\n"}
+,{"stream_name":"stdout","time":1529.826696451,"data":"[train] step 3400/4000 | loss 0.3398 (mean 0.3944) | lr 4.63e-05 | 8.84 step/s | còn ~1 phút\n"}
+,{"stream_name":"stdout","time":1530.674567824,"data":"[eval ] step 3400 | f1 0.1778 | 1s\n"}
+,{"stream_name":"stdout","time":1541.939992428,"data":"[eval ] step 3500 | f1 0.1741 | 1s\n"}
+,{"stream_name":"stdout","time":1552.387047048,"data":"[train] step 3600/4000 | loss 0.3677 (mean 0.3662) | lr 3.74e-05 | 8.84 step/s | còn ~1 phút\n"}
+,{"stream_name":"stdout","time":1553.236086305,"data":"[eval ] step 3600 | f1 0.1767 | 1s\n"}
+,{"stream_name":"stdout","time":1564.719849695,"data":"[eval ] step 3700 | f1 0.1684 | 1s\n"}
+,{"stream_name":"stdout","time":1575.149647017,"data":"[train] step 3800/4000 | loss 0.3004 (mean 0.3363) | lr 3.19e-05 | 8.84 step/s | còn ~0 phút\n"}
+,{"stream_name":"stdout","time":1575.991973234,"data":"[eval ] step 3800 | f1 0.1700 | 1s\n"}
+,{"stream_name":"stdout","time":1587.227040337,"data":"[eval ] step 3900 | f1 0.1682 | 1s\n"}
+,{"stream_name":"stdout","time":1597.735432712,"data":"[train] step 4000/4000 | loss 0.3630 (mean 0.3313) | lr 3.00e-05 | 8.84 step/s | còn ~0 phút\n"}
+,{"stream_name":"stdout","time":1598.591890052,"data":"[eval ] step 4000 | f1 0.1719 | 1s\n"}
+,{"stream_name":"stdout","time":1616.350919695,"data":"RESULT siamese s1339: best step 1600 | tau 0.70 val F1 0.2199 -\u003e TEST F1 0.2280 AP 0.1681 (per half 0.2027) | params 5,427,713 | 7.9 min\n"}
+,{"stream_name":"stdout","time":1616.700273663,"data":"[train] step 1/4000 | loss 1.1838 (mean 1.1838) | lr 0.00e+00 | 3.85 step/s | còn ~17 phút\n"}
+,{"stream_name":"stdout","time":1627.675677816,"data":"[eval ] step 100 | f1 0.0958 | 1s\n"}
+,{"stream_name":"stdout","time":1638.136389589,"data":"[train] step 200/4000 | loss 0.8343 (mean 1.1492) | lr 2.98e-04 | 9.22 step/s | còn ~7 phút\n"}
+,{"stream_name":"stdout","time":1639.010117126,"data":"[eval ] step 200 | f1 0.1496 | 1s\n"}
+,{"stream_name":"stdout","time":1650.527536924,"data":"[eval ] step 300 | f1 0.1298 | 1s\n"}
+,{"stream_name":"stdout","time":1661.294169926,"data":"[train] step 400/4000 | loss 1.1149 (mean 1.1004) | lr 2.98e-04 | 8.92 step/s | còn ~7 phút\n"}
+,{"stream_name":"stdout","time":1662.170757513,"data":"[eval ] step 400 | f1 0.1391 | 1s\n"}
+,{"stream_name":"stdout","time":1673.398785326,"data":"[eval ] step 500 | f1 0.1748 | 1s\n"}
+,{"stream_name":"stdout","time":1683.735723487,"data":"[train] step 600/4000 | loss 0.8439 (mean 1.0218) | lr 2.93e-04 | 8.92 step/s | còn ~6 phút\n"}
+,{"stream_name":"stdout","time":1684.553502181,"data":"[eval ] step 600 | f1 0.1694 | 1s\n"}
+,{"stream_name":"stdout","time":1695.795767428,"data":"[eval ] step 700 | f1 0.1549 | 1s\n"}
+,{"stream_name":"stdout","time":1706.099027553,"data":"[train] step 800/4000 | loss 1.0547 (mean 1.0204) | lr 2.84e-04 | 8.92 step/s | còn ~6 phút\n"}
+,{"stream_name":"stdout","time":1706.941820049,"data":"[eval ] step 800 | f1 0.1633 | 1s\n"}
+,{"stream_name":"stdout","time":1718.188170954,"data":"[eval ] step 900 | f1 0.1710 | 1s\n"}
+,{"stream_name":"stdout","time":1728.79957648,"data":"[train] step 1000/4000 | loss 0.9829 (mean 0.9559) | lr 2.72e-04 | 8.90 step/s | còn ~6 phút\n"}
+,{"stream_name":"stdout","time":1729.668140237,"data":"[eval ] step 1000 | f1 0.1485 | 1s\n"}
+,{"stream_name":"stdout","time":1741.001801618,"data":"[eval ] step 1100 | f1 0.1892 | 1s\n"}
+,{"stream_name":"stdout","time":1751.462474289,"data":"[train] step 1200/4000 | loss 1.0083 (mean 0.9681) | lr 2.57e-04 | 8.89 step/s | còn ~5 phút\n"}
+,{"stream_name":"stdout","time":1752.302749946,"data":"[eval ] step 1200 | f1 0.1666 | 1s\n"}
+,{"stream_name":"stdout","time":1763.720289132,"data":"[eval ] step 1300 | f1 0.1496 | 1s\n"}
+,{"stream_name":"stdout","time":1774.096225776,"data":"[train] step 1400/4000 | loss 0.9290 (mean 0.9271) | lr 2.39e-04 | 8.88 step/s | còn ~5 phút\n"}
+,{"stream_name":"stdout","time":1774.932609576,"data":"[eval ] step 1400 | f1 0.1409 | 1s\n"}
+,{"stream_name":"stdout","time":1786.139276452,"data":"[eval ] step 1500 | f1 0.1528 | 1s\n"}
+,{"stream_name":"stdout","time":1796.678760422,"data":"[train] step 1600/4000 | loss 1.0817 (mean 0.9024) | lr 2.19e-04 | 8.88 step/s | còn ~5 phút\n"}
+,{"stream_name":"stdout","time":1797.532197535,"data":"[eval ] step 1600 | f1 0.1686 | 1s\n"}
+,{"stream_name":"stdout","time":1808.7785447,"data":"[eval ] step 1700 | f1 0.1464 | 1s\n"}
+,{"stream_name":"stdout","time":1819.201830158,"data":"[train] step 1800/4000 | loss 0.7626 (mean 0.9017) | lr 1.98e-04 | 8.88 step/s | còn ~4 phút\n"}
+,{"stream_name":"stdout","time":1820.044624999,"data":"[eval ] step 1800 | f1 0.1826 | 1s\n"}
+,{"stream_name":"stdout","time":1831.514330368,"data":"[eval ] step 1900 | f1 0.1932 | 1s\n"}
+,{"stream_name":"stdout","time":1841.972829469,"data":"[train] step 2000/4000 | loss 0.7461 (mean 0.8486) | lr 1.76e-04 | 8.87 step/s | còn ~4 phút\n"}
+,{"stream_name":"stdout","time":1842.823472452,"data":"[eval ] step 2000 | f1 0.1805 | 1s\n"}
+,{"stream_name":"stdout","time":1854.085049148,"data":"[eval ] step 2100 | f1 0.1810 | 1s\n"}
+,{"stream_name":"stdout","time":1864.652155726,"data":"[train] step 2200/4000 | loss 0.9829 (mean 0.8261) | lr 1.54e-04 | 8.86 step/s | còn ~3 phút\n"}
+,{"stream_name":"stdout","time":1865.514097,"data":"[eval ] step 2200 | f1 0.1831 | 1s\n"}
+,{"stream_name":"stdout","time":1876.745891362,"data":"[eval ] step 2300 | f1 0.1878 | 1s\n"}
+,{"stream_name":"stdout","time":1887.145797324,"data":"[train] step 2400/4000 | loss 0.8369 (mean 0.8233) | lr 1.32e-04 | 8.87 step/s | còn ~3 phút\n"}
+,{"stream_name":"stdout","time":1887.987894968,"data":"[eval ] step 2400 | f1 0.1841 | 1s\n"}
+,{"stream_name":"stdout","time":1899.393845439,"data":"[eval ] step 2500 | f1 0.1946 | 1s\n"}
+,{"stream_name":"stdout","time":1909.796892825,"data":"[train] step 2600/4000 | loss 0.7586 (mean 0.7436) | lr 1.11e-04 | 8.86 step/s | còn ~3 phút\n"}
+,{"stream_name":"stdout","time":1910.633318302,"data":"[eval ] step 2600 | f1 0.1970 | 1s\n"}
+,{"stream_name":"stdout","time":1921.862615594,"data":"[eval ] step 2700 | f1 0.1927 | 1s\n"}
+,{"stream_name":"stdout","time":1932.386310371,"data":"[train] step 2800/4000 | loss 0.9829 (mean 0.7208) | lr 9.13e-05 | 8.86 step/s | còn ~2 phút\n"}
+,{"stream_name":"stdout","time":1933.250416724,"data":"[eval ] step 2800 | f1 0.2075 | 1s\n"}
+,{"stream_name":"stdout","time":1944.487311221,"data":"[eval ] step 2900 | f1 0.1987 | 1s\n"}
+,{"stream_name":"stdout","time":1954.856730882,"data":"[train] step 3000/4000 | loss 0.6641 (mean 0.6940) | lr 7.36e-05 | 8.86 step/s | còn ~2 phút\n"}
+,{"stream_name":"stdout","time":1955.691780019,"data":"[eval ] step 3000 | f1 0.1947 | 1s\n"}
+,{"stream_name":"stdout","time":1967.078193325,"data":"[eval ] step 3100 | f1 0.2058 | 1s\n"}
+,{"stream_name":"stdout","time":1977.449826351,"data":"[train] step 3200/4000 | loss 0.7280 (mean 0.6317) | lr 5.85e-05 | 8.86 step/s | còn ~2 phút\n"}
+,{"stream_name":"stdout","time":1978.292936774,"data":"[eval ] step 3200 | f1 0.2024 | 1s\n"}
+,{"stream_name":"stdout","time":1989.491082904,"data":"[eval ] step 3300 | f1 0.1893 | 1s\n"}
+,{"stream_name":"stdout","time":2000.021252417,"data":"[train] step 3400/4000 | loss 0.5402 (mean 0.6322) | lr 4.63e-05 | 8.86 step/s | còn ~1 phút\n"}
+,{"stream_name":"stdout","time":2000.878002262,"data":"[eval ] step 3400 | f1 0.2070 | 1s\n"}
+,{"stream_name":"stdout","time":2012.093099221,"data":"[eval ] step 3500 | f1 0.2063 | 1s\n"}
+,{"stream_name":"stdout","time":2022.454678185,"data":"[train] step 3600/4000 | loss 0.6560 (mean 0.6136) | lr 3.74e-05 | 8.87 step/s | còn ~1 phút\n"}
+,{"stream_name":"stdout","time":2023.297757504,"data":"[eval ] step 3600 | f1 0.1924 | 1s\n"}
+,{"stream_name":"stdout","time":2034.699091126,"data":"[eval ] step 3700 | f1 0.2045 | 1s\n"}
+,{"stream_name":"stdout","time":2045.086720431,"data":"[train] step 3800/4000 | loss 0.4612 (mean 0.5710) | lr 3.19e-05 | 8.87 step/s | còn ~0 phút\n"}
+,{"stream_name":"stdout","time":2045.940410918,"data":"[eval ] step 3800 | f1 0.1884 | 1s\n"}
+,{"stream_name":"stdout","time":2057.18463998,"data":"[eval ] step 3900 | f1 0.2034 | 1s\n"}
+,{"stream_name":"stdout","time":2067.734131901,"data":"[train] step 4000/4000 | loss 0.3714 (mean 0.5469) | lr 3.00e-05 | 8.86 step/s | còn ~0 phút\n"}
+,{"stream_name":"stdout","time":2068.605582155,"data":"[eval ] step 4000 | f1 0.1948 | 1s\n"}
+,{"stream_name":"stdout","time":2086.077874647,"data":"RESULT vit s1337: best step 2800 | tau 0.72 val F1 0.2185 -\u003e TEST F1 0.2516 AP 0.1934 (per half 0.2171) | params 5,427,713 | 7.8 min\n"}
+,{"stream_name":"stdout","time":2086.424115438,"data":"[train] step 1/4000 | loss 1.2618 (mean 1.2618) | lr 0.00e+00 | 3.77 step/s | còn ~18 phút\n"}
+,{"stream_name":"stdout","time":2097.378297333,"data":"[eval ] step 100 | f1 0.1148 | 1s\n"}
+,{"stream_name":"stdout","time":2107.833057341,"data":"[train] step 200/4000 | loss 1.1586 (mean 1.1446) | lr 2.98e-04 | 9.23 step/s | còn ~7 phút\n"}
+,{"stream_name":"stdout","time":2108.710816186,"data":"[eval ] step 200 | f1 0.1055 | 1s\n"}
+,{"stream_name":"stdout","time":2120.209283521,"data":"[eval ] step 300 | f1 0.1490 | 1s\n"}
+,{"stream_name":"stdout","time":2131.001077409,"data":"[train] step 400/4000 | loss 1.2468 (mean 1.0574) | lr 2.98e-04 | 8.92 step/s | còn ~7 phút\n"}
+,{"stream_name":"stdout","time":2131.871370474,"data":"[eval ] step 400 | f1 0.1458 | 1s\n"}
+,{"stream_name":"stdout","time":2143.083531671,"data":"[eval ] step 500 | f1 0.1622 | 1s\n"}
+,{"stream_name":"stdout","time":2153.379774187,"data":"[train] step 600/4000 | loss 0.8345 (mean 1.0183) | lr 2.93e-04 | 8.93 step/s | còn ~6 phút\n"}
+,{"stream_name":"stdout","time":2154.206306437,"data":"[eval ] step 600 | f1 0.1666 | 1s\n"}
+,{"stream_name":"stdout","time":2165.47358014,"data":"[eval ] step 700 | f1 0.1691 | 1s\n"}
+,{"stream_name":"stdout","time":2175.800083504,"data":"[train] step 800/4000 | loss 0.9411 (mean 1.0051) | lr 2.84e-04 | 8.92 step/s | còn ~6 phút\n"}
+,{"stream_name":"stdout","time":2176.635147953,"data":"[eval ] step 800 | f1 0.1693 | 1s\n"}
+,{"stream_name":"stdout","time":2187.9020712,"data":"[eval ] step 900 | f1 0.1949 | 1s\n"}
+,{"stream_name":"stdout","time":2198.506689187,"data":"[train] step 1000/4000 | loss 0.7065 (mean 0.9910) | lr 2.72e-04 | 8.90 step/s | còn ~6 phút\n"}
+,{"stream_name":"stdout","time":2199.371420756,"data":"[eval ] step 1000 | f1 0.1866 | 1s\n"}
+,{"stream_name":"stdout","time":2210.652533066,"data":"[eval ] step 1100 | f1 0.1668 | 1s\n"}
+,{"stream_name":"stdout","time":2221.05421551,"data":"[train] step 1200/4000 | loss 1.0159 (mean 0.9578) | lr 2.57e-04 | 8.90 step/s | còn ~5 phút\n"}
+,{"stream_name":"stdout","time":2221.891993338,"data":"[eval ] step 1200 | f1 0.1831 | 1s\n"}
+,{"stream_name":"stdout","time":2233.259234243,"data":"[eval ] step 1300 | f1 0.1678 | 1s\n"}
+,{"stream_name":"stdout","time":2243.592336744,"data":"[train] step 1400/4000 | loss 0.6185 (mean 0.9333) | lr 2.39e-04 | 8.89 step/s | còn ~5 phút\n"}
+,{"stream_name":"stdout","time":2244.435887955,"data":"[eval ] step 1400 | f1 0.1721 | 1s\n"}
+,{"stream_name":"stdout","time":2255.608136296,"data":"[eval ] step 1500 | f1 0.1965 | 1s\n"}
+,{"stream_name":"stdout","time":2266.155867483,"data":"[train] step 1600/4000 | loss 0.8187 (mean 0.8702) | lr 2.19e-04 | 8.89 step/s | còn ~4 phút\n"}
+,{"stream_name":"stdout","time":2267.018017319,"data":"[eval ] step 1600 | f1 0.1486 | 1s\n"}
+,{"stream_name":"stdout","time":2278.254685659,"data":"[eval ] step 1700 | f1 0.1719 | 1s\n"}
+,{"stream_name":"stdout","time":2288.642838164,"data":"[train] step 1800/4000 | loss 0.7290 (mean 0.8859) | lr 1.98e-04 | 8.89 step/s | còn ~4 phút\n"}
+,{"stream_name":"stdout","time":2289.483446114,"data":"[eval ] step 1800 | f1 0.1867 | 1s\n"}
+,{"stream_name":"stdout","time":2300.898966036,"data":"[eval ] step 1900 | f1 0.1775 | 1s\n"}
+,{"stream_name":"stdout","time":2311.300781097,"data":"[train] step 2000/4000 | loss 1.0113 (mean 0.8428) | lr 1.76e-04 | 8.88 step/s | còn ~4 phút\n"}
+,{"stream_name":"stdout","time":2312.142646929,"data":"[eval ] step 2000 | f1 0.1560 | 1s\n"}
+,{"stream_name":"stdout","time":2323.389018555,"data":"[eval ] step 2100 | f1 0.1639 | 1s\n"}
+,{"stream_name":"stdout","time":2333.941676083,"data":"[train] step 2200/4000 | loss 0.7426 (mean 0.8091) | lr 1.54e-04 | 8.88 step/s | còn ~3 phút\n"}
+,{"stream_name":"stdout","time":2334.801040581,"data":"[eval ] step 2200 | f1 0.1891 | 1s\n"}
+,{"stream_name":"stdout","time":2346.013175715,"data":"[eval ] step 2300 | f1 0.2037 | 1s\n"}
+,{"stream_name":"stdout","time":2356.402726215,"data":"[train] step 2400/4000 | loss 0.9339 (mean 0.7970) | lr 1.32e-04 | 8.88 step/s | còn ~3 phút\n"}
+,{"stream_name":"stdout","time":2357.241225834,"data":"[eval ] step 2400 | f1 0.1850 | 1s\n"}
+,{"stream_name":"stdout","time":2368.634230699,"data":"[eval ] step 2500 | f1 0.2010 | 1s\n"}
+,{"stream_name":"stdout","time":2378.989573962,"data":"[train] step 2600/4000 | loss 0.9237 (mean 0.7270) | lr 1.11e-04 | 8.88 step/s | còn ~3 phút\n"}
+,{"stream_name":"stdout","time":2379.827022701,"data":"[eval ] step 2600 | f1 0.1847 | 1s\n"}
+,{"stream_name":"stdout","time":2391.02386762,"data":"[eval ] step 2700 | f1 0.2029 | 1s\n"}
+,{"stream_name":"stdout","time":2401.52683094,"data":"[train] step 2800/4000 | loss 0.7903 (mean 0.6792) | lr 9.13e-05 | 8.88 step/s | còn ~2 phút\n"}
+,{"stream_name":"stdout","time":2402.380639925,"data":"[eval ] step 2800 | f1 0.1873 | 1s\n"}
+,{"stream_name":"stdout","time":2413.578167059,"data":"[eval ] step 2900 | f1 0.1822 | 1s\n"}
+,{"stream_name":"stdout","time":2423.937693219,"data":"[train] step 3000/4000 | loss 0.5637 (mean 0.6770) | lr 7.36e-05 | 8.88 step/s | còn ~2 phút\n"}
+,{"stream_name":"stdout","time":2424.781958881,"data":"[eval ] step 3000 | f1 0.1930 | 1s\n"}
+,{"stream_name":"stdout","time":2436.178215282,"data":"[eval ] step 3100 | f1 0.1996 | 1s\n"}
+,{"stream_name":"stdout","time":2446.558082931,"data":"[train] step 3200/4000 | loss 0.4552 (mean 0.6304) | lr 5.85e-05 | 8.88 step/s | còn ~2 phút\n"}
+,{"stream_name":"stdout","time":2447.408903179,"data":"[eval ] step 3200 | f1 0.1932 | 1s\n"}
+,{"stream_name":"stdout","time":2458.624185852,"data":"[eval ] step 3300 | f1 0.1988 | 1s\n"}
+,{"stream_name":"stdout","time":2469.164982853,"data":"[train] step 3400/4000 | loss 0.8452 (mean 0.6027) | lr 4.63e-05 | 8.88 step/s | còn ~1 phút\n"}
+,{"stream_name":"stdout","time":2470.021962581,"data":"[eval ] step 3400 | f1 0.2058 | 1s\n"}
+,{"stream_name":"stdout","time":2481.273997996,"data":"[eval ] step 3500 | f1 0.2145 | 1s\n"}
+,{"stream_name":"stdout","time":2491.730497655,"data":"[train] step 3600/4000 | loss 0.6180 (mean 0.5894) | lr 3.74e-05 | 8.88 step/s | còn ~1 phút\n"}
+,{"stream_name":"stdout","time":2492.579338698,"data":"[eval ] step 3600 | f1 0.1846 | 1s\n"}
+,{"stream_name":"stdout","time":2504.047224466,"data":"[eval ] step 3700 | f1 0.1948 | 1s\n"}
+,{"stream_name":"stdout","time":2514.452819825,"data":"[train] step 3800/4000 | loss 0.3595 (mean 0.5472) | lr 3.19e-05 | 8.87 step/s | còn ~0 phút\n"}
+,{"stream_name":"stdout","time":2515.293779898,"data":"[eval ] step 3800 | f1 0.2082 | 1s\n"}
+,{"stream_name":"stdout","time":2526.538205914,"data":"[eval ] step 3900 | f1 0.1929 | 1s\n"}
+,{"stream_name":"stdout","time":2537.100086241,"data":"[train] step 4000/4000 | loss 0.5242 (mean 0.5342) | lr 3.00e-05 | 8.87 step/s | còn ~0 phút\n"}
+,{"stream_name":"stdout","time":2537.967467912,"data":"[eval ] step 4000 | f1 0.2041 | 1s\n"}
+,{"stream_name":"stdout","time":2555.723346878,"data":"RESULT vit s1338: best step 3500 | tau 0.66 val F1 0.2188 -\u003e TEST F1 0.2369 AP 0.1841 (per half 0.1998) | params 5,427,713 | 7.8 min\n"}
+,{"stream_name":"stdout","time":2556.06456912,"data":"[train] step 1/4000 | loss 1.2731 (mean 1.2731) | lr 0.00e+00 | 3.81 step/s | còn ~17 phút\n"}
+,{"stream_name":"stdout","time":2567.009238915,"data":"[eval ] step 100 | f1 0.0858 | 1s\n"}
+,{"stream_name":"stdout","time":2577.428724871,"data":"[train] step 200/4000 | loss 0.9745 (mean 1.1572) | lr 2.98e-04 | 9.25 step/s | còn ~7 phút\n"}
+,{"stream_name":"stdout","time":2578.298960512,"data":"[eval ] step 200 | f1 0.1329 | 1s\n"}
+,{"stream_name":"stdout","time":2589.811839421,"data":"[eval ] step 300 | f1 0.1167 | 1s\n"}
+,{"stream_name":"stdout","time":2600.568136113,"data":"[train] step 400/4000 | loss 0.8339 (mean 1.0527) | lr 2.98e-04 | 8.94 step/s | còn ~7 phút\n"}
+,{"stream_name":"stdout","time":2601.446604446,"data":"[eval ] step 400 | f1 0.1544 | 1s\n"}
+,{"stream_name":"stdout","time":2612.701663113,"data":"[eval ] step 500 | f1 0.1503 | 1s\n"}
+,{"stream_name":"stdout","time":2622.967923682,"data":"[train] step 600/4000 | loss 0.7906 (mean 1.0475) | lr 2.93e-04 | 8.93 step/s | còn ~6 phút\n"}
+,{"stream_name":"stdout","time":2623.793442032,"data":"[eval ] step 600 | f1 0.1794 | 1s\n"}
+,{"stream_name":"stdout","time":2635.071868075,"data":"[eval ] step 700 | f1 0.1480 | 1s\n"}
+,{"stream_name":"stdout","time":2645.358141299,"data":"[train] step 800/4000 | loss 1.0639 (mean 1.0124) | lr 2.84e-04 | 8.93 step/s | còn ~6 phút\n"}
+,{"stream_name":"stdout","time":2646.204540983,"data":"[eval ] step 800 | f1 0.1520 | 1s\n"}
+,{"stream_name":"stdout","time":2657.491827175,"data":"[eval ] step 900 | f1 0.1764 | 1s\n"}
+,{"stream_name":"stdout","time":2668.144845257,"data":"[train] step 1000/4000 | loss 1.0055 (mean 0.9763) | lr 2.72e-04 | 8.90 step/s | còn ~6 phút\n"}
+,{"stream_name":"stdout","time":2669.017073325,"data":"[eval ] step 1000 | f1 0.1567 | 1s\n"}
+,{"stream_name":"stdout","time":2680.400493754,"data":"[eval ] step 1100 | f1 0.1604 | 1s\n"}
+,{"stream_name":"stdout","time":2690.902353213,"data":"[train] step 1200/4000 | loss 0.9570 (mean 0.9484) | lr 2.57e-04 | 8.88 step/s | còn ~5 phút\n"}
+,{"stream_name":"stdout","time":2691.75481265,"data":"[eval ] step 1200 | f1 0.1653 | 1s\n"}
+,{"stream_name":"stdout","time":2703.230072972,"data":"[eval ] step 1300 | f1 0.1408 | 1s\n"}
+,{"stream_name":"stdout","time":2713.649711836,"data":"[train] step 1400/4000 | loss 1.0161 (mean 0.9500) | lr 2.39e-04 | 8.87 step/s | còn ~5 phút\n"}
+,{"stream_name":"stdout","time":2714.504325264,"data":"[eval ] step 1400 | f1 0.1629 | 1s\n"}
+,{"stream_name":"stdout","time":2725.799112128,"data":"[eval ] step 1500 | f1 0.1439 | 1s\n"}
+,{"stream_name":"stdout","time":2736.412848256,"data":"[train] step 1600/4000 | loss 0.8780 (mean 0.9009) | lr 2.19e-04 | 8.86 step/s | còn ~5 phút\n"}
+,{"stream_name":"stdout","time":2737.281378369,"data":"[eval ] step 1600 | f1 0.1886 | 1s\n"}
+,{"stream_name":"stdout","time":2748.633956416,"data":"[eval ] step 1700 | f1 0.1777 | 1s\n"}
+,{"stream_name":"stdout","time":2759.142009828,"data":"[train] step 1800/4000 | loss 0.7404 (mean 0.8948) | lr 1.98e-04 | 8.85 step/s | còn ~4 phút\n"}
+,{"stream_name":"stdout","time":2759.992653304,"data":"[eval ] step 1800 | f1 0.1850 | 1s\n"}
+,{"stream_name":"stdout","time":2771.519602655,"data":"[eval ] step 1900 | f1 0.1560 | 1s\n"}
+,{"stream_name":"stdout","time":2782.04458928,"data":"[train] step 2000/4000 | loss 0.8446 (mean 0.8513) | lr 1.76e-04 | 8.84 step/s | còn ~4 phút\n"}
+,{"stream_name":"stdout","time":2782.903876467,"data":"[eval ] step 2000 | f1 0.1921 | 1s\n"}
+,{"stream_name":"stdout","time":2794.289362758,"data":"[eval ] step 2100 | f1 0.1965 | 1s\n"}
+,{"stream_name":"stdout","time":2804.949752686,"data":"[train] step 2200/4000 | loss 1.0710 (mean 0.8441) | lr 1.54e-04 | 8.83 step/s | còn ~3 phút\n"}
+,{"stream_name":"stdout","time":2805.812799358,"data":"[eval ] step 2200 | f1 0.1706 | 1s\n"}
+,{"stream_name":"stdout","time":2817.116934769,"data":"[eval ] step 2300 | f1 0.1795 | 1s\n"}
+,{"stream_name":"stdout","time":2827.574993195,"data":"[train] step 2400/4000 | loss 0.5319 (mean 0.7871) | lr 1.32e-04 | 8.83 step/s | còn ~3 phút\n"}
+,{"stream_name":"stdout","time":2828.416313294,"data":"[eval ] step 2400 | f1 0.1943 | 1s\n"}
+,{"stream_name":"stdout","time":2839.891799295,"data":"[eval ] step 2500 | f1 0.1840 | 1s\n"}
+,{"stream_name":"stdout","time":2850.32633214,"data":"[train] step 2600/4000 | loss 0.7748 (mean 0.7559) | lr 1.11e-04 | 8.83 step/s | còn ~3 phút\n"}
+,{"stream_name":"stdout","time":2851.189185008,"data":"[eval ] step 2600 | f1 0.1602 | 1s\n"}
+,{"stream_name":"stdout","time":2862.494069626,"data":"[eval ] step 2700 | f1 0.1782 | 1s\n"}
+,{"stream_name":"stdout","time":2873.104387844,"data":"[train] step 2800/4000 | loss 0.6724 (mean 0.7272) | lr 9.13e-05 | 8.82 step/s | còn ~2 phút\n"}
+,{"stream_name":"stdout","time":2873.977603682,"data":"[eval ] step 2800 | f1 0.1897 | 1s\n"}
+,{"stream_name":"stdout","time":2885.263489027,"data":"[eval ] step 2900 | f1 0.1951 | 1s\n"}
+,{"stream_name":"stdout","time":2895.714500677,"data":"[train] step 3000/4000 | loss 0.5714 (mean 0.6999) | lr 7.36e-05 | 8.83 step/s | còn ~2 phút\n"}
+,{"stream_name":"stdout","time":2896.576018715,"data":"[eval ] step 3000 | f1 0.1889 | 1s\n"}
+,{"stream_name":"stdout","time":2908.057740325,"data":"[eval ] step 3100 | f1 0.1778 | 1s\n"}
+,{"stream_name":"stdout","time":2918.518775793,"data":"[train] step 3200/4000 | loss 0.6269 (mean 0.6428) | lr 5.85e-05 | 8.82 step/s | còn ~2 phút\n"}
+,{"stream_name":"stdout","time":2919.371241998,"data":"[eval ] step 3200 | f1 0.1722 | 1s\n"}
+,{"stream_name":"stdout","time":2930.653286673,"data":"[eval ] step 3300 | f1 0.1712 | 1s\n"}
+,{"stream_name":"stdout","time":2941.255941951,"data":"[train] step 3400/4000 | loss 0.6391 (mean 0.6509) | lr 4.63e-05 | 8.82 step/s | còn ~1 phút\n"}
+,{"stream_name":"stdout","time":2942.126705174,"data":"[eval ] step 3400 | f1 0.1883 | 1s\n"}
+,{"stream_name":"stdout","time":2953.422872474,"data":"[eval ] step 3500 | f1 0.1943 | 1s\n"}
+,{"stream_name":"stdout","time":2963.873058274,"data":"[train] step 3600/4000 | loss 0.7260 (mean 0.5959) | lr 3.74e-05 | 8.82 step/s | còn ~1 phút\n"}
+,{"stream_name":"stdout","time":2964.725529347,"data":"[eval ] step 3600 | f1 0.1887 | 1s\n"}
+,{"stream_name":"stdout","time":2976.227424127,"data":"[eval ] step 3700 | f1 0.1865 | 1s\n"}
+,{"stream_name":"stdout","time":2986.696096799,"data":"[train] step 3800/4000 | loss 0.6320 (mean 0.5675) | lr 3.19e-05 | 8.82 step/s | còn ~0 phút\n"}
+,{"stream_name":"stdout","time":2987.549576038,"data":"[eval ] step 3800 | f1 0.1892 | 1s\n"}
+,{"stream_name":"stdout","time":2998.856548991,"data":"[eval ] step 3900 | f1 0.1835 | 1s\n"}
+,{"stream_name":"stdout","time":3009.469508748,"data":"[train] step 4000/4000 | loss 0.5473 (mean 0.5596) | lr 3.00e-05 | 8.82 step/s | còn ~0 phút\n"}
+,{"stream_name":"stdout","time":3010.332484937,"data":"[eval ] step 4000 | f1 0.1853 | 1s\n"}
+,{"stream_name":"stdout","time":3028.884412566,"data":"RESULT vit s1339: best step 2100 | tau 0.69 val F1 0.2201 -\u003e TEST F1 0.2656 AP 0.1946 (per half 0.2231) | params 5,427,713 | 7.9 min\n"}
+,{"stream_name":"stdout","time":3028.884450264,"data":"A3 DONE\n"}
+,{"stream_name":"stderr","time":3032.163422565,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":3032.163458203,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":3032.45359285,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":3032.45362649,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":3033.303970349,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":3034.366794782,"data":"[NbConvertApp] Writing 328641 bytes to __results__.html\n"}
+]

@@ -148,3 +148,29 @@ Kết luận cho luận án: trong vùng train (ctx 256) RoPE tốt hơn nhẹ (
 ngoài vùng train RoPE suy giảm chậm hơn nhiều (ppl ≈ ½ learned ở 512 và 1024). Đây là lý do thực nghiệm cho lựa chọn RoPE. Hạn chế:
 mô hình nhỏ, một bộ dữ liệu, 3 seed. Checkpoint (không thay MiniGPT active): `D:/data_training_ai/ai05_a2_pe/output/`, SHA256 (16 ký tự đầu)
 rope s1337/1338/1339 `e6c1657da071487f` / `e1ab1a30e436aeeb` / `a588a65e54824d5b`; learned `6efd97a01446071a` / `aef32b464f987312` / `9cc5ce7726c035ef`.
+
+## 9. Ablation A3 — Highlight Fusion: token ảnh Siamese vs ViT (backbone đóng băng) ★ (`ablation_A3_compare.py` → `ablation_A3_compare.json`)
+Đăng ký trước (TASKS "Ablation A3", user duyệt 2026-11-13, đính chính chiều hai nhánh trước khi trích/chạy). Kernel
+`traininghighlight/ai-core-fusion-ablation-a3` v1 (Tesla T4, code `bb09ae0`), log `ablation_A3_kaggle.log`, số gốc `ablation_A3_eval.json`.
+Biến thể DUY NHẤT: vector ảnh mỗi giây — Siamese backbone đóng băng (đối chứng, `vision` trong `highlight_features_140.pt`) vs ViT phân loại
+backbone đóng băng (checkpoint active `192d90e4`, 256-d, trích trên máy bằng `a3_extract.py` từ cùng JPG 1 fps; log `ablation_A3_extract.log`).
+Kiểm căn chỉnh trước khi trích: Siamese backbone trên chính các JPG đó tái tạo `vision` đối chứng, cosine TB = 1.0000 trên 7 hiệp (ngưỡng 0.99).
+Audio, nhãn, split (218 / 28 / 27 hiệp), 751.171 giây giữ nguyên; cosine ViT vs Siamese theo hiệp 0.018 (hai không gian khác nhau, như dự kiến).
+Công thức T1.5e: d256, 8 head, dropout 0.3, 4000 bước, lr 3e-4, wd 0.1, warmup 5%, bf16, batch 32, cửa sổ 120 s bước 60, best.pt theo val F1.
+Sanity: gradient check, AdamW parity, test fusion PASS; overfit 1 batch thật (4 × 120 s, 300 bước) loss 0.0000 cả hai nhánh → PASS.
+Chấm: điểm/giây trên trọn hiệp (`model_scores`, không chồng, không làm mượt), τ sweep trên VAL từng seed, TEST chấm đúng một lần ở τ đó.
+| Token ảnh | val F1/giây @τ | TEST F1/giây | TEST AP gộp | TEST AP TB/hiệp | τ (3 seed) | Tham số |
+|---|---|---|---|---|---|---|
+| Siamese (dự án) | 0.2201 ± 0.0003 | 0.2248 ± 0.0030 | 0.1708 ± 0.0024 | 0.2003 ± 0.0043 | 0.55 / 0.55 / 0.70 | 5.427.713 |
+| ViT phân loại | 0.2192 ± 0.0009 | 0.2514 ± 0.0144 | 0.1907 ± 0.0058 | 0.2133 ± 0.0121 | 0.72 / 0.66 / 0.69 | 5.427.713 |
+Hiệu ViT − Siamese (Welch, 3 vs 3; khớp scipy): val F1 −0.0009 (t = −1.75, df 2.3, p = 0.20); test F1 **+0.027** (t = 3.13, df 2.2, p = 0.080);
+AP gộp **+0.020** (t = 5.53, df 2.6, p = 0.016); AP TB/hiệp +0.013 (t = 1.75, df 2.5, p = 0.20). 4 số đo → Bonferroni α = 0.0125: không hiệu nào đạt.
+Kết luận cho luận án: trên val (tập dùng để chọn) hai nguồn token ảnh **tương đương** (≈ 0.22); trên test ViT nhỉnh hơn (+0.027 F1, +0.020 AP)
+nhưng phương sai giữa seed lớn hơn (std F1 0.014 vs 0.003) và không có ý nghĩa sau hiệu chỉnh đa so sánh → **chưa đủ bằng chứng** để nói backbone
+ViT tốt hơn Siamese làm token ảnh. Fusion active giữ Siamese (không đổi). Hạn chế: 3 seed, một bộ dữ liệu (27 hiệp test / 14 trận); biến thể
+"unfreeze 2 block cuối" không chạy (đã ghi khi đăng ký). Số tuyệt đối thấp hơn §7 vì §7 là ensemble r8_rep10 (3 seed), còn A3 là model đơn
+công thức T1.5e — chỉ so sánh trong A3. Kiểm tái lập: tải 6 best.pt về máy, load strict, chấm lại test ở τ đã ghi → 6/6 khớp kernel
+(`ablation_A3_parity.py` → `ablation_A3_parity.txt`). Ghi chú minh bạch: smoke CPU 30 bước trước khi push kernel có chạy hết luồng, gồm chấm
+test của model 30 bước, chỉ để kiểm code chạy; không dùng để chọn hay đổi gì. Checkpoint (không thay Fusion active):
+`D:/data_training_ai/ai05_a3_fusion/output/`, SHA256 (16 ký tự đầu) best.pt siamese s1337/1338/1339 `da835b823ddb2386` / `339247ff08a3cc78` /
+`9a6839c93f49da4c`; vit `add7ded0e675324e` / `192704e9d4edea86` / `07b9101665647450`.

@@ -40,7 +40,7 @@ Backlog ứng dụng 32 ID INT: `coordination/claude/OPEN_TASKS.md` (tick + evid
 | AI-02 | T1.4 | ASR domain: 02a đề xuất 53 clip · 02b người duyệt · 02c intake/train | DONE (02a 2026-10-27 · 02b user duyệt 51/60 2026-10-28 · 02c guard loại, không promote) · D23 dừng cho MVP | — |
 | AI-03 | T1.6 | Mini-GPT: 03a Claude soạn summary 40 clip · 03b người duyệt · 03c train/eval | DONE (03a 2026-10-26 · 03b Claude duyệt theo D22 2026-10-27 · 03c không promote, người chấm 1.6/5) · D23 dừng cho MVP | — |
 | AI-04 | T1.8 / T4.3 | Đo VRAM sơ bộ Kaggle T4 (PRELIMINARY) | DONE — PRELIMINARY_T4 (2026-10-26; nghiệm thu 3060 vẫn mở) | AI-06 (DONE) |
-| AI-05 | T5.3 | Số liệu evaluation cho luận án | IN_PROGRESS (2026-11-12) — user chọn đo cả 4 nhóm §7 (highlight mAP/ρ/IoU, ASR RTF + Two-Tower, Siamese R@1/5/mAP, ablation GPU) + cập nhật bảng theo ASR `7c497d43`/MiniGPT `8a62e953` + AI-24…31 | AI-02, AI-03, AI-04 |
+| AI-05 | T5.3 | Số liệu evaluation cho luận án | REVIEW (2026-11-16; đợt 2 xong, §1–9 SO_LIEU_LUAN_AN_v2) — user chọn đo cả 4 nhóm §7 (highlight mAP/ρ/IoU, ASR RTF + Two-Tower, Siamese R@1/5/mAP, ablation GPU) + cập nhật bảng theo ASR `7c497d43`/MiniGPT `8a62e953` + AI-24…31 | AI-02, AI-03, AI-04 |
 | AI-08 | — | Dọn dẹp dữ liệu/artefact làn AI an toàn (lặp lại sau mỗi đợt train) | TODO lặp lại (đợt #1 2026-10-26, đợt #2 2026-10-30 DONE) | không job/server nào đang dùng; user duyệt danh sách |
 
 Thứ tự đề xuất (tối đa 1 IN_PROGRESS, cập nhật D14–D17): AI-10 → AI-07 → release (user duyệt) → AI-01 công bố API_READY; song song khi chờ: AI-09 (phần không cần mapping: schema/version/test), AI-03a, AI-02a, AI-04.
@@ -630,6 +630,9 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   Số đo (checkpoint cuối, không chọn theo val): perplexity val ở ctx 256 (chính), 512, 1024 (ngoại suy; PE học dùng vị trí > 255 chưa train —
   báo nguyên trạng); mean ± std, Welch t (3 vs 3, công suất thấp), số tham số. Sanity bắt buộc (gradient check, overfit 1 batch thật cho
   CẢ HAI biến thể); FAIL → dừng, ghi kết quả. Chỉ để luận án; không đổi MiniGPT active. Kernel riêng `ai-core-minigpt-ablation-pe`.
+  **Kết quả 2026-11-16:** sanity PASS cả hai, N = 12.500 bước. ppl val ctx256 RoPE 40.30 ± 0.11 vs learned 40.90 ± 0.03 (t 9.13, p 0.008);
+  ctx512 61.3 vs 120.1, ctx1024 118.8 vs 243.8 (RoPE ≈ ½). `SO_LIEU_LUAN_AN_v2.md` §8 + `ablation_A2_compare.{py,json}`; output
+  `D:/data_training_ai/ai05_a2_pe/output/`. MiniGPT active không đổi.
 - **Ablation A3 (user duyệt 2026-11-13; đăng ký TRƯỚC khi trích feature/chạy; ĐÍNH CHÍNH cùng ngày trước khi trích/chạy bất cứ gì):**
   bản đầu ghi đảo hai nhánh. Thực tế (model_spec §2, `inference-service/app/worker.py` vision(), kernel-embed-b1/b2): Fusion active dùng
   embedding BACKBONE **Siamese** đóng băng 256-d (`highlight_features_140.pt`). Đúng là: Highlight Fusion — nguồn token ảnh: Siamese backbone
@@ -641,6 +644,12 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   trong CÙNG kernel, cùng công thức T1.5e (fusion, d256, dropout 0.3, 4000 bước), seed 1337/1338/1339. Số đo: val F1/giây với τ sweep riêng
   từng seed (chọn τ trên val), sau đó test F1 + AP chấm ĐÚNG MỘT LẦN bằng τ đã chọn; mean ± std, Welch t, số tham số. Biến thể "unfreeze
   2 block cuối" KHÔNG chạy (train end-to-end ~740k ảnh/epoch vượt máy + quota) → ghi hạn chế. Không đổi Fusion active.
+  **Kết quả 2026-11-16:** căn chỉnh cosine 1.0000 (7 hiệp); sanity PASS cả hai nhánh. val F1 Siamese 0.2201 ± 0.0003 vs ViT 0.2192 ± 0.0009
+  (p 0.20); TEST F1 0.2248 vs 0.2514 (+0.027, p 0.080); AP gộp 0.1708 vs 0.1907 (p 0.016); AP/hiệp p 0.20 → không hiệu nào qua Bonferroni
+  (α 0.0125): chưa đủ bằng chứng ViT tốt hơn; Fusion active giữ Siamese. Parity tải về 6/6 khớp. `SO_LIEU_LUAN_AN_v2.md` §9 +
+  `ablation_A3_{compare,parity}.*`; output `D:/data_training_ai/ai05_a3_fusion/output/`.
+- **Đợt 2 xong 2026-11-16 (REVIEW):** đủ 5 nhóm — (1) §1–2, (2) §7, (3) §3–4, (4) §5, (5) A1/A1b/A2/A3 §6/6b/8/9.
+  Commits đợt 2 A2/A3: 0c53596, bb09ae0, 335748b, (commit này).
 
 ### AI-08 — Dọn dẹp dữ liệu/artefact làn AI an toàn (yêu cầu user 2026-10-26)
 - T gốc: — | Owner: claude | Status: TODO (task lặp lại: chạy sau mỗi đợt train xong, hoặc khi một ổ chạm `BLOCKED_RESOURCE`)

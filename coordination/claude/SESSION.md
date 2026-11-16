@@ -3,6 +3,11 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
+- **2026-11-16 ~11:50 (AI-05 → REVIEW):** kernel A3 COMPLETE (sanity 5/5 PASS, 6 run ~7.8 phút/run). Output tải về
+  `D:/data_training_ai/ai05_a3_fusion/output/` (tải gộp bị MemoryError → tải từng ckpt bằng `--file-pattern`). Parity: 6 best.pt load strict,
+  test F1 khớp kernel 6/6. val F1 Siamese 0.2201 vs ViT 0.2192; test F1 0.2248 vs 0.2514 (p 0.08), AP 0.171 vs 0.191 (p 0.016) → không qua
+  Bonferroni, Fusion active giữ Siamese. `SO_LIEU_LUAN_AN_v2.md` §9. AI-05 đợt 2 đủ 5 nhóm → REVIEW. Không task AI nào IN_PROGRESS.
+  Commit A2/A3 chưa push (chờ user).
 - **2026-11-16 (AI-05):** A2 xong — output Kaggle `ai-core-minigpt-ablation-pe` tải về `D:/data_training_ai/ai05_a2_pe/output/`, ghi
   `SO_LIEU_LUAN_AN_v2.md` §8 (RoPE ppl256 40.30 vs learned 40.90; ctx 512/1024 RoPE ≈ ½). A3: trích feature bị ngắt ở 190/195 (máy khởi động
   lại 13/11), chạy lại task `A3_extract_b2` 2026-11-16 ~9:00 (resume theo hiệp; còn 46/273 hiệp, ~1 phút/hiệp). Xong → `D:\tmp\ai25\a3_extract.done`

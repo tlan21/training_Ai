@@ -1,0 +1,7 @@
+siamese_s1337: strict load OK | test F1 local 0.222083 kernel 0.222083 MATCH
+siamese_s1338: strict load OK | test F1 local 0.224416 kernel 0.224416 MATCH
+siamese_s1339: strict load OK | test F1 local 0.227969 kernel 0.227969 MATCH
+vit_s1337: strict load OK | test F1 local 0.251593 kernel 0.251593 MATCH
+vit_s1338: strict load OK | test F1 local 0.236862 kernel 0.236862 MATCH
+vit_s1339: strict load OK | test F1 local 0.265615 kernel 0.265615 MATCH
+PARITY PASS

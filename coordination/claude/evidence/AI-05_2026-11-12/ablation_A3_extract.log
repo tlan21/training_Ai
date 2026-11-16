@@ -1,0 +1,117 @@
+device cpu | halves in g100..g139: 78 | seconds 213233
+E:\traning_ai\ai-core\ai_core\scripts\extract_vit_embeddings.py:19: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\torch\csrc\utils\tensor_numpy.cpp:219.)
+  return torch.from_numpy(np.asarray(image)).float().div(255).permute(2, 0, 1)
+ALIGNMENT siamese vs control ['g100h1', 'g121h2', 'g138h2']: mean cosine [1.0, 1.0, 1.0]
+[3/78] g101h1 train 2700
+[4/78] g101h2 train 2700
+[5/78] g102h1 train 2700
+[6/78] g102h2 train 2700
+[7/78] g103h1 train 2700
+[8/78] g103h2 train 2797
+[9/78] g104h1 train 2700
+[10/78] g104h2 train 2911
+[11/78] g105h1 train 2700
+[12/78] g105h2 train 2700
+[13/78] g106h1 train 2698
+[14/78] g106h2 train 2801
+[15/78] g107h1 train 2700
+[16/78] g107h2 train 2747
+[17/78] g109h1 train 2700
+[18/78] g109h2 train 2700
+[19/78] g110h1 train 2833
+[20/78] g110h2 train 2699
+[21/78] g111h1 train 2700
+[22/78] g111h2 train 2793
+[23/78] g112h1 train 2700
+[24/78] g112h2 train 2911
+[25/78] g113h1 train 2700
+[26/78] g113h2 train 2700
+[27/78] g114h1 train 2700
+[28/78] g114h2 train 2699
+[29/78] g116h1 train 2700
+[30/78] g116h2 train 2700
+[31/78] g117h1 train 2700
+[32/78] g117h2 train 2700
+[33/78] g118h1 train 2700
+[34/78] g118h2 train 2790
+[35/78] g119h1 train 2700
+[36/78] g119h2 train 2700
+[37/78] g120h1 train 2714
+Traceback (most recent call last):
+  File "E:\traning_ai\coordination\claude\evidence\AI-05_2026-11-12\a3_extract.py", line 97, in <module>
+    main()
+  File "E:\traning_ai\coordination\claude\evidence\AI-05_2026-11-12\a3_extract.py", line 88, in main
+    emb = embed(vit, size, frame_dir(root, name), name, list(range(T)), device)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\traning_ai\ai-core\.venv\Lib\site-packages\torch\utils\_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "E:\traning_ai\coordination\claude\evidence\AI-05_2026-11-12\a3_extract.py", line 55, in embed
+    batch = torch.stack([_load_image(os.path.join(folder, f'{name}_s{s:05d}.jpg'), size) for s in secs[i:i + BATCH]]).to(device)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\traning_ai\coordination\claude\evidence\AI-05_2026-11-12\a3_extract.py", line 55, in <listcomp>
+    batch = torch.stack([_load_image(os.path.join(folder, f'{name}_s{s:05d}.jpg'), size) for s in secs[i:i + BATCH]]).to(device)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\traning_ai\ai-core\ai_core\scripts\extract_vit_embeddings.py", line 18, in _load_image
+    image = Image.open(path).convert("RGB").resize((size, size))
+            ^^^^^^^^^^^^^^^^
+  File "E:\traning_ai\ai-core\.venv\Lib\site-packages\PIL\Image.py", line 3654, in open
+    fp = builtins.open(filename, "rb")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'D:\\data_training_ai\\data\\processed\\frames_jpg_100\\g120h2\\g120h2_s03149.jpg'
+device cpu | halves in g0..g99: 195 | seconds 537938
+E:\traning_ai\ai-core\ai_core\scripts\extract_vit_embeddings.py:19: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\torch\csrc\utils\tensor_numpy.cpp:219.)
+  return torch.from_numpy(np.asarray(image)).float().div(255).permute(2, 0, 1)
+ALIGNMENT siamese vs control ['g00h1', 'g63h2', 'g98h2', 'g17h1']: mean cosine [1.0, 1.0, 1.0, 1.0]
+[191/195] g75h2 test 2700
+[192/195] g96h1 test 2700
+[193/195] g96h2 test 2744
+[194/195] g98h1 test 2737
+[195/195] g98h2 test 2700
+A3 EXTRACT DONE
+device cpu | halves in g100..g139: 78 | seconds 213233
+E:\traning_ai\ai-core\ai_core\scripts\extract_vit_embeddings.py:19: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\torch\csrc\utils\tensor_numpy.cpp:219.)
+  return torch.from_numpy(np.asarray(image)).float().div(255).permute(2, 0, 1)
+ALIGNMENT siamese vs control ['g100h1', 'g121h2', 'g138h2', 'g120h2']: mean cosine [1.0, 1.0, 1.0, 1.0]
+[38/78] g120h2 train 3152
+[39/78] g121h1 train 2700
+[40/78] g121h2 train 2753
+[41/78] g122h1 train 2700
+[42/78] g122h2 train 2730
+[43/78] g123h1 train 2700
+[44/78] g123h2 train 2881
+[45/78] g124h1 train 2817
+[46/78] g124h2 train 2700
+[47/78] g125h1 train 2718
+[48/78] g125h2 train 2700
+[49/78] g127h1 train 2700
+[50/78] g127h2 train 2700
+[51/78] g128h1 train 2700
+[52/78] g128h2 train 2700
+[53/78] g131h1 train 2819
+[54/78] g131h2 train 2869
+[55/78] g132h1 train 2905
+[56/78] g132h2 train 2849
+[57/78] g133h1 train 2700
+[58/78] g133h2 train 2700
+[59/78] g134h1 train 2700
+[60/78] g134h2 train 2700
+[61/78] g135h1 train 2700
+[62/78] g135h2 train 2700
+[63/78] g136h1 train 2700
+[64/78] g136h2 train 2700
+[65/78] g139h1 train 2700
+[66/78] g139h2 train 2700
+[67/78] g126h1 val 2700
+[68/78] g126h2 val 2700
+[69/78] g130h1 val 2700
+[70/78] g130h2 val 2720
+[71/78] g137h1 val 2700
+[72/78] g137h2 val 2700
+[73/78] g115h1 test 2700
+[74/78] g115h2 test 2700
+[75/78] g129h1 test 2827
+[76/78] g129h2 test 2700
+[77/78] g138h1 test 2700
+[78/78] g138h2 test 2700
+A3 EXTRACT DONE

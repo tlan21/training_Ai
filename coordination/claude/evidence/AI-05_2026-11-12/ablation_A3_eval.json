@@ -1,0 +1,99 @@
+{
+ "recipe": {
+  "d_model": 256,
+  "dropout": 0.3,
+  "steps": 4000,
+  "window": 120,
+  "lr": 0.0003,
+  "wd": 0.1,
+  "warmup_ratio": 0.05,
+  "batch": 32
+ },
+ "sanity": [
+  "SANITY gradient check < 1e-4: PASS | 3 passed in 1.81s",
+  "SANITY AdamW parity < 1e-6: PASS | 1 passed in 7.17s",
+  "SANITY highlight fusion shape + overfit: PASS | 1 passed in 8.79s",
+  "SANITY overfit 1 batch that (siamese, 4 x 120 s, 300 buoc): PASS | loss 0.0000",
+  "SANITY overfit 1 batch that (vit, 4 x 120 s, 300 buoc): PASS | loss 0.0000"
+ ],
+ "runs": {
+  "siamese_s1337": {
+   "branch": "siamese",
+   "seed": 1337,
+   "params": 5427713,
+   "best_step": 2100,
+   "val_f1_at_0.5": 0.21742358618982796,
+   "tau": 0.55,
+   "val_f1": 0.21998621640248106,
+   "test_f1": 0.22208254766394303,
+   "test_ap_pooled": 0.1722618192434311,
+   "test_ap_mean_per_half": 0.20287458653803225,
+   "minutes": 7.7
+  },
+  "siamese_s1338": {
+   "branch": "siamese",
+   "seed": 1338,
+   "params": 5427713,
+   "best_step": 900,
+   "val_f1_at_0.5": 0.21372571298716056,
+   "tau": 0.55,
+   "val_f1": 0.2203622392974753,
+   "test_f1": 0.22441630851434546,
+   "test_ap_pooled": 0.17208339273929596,
+   "test_ap_mean_per_half": 0.195387309210168,
+   "minutes": 7.8
+  },
+  "siamese_s1339": {
+   "branch": "siamese",
+   "seed": 1339,
+   "params": 5427713,
+   "best_step": 1600,
+   "val_f1_at_0.5": 0.18969978378761565,
+   "tau": 0.7,
+   "val_f1": 0.2198665096191598,
+   "test_f1": 0.22796934865900384,
+   "test_ap_pooled": 0.16809777915477753,
+   "test_ap_mean_per_half": 0.20274257328775194,
+   "minutes": 7.9
+  },
+  "vit_s1337": {
+   "branch": "vit",
+   "seed": 1337,
+   "params": 5427713,
+   "best_step": 2800,
+   "val_f1_at_0.5": 0.20753102267864784,
+   "tau": 0.72,
+   "val_f1": 0.21849225871798583,
+   "test_f1": 0.2515931684934999,
+   "test_ap_pooled": 0.1934329867362976,
+   "test_ap_mean_per_half": 0.21712702843878004,
+   "minutes": 7.8
+  },
+  "vit_s1338": {
+   "branch": "vit",
+   "seed": 1338,
+   "params": 5427713,
+   "best_step": 3500,
+   "val_f1_at_0.5": 0.21452059084503367,
+   "tau": 0.66,
+   "val_f1": 0.21882385652717923,
+   "test_f1": 0.2368615840118431,
+   "test_ap_pooled": 0.1840706467628479,
+   "test_ap_mean_per_half": 0.19976348871434177,
+   "minutes": 7.8
+  },
+  "vit_s1339": {
+   "branch": "vit",
+   "seed": 1339,
+   "params": 5427713,
+   "best_step": 2100,
+   "val_f1_at_0.5": 0.1965037351636267,
+   "tau": 0.69,
+   "val_f1": 0.22013926084627747,
+   "test_f1": 0.2656147271531887,
+   "test_ap_pooled": 0.19458846747875214,
+   "test_ap_mean_per_half": 0.2230676528480318,
+   "minutes": 7.9
+  }
+ }
+}
