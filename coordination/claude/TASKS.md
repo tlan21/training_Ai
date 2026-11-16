@@ -697,6 +697,10 @@ Nhãn kiểm duyệt dữ liệu (AI-02/AI-03): `MACHINE_DRAFT` (máy sinh: Whis
   Manifest + kết quả: `coordination/claude/cleanup/CLEANUP_2026-10-26.md`. Task vẫn TODO cho các đợt sau.
 - Đợt #2 (2026-10-30, user duyệt 4 nhóm): **DONE** — xóa 4 parquet gốc công khai có checksum (tin tức + FLEURS train/val) + 4 thư mục scratch
   `D:/tmp`; D: 0.84 → 7.1 GB; ai-core 319, inference 81/10, 6 checkpoint SHA khớp, manifest path 0 thiếu. `coordination/claude/cleanup/CLEANUP_2026-10-30.md`.
+- Đợt #3 (2026-11-16, sau AI-05 A2/A3, user duyệt nhóm A+B+C; V.League giữ nguyên): **DONE** — xóa a3smoke (bản sao trùng byte + ckpt smoke),
+  11 bản trùng SHA trong thư mục upload Kaggle cũ, 4 build context deploy cũ = 2,543,409,173 byte (= manifest; D: tăng ít hơn vì app khác ghi
+  vào D: cùng lúc). SHA 6 checkpoint khớp, validate 6/6, ai-core 331, inference 65/6, 285 bản giữ đúng SHA, 0 path manifest mất do đợt này.
+  `coordination/claude/cleanup/CLEANUP_2026-11-16.{md,json}` + `execute_2026-11-16.{py,log}`. Commits `e3b8249` (manifest trước) + `2297148`.
 - Evidence: VERIFIED-NOW 2026-10-26 (đợt #1, xem manifest) | Commits: `a5f340f` (manifest trước khi xóa) + commit kết quả | Checkpoint: SESSION.md
 
 ### AI-06 — Xác minh nguồn checkpoint + thang sẵn sàng 6 model (ƯU TIÊN 1)
