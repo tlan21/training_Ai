@@ -129,3 +129,22 @@ rất thấp: **không kết luận được khác biệt độ chính xác**. �
 phân kỳ; train loss cuối Post-LN ≈ 0.024 (học thuộc train, khoảng cách tổng quát hóa như nhau — giới hạn chung là 123 video).
 Kết luận cho luận án: với warmup, Post-LN đạt độ chính xác tương đương; khác biệt thực nghiệm đo được là **ổn định tối ưu hóa** — không
 warmup thì Post-LN không học được (A1, loss 1.26) còn Pre-Norm học ngay (0.0001). Pre-Norm bỏ được ràng buộc warmup → chọn Pre-Norm.
+
+## 8. Ablation A2 — MiniGPT RoPE vs positional embedding học ★ (`ablation_A2_compare.py` → `ablation_A2_compare.json`)
+Đăng ký trước (TASKS "Ablation A2", user duyệt 2026-11-13). Kernel `traininghighlight/ai-core-minigpt-ablation-pe` (Tesla T4, code `53cea25`),
+log `ablation_A2_pe_kaggle.log`, số gốc `ablation_A2_pe_eval.json`. Biến thể DUY NHẤT `pos_encoding = rope | learned` (bảng vị trí 1024 × 256
+cộng vào token embedding). MiniGPT d256, 4 lớp, 4 head, vocab 8192, dữ liệu `viwiki-tokens-8192`, train ctx 256, 65.536 token/bước,
+**N = 12.500 bước** chọn từ bench tốc độ đầu kernel (in ra trước khi train, cùng N cho 6 run). Đo val 262.144 token, checkpoint cuối (không chọn theo val).
+Sanity: gradient check, AdamW parity, test pos_encoding (KV-cache khớp chính xác) PASS; overfit 1 batch thật 300 bước: RoPE loss 0.0002,
+learned 0.0001 → PASS cả hai. (Test load strict MiniGPT active skip trên Kaggle vì không có checkpoint; chạy lại trên máy 2026-11-16: 4/4 PASS.)
+| Mã hóa vị trí | ppl ctx 256 (chính) | ppl ctx 512 | ppl ctx 1024 | Tham số | train loss cuối (3 seed) |
+|---|---|---|---|---|---|
+| RoPE (dự án) | **40.30 ± 0.11** | **61.3 ± 3.5** | **118.8 ± 7.7** | 5.310.720 | 3.289 / 3.273 / 3.309 |
+| Học (learned PE) | 40.90 ± 0.03 | 120.1 ± 5.4 | 243.8 ± 3.8 | 5.572.864 | 3.301 / 3.297 / 3.327 |
+Hiệu learned − RoPE: ctx 256 **+0.60** (Welch t = 9.13, df 2.3, p = 0.008); ctx 512 +58.8 (t = 15.8, p = 0.0003); ctx 1024 +125.1 (t = 25.2,
+p = 0.0002). 3 vs 3 seed → p chỉ tham khảo. Ở ctx 512/1024, learned PE dùng các vị trí > 255 chưa từng được train (đã nêu khi đăng ký) nên
+phần ngoại suy là so sánh khả năng tổng quát hóa độ dài, không phải chất lượng mô hình trong vùng train.
+Kết luận cho luận án: trong vùng train (ctx 256) RoPE tốt hơn nhẹ (~1,5% perplexity) với ít hơn 262.144 tham số (không có bảng vị trí);
+ngoài vùng train RoPE suy giảm chậm hơn nhiều (ppl ≈ ½ learned ở 512 và 1024). Đây là lý do thực nghiệm cho lựa chọn RoPE. Hạn chế:
+mô hình nhỏ, một bộ dữ liệu, 3 seed. Checkpoint (không thay MiniGPT active): `D:/data_training_ai/ai05_a2_pe/output/`, SHA256 (16 ký tự đầu)
+rope s1337/1338/1339 `e6c1657da071487f` / `e1ab1a30e436aeeb` / `a588a65e54824d5b`; learned `6efd97a01446071a` / `aef32b464f987312` / `9cc5ce7726c035ef`.

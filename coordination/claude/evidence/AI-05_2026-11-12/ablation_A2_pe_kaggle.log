@@ -1,0 +1,172 @@
+[{"stream_name":"stdout","time":35.361716081,"data":"torch 2.11.0+cu130 | Tesla T4\n"}
+,{"stream_name":"stdout","time":44.201125526,"data":"DATA OK: train 960,756 windows x 256 | val eval tokens 262,144\n"}
+,{"stream_name":"stdout","time":94.360114082,"data":"SANITY gradient check \u003c 1e-4: PASS | 3 passed in 2.60s\n"}
+,{"stream_name":"stdout","time":94.360171849,"data":"SANITY AdamW parity \u003c 1e-6: PASS | 1 passed in 9.98s\n"}
+,{"stream_name":"stdout","time":94.360179136,"data":"SANITY pos_encoding (overfit, KV-cache, strict load): PASS | 3 passed, 1 skipped in 4.86s\n"}
+,{"stream_name":"stdout","time":94.36018537,"data":"SANITY overfit 1 batch that (rope, 4 x 256 token, 300 buoc): PASS | loss 0.0002\n"}
+,{"stream_name":"stdout","time":94.360191413,"data":"SANITY overfit 1 batch that (learned, 4 x 256 token, 300 buoc): PASS | loss 0.0001\n"}
+,{"stream_name":"stdout","time":113.519573142,"data":"BENCH s/step {'rope': 0.41601569652557374, 'learned': 0.37513476610183716} -\u003e N = 12500 steps per run (fixed for all 6 runs, chosen before any training)\n"}
+,{"stream_name":"stdout","time":330.210527974,"data":"rope s1337 step 500/12500 loss 4.6747 216s\n"}
+,{"stream_name":"stdout","time":547.248731901,"data":"rope s1337 step 1000/12500 loss 4.0801 434s\n"}
+,{"stream_name":"stdout","time":764.498815157,"data":"rope s1337 step 1500/12500 loss 3.8772 651s\n"}
+,{"stream_name":"stdout","time":981.71761778,"data":"rope s1337 step 2000/12500 loss 3.8398 868s\n"}
+,{"stream_name":"stdout","time":1198.907045846,"data":"rope s1337 step 2500/12500 loss 3.7332 1085s\n"}
+,{"stream_name":"stdout","time":1415.845177838,"data":"rope s1337 step 3000/12500 loss 3.6874 1302s\n"}
+,{"stream_name":"stdout","time":1633.196579497,"data":"rope s1337 step 3500/12500 loss 3.6607 1519s\n"}
+,{"stream_name":"stdout","time":1850.591585049,"data":"rope s1337 step 4000/12500 loss 3.6424 1737s\n"}
+,{"stream_name":"stdout","time":2067.782633345,"data":"rope s1337 step 4500/12500 loss 3.5790 1954s\n"}
+,{"stream_name":"stdout","time":2285.183282482,"data":"rope s1337 step 5000/12500 loss 3.5652 2171s\n"}
+,{"stream_name":"stdout","time":2502.599382148,"data":"rope s1337 step 5500/12500 loss 3.4708 2389s\n"}
+,{"stream_name":"stdout","time":2719.98298769,"data":"rope s1337 step 6000/12500 loss 3.4813 2606s\n"}
+,{"stream_name":"stdout","time":2937.161641632,"data":"rope s1337 step 6500/12500 loss 3.4443 2823s\n"}
+,{"stream_name":"stdout","time":3154.563982332,"data":"rope s1337 step 7000/12500 loss 3.4293 3041s\n"}
+,{"stream_name":"stdout","time":3371.881939416,"data":"rope s1337 step 7500/12500 loss 3.3648 3258s\n"}
+,{"stream_name":"stdout","time":3589.417690496,"data":"rope s1337 step 8000/12500 loss 3.4101 3476s\n"}
+,{"stream_name":"stdout","time":3806.891668765,"data":"rope s1337 step 8500/12500 loss 3.3838 3693s\n"}
+,{"stream_name":"stdout","time":4024.379219382,"data":"rope s1337 step 9000/12500 loss 3.3971 3911s\n"}
+,{"stream_name":"stdout","time":4241.822164147,"data":"rope s1337 step 9500/12500 loss 3.4233 4128s\n"}
+,{"stream_name":"stdout","time":4459.497281398,"data":"rope s1337 step 10000/12500 loss 3.3889 4346s\n"}
+,{"stream_name":"stdout","time":4677.112014907,"data":"rope s1337 step 10500/12500 loss 3.4043 4563s\n"}
+,{"stream_name":"stdout","time":4894.7121333,"data":"rope s1337 step 11000/12500 loss 3.3578 4781s\n"}
+,{"stream_name":"stdout","time":5112.673601415,"data":"rope s1337 step 11500/12500 loss 3.3426 4999s\n"}
+,{"stream_name":"stdout","time":5330.347729533,"data":"rope s1337 step 12000/12500 loss 3.3702 5217s\n"}
+,{"stream_name":"stdout","time":5548.299804233,"data":"rope s1337 step 12500/12500 loss 3.2886 5435s\n"}
+,{"stream_name":"stdout","time":5552.612318611,"data":"RESULT rope s1337: ppl {'256': 40.42448411515038, '512': 64.40570110770766, '1024': 126.16268587834999} params 5,310,720\n"}
+,{"stream_name":"stdout","time":5748.3688375,"data":"learned s1337 step 500/12500 loss 4.8084 196s\n"}
+,{"stream_name":"stdout","time":5944.072003827,"data":"learned s1337 step 1000/12500 loss 4.1089 391s\n"}
+,{"stream_name":"stdout","time":6139.384813018,"data":"learned s1337 step 1500/12500 loss 3.8818 587s\n"}
+,{"stream_name":"stdout","time":6334.502634451,"data":"learned s1337 step 2000/12500 loss 3.8349 782s\n"}
+,{"stream_name":"stdout","time":6530.003120718,"data":"learned s1337 step 2500/12500 loss 3.7192 977s\n"}
+,{"stream_name":"stdout","time":6725.54597058,"data":"learned s1337 step 3000/12500 loss 3.6737 1173s\n"}
+,{"stream_name":"stdout","time":6920.940301829,"data":"learned s1337 step 3500/12500 loss 3.6626 1368s\n"}
+,{"stream_name":"stdout","time":7116.674329751,"data":"learned s1337 step 4000/12500 loss 3.6470 1564s\n"}
+,{"stream_name":"stdout","time":7312.25015975,"data":"learned s1337 step 4500/12500 loss 3.5846 1759s\n"}
+,{"stream_name":"stdout","time":7507.587855905,"data":"learned s1337 step 5000/12500 loss 3.5849 1955s\n"}
+,{"stream_name":"stdout","time":7702.927346045,"data":"learned s1337 step 5500/12500 loss 3.4815 2150s\n"}
+,{"stream_name":"stdout","time":7898.42817912,"data":"learned s1337 step 6000/12500 loss 3.4964 2346s\n"}
+,{"stream_name":"stdout","time":8094.012052465,"data":"learned s1337 step 6500/12500 loss 3.4584 2541s\n"}
+,{"stream_name":"stdout","time":8289.699969127,"data":"learned s1337 step 7000/12500 loss 3.4443 2737s\n"}
+,{"stream_name":"stdout","time":8485.283210802,"data":"learned s1337 step 7500/12500 loss 3.3772 2932s\n"}
+,{"stream_name":"stdout","time":8681.316711508,"data":"learned s1337 step 8000/12500 loss 3.4273 3128s\n"}
+,{"stream_name":"stdout","time":8876.879211697,"data":"learned s1337 step 8500/12500 loss 3.4074 3324s\n"}
+,{"stream_name":"stdout","time":9072.503280259,"data":"learned s1337 step 9000/12500 loss 3.4092 3520s\n"}
+,{"stream_name":"stdout","time":9267.897818537,"data":"learned s1337 step 9500/12500 loss 3.4346 3715s\n"}
+,{"stream_name":"stdout","time":9463.654691111,"data":"learned s1337 step 10000/12500 loss 3.4092 3911s\n"}
+,{"stream_name":"stdout","time":9659.327786293,"data":"learned s1337 step 10500/12500 loss 3.4205 4106s\n"}
+,{"stream_name":"stdout","time":9855.252633015,"data":"learned s1337 step 11000/12500 loss 3.3740 4302s\n"}
+,{"stream_name":"stdout","time":10051.332717256,"data":"learned s1337 step 11500/12500 loss 3.3640 4498s\n"}
+,{"stream_name":"stdout","time":10246.959756076,"data":"learned s1337 step 12000/12500 loss 3.3803 4694s\n"}
+,{"stream_name":"stdout","time":10442.684615716,"data":"learned s1337 step 12500/12500 loss 3.3014 4890s\n"}
+,{"stream_name":"stdout","time":10446.683470435,"data":"RESULT learned s1337: ppl {'256': 40.877182679147694, '512': 113.86870496064898, '1024': 244.84689715492993} params 5,572,864\n"}
+,{"stream_name":"stdout","time":10664.326867808,"data":"rope s1338 step 500/12500 loss 4.6859 217s\n"}
+,{"stream_name":"stdout","time":10881.576113959,"data":"rope s1338 step 1000/12500 loss 4.1937 435s\n"}
+,{"stream_name":"stdout","time":11098.602204367,"data":"rope s1338 step 1500/12500 loss 3.9225 652s\n"}
+,{"stream_name":"stdout","time":11315.93851883,"data":"rope s1338 step 2000/12500 loss 3.8238 869s\n"}
+,{"stream_name":"stdout","time":11533.29682639,"data":"rope s1338 step 2500/12500 loss 3.6986 1086s\n"}
+,{"stream_name":"stdout","time":11750.368232476,"data":"rope s1338 step 3000/12500 loss 3.7252 1303s\n"}
+,{"stream_name":"stdout","time":11967.653238563,"data":"rope s1338 step 3500/12500 loss 3.5754 1521s\n"}
+,{"stream_name":"stdout","time":12184.865320903,"data":"rope s1338 step 4000/12500 loss 3.5739 1738s\n"}
+,{"stream_name":"stdout","time":12402.192258133,"data":"rope s1338 step 4500/12500 loss 3.4672 1955s\n"}
+,{"stream_name":"stdout","time":12619.638912264,"data":"rope s1338 step 5000/12500 loss 3.5197 2173s\n"}
+,{"stream_name":"stdout","time":12836.732179436,"data":"rope s1338 step 5500/12500 loss 3.5050 2390s\n"}
+,{"stream_name":"stdout","time":13054.170899402,"data":"rope s1338 step 6000/12500 loss 3.5440 2607s\n"}
+,{"stream_name":"stdout","time":13271.55456469,"data":"rope s1338 step 6500/12500 loss 3.4213 2825s\n"}
+,{"stream_name":"stdout","time":13488.906336956,"data":"rope s1338 step 7000/12500 loss 3.4245 3042s\n"}
+,{"stream_name":"stdout","time":13706.125407302,"data":"rope s1338 step 7500/12500 loss 3.4550 3259s\n"}
+,{"stream_name":"stdout","time":13923.479184829,"data":"rope s1338 step 8000/12500 loss 3.4331 3477s\n"}
+,{"stream_name":"stdout","time":14140.729946756,"data":"rope s1338 step 8500/12500 loss 3.3819 3694s\n"}
+,{"stream_name":"stdout","time":14358.275610543,"data":"rope s1338 step 9000/12500 loss 3.4696 3911s\n"}
+,{"stream_name":"stdout","time":14575.495633719,"data":"rope s1338 step 9500/12500 loss 3.4070 4129s\n"}
+,{"stream_name":"stdout","time":14792.634109486,"data":"rope s1338 step 10000/12500 loss 3.4239 4346s\n"}
+,{"stream_name":"stdout","time":15010.215551416,"data":"rope s1338 step 10500/12500 loss 3.3552 4563s\n"}
+,{"stream_name":"stdout","time":15227.839156159,"data":"rope s1338 step 11000/12500 loss 3.3942 4781s\n"}
+,{"stream_name":"stdout","time":15445.754210154,"data":"rope s1338 step 11500/12500 loss 3.3279 4999s\n"}
+,{"stream_name":"stdout","time":15663.243396273,"data":"rope s1338 step 12000/12500 loss 3.2806 5216s\n"}
+,{"stream_name":"stdout","time":15881.072932341,"data":"rope s1338 step 12500/12500 loss 3.2731 5434s\n"}
+,{"stream_name":"stdout","time":15885.381158259,"data":"RESULT rope s1338: ppl {'256': 40.21872583463651, '512': 61.99376264813943, '1024': 119.36370047246545} params 5,310,720\n"}
+,{"stream_name":"stdout","time":16081.335266538,"data":"learned s1338 step 500/12500 loss 4.8300 196s\n"}
+,{"stream_name":"stdout","time":16276.898290775,"data":"learned s1338 step 1000/12500 loss 4.2338 391s\n"}
+,{"stream_name":"stdout","time":16472.298370195,"data":"learned s1338 step 1500/12500 loss 3.9371 587s\n"}
+,{"stream_name":"stdout","time":16667.631271302,"data":"learned s1338 step 2000/12500 loss 3.8121 782s\n"}
+,{"stream_name":"stdout","time":16862.888839433,"data":"learned s1338 step 2500/12500 loss 3.7026 977s\n"}
+,{"stream_name":"stdout","time":17058.129896294,"data":"learned s1338 step 3000/12500 loss 3.7293 1173s\n"}
+,{"stream_name":"stdout","time":17253.542950331,"data":"learned s1338 step 3500/12500 loss 3.5884 1368s\n"}
+,{"stream_name":"stdout","time":17449.233008568,"data":"learned s1338 step 4000/12500 loss 3.5844 1564s\n"}
+,{"stream_name":"stdout","time":17644.657433337,"data":"learned s1338 step 4500/12500 loss 3.4763 1759s\n"}
+,{"stream_name":"stdout","time":17839.86242559,"data":"learned s1338 step 5000/12500 loss 3.5346 1954s\n"}
+,{"stream_name":"stdout","time":18034.914961344,"data":"learned s1338 step 5500/12500 loss 3.5263 2149s\n"}
+,{"stream_name":"stdout","time":18230.292309243,"data":"learned s1338 step 6000/12500 loss 3.5662 2345s\n"}
+,{"stream_name":"stdout","time":18425.90751843,"data":"learned s1338 step 6500/12500 loss 3.4325 2540s\n"}
+,{"stream_name":"stdout","time":18621.267384505,"data":"learned s1338 step 7000/12500 loss 3.4354 2736s\n"}
+,{"stream_name":"stdout","time":18816.801359113,"data":"learned s1338 step 7500/12500 loss 3.4644 2931s\n"}
+,{"stream_name":"stdout","time":19012.595061664,"data":"learned s1338 step 8000/12500 loss 3.4528 3127s\n"}
+,{"stream_name":"stdout","time":19208.29941538,"data":"learned s1338 step 8500/12500 loss 3.4043 3323s\n"}
+,{"stream_name":"stdout","time":19403.753341193,"data":"learned s1338 step 9000/12500 loss 3.4921 3518s\n"}
+,{"stream_name":"stdout","time":19599.352412349,"data":"learned s1338 step 9500/12500 loss 3.4282 3714s\n"}
+,{"stream_name":"stdout","time":19794.913272691,"data":"learned s1338 step 10000/12500 loss 3.4377 3909s\n"}
+,{"stream_name":"stdout","time":19990.687605503,"data":"learned s1338 step 10500/12500 loss 3.3668 4105s\n"}
+,{"stream_name":"stdout","time":20186.466681618,"data":"learned s1338 step 11000/12500 loss 3.4205 4301s\n"}
+,{"stream_name":"stdout","time":20382.02200998,"data":"learned s1338 step 11500/12500 loss 3.3482 4496s\n"}
+,{"stream_name":"stdout","time":20577.551003731,"data":"learned s1338 step 12000/12500 loss 3.2928 4692s\n"}
+,{"stream_name":"stdout","time":20773.079081595,"data":"learned s1338 step 12500/12500 loss 3.2969 4887s\n"}
+,{"stream_name":"stdout","time":20777.071643746,"data":"RESULT learned s1338: ppl {'256': 40.932246493081664, '512': 122.3252208146626, '1024': 246.95508765256668} params 5,572,864\n"}
+,{"stream_name":"stdout","time":20994.675607259,"data":"rope s1339 step 500/12500 loss 4.6898 217s\n"}
+,{"stream_name":"stdout","time":21212.007870447,"data":"rope s1339 step 1000/12500 loss 4.1755 435s\n"}
+,{"stream_name":"stdout","time":21429.36526356,"data":"rope s1339 step 1500/12500 loss 3.9538 652s\n"}
+,{"stream_name":"stdout","time":21646.445709848,"data":"rope s1339 step 2000/12500 loss 3.8607 869s\n"}
+,{"stream_name":"stdout","time":21863.455386915,"data":"rope s1339 step 2500/12500 loss 3.7411 1086s\n"}
+,{"stream_name":"stdout","time":22080.487822817,"data":"rope s1339 step 3000/12500 loss 3.6246 1303s\n"}
+,{"stream_name":"stdout","time":22297.289009929,"data":"rope s1339 step 3500/12500 loss 3.5952 1520s\n"}
+,{"stream_name":"stdout","time":22514.419058343,"data":"rope s1339 step 4000/12500 loss 3.5432 1737s\n"}
+,{"stream_name":"stdout","time":22731.402218003,"data":"rope s1339 step 4500/12500 loss 3.5511 1954s\n"}
+,{"stream_name":"stdout","time":22948.737619018,"data":"rope s1339 step 5000/12500 loss 3.5181 2171s\n"}
+,{"stream_name":"stdout","time":23165.803845911,"data":"rope s1339 step 5500/12500 loss 3.5350 2388s\n"}
+,{"stream_name":"stdout","time":23382.731687885,"data":"rope s1339 step 6000/12500 loss 3.5304 2605s\n"}
+,{"stream_name":"stdout","time":23599.849953466,"data":"rope s1339 step 6500/12500 loss 3.4874 2823s\n"}
+,{"stream_name":"stdout","time":23817.323828,"data":"rope s1339 step 7000/12500 loss 3.4195 3040s\n"}
+,{"stream_name":"stdout","time":24034.471471105,"data":"rope s1339 step 7500/12500 loss 3.4106 3257s\n"}
+,{"stream_name":"stdout","time":24252.093671984,"data":"rope s1339 step 8000/12500 loss 3.3689 3475s\n"}
+,{"stream_name":"stdout","time":24469.48846858,"data":"rope s1339 step 8500/12500 loss 3.4218 3692s\n"}
+,{"stream_name":"stdout","time":24686.568965205,"data":"rope s1339 step 9000/12500 loss 3.3139 3909s\n"}
+,{"stream_name":"stdout","time":24903.868802165,"data":"rope s1339 step 9500/12500 loss 3.3301 4127s\n"}
+,{"stream_name":"stdout","time":25121.085208922,"data":"rope s1339 step 10000/12500 loss 3.3800 4344s\n"}
+,{"stream_name":"stdout","time":25338.564728679,"data":"rope s1339 step 10500/12500 loss 3.3403 4561s\n"}
+,{"stream_name":"stdout","time":25556.119724454,"data":"rope s1339 step 11000/12500 loss 3.4030 4779s\n"}
+,{"stream_name":"stdout","time":25773.853790636,"data":"rope s1339 step 11500/12500 loss 3.3111 4997s\n"}
+,{"stream_name":"stdout","time":25991.285624626,"data":"rope s1339 step 12000/12500 loss 3.3895 5214s\n"}
+,{"stream_name":"stdout","time":26208.658364251,"data":"rope s1339 step 12500/12500 loss 3.3089 5431s\n"}
+,{"stream_name":"stdout","time":26212.939466783,"data":"RESULT rope s1339: ppl {'256': 40.25594614771195, '512': 57.53371317882797, '1024': 110.75094030059643} params 5,310,720\n"}
+,{"stream_name":"stdout","time":26408.847076039,"data":"learned s1339 step 500/12500 loss 4.8298 196s\n"}
+,{"stream_name":"stdout","time":26604.268885924,"data":"learned s1339 step 1000/12500 loss 4.2204 391s\n"}
+,{"stream_name":"stdout","time":26799.499808404,"data":"learned s1339 step 1500/12500 loss 3.9816 586s\n"}
+,{"stream_name":"stdout","time":26994.733273176,"data":"learned s1339 step 2000/12500 loss 3.8694 782s\n"}
+,{"stream_name":"stdout","time":27190.010060777,"data":"learned s1339 step 2500/12500 loss 3.7442 977s\n"}
+,{"stream_name":"stdout","time":27385.46596494,"data":"learned s1339 step 3000/12500 loss 3.6389 1172s\n"}
+,{"stream_name":"stdout","time":27580.741436218,"data":"learned s1339 step 3500/12500 loss 3.6065 1368s\n"}
+,{"stream_name":"stdout","time":27776.292471863,"data":"learned s1339 step 4000/12500 loss 3.5718 1563s\n"}
+,{"stream_name":"stdout","time":27971.536763882,"data":"learned s1339 step 4500/12500 loss 3.5744 1758s\n"}
+,{"stream_name":"stdout","time":28166.694215569,"data":"learned s1339 step 5000/12500 loss 3.5402 1953s\n"}
+,{"stream_name":"stdout","time":28362.022295332,"data":"learned s1339 step 5500/12500 loss 3.5550 2149s\n"}
+,{"stream_name":"stdout","time":28557.111844977,"data":"learned s1339 step 6000/12500 loss 3.5495 2344s\n"}
+,{"stream_name":"stdout","time":28752.581244911,"data":"learned s1339 step 6500/12500 loss 3.5078 2539s\n"}
+,{"stream_name":"stdout","time":28947.992286805,"data":"learned s1339 step 7000/12500 loss 3.4483 2735s\n"}
+,{"stream_name":"stdout","time":29143.235424158,"data":"learned s1339 step 7500/12500 loss 3.4358 2930s\n"}
+,{"stream_name":"stdout","time":29338.817503882,"data":"learned s1339 step 8000/12500 loss 3.3886 3126s\n"}
+,{"stream_name":"stdout","time":29534.379345568,"data":"learned s1339 step 8500/12500 loss 3.4452 3321s\n"}
+,{"stream_name":"stdout","time":29729.810659182,"data":"learned s1339 step 9000/12500 loss 3.3373 3517s\n"}
+,{"stream_name":"stdout","time":29925.4942862,"data":"learned s1339 step 9500/12500 loss 3.3574 3712s\n"}
+,{"stream_name":"stdout","time":30121.015645501,"data":"learned s1339 step 10000/12500 loss 3.4051 3908s\n"}
+,{"stream_name":"stdout","time":30316.887106978,"data":"learned s1339 step 10500/12500 loss 3.3629 4104s\n"}
+,{"stream_name":"stdout","time":30512.378534541,"data":"learned s1339 step 11000/12500 loss 3.4219 4299s\n"}
+,{"stream_name":"stdout","time":30708.344397799,"data":"learned s1339 step 11500/12500 loss 3.3266 4495s\n"}
+,{"stream_name":"stdout","time":30903.990495518,"data":"learned s1339 step 12000/12500 loss 3.4033 4691s\n"}
+,{"stream_name":"stdout","time":31099.548970842,"data":"learned s1339 step 12500/12500 loss 3.3271 4886s\n"}
+,{"stream_name":"stdout","time":31103.538142053,"data":"RESULT learned s1339: ppl {'256': 40.88604233931421, '512': 123.98142042698926, '1024': 239.61376496271538} params 5,572,864\n"}
+,{"stream_name":"stdout","time":31103.582917412,"data":"XONG — tai /kaggle/working/pe_eval.json + pe_*.pt ve\n"}
+,{"stream_name":"stderr","time":31107.749921281,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":31107.749952252,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":31108.219559856,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":31108.219588471,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":31109.419132593,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":31111.030594615,"data":"[NbConvertApp] Writing 325799 bytes to __results__.html\n"}
+]
