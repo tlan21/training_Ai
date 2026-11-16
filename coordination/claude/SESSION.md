@@ -3,6 +3,7 @@
 Cập nhật + commit sau mỗi bước (`chore(claude-progress): ...`). Phiên mới đọc file này trước TASKS.md.
 
 ## Phiên đang chạy
+- **2026-11-16 (AI-05 DONE):** user duyệt "duyệt Done, push và merge sau đó làm việc tiếp theo" → AI-05 DONE, push + merge master.
 - **2026-11-16 ~11:50 (AI-05 → REVIEW):** kernel A3 COMPLETE (sanity 5/5 PASS, 6 run ~7.8 phút/run). Output tải về
   `D:/data_training_ai/ai05_a3_fusion/output/` (tải gộp bị MemoryError → tải từng ckpt bằng `--file-pattern`). Parity: 6 best.pt load strict,
   test F1 khớp kernel 6/6. val F1 Siamese 0.2201 vs ViT 0.2192; test F1 0.2248 vs 0.2514 (p 0.08), AP 0.171 vs 0.191 (p 0.016) → không qua
