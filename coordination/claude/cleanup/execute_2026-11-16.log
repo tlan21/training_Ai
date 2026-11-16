@@ -1,0 +1,26 @@
+A deleted    1 files   967,770,992 B  D:/tmp/ai25/a3smoke/input/ctrl/highlight_features_140.pt
+A deleted  273 files   769,632,082 B  D:/tmp/ai25/a3smoke/input/vit
+Traceback (most recent call last):
+  File "D:\tmp\ai08_3\execute.py", line 47, in <module>
+    os.rmdir(r)
+OSError: [WinError 145] The directory is not empty: 'D:/tmp/ai25/a3smoke/out/ckpt_siamese_s1337'
+A already gone D:/tmp/ai25/a3smoke/input/ctrl/highlight_features_140.pt
+A already gone D:/tmp/ai25/a3smoke/input/vit
+A removed empty dirs (files deleted earlier)    43,466,895 B  D:/tmp/ai25/a3smoke/out/ckpt_siamese_s1337
+A deleted    3 files    43,466,895 B  D:/tmp/ai25/a3smoke/out/ckpt_vit_s1337
+B deleted    1 files    33,496,107 B  D:/data_training_ai/asr_football_replay_v2_20261106/kaggle_dataset/source_asr.pt
+B deleted    1 files    33,496,107 B  D:/data_training_ai/asr_football_replay_v3_20261111/kaggle_dataset/source_asr.pt
+B deleted    1 files    33,496,107 B  D:/data_training_ai/asr_public_expand_v1_20261105/kaggle_dataset/source_asr.pt
+B deleted    1 files    33,444,715 B  D:/data_training_ai/asr_football_replay_v1_20261105/kaggle_dataset/source_asr.pt
+B deleted    1 files    33,444,715 B  D:/data_training_ai/asr_robust/kaggle_dataset/source_asr.pt
+B deleted    1 files    33,490,603 B  D:/data_training_ai/asr_domain_replay_v1_20261021/kaggle_dataset/source_asr.pt
+B deleted    1 files    33,490,603 B  D:/data_training_ai/asr_domain_replay_v1_20261021_incomplete_reference_hash/kaggle_dataset/source_asr.pt
+B deleted    1 files    33,490,603 B  D:/data_training_ai/asr_domain_replay_v2_20261028/kaggle_dataset/source_asr.pt
+B deleted    1 files    55,197,377 B  D:/data_training_ai/minigpt_football_v1/upload/active.pt
+B deleted    1 files    55,197,377 B  D:/data_training_ai/minigpt_football_v2/upload/active.pt
+B deleted    1 files    80,023,520 B  D:/data_training_ai/asr_public_expand_v1_20261105/kaggle_dataset/domain_audio.zip
+C deleted   28 files    65,275,651 B  D:/tmp/ai25/deploy012
+C deleted   70 files    67,219,034 B  D:/tmp/ai25/deploy061
+C deleted    1 files    62,999,368 B  D:/tmp/ai25/deploy062
+C deleted   15 files    65,310,422 B  D:/tmp/ai25/deploy063
+FREED 806,006,099 B

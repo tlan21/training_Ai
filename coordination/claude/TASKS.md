@@ -41,7 +41,7 @@ Backlog ứng dụng 32 ID INT: `coordination/claude/OPEN_TASKS.md` (tick + evid
 | AI-03 | T1.6 | Mini-GPT: 03a Claude soạn summary 40 clip · 03b người duyệt · 03c train/eval | DONE (03a 2026-10-26 · 03b Claude duyệt theo D22 2026-10-27 · 03c không promote, người chấm 1.6/5) · D23 dừng cho MVP | — |
 | AI-04 | T1.8 / T4.3 | Đo VRAM sơ bộ Kaggle T4 (PRELIMINARY) | DONE — PRELIMINARY_T4 (2026-10-26; nghiệm thu 3060 vẫn mở) | AI-06 (DONE) |
 | AI-05 | T5.3 | Số liệu evaluation cho luận án | DONE (user duyệt 2026-11-16; đợt 2 xong, §1–9 SO_LIEU_LUAN_AN_v2) — user chọn đo cả 4 nhóm §7 (highlight mAP/ρ/IoU, ASR RTF + Two-Tower, Siamese R@1/5/mAP, ablation GPU) + cập nhật bảng theo ASR `7c497d43`/MiniGPT `8a62e953` + AI-24…31 | AI-02, AI-03, AI-04 |
-| AI-08 | — | Dọn dẹp dữ liệu/artefact làn AI an toàn (lặp lại sau mỗi đợt train) | IN_PROGRESS (đợt #3 2026-11-16, sau A2/A3; C 2.7 / D 2.0 / E 3.9 GB trống) — đợt #1 2026-10-26, đợt #2 2026-10-30 DONE | không job/server nào đang dùng; user duyệt danh sách |
+| AI-08 | — | Dọn dẹp dữ liệu/artefact làn AI an toàn (lặp lại sau mỗi đợt train) | TODO lặp lại (đợt #1 2026-10-26, #2 2026-10-30, #3 2026-11-16 DONE) | không job/server nào đang dùng; user duyệt danh sách |
 
 Thứ tự đề xuất (tối đa 1 IN_PROGRESS, cập nhật D14–D17): AI-10 → AI-07 → release (user duyệt) → AI-01 công bố API_READY; song song khi chờ: AI-09 (phần không cần mapping: schema/version/test), AI-03a, AI-02a, AI-04.
 AI-08 (dọn dẹp) chạy sau mỗi đợt train xong hoặc khi một ổ chạm `BLOCKED_RESOURCE`; luôn qua manifest + user duyệt.
